@@ -27,7 +27,15 @@ recipes={input_filter_defaults={item_type=-1,item_subtype=-1,mat_type=-1,mat_ind
  [2]={defaults={flags1={unrotten=true}},{name='prepare easy meal',items={{flags1={solid=true,cookable=true}},{flags1={cookable=true}}},job_fields={job_type=114,mat_type=2}}}
 },jobs_furnace={}}
 package.preload.utils=function()return utils end
-package.preload['dfhack.workshops']=function()return recipes end
+package.preload['dfhack.workshops']=function()error('Production must not use reconstructed workshop tables')end
+function native_builtins(id)
+ local rows={}
+ for _,entry in ipairs(recipes.jobs_workshop[id+1] or {})do
+  local fields=clone(entry.job_fields);if id==0 then fields.material_category={wood=true}end
+  rows[#rows+1]=fields
+ end
+ return rows
+end
 local jobs={}
 local next_id=10
 local filters_alive=0
@@ -120,7 +128,7 @@ local function req(action,p)
   end
   error('Missing injected requirements')
  end
- return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption_matches=function(a,b)return a:lower():find(b:lower(),1,true)~=nil end,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)assert(id==2);return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_builtin_templates=native_builtins,workshop_caption_matches=function(a,b)return a:lower():find(b:lower(),1,true)~=nil end,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)if id~=2 then return {} end;return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
 end
 local list=req(15,{cursor=0,query='#0'})
 assert(list.ok and #list.buildings==1 and list.buildings[1].id==0,'ID zero and numeric search')
@@ -136,6 +144,12 @@ local queued=req(17,{building_id=0,recipe=recipe})
 assert(queued.ok and queued.created_job==10 and #carp.jobs==1 and checked,'native queue links and wakes scheduler')
 local j=carp.jobs[0];j.worker={id=7}
 assert(j.material_category.wood,'carpenter job carries native wooden material category')
+-- Details can narrow an otherwise unrestricted builtin to a specific material.
+j.mat_type=419;j.mat_index=3
+assert(req(16,{building_id=0}).production_jobs[1].editable,'Details material choice must retain task editability')
+local extra=req(17,{building_id=0,recipe=recipe})
+assert(extra.ok,'Details material choice must not block another task')
+assert(req(18,{building_id=0,job_id=extra.created_job,cancel=true}).ok)
 -- Current bridge pin, not native parity: e3/findings.md Work-order jobs; 06-B E2.
 j.flags.by_manager=true
 assert(not req(18,{building_id=0,job_id=j.id,cancel=true}).ok,'manager jobs are read-only')
@@ -188,7 +202,7 @@ local function req(action,p)
   end
   error('Missing injected requirements')
  end
- return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption_matches=function(a,b)return a:lower():find(b:lower(),1,true)~=nil end,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)assert(id==2);return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_builtin_templates=native_builtins,workshop_caption_matches=function(a,b)return a:lower():find(b:lower(),1,true)~=nil end,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)if id~=2 then return {} end;return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
 end
 local function refusal(action,p,message)
  local result=req(action,p)

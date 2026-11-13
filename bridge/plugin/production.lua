@@ -1,6 +1,5 @@
 -- Fixed semantic production adapter. Native simulation owns input selection and work.
 local B,J=dfhack.buildings,dfhack.job
-local W=require('dfhack.workshops')
 local utils=require('utils')
 local function fail(s) return {ok=false,message=s} end
 local function utf(s) return dfhack.df2utf(s or '') end
@@ -55,16 +54,16 @@ local function template_job(recipe,b,native_requirements)
  if not ok then delete_template(j);return nil,tostring(err) end
  return j
 end
-local function recipes(b,native_requirements,native_caption,native_reactions,native_less)
+local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_builtins)
  local out,keys={},{}
  local k=kind(b)
- -- Reuse pinned builtin templates only for validated initial families.
+ -- Native owned templates supply the audited builtin branches. The order
+ -- classifier alone is not sufficient evidence for additional families.
  if k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' then
-  local source=(k=='WoodFurnace' and W.jobs_furnace or W.jobs_workshop)[b.type]
-  for _,entry in ipairs(source or {}) do
-   local fields=utils.clone(entry.job_fields,true)
-   if k=='Carpenters' then fields.material_category={wood=true} end
-   out[#out+1]={key='builtin:'..fields.job_type..':'..(fields.mat_type or -1),fields=fields}
+  for _,fields in ipairs(native_builtins(b.id)) do
+   local key='builtin:'..fields.job_type..':'..(fields.mat_type or -1)
+   if (fields.item_subtype or -1)>=0 then key=key..':subtype:'..fields.item_subtype end
+   out[#out+1]={key=key,fields=fields,available=true,objection=''}
   end
  end
  -- Root reaction choices and current objections come from the native reader.
@@ -73,6 +72,8 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
   -- Constructor8b169e leaves show_help_instead false; no inventory veto is
   -- applied to this builtin. Native input generation still owns its filters.
   out[#out+1]={key='builtin:'..df.job_type.ExtractFromPlants..':-1',fields={job_type=df.job_type.ExtractFromPlants},available=true,objection=''}
+ end
+ if k=='Still' or k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' then
   for _,row in ipairs(native_reactions(b.id)) do
    local r=df.global.world.raws.reactions.reactions[row.raw_index]
    if not r or r.code~=row.code then return nil,'Native reaction identity changed' end
@@ -104,7 +105,8 @@ local function editable(j,rs)
  for _,r in ipairs(rs) do
   if r.reaction then
    if j.job_type==df.job_type.CustomReaction and j.reaction_name==r.reaction.code then return true end
-  elseif j.job_type==r.fields.job_type and j.mat_type==(r.fields.mat_type or -1) then return true end
+  elseif j.job_type==r.fields.job_type and j.item_subtype==(r.fields.item_subtype or -1) and
+   ((r.fields.mat_type or -1)==-1 or j.mat_type==r.fields.mat_type) then return true end
  end
  return false
 end
@@ -215,7 +217,7 @@ return function(request)
   seed_scan.cursor=finish
   if finish<#all then return {ok=true,pending=true,message='Counting available seeds'} end
  end
- local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less);if not rs then return fail(err) end
+ local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_builtin_templates);if not rs then return fail(err) end
  if request.action==16 then
   local result=inspect(b,rs,request.workshop_caption)
   if kind(b)~='FarmPlot' and p.query and p.query~='' then

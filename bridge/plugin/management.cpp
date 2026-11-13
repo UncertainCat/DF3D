@@ -5861,6 +5861,24 @@ void run(color_ostream& out) {
       return 1;
     });lua_setfield(L,-2,"workshop_reactions");
     lua_pushcfunction(L,[](lua_State* state)->int {
+      auto* shop=df::building::find(int32_t(luaL_checkinteger(state,1)));
+      const auto rows=df3d_production::workshopBuiltinTaskTemplates(shop);
+      if(!rows)return luaL_error(state,"Native workshop builtin choices unavailable");
+      lua_newtable(state);int index=0;
+      for(const auto& row:*rows) {
+        lua_newtable(state);field(state,"job_type",int(row.job_type));
+        field(state,"item_type",int(row.item_type));field(state,"item_subtype",row.item_subtype);
+        field(state,"mat_type",row.mat_type);field(state,"mat_index",row.mat_index);
+        lua_newtable(state);field(state,"whole",row.material_category.whole);lua_setfield(state,-2,"material_category");
+        lua_newtable(state);field(state,"whole",row.specflag.whole);lua_setfield(state,-2,"specflag");
+        lua_newtable(state);field(state,"hist_figure_id",row.specdata.hist_figure_id);lua_setfield(state,-2,"specdata");
+        lua_newtable(state);field(state,"type",int(row.art_specifier));field(state,"id",row.art_specifier_id1);
+        field(state,"subid",row.art_specifier_id2);lua_setfield(state,-2,"art_spec");
+        lua_rawseti(state,-2,++index);
+      }
+      return 1;
+    });lua_setfield(L,-2,"workshop_builtin_templates");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto result=df3d_production::setWorkshopPriority(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),lua_toboolean(state,3)!=0,lua_toboolean(state,4)!=0);
       if(result!=df3d_production::PriorityOutcome::Rejected)mutated=true;
       lua_pushboolean(state,result==df3d_production::PriorityOutcome::Applied);return 1;

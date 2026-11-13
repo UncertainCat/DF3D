@@ -128,6 +128,22 @@ inline std::optional<std::vector<df::manager_order_template>> nativeWorkshopOrde
     return result;
 }
 
+// These native task branches have the same builtin descriptor membership as
+// the owned order catalog (Carpenter8c762d, Kitchen8cb3fc, WoodFurnace root).
+// Reactions are supplied separately with native category/availability checks.
+// Do not extend this to other families merely because classifier311580 matches:
+// Mechanic, Craftsdwarf, Butcher, Stoneworker and Forge differ from task menus.
+inline std::optional<std::vector<df::manager_order_template>> workshopBuiltinTaskTemplates(df::building* building) {
+    if(!building)return std::nullopt;
+    const auto type=building->getType();const auto subtype=building->getSubtype();
+    if(!((int(type)==13 && (subtype==0 || subtype==19)) || (int(type)==5 && subtype==0)))return std::nullopt;
+    auto rows=nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
+    rows->erase(std::remove_if(rows->begin(),rows->end(),[](const auto& row) {
+        return row.job_type==df::job_type::CustomReaction;
+    }),rows->end());
+    return rows;
+}
+
 struct WorkshopOrderCatalog {
     uint64_t revision=0;
     std::vector<df::manager_order_template> rows;

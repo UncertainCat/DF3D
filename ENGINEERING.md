@@ -15837,9 +15837,12 @@ tick. Fertilizer transport is verified above; lifecycle faults and viewer contro
 ### Native farm and workshop providers
 
 The existing `bridge/plugin/production.lua` adapter is not a complete native
-building-management provider. Its Carpenters/Kitchen/WoodFurnace choices come
-from hand-maintained `dfhack.workshops` tables; recipe-key ordering and the
-restricted reaction catalog remain incomplete. Ordinary requirement descriptions
+building-management provider. Carpenters/Kitchen/WoodFurnace builtin choices now
+come from the owned native Work orders template builder and exact workshop
+classifier, restricted to these independently compared families. The adapter no
+longer imports `dfhack.workshops`. Root reactions use the native availability
+reader for these families and Still; category navigation remains unfinished.
+Ordinary requirement descriptions
 combine raw enum/flag names. Native reagent and job helpers do not establish
 native parity for these surrounding choices, ordering or visible text. The catalog and panel remain staged until these gaps are resolved.
 
@@ -15868,7 +15871,8 @@ installed literals. Random streams and the historical-material cache are
 preserved; native menu state is never an input. Reference getters may initialize
 semantic cached indices as in the existing item-position reader.
 
-The production adapter now consumes these root reaction rows for Still and
+The production adapter consumes these root reaction rows for Still, Carpenter,
+Kitchen and Wood Furnace and
 rejects a newly unavailable reaction before queueing, retaining its native
 objection. Optional `ProductionRecipe.availability` transports the native boolean
 and objection through bridge/model/Godot. Absence means unknown, preserving old
@@ -17289,6 +17293,30 @@ composition and job effects remain unqualified. Native action `8c24cc` copies
 the button's item-type field into its job even when constructor `8b1600` has
 not initialized it; whether those values affect each job's behavior remains
 unresolved, so template equivalence must not discard them without further audit.
+
+`workshopBuiltinTaskTemplates` reuses the owned native template builder for
+Carpenter/Kitchen/WoodFurnace builtin descriptors, excluding CustomReaction
+templates. `production.lua` receives the full subtype/material/spec/art fields;
+subtyped recipes have distinct opaque keys. Root reactions are appended through
+the existing native reader. Native builtin availability is explicit, enabling
+rows that previously had unknown availability. Material-specific Details edits
+retain task editability when the recipe's default material is unrestricted;
+fixed-material recipes such as meal sizes still require their native value.
+Subtype identity is also checked. Special and manager jobs remain excluded.
+
+Protected190358 on2026-11-12 compares all36 Carpenter root choices, captions and
+availability, then queues Make menacing wooden spike through the controller
+after a native-backed Details material edit. Native and viewer job type140,
+subtype4, wood category2 and input type/subtype/material/quantity/flags1..3 match.
+Priority worker displacement and Details gestures still pass. This does not
+qualify job.item_type, every variant's execution, category navigation or whole
+workshop rendering. `native_workshop.json.owned_builtin_reference` retains the
+bounded evidence. Owned DF44900 exits unsaved with source/prefs preserved; the
+Godot log has only the three documented diagnostics. The initial185507 run
+exposed the material-editability defect;185724 retained the old embedded adapter.
+190047/190251 passed client assertions but failed a diagnostic-only job lookup;
+only190358 is final acceptance. Adapter regression forbids importing the old
+tables and verifies that material edits do not block subsequent tasks.
 
 Native job captions delegate from `8c2310` to semantic formatter `d032b0`.
 `workshopJobCaption` calls that formatter directly with scalar job fields,

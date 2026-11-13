@@ -5054,5 +5054,234 @@
       "Workshop move-up arrows and some contained-item artwork remain missing; no whole-workshop pixel acceptance.",
       "Legacy production errors do not distinguish pre-write rejection from post-write errors; Priority error replies conservatively enter Unknown and cannot replay."
     ]
+  },
+  "owned_builtin_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-190358",
+    "bridge_sha256": "10ED5A5C288310217A529AB7397CE90958FB256F808A0EAF3F7A420A630BEF79",
+    "source_sha256": "0a4388f8e25ad7c6150b2ed97332a89e34e6e22754228cb0166d2e991fbca9fa",
+    "scope": "36 Carpenter root choices and one wooden trap-component job/input comparison after Details material edit. No whole menu/category or all-family effects acceptance. job.item_type excluded pending behavior audit.",
+    "task_choices": [
+      {
+        "available": true,
+        "name": "Make bed",
+        "objection": ""
+      },
+      {
+        "available": false,
+        "name": "Make display case",
+        "objection": "[Requires Window]"
+      },
+      {
+        "available": true,
+        "name": "Make enormous wooden corkscrew",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make four wooden blocks",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make menacing wooden spike",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make spiked wooden ball",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden altar",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden animal trap",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden armor stand",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden barrel",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden bin",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden bookcase",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden bucket",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden buckler",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden cabinet",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden cage",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden casket",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden chair",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden chest",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden crutch",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden door",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden floodgate",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden grate",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden hatch cover",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden minecart",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden pedestal",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden pipe section",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden shield",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden splint",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden stepladder",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden table",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden training axe",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden training spear",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden training sword",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden weapon rack",
+        "objection": ""
+      },
+      {
+        "available": true,
+        "name": "Make wooden wheelbarrow",
+        "objection": ""
+      }
+    ],
+    "native_variant": {
+      "inputs": [
+        {
+          "flags1": 0,
+          "flags2": 0,
+          "flags3": 0,
+          "item_subtype": -1,
+          "item_type": 5,
+          "mat_index": -1,
+          "mat_type": -1,
+          "quantity": 1
+        }
+      ],
+      "item_subtype": 4,
+      "job_type": 140,
+      "mat_index": -1,
+      "mat_type": -1,
+      "material_category": 2
+    },
+    "viewer_variant": {
+      "inputs": [
+        {
+          "flags1": 0,
+          "flags2": 0,
+          "flags3": 0,
+          "item_subtype": -1,
+          "item_type": 5,
+          "mat_index": -1,
+          "mat_type": -1,
+          "quantity": 1
+        }
+      ],
+      "item_subtype": 4,
+      "job_type": 140,
+      "mat_index": -1,
+      "mat_type": -1,
+      "material_category": 2
+    },
+    "source_preserved": true,
+    "owned_process_closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues"
   }
 }

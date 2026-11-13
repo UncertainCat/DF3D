@@ -211,6 +211,25 @@ local ok,err=xpcall(function()
   shot('task-catalog-return');return
  end
  if os.getenv('DF3D_WORKSHOP_JOB_CONTROLS')=='1'then
+  assert(click_label('Add new task'))
+  local task_choices={};local utils=require('utils')
+  for _,button in ipairs(df.global.game.main_interface.building.filtered_button)do
+   if df.interface_button_building_new_jobst:is_instance(button)then
+    local job=df.reinterpret_cast(df.interface_button_building_new_jobst,button)
+    task_choices[#task_choices+1]={name=dfhack.df2utf(utils.call_with_string(button,'text')),available=not job.show_help_instead,objection=dfhack.df2utf(job.objection)}
+   end
+  end
+  local function variant_effect(job)
+   local inputs={}
+   for _,item in ipairs(job.job_items.elements)do
+    inputs[#inputs+1]={item_type=item.item_type,item_subtype=item.item_subtype,mat_type=item.mat_type,mat_index=item.mat_index,
+     quantity=item.quantity,flags1=item.flags1.whole,flags2=item.flags2.whole,flags3=item.flags3.whole}
+   end
+   return {job_type=job.job_type,item_subtype=job.item_subtype,mat_type=job.mat_type,mat_index=job.mat_index,material_category=job.material_category.whole,inputs=inputs}
+  end
+  assert(click_label('Make menacing wooden spike'))
+  local variant=assert(building.jobs[#building.jobs-1]);local variant_reference=variant_effect(variant)
+  assert(dfhack.job.removeJob(variant));select_map(building)
   assert(click_label('Add new task'));assert(click_label('Make bed'))
   local created=assert(building.jobs[#building.jobs-1]);assert(#building.jobs==#jobs+1)
   local function click(x,y)
@@ -225,7 +244,7 @@ local ok,err=xpcall(function()
   end
   local worked,problem=xpcall(function()
    local priority_worker
-   result.job_controls={building_id=building.id,job_id=created.id,before=snapshot()}
+   result.job_controls={building_id=building.id,job_id=created.id,before=snapshot(),task_choices=task_choices,variant_reference=variant_reference}
    shot('job-controls-before')
    click(772,154);result.job_controls.priority_on=snapshot();shot('job-priority-on')
    assert(created.flags.do_now,'Native Priority did not set do_now')
@@ -288,6 +307,16 @@ local ok,err=xpcall(function()
    shot('job-viewer-before');capture('workshop-wire')
    assert(not priority_worker.job.current_job and not dfhack.job.getWorker(created),'Viewer Priority did not release displaced worker')
    assert(json.encode(material_effect())==json.encode(result.job_controls.material_effect),'Viewer material edit differs from native job/input effect')
+   local wire_file=assert(io.open(out..'/workshop-wire-result.json'));local wire=json.decode(wire_file:read('*a'));wire_file:close()
+   local viewer_variant
+   for _,job in ipairs(building.jobs)do if job.id==wire.variant_id then viewer_variant=job;break end end
+   assert(viewer_variant,'Viewer variant job missing')
+   assert(dfhack.job.getHolder(viewer_variant)==building,'Viewer variant holder differs')
+   local actual_variant=variant_effect(viewer_variant)
+   local comparison=assert(io.open(out..'/workshop-variant-comparison.json','w'));comparison:write(json.encode({native=variant_reference,viewer=actual_variant}));comparison:close()
+   assert(dfhack.job.removeJob(viewer_variant))
+   assert(json.encode(actual_variant)==json.encode(variant_reference),'Viewer task variant/input effects differ')
+   result.job_controls.viewer_variant_effect=actual_variant
    result.job_controls.viewer_material_effect=material_effect();shot('job-viewer-after')
   end,debug.traceback)
   if df.global.game.main_interface.job_details.open then gui.simulateInput(view,'LEAVESCREEN')end
@@ -1057,7 +1086,7 @@ local ok,err=xpcall(function()
  for _,a in ipairs(prior_index)do indexed:insert('#',a)end
  assert(catalog_ok,catalog_err)
 end,debug.traceback)
-assert(#building.jobs==#jobs,'Workshop capture changed job count')
+assert(#building.jobs==#jobs,'Workshop capture changed job count'..(ok and '' or '\n'..tostring(err)))
 for i,id in ipairs(jobs)do assert(building.jobs[i-1].id==id,'Workshop capture changed job order')end
 select_map(original)
 assert(df.global.pause_state and df.global.world.frame_counter==frame,'Workshop capture advanced simulation')

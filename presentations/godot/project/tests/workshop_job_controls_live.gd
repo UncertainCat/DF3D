@@ -19,6 +19,12 @@ func run() -> void:
 	var owner=preload("res://scripts/workshop_panel.gd").new();root.add_child(owner);owner.configure(world,service,host)
 	owner.open_workshop(int(reference.building_id),"BUILDING_ICON_WORKSHOP_CARPENTER")
 	await settle(service,func():return owner.state.phase==owner.state.Phase.Ready and owner.tasks.phase==owner.tasks.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+	var task_choices: Array=owner.tasks.recipes()
+	check(task_choices.size()==reference.task_choices.size(),"Native root task count differs")
+	for index in mini(task_choices.size(),reference.task_choices.size()):
+		var expected: Dictionary=reference.task_choices[index]
+		var actual: Dictionary=task_choices[index]
+		check(actual.name==expected.name and actual.get("availability",{}).get("available")==expected.available and actual.get("availability",{}).get("objection")==expected.objection,"Native root task caption or availability differs")
 	# Build three jobs and compare actual Priority gestures with native queue effects.
 	var recipe_key:=""
 	for recipe in owner.tasks.recipes():
@@ -72,6 +78,17 @@ func run() -> void:
 	click(Vector2(820,154));owner.close_panel()
 	for frame in 8:world.poll();service.poll(0.01);await process_frame
 	check(not owner._job_details_open() and not owner.job_details_view.visible and owner.job_details.ticket==0,"Closed workshop retained Details ownership")
-	owner.queue_free();host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
-	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"materials":rows.size(),"priority_queue":true,"escape_return":true,"material_click":true,"parent_close":true}));file.close()
+	owner.open_workshop(int(reference.building_id),"BUILDING_ICON_WORKSHOP_CARPENTER")
+	await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+	var variant_key:=""
+	for recipe in owner.tasks.recipes():
+		if recipe.name=="Make menacing wooden spike":variant_key=recipe.key;break
+	if not check(not variant_key.is_empty(),"Native task variant missing"):quit(1);return
+	owner.tasks.queue_task(variant_key)
+	await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+	var variant_id: int=owner.tasks.snapshot.get("created_job",-1)
+	check(variant_id>=0,"Native task variant did not queue")
+	owner.close_panel();owner.queue_free();await process_frame
+	host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
+	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"variant_id":variant_id,"materials":rows.size(),"priority_queue":true,"escape_return":true,"material_click":true,"parent_close":true}));file.close()
 	world.detach_live();world.queue_free();await process_frame;quit(1 if failed else 0)

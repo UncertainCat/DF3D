@@ -17146,6 +17146,23 @@ only the known separate-thread, device-finalize and two-ObjectDB diagnostics
 (`passed_with_known_issues`). Headless composition passes in
 `workshop-job-details-native-frame`; core19 passes.
 
+Priority's multi-job behavior is recorded separately in
+`native_workshop.json.priority_queue_reference`. Protected175838 on2026-11-12
+clicks six times across three fresh Make bed jobs, locating each target by ID
+after previous reordering. Enabling moves that job to the front while retaining
+other jobs' Priority flags; disabling leaves queue order unchanged. The native
+inline branch1ad296..1ad3ff toggles bit18 at job+2c and, when enabling, swaps the
+job forward one predecessor at a time. Each swap also scans active units and
+calls1325080(unit,false,0,false,nullptr) for living workers assigned to the
+displaced job. This cancellation routine is already pinned by
+`tasks_action_native.h`; DFHack `Job::removeWorker` is not equivalent. Do not
+call the whole UI handler or use native menu state. Worker displacement is
+source-audited but still needs live qualification; the recorded three jobs have
+no workers. Priority remains unimplemented pending the semantic request/state
+extension and this full effect, rather than a flag-only toggle. The source
+save is unchanged and owned DF6532 exits unsaved; live diagnostics are limited
+to the documented Godot signatures.
+
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;
 DF's requirement builder supplies its inputs. Flat task choices retain native

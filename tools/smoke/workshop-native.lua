@@ -132,6 +132,33 @@ local ok,err=xpcall(function()
    assert(created.flags.do_now,'Native Priority did not set do_now')
    click(772,154);result.job_controls.priority_off=snapshot();shot('job-priority-off')
    assert(not created.flags.do_now,'Native Priority did not clear do_now')
+   -- Exercise queue interactions before selecting Details on the original job.
+   local extra={}
+   local queue_ok,queue_problem=xpcall(function()
+    for i=1,2 do
+     assert(click_label('Add new task'));assert(click_label('Make bed'))
+     extra[#extra+1]=assert(building.jobs[#building.jobs-1])
+    end
+    local function queue_snapshot()
+     local rows={}
+     for _,job in ipairs(building.jobs)do rows[#rows+1]={id=job.id,flags=job.flags.whole,do_now=job.flags.do_now}end
+     return rows
+    end
+    local samples={{name='before',rows=queue_snapshot()}}
+    for _,step in ipairs{{'middle-on',extra[1].id},{'original-on',created.id},{'last-on',extra[2].id},{'middle-off',extra[1].id},{'original-off',created.id},{'last-off',extra[2].id}}do
+     local index
+     for i,job in ipairs(building.jobs)do if job.id==step[2]then index=i;break end end
+     assert(index,'Priority target left queue')
+     click(772,154+index*36);samples[#samples+1]={name=step[1],target=step[2],rows=queue_snapshot()}
+    end
+    result.job_controls.priority_queue=samples
+    local _,job_address=df.sizeof(created);local _,flags_address=df.sizeof(created.flags)
+    result.job_controls.flags_offset=flags_address-job_address
+    shot('job-priority-queue-restored')
+   end,debug.traceback)
+   for _,job in ipairs(extra)do assert(dfhack.job.removeJob(job),'Priority queue cleanup failed')end
+   assert(queue_ok,queue_problem)
+   select_map(building)
    click(820,154)
    local details=df.global.game.main_interface.job_details
    assert(details.open and details.jb==created,'Native workshop Details did not target created task')

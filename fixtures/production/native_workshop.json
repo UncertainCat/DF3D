@@ -4259,5 +4259,172 @@
       "godot-shutdown-objects"
     ],
     "ownership": "Owned DF39928 exited unsaved; source unchanged. Native and viewer capped30FPS; preferences restored."
+  },
+  "priority_queue_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-175838",
+    "status": "passed_with_known_issues",
+    "scope": "Six native Priority clicks on three freshly queued Make bed jobs, selected by ID after each reorder. Enabling moves only the target to the front and retains other priority flags. Disabling keeps current queue order. No workers assigned; worker release is source-audited but not live-qualified. No runtime Priority implementation yet.",
+    "samples": [
+      {
+        "name": "before",
+        "rows": [
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382796
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382797
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382798
+          }
+        ]
+      },
+      {
+        "name": "middle-on",
+        "rows": [
+          {
+            "do_now": true,
+            "flags": 262144,
+            "id": 382797
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382796
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382798
+          }
+        ],
+        "target": 382797
+      },
+      {
+        "name": "original-on",
+        "rows": [
+          {
+            "do_now": true,
+            "flags": 262144,
+            "id": 382796
+          },
+          {
+            "do_now": true,
+            "flags": 262144,
+            "id": 382797
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382798
+          }
+        ],
+        "target": 382796
+      },
+      {
+        "name": "last-on",
+        "rows": [
+          {
+            "do_now": true,
+            "flags": 262144,
+            "id": 382798
+          },
+          {
+            "do_now": true,
+            "flags": 262144,
+            "id": 382796
+          },
+          {
+            "do_now": true,
+            "flags": 262144,
+            "id": 382797
+          }
+        ],
+        "target": 382798
+      },
+      {
+        "name": "middle-off",
+        "rows": [
+          {
+            "do_now": true,
+            "flags": 262144,
+            "id": 382798
+          },
+          {
+            "do_now": true,
+            "flags": 262144,
+            "id": 382796
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382797
+          }
+        ],
+        "target": 382797
+      },
+      {
+        "name": "original-off",
+        "rows": [
+          {
+            "do_now": true,
+            "flags": 262144,
+            "id": 382798
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382796
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382797
+          }
+        ],
+        "target": 382796
+      },
+      {
+        "name": "last-off",
+        "rows": [
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382798
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382796
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382797
+          }
+        ],
+        "target": 382798
+      }
+    ],
+    "flags_offset": 44,
+    "native_inline": {
+      "begin_rva": "1ad296",
+      "end_rva": "1ad3ff",
+      "length": 361,
+      "fnv1a64": "20c8c67bd84fb457",
+      "behavior": "Toggle bit18 at job+2c. Enabling repeatedly swaps target with its predecessor in building.jobs. After each swap, scan active units; for non-dead units whose current_job is the displaced job, call native1325080(unit,false,0,false,nullptr). Disabling returns immediately. Whole UI handler is not callable by runtime."
+    },
+    "sha256": {
+      "workshop-native.json": "e7118d4dd8ec2c9be1c70dcff5b866dcb1b98dc7eddf006a4e76572e4b9c890f",
+      "workshop-wire-result.json": "87c720fcaa798a54aba96592574b08763844779e0290100e01d3342b76184403",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "ownership": "Owned DF6532 exited unsaved; source unchanged, preferences restored. Serial30FPS, sampled GPU60C."
   }
 }

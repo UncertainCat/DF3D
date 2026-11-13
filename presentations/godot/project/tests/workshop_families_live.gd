@@ -45,6 +45,14 @@ func run() -> void:
 			var id: int=owner.tasks.snapshot.get("created_job",-1)
 			check(id>=0 and not owner.panel.tasks.picking,"Family task did not queue: "+entry.caption)
 			created[str(int(family.building_id))+":"+str(int(entry.index))]=id
+			if OS.get_environment("DF3D_WORKSHOP_CUSTOM_SUPPLIES")=="1":
+				var jobs: Array=owner.tasks.jobs()
+				var index:=jobs.size()-1
+				if check(index>=0 and jobs[index].id==id and jobs[index].editable,"Custom reaction controls missing"):
+					for desired in [true,false]:
+						click(owner.panel.tasks.global_position+Vector2(316,48+index*36))
+						await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+						check(owner.tasks.jobs()[index].repeat==desired,"Custom reaction Repeat differs")
 		for i in choices.size():
 			if not choices[i].has("availability") or choices[i].availability.available:continue
 			owner.panel.tasks.choose_mode(true)

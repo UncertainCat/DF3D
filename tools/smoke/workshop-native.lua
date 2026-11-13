@@ -115,6 +115,7 @@ local dye_names={}
 local workshop_fixtures={}
 local workshop_fixture_ids={}
 local craft_tool_fixture
+local custom_supplies={}
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
@@ -238,11 +239,49 @@ local ok,err=xpcall(function()
    local inputs={};for _,i in ipairs(job.job_items.elements)do
     inputs[#inputs+1]={item_type=i.item_type,item_subtype=i.item_subtype,mat_type=i.mat_type,mat_index=i.mat_index,quantity=i.quantity,
      flags1=i.flags1.whole,flags2=i.flags2.whole,flags3=i.flags3.whole}
+    if os.getenv('DF3D_WORKSHOP_CUSTOM_SUPPLIES')=='1'then
+     local row=inputs[#inputs]
+     for _,field in ipairs({'vector_id','flags4','flags5','metal_ore','reaction_class','has_material_reaction_product','min_dimension','reagent_index','reaction_id','has_tool_use','dye_color'})do row[field]=i[field]end
+     row.contains={};for _,value in ipairs(i.contains)do row.contains[#row.contains+1]=value end
+    end
    end
    local effect={job_type=job.job_type,reaction_name=job.reaction_name,item_subtype=job.item_subtype,mat_type=job.mat_type,mat_index=job.mat_index,
     material_category=job.material_category.whole,specflag=job.specflag.whole,specdata=job.specdata.hist_figure_id,inputs=inputs}
    if os.getenv('DF3D_WORKSHOP_DYER_RUNTIME')=='1'then effect.art_type=job.art_spec.type;effect.art_id=job.art_spec.id;effect.art_subid=job.art_spec.subid end
    return effect
+  end
+  if os.getenv('DF3D_WORKSHOP_CUSTOM_SUPPLIES')=='1'then
+   assert(os.getenv('DF3D_WORKSHOP_CUSTOM_DISCOVERY')=='1' and df.global.pause_state,'Custom supplies require paused owned custom lane')
+   local worker
+   for _,unit in ipairs(df.global.world.units.active)do if dfhack.units.isCitizen(unit) and not unit.job.current_job then worker=unit;break end end
+   assert(worker,'Custom supplies need an idle citizen')
+   local function tool(code)
+    for index,raw in ipairs(df.global.world.raws.itemdefs.tools)do if raw.id==code then return index end end
+    error('Missing fixture tool '..code)
+   end
+   local function supply(kind,subtype,token,container)
+    local material=assert(dfhack.matinfo.find(token),'Missing fixture material '..token)
+    local items=dfhack.items.createItem(worker,df.item_type[kind],subtype,material.type,material.index)
+    assert(#items==1,'Custom supply creation failed')
+    local item=items[1];custom_supplies[#custom_supplies+1]=item
+    assert(dfhack.items.moveToGround(item,worker.pos));item.flags.forbid=false
+    if kind=='GLOB' or kind=='LIQUID_MISC' then item:setDimension(150)end
+    if container then assert(dfhack.items.moveToContainer(item,container))end
+    return item
+   end
+   local pot=tool('ITEM_TOOL_LARGE_POT')
+   local lye_pot=supply('TOOL',pot,'INORGANIC:GRANITE')
+   supply('LIQUID_MISC',-1,'LYE',lye_pot)
+   local oil_pot=supply('TOOL',pot,'INORGANIC:GRANITE')
+   supply('LIQUID_MISC',-1,'PLANT_MAT:FLAX:OIL',oil_pot)
+   supply('GLOB',-1,'CREATURE_MAT:COW:TALLOW')
+   supply('GLOB',-1,'PLANT_MAT:FLAX:SEED')
+   supply('GLOB',-1,'PLANT_MAT:FLAX:THREAD')
+   supply('PLANT_GROWTH',-1,'PLANT_MAT:OLIVE:FRUIT')
+   supply('TOOL',tool('ITEM_TOOL_HONEYCOMB'),'CREATURE_MAT:HONEY_BEE:WAX')
+   supply('TOOL',pot,'INORGANIC:GRANITE')
+   result.custom_supplies={}
+   for _,item in ipairs(custom_supplies)do result.custom_supplies[#result.custom_supplies+1]={id=item.id,type=item:getType(),subtype=item:getSubtype(),mat_type=item:getMaterial(),mat_index=item:getMaterialIndex()}end
   end
   if os.getenv('DF3D_WORKSHOP_CRAFT_BONE_TOOL')=='1'then
    assert(os.getenv('DF3D_WORKSHOP_CRAFT_NAV')=='1','Bone tool probe requires Craft navigation')
@@ -601,6 +640,10 @@ local ok,err=xpcall(function()
     end
     assert(#target.jobs==#queue_ids,'Category discovery changed workshop queue')
     for i,id in ipairs(queue_ids)do assert(target.jobs[i-1].id==id,'Category discovery reordered workshop queue')end
+    if os.getenv('DF3D_WORKSHOP_CUSTOM_SUPPLIES')=='1' and target:getSubtype()==23 then
+     assert(#rows==(target.custom_type==0 and 2 or 4),'Custom stocked catalog count changed')
+     for _,row in ipairs(rows)do assert(row.available,'Stocked custom reaction unavailable: '..row.caption)end
+    end
     if os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')=='1'then
      catalog.effects={};catalog.queue_ids=queue_ids;local effect_types={}
      for index,row in ipairs(rows)do
@@ -1610,6 +1653,7 @@ local ok,err=xpcall(function()
  for _,a in ipairs(prior_index)do indexed:insert('#',a)end
  assert(catalog_ok,catalog_err)
 end,debug.traceback)
+for index=#custom_supplies,1,-1 do assert(dfhack.items.remove(custom_supplies[index]),'Custom supply cleanup failed')end
 for _,prior in ipairs(fuel_flags)do prior.item.flags.forbid=prior.forbid end
 for _,prior in ipairs(dye_names)do prior.color.name=prior.name;assert(prior.color.name==prior.name)end
 for _,entry in ipairs(furnace_fixtures)do entry.building.type=entry.prior_type end

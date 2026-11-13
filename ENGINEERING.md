@@ -17743,8 +17743,8 @@ reject. Both picker crops432,106..888,676 match native pixels. The diagnostic
 Tool24 retype stays on Tasks after Add new task; its Tasks crop432,106..888,496
 also matches. The larger Tool crop still differs by578 pixels in the two
 construction-item icons. This is not a real placed-tool qualification.
-Successful custom reaction creation, worker execution/products and custom
-child categories remain unqualified. Whole workshop exposure remains gated.
+Successful custom reaction creation is qualified below; worker execution/products
+and custom child categories remain unqualified. Whole workshop exposure remains gated.
 
 Fixture custom_workshop_reference retains bounded observations and hashes.
 Owned DF34972 exits unsaved with source saves/preferences restored. Both
@@ -17753,6 +17753,24 @@ passes with the three documented Godot startup/shutdown diagnostics and no
 unclassified errors. Core19 and engine state/composition/adapter checks pass
 (build/qa/custom-workshops). Earlier105454 had a blank Tool picker;110005
 verifies the corrected empty-root behavior.
+
+Protected110446 on2026-11-13 supplies ten controlled items in the paused clone:
+lye and flax oil in separate stone pots, cow tallow, flax seed paste, linen
+slurry, olive fruit, honeycomb and an empty stone pot. Native eligibility makes
+all six custom reactions available. Actual native and viewer clicks create all
+six jobs; captured job descriptors and input fields match, including reaction
+class/product, reagent/containment indices and tool requirements. Each viewer
+job accepts Repeat on/off from the root context. Both stocked menu crops match
+native pixels. Original queues are restored, controlled supplies removed and
+owned DF23692 exits unsaved with source preservation. No worker execution or
+finished-product claim follows from these paused queue checks.
+
+Fixture custom_workshop_reference.stocked_reference stores both job effects,
+supply identities, image hashes and omissions. Core19 passes. The live run has
+only the three documented Godot diagnostics;30FPS GPU60C/2% is a sample.
+Earlier110328 establishes the same six creations with fewer input fields;
+110446 is the stronger accepted comparison. Tool contents artwork and actual
+placed-tool qualification remain unfinished.
 
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.

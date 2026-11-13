@@ -3605,7 +3605,8 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           Json::Value rows(Json::arrayValue);
           for(const auto& choice:*choices) {
             Json::Value row(Json::objectValue);row["color"]=choice.color;row["available"]=choice.available;
-            row["alpha_order"]=choice.alphaOrder;row["tint"]=choice.tint;rows.append(std::move(row));
+            row["alpha_order"]=choice.alphaOrder;row["tint"]=choice.tint;
+            row["caption"]=DF2UTF(choice.caption);row["info"]=DF2UTF(choice.info);rows.append(std::move(row));
           }
           out.print("{}",Json::FastWriter().write(rows));return CR_OK;
         }

@@ -350,11 +350,13 @@ local ok,err=xpcall(function()
       local expected={}
       for _,row in ipairs(page.rows)do
        local tint=row.color~=nil;local color=tint and row.color or row.specdata
-       local count=tonumber((row.info or ''):match('At least ([%d,]+)')or '0')
+       local digits=(row.info or ''):match('At least ([%d,]+)')or '0'
+       local count=tonumber((digits:gsub(',','')))
        assert(count~=nil,'Dyer count format needs native-number decoding')
        expected[tostring(tint)..':'..color]={count=count,alpha_order=row.alpha_order}
       end
-      for _,row in ipairs(page.owned_dye_targets)do
+      for index,row in ipairs(page.owned_dye_targets)do
+       assert(row.caption==page.rows[index].caption and row.info==page.rows[index].info,'Dyer target text/order differs at '..index)
        local key=tostring(row.tint)..':'..row.color;local native=assert(expected[key],'Missing native Dyer target '..key)
        assert(native.count==row.available and native.alpha_order==row.alpha_order,'Dyer target availability differs: '..key)
        expected[key]=nil

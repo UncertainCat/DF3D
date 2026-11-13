@@ -2,7 +2,7 @@
 #include "work_order_dye_native.h"
 
 namespace df3d_production {
-struct WorkshopDyeTarget {int32_t color=-1,available=0,alphaOrder=0;bool tint=false;};
+struct WorkshopDyeTarget {int32_t color=-1,available=0,alphaOrder=0;bool tint=false;std::string caption,info;};
 
 // Native8c597d..8c6cbb builds these lists inline. Only its semantic inventory
 // search and color mixer are invoked; all filters, vectors and counts are owned.
@@ -14,7 +14,31 @@ inline std::optional<std::vector<WorkshopDyeTarget>> workshopDyeTargets(df::buil
     static const bool supported=[base] {
         uint64_t hash=UINT64_C(14695981039346656037);
         for(size_t i=0;i<0x133e;++i){hash^=base[0x8c597d+i];hash*=UINT64_C(1099511628211);}
-        return hash==UINT64_C(0x0a41fe9bfc54aa4e);
+        if(hash!=UINT64_C(0x0a41fe9bfc54aa4e))return false;
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x8c2670,0x1ed,UINT64_C(0xeb925a19dec78106)},
+            {0x52c2b0,0xd8,UINT64_C(0x38b6489e35387929)},
+            {0x16159c0,6,UINT64_C(0x8a94945c77812366)},
+            {0x161596c,5,UINT64_C(0xbaa2b8c96e977ba9)},
+            {0x1615838,5,UINT64_C(0x5844e24667cb6035)},
+            {0x1615870,14,UINT64_C(0x8bbdc86cdb98b554)},
+            {0x16bec70,12,UINT64_C(0x0391cf9dbe18bb00)},
+            {0x16bec80,13,UINT64_C(0x6daea43b911a405c)},
+            {0x16bec48,14,UINT64_C(0xc1fa53db19023321)},
+            {0x1615890,10,UINT64_C(0xca2c9a7d776f5771)},
+            {0x1615860,11,UINT64_C(0x8517038a788c3c2a)},
+            {0x16beb38,15,UINT64_C(0x88fca6f071e154f8)},
+            {0x16beb48,21,UINT64_C(0x9548569b1f223a6d)},
+            {0x16bec18,23,UINT64_C(0x2549936d31f9bdce)},
+            {0x16bec30,22,UINT64_C(0xd89520d19424a34b)},
+        };
+        for(const auto& pin:pins) {
+            hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;
+        }
+        return true;
     }();
     if(!supported)return std::nullopt;
     auto& colors=df::global::world->raws.descriptors.colors;
@@ -70,6 +94,40 @@ inline std::optional<std::vector<WorkshopDyeTarget>> workshopDyeTargets(df::buil
             rows.push_back({c,tints[c],mixing?pass:2*pass+1,true});
     if(!mixing)for(int pass=0;pass<2;++pass)for(int32_t c=0;size_t(c)<count;++c)
         if((dyes[c]>0)==(pass==0))rows.push_back({c,dyes[c],2*pass,false});
+    const auto literal=[base](size_t rva){return std::string(reinterpret_cast<const char*>(base+rva));};
+    for(auto& row:rows) {
+        if(row.tint) {
+            // Inline text8c2670 uses only job kind, raw color name and literals.
+            row.caption=literal(mixing?0x161596c:job==191?0x16bec70:job==190?0x16bec80:0x16bec48)+colors[row.color]->name;
+            if(mixing)row.caption+=literal(0x1615838);
+            row.caption+=literal(0x1615870);
+        } else {
+            df::job descriptor;descriptor.job_type=df::job_type(job);
+            descriptor.item_type=df::item_type(-1);descriptor.item_subtype=-1;
+            descriptor.mat_type=-1;descriptor.mat_index=-1;descriptor.material_category.whole=0;descriptor.specflag.whole=0;
+            descriptor.specdata.hist_figure_id=row.color;descriptor.art_spec.type=df::job_art_specifier_type(-1);
+            descriptor.art_spec.id=-1;descriptor.art_spec.subid=row.color;
+            const auto caption=workshopJobCaption(descriptor);if(!caption)return std::nullopt;
+            row.caption=*caption;
+        }
+        if(row.available>0) {
+            std::string number;
+            reinterpret_cast<void(*)(int32_t,std::string*)>(base+(mixing?0x52c130:0x52c2b0))(row.available,&number);
+            row.info=literal(0x1615890)+number+literal(mixing?0x1615860:!row.tint?0x16beb38:job==191?0x16beb48:job==244?0x16bec18:0x16bec30);
+        }
+    }
+    for(size_t i=1;i<rows.size();++i) {
+        auto row=rows[i];size_t at=i;
+        while(at>0) {
+            const auto& prior=rows[at-1];bool less;
+            if(row.tint!=prior.tint)less=row.tint;
+            else if(row.alphaOrder!=prior.alphaOrder)less=row.alphaOrder<prior.alphaOrder;
+            else {const auto compared=workshopCaptionLess(row.caption,prior.caption);if(!compared)return std::nullopt;less=*compared;}
+            if(!less)break;
+            rows[at]=prior;--at;
+        }
+        rows[at]=std::move(row);
+    }
     return rows;
 }
 }

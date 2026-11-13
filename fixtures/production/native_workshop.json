@@ -27589,7 +27589,20 @@
         "Caption sorting/rendering not provided by this helper.",
         "No ingredient submenus or task effects.",
         "No viewer integration or public exposure."
-      ]
+      ],
+      "text_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261112-235501",
+        "scope": "All 811 captions and availability strings match native row-for-row, including complete ordering. Membership/count/alpha assertions also pass.",
+        "sha256": {
+          "workshop-native.json": "d9ff375ac021168b0a58c832aa0b07001f689a129d16634dfb9e1dcbc5056711",
+          "result.json": "e3ab30ec35c611654b96fea1ae4734bf09c5e31e4d104bd989cabf97f3c8dd74"
+        },
+        "cleanup": "Owned DF10428 closed unsaved; source saves, preferences and controlled workshop type/stage restored.",
+        "omissions": [
+          "No viewer transport/rendering or color swatch acceptance.",
+          "No ingredient pages or task creation."
+        ]
+      }
     }
   }
 }

@@ -8430,5 +8430,71 @@
     ],
     "diagnostics": "passed_with_known_issues: separate-renderer, finalize, ObjectDB shutdown; no unclassified diagnostics",
     "source_preservation": "Both sources unchanged; owned DF16260 and DF30016 exited unsaved"
+  },
+  "clothier_navigation_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-215249",
+    "scope": "Native root fabric clicks and Back restore the exact root rows for cloth/silk/yarn. All 48 task descriptors match owned native order catalog grouped by fabric flag, excluding uninitialized item_type. Runtime Clothier dispatch and viewer remain pending.",
+    "root": [
+      {
+        "caption": "cloth (opens menu)",
+        "leave": false,
+        "material": -1,
+        "material_category": 4,
+        "matgloss": -1,
+        "type": "<type: interface_button_building_material_selectorst>"
+      },
+      {
+        "caption": "silk (opens menu)",
+        "leave": false,
+        "material": -1,
+        "material_category": 8,
+        "matgloss": -1,
+        "type": "<type: interface_button_building_material_selectorst>"
+      },
+      {
+        "caption": "yarn (opens menu)",
+        "leave": false,
+        "material": -1,
+        "material_category": 4096,
+        "matgloss": -1,
+        "type": "<type: interface_button_building_material_selectorst>"
+      }
+    ],
+    "pages": [
+      {
+        "fabric": 4,
+        "caption": "cloth (opens menu)",
+        "tasks": 16,
+        "back_restored_root": true
+      },
+      {
+        "fabric": 8,
+        "caption": "silk (opens menu)",
+        "tasks": 16,
+        "back_restored_root": true
+      },
+      {
+        "fabric": 4096,
+        "caption": "yarn (opens menu)",
+        "tasks": 16,
+        "back_restored_root": true
+      }
+    ],
+    "membership_pin": {
+      "rva": "8c812d",
+      "length": "4d2",
+      "fnv64": "a0bb18750d912459"
+    },
+    "caption": "Native8c28f0 delegates to semantic14d1920(world,owned_string,-1,-1,fabric,false,0) then appends installed suffix1615870 length13. Widget constructors and input8c2940 are prohibited runtime.",
+    "source_preservation": "Owned source unchanged; DF11788 exited unsaved",
+    "sha256": {
+      "workshop-native.json": "f724040cf59911510d18d049101b3ec3171fbe8890992e1dbd63874667f09ed9",
+      "workshop-clothier-root.png": "502c291e6838d270f3fdd14ece8dcad5177df786f55d60c76241f542a799e27b",
+      "workshop-clothier-back-root.png": "502c291e6838d270f3fdd14ece8dcad5177df786f55d60c76241f542a799e27b",
+      "workshop-clothier-page-1.png": "0f6545e8f6bea5d9f88bd973cf2d24dc33f808fbfaf91997d6c90546d6874415",
+      "workshop-clothier-page-2.png": "280478c1ef4fc196f731c1cd367cf91cd18c7cf910bbba6a0b4c91958f265c1b",
+      "workshop-clothier-page-3.png": "93b7cdfb5a6057c2b89f8544c52c3b33aa0710daa4b1554289ffd522890e5e3c",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
   }
 }

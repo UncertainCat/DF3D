@@ -17302,6 +17302,25 @@ are observations rather than continuous peaks. Evidence is in
 native_workshop.json.jeweler_runtime_reference. Public workshop exposure remains
 gated on the remaining families and complete workflows.
 
+Clothier native discovery establishes three root fabric selectors, in cloth/silk/
+yarn order, with material-category flags4/8/4096. Native8c812d..8c85ff walks
+civilization clothing resources with raw flag0, copies the selected material
+and category into each task, and adds bag74, rope120 and image192. Child pages
+bypass reaction insertion; the root reaches8c3fe0. A child appends a leave
+material selector resetting material=-1/category=0; actual Back clicks restore
+the exact root rows. Native widget input8c2940 writes global menu scratch and
+is not eligible for runtime use. Caption8c28f0 calls semantic14d1920 with an
+owned string, material/index=-1, fabric flag, false and0, then appends installed
+suffix1615870 length13. Runtime may use the semantic formatter, not the widget.
+
+Protected215249 on2026-11-12 verifies all three native selections and Back,
+with16 tasks per child. All48 descriptors match the independently owned order
+catalog when grouped by fabric flag (job.item_type excluded). Native root/child
+screenshots were captured and inspected. This is discovery evidence, not viewer
+acceptance: Clothier runtime dispatch and presentation remain pending. Owned
+DF11788 exits unsaved with source preservation; GPU samples42C at30FPS are not
+a continuous peak. See native_workshop.json.clothier_navigation_reference.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

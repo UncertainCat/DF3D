@@ -275,7 +275,7 @@ local ok,err=xpcall(function()
    for _,entry in ipairs(furnace_fixtures)do result.furnace_fixtures[#result.furnace_fixtures+1]={id=entry.id,prior_type=entry.prior_type,fixture_type=entry.fixture_type}end
   end
   if os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')=='1'then
-   local types=os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' and {7,9,14,16,17,18,20} or {7,9,14,16,17,18,20,21}
+   local types=os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and {21} or (os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' and {7,9,14,16,17,18,20} or {7,9,14,16,17,18,20,21})
    for _,target in ipairs(df.global.world.buildings.all)do
     if df.building_workshopst:is_instance(target) and target:getBuildStage()==target:getMaxBuildStage() and #target.jobs==0 and target.custom_type==-1 then
      local subtype=types[#workshop_fixtures+1]
@@ -285,7 +285,7 @@ local ok,err=xpcall(function()
      if #workshop_fixtures==#types then break end
     end
    end
-   assert(#workshop_fixtures==#types,'Extra discovery requires eight idle completed workshops')
+   assert(#workshop_fixtures==#types,'Extra discovery has insufficient idle completed workshops')
    result.workshop_fixtures={}
    for _,entry in ipairs(workshop_fixtures)do result.workshop_fixtures[#result.workshop_fixtures+1]={id=entry.id,prior_type=entry.prior_type,prior_stage=entry.prior_stage,fixture_type=entry.fixture_type,fixture_stage=entry.building.construction_stage}end
   end
@@ -307,7 +307,7 @@ local ok,err=xpcall(function()
       row.specflag=job.specflag.whole;row.specdata=job.specdata.hist_figure_id
       row.art_type=job.art_specifier;row.art_id=job.art_specifier_id1;row.art_subid=job.art_specifier_id2
       row.available=not job.show_help_instead;row.objection=dfhack.df2utf(job.objection);row.priority=job.list_priority
-      if os.getenv('DF3D_WORKSHOP_STONE_NAV')=='1'then row.info=dfhack.df2utf(job.info)end
+      if os.getenv('DF3D_WORKSHOP_STONE_NAV')=='1' or os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1'then row.info=dfhack.df2utf(job.info)end
      elseif df.interface_button_building_category_selectorst:is_instance(button)then
       local selector=df.reinterpret_cast(df.interface_button_building_category_selectorst,button)
       row.category=selector.category
@@ -319,7 +319,9 @@ local ok,err=xpcall(function()
      elseif df.interface_button_building_color_selectorst:is_instance(button)then
       local selector=df.reinterpret_cast(df.interface_button_building_color_selectorst,button)
       row.color=selector.color_index;row.color_job=selector.job
+      if os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1'then row.info=dfhack.df2utf(selector.info);row.prepare_interface=selector.prepare_interface end
      end
+     if os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1'then row.alpha_order=button.alpha_order end
      rows[#rows+1]=row
     end
     return rows
@@ -376,7 +378,7 @@ local ok,err=xpcall(function()
       end
      end
      for index,row in ipairs(page.rows)do
-      if os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')~='1' and not row.leave and (row.category~=nil or row.custom_category~=nil or row.material~=nil or row.color~=nil)then
+      if (os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')~='1' or (os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and #page.path==0)) and not row.leave and (row.category~=nil or row.custom_category~=nil or row.material~=nil or row.color~=nil)then
        assert(#page.path<8,'Native task category discovery exceeded depth bound')
        gui.simulateInput(view,'LEAVESCREEN');select_map(target)
        assert(click_label('Add new task'),'Native task catalog did not reopen')
@@ -396,6 +398,7 @@ local ok,err=xpcall(function()
         assert(clicked,'Native category caption not reachable: '..step.caption)
        end
        pending[#pending+1]={path=path,rows=read_rows(),reaction_parent=row.custom_category}
+       if os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1'then shot('dyer-page-'..index)end
       end
      end
     end
@@ -541,7 +544,7 @@ local ok,err=xpcall(function()
     gui.simulateInput(view,'LEAVESCREEN')
    end
   end
-  if os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')=='1'then assert(#result.task_catalogs==(os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' and 7 or 8),'Missing extra-family root catalog')end
+  if os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')=='1'then assert(#result.task_catalogs==(os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and 1 or (os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' and 7 or 8)),'Missing extra-family root catalog')end
   shot('task-catalog-return')
   if os.getenv('DF3D_WORKSHOP_STONE_RUNTIME')=='1'then
    capture('workshop-wire')

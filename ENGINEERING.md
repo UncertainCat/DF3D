@@ -17589,7 +17589,19 @@ worker execution/products and uninitialized item_type remain unqualified.
 See native_workshop.json.extra_family_runtime_reference.
 
 Dyer root discovery233126 records four nested color/mixing categories and
-three generic dye tasks. Its nested workflow is unfinished. An earlier
+three generic dye tasks. Protected234708 captures all four first-level pages:
+cloth/leather/thread each have116 tint selectors followed by116 direct dye
+jobs; Mix dye has115 selectors. These fit the separate128-category/recipe
+bounds, but need native color swatches and independent availability captions.
+The first cloth page was visually inspected. Native8c660e..8c6cb6 collects
+substrate colors with building/position inputs and computes tint availability
+as the maximum pair minimum using color mixer7dc570; direct dye availability
+uses dye counts. Runtime must own these searches, not use the native menu.
+Controlled type/stage changes were restored, DF10672 exited unsaved, and
+source saves/preferences were preserved; serial30FPS sampled39C.
+See native_workshop.json.dyer_navigation_reference for rows and evidence hashes.
+Ingredient submenu navigation, creation effects and DF3D implementation remain
+unfinished. An earlier
 controlled discovery232955 exited while entering Tint cloth aqua; source
 saves were unchanged. The cause has not been isolated, so this is not a
 confirmed native bug and grants no behavior exception. Custom/Tool workshops,

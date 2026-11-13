@@ -17413,6 +17413,29 @@ state/composition/adapter checks pass; live diagnostics contain only the three
 documented Godot signatures. Serial30FPS GPU samples are40-41C. See
 native_workshop.json.kiln_runtime_reference. Whole workshop exposure remains gated.
 
+Regular Glass Furnace Tasks exposes canonical glass:3/4/5 pages, using the
+owned native order catalog and the native14d1920 material formatter shared with
+Clothier. Root retains Collect sand and native reaction categories; material
+children omit reactions and return directly to root. Native8c5078..8c565b is
+pinned. Tool membership uses civilization resources+280, excludes NO_DEFAULT_JOB17
+and requires HARD_MAT0 or GLASS_MAT12. Trap components use resources+220 and
+METAL3, matching the independent catalog's glass branches. Native menu objects
+and selection globals remain prohibited runtime inputs.
+Protected222409 on2026-11-12 verifies all105 glass choices, three Back transitions,
+root Cancel, four invalid selectors and six first/last-row job creations through
+clicks and scrolling. All job fields and input requirements match native in the
+lane assertions. Four picker crops432,106..888,676 are pixel-identical.
+Clothier regression222513 verifies all48 choices, six creations and four more
+pixel-identical crops after the shared formatter change. Both captures contain
+only the three documented Godot diagnostics; owned DF3896/8292 exit unsaved and
+source saves remain unchanged. Serial30FPS GPU samples39-43C are not continuous
+peaks. Core19 and headless state/composition/adapter checks pass.
+Glass uses a temporary restored furnace subtype fixture. Natural construction,
+Collect sand creation, instrument-child workflow, all105 creation effects,
+worker execution/products, magma supply and uninitialized item_type equivalence
+remain unqualified. See native_workshop.json.glass_runtime_reference. Whole
+workshop exposure remains gated.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

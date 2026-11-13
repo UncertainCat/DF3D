@@ -15,6 +15,7 @@ inline bool workOrderCatalogSupported() {
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0x8c5078,0x5e3,UINT64_C(0x6340566cdcdeff62)}, // glass root and material-page membership
             {0x8c5036,0x21,UINT64_C(0x4280d302be848fe3)}, // kiln root Collect clay membership
             {0x8c812d,0x4d2,UINT64_C(0xa0bb18750d912459)}, // clothier fabric/task membership
             {0x8c571c,0x106,UINT64_C(0xe7e3ae7701fd626a)}, // jeweler job types + encrust targets
@@ -147,7 +148,7 @@ inline std::optional<std::vector<df::manager_order_template>> workshopTaskTempla
     if(!building)return std::nullopt;
     const auto type=building->getType();const auto subtype=building->getSubtype();
     const bool forge=int(type)==13 && (subtype==5 || subtype==6);
-    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==4 || subtype==11 || subtype==12 || subtype==13 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && (subtype==0 || subtype==1 || subtype==3))))return std::nullopt;
+    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==4 || subtype==11 || subtype==12 || subtype==13 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && (subtype==0 || subtype==1 || subtype==2 || subtype==3))))return std::nullopt;
     auto rows=nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
     // These descriptors qualify existing queued jobs, never populate the forge
     // picker. The native task branches supply its choices independently.
@@ -160,8 +161,10 @@ inline std::optional<std::vector<df::manager_order_template>> workshopTaskTempla
 }
 
 // Caption8c28f0 delegates to this semantic formatter; never construct its widget.
-inline std::optional<std::vector<WorkshopForgeChoice>> workshopClothierFabrics(df::building* building) {
-    if(!workOrderCatalogSupported() || !building || int(building->getType())!=13 || building->getSubtype()!=13)return std::nullopt;
+inline std::optional<std::vector<WorkshopForgeChoice>> workshopMaterialChoices(df::building* building) {
+    if(!workOrderCatalogSupported() || !building)return std::nullopt;
+    const bool glass=int(building->getType())==5 && building->getSubtype()==2;
+    if(!glass && !(int(building->getType())==13 && building->getSubtype()==13))return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     static const bool pinned=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
@@ -177,11 +180,11 @@ inline std::optional<std::vector<WorkshopForgeChoice>> workshopClothierFabrics(d
     using Name=void (*)(void*,std::string*,int16_t,int32_t,int32_t,bool,int16_t);
     df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
     std::vector<WorkshopForgeChoice> rows;
-    for(int32_t fabric:{4,8,4096}){
+    for(int32_t choice:(glass?std::vector<int32_t>{3,4,5}:std::vector<int32_t>{4,8,4096})){
         std::string caption;
-        reinterpret_cast<Name>(base+0x14d1920)(df::global::world,&caption,-1,-1,fabric,false,0);
+        reinterpret_cast<Name>(base+0x14d1920)(df::global::world,&caption,glass?int16_t(choice):int16_t(-1),-1,glass?0:choice,false,0);
         caption.append(reinterpret_cast<const char*>(base+0x1615870),13);
-        rows.push_back({fabric,-1,std::move(caption)});
+        rows.push_back({choice,-1,std::move(caption)});
     }
     return rows;
 }

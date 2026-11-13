@@ -5930,13 +5930,14 @@ void run(color_ostream& out) {
       return 1;
     });lua_setfield(L,-2,"workshop_forge_page");
     lua_pushcfunction(L,[](lua_State* state)->int {
-      const auto rows=df3d_production::workshopClothierFabrics(df::building::find(int32_t(luaL_checkinteger(state,1))));
-      if(!rows)return luaL_error(state,"Native clothier fabrics unavailable");
+      auto* building=df::building::find(int32_t(luaL_checkinteger(state,1)));
+      const auto rows=df3d_production::workshopMaterialChoices(building);
+      if(!rows)return luaL_error(state,"Native workshop materials unavailable");
       lua_newtable(state);int index=0;
       for(const auto& row:*rows){lua_newtable(state);field(state,"caption",row.caption);
-        field(state,"key","clothier:"+std::to_string(row.category));lua_rawseti(state,-2,++index);}
+        field(state,"key",std::string(int(building->getType())==5?"glass:":"clothier:")+std::to_string(row.category));lua_rawseti(state,-2,++index);}
       return 1;
-    });lua_setfield(L,-2,"workshop_clothier_fabrics");
+    });lua_setfield(L,-2,"workshop_material_choices");
     lua_pushcfunction(L,[](lua_State* state)->int {
       std::vector<df3d_production::WorkshopSmelterRow> rows;
       if(!df3d_production::workshopReactionRows(df::building::find(int32_t(luaL_checkinteger(state,1))),"",&rows))return luaL_error(state,"Native smelter choices unavailable");

@@ -244,24 +244,25 @@ local ok,err=xpcall(function()
    end end
    result.fuel_scenario={forbidden_bars=#fuel_flags};assert(#fuel_flags>0,'Fuel scenario has no fuel bars')
   end
-  if os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')=='1' or os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1'then
+  if os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')=='1' or os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1'then
    local kiln_only=os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1'
+   local glass_only=os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1'
    for _,target in ipairs(df.global.world.buildings.all)do
     if df.building_furnacest:is_instance(target) and target:getBuildStage()==target:getMaxBuildStage() and #target.jobs==0 and target.custom_type==-1 then
      local subtype=kiln_only and 3 or 2+#furnace_fixtures
      furnace_fixtures[#furnace_fixtures+1]={building=target,prior_type=target.type,id=target.id,fixture_type=subtype}
      target.type=subtype
-     if #furnace_fixtures==(kiln_only and 1 or 2) then break end
+     if #furnace_fixtures==((kiln_only or glass_only) and 1 or 2) then break end
     end
    end
-   assert(#furnace_fixtures==(kiln_only and 1 or 2),'Furnace fixture needs idle completed furnace records')
+   assert(#furnace_fixtures==((kiln_only or glass_only) and 1 or 2),'Furnace fixture needs idle completed furnace records')
    result.furnace_fixtures={}
    for _,entry in ipairs(furnace_fixtures)do result.furnace_fixtures[#result.furnace_fixtures+1]={id=entry.id,prior_type=entry.prior_type,fixture_type=entry.fixture_type}end
   end
   result.task_catalogs={};local seen={}
   for _,target in ipairs(df.global.world.buildings.all)do
    local type=target:getType();local key=type..':'..target:getSubtype()..':'..target:getCustomType()
-   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')~='1' or key=='5:2:-1' or key=='5:3:-1') and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1' and key=='5:3:-1') or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
+   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')~='1' or key=='5:2:-1' or key=='5:3:-1') and (os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')~='1' or key=='5:2:-1') and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1' and key=='5:3:-1') or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
     seen[key]=true;select_map(target)
     assert(click_label('Add new task'),'Native task catalog did not open: '..key)
     local function read_rows()
@@ -366,17 +367,23 @@ local ok,err=xpcall(function()
       end
      end
     end
-    if os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')=='1'then
+    if os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')=='1' or os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1'then
+     local glass=os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1'
+     local prefix=glass and 'glass' or 'clothier'
+     local function semantic_rows(values)
+      local copy={};for _,entry in ipairs(values)do local row={};for field,value in pairs(entry)do if field~='item_type'then row[field]=value end end;copy[#copy+1]=row end
+      return json.encode(copy)
+     end
      catalog.navigation={}
      gui.simulateInput(view,'LEAVESCREEN');select_map(target);assert(click_label('Add new task'))
-     shot('clothier-root')
-     for index,root_row in ipairs(rows)do
+     shot(prefix..'-root')
+     for index,root_row in ipairs(rows)do if not glass or root_row.material~=nil then
       assert(click_label(root_row.caption),'Clothier fabric selection failed')
-      local child=read_rows();shot('clothier-page-'..index)
+      local child=read_rows();shot(prefix..'-page-'..index)
       assert(click_label('Back'),'Clothier Back missing')
-      local returned=read_rows();assert(json.encode(returned)==json.encode(rows),'Clothier Back did not restore root')
-      catalog.navigation[#catalog.navigation+1]={fabric=root_row.material_category,caption=root_row.caption,rows=child,back_restored_root=true}
-      if os.getenv('DF3D_WORKSHOP_CLOTHIER_RUNTIME')=='1'then
+      local returned=read_rows();assert(semantic_rows(returned)==semantic_rows(rows),'Clothier Back did not restore root')
+      catalog.navigation[#catalog.navigation+1]={fabric=glass and root_row.material or root_row.material_category,caption=root_row.caption,rows=child,back_restored_root=true}
+      if os.getenv('DF3D_WORKSHOP_CLOTHIER_RUNTIME')=='1' or glass then
        local nav=catalog.navigation[#catalog.navigation];nav.effects={}
        for _,pick in ipairs({1,#child})do
         assert(click_label(root_row.caption))
@@ -390,12 +397,12 @@ local ok,err=xpcall(function()
         local job=assert(target.jobs[#target.jobs-1]);assert(#target.jobs==#queue_ids+1)
         nav.effects[#nav.effects+1]={index=pick,caption=child[pick].caption,native=family_effect(job)}
         assert(dfhack.job.removeJob(job));view:render(dfhack.getTickCount());assert(click_label('Add new task'))
-        nav.reopened=read_rows();shot('clothier-reopened-'..index..'-'..pick)
-        if json.encode(nav.reopened)~=json.encode(rows)then assert(click_label('Back'),'Reopened clothier page has no Back')end
+        nav.reopened=read_rows();shot(prefix..'-reopened-'..index..'-'..pick)
+        if semantic_rows(nav.reopened)~=semantic_rows(rows)then assert(click_label('Back'),'Reopened clothier page has no Back')end
        end
       end
-     end
-     shot('clothier-back-root')
+     end end
+     shot(prefix..'-back-root')
     end
     if os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')=='1'then
      catalog.navigation={}
@@ -440,7 +447,7 @@ local ok,err=xpcall(function()
    end
   end
   shot('task-catalog-return')
-  if os.getenv('DF3D_WORKSHOP_CLOTHIER_RUNTIME')=='1'then
+  if os.getenv('DF3D_WORKSHOP_CLOTHIER_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1'then
    capture('workshop-wire')
    local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)
    for _,catalog in ipairs(result.task_catalogs)do

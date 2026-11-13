@@ -1,5 +1,5 @@
 extends "res://tests/workshop_selector_layout_live.gd"
-# Native Clothier fabric navigation and task effects.
+# Native Clothier/Glass Furnace material navigation and task effects.
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/workshop-native.json"))
@@ -18,9 +18,12 @@ func run() -> void:
 	var host=preload("res://scripts/ui_host.gd").new();host.interaction=Interaction.new();root.add_child(host)
 	var owner=preload("res://scripts/workshop_panel.gd").new();root.add_child(owner);owner.configure(world,service,host)
 	var family: Dictionary=reference.task_catalogs[0]
-	owner.open_workshop(int(family.building_id),preload("res://scripts/location_staff_indicators.gd").WORKSHOPS["13"])
+	var glass:=OS.get_environment("DF3D_WORKSHOP_GLASS_RUNTIME")=="1"
+	var prefix: String="glass" if glass else "clothier"
+	var icons=preload("res://scripts/location_staff_indicators.gd")
+	owner.open_workshop(int(family.building_id),icons.FURNACES["2"] if glass else icons.WORKSHOPS["13"])
 	await settle(service,func():return owner.state.phase==owner.state.Phase.Ready and owner.tasks.phase==owner.tasks.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
-	for invalid in ["clothier:0","clothier:04","clothier:16","clothier:4097"]:
+	for invalid in (["glass:0","glass:03","glass:6","glass:4097"] if glass else ["clothier:0","clothier:04","clothier:16","clothier:4097"]):
 		var rejected:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_id":int(family.building_id),"task_category":invalid})
 		check(rejected.get("status")==C.ManagementStatus.Rejected,"Invalid fabric accepted")
 	owner.panel.tasks.choose_mode(true)
@@ -28,7 +31,7 @@ func run() -> void:
 	check(roots.size()==family.native.size(),"Clothier root count differs")
 	for i in mini(roots.size(),family.native.size()):check(roots[i].name==family.native[i].caption,"Clothier root caption/order differs")
 	await process_frame;await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png(directory+"/clothier-root-live.png")
+	root.get_texture().get_image().save_png(directory+"/"+prefix+"-root-live.png")
 	var created: Dictionary={}
 	for index in family.navigation.size():
 		var nav: Dictionary=family.navigation[index]
@@ -39,7 +42,7 @@ func run() -> void:
 		check(choices.size()==nav.rows.size(),"Fabric task count differs")
 		for i in mini(choices.size(),nav.rows.size()):check(choices[i].name==nav.rows[i].caption and choices[i].availability.available==nav.rows[i].available,"Fabric task differs")
 		await process_frame;await RenderingServer.frame_post_draw
-		root.get_texture().get_image().save_png(directory+"/clothier-page-"+str(index+1)+"-live.png")
+		root.get_texture().get_image().save_png(directory+"/"+prefix+"-page-"+str(index+1)+"-live.png")
 		click(owner.panel.tasks.global_position+Vector2(owner.panel.tasks.size.x-48,12))
 		await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready)
 		check(owner.tasks.category.is_empty() and owner.panel.tasks.picking and owner.tasks.choices()==roots,"Fabric Back did not restore root")

@@ -9919,5 +9919,634 @@
       "workshop-family-3.png": "6dceac5c8c32e73c09d18b07aad8c3ef8cbdc3c976858f265d6a6178b42edc9f",
       "family-3-live.png": "71c2ded348e1ba90cbe0c0f31fa323976517bae93e54d0381d247cca4abc2646"
     }
+  },
+  "glass_runtime_reference": {
+    "scope": "Regular Glass Furnace canonical material pages3/4/5. All105 choices/captions/order/availability and three Back transitions match native. Invalid selectors rejected, root Cancel works. Six actual first/last-row jobs including scrolling match native fields and input requirements; lane assertions compare after fixture write, so stored effect records contain native only. Clothier regression verifies48 choices and six jobs after shared material formatter refactor.",
+    "membership": "8c5078..8c565b pinned FNV64 6340566cdcdeff62. Civilization tool list+280 excludes NO_DEFAULT_JOB17 and requires HARD_MAT0 or GLASS_MAT12; trapcomp list+220 requires METAL3. Independent catalog a9a210..a9a37f/a9a745..a9a855 applies equivalent glass gates. Child Back resets material/category and bypasses reactions; runtime uses owned canonical selectors and native14d1920 string formatter, not widgets/globals.",
+    "omissions": [
+      "Natural Glass Furnace construction (temporary restored subtype fixture)",
+      "Collect sand creation",
+      "Instrument category child workflow",
+      "All105 job creation effects",
+      "Worker execution/products",
+      "Magma supply",
+      "Native uninitialized item_type equivalence"
+    ],
+    "runs": [
+      {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261112-222409",
+        "kind": "glass",
+        "navigation": [
+          {
+            "fabric": 3,
+            "caption": "green glass (opens menu)",
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Make enormous green glass corkscrew",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 8388608,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 0,
+                      "mat_index": -1,
+                      "mat_type": 7,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": 1,
+                  "job_type": 140,
+                  "mat_index": -1,
+                  "mat_type": 3,
+                  "material_category": 0,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Make three green glass vials",
+                "index": 35,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 8388608,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 0,
+                      "mat_index": -1,
+                      "mat_type": 7,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 121,
+                  "mat_index": -1,
+                  "mat_type": 3,
+                  "material_category": 0,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          },
+          {
+            "fabric": 4,
+            "caption": "clear glass (opens menu)",
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Make clear glass altar",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 8388608,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 0,
+                      "mat_index": -1,
+                      "mat_type": 10,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 0,
+                      "mat_index": -1,
+                      "mat_type": 7,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": 28,
+                  "job_type": 216,
+                  "mat_index": -1,
+                  "mat_type": 4,
+                  "material_category": 0,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Make three clear glass vials",
+                "index": 35,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 8388608,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 0,
+                      "mat_index": -1,
+                      "mat_type": 10,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 0,
+                      "mat_index": -1,
+                      "mat_type": 7,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 121,
+                  "mat_index": -1,
+                  "mat_type": 4,
+                  "material_category": 0,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          },
+          {
+            "fabric": 5,
+            "caption": "crystal glass (opens menu)",
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Make crystal glass altar",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 0,
+                      "mat_index": -1,
+                      "mat_type": 10,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 0,
+                      "flags2": 16,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 3,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 0,
+                      "mat_index": -1,
+                      "mat_type": 7,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": 28,
+                  "job_type": 216,
+                  "mat_index": -1,
+                  "mat_type": 5,
+                  "material_category": 0,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Make three crystal glass vials",
+                "index": 35,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 0,
+                      "mat_index": -1,
+                      "mat_type": 10,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 0,
+                      "flags2": 16,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 3,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 0,
+                      "mat_index": -1,
+                      "mat_type": 7,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 121,
+                  "mat_index": -1,
+                  "mat_type": 5,
+                  "material_category": 0,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          }
+        ],
+        "picker_crop": [
+          432,
+          106,
+          888,
+          676
+        ],
+        "crops": [
+          {
+            "page": "root",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-1",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-2",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-3",
+            "differing_pixels": 0
+          }
+        ],
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "source_preservation": "Owned DF3896 exited unsaved; Owned source unchanged",
+        "sha256": {
+          "workshop-native.json": "6f7d3cf1f346e1af92acd58235852fa69d205a533f5a4d9bb7a94b0d78afd797",
+          "workshop-wire-result.json": "c0da6adb252c045e2d4544d60c4a876273031c930f7e10d7870d3a22e151d965",
+          "result.json": "4fb5bfbf4cb56e00495a7fe17418f2807d863f381a8c39296cb310ebc6d1b47b",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "workshop-glass-root.png": "864ae0611f4a41d1649a4d20567d17ab98104727c19594d1c5842eca70291935",
+          "glass-root-live.png": "c241da091b2f613f3b6384550ff15f98484f262f6988b0bd7dca2d48c5182f18",
+          "workshop-glass-page-1.png": "7cccc0293155b39bd994eddee5f9aad9de3b604745ffa17f26e3e73333754e42",
+          "glass-page-1-live.png": "911fd0e29e2bd6f10d2b045f04a117f1eb4c5821813fa6ebf95010f8f6b94dba",
+          "workshop-glass-page-2.png": "cf0e6dc289697f7611dc5bc2e17d49e64c34014a8e224e57c6f070c27d939ffe",
+          "glass-page-2-live.png": "2588c46d697e2877c63cf02609e5202546b614ac5e1d36adef83aa27fff4cef0",
+          "workshop-glass-page-3.png": "47d2c4fdbb584c112dcdb36120c446db223edffeae17962298dedec26072cd8a",
+          "glass-page-3-live.png": "6e082d0b21c03df8567427dee5e1aad19646000e2de610405024bff2f001537a"
+        }
+      },
+      {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261112-222513",
+        "kind": "clothier",
+        "navigation": [
+          {
+            "fabric": 4,
+            "caption": "cloth (opens menu)",
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Make cloth bag",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 16384,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 58,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 10000
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 74,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 4,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Sew cloth image",
+                "index": 16,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 1024,
+                      "flags2": 8,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 0,
+                      "flags2": 16384,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 58,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 10000
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 192,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 4,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          },
+          {
+            "fabric": 8,
+            "caption": "silk (opens menu)",
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Make pair of silk gloves",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 32768,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 58,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 10000
+                    }
+                  ],
+                  "item_subtype": 1,
+                  "job_type": 116,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 8,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Sew silk image",
+                "index": 16,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 1024,
+                      "flags2": 8,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 0,
+                      "flags2": 32768,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 58,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 10000
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 192,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 8,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          },
+          {
+            "fabric": 4096,
+            "caption": "yarn (opens menu)",
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Make pair of yarn gloves",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 2147483648,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 58,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 10000
+                    }
+                  ],
+                  "item_subtype": 1,
+                  "job_type": 116,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 4096,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Sew yarn image",
+                "index": 16,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 1024,
+                      "flags2": 8,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 0,
+                      "flags2": 2147483648,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 58,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 10000
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 192,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 4096,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          }
+        ],
+        "picker_crop": [
+          432,
+          106,
+          888,
+          676
+        ],
+        "crops": [
+          {
+            "page": "root",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-1",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-2",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-3",
+            "differing_pixels": 0
+          }
+        ],
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "source_preservation": "Owned DF8292 exited unsaved; Owned source unchanged",
+        "sha256": {
+          "workshop-native.json": "3df51490ddfab91f669379bb19e9dbc6301ebe9dd89b511b6284d96d6a3033b9",
+          "workshop-wire-result.json": "9238cb21200d734d103c04bb749b476db6f19dda6757d80a83289946c2259fe8",
+          "result.json": "5b1bbf0b78d49a1309341af5077382ba9bb02836c0c3f61ed56db47627f62cbd",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "workshop-clothier-root.png": "502c291e6838d270f3fdd14ece8dcad5177df786f55d60c76241f542a799e27b",
+          "clothier-root-live.png": "d5128313f93335c7d09b451cc01cc70eb1d6eae8a3125206376dd701dcaf0202",
+          "workshop-clothier-page-1.png": "0f6545e8f6bea5d9f88bd973cf2d24dc33f808fbfaf91997d6c90546d6874415",
+          "clothier-page-1-live.png": "2543958ba1cf8ac71668f99f496f28cea895bfca84171b9b56fc78fae48b8b4e",
+          "workshop-clothier-page-2.png": "280478c1ef4fc196f731c1cd367cf91cd18c7cf910bbba6a0b4c91958f265c1b",
+          "clothier-page-2-live.png": "6be23cbbe58959dcdb249c731df3013401a816d01b558d1eb8dca4099d10f14f",
+          "workshop-clothier-page-3.png": "93b7cdfb5a6057c2b89f8544c52c3b33aa0710daa4b1554289ffd522890e5e3c",
+          "clothier-page-3-live.png": "057145b63b98f89ba9c808b0403fd17bf85714eb432e59088350e95eb1a5e5a8"
+        }
+      }
+    ]
   }
 }

@@ -17634,6 +17634,17 @@ QA extension/state/composition/adapter and core19 pass; live has only the three
 documented Godot shutdown/thread diagnostics. See dyer_navigation_reference.
 Ingredient menus, actual task effects, lower-page rendering and broader input/
 lifecycle acceptance remain unfinished. The workshop public gate stays closed.
+Protected002648 on2026-11-13 opens the first stocked cloth tint, cerulean,
+and records172 ingredient jobs. The first has21 available; the other171 have
+empty info. Native get_swatch_color returns-1 for all172 despite each job's
+target color being18, matching the rendered text-only rows. Discovery now
+records this native display predicate instead of assuming specdata implies a
+swatch. This submenu exceeds the current128-recipe transport cap: ingredient
+integration must preserve all choices and carry info without requiring a
+swatch. The first viewport was inspected in equivalent002527; neither run
+creates jobs. Owned DF42328 closes unsaved with source saves/preferences and
+controlled workshop type/stage restored. This does not resolve the earlier
+Aqua exit or establish other ingredient pages. See ingredient_reference.
 Ingredient submenu navigation, creation effects and DF3D implementation remain
 unfinished. An earlier
 controlled discovery232955 exited while entering Tint cloth aqua; source

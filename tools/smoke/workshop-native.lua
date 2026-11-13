@@ -323,7 +323,7 @@ local ok,err=xpcall(function()
      end
      if os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1'then
       row.alpha_order=button.alpha_order
-      local color=row.color or row.specdata
+      local color=button:get_swatch_color();row.native_swatch=color
       if color and color>=0 then local raw=df.global.world.raws.descriptors.colors[color];row.swatch={red=raw.red,green=raw.green,blue=raw.blue}end
      end
      rows[#rows+1]=row
@@ -403,7 +403,8 @@ local ok,err=xpcall(function()
       end
      end
      for index,row in ipairs(page.rows)do
-      if (os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')~='1' or (os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and #page.path==0)) and not row.leave and (row.category~=nil or row.custom_category~=nil or row.material~=nil or row.color~=nil)then
+      local dyer_child=os.getenv('DF3D_WORKSHOP_DYER_INGREDIENT_NAV')=='1' and #page.path==1 and page.path[1].index==1 and index==1
+      if (os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')~='1' or (os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and #page.path==0) or dyer_child) and not row.leave and (row.category~=nil or row.custom_category~=nil or row.material~=nil or row.color~=nil)then
        assert(#page.path<8,'Native task category discovery exceeded depth bound')
        gui.simulateInput(view,'LEAVESCREEN');select_map(target)
        assert(click_label('Add new task'),'Native task catalog did not reopen')
@@ -423,7 +424,7 @@ local ok,err=xpcall(function()
         assert(clicked,'Native category caption not reachable: '..step.caption)
        end
        pending[#pending+1]={path=path,rows=read_rows(),reaction_parent=row.custom_category}
-       if os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1'then shot('dyer-page-'..index)end
+       if os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1'then shot((dyer_child and 'dyer-ingredients-' or 'dyer-page-')..index)end
       end
      end
     end

@@ -17312,6 +17312,31 @@ the button's item-type field into its job even when constructor `8b1600` has
 not initialized it; whether those values affect each job's behavior remains
 unresolved, so template equivalence must not discard them without further audit.
 
+Forge task-category audit (supported53.16 executable and captured172-page
+catalog): native8c9a2a..8c9ab7 emits builtin categories0..6 in fixed order,
+followed by reaction categories. Do not alphabetically sort those builtin rows.
+Categories0..5 enumerate materials in raw-index order, then tasks; category6
+(Metal clothing) emits tasks directly. The captured material counts are
+17/16/34/17/17/34, and clothing has14 tasks in this fortress. These are evidence
+counts, not runtime constants. Root captions come from8c2ab0's scalar switch;
+material eligibility uses semantic145bee0(world, flag, material, index), already
+pinned by other providers. The inline material branches require metal flag47
+plus: category0 any of51/52/54/55, category1 flag56, categories2/5 flag11,
+categories3/4 flag51. Clothing has a separate flag10/resource branch and must
+not reuse those material selectors. Constructor8b1570 registers a widget and
+remains prohibited; compose the inline branch with explicit category inputs.
+
+Descriptor comparison identifies all34 native-only Forge rows:17 ballista
+arrow heads with concrete subtype0 and17 metal mechanisms(job139). All19
+order-template-only rows are the same17 ballista heads with subtype-1, plus
+Stud with bismuth and Stud with pig iron. Native8cae83..8caf26 walks civilization
+siege-ammo resources, tests raw ID BALLISTA and copies its concrete subtype.
+Native8cb067..8cb09b adds mechanisms after material flag11, within the Trap
+components branch; workshop order classification alone omits these forge tasks.
+The recorded material menus exclude the two extra Stud materials. This resolves
+which branches need composition, not their runtime implementation or effect
+acceptance. Native job.item_type remains separately unresolved as described above.
+
 `workshopTaskTemplates` reuses the owned native template builder for
 Carpenter/Kitchen/WoodFurnace/Still descriptors. All categories remain available
 for queued-job eligibility; only builtin templates become root builtin choices. `production.lua` receives the full subtype/material/spec/art fields;

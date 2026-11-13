@@ -15,6 +15,13 @@ inline bool workOrderCatalogSupported() {
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0x8c5822,0x35,UINT64_C(0x64a4477a3ed0ddb0)},
+            {0x8c5857,0x9c,UINT64_C(0x1d55ebd90cdf7bc4)},
+            {0x8c58f3,0x45,UINT64_C(0xc10aa4afb2698ace)},
+            {0x8c75e8,0x45,UINT64_C(0x5003b3ed31870c4f)},
+            {0x8c7ad2,0xe3,UINT64_C(0x40d6e4abc60fd999)},
+            {0x8c7bb5,0x16d,UINT64_C(0x553093bd5ea45076)},
+            {0x145bee0,0x5e,UINT64_C(0x6abc4e374e372eef)},
             {0x8c7347,0x2a1,UINT64_C(0x3e7ee9b6c95503a6)}, // Stoneworker ordinary root membership
             {0x8c85ff,0x1407,UINT64_C(0x5d04ed38ed239697)}, // craft root/material membership
             {0x8c5938,0x45,UINT64_C(0x6ee9cdb87491c59c)}, // butcher root jobs104/151/33
@@ -152,7 +159,7 @@ inline std::optional<std::vector<df::manager_order_template>> workshopTaskTempla
     if(!building)return std::nullopt;
     const auto type=building->getType();const auto subtype=building->getSubtype();
     const bool forge=int(type)==13 && (subtype==5 || subtype==6);
-    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==2 || subtype==3 || subtype==4 || subtype==8 || subtype==10 || subtype==11 || subtype==12 || subtype==13 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && (subtype==0 || subtype==1 || subtype==2 || subtype==3))))return std::nullopt;
+    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==2 || subtype==3 || subtype==4 || subtype==7 || subtype==9 || subtype==14 || subtype==16 || subtype==17 || subtype==18 || subtype==20 || subtype==8 || subtype==10 || subtype==11 || subtype==12 || subtype==13 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && (subtype==0 || subtype==1 || subtype==2 || subtype==3))))return std::nullopt;
     auto rows=nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
     // Native8c6cbb admits only generic rock mechanisms and traction benches.
     // Classifier311580 also assigns explicit-metal mechanisms here; those
@@ -161,6 +168,36 @@ inline std::optional<std::vector<df::manager_order_template>> workshopTaskTempla
         return row.job_type!=df::job_type::CustomReaction &&
             !((int(row.job_type)==139 && row.mat_type==0 && row.mat_index==-1) || int(row.job_type)==205);
     }),rows->end());
+    // Native root membership differs from the manager classifier for these
+    // families. Supplement owned descriptors; native job formatting and input
+    // generation still supply their captions and requirements.
+    if(int(type)==13) {
+        const auto add=[&](int32_t type,int16_t material=-1) {
+            if(std::any_of(rows->begin(),rows->end(),[&](const auto& row){return int(row.job_type)==type && row.mat_type==material;}))return;
+            df::manager_order_template row;row.job_type=df::job_type(type);row.mat_type=material;row.mat_index=-1;
+            rows->push_back(std::move(row));
+        };
+        if(subtype==17)add(106);
+        if(subtype==18)add(152);
+        if(subtype==16) {
+            add(115,0);
+            if(!df::global::world->items.other.ANY_WEBS.empty())add(14);
+            else rows->erase(std::remove_if(rows->begin(),rows->end(),[](const auto& row){return int(row.job_type)==14;}),rows->end());
+        }
+        if(subtype==9) {
+            const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+            using Flag=bool (*)(df::world*,int32_t,int16_t,int32_t);
+            const auto flag=reinterpret_cast<Flag>(base+0x145bee0);
+            rows->erase(std::remove_if(rows->begin(),rows->end(),[&](const auto& row){
+                const auto job=int(row.job_type);
+                if(job==209)return false;
+                if(job==98 || job==99 || job==245)return row.material_category.whole!=2;
+                if(job==134)return !(row.material_category.whole==2 || (row.mat_type==0 &&
+                    flag(df::global::world,47,0,row.mat_index) && flag(df::global::world,51,0,row.mat_index)));
+                return true;
+            }),rows->end());
+        }
+    }
     // These descriptors qualify existing queued jobs, never populate the forge
     // picker. The native task branches supply its choices independently.
     if(forge)for(const auto* job:building->jobs) {

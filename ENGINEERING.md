@@ -17561,6 +17561,40 @@ The earlier discovery owned DF4376 exited unsaved; source saves and queues remai
 unchanged. Native capture used30FPS with a41C GPU sample. See
 native_workshop.json.stone_memorial_navigation_reference.
 
+Bowyer, Siege, Fishery, Loom, Quern, Kennels and Ashery now use audited
+native task membership with the owned order catalog and native caption/input
+generation. Pins cover8c7ad2..8c7bb5(Bowyer),8c7bb5..8c7d22(Siege),
+8c58f3..8c5938(Fishery),8c5857..8c58f3(Loom),8cb44f(Quern),
+8c5822..8c5857(Kennels) and8c75e8..8c762d(Ashery). Siege omits the
+classifier's metal siege-engine parts and retains wood parts; metal ballista
+arrows use native145bee0 flags47/51. Loom supplies generic metal cloth and
+offers Collect webs only while ANY_WEBS is nonempty. Quern supplements
+Mill plants; Kennels supplements Tame a small animal. Supplemental descriptors
+explicitly retain native mat_index=-1. Opaque recipe keys include material
+category and index to distinguish Bowyer materials and Siege arrow metals.
+
+Protected233913 on2026-11-12 passes40 choices across seven controlled idle,
+completed workshop records and23 actual click-created jobs, with matching
+native fields/input requirements and restored queue IDs/order. Each of seven
+picker crops432,106..888,676 has zero differing pixels; the Loom image was
+inspected. Type and construction-stage changes are restored before owned
+DF36504 exits unsaved; source saves and preferences are preserved. QA
+state/composition/adapter and core19 pass. There are three known Godot
+diagnostics and no unclassified errors. Serial30FPS sampled37-40C; no peak
+measurement is claimed. Initial233547/233704 runs exposed a supplemental
+template initialization error (material index0 instead of-1), now corrected;
+those runs do not establish acceptance. All Siege material creations, the
+second Quern custom reaction, an absent-web Loom fixture, natural construction,
+worker execution/products and uninitialized item_type remain unqualified.
+See native_workshop.json.extra_family_runtime_reference.
+
+Dyer root discovery233126 records four nested color/mixing categories and
+three generic dye tasks. Its nested workflow is unfinished. An earlier
+controlled discovery232955 exited while entering Tint cloth aqua; source
+saves were unchanged. The cause has not been isolated, so this is not a
+confirmed native bug and grants no behavior exception. Custom/Tool workshops,
+magma furnace variants and broader workshop acceptance remain in scope.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

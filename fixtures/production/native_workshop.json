@@ -12925,5 +12925,2159 @@
       "workshop-wire.stdout.log": "fb20279c98c632112478639ed78173982c97c24a74dd1f62bbbb52709a1c3598",
       "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
     }
+  },
+  "extra_family_runtime_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-233913",
+    "scope": "Controlled completed-workshop type fixtures for Bowyer, Siege, Fishery, Loom, Quern, Kennels and Ashery. Choice/caption/order/availability, Cancel and representative actual click-created jobs. Whole workshop remains gated.",
+    "fixtures": [
+      {
+        "fixture_stage": 3,
+        "fixture_type": 7,
+        "id": 3,
+        "prior_stage": 3,
+        "prior_type": 2
+      },
+      {
+        "fixture_stage": 3,
+        "fixture_type": 9,
+        "id": 4,
+        "prior_stage": 3,
+        "prior_type": 0
+      },
+      {
+        "fixture_stage": 3,
+        "fixture_type": 14,
+        "id": 5,
+        "prior_stage": 3,
+        "prior_type": 8
+      },
+      {
+        "fixture_stage": 3,
+        "fixture_type": 16,
+        "id": 6,
+        "prior_stage": 3,
+        "prior_type": 3
+      },
+      {
+        "fixture_stage": 1,
+        "fixture_type": 17,
+        "id": 30,
+        "prior_stage": 3,
+        "prior_type": 1
+      },
+      {
+        "fixture_stage": 3,
+        "fixture_type": 18,
+        "id": 31,
+        "prior_stage": 3,
+        "prior_type": 19
+      },
+      {
+        "fixture_stage": 3,
+        "fixture_type": 20,
+        "id": 37,
+        "prior_stage": 3,
+        "prior_type": 15
+      }
+    ],
+    "families": [
+      {
+        "kind": "13:7:-1",
+        "building_id": 3,
+        "rows": [
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Make bone crossbow",
+            "item_subtype": 6,
+            "item_type": 194,
+            "job_type": 96,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 32,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Make wooden crossbow",
+            "item_subtype": 6,
+            "item_type": 45,
+            "job_type": 96,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 2,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ],
+        "effects": [
+          {
+            "caption": "Make bone crossbow",
+            "index": 1,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 16,
+                  "flags2": 33685504,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": 6,
+              "job_type": 96,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 32,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 16,
+                  "flags2": 33685504,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": 6,
+              "job_type": 96,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 32,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make wooden crossbow",
+            "index": 2,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 5,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": 6,
+              "job_type": 96,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 2,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 5,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": 6,
+              "job_type": 96,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 2,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "13:9:-1",
+        "building_id": 4,
+        "rows": [
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble adamantine ballista arrow",
+            "item_subtype": 0,
+            "item_type": 32,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 25,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble bismuth bronze ballista arrow",
+            "item_subtype": 0,
+            "item_type": 66,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 24,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble blistered metal ballista arrow",
+            "item_subtype": 0,
+            "item_type": 44,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 281,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble bronze ballista arrow",
+            "item_subtype": 0,
+            "item_type": 66,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 6,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble copper ballista arrow",
+            "item_subtype": 0,
+            "item_type": 66,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 3,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble dark metal ballista arrow",
+            "item_subtype": 0,
+            "item_type": 105,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 277,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble flashing metal ballista arrow",
+            "item_subtype": 0,
+            "item_type": 20,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 267,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble flickering metal ballista arrow",
+            "item_subtype": 0,
+            "item_type": 149,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 283,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble flowing metal ballista arrow",
+            "item_subtype": 0,
+            "item_type": 105,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 269,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble iron ballista arrow",
+            "item_subtype": 0,
+            "item_type": 194,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 0,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble pale metal ballista arrow",
+            "item_subtype": 0,
+            "item_type": 194,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 279,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble rusted metal ballista arrow",
+            "item_subtype": 0,
+            "item_type": 22,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 265,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble silver ballista arrow",
+            "item_subtype": 0,
+            "item_type": 100,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 2,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble slick metal ballista arrow",
+            "item_subtype": 0,
+            "item_type": 42,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 273,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble steel ballista arrow",
+            "item_subtype": 0,
+            "item_type": 0,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 8,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble translucent metal ballista arrow",
+            "item_subtype": 0,
+            "item_type": 66,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 271,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble twinkling metal ballista arrow",
+            "item_subtype": 0,
+            "item_type": 194,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": 275,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Assemble wooden ballista arrow",
+            "item_subtype": 0,
+            "item_type": 66,
+            "job_type": 134,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 2,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Make ballista parts",
+            "item_subtype": -1,
+            "item_type": 105,
+            "job_type": 99,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 2,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Make bolt thrower parts",
+            "item_subtype": -1,
+            "item_type": 29360,
+            "job_type": 245,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 2,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Make catapult parts",
+            "item_subtype": -1,
+            "item_type": 45,
+            "job_type": 98,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 2,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ],
+        "effects": [
+          {
+            "caption": "Assemble adamantine ballista arrow",
+            "index": 1,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 5,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 66,
+                  "mat_index": 25,
+                  "mat_type": 0,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": 0,
+              "job_type": 134,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 5,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 66,
+                  "mat_index": 25,
+                  "mat_type": 0,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": 0,
+              "job_type": 134,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Assemble wooden ballista arrow",
+            "index": 18,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 5,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": 0,
+              "job_type": 134,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 2,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 5,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": 0,
+              "job_type": 134,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 2,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make ballista parts",
+            "index": 19,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 5,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 99,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 2,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 5,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 99,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 2,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make bolt thrower parts",
+            "index": 20,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 5,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 245,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 2,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 5,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 245,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 2,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make catapult parts",
+            "index": 21,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 5,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 98,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 2,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 5,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 98,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 2,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "13:14:-1",
+        "building_id": 5,
+        "rows": [
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Catch live fish",
+            "item_subtype": -1,
+            "item_type": 45,
+            "job_type": 34,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Extract from raw fish",
+            "item_subtype": -1,
+            "item_type": 2480,
+            "job_type": 150,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Prepare a raw fish",
+            "item_subtype": -1,
+            "item_type": 194,
+            "job_type": 105,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ],
+        "effects": [
+          {
+            "caption": "Catch live fish",
+            "index": 1,
+            "native": {
+              "inputs": [],
+              "item_subtype": -1,
+              "job_type": 34,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [],
+              "item_subtype": -1,
+              "job_type": 34,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Extract from raw fish",
+            "index": 2,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 32784,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 16778240,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 11,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 150,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 32784,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 16778240,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 11,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 150,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Prepare a raw fish",
+            "index": 3,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 16,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 50,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 105,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 16,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 50,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 105,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "13:16:-1",
+        "building_id": 6,
+        "rows": [
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Collect webs",
+            "item_subtype": -1,
+            "item_type": 45,
+            "job_type": 14,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Weave metal cloth",
+            "item_subtype": -1,
+            "item_type": 29360,
+            "job_type": 115,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": 0,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Weave thread into cloth",
+            "item_subtype": -1,
+            "item_type": 194,
+            "job_type": 115,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 1,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Weave thread into silk",
+            "item_subtype": -1,
+            "item_type": 230,
+            "job_type": 115,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 8,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Weave yarn into cloth",
+            "item_subtype": -1,
+            "item_type": 29360,
+            "job_type": 115,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 4096,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ],
+        "effects": [
+          {
+            "caption": "Collect webs",
+            "index": 1,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 32,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 57,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 10
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 14,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 32,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 57,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 10
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 14,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Weave metal cloth",
+            "index": 2,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 64,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 57,
+                  "mat_index": -1,
+                  "mat_type": 0,
+                  "quantity": 15000
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 115,
+              "mat_index": -1,
+              "mat_type": 0,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 64,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 57,
+                  "mat_index": -1,
+                  "mat_type": 0,
+                  "quantity": 15000
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 115,
+              "mat_index": -1,
+              "mat_type": 0,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Weave thread into cloth",
+            "index": 3,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 64,
+                  "flags2": 16384,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 57,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 15000
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 115,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 1,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 64,
+                  "flags2": 16384,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 57,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 15000
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 115,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 1,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Weave thread into silk",
+            "index": 4,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 64,
+                  "flags2": 32768,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 57,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 15000
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 115,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 8,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 64,
+                  "flags2": 32768,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 57,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 15000
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 115,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 8,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Weave yarn into cloth",
+            "index": 5,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 64,
+                  "flags2": 2147483648,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 57,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 15000
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 115,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 4096,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 64,
+                  "flags2": 2147483648,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 57,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 15000
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 115,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 4096,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "13:17:-1",
+        "building_id": 30,
+        "rows": [
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Mash plant into slurry",
+            "item_subtype": -1,
+            "item_type": 45,
+            "job_type": 209,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "MAKE_SLURRY_FROM_PLANT",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Mill plants",
+            "item_subtype": -1,
+            "item_type": 66,
+            "job_type": 106,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Mill seeds/nuts to paste",
+            "item_subtype": -1,
+            "item_type": 28005,
+            "job_type": 209,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "MILL_SEEDS_NUTS_TO_PASTE",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ],
+        "effects": [
+          {
+            "caption": "Mash plant into slurry",
+            "index": 1,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 16,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_SLURRY_FROM_PLANT",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 16,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_SLURRY_FROM_PLANT",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Mill plants",
+            "index": 2,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 20,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 1024,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 31,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 106,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 20,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 1024,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 31,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 106,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "13:18:-1",
+        "building_id": 31,
+        "rows": [
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Catch live land animal",
+            "item_subtype": -1,
+            "item_type": -27488,
+            "job_type": 33,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Tame a small animal",
+            "item_subtype": -1,
+            "item_type": 29360,
+            "job_type": 152,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ],
+        "effects": [
+          {
+            "caption": "Catch live land animal",
+            "index": 1,
+            "native": {
+              "inputs": [],
+              "item_subtype": -1,
+              "job_type": 33,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [],
+              "item_subtype": -1,
+              "job_type": 33,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Tame a small animal",
+            "index": 2,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 2097152,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 16,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 152,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 2097152,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 16,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 152,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "13:20:-1",
+        "building_id": 37,
+        "rows": [
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Make lye",
+            "item_subtype": -1,
+            "item_type": 24941,
+            "job_type": 186,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Make milk of lime",
+            "item_subtype": -1,
+            "item_type": 28005,
+            "job_type": 209,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "MAKE_MILK_OF_LIME",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Make potash from ash",
+            "item_subtype": -1,
+            "item_type": 29801,
+            "job_type": 189,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Make potash from lye",
+            "item_subtype": -1,
+            "item_type": 30067,
+            "job_type": 187,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 0,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ],
+        "effects": [
+          {
+            "caption": "Make lye",
+            "index": 1,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": -1,
+                  "mat_type": 9,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 1024,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 18,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 186,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": -1,
+                  "mat_type": 9,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 1024,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 18,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 186,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make milk of lime",
+            "index": 2,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 1024,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 18,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_MILK_OF_LIME",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 1024,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 18,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_MILK_OF_LIME",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make potash from ash",
+            "index": 3,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": -1,
+                  "mat_type": 9,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 189,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": -1,
+                  "mat_type": 9,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 189,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make potash from lye",
+            "index": 4,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 2147483648,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 187,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 2147483648,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 187,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "different_pixels": 0
+      }
+    ],
+    "total_choices": 40,
+    "created_jobs": 23,
+    "effect_evidence": "Native snapshots saved before viewer; protected post-viewer assertions compare fields/input requirements, remove jobs and verify original queue IDs/order.",
+    "render_crop": [
+      432,
+      106,
+      888,
+      676
+    ],
+    "inspected_image": "family-16-live.png",
+    "source_preservation": "Owned DF36504 exited unsaved; source saves unchanged. Type and construction-stage fixtures restored, original queues verified, preferences restored.",
+    "diagnostics": {
+      "known_engine": 3,
+      "unclassified": []
+    },
+    "gpu": "Serial30FPS, sampled37-40C during work; no continuous peak claim.",
+    "discovery": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261112-233126",
+      "roots": 8,
+      "source_preserved": true,
+      "dyer": "Root captured only; failed controlled232955 exited while entering Tint cloth aqua. Cause unqualified; not an accepted native bug or runtime workflow."
+    },
+    "omissions": [
+      "Natural construction of these seven fixture buildings",
+      "All Siege material variants created",
+      "Second Quern custom reaction created",
+      "Controlled absent-web Loom branch",
+      "Dyer nested menus and effects",
+      "Worker execution/products",
+      "Native uninitialized item_type equivalence",
+      "Full workshop hover/hotkeys/responsive/lifecycle acceptance"
+    ],
+    "sha256": {
+      "workshop-native.json": "36db4e18964dbe185ff435b665609172791864d2f5adb84038828c4a8c958055",
+      "workshop-wire-result.json": "e4af7b33032483a510de19cec2505753166c2237d5d0dfa6a2403cefcb802f09",
+      "result.json": "31e020c2e78ea7959ece020301c57834d9cea285416d8b2096682f434be84de1",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "workshop-wire.stdout.log": "e40e140d084407ddbab47ca31a3598be9a0e1a9d9fb9887e0618910e5eaa65f1",
+      "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+      "workshop-family-7.png": "42ef32ccf64c73aaf671fd65a7264fc7ec02653f9aa1dd806c75f45e16d7eb34",
+      "family-7-live.png": "4a55ee320a910599fdc0763248cffb204917e39fd601b7f485b0545850f0b65f",
+      "workshop-family-9.png": "1da9e46af14a71309cbe7756a0cec5b177c0a049a4d89f2d316dad7df6ff5129",
+      "family-9-live.png": "79d00303f568afdf0147d58d4433e50a2df2621e1c58ac52b1bea7f9b323f53d",
+      "workshop-family-14.png": "8d07d6ae7806ba78c5015a48e5eee3a6115377a22c669368f536462566f80b57",
+      "family-14-live.png": "9c878adf8bfe1f8374f5f9eef6b2c10b39d9ffa90d556d48f9727d2d7840de6f",
+      "workshop-family-16.png": "f421c770d2b7fe7b876fffcbd27474e09201b1f13f88b96f661b444ffd08a4fb",
+      "family-16-live.png": "ccaeedf685fcdfdfd5428382459d37d283e909d5416fe5976e1a0d9a579f26db",
+      "workshop-family-17.png": "f211380a65969ffa1179ccc70f40e6a1675e2c42a38e2c46a01b0de99ee7989a",
+      "family-17-live.png": "a887dca3665f6908b786fccf5a04e4f6f83b617750d07034f8724c90a1f95126",
+      "workshop-family-18.png": "067afe383e268f3f6e0a584b23bfc225a87dcdd9555858377b93d90b9eeda1c1",
+      "family-18-live.png": "2502a29082257cfc5215dfdd6c20fc3c63b35d6b226acba22ffb16aa9569f050",
+      "workshop-family-20.png": "7f1a24e05793d30ef99af8dda07cf374032d08d759188aa08322b62644657a19",
+      "family-20-live.png": "9172848120ac51346beb1b9582c0854da7bc5c414d408ce2833dfa5d3eb96e85"
+    }
   }
 }

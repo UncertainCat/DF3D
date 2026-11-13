@@ -61,7 +61,8 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  local stone=k=='Masons'
  local memorial_page=stone and category=='stone:memorial'
  if stone and category~='' and not memorial_page and category:sub(1,9)~='reaction:' then return nil,'Invalid memorial category' end
- local ordinary=stone or k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Kiln' or k=='Farmers' or k=='Millstone' or k=='Tanners' or k=='Leatherworks' or k=='Jewelers' or k=='Mechanics' or k=='Butchers'
+ local extra=({Bowyers=true,Siege=true,Fishery=true,Loom=true,Quern=true,Kennels=true,Ashery=true})[k]
+ local ordinary=extra or stone or k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Kiln' or k=='Farmers' or k=='Millstone' or k=='Tanners' or k=='Leatherworks' or k=='Jewelers' or k=='Mechanics' or k=='Butchers'
  local clothier=k=='Clothiers'
  local glass=k=='GlassFurnace'
  local craft=k=='Craftsdwarfs'
@@ -165,6 +166,7 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
    if (fields.item_subtype or -1)>=0 then key=key..':subtype:'..fields.item_subtype end
    if fields.specflag and (fields.specflag.whole or 0)~=0 then key=key..':specflag:'..fields.specflag.whole end
    if fabric then key=key..':fabric:'..fabric end
+   if extra then key=key..':material:'..tostring((fields.material_category or {}).whole or 0)..':index:'..tostring(fields.mat_index or -1) end
    if craft then key=key..':craft:'..tostring(craft_material or 'root')..':material:'..tostring((fields.material_category or {}).whole or 0)..':index:'..tostring(fields.mat_index or -1) end
    out[#out+1]={key=key,fields=fields,available=true,objection=''}
    end

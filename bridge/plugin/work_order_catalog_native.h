@@ -15,6 +15,7 @@ inline bool workOrderCatalogSupported() {
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0x8c812d,0x4d2,UINT64_C(0xa0bb18750d912459)}, // clothier fabric/task membership
             {0x8c571c,0x106,UINT64_C(0xe7e3ae7701fd626a)}, // jeweler job types + encrust targets
             {0x8c7d22,0x40b,UINT64_C(0xce7eea858978ebf4)}, // leather civ subtypes + LEATHER membership
             {0x8c6cf8,0x8f,UINT64_C(0xe02d6e399757e45f)}, // farmer task membership
@@ -136,7 +137,7 @@ inline std::optional<std::vector<df::manager_order_template>> nativeWorkshopOrde
 
 // These native task branches have the same builtin descriptor membership as
 // the owned order catalog (Carpenter8c762d, Kitchen8cb3fc, WoodFurnace root,
-// Farmer8c6cf8, Tanner8cb3ee, Millstone8cb44f Leather8c7d22 and Jeweler8c571c).
+// Farmer8c6cf8, Tanner8cb3ee, Millstone8cb44f Leather8c7d22, Jeweler8c571c and Clothier8c812d fabric pages).
 // Reaction templates identify queued jobs across categories; visible reaction
 // choices still use the separate native category/availability reader.
 // Do not extend this to other families merely because classifier311580 matches:
@@ -145,7 +146,7 @@ inline std::optional<std::vector<df::manager_order_template>> workshopTaskTempla
     if(!building)return std::nullopt;
     const auto type=building->getType();const auto subtype=building->getSubtype();
     const bool forge=int(type)==13 && (subtype==5 || subtype==6);
-    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==4 || subtype==11 || subtype==12 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && subtype==0)))return std::nullopt;
+    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==4 || subtype==11 || subtype==12 || subtype==13 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && subtype==0)))return std::nullopt;
     auto rows=nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
     // These descriptors qualify existing queued jobs, never populate the forge
     // picker. The native task branches supply its choices independently.
@@ -153,6 +154,33 @@ inline std::optional<std::vector<df::manager_order_template>> workshopTaskTempla
         if(!job || job->mat_type!=0 || (int(job->job_type)!=133 && int(job->job_type)!=139))continue;
         const auto tasks=workshopForgeTasks(building,int(job->job_type)==133?3:4,job->mat_index);
         if(tasks)for(const auto& task:*tasks)if(task.job_type==job->job_type && task.item_subtype==job->item_subtype)rows->push_back(task);
+    }
+    return rows;
+}
+
+// Caption8c28f0 delegates to this semantic formatter; never construct its widget.
+inline std::optional<std::vector<WorkshopForgeChoice>> workshopClothierFabrics(df::building* building) {
+    if(!workOrderCatalogSupported() || !building || int(building->getType())!=13 || building->getSubtype()!=13)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base] {
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={{0x14d1920,0x459,UINT64_C(0xf48e28715360ed9a)},
+            {0x8c28f0,0x4a,UINT64_C(0xf75668c2b3daf60e)},
+            {0x1615870,13,UINT64_C(0xcd56f05c0ea1035c)}};
+        for(const auto& pin:pins){uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;}
+        return true;
+    }();
+    if(!pinned || !df::global::world)return std::nullopt;
+    using Name=void (*)(void*,std::string*,int16_t,int32_t,int32_t,bool,int16_t);
+    df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    std::vector<WorkshopForgeChoice> rows;
+    for(int32_t fabric:{4,8,4096}){
+        std::string caption;
+        reinterpret_cast<Name>(base+0x14d1920)(df::global::world,&caption,-1,-1,fabric,false,0);
+        caption.append(reinterpret_cast<const char*>(base+0x1615870),13);
+        rows.push_back({fabric,-1,std::move(caption)});
     }
     return rows;
 }

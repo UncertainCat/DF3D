@@ -54,16 +54,23 @@ local function template_job(recipe,b,native_requirements)
  if not ok then delete_template(j);return nil,tostring(err) end
  return j
 end
-local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_templates,native_categories,category,native_forge)
+local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_templates,native_categories,category,native_forge,native_fabrics)
  local out,keys={},{}
  local k=kind(b)
  local forge=k=='MetalsmithsForge' or k=='MagmaForge'
  local ordinary=k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Farmers' or k=='Millstone' or k=='Tanners' or k=='Leatherworks' or k=='Jewelers'
- local supported=forge or ordinary or k=='Still'
+ local clothier=k=='Clothiers'
+ local fabric=nil
+ if clothier and category~='' and category:sub(1,9)~='reaction:' then
+  fabric=({['clothier:4']=4,['clothier:8']=8,['clothier:4096']=4096})[category]
+  if not fabric then return nil,'Invalid clothier category' end
+  out.parent=''
+ end
+ local supported=forge or ordinary or clothier or k=='Still'
  if category~='' and not supported then return nil,'Unsupported workshop category' end
  if supported then
   out.category=category;out.categories={}
-  if not forge or category=='' or category:sub(1,9)=='reaction:' then out.categories=native_categories(b.id,category) end
+  if not fabric and (not forge or category=='' or category:sub(1,9)=='reaction:') then out.categories=native_categories(b.id,category) end
   out.editable_templates=native_templates(b.id)
   for i=2,#out.categories do
    local row=out.categories[i];local at=i
@@ -71,7 +78,12 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
    out.categories[at]=row
   end
  end
- local reaction_page=not forge or category=='' or category:sub(1,9)=='reaction:'
+ local reaction_page=not fabric and (not forge or category=='' or category:sub(1,9)=='reaction:')
+ if clothier and category=='' then
+  local categories=native_fabrics(b.id)
+  for _,row in ipairs(out.categories)do categories[#categories+1]=row end
+  out.categories=categories
+ end
  if forge and (category=='' or not reaction_page) then
   local group,material=-1,nil
   if category~='' then
@@ -93,12 +105,13 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  end
  -- Native owned templates supply the audited builtin branches. The order
  -- classifier alone is not sufficient evidence for additional families.
- if category=='' and ordinary then
+ if (category=='' and ordinary) or fabric then
   for _,fields in ipairs(out.editable_templates) do
-   if fields.job_type~=df.job_type.CustomReaction then
+   if fields.job_type~=df.job_type.CustomReaction and (not fabric or (fields.material_category or {}).whole==fabric) then
    local key='builtin:'..fields.job_type..':'..(fields.mat_type or -1)
    if (fields.item_subtype or -1)>=0 then key=key..':subtype:'..fields.item_subtype end
    if fields.specflag and (fields.specflag.whole or 0)~=0 then key=key..':specflag:'..fields.specflag.whole end
+   if fabric then key=key..':fabric:'..fabric end
    out[#out+1]={key=key,fields=fields,available=true,objection=''}
    end
   end
@@ -265,7 +278,7 @@ return function(request)
   seed_scan.cursor=finish
   if finish<#all then return {ok=true,pending=true,message='Counting available seeds'} end
  end
- local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_task_templates,request.workshop_task_categories,p.task_category or '',request.workshop_forge_page);if not rs then return fail(err) end
+ local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_task_templates,request.workshop_task_categories,p.task_category or '',request.workshop_forge_page,request.workshop_clothier_fabrics);if not rs then return fail(err) end
  if request.action==16 then
   local result=inspect(b,rs,request.workshop_caption,request.workshop_job_active)
   if kind(b)~='FarmPlot' and p.query and p.query~='' then

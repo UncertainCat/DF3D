@@ -17316,10 +17316,33 @@ suffix1615870 length13. Runtime may use the semantic formatter, not the widget.
 Protected215249 on2026-11-12 verifies all three native selections and Back,
 with16 tasks per child. All48 descriptors match the independently owned order
 catalog when grouped by fabric flag (job.item_type excluded). Native root/child
-screenshots were captured and inspected. This is discovery evidence, not viewer
-acceptance: Clothier runtime dispatch and presentation remain pending. Owned
+screenshots were captured and inspected. This is discovery evidence; runtime qualification is described below. Owned
 DF11788 exits unsaved with source preservation; GPU samples42C at30FPS are not
 a continuous peak. See native_workshop.json.clothier_navigation_reference.
+
+Clothier dispatch now exposes the three fabric choices using native14d1920
+with owned strings and restored material-cache scratch. Explicit canonical
+clothier:4/8/4096 pages filter the independently audited native catalog by
+material-category flags. Fabric enters the opaque task key, preventing cross-
+fabric collisions. Child pages omit reactions, as native does, and report an
+explicit empty parent for Back. The shared viewer owns navigation and rendering;
+no widget/global menu state is a runtime input. Protocol208 remains unchanged.
+
+Protected220009 on2026-11-12 verifies root and all48 child choices, native
+captions/order/availability, actual fabric clicks, Back, root Cancel and invalid
+fabric rejection. All four picker crops432,106..888,676 match native with zero
+differing pixels. First/last tasks on each page create six jobs, including wheel
+scrolling; the lane asserts native-equivalent job fields and all input filters
+before removal and verifies original queue order. Native Add new task reopens
+at the root, matching DF3D. Worker execution, products, every subtype's creation,
+search gestures and job.item_type equality remain outside this evidence.
+Owned DF40372 exits unsaved with source preservation; only the three known Godot
+diagnostics occur. Core19 and controller/composition/adapter checks pass. GPU
+samples41-43C at30FPS are not continuous peaks. Earlier215744/215910 failed in
+diagnostic setup because removing a job moved Add new task before the capture
+helper refreshed native layout; no runtime navigation defect was established.
+The helper now redraws before clicking. See native_workshop.json.clothier_runtime_reference.
+Public workshop exposure remains gated on complete workflows and other families.
 
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.

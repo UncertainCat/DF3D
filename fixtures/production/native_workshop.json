@@ -8496,5 +8496,241 @@
       "workshop-clothier-page-3.png": "93b7cdfb5a6057c2b89f8544c52c3b33aa0710daa4b1554289ffd522890e5e3c",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
     }
+  },
+  "clothier_runtime_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-220009",
+    "scope": "Root and three16-task pages match captions/order/availability and pixels. Actual fabric clicks, Back, Cancel, invalid keys and six first/last-row creations verified, including scrolling. Native lane asserts matching job fields and every input before removing viewer jobs; original queue order restored. Worker execution/products/all48creationeffects/search gestures/job.item_type equality remain outside evidence.",
+    "crop": [
+      432,
+      106,
+      888,
+      676
+    ],
+    "differing_pixels": {
+      "root": 0,
+      "cloth": 0,
+      "silk": 0,
+      "yarn": 0
+    },
+    "effects": [
+      {
+        "fabric": 4,
+        "rows": [
+          {
+            "caption": "Make cloth bag",
+            "index": 1,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 16384,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 58,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 10000
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 74,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 4,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Sew cloth image",
+            "index": 16,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 1024,
+                  "flags2": 8,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 16384,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 58,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 10000
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 192,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 4,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ]
+      },
+      {
+        "fabric": 8,
+        "rows": [
+          {
+            "caption": "Make pair of silk gloves",
+            "index": 1,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 32768,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 58,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 10000
+                }
+              ],
+              "item_subtype": 1,
+              "job_type": 116,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 8,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Sew silk image",
+            "index": 16,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 1024,
+                  "flags2": 8,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 32768,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 58,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 10000
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 192,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 8,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ]
+      },
+      {
+        "fabric": 4096,
+        "rows": [
+          {
+            "caption": "Make pair of yarn gloves",
+            "index": 1,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 2147483648,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 58,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 10000
+                }
+              ],
+              "item_subtype": 1,
+              "job_type": 116,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 4096,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Sew yarn image",
+            "index": 16,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 1024,
+                  "flags2": 8,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 2147483648,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 58,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 10000
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 192,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 4096,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ]
+      }
+    ],
+    "reopened_at_root": true,
+    "diagnostics": "passed_with_known_issues: separate-renderer, finalize, ObjectDB shutdown; no unclassified diagnostics",
+    "source_preservation": "Owned source unchanged; DF40372 exited unsaved",
+    "sha256": {
+      "workshop-native.json": "4061b259b68da6a7d2dd1c673bfa51820b45b0d022a2f509a1058d4250fa705b",
+      "workshop-wire-result.json": "9238cb21200d734d103c04bb749b476db6f19dda6757d80a83289946c2259fe8",
+      "result.json": "551066950527be06c14bfcef35d39de342bc0b04b73a2ff55c1dd0e9650935e0",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "workshop-clothier-root.png": "502c291e6838d270f3fdd14ece8dcad5177df786f55d60c76241f542a799e27b",
+      "clothier-root-live.png": "d5128313f93335c7d09b451cc01cc70eb1d6eae8a3125206376dd701dcaf0202",
+      "workshop-clothier-page-1.png": "0f6545e8f6bea5d9f88bd973cf2d24dc33f808fbfaf91997d6c90546d6874415",
+      "clothier-page-1-live.png": "2543958ba1cf8ac71668f99f496f28cea895bfca84171b9b56fc78fae48b8b4e",
+      "workshop-clothier-page-2.png": "280478c1ef4fc196f731c1cd367cf91cd18c7cf910bbba6a0b4c91958f265c1b",
+      "clothier-page-2-live.png": "6be23cbbe58959dcdb249c731df3013401a816d01b558d1eb8dca4099d10f14f",
+      "workshop-clothier-page-3.png": "93b7cdfb5a6057c2b89f8544c52c3b33aa0710daa4b1554289ffd522890e5e3c",
+      "clothier-page-3-live.png": "057145b63b98f89ba9c808b0403fd17bf85714eb432e59088350e95eb1a5e5a8"
+    }
   }
 }

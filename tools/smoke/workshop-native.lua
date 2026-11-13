@@ -278,7 +278,7 @@ local ok,err=xpcall(function()
     -- Discovery only: invoke category buttons, never job/action buttons. Runtime
     -- catalogs must not read these widgets or use their mutable menu storage.
     local pending={{path={},rows=rows,reaction_parent=''}};local next_page=1
-    local queue_ids={};for _,job in ipairs(target.jobs)do queue_ids[#queue_ids+1]=job.id end
+    local queue_ids={};for _,job in ipairs(target.jobs)do queue_ids[#queue_ids+1]=job.id end;catalog.queue_ids=queue_ids
     while next_page<=#pending do
      assert(#pending<=512,'Native task category discovery exceeded page bound')
      local page=pending[next_page];next_page=next_page+1
@@ -352,6 +352,24 @@ local ok,err=xpcall(function()
       assert(click_label('Back'),'Clothier Back missing')
       local returned=read_rows();assert(json.encode(returned)==json.encode(rows),'Clothier Back did not restore root')
       catalog.navigation[#catalog.navigation+1]={fabric=root_row.material_category,caption=root_row.caption,rows=child,back_restored_root=true}
+      if os.getenv('DF3D_WORKSHOP_CLOTHIER_RUNTIME')=='1'then
+       local nav=catalog.navigation[#catalog.navigation];nav.effects={}
+       for _,pick in ipairs({1,#child})do
+        assert(click_label(root_row.caption))
+        local clicked=false
+        for scroll=0,128 do
+         if click_label(child[pick].caption)then clicked=true;break end
+         g.precise_mouse_x=600;g.precise_mouse_y=350;g.mouse_x=75;g.mouse_y=29
+         gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');view:render(dfhack.getTickCount())
+        end
+        assert(clicked,'Clothier task unreachable')
+        local job=assert(target.jobs[#target.jobs-1]);assert(#target.jobs==#queue_ids+1)
+        nav.effects[#nav.effects+1]={index=pick,caption=child[pick].caption,native=family_effect(job)}
+        assert(dfhack.job.removeJob(job));view:render(dfhack.getTickCount());assert(click_label('Add new task'))
+        nav.reopened=read_rows();shot('clothier-reopened-'..index..'-'..pick)
+        if json.encode(nav.reopened)~=json.encode(rows)then assert(click_label('Back'),'Reopened clothier page has no Back')end
+       end
+      end
      end
      shot('clothier-back-root')
     end
@@ -382,6 +400,21 @@ local ok,err=xpcall(function()
    end
   end
   shot('task-catalog-return')
+  if os.getenv('DF3D_WORKSHOP_CLOTHIER_RUNTIME')=='1'then
+   capture('workshop-wire')
+   local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)
+   for _,catalog in ipairs(result.task_catalogs)do
+    local target=assert(df.building.find(catalog.building_id))
+    for _,nav in ipairs(catalog.navigation)do for _,entry in ipairs(nav.effects)do
+     local id=assert(receipt.created[tostring(nav.fabric)..':'..entry.index]);local job
+     for _,candidate in ipairs(target.jobs)do if candidate.id==id then job=candidate;break end end
+     assert(job);entry.viewer=family_effect(job);assert(json.encode(entry.native)==json.encode(entry.viewer),'Clothier task effect differs')
+     assert(dfhack.job.removeJob(job))
+    end end
+    assert(#target.jobs==#catalog.queue_ids)
+    for i,id in ipairs(catalog.queue_ids)do assert(target.jobs[i-1].id==id)end
+   end
+  end
   if os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')=='1'then
    capture('workshop-wire')
    local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)

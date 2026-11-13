@@ -1309,7 +1309,9 @@ inline std::optional<BuildingContentsSnapshot> buildingContents(df::building_act
         auto facts=itemFacts(held->item);if(!facts)return std::nullopt;
         BuildingContentsRow row;static_cast<ItemFacts&>(row)=std::move(*facts);
         row.role=static_cast<int32_t>(held->use_mode);
-        if(row.itemType==5||row.itemType==13||row.itemType==17||row.itemType==30||row.itemType==86){row.appearance=itemAppearance(held->item);if(!row.appearance)return std::nullopt;}
+        // Construction materials use the same owned appearance facts as their
+        // item sheets. Omitting them leaves workshop contents picture boxes blank.
+        if((row.itemType>=0&&row.itemType<=5)||row.itemType==13||row.itemType==17||row.itemType==30||row.itemType==86){row.appearance=itemAppearance(held->item);if(!row.appearance)return std::nullopt;}
         snapshot.rows.push_back(std::move(row));
     }
     snapshot.revision=buildingContentsRevision(snapshot);

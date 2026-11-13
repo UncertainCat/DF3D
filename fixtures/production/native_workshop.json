@@ -33483,7 +33483,7 @@
     "limitations": [
       "All six vanilla reactions have successful queue/input/Repeat coverage below. Worker execution and finished products remain unqualified.",
       "No custom child categories in the installed vanilla definitions.",
-      "Tool contents crop differs by 578 pixels in two item icons; actual placed Tool remains unqualified.",
+      "Actual placed Tool remains unqualified. The diagnostic construction-block icon omission is resolved by contents_material_reference.",
       "Whole workshop feature remains gated; no release-completion claim."
     ],
     "stocked_reference": {
@@ -34304,6 +34304,43 @@
         "Simulation remains paused; worker execution and products not verified.",
         "Job item_type is not compared; reaction inputs include item type, quantity, materials, flags1..5, vector, reaction class/product, min dimension, reagent index, reaction ID, tool use, dye color and containment indices.",
         "Only installed vanilla Custom definitions; custom child categories remain pending."
+      ]
+    },
+    "contents_material_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261113-110857",
+      "scope": "Same diagnostic Tool24 retype, now with owned appearance facts for its dolomite and microcline construction blocks. Existing native item-sheet artwork path; no new presentation rules.",
+      "crop": [
+        432,
+        106,
+        888,
+        676
+      ],
+      "different_pixels": 0,
+      "native_sha256": "f874f7db56885e54e789570a4a479183c55bb7fa79a1f69aac392a96e4b5c055",
+      "viewer_sha256": "12676d5e02a5bae89b144e8891fecdab3a3dfefb9c561a2e83a92d6bda72d9ad",
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "omissions": [
+        "Real placed Tool not qualified.",
+        "This contents crop covers two inorganic block materials; the other construction-material families reuse existing item-sheet providers but are not independently rendered here."
       ]
     }
   }

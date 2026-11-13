@@ -17741,8 +17741,8 @@ Press's four reactions, including native captions, order and refusal messages.
 Actual row clicks leave the queue unchanged and all six direct queue intents
 reject. Both picker crops432,106..888,676 match native pixels. The diagnostic
 Tool24 retype stays on Tasks after Add new task; its Tasks crop432,106..888,496
-also matches. The larger Tool crop still differs by578 pixels in the two
-construction-item icons. This is not a real placed-tool qualification.
+also matches. The larger Tool crop initially differed by578 pixels in two construction-item
+icons, resolved by110857 below. This is not a real placed-tool qualification.
 Successful custom reaction creation is qualified below; worker execution/products
 and custom child categories remain unqualified. Whole workshop exposure remains gated.
 
@@ -17769,8 +17769,21 @@ Fixture custom_workshop_reference.stocked_reference stores both job effects,
 supply identities, image hashes and omissions. Core19 passes. The live run has
 only the three documented Godot diagnostics;30FPS GPU60C/2% is a sample.
 Earlier110328 establishes the same six creations with fewer input fields;
-110446 is the stronger accepted comparison. Tool contents artwork and actual
-placed-tool qualification remain unfinished.
+110446 is the stronger accepted comparison. The contents artwork omission is resolved below; actual placed-tool
+qualification remains unfinished.
+
+Building contents now include existing owned item appearance facts for native
+item types0..5 (bars, cut gems, blocks, rough gems, boulders and wood). The
+previous whitelist admitted wood but omitted the other construction materials,
+leaving blank picture boxes despite an existing item-sheet artwork provider.
+No Godot artwork rules or protocol changes are required. Protected110857
+on2026-11-13 verifies the dolomite/microcline block rows: the entire diagnostic
+Tool Tasks/contents crop432,106..888,676 now has zero differing pixels. This
+does not establish real placed-tool behavior or independently qualify every
+material family's contents artwork. Native/DF3D custom menus and six refusals
+also pass. Owned DF7240 exits unsaved with source/preferences preserved;
+30FPS GPU60C/1% is a sample. Only the three documented Godot diagnostics remain.
+MSVC and Core19 pass; fixture contents_material_reference records provenance.
 
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.

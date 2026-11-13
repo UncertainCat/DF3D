@@ -35871,5 +35871,411 @@
         "reason": "Furnace discovery navigation overwrote glass runtime effect records; guarded the duplicate discovery pass."
       }
     ]
+  },
+  "instrument_reaction_children_reference": {
+    "scope": "Craftsdwarf instrument-piece and instrument menus plus powered magma glass instrument-piece menu. Existing owned native reaction/category providers, no runtime product changes.",
+    "runs": [
+      {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261113-113447",
+        "receipt": {
+          "created": {
+            "6:6": 382798,
+            "6:7": 382799
+          },
+          "pages": 2,
+          "refused": 10,
+          "success": true
+        },
+        "pages": [
+          {
+            "kind": "13:3:-1",
+            "page": 6,
+            "category": "INSTRUMENT_PIECE",
+            "path": [
+              {
+                "caption": "Make instrument piece (opens menu)",
+                "index": 5
+              }
+            ],
+            "rows": [
+              {
+                "caption": "Make åm strings",
+                "available": true,
+                "objection": "",
+                "reaction": "MAKE_ENT245 INS2_STRINGS"
+              },
+              {
+                "caption": "Make ennol strings",
+                "available": false,
+                "objection": "[Requires Collected silk thread]",
+                "reaction": "MAKE_ENT245 INS1_STRINGS"
+              },
+              {
+                "caption": "Make magel keyboard",
+                "available": true,
+                "objection": "",
+                "reaction": "MAKE_ENT245 INK1_KEYBOARD"
+              },
+              {
+                "caption": "Make magel pipes",
+                "available": true,
+                "objection": "",
+                "reaction": "MAKE_ENT245 INK1_VIB"
+              },
+              {
+                "caption": "Make rít strings",
+                "available": false,
+                "objection": "[Requires Collected silk thread]",
+                "reaction": "MAKE_ENT245 INS3_STRINGS"
+              },
+              {
+                "caption": "Make vúsh drone pipe",
+                "available": true,
+                "objection": "",
+                "reaction": "MAKE_ENT245 INW3_DRONE"
+              }
+            ],
+            "effect": {
+              "caption": "Make åm strings",
+              "index": 1,
+              "native": {
+                "inputs": [
+                  {
+                    "flags1": 64,
+                    "flags2": 16384,
+                    "flags3": 0,
+                    "item_subtype": -1,
+                    "item_type": 57,
+                    "mat_index": -1,
+                    "mat_type": -1,
+                    "quantity": 15000
+                  }
+                ],
+                "item_subtype": -1,
+                "job_type": 209,
+                "mat_index": -1,
+                "mat_type": -1,
+                "material_category": 0,
+                "reaction_name": "MAKE_ENT245 INS2_STRINGS",
+                "specdata": -1,
+                "specflag": 0
+              },
+              "viewer": {
+                "inputs": [
+                  {
+                    "flags1": 64,
+                    "flags2": 16384,
+                    "flags3": 0,
+                    "item_subtype": -1,
+                    "item_type": 57,
+                    "mat_index": -1,
+                    "mat_type": -1,
+                    "quantity": 15000
+                  }
+                ],
+                "item_subtype": -1,
+                "job_type": 209,
+                "mat_index": -1,
+                "mat_type": -1,
+                "material_category": 0,
+                "reaction_name": "MAKE_ENT245 INS2_STRINGS",
+                "specdata": -1,
+                "specflag": 0
+              }
+            },
+            "cancel_returns_tasks": true,
+            "crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "different_pixels": 0,
+            "native_sha256": "b2fd9234da12d8a833a210683987fccc5f5e87918daf71e859c3ac0ef7b75614",
+            "viewer_sha256": "d30c92362124415927c852b3c609dd96225843bbd1c4e1875ab1b2428a0a382c"
+          },
+          {
+            "kind": "13:3:-1",
+            "page": 7,
+            "category": "INSTRUMENT",
+            "path": [
+              {
+                "caption": "Make instrument (opens menu)",
+                "index": 6
+              }
+            ],
+            "rows": [
+              {
+                "caption": "Assemble åm",
+                "available": false,
+                "objection": "[Requires Åm strings]",
+                "reaction": "MAKE_ENT245 INS2"
+              },
+              {
+                "caption": "Assemble ennol",
+                "available": false,
+                "objection": "[Requires Ennol strings]",
+                "reaction": "MAKE_ENT245 INS1"
+              },
+              {
+                "caption": "Assemble magel",
+                "available": false,
+                "objection": "[Requires Magel bellows]",
+                "reaction": "MAKE_ENT245 INK1"
+              },
+              {
+                "caption": "Assemble rít",
+                "available": false,
+                "objection": "[Requires Rít plectrum]",
+                "reaction": "MAKE_ENT245 INS3"
+              },
+              {
+                "caption": "Assemble vúsh",
+                "available": false,
+                "objection": "[Requires Vúsh drone pipe]",
+                "reaction": "MAKE_ENT245 INW3"
+              },
+              {
+                "caption": "Make adesh",
+                "available": false,
+                "objection": "[Requires Unrotten bone body part]",
+                "reaction": "MAKE_ENT245 INW1"
+              },
+              {
+                "caption": "Make eb",
+                "available": false,
+                "objection": "[Requires Unrotten bone body part]",
+                "reaction": "MAKE_ENT245 INW2"
+              },
+              {
+                "caption": "Make igang",
+                "available": true,
+                "objection": "",
+                "reaction": "MAKE_ENT245 INW4"
+              },
+              {
+                "caption": "Make libash",
+                "available": false,
+                "objection": "[Requires Unrotten bone body part]",
+                "reaction": "MAKE_ENT245 INP1"
+              }
+            ],
+            "effect": {
+              "caption": "Make igang",
+              "index": 8,
+              "native": {
+                "inputs": [
+                  {
+                    "flags1": 0,
+                    "flags2": 0,
+                    "flags3": 0,
+                    "item_subtype": -1,
+                    "item_type": 5,
+                    "mat_index": -1,
+                    "mat_type": -1,
+                    "quantity": 1
+                  }
+                ],
+                "item_subtype": -1,
+                "job_type": 209,
+                "mat_index": -1,
+                "mat_type": -1,
+                "material_category": 0,
+                "reaction_name": "MAKE_ENT245 INW4",
+                "specdata": -1,
+                "specflag": 0
+              },
+              "viewer": {
+                "inputs": [
+                  {
+                    "flags1": 0,
+                    "flags2": 0,
+                    "flags3": 0,
+                    "item_subtype": -1,
+                    "item_type": 5,
+                    "mat_index": -1,
+                    "mat_type": -1,
+                    "quantity": 1
+                  }
+                ],
+                "item_subtype": -1,
+                "job_type": 209,
+                "mat_index": -1,
+                "mat_type": -1,
+                "material_category": 0,
+                "reaction_name": "MAKE_ENT245 INW4",
+                "specdata": -1,
+                "specflag": 0
+              }
+            },
+            "cancel_returns_tasks": true,
+            "crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "different_pixels": 0,
+            "native_sha256": "19056af8348493ca6f3bd5fe1870aa07171b42611161f351058f4a7cb7383887",
+            "viewer_sha256": "d2341cd138e06e556fb95549a95d6568a28d74db115b7be5a2f7cd82dbd6cedf"
+          }
+        ],
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        }
+      },
+      {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261113-113540",
+        "receipt": {
+          "created": {
+            "56:5": 382797
+          },
+          "pages": 1,
+          "refused": 0,
+          "success": true
+        },
+        "pages": [
+          {
+            "kind": "5:5:-1",
+            "page": 5,
+            "category": "INSTRUMENT_PIECE",
+            "path": [
+              {
+                "caption": "Make instrument piece (opens menu)",
+                "index": 4
+              }
+            ],
+            "rows": [
+              {
+                "caption": "Make ennol body",
+                "available": true,
+                "objection": "",
+                "reaction": "MAKE_ENT245 INS1_BODY"
+              },
+              {
+                "caption": "Make rít plectrum",
+                "available": true,
+                "objection": "",
+                "reaction": "MAKE_ENT245 INS3_PROD"
+              }
+            ],
+            "effect": {
+              "caption": "Make ennol body",
+              "index": 1,
+              "native": {
+                "inputs": [
+                  {
+                    "flags1": 0,
+                    "flags2": 0,
+                    "flags3": 0,
+                    "item_subtype": -1,
+                    "item_type": -1,
+                    "mat_index": -1,
+                    "mat_type": -1,
+                    "quantity": 1
+                  }
+                ],
+                "item_subtype": -1,
+                "job_type": 209,
+                "mat_index": -1,
+                "mat_type": -1,
+                "material_category": 0,
+                "reaction_name": "MAKE_ENT245 INS1_BODY",
+                "specdata": -1,
+                "specflag": 0
+              },
+              "viewer": {
+                "inputs": [
+                  {
+                    "flags1": 0,
+                    "flags2": 0,
+                    "flags3": 0,
+                    "item_subtype": -1,
+                    "item_type": -1,
+                    "mat_index": -1,
+                    "mat_type": -1,
+                    "quantity": 1
+                  }
+                ],
+                "item_subtype": -1,
+                "job_type": 209,
+                "mat_index": -1,
+                "mat_type": -1,
+                "material_category": 0,
+                "reaction_name": "MAKE_ENT245 INS1_BODY",
+                "specdata": -1,
+                "specflag": 0
+              }
+            },
+            "cancel_returns_tasks": true,
+            "crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "different_pixels": 0,
+            "native_sha256": "20c2307ece99a63ab03fc71ebb08d3a5f464b182d5d1b109ba2dc8c4a63747d9",
+            "viewer_sha256": "0ad38a8a79d54061490087e4c37b3718bfbeaaa93663ada251d34bdbc831f7a9"
+          }
+        ],
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        }
+      }
+    ],
+    "verification": [
+      "Actual category clicks, all child captions/order/availability/refusal text, Cancel/reopening, every unavailable row click plus direct semantic queue rejection, first available native/viewer job per child, root-context Repeat on/off.",
+      "Paused owned clone; created jobs removed, original queues preserved. Magma glass furnace/type/map fixture restored. Source saves/preferences preserved and games exited unsaved."
+    ],
+    "limitations": [
+      "One available job created per category, not every instrument/reagent combination.",
+      "No worker execution, products or assembly consumption qualification.",
+      "Other workshop instrument categories, search/hover/responsive/lifecycle and full release acceptance remain separate requirements."
+    ],
+    "failed_attempts": [
+      {
+        "lane": "113125",
+        "reason": "Diagnostic assumed native Cancel cleared filtered_button; visible Tasks returns while entries remain."
+      },
+      {
+        "lane": "113216",
+        "reason": "Diagnostic stalled after reading retained button entries following Cancel. Agent explicitly requested failed teardown via a failure result (origin agent-requested-abort); source preserved, no acceptance credit."
+      }
+    ]
   }
 }

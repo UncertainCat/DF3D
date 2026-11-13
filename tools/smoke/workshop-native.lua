@@ -507,6 +507,24 @@ local ok,err=xpcall(function()
        assert(native.caption==row.caption and native.available==row.available and native.objection==row.objection,'Native reaction choice differs: '..row.code)
       end
      end
+     if os.getenv('DF3D_WORKSHOP_REACTION_RUNTIME')=='1' and page.reaction_parent and page.reaction_parent~=''then
+      local function reopen()
+       gui.simulateInput(view,'LEAVESCREEN');select_map(target);assert(click_label('Add new task'))
+       for _,step in ipairs(page.path)do assert(click_label(step.caption),'Reaction category unreachable')end
+      end
+      reopen();shot('reaction-page-'..#catalog.pages)
+      assert(click_label('Cancel'),'Reaction Cancel missing')
+      shot('reaction-cancel-'..#catalog.pages)
+      page.cancel_returns_tasks=false
+      for _,line in ipairs(lines())do if line.text:find('Add new task',1,true)then page.cancel_returns_tasks=true end end
+      reopen()
+      for index,row in ipairs(page.rows)do if row.available and row.reaction and row.reaction~=''then
+       assert(click_label(row.caption),'Reaction task unreachable')
+       local job=assert(target.jobs[#target.jobs-1]);assert(#target.jobs==#queue_ids+1)
+       page.effect={index=index,caption=row.caption,native=family_effect(job)}
+       assert(dfhack.job.removeJob(job));break
+      end end
+     end
      for index,row in ipairs(page.rows)do
       local requested_color=tonumber(os.getenv('DF3D_WORKSHOP_DYER_TARGET')or '')
       local dyer_child=os.getenv('DF3D_WORKSHOP_DYER_INGREDIENT_NAV')=='1' and #page.path==1 and page.path[1].index==tonumber(os.getenv('DF3D_WORKSHOP_DYER_ROOT')or '1') and
@@ -716,6 +734,23 @@ local ok,err=xpcall(function()
     assert(#target.jobs==#catalog.queue_ids)
     for i,id in ipairs(catalog.queue_ids)do assert(target.jobs[i-1].id==id)end
    end
+  end
+  if os.getenv('DF3D_WORKSHOP_REACTION_RUNTIME')=='1'then
+   capture('workshop-wire')
+   local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)
+   for _,catalog in ipairs(result.task_catalogs)do
+    local target=assert(df.building.find(catalog.building_id))
+    for index,page in ipairs(catalog.pages)do if page.effect then
+     local id=assert(receipt.created[tostring(catalog.building_id)..':'..index]);local job
+     for _,candidate in ipairs(target.jobs)do if candidate.id==id then job=candidate;break end end
+     assert(job);page.effect.viewer=family_effect(job)
+     assert(json.encode(page.effect.native)==json.encode(page.effect.viewer),'Reaction category job effects differ')
+     assert(dfhack.job.removeJob(job))
+    end end
+    assert(#target.jobs==#catalog.queue_ids)
+    for index,id in ipairs(catalog.queue_ids)do assert(target.jobs[index-1].id==id)end
+   end
+   shot('reaction-effects-return')
   end
   if os.getenv('DF3D_WORKSHOP_CLOTHIER_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_CRAFT_RUNTIME')=='1'then
    capture('workshop-wire')

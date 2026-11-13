@@ -17820,6 +17820,31 @@ navigation effects and111106 exposed the power prerequisite; none is accepted
 as a passing run. Fixture magma_furnace_reference records evidence and omissions.
 Whole workshop public exposure remains gated.
 
+Instrument child menus use the existing owned reaction/category provider.
+Protected113447 on2026-11-13 checks Craftsdwarf INSTRUMENT_PIECE(6 rows) and
+INSTRUMENT(9 rows), ten unavailable row clicks/direct queue refusals, and one
+available native/viewer job per child.113540 checks the powered magma glass
+INSTRUMENT_PIECE child(2 rows) and one available job. Actual category clicks,
+native captions/order/objections, Cancel/reopening and root-context Repeat
+on/off agree; captured job fields/inputs match. All three child panel
+crops432,106..888,676 match native pixels. No runtime product change was needed.
+
+Native Cancel visibly returns to Tasks but leaves filtered_button entries.
+Diagnostic113125 incorrectly asserted the list was empty;113216 stalled after
+reading those retained entries. The latter run was explicitly aborted with a
+failure result carrying origin agent-requested-abort, then normal lane teardown
+closed owned DF10688 and verified source preservation. Neither is acceptance.
+The harness now observes visible Add new task after Cancel and never inspects
+the retired buttons. Runtime providers never consult these menu structures.
+
+Accepted owned DF6368/17448 exit unsaved, preserving original queues, source
+saves and preferences; the magma fixture also restores furnace type and map
+cells.30FPS samples56-60C are not peaks. Only the three documented Godot
+diagnostics remain. Core19 passes. Fixture instrument_reaction_children_reference
+retains hashes, effects and limits. This qualifies one creation per child, not
+all instrument combinations or worker execution/products. Other workshop
+instrument categories and broader management/release acceptance remain pending.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

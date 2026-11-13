@@ -227,6 +227,14 @@ local ok,err=xpcall(function()
  end
  if os.getenv('DF3D_WORKSHOP_TASK_CATALOG')=='1'then
   local utils=require('utils')
+  local function family_effect(job)
+   local inputs={};for _,i in ipairs(job.job_items.elements)do
+    inputs[#inputs+1]={item_type=i.item_type,item_subtype=i.item_subtype,mat_type=i.mat_type,mat_index=i.mat_index,quantity=i.quantity,
+     flags1=i.flags1.whole,flags2=i.flags2.whole,flags3=i.flags3.whole}
+   end
+   return {job_type=job.job_type,reaction_name=job.reaction_name,item_subtype=job.item_subtype,mat_type=job.mat_type,mat_index=job.mat_index,
+    material_category=job.material_category.whole,specflag=job.specflag.whole,specdata=job.specdata.hist_figure_id,inputs=inputs}
+  end
   result.task_catalogs={};local seen={}
   for _,target in ipairs(df.global.world.buildings.all)do
    local type=target:getType();local key=type..':'..target:getSubtype()..':'..target:getCustomType()
@@ -336,12 +344,38 @@ local ok,err=xpcall(function()
     end
     assert(#target.jobs==#queue_ids,'Category discovery changed workshop queue')
     for i,id in ipairs(queue_ids)do assert(target.jobs[i-1].id==id,'Category discovery reordered workshop queue')end
+    if os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')=='1'then
+     catalog.effects={};catalog.queue_ids=queue_ids
+     for index,row in ipairs(rows)do if row.available then
+      gui.simulateInput(view,'LEAVESCREEN');select_map(target);assert(click_label('Add new task'))
+      assert(click_label(row.caption),'Family native task unavailable')
+      local job=assert(target.jobs[#target.jobs-1]);assert(#target.jobs==#queue_ids+1,'Native task did not append a job')
+      catalog.effects[#catalog.effects+1]={index=index,caption=row.caption,native=family_effect(job)}
+      assert(dfhack.job.removeJob(job))
+     end end
+    end
     local saved=assert(io.open(out..'/workshop-native.json','w'));saved:write(json.encode(result));saved:close()
     gui.simulateInput(view,'LEAVESCREEN')
    end
   end
   shot('task-catalog-return')
-  if os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')=='1'then capture('workshop-wire')end
+  if os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')=='1'then
+   capture('workshop-wire')
+   local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)
+   for _,catalog in ipairs(result.task_catalogs)do
+    local target=assert(df.building.find(catalog.building_id))
+    for _,entry in ipairs(catalog.effects)do
+     local id=assert(receipt.created[tostring(catalog.building_id)..':'..entry.index]);local job
+     for _,candidate in ipairs(target.jobs)do if candidate.id==id then job=candidate;break end end
+     assert(job,'Family job missing from target workshop')
+     entry.viewer=family_effect(job);assert(json.encode(entry.native)==json.encode(entry.viewer),'Family job effects differ: '..entry.caption)
+     assert(dfhack.job.removeJob(job))
+    end
+    assert(#target.jobs==#catalog.queue_ids,'Family checks changed original queue')
+    for i,id in ipairs(catalog.queue_ids)do assert(target.jobs[i-1].id==id,'Family checks reordered original queue')end
+   end
+   shot('family-effects-return')
+  end
   return
  end
  if os.getenv('DF3D_WORKSHOP_JOB_CONTROLS')=='1'then

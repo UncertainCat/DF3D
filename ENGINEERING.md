@@ -17432,8 +17432,18 @@ viewer and exercises Cancel. Each picker crop432,130..888,676 at1200x800 matches
 native with zero differing pixels. Owned DF3164 closes unsaved with source saves
 and queues unchanged; only the three documented Godot diagnostics occur.
 `native_workshop.json.ordinary_family_runtime_reference` retains descriptors,
-provenance and bounded coverage. Successful job effects, other sizes, full
-hover/hotkeys and public workshop acceptance remain unverified for these families.
+provenance and bounded coverage. Other sizes, full hover/hotkeys and public workshop acceptance remain unverified.
+Protected205609 compares native and viewer creation for all seven farmer builtins
+and all three available Millstone choices, including its two reactions. Job
+kind/subtype/material/category/special fields and input type/subtype/material/
+quantity/flags match. Four unavailable choices are blocked in the viewer and
+rejected through the command path: two farmer reactions and both Tanner recipes.
+Original queues are restored in order after removing test jobs. Owned DF35908
+closes unsaved with source preservation and only the three known Godot diagnostics.
+See ordinary_family_effect_reference. This verifies queue creation, not worker
+execution/completed products, job.item_type equivalence or successful tanning.
+Earlier205403/205507 were diagnostic failures (numeric receipt-key formatting,
+then an unavailable job lookup helper); they are not accepted effect evidence.
 
 `workshopTaskTemplates` reuses the owned native template builder for
 Carpenter/Kitchen/WoodFurnace/Still/Farmer/Millstone/Tanner descriptors. All categories remain available

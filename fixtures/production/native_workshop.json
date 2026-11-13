@@ -6810,5 +6810,538 @@
     "closed_unsaved": true,
     "queues_unchanged": true,
     "diagnostics": "passed_with_known_issues: three documented Godot diagnostics, no unclassified errors"
+  },
+  "ordinary_family_effect_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-205609",
+    "source_sha256": "8dd164ecaaa89abd17eb7cc285f3b6c81e97ca7cd88891e1ca4bf60bd0d05f78",
+    "scope": "Native clicks versus viewer clicks: seven farmer and three millstone queued jobs, including input requirements; four unavailable choices rejected. No simulated worker completion.",
+    "families": [
+      {
+        "kind": "13:1:-1",
+        "building_id": 30,
+        "effects": [
+          {
+            "caption": "Make cheese",
+            "index": 1,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 33554448,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 109,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 33554448,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 109,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Milk animal",
+            "index": 3,
+            "native": {
+              "inputs": [],
+              "item_subtype": -1,
+              "job_type": 108,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [],
+              "item_subtype": -1,
+              "job_type": 108,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Process plants",
+            "index": 5,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 2064,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 110,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 2064,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 110,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Process plants (barrel)",
+            "index": 6,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 524304,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 1024,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 17,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 113,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 524304,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 1024,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 17,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 113,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Process plants (vial)",
+            "index": 7,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 131088,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 16778240,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 11,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 112,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 131088,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 16778240,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 11,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 112,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Shear animal",
+            "index": 8,
+            "native": {
+              "inputs": [],
+              "item_subtype": -1,
+              "job_type": 212,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [],
+              "item_subtype": -1,
+              "job_type": 212,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Spin thread",
+            "index": 9,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 16,
+                  "flags2": 1107296256,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 213,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 8192,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 16,
+                  "flags2": 1107296256,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 213,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 8192,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "original_queue": []
+      },
+      {
+        "kind": "13:22:-1",
+        "building_id": 233,
+        "effects": [
+          {
+            "caption": "Mash plant into slurry",
+            "index": 1,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 16,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_SLURRY_FROM_PLANT",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 16,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_SLURRY_FROM_PLANT",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Mill plants",
+            "index": 2,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 20,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 1024,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 31,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 106,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 20,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 54,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 1024,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 31,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 106,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Mill seeds/nuts to paste",
+            "index": 3,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 16,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 53,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MILL_SEEDS_NUTS_TO_PASTE",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 16,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 53,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MILL_SEEDS_NUTS_TO_PASTE",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "original_queue": []
+      },
+      {
+        "kind": "13:12:-1",
+        "building_id": 237,
+        "effects": [],
+        "original_queue": []
+      }
+    ],
+    "refused": 4,
+    "source_preserved": true,
+    "original_queues_restored": true,
+    "closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues: three documented Godot diagnostics, no unclassified errors",
+    "omissions": [
+      "Successful Tanner creation: both native recipes unavailable",
+      "job.item_type equivalence",
+      "worker execution and completed products"
+    ]
   }
 }

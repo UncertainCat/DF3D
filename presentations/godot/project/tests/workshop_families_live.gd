@@ -17,7 +17,7 @@ func run() -> void:
 	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true);service.set_process(false)
 	var host=preload("res://scripts/ui_host.gd").new();host.interaction=Interaction.new();root.add_child(host)
 	var owner=preload("res://scripts/workshop_panel.gd").new();root.add_child(owner);owner.configure(world,service,host)
-	var checked:=0
+	var checked:=0;var created: Dictionary={};var refused:=0
 	for family in reference.task_catalogs:
 		owner.open_workshop(int(family.building_id),preload("res://scripts/location_staff_indicators.gd").WORKSHOPS[family.kind.split(":")[1]])
 		await settle(service,func():return owner.state.phase==owner.state.Phase.Ready and owner.tasks.phase==owner.tasks.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
@@ -31,9 +31,24 @@ func run() -> void:
 		root.get_texture().get_image().save_png(directory+"/family-"+family.kind.split(":")[1]+"-live.png")
 		click(owner.panel.tasks.global_position+Vector2(owner.panel.tasks.size.x-48,12))
 		check(not owner.panel.tasks.picking,"Family Cancel did not return to Tasks")
+		for entry in family.effects:
+			owner.panel.tasks.choose_mode(true)
+			click(owner.panel.tasks.global_position+Vector2(24,84+(int(entry.index)-1)*36))
+			await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+			var id: int=owner.tasks.snapshot.get("created_job",-1)
+			check(id>=0 and not owner.panel.tasks.picking,"Family task did not queue: "+entry.caption)
+			created[str(int(family.building_id))+":"+str(int(entry.index))]=id
+		for i in choices.size():
+			if choices[i].availability.available:continue
+			owner.panel.tasks.choose_mode(true)
+			click(owner.panel.tasks.global_position+Vector2(24,84+i*36))
+			check(owner.panel.tasks.picking and owner.tasks.phase==owner.tasks.Phase.Ready,"Unavailable family row accepted a click")
+			var rejected:=await request("production",{"action":C.ManagementAction.ProductionQueue,"building_id":int(family.building_id),"recipe":choices[i].key,"task_category":""})
+			check(rejected.get("status")==C.ManagementStatus.Rejected,"Unavailable family task was queued")
+			refused+=1
 		owner.close_panel();checked+=1
 	check(checked==3,"Missing family reference")
 	owner.queue_free();await process_frame
 	host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
-	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"families":checked}));file.close()
+	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"families":checked,"created":created,"refused":refused}));file.close()
 	world.detach_live();world.queue_free();await process_frame;quit(1 if failed else 0)

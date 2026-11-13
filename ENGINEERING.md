@@ -17096,6 +17096,19 @@ workshop selector uses the captured76-cell width; shared location selectors reta
 capture with only known renderer diagnostics. This does not establish public
 selection routing or completed selector indicators.
 
+The assigned Workers body has no native hover instructions at its tested
+controls. Protected115739 on2026-11-13 samples unrestricted Assign/caption,
+assigned portrait/caption, Remove, Assign and both specialization states/icon
+and caption at1200x800. All yield current_hover=-1, while the same probe's
+Rename positive control yields301. Native assignment and specialization clicks
+establish the active controls; the final assigned screenshot is inspected.
+Keep this body without invented help; selector specialization help below is a
+separate native surface. worker_hover_reference retains coordinates and hashes.
+Owned DF34040 exits unsaved after restoring the empty profile and specialization
+flag; source saves/preferences are preserved.30FPS GPU sample60C is not a peak.
+Core19 passes. This resolves the suspected missing Workers hover wiring for
+these tested controls; it does not broaden public workshop acceptance.
+
 The worker selector's work-mode buttons reuse CitizenInspect and CitizenWorkScope
 with current per-unit receipts. Native widget constructor14290b0 installs renderer
 1431b20 and click1431c60; the click changes only the specialization flag and calls

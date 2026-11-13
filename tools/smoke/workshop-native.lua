@@ -121,6 +121,50 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ if os.getenv('DF3D_WORKSHOP_WORKER_HOVER')=='1'then
+  local profile=building:getWorkshopProfile();assert(#profile.permitted_workers==0)
+  local assigned,specialized
+  local function click(x,y)
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+   df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  end
+  local worked,problem=xpcall(function()
+   assert(click_label('Workers'));result.worker_hover={}
+   local function sample(kind,x,y)
+    local script=require('gui.script')
+    local function move()
+     g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+     df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+     gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+    end
+    local deadline=dfhack.getTickCount()+700
+    repeat move();script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
+    move()
+    local row={kind=kind,x=x,y=y,instruction=df.global.game.main_interface.current_hover,enabled=df.global.game.main_interface.hover_instructions_on,lines={}}
+    for yy=0,17 do
+     local chars={};for xx=g.dimx-24,g.dimx-1 do local ch=dfhack.screen.readTile(xx,yy).ch;chars[#chars+1]=ch>=32 and string.char(ch%256)or' 'end
+     row.lines[#row.lines+1]=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')
+    end
+    while #row.lines>0 and row.lines[#row.lines]==''do table.remove(row.lines)end
+    result.worker_hover[#result.worker_hover+1]=row
+   end
+   sample('rename-control',800,82);assert(result.worker_hover[1].instruction==301)
+   sample('assign-free',448,154);sample('free-caption',600,154)
+   click(448,154);click(80,106);assert(#profile.permitted_workers==1)
+   assigned=assert(df.unit.find(profile.permitted_workers[0]));specialized=assigned.flags4.only_do_assigned_jobs
+   sample('portrait',448,154);sample('assigned-caption',600,154);sample('remove',864,154);sample('assign',448,190)
+   sample(specialized and 'specialized' or 'unspecialized',448,250)
+   click(448,250);assert(assigned.flags4.only_do_assigned_jobs~=specialized)
+   sample(specialized and 'unspecialized' or 'specialized',448,250)
+   sample('mode-caption',600,250)
+   shot('worker-hover')
+  end,debug.traceback)
+  if assigned then assigned.flags4.only_do_assigned_jobs=specialized end
+  profile.permitted_workers:resize(0)
+  assert(worked,problem);return
+ end
  if os.getenv('DF3D_WORKSHOP_TASK_HOVER')=='1'then
   assert(#jobs==0,'Hover reference needs an empty workshop queue')
   assert(click_label('Add new task'));assert(click_label('Make bed'))

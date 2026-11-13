@@ -38530,5 +38530,95 @@
         "workshop-hover-suspend.png": "c738d2bfdff71ec0962ee8b7041ca4c07bec03278337f50478f6848ec3eb458b"
       }
     }
+  },
+  "worker_hover_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261113-115739",
+    "scope": "Native paused Carpenter Workers tab before and after assignment through the native selector. Specialization toggled through native input. Rename301 is a positive control; worker locations produce no current_hover instruction.",
+    "samples": [
+      {
+        "kind": "rename-control",
+        "x": 800,
+        "y": 82,
+        "instruction": 301,
+        "lines": [
+          "Name this building."
+        ]
+      },
+      {
+        "kind": "assign-free",
+        "x": 448,
+        "y": 154,
+        "instruction": -1,
+        "lines": []
+      },
+      {
+        "kind": "free-caption",
+        "x": 600,
+        "y": 154,
+        "instruction": -1,
+        "lines": []
+      },
+      {
+        "kind": "portrait",
+        "x": 448,
+        "y": 154,
+        "instruction": -1,
+        "lines": []
+      },
+      {
+        "kind": "assigned-caption",
+        "x": 600,
+        "y": 154,
+        "instruction": -1,
+        "lines": []
+      },
+      {
+        "kind": "remove",
+        "x": 864,
+        "y": 154,
+        "instruction": -1,
+        "lines": []
+      },
+      {
+        "kind": "assign",
+        "x": 448,
+        "y": 190,
+        "instruction": -1,
+        "lines": []
+      },
+      {
+        "kind": "unspecialized",
+        "x": 448,
+        "y": 250,
+        "instruction": -1,
+        "lines": []
+      },
+      {
+        "kind": "specialized",
+        "x": 448,
+        "y": 250,
+        "instruction": -1,
+        "lines": []
+      },
+      {
+        "kind": "mode-caption",
+        "x": 600,
+        "y": 250,
+        "instruction": -1,
+        "lines": []
+      }
+    ],
+    "sha256": {
+      "workshop-native.json": "4a09bddc2b1f2958468dee4a862f040235871019db1d7fac83ec0762d3650af3",
+      "workshop-worker-hover.png": "d54b31dc7aa984bb6bfb4d7af6c15638721471a97d1990ac337687af52da5121",
+      "result.json": "b8cf31d10f7bd732a23b52ba9d78a1c387f2a61a79c3323b271835fc0e0ed70e"
+    },
+    "result": "passed",
+    "cleanup": "Original empty permitted-worker list and specialization flag restored; owned DF34040 exited unsaved, source saves/preferences preserved.",
+    "decision": "Keep the assigned Workers body without hover help. Shared selector specialization help remains independently supported.",
+    "limits": [
+      "Absence is scoped to tested icon and caption positions at1200x800.",
+      "No new viewer runtime change; existing worker action acceptance remains separate."
+    ]
   }
 }

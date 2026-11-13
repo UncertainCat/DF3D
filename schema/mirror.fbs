@@ -1558,6 +1558,7 @@ table ProductionAvailability { available:bool; objection:string; }
 table ProductionMemorialStatus { text:string; priority:int = 1000; }
 // Optional native dye color and informational availability text. Absence means unknown.
 // RGB is the raw descriptor color, independent of presentation palette/texture choices.
+// color_id -1 with zero RGB carries native information without a swatch.
 table ProductionDyeStatus { text:string; color_id:int = -1; red:float; green:float; blue:float; }
 table ProductionRecipe { key:string; name:string; requirements:[ProductionRequirement]; availability:ProductionAvailability; memorial:ProductionMemorialStatus; dye:ProductionDyeStatus; }
 table ProductionTaskCategory { key:string; name:string; dye:ProductionDyeStatus; }
@@ -2414,6 +2415,9 @@ table StocksCategoryRow { type:int16 = -1; caption:string (required); stored:str
 table StocksGroupRow { key:StocksGroupKey (required); amount:int32; caption:string (required); matches:bool; expanded:bool; flags:uint8; revision:uint64; item_ids:[int32] (required); }
 table StocksItemRow { id:int32 = -1; type:int16 = -1; caption:string (required); flags:uint32; can_dump:bool; can_melt:bool; material_token:string (required); subtype_raw:string (required); appearance:ItemInspectionAppearance; }
 table StocksReplyPage { request_seq:uint64; total:uint32; offset:uint32; bytes:[uint8] (required); }
+// Continuations read an already serialized Production reply; never rerun its action.
+table ProductionReplyRequest { request_seq:uint64; offset:uint32; }
+table ProductionReplyPage { request_seq:uint64; total:uint32; offset:uint32; bytes:[uint8] (required); }
 table StocksMenuState { outcome:StocksMenuOutcome; category:int16 = -1; categories:[StocksCategoryRow] (required); groups:[StocksGroupRow] (required); items:[StocksItemRow] (required); }
 
 // Quantities are player-known counts, never hidden exact stock totals.
@@ -2516,7 +2520,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 208;
+  schema_version:uint32 = 209;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2581,13 +2585,14 @@ table ConstructionRequest {
   nobles:NoblesRequest;
   objects:ObjectsRequest;
   justice:JusticeRequest;
+  production_reply:ProductionReplyRequest;
 }
 // Native ordered world-hover descriptions. Missing means unavailable, never guessed.
 table WorldHoverEntry { text:string (required); foreground:uint8; background:uint8; bright:bool; kind:uint8; object_id:int32 = -1; }
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 208;
+  schema_version:uint32 = 209;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;
@@ -2647,6 +2652,7 @@ table ManagementState {
   nobles:NoblesState;
   objects:ObjectsState;
   justice:JusticeState;
+  production_page:ProductionReplyPage;
 }
 
 table WorkOrderInput { index:uint16; description:string; mat_type:int16 = -1; mat_index:int32 = -1; editable:bool; }

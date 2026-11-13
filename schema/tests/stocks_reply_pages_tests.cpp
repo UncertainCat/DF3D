@@ -2,6 +2,20 @@
 #include "stocks_reply_pages.h"
 using namespace df3d::stocks_pages;
 
+TEST_CASE("reply families share a budget but cannot read each other's captures") {
+    Store store;const Identity stock{3,7,11},production{3,8,12};
+    REQUIRE(store.capture(stock,{1,2,3}));
+    REQUIRE(store.capture(production,{4,5},Family::Production));
+    CHECK(store.retained()==5);
+    CHECK_FALSE(store.read(stock,0,Family::Production));
+    CHECK_FALSE(store.read(production,0));
+    REQUIRE(store.read(production,0,Family::Production));
+    CHECK_FALSE(store.capture(production,{9},Family::Stocks));
+    REQUIRE(store.capture({3,9,1},std::vector<uint8_t>(retainedBytes,42),Family::Production));
+    CHECK_FALSE(store.read(stock,0));CHECK_FALSE(store.read(production,0,Family::Production));
+    CHECK(store.retained()==retainedBytes);
+}
+
 TEST_CASE("Stocks reply pages preserve one immutable capture") {
     Store store;Assembly assembly;const Identity id{3,7,11};
     std::vector<uint8_t> source(pageBytes*2+17);

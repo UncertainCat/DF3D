@@ -184,8 +184,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 208;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v208";
+inline constexpr uint32_t kManagementVersion = 209;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v209";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -950,7 +950,12 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if (!a) return "invalid area request";
     if(auto error=validateAreaOperation(r.action(),*a)) return error;
   } else if (r.area()) return "unexpected area payload";
-  if (r.action() >= ManagementAction::ProductionList && r.action() <= ManagementAction::FarmEdit) {
+  if(const auto* page=r.production_reply()) {
+    if(r.action()!=ManagementAction::ProductionInspect || r.production() ||
+       !page->request_seq() || page->request_seq()>=r.seq() || !page->offset() ||
+       page->offset()>=df3d::stocks_pages::retainedBytes || page->offset()%df3d::stocks_pages::pageBytes)
+      return "invalid production reply continuation";
+  } else if (r.action() >= ManagementAction::ProductionList && r.action() <= ManagementAction::FarmEdit) {
     const auto* p=r.production();
     if (!p || p->building_id() < -1 || p->job_id() < -1 || p->crop_id() < -1 || p->crop_id()>32767 ||
         p->repeat() < -1 || p->repeat()>1 || p->suspend() < -1 || p->suspend()>1 ||
@@ -1369,6 +1374,14 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
+  if(const auto* page=s.production_page()) {
+    if((s.action()!=ManagementAction::ProductionInspect && s.action()!=ManagementAction::ProductionQueue && s.action()!=ManagementAction::ProductionJobEdit) ||
+       s.status()!=ManagementStatus::Pending || !s.world_epoch() || !s.client_id() || !page->request_seq() || page->request_seq()>s.request_seq() ||
+       !page->total() || page->total()>df3d::stocks_pages::retainedBytes || page->offset()>=page->total() || page->offset()%df3d::stocks_pages::pageBytes ||
+       !page->bytes() || page->bytes()->size()!=std::min(df3d::stocks_pages::pageBytes,page->total()-page->offset()) ||
+       s.production() || s.stocks_page() || s.stocks_menu())return "invalid production reply page";
+    return std::nullopt;
+  }
   if(const auto* p=s.stocks_page()) {
     if((s.action()!=ManagementAction::StocksMenuRead && s.action()!=ManagementAction::StocksGroupApply && s.action()!=ManagementAction::StocksItemApply) ||
        s.status()!=ManagementStatus::Pending || !s.world_epoch() || !s.client_id() || !p->request_seq() || p->request_seq()>s.request_seq() ||
@@ -2894,7 +2907,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if((p->crops() && p->crops()->size()) || (p->seasonal_crops() && p->seasonal_crops()->size()) || p->current_season()!=-1)
         return "mixed legacy and native farm state";
     }
-    if ((p->buildings() && p->buildings()->size()>64) || (p->recipes() && p->recipes()->size()>128) ||
+    if ((p->buildings() && p->buildings()->size()>64) || (p->recipes() && p->recipes()->size()>16384) ||
         (p->jobs() && p->jobs()->size()>64) || (p->crops() && p->crops()->size()>256) ||
         (p->seasonal_crops() && p->seasonal_crops()->size()!=0 && p->seasonal_crops()->size()!=4) ||
         p->current_season() < -1 || p->current_season()>3 || p->selected_building() < -1 || p->created_job() < -1 ||
@@ -2903,7 +2916,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     const auto dyeOk=[&](const ProductionDyeStatus* d) {
       if(!d)return true;
       const auto channel=[](float value){return std::isfinite(value) && value>=0 && value<=1;};
-      return textOk(d->text(),4096) && d->color_id()>=0 && d->color_id()<1024 &&
+      return textOk(d->text(),4096) && d->color_id()>=-1 && d->color_id()<1024 &&
+        (d->color_id()!=-1 || (d->red()==0 && d->green()==0 && d->blue()==0)) &&
         channel(d->red()) && channel(d->green()) && channel(d->blue());
     };
     if(p->task_category()) {

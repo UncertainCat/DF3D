@@ -113,33 +113,49 @@ bool ManagementClient::poll() {
     }
     error_=why;pending_=0;i.assembly.reset();i.assembled.clear();i.paging=false;return true;
   };
-  if(const auto* page=s->stocks_page()) {
+  if(s->stocks_page() || s->production_page()) {
     if(!pending_ || s->request_seq()!=i.transportSeq)return false;
-    if(page->request_seq()!=pending_ || s->world_epoch()!=state_.worldEpoch ||
-       s->action()!=m::ManagementAction(i.paging?ManagementAction::StocksMenuRead:i.logicalAction))return failTransfer("Mismatched Stocks reply page");
-    df3d::stocks_pages::Page part{{s->world_epoch(),s->client_id(),page->request_seq()},page->total(),page->offset(),
-      {page->bytes()->begin(),page->bytes()->end()}};
-    if(!i.assembly.append(part))return failTransfer("Invalid Stocks reply sequence");
+    const bool production=i.logicalAction==ManagementAction::ProductionInspect ||
+        i.logicalAction==ManagementAction::ProductionQueue || i.logicalAction==ManagementAction::ProductionJobEdit;
+    const bool stocks=i.logicalAction==ManagementAction::StocksMenuRead ||
+        i.logicalAction==ManagementAction::StocksGroupApply || i.logicalAction==ManagementAction::StocksItemApply;
+    if((production && !s->production_page()) || (stocks && !s->stocks_page()) || (!production && !stocks))
+      return failTransfer("Mismatched reply family");
+    const auto continuationAction=production?ManagementAction::ProductionInspect:ManagementAction::StocksMenuRead;
+    df3d::stocks_pages::Page part;
+    const auto copyPage=[&](const auto* page) {
+      part={{s->world_epoch(),s->client_id(),page->request_seq()},page->total(),page->offset(),
+        {page->bytes()->begin(),page->bytes()->end()}};
+    };
+    if(production)copyPage(s->production_page());else copyPage(s->stocks_page());
+    if(part.identity.request!=pending_ || s->world_epoch()!=state_.worldEpoch ||
+       s->action()!=m::ManagementAction(i.paging?continuationAction:i.logicalAction))return failTransfer("Mismatched reply page");
+    if(!i.assembly.append(part))return failTransfer("Invalid reply sequence");
     i.paging=true;
     if(!i.assembly.complete()) {
-      ManagementRequest continuation;continuation.action=ManagementAction::StocksMenuRead;
-      continuation.stocksMenu.pageRequest=pending_;continuation.stocksMenu.pageOffset=i.assembly.nextOffset();
+      ManagementRequest continuation;continuation.action=continuationAction;
+      if(production) {
+        continuation.productionReplyRequest=pending_;continuation.productionReplyOffset=i.assembly.nextOffset();
+      } else {
+        continuation.stocksMenu.pageRequest=pending_;continuation.stocksMenu.pageOffset=i.assembly.nextOffset();
+      }
       flatbuffers::FlatBufferBuilder command;
       detail::management::encodeRequest(command,continuation,clientId_,seq_+1,state_.worldEpoch);
       if(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(command.GetBufferPointer())) ||
-         !i.channel->push(command.GetBufferPointer(),command.GetSize()))return failTransfer("Stocks continuation unavailable");
+         !i.channel->push(command.GetBufferPointer(),command.GetSize()))return failTransfer("Reply continuation unavailable");
       i.transportSeq=++seq_;return false;
     }
     i.assembled=std::move(*i.assembly.take());
     flatbuffers::Verifier complete(i.assembled.data(),i.assembled.size());
-    if(!complete.VerifyBuffer<m::ManagementState>(nullptr))return failTransfer("Malformed complete Stocks reply");
+    if(!complete.VerifyBuffer<m::ManagementState>(nullptr))return failTransfer("Malformed complete reply");
     s=flatbuffers::GetRoot<m::ManagementState>(i.assembled.data());
-    if(s->stocks_page() || m::validateManagementState(*s) || s->client_id()!=clientId_ || s->world_epoch()!=state_.worldEpoch ||
-       s->request_seq()!=pending_ || s->action()!=m::ManagementAction(i.logicalAction) || !s->stocks_menu())return failTransfer("Mismatched complete Stocks reply");
+    if(s->stocks_page() || s->production_page() || m::validateManagementState(*s) || s->client_id()!=clientId_ || s->world_epoch()!=state_.worldEpoch ||
+       s->request_seq()!=pending_ || s->action()!=m::ManagementAction(i.logicalAction) ||
+       (production?!s->production():!s->stocks_menu()))return failTransfer("Mismatched complete reply");
     i.paging=false;
   }else if(i.paging) {
     if(s->request_seq()!=i.transportSeq)return false;
-    return failTransfer("Stocks capture unavailable");
+    return failTransfer("Reply capture unavailable");
   }
   if (s->revision() == state_.revision)
     return false;

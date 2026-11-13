@@ -694,7 +694,9 @@ TEST_CASE("production dye data preserves optional color and text on tasks and ca
   auto dye=mm::CreateProductionDyeStatus(b,b.CreateString("Synthetic dye count"),18,0.0f,0.5f,1.0f);
   auto recipe=mm::CreateProductionRecipe(b,b.CreateString("dye:18"),b.CreateString("Synthetic task"),b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRequirement>>{}),0,0,dye);
   auto legacy=mm::CreateProductionRecipe(b,b.CreateString("legacy"),b.CreateString("Synthetic legacy"),b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRequirement>>{}));
-  auto recipes=b.CreateVector(std::vector{recipe,legacy});
+  auto info=mm::CreateProductionDyeStatus(b,b.CreateString("Synthetic information"));
+  auto ingredient=mm::CreateProductionRecipe(b,b.CreateString("ingredient"),b.CreateString("Synthetic ingredient"),b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRequirement>>{}),0,0,info);
+  auto recipes=b.CreateVector(std::vector{recipe,legacy,ingredient});
   auto category=mm::CreateProductionTaskCategory(b,b.CreateString("tint:18"),b.CreateString("Synthetic category"),dye);
   auto categories=b.CreateVector(std::vector{category});auto key=b.CreateString("dye");
   mm::ProductionStateBuilder production(b);production.add_recipes(recipes);production.add_task_categories(categories);
@@ -705,7 +707,8 @@ TEST_CASE("production dye data preserves optional color and text on tasks and ca
   state.add_production(domain);b.Finish(state.Finish());
   REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
   REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));REQUIRE(c->poll());
-  const auto& v=c->state().production;REQUIRE(v.recipes.size()==2);REQUIRE(v.taskCategories.size()==1);
+  const auto& v=c->state().production;REQUIRE(v.recipes.size()==3);REQUIRE(v.taskCategories.size()==1);
+  REQUIRE(v.recipes[2].dye);CHECK(v.recipes[2].dye->colorId==-1);CHECK(v.recipes[2].dye->text=="Synthetic information");
   REQUIRE(v.recipes[0].dye);REQUIRE(v.taskCategories[0].dye);CHECK_FALSE(v.recipes[1].dye);
   for(const auto* d:{&*v.recipes[0].dye,&*v.taskCategories[0].dye}) {
     CHECK(d->colorId==18);CHECK(d->text=="Synthetic dye count");
@@ -727,6 +730,38 @@ TEST_CASE("production dye validation rejects malformed color data on either row 
     state.add_action(mm::ManagementAction::ProductionInspect);state.add_status(mm::ManagementStatus::Ok);
     state.add_production(domain);b.Finish(state.Finish());
     CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value()==(variant!=0));
+  }
+}
+TEST_CASE("production continuation cannot carry an action payload or replay its request") {
+  for(int fault=0;fault<7;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    auto page=mm::CreateProductionReplyRequest(b,fault==1?0:fault==2?5:4,
+      fault==3?0:fault==4?1:fault==5?df3d::stocks_pages::retainedBytes:df3d::stocks_pages::pageBytes);
+    auto production=fault==6?mm::CreateProductionRequest(b,72):flatbuffers::Offset<mm::ProductionRequest>{};
+    mm::ConstructionRequestBuilder request(b);request.add_schema_version(mm::kManagementVersion);
+    request.add_seq(5);request.add_client_id(3);request.add_world_epoch(7);
+    request.add_action(mm::ManagementAction::ProductionInspect);request.add_production_reply(page);
+    if(fault==6)request.add_production(production);
+    b.Finish(request.Finish());
+    const auto error=mm::validateConstructionRequest(*flatbuffers::GetRoot<mm::ConstructionRequest>(b.GetBufferPointer()));
+    INFO(error.value_or("valid"));CHECK(error.has_value()==(fault!=0));
+  }
+}
+TEST_CASE("production reply pages validate identity offsets bounds and domain") {
+  for(int fault=0;fault<10;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    auto bytes=b.CreateVector(std::vector<uint8_t>(fault==1?3:4,0));
+    auto page=mm::CreateProductionReplyPage(b,fault==2?0:fault==3?6:4,
+      fault==4?0:fault==5?df3d::stocks_pages::retainedBytes+1:4,fault==6?1:0,bytes);
+    auto production=fault==9?mm::CreateProductionState(b):flatbuffers::Offset<mm::ProductionState>{};
+    mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(1);
+    state.add_world_epoch(7);state.add_client_id(3);state.add_request_seq(5);
+    state.add_action(fault==7?mm::ManagementAction::StocksMenuRead:mm::ManagementAction::ProductionQueue);
+    state.add_status(fault==8?mm::ManagementStatus::Ok:mm::ManagementStatus::Pending);
+    state.add_production_page(page);if(fault==9)state.add_production(production);
+    b.Finish(state.Finish());
+    const auto error=mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer()));
+    INFO(error.value_or("valid"));CHECK(error.has_value()==(fault!=0));
   }
 }
 TEST_CASE("memorial recipe status validates native priorities and bounded text") {
@@ -1743,6 +1778,78 @@ TEST_CASE("Stocks large replies assemble under one logical request without repla
         REQUIRE(c->poll());CHECK(c->state().requestSeq==logical);CHECK(c->state().action==request.action);CHECK(c->state().status==wm::ManagementStatus::Ok);
         REQUIRE(c->state().stocksMenu);REQUIRE(c->state().stocksMenu->groups.size()==1);CHECK(c->state().stocksMenu->groups[0].itemIds==ids);
         CHECK(c->send({})>transport);CHECK(p.pop()->action()==mm::ManagementAction::Catalog);
+      }
+    }
+  }
+}
+
+TEST_CASE("Production large replies finish the original action without replaying it") {
+  for(int mode=0;mode<8;++mode) {
+    CAPTURE(mode);
+    ManagementPublisher p;p.publish(1);auto c=openClient(p);const auto owner=claim(p,*c);
+    wm::ManagementRequest request;
+    request.action=mode==0?wm::ManagementAction::ProductionInspect:mode==1?wm::ManagementAction::ProductionJobEdit:wm::ManagementAction::ProductionQueue;
+    request.production.buildingId=72;
+    if(mode==1){request.production.jobId=504;request.production.suspend=1;}
+    if(mode>=2)request.production.recipe="synthetic:0";
+    const auto logical=c->send(request);REQUIRE(logical);REQUIRE(p.pop()->production());
+    flatbuffers::FlatBufferBuilder full;
+    std::vector<flatbuffers::Offset<mm::ProductionRecipe>> rows;
+    for(int index=0;index<128;++index) {
+      const auto info=mm::CreateProductionAvailability(full,false,full.CreateString(std::string(4096,'x')));
+      rows.push_back(mm::CreateProductionRecipe(full,full.CreateString("synthetic:"+std::to_string(index)),
+          full.CreateString("Synthetic task"),full.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRequirement>>{}),info));
+    }
+    auto recipes=full.CreateVector(rows);
+    mm::ProductionStateBuilder domain(full);domain.add_selected_building(72);domain.add_created_job(mode>=2?505:-1);domain.add_recipes(recipes);
+    const auto data=domain.Finish();
+    mm::ManagementStateBuilder state(full);state.add_revision(3);state.add_client_id(owner.id);state.add_request_seq(logical);
+    state.add_world_epoch(7);state.add_action(mode==7?mm::ManagementAction::ProductionInspect:mm::ManagementAction(request.action));
+    state.add_status(mm::ManagementStatus::Ok);state.add_production(data);full.Finish(state.Finish());
+    REQUIRE(full.GetSize()>mm::kManagementCapacity);
+    REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(full.GetBufferPointer())));
+    uint64_t transport=logical,revision=4;uint32_t offset=0;
+    while(offset<full.GetSize()) {
+      if(offset && mode==3) {
+        p.publish(revision++,owner.id,transport,7,mm::ManagementAction::ProductionInspect,mm::ManagementStatus::Rejected);
+        REQUIRE(c->poll());CHECK(c->state().requestSeq==logical);CHECK(c->state().status==wm::ManagementStatus::Rejected);
+        CHECK(c->state().production.createdJob==-1);CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);break;
+      }
+      if(offset && mode==6) {
+        p.publish(revision++,0,0,8);REQUIRE(c->poll());CHECK(c->state().worldEpoch==8);
+        CHECK(c->state().production.recipes.empty());CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);break;
+      }
+      flatbuffers::FlatBufferBuilder page;
+      const auto sentOffset=offset && mode==5?0:offset;
+      const auto count=std::min(df3d::stocks_pages::pageBytes,uint32_t(full.GetSize()-sentOffset));
+      const auto bytes=page.CreateVector(full.GetBufferPointer()+sentOffset,count);
+      const auto part=mode==4?flatbuffers::Offset<mm::ProductionReplyPage>{}:mm::CreateProductionReplyPage(page,logical,uint32_t(full.GetSize()),sentOffset,bytes);
+      const auto wrong=mode==4?mm::CreateStocksReplyPage(page,logical,uint32_t(full.GetSize()),sentOffset,bytes):flatbuffers::Offset<mm::StocksReplyPage>{};
+      mm::ManagementStateBuilder envelope(page);envelope.add_revision(revision++);envelope.add_client_id(owner.id);
+      envelope.add_request_seq(transport);envelope.add_world_epoch(7);
+      envelope.add_action(mode==4?mm::ManagementAction::StocksMenuRead:offset?mm::ManagementAction::ProductionInspect:mm::ManagementAction(request.action));
+      envelope.add_status(mm::ManagementStatus::Pending);envelope.add_production_page(part);envelope.add_stocks_page(wrong);page.Finish(envelope.Finish());
+      REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(page.GetBufferPointer())));
+      REQUIRE(p.write(page.GetBufferPointer(),page.GetSize()));
+      const bool failure=mode==4 || (mode==5 && offset) || (mode==7 && offset+count==full.GetSize());
+      offset+=count;
+      if(failure) {
+        REQUIRE(c->poll());CHECK(c->state().status==wm::ManagementStatus::Rejected);CHECK(c->state().requestSeq==logical);
+        CHECK(c->state().action==request.action);CHECK(c->state().production.recipes.empty());
+        CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);break;
+      }
+      if(offset<full.GetSize()) {
+        CHECK_FALSE(c->poll());CHECK(c->state().requestSeq==logical);CHECK(c->state().status==wm::ManagementStatus::Pending);
+        CHECK(c->state().production.recipes.empty());
+        const auto* next=p.pop();REQUIRE(next->production_reply());CHECK_FALSE(next->production());
+        CHECK(next->action()==mm::ManagementAction::ProductionInspect);CHECK(next->production_reply()->request_seq()==logical);
+        CHECK(next->production_reply()->offset()==offset);transport=next->seq();
+        CHECK_FALSE(c->poll());CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);
+      }else {
+        REQUIRE(c->poll());CHECK(c->state().requestSeq==logical);CHECK(c->state().action==request.action);
+        CHECK(c->state().status==wm::ManagementStatus::Ok);CHECK(c->state().production.recipes.size()==128);
+        CHECK(c->state().production.createdJob==(mode>=2?505:-1));
+        CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);
       }
     }
   }

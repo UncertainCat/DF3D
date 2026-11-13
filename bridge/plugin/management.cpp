@@ -588,7 +588,7 @@ struct StocksResult {
   std::vector<StocksItemResult> items;
 };
 std::optional<StocksResult> stocks;
-df3d::stocks_pages::Store stocksReplies;
+df3d::stocks_pages::Store pagedReplies;
 
 // Category -1 requests only the catalog. Selection and expansion belong to
 // the viewer; no native menu state is read or changed by this snapshot.
@@ -743,12 +743,19 @@ void processJobDraft(df::job& source,int32_t unitId,int32_t buildingId,int16_t o
   } catch(...) {jobSettings.reset();if(writing)jobSettingsEdit->outcome=uncertain?m::JobSettingsEditOutcome::Unknown:m::JobSettingsEditOutcome::Rejected;}
 }
 
-bool publishStocksPage(df3d::stocks_pages::Identity identity,uint32_t offset) {
-  const auto page=stocksReplies.read(identity,offset);if(!page)return false;
+bool publishReplyPage(df3d::stocks_pages::Identity identity,uint32_t offset,
+    df3d::stocks_pages::Family family=df3d::stocks_pages::Family::Stocks) {
+  const auto page=pagedReplies.read(identity,offset,family);if(!page)return false;
   flatbuffers::FlatBufferBuilder b;
-  const auto part=m::CreateStocksReplyPage(b,identity.request,page->total,page->offset,b.CreateVector(page->bytes));
+  flatbuffers::Offset<m::StocksReplyPage> stocksPart;
+  flatbuffers::Offset<m::ProductionReplyPage> productionPart;
+  const auto bytes=b.CreateVector(page->bytes);
+  if(family==df3d::stocks_pages::Family::Production)
+    productionPart=m::CreateProductionReplyPage(b,identity.request,page->total,page->offset,bytes);
+  else stocksPart=m::CreateStocksReplyPage(b,identity.request,page->total,page->offset,bytes);
   m::ManagementStateBuilder state(b);state.add_revision(++revision);state.add_world_epoch(epoch);
-  state.add_client_id(client);state.add_request_seq(seq);state.add_action(action);state.add_status(m::ManagementStatus::Pending);state.add_stocks_page(part);
+  state.add_client_id(client);state.add_request_seq(seq);state.add_action(action);state.add_status(m::ManagementStatus::Pending);
+  state.add_stocks_page(stocksPart);state.add_production_page(productionPart);
   b.Finish(state.Finish());
   sh::publishSnapshot(region,b.GetBufferPointer(),b.GetSize(),revision);
   if(reply)sh::publishSnapshot(reply->region(),b.GetBufferPointer(),b.GetSize(),revision);
@@ -1464,10 +1471,13 @@ void publish() {
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
-  if(stocks && !validationError && b.GetSize()>m::kManagementCapacity) {
+  const bool productionReply=action==m::ManagementAction::ProductionInspect ||
+      action==m::ManagementAction::ProductionQueue || action==m::ManagementAction::ProductionJobEdit;
+  if((stocks || productionReply) && !validationError && b.GetSize()>m::kManagementCapacity) {
+    const auto family=productionReply?df3d::stocks_pages::Family::Production:df3d::stocks_pages::Family::Stocks;
     if(b.GetSize()<=df3d::stocks_pages::retainedBytes &&
-       stocksReplies.capture({epoch,client,seq},{b.GetBufferPointer(),b.GetBufferPointer()+b.GetSize()}) && publishStocksPage({epoch,client,seq},0))return;
-    validationError="stocks response exceeds retained reply budget";
+       pagedReplies.capture({epoch,client,seq},{b.GetBufferPointer(),b.GetBufferPointer()+b.GetSize()},family) && publishReplyPage({epoch,client,seq},0,family))return;
+    validationError="response exceeds retained reply budget";
   }
   if (auto e = validationError) {
     if (publishingFallback) {
@@ -4804,10 +4814,10 @@ void run(color_ostream& out) {
     try {
       const auto& q=*r->stocks_menu();
       if(q.page_request()) {
-        if(!publishStocksPage({epoch,client,q.page_request()},q.page_offset())){message="Stocks reply expired";publish();}
+        if(!publishReplyPage({epoch,client,q.page_request()},q.page_offset())){message="Stocks reply expired";publish();}
         return;
       }
-      stocksReplies.retire(client);
+      pagedReplies.retire(client);
       if(r->action()==m::ManagementAction::StocksMenuRead){
         std::vector<int32_t> ids;if(q.item_ids())ids.assign(q.item_ids()->begin(),q.item_ids()->end());
         stocks=readStocks(q.category(),UTF2DF(q.query()->str()),ids);
@@ -5971,6 +5981,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,([](lua_State* state)->int {
       auto* shop=df::building::find(int32_t(luaL_checkinteger(state,1)));
       const int32_t job=int32_t(luaL_checkinteger(state,2));
+      const int32_t target=int32_t(luaL_optinteger(state,3,-1));
       if(!shop || int(shop->getType())!=13 || shop->getSubtype()!=21 || !df3d_production::workOrderDyeReady())return luaL_error(state,"Native Dyer unavailable");
       lua_newtable(state);int index=0;
       if(job==0) {
@@ -5983,16 +5994,17 @@ void run(color_ostream& out) {
           lua_newtable(state);field(state,"job_type",root.job);field(state,"caption",std::string(base+root.rva)+std::string(base+0x1615870));lua_rawseti(state,-2,++index);
         }
       } else {
-        const auto rows=df3d_production::workshopDyeTargets(shop,job);
+        const auto rows=df3d_production::workshopDyeTargets(shop,job,target);
         if(!rows)return luaL_error(state,"Native Dyer targets unavailable");
         for(const auto& row:*rows) {
           const auto* color=df::global::world->raws.descriptors.colors[size_t(row.color)];
           lua_newtable(state);field(state,"color",row.color);field(state,"tint",row.tint);
+          field(state,"first",row.first);field(state,"second",row.second);
           field(state,"caption",row.caption);field(state,"alpha_order",row.alphaOrder);
-          lua_newtable(state);field(state,"text",DF2UTF(row.info));field(state,"color_id",row.color);
-          lua_pushnumber(state,color->red);lua_setfield(state,-2,"red");
-          lua_pushnumber(state,color->green);lua_setfield(state,-2,"green");
-          lua_pushnumber(state,color->blue);lua_setfield(state,-2,"blue");
+          lua_newtable(state);field(state,"text",DF2UTF(row.info));field(state,"color_id",target>=0?-1:row.color);
+          lua_pushnumber(state,target>=0?0:color->red);lua_setfield(state,-2,"red");
+          lua_pushnumber(state,target>=0?0:color->green);lua_setfield(state,-2,"green");
+          lua_pushnumber(state,target>=0?0:color->blue);lua_setfield(state,-2,"blue");
           lua_setfield(state,-2,"dye");lua_rawseti(state,-2,++index);
         }
       }
@@ -6479,7 +6491,7 @@ void run(color_ostream& out) {
     auto each=[&](const char* key,size_t cap,auto fn){lua_getfield(L,-1,key);if(lua_istable(L,-1)) for(size_t i=1;i<=lua_rawlen(L,-1)&&i<=cap;++i){lua_rawgeti(L,-1,i);fn();lua_pop(L,1);}lua_pop(L,1);};
     auto reqs=[&](){std::vector<ProductionRequirement> out;each("requirements",16,[&](){out.push_back({text(L,"description"),int32_t(number(L,"quantity")),int16_t(number(L,"item_type",-1))});});return out;};
     each("buildings",64,[&](){ProductionBuilding v;v.id=int32_t(number(L,"id",-1));v.x=int32_t(number(L,"x"));v.y=int32_t(number(L,"y"));v.z=int32_t(number(L,"z"));v.name=text(L,"name");v.kind=text(L,"kind");v.buildStage=int16_t(number(L,"build_stage"));v.maxStage=int16_t(number(L,"max_stage"));v.queueSize=uint16_t(number(L,"queue_size"));production.buildings.push_back(std::move(v));});
-    each("recipes",128,[&](){
+    each("recipes",16384,[&](){
       ProductionRecipe row{text(L,"key"),text(L,"name"),reqs()};
       lua_getfield(L,-1,"availability");
       if(lua_istable(L,-1))row.availability=ProductionAvailability{boolean(L,"available"),text(L,"objection")};
@@ -6835,7 +6847,7 @@ void stop() {
     mapping = nullptr;
   }
   reply.reset();
-  stocksReplies.clear();
+  pagedReplies.clear();
   epoch = revision = client = seq = 0;
   request.clear();
   clearResult();
@@ -6908,7 +6920,7 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
     areaHints.clear();terrainHint=false;mutated=false;
     if(reply && status==m::ManagementStatus::Pending){status=m::ManagementStatus::Rejected;message="World changed before operation completed";publish();}
     reply.reset();
-    epoch = worldEpoch;stocksReplies.world(epoch);
+    epoch = worldEpoch;pagedReplies.world(epoch);
     client = seq = 0;
     request.clear();
     clearResult();
@@ -6970,6 +6982,14 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
       return;
     }
     if(!m::runtimeManagementAction(action)){status=m::ManagementStatus::Rejected;message="Native screen adapters are retired; semantic replacement unfinished";publish();return;}
+    // Continuations never enter semantic dispatch, including failed/expired reads.
+    if(const auto* page=r->production_reply()) {
+      if(!publishReplyPage({epoch,client,page->request_seq()},page->offset(),df3d::stocks_pages::Family::Production)) {
+        status=m::ManagementStatus::Rejected;message="Production reply expired";publish();
+      }
+      return;
+    }
+    if(!(r->stocks_menu() && r->stocks_menu()->page_request()))pagedReplies.retire(client);
     status = m::ManagementStatus::Pending;
   }
   if (status == m::ManagementStatus::Pending) {

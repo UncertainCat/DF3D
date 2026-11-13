@@ -22,6 +22,18 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management209 adds retained byte continuations for Production Inspect, Queue and
+JobEdit replies larger than the512KiB mailbox. Continuations use Inspect with
+only `production_reply`, never the original action payload. The client assembles
+the entire reply before publishing its original identity and result. Stocks and
+Production share a64MiB retained budget with distinct capture families. Expired
+captures fail without replay; world changes retire them. Rebuild both peers:
+`Local\df3d_management_v209` isolates208. Legacy recordings imply no continuation
+or additional recipe facts. Production menus now allow16384 recipes within the
+retained reply budget; Work orders retain their independent128 recipe limit.
+ProductionDyeStatus color_id=-1 with zero RGB represents native information
+without a color swatch; older absent status fields remain absent.
+
 Management208 adds ProductionRequest.expected_previous_job_id for an exclusive
 Move up intent and ProductionJob.can_move_up (-1 unknown,0 unavailable,1 available).
 The predecessor must be a distinct nonnegative job ID; legacy observations omit

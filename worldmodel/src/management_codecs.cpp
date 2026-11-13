@@ -338,7 +338,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
     area = encodeArea(b, r.area);
   }
   flatbuffers::Offset<m::ProductionRequest> production;
-  if (r.action >= ManagementAction::ProductionList && r.action <= ManagementAction::FarmEdit) {
+  if (!r.productionReplyRequest && r.action >= ManagementAction::ProductionList && r.action <= ManagementAction::FarmEdit) {
     production = encodeProduction(b, r.production);
   }
   flatbuffers::Offset<m::WorkOrderRequest> workOrder;
@@ -538,7 +538,8 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::WorkDetailSettingsRequest>{},
       (r.action==ManagementAction::StandingOrdersRead || r.action==ManagementAction::StandingOrdersSet)?
           m::CreateStandingOrdersRequest(b,r.standingOrders.category,r.standingOrders.settingId,r.standingOrders.expectedValue,r.standingOrders.value):
-          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse,stocksMenu,tasks,places,nobles,objects,justice);
+          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse,stocksMenu,tasks,places,nobles,objects,justice,
+      r.productionReplyRequest?m::CreateProductionReplyRequest(b,r.productionReplyRequest,r.productionReplyOffset):flatbuffers::Offset<m::ProductionReplyRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

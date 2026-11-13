@@ -23,6 +23,7 @@ struct Page {
     uint32_t total=0, offset=0;
     std::vector<uint8_t> bytes;
 };
+enum class Family { Stocks, Production };
 inline bool valid(const Page& page) {
     return page.identity.valid() && page.total && page.total<=retainedBytes &&
         page.offset<page.total && page.offset%pageBytes==0 &&
@@ -32,7 +33,7 @@ inline bool valid(const Page& page) {
 // One capture per client; oldest captures are evicted under the global byte
 // budget. A missing capture is a failed read, never permission to run it again.
 class Store {
-    struct Entry { Identity identity;uint64_t age;std::vector<uint8_t> bytes; };
+    struct Entry { Identity identity;uint64_t age;std::vector<uint8_t> bytes;Family family; };
     std::map<uint64_t,Entry> entries_;
     size_t bytes_=0;
     uint64_t epoch_=0, age_=0;
@@ -45,7 +46,7 @@ public:
     void retire(uint64_t client) {
         const auto it=entries_.find(client);if(it!=entries_.end())erase(it);
     }
-    bool capture(Identity identity,std::vector<uint8_t> bytes) {
+    bool capture(Identity identity,std::vector<uint8_t> bytes,Family family=Family::Stocks) {
         if(!identity.valid() || bytes.empty() || bytes.size()>retainedBytes)return false;
         world(identity.epoch);
         const auto previous=entries_.find(identity.client);
@@ -56,12 +57,12 @@ public:
                 [](const auto& a,const auto& b){return a.second.age<b.second.age;});
             erase(oldest);
         }
-        bytes_+=bytes.size();entries_.emplace(identity.client,Entry{identity,++age_,std::move(bytes)});
+        bytes_+=bytes.size();entries_.emplace(identity.client,Entry{identity,++age_,std::move(bytes),family});
         return true;
     }
-    std::optional<Page> read(Identity identity,uint32_t offset) const {
+    std::optional<Page> read(Identity identity,uint32_t offset,Family family=Family::Stocks) const {
         const auto it=entries_.find(identity.client);
-        if(it==entries_.end() || !(it->second.identity==identity))return std::nullopt;
+        if(it==entries_.end() || !(it->second.identity==identity) || it->second.family!=family)return std::nullopt;
         const auto& bytes=it->second.bytes;
         if(offset>=bytes.size() || offset%pageBytes)return std::nullopt;
         const auto end=std::min(bytes.size(),size_t(offset)+pageBytes);

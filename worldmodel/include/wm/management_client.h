@@ -997,6 +997,9 @@ struct ManagementRequest {
   int32_t buildingId = -1;
   AreaRequest area;
   ProductionRequest production;
+  // Internal byte continuation, never a repeat of the original semantic action.
+  uint64_t productionReplyRequest=0;
+  uint32_t productionReplyOffset=0;
   WorkOrderRequest workOrder;
   CitizenRequest citizen;
   ReportRequest report;

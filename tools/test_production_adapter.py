@@ -70,7 +70,7 @@ end}
 df.general_ref_building_holderst={new=function()refs_alive=refs_alive+1;return {delete=function()refs_alive=refs_alive-1 end}end}
 function building(id,t,k)
  return {id=id,type=t,kind=k or 'workshop',centerx=5,centery=6,z=2,jobs=vec(),plant_id={[-0]=-1,[1]=-1,[2]=-1,[3]=-1},
- getBuildStage=function()return 3 end,getMaxBuildStage=function()return 3 end,getWorkshopProfile=function()return {permitted_workers=vec()}end,
+ isUnpowered=function(b)return b.unpowered or false end,getBuildStage=function()return 3 end,getMaxBuildStage=function()return 3 end,getWorkshopProfile=function()return {permitted_workers=vec()}end,
  getType=function()return 0 end,getSubtype=function()return t end,getCustomType=function()return -1 end}
 end
 carp=building(0,1);kitchen=building(1,2);still=building(2,3);farm=building(3,0,'farm')
@@ -136,6 +136,11 @@ local state=req(16,{building_id=0})
 assert(state.ok and #state.recipes==1 and state.recipes[1].requirements[1].description=='WOOD')
 assert(counts()==0,'preview frees filters')
 local recipe=state.recipes[1].key
+carp.unpowered=true
+local powerless=req(16,{building_id=0})
+assert(powerless.ok and #powerless.recipes==0,'native power gate hides choices')
+assert(not req(17,{building_id=0,recipe=recipe}).ok and #carp.jobs==0,'stale powered recipe cannot queue')
+carp.unpowered=false
 force_link_failure=true
 local bad=req(17,{building_id=0,recipe=recipe})
 assert(not bad.ok and #carp.jobs==0 and counts()==0,'failed link fully rolls back')

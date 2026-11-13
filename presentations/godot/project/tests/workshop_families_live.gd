@@ -65,7 +65,7 @@ func run() -> void:
 			check(rejected.get("status")==C.ManagementStatus.Rejected,"Unavailable family task was queued")
 			refused+=1
 		owner.close_panel();checked+=1
-	check(checked==(7 if OS.get_environment("DF3D_WORKSHOP_EXTRA_RUNTIME")=="1" else 1 if OS.get_environment("DF3D_WORKSHOP_BUTCHER_RUNTIME")=="1" or OS.get_environment("DF3D_WORKSHOP_MECHANIC_RUNTIME")=="1" or OS.get_environment("DF3D_WORKSHOP_KILN_RUNTIME")=="1" or OS.get_environment("DF3D_WORKSHOP_LEATHER_RUNTIME")=="1" or OS.get_environment("DF3D_WORKSHOP_JEWELER_RUNTIME")=="1" or OS.get_environment("DF3D_WORKSHOP_SMELTER_RUNTIME")=="1" else 3),"Missing family reference")
+	check(checked==(1 if not OS.get_environment("DF3D_WORKSHOP_MAGMA_TYPE").is_empty() else 7 if OS.get_environment("DF3D_WORKSHOP_EXTRA_RUNTIME")=="1" else 1 if OS.get_environment("DF3D_WORKSHOP_BUTCHER_RUNTIME")=="1" or OS.get_environment("DF3D_WORKSHOP_MECHANIC_RUNTIME")=="1" or OS.get_environment("DF3D_WORKSHOP_KILN_RUNTIME")=="1" or OS.get_environment("DF3D_WORKSHOP_LEATHER_RUNTIME")=="1" or OS.get_environment("DF3D_WORKSHOP_JEWELER_RUNTIME")=="1" or OS.get_environment("DF3D_WORKSHOP_SMELTER_RUNTIME")=="1" else 3),"Missing family reference")
 	owner.queue_free();await process_frame
 	host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"families":checked,"created":created,"refused":refused}));file.close()

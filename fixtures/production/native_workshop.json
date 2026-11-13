@@ -34343,5 +34343,1533 @@
         "This contents crop covers two inorganic block materials; the other construction-material families reuse existing item-sheet providers but are not independently rendered here."
       ]
     }
+  },
+  "magma_furnace_reference": {
+    "dispatch": {
+      "rva": "8c4fe7",
+      "length": 45,
+      "fnv": "d0ba0f7dda7fb9fc",
+      "jump_table_rva": "8c565c",
+      "jump_table_length": 32,
+      "jump_table_fnv": "d0e6301c05fbbc06",
+      "branches": [
+        "8c5014",
+        "8c5057",
+        "8c5078",
+        "8c5036",
+        "8c5057",
+        "8c5078",
+        "8c5036",
+        "8c5057"
+      ]
+    },
+    "power": "Native building.isUnpowered virtual, furnace slot11 ->5ad710. Owned simulation map inputs; no native menu state. Empty choice list while unpowered retains existing job editable templates.",
+    "fixture": "Retype one completed idle furnace in a paused unsaved clone. For powered cases, a noncenter footprint opening and7/7 magma immediately below satisfy native power. Restore original tile type, designation word and furnace type.",
+    "runs": [
+      {
+        "scenario": "smelter-first-ten",
+        "lane": "build/stockpile-storage-native-farm-discovery-20261113-111900",
+        "kind": "5:4:-1",
+        "unpowered": false,
+        "native_choices": 40,
+        "receipt": {
+          "created": {
+            "56:10": 382809,
+            "56:13": 382810,
+            "56:18": 382811,
+            "56:2": 382806,
+            "56:21": 382812,
+            "56:24": 382813,
+            "56:3": 382807,
+            "56:32": 382814,
+            "56:36": 382815,
+            "56:8": 382808
+          },
+          "families": 1,
+          "refused": 29,
+          "success": true
+        },
+        "effects": [
+          {
+            "caption": "Make billon bars (use bars)",
+            "index": 2,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 2,
+                  "mat_type": 0,
+                  "quantity": 150
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 3,
+                  "mat_type": 0,
+                  "quantity": 150
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "BILLON_MAKING2",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 2,
+                  "mat_type": 0,
+                  "quantity": 150
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 3,
+                  "mat_type": 0,
+                  "quantity": 150
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "BILLON_MAKING2",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make billon bars (use ore)",
+            "index": 3,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "BILLON_MAKING",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "BILLON_MAKING",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make bronze bars (use bars)",
+            "index": 8,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 12,
+                  "mat_type": 0,
+                  "quantity": 150
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 3,
+                  "mat_type": 0,
+                  "quantity": 150
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "BRONZE_MAKING2",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 12,
+                  "mat_type": 0,
+                  "quantity": 150
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 3,
+                  "mat_type": 0,
+                  "quantity": 150
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "BRONZE_MAKING2",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make coke from bituminous coal",
+            "index": 10,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": 196,
+                  "mat_type": 0,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "BITUMINOUS_COAL_TO_COKE",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": 196,
+                  "mat_type": 0,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "BITUMINOUS_COAL_TO_COKE",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make electrum bars (use ore)",
+            "index": 13,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "ELECTRUM_MAKING",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "ELECTRUM_MAKING",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make pig iron bars",
+            "index": 18,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 0,
+                  "mat_type": 0,
+                  "quantity": 150
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": -1,
+                  "mat_type": 7,
+                  "quantity": 150
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "PIG_IRON_MAKING",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 0,
+                  "mat_type": 0,
+                  "quantity": 150
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": -1,
+                  "mat_type": 7,
+                  "quantity": 150
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "PIG_IRON_MAKING",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make sterling silver bars",
+            "index": 21,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 2,
+                  "mat_type": 0,
+                  "quantity": 450
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 3,
+                  "mat_type": 0,
+                  "quantity": 150
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "STERLING_SILVER_MAKING",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 2,
+                  "mat_type": 0,
+                  "quantity": 450
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": 3,
+                  "mat_type": 0,
+                  "quantity": 150
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "STERLING_SILVER_MAKING",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Melt a metal object",
+            "index": 24,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 5120,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 90,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 5120,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 90,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Smelt magnetite ore",
+            "index": 32,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": 221,
+                  "mat_type": 0,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 89,
+              "mat_index": 221,
+              "mat_type": 0,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": 221,
+                  "mat_type": 0,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 89,
+              "mat_index": 221,
+              "mat_type": 0,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Smelt native gold ore",
+            "index": 36,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": 189,
+                  "mat_type": 0,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 89,
+              "mat_index": 189,
+              "mat_type": 0,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": 189,
+                  "mat_type": 0,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 89,
+              "mat_index": 189,
+              "mat_type": 0,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "crops": [
+          {
+            "native": "workshop-family-4.png",
+            "viewer": "family-4-live.png",
+            "crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "different_pixels": 0,
+            "native_sha256": "0723f3d2f503de3b215dd8a21a9d46ca21dde96c7e5210b251d4ab6c14ac9348",
+            "viewer_sha256": "efade8eeaf2451ce843ae6a708dfcddd8873cacf6c58fedffa672c4e54ad0a7c"
+          }
+        ],
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "comparison": "Protected lane asserts native/viewer family_effect equality and restores queues. Glass result file is serialized before post-viewer assertions; its viewer effects are not in that file."
+      },
+      {
+        "scenario": "smelter-last",
+        "lane": "build/stockpile-storage-native-farm-discovery-20261113-112105",
+        "kind": "5:4:-1",
+        "unpowered": false,
+        "native_choices": 40,
+        "receipt": {
+          "created": {
+            "56:40": 382797
+          },
+          "families": 1,
+          "refused": 29,
+          "success": true
+        },
+        "effects": [
+          {
+            "caption": "Smelt tetrahedrite ore",
+            "index": 40,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": 201,
+                  "mat_type": 0,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 89,
+              "mat_index": 201,
+              "mat_type": 0,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": 201,
+                  "mat_type": 0,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 89,
+              "mat_index": 201,
+              "mat_type": 0,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "crops": [],
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "comparison": "Protected lane asserts native/viewer family_effect equality and restores queues. Glass result file is serialized before post-viewer assertions; its viewer effects are not in that file."
+      },
+      {
+        "scenario": "glass",
+        "lane": "build/stockpile-storage-native-farm-discovery-20261113-112334",
+        "kind": "5:5:-1",
+        "unpowered": false,
+        "native_choices": 5,
+        "receipt": {
+          "created": {
+            "3:1": 382802,
+            "3:35": 382803,
+            "4:1": 382804,
+            "4:35": 382805,
+            "5:1": 382806,
+            "5:35": 382807
+          },
+          "success": true
+        },
+        "effects": [
+          {
+            "caption": "Make enormous green glass corkscrew",
+            "index": 1,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 8388608,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": 1,
+              "job_type": 140,
+              "mat_index": -1,
+              "mat_type": 3,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make three green glass vials",
+            "index": 35,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 8388608,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 121,
+              "mat_index": -1,
+              "mat_type": 3,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make clear glass altar",
+            "index": 1,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 8388608,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": -1,
+                  "mat_type": 10,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": 28,
+              "job_type": 216,
+              "mat_index": -1,
+              "mat_type": 4,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make three clear glass vials",
+            "index": 35,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 8388608,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": -1,
+                  "mat_type": 10,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 121,
+              "mat_index": -1,
+              "mat_type": 4,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make crystal glass altar",
+            "index": 1,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": -1,
+                  "mat_type": 10,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 16,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 3,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": 28,
+              "job_type": 216,
+              "mat_index": -1,
+              "mat_type": 5,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make three crystal glass vials",
+            "index": 35,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 0,
+                  "mat_index": -1,
+                  "mat_type": 10,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 0,
+                  "flags2": 16,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 3,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 121,
+              "mat_index": -1,
+              "mat_type": 5,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "crops": [
+          {
+            "native": "workshop-glass-root.png",
+            "viewer": "glass-root-live.png",
+            "crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "different_pixels": 0,
+            "native_sha256": "9f2be223c3984fa85aec847e8f13e619cb128f4a7942cc031b3252a65f99dee7",
+            "viewer_sha256": "bb5371a2bedcc89da85575c7bdb6a29df609de29a7e5c13d06f50d6f5688bdf7"
+          },
+          {
+            "native": "workshop-glass-page-1.png",
+            "viewer": "glass-page-1-live.png",
+            "crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "different_pixels": 0,
+            "native_sha256": "438052f74983865dc397a22f41682d8745ad5348269ffa3bee727ebb244886df",
+            "viewer_sha256": "f5c9f04bddbef90df4e327f3c0d199d88be48facd62f7a7dc5b95c98f39aeb2e"
+          },
+          {
+            "native": "workshop-glass-page-2.png",
+            "viewer": "glass-page-2-live.png",
+            "crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "different_pixels": 0,
+            "native_sha256": "ddc49585328b4880a0cd5d2e5b5aa4e79ae87e152e904dbed7d5f6d1b1b8bb13",
+            "viewer_sha256": "321553774872abb18124c713510bddfa3e01f00849fb389214d4d5cf268b2039"
+          },
+          {
+            "native": "workshop-glass-page-3.png",
+            "viewer": "glass-page-3-live.png",
+            "crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "different_pixels": 0,
+            "native_sha256": "e2e5b248f3600b13eb8d67ebc8461a208fa678f848dfd8af6086e2129fa52130",
+            "viewer_sha256": "222795101fa7d057587dbeedc52dbb6239333e16124590f4773c4f8955c60717"
+          }
+        ],
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "comparison": "Protected lane asserts native/viewer family_effect equality and restores queues. Glass result file is serialized before post-viewer assertions; its viewer effects are not in that file."
+      },
+      {
+        "scenario": "kiln",
+        "lane": "build/stockpile-storage-native-farm-discovery-20261113-112426",
+        "kind": "5:6:-1",
+        "unpowered": false,
+        "native_choices": 15,
+        "receipt": {
+          "created": {
+            "56:10": 382807,
+            "56:11": 382808,
+            "56:12": 382809,
+            "56:2": 382803,
+            "56:7": 382804,
+            "56:8": 382805,
+            "56:9": 382806
+          },
+          "families": 1,
+          "refused": 7,
+          "success": true
+        },
+        "effects": [
+          {
+            "caption": "Collect clay",
+            "index": 2,
+            "native": {
+              "inputs": [],
+              "item_subtype": -1,
+              "job_type": 217,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [],
+              "item_subtype": -1,
+              "job_type": 217,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make clay bricks",
+            "index": 7,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_CLAY_BRICKS",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_CLAY_BRICKS",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make clay crafts",
+            "index": 8,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_CLAY_CRAFTS",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_CLAY_CRAFTS",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make clay hive",
+            "index": 9,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_CLAY_HIVE",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_CLAY_HIVE",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make clay jug",
+            "index": 10,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_CLAY_JUG",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_CLAY_JUG",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make clay statue",
+            "index": 11,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_CLAY_STATUE",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_CLAY_STATUE",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "caption": "Make large clay pot",
+            "index": 12,
+            "native": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_LARGE_CLAY_POT",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "viewer": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 209,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "MAKE_LARGE_CLAY_POT",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "crops": [
+          {
+            "native": "workshop-family-6.png",
+            "viewer": "family-6-live.png",
+            "crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "different_pixels": 0,
+            "native_sha256": "49149a510eb117930446700118b5e4da0026fa3625db015bac71efac3731016d",
+            "viewer_sha256": "86143c9f6a5d90f71dfeb4316141b3fc9c5df023963d68a3e176a84bf4c8deba"
+          }
+        ],
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "comparison": "Protected lane asserts native/viewer family_effect equality and restores queues. Glass result file is serialized before post-viewer assertions; its viewer effects are not in that file."
+      },
+      {
+        "scenario": "unpowered-smelter",
+        "lane": "build/stockpile-storage-native-farm-discovery-20261113-112512",
+        "kind": "5:4:-1",
+        "unpowered": true,
+        "native_choices": 0,
+        "receipt": {
+          "created": {},
+          "families": 1,
+          "refused": 0,
+          "success": true
+        },
+        "effects": [],
+        "crops": [
+          {
+            "native": "workshop-family-4.png",
+            "viewer": "family-4-live.png",
+            "crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "different_pixels": 0,
+            "native_sha256": "83226d193b87c2049fe0b104fd2d77e24d0c5fdb3ac46058861f8d49e36e2f2a",
+            "viewer_sha256": "38faa049aa5196a486fb515a504dbfb80e60c41f6c86dc75a3681c105859629b"
+          }
+        ],
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "comparison": "Protected lane asserts native/viewer family_effect equality and restores queues. Glass result file is serialized before post-viewer assertions; its viewer effects are not in that file."
+      }
+    ],
+    "limitations": [
+      "No worker execution, material consumption or finished products; no real MagmaForge qualification.",
+      "Glass checks all rows across three material pages and first/last job per page, not every creation.",
+      "Custom reaction child menus remain a separate qualification.",
+      "Second smelter batch112105 native image captured the previous panel (122275 differing pixels); excluded from visual acceptance. First batch111900 proves root pixels.",
+      "All management/release requirements and workshop public exposure remain pending."
+    ],
+    "failed_attempts": [
+      {
+        "lane": "111106",
+        "reason": "Unpowered native menu empty; diagnostic compared standalone reaction leaf before accounting for native power gate."
+      },
+      {
+        "lane": "111719",
+        "reason": "Diagnostic retained11 jobs, exceeding native queue limit10; split into batches."
+      },
+      {
+        "lane": "112159",
+        "reason": "Furnace discovery navigation overwrote glass runtime effect records; guarded the duplicate discovery pass."
+      }
+    ]
   }
 }

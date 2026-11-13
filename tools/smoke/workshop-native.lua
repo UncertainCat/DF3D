@@ -116,6 +116,7 @@ local workshop_fixtures={}
 local workshop_fixture_ids={}
 local craft_tool_fixture
 local custom_supplies={}
+local magma_tiles={}
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
@@ -303,17 +304,29 @@ local ok,err=xpcall(function()
    result.fuel_scenario={forbidden_bars=#fuel_flags};assert(#fuel_flags>0,'Fuel scenario has no fuel bars')
   end
   if os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')=='1' or os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1'then
+   local magma_type=tonumber(os.getenv('DF3D_WORKSHOP_MAGMA_TYPE')or '')
+   if magma_type then assert(magma_type>=4 and magma_type<=6,'Invalid magma furnace fixture')end
    local kiln_only=os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1'
    local glass_only=os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1'
    for _,target in ipairs(df.global.world.buildings.all)do
     if df.building_furnacest:is_instance(target) and target:getBuildStage()==target:getMaxBuildStage() and #target.jobs==0 and target.custom_type==-1 then
-     local subtype=kiln_only and 3 or 2+#furnace_fixtures
+     local subtype=magma_type or (kiln_only and 3 or 2+#furnace_fixtures)
      furnace_fixtures[#furnace_fixtures+1]={building=target,prior_type=target.type,id=target.id,fixture_type=subtype}
      target.type=subtype
-     if #furnace_fixtures==((kiln_only or glass_only) and 1 or 2) then break end
+     if magma_type and os.getenv('DF3D_WORKSHOP_MAGMA_SUPPLY')=='1'then
+      local x,y,z=target.x1,target.y1,target.z
+      assert(x~=target.centerx or y~=target.centery,'Magma fixture needs a noncenter tile')
+      local upper=assert(dfhack.maps.getTileBlock(x,y,z));local lower=assert(dfhack.maps.getTileBlock(x,y,z-1))
+      local tx,ty=x%16,y%16
+      magma_tiles[#magma_tiles+1]={upper=upper,lower=lower,x=tx,y=ty,tile=upper.tiletype[tx][ty],designation=lower.designation[tx][ty].whole}
+      upper.tiletype[tx][ty]=df.tiletype.OpenSpace
+      lower.designation[tx][ty].flow_size=7;lower.designation[tx][ty].liquid_type=df.tile_liquid.Magma
+      assert(not target:isUnpowered(),'Controlled magma opening did not power furnace')
+     end
+     if #furnace_fixtures==((magma_type or kiln_only or glass_only) and 1 or 2) then break end
     end
    end
-   assert(#furnace_fixtures==((kiln_only or glass_only) and 1 or 2),'Furnace fixture needs idle completed furnace records')
+   assert(#furnace_fixtures==((magma_type or kiln_only or glass_only) and 1 or 2),'Furnace fixture needs idle completed furnace records')
    result.furnace_fixtures={}
    for _,entry in ipairs(furnace_fixtures)do result.furnace_fixtures[#result.furnace_fixtures+1]={id=entry.id,prior_type=entry.prior_type,fixture_type=entry.fixture_type}end
   end
@@ -356,7 +369,7 @@ local ok,err=xpcall(function()
   result.task_catalogs={};local seen={}
   for _,target in ipairs(df.global.world.buildings.all)do
    local type=target:getType();local key=type..':'..target:getSubtype()..':'..target:getCustomType()
-   if (os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')~='1' or workshop_fixture_ids[target.id]) and (type==df.building_type.Workshop or type==df.building_type.Furnace)and (os.getenv('DF3D_WORKSHOP_STONE_NAV')~='1' or key=='13:2:-1') and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')~='1' or key=='5:2:-1' or key=='5:3:-1') and (os.getenv('DF3D_WORKSHOP_CRAFT_NAV')~='1' or key=='13:3:-1') and (os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')~='1' or key=='5:2:-1') and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_CUSTOM_DISCOVERY')=='1' or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')=='1' and key=='13:10:-1') or (os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')=='1' and key=='13:8:-1') or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1' and key=='5:3:-1') or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
+   if (os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')~='1' or workshop_fixture_ids[target.id]) and (type==df.building_type.Workshop or type==df.building_type.Furnace)and (os.getenv('DF3D_WORKSHOP_STONE_NAV')~='1' or key=='13:2:-1') and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')~='1' or (os.getenv('DF3D_WORKSHOP_MAGMA_TYPE') and key=='5:'..os.getenv('DF3D_WORKSHOP_MAGMA_TYPE')..':-1') or (not os.getenv('DF3D_WORKSHOP_MAGMA_TYPE') and (key=='5:2:-1' or key=='5:3:-1'))) and (os.getenv('DF3D_WORKSHOP_CRAFT_NAV')~='1' or key=='13:3:-1') and (os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')~='1' or key=='5:2:-1' or key=='5:5:-1') and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or os.getenv('DF3D_WORKSHOP_MAGMA_TYPE') or os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_CUSTOM_DISCOVERY')=='1' or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')=='1' and key=='13:10:-1') or (os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')=='1' and key=='13:8:-1') or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1' and key=='5:3:-1') or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
     seen[key]=true;select_map(target)
     assert(click_label('Add new task'),'Native task catalog did not open: '..key)
     local function read_rows()
@@ -396,7 +409,7 @@ local ok,err=xpcall(function()
     end
     local rows=read_rows()
     local text,code=dfhack.run_command_silent('df3d','workshop-task-templates-probe',tostring(target.id));assert(code==0,text)
-    local catalog={building_id=target.id,kind=key,name=dfhack.df2utf(dfhack.buildings.getName(target)),native=rows,templates=json.decode(text).rows,pages={}}
+    local catalog={building_id=target.id,kind=key,name=dfhack.df2utf(dfhack.buildings.getName(target)),unpowered=target:isUnpowered(),native=rows,templates=json.decode(text).rows,pages={}}
     result.task_catalogs[#result.task_catalogs+1]=catalog
     if target.id==building.id then shot('task-catalog-carpenter')end
     if os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')=='1'then shot('extra-root-'..target:getSubtype()..(os.getenv('DF3D_WORKSHOP_CUSTOM_DISCOVERY')=='1' and ('-'..target:getCustomType())or ''))end
@@ -477,7 +490,7 @@ local ok,err=xpcall(function()
       comparison:write(json.encode({category=category,material=material,native=native,owned=page.owned_forge_tasks}));comparison:close()
       assert(json.encode(native)==json.encode(page.owned_forge_tasks),'Forge task descriptors differ: '..category..'/'..material)
      end
-     if page.reaction_parent~=nil then
+     if page.reaction_parent~=nil and not catalog.unpowered then
       local encoded,status=dfhack.run_command_silent('df3d','workshop-reaction-categories-probe',tostring(target.id),page.reaction_parent)
       assert(status==0,encoded);page.owned_categories=json.decode(encoded)
       local native_categories={};local native_count=0
@@ -622,7 +635,7 @@ local ok,err=xpcall(function()
      end
      shot(prefix..'-back-root')
     end
-    if os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')=='1'then
+    if os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')=='1' and os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')~='1'then
      catalog.navigation={}
      gui.simulateInput(view,'LEAVESCREEN');select_map(target);assert(click_label('Add new task'))
      for index,row in ipairs(rows)do if row.material~=nil then
@@ -645,11 +658,14 @@ local ok,err=xpcall(function()
      for _,row in ipairs(rows)do assert(row.available,'Stocked custom reaction unavailable: '..row.caption)end
     end
     if os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')=='1'then
-     catalog.effects={};catalog.queue_ids=queue_ids;local effect_types={}
+     catalog.effects={};catalog.queue_ids=queue_ids;local effect_types={};local available_index=0
      for index,row in ipairs(rows)do
+      if row.available then available_index=available_index+1 end
+      local magma_batch=tonumber(os.getenv('DF3D_WORKSHOP_MAGMA_BATCH')or '0')
+      local magma_in_batch=not os.getenv('DF3D_WORKSHOP_MAGMA_TYPE') or math.floor((available_index-1)/10)==magma_batch
       local jeweler_batch=tonumber(os.getenv('DF3D_WORKSHOP_JEWELER_BATCH')or '0')
       local in_batch=os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' or (jeweler_batch==0 and index<=10) or (jeweler_batch==1 and index>10)
-      if row.available and in_batch and (os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')~='1' or not effect_types[tostring(row.job_type)..':'..tostring(row.material_category)]) and (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' or row.job_type~=209 or not effect_types[209]) and (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' or (#catalog.effects<8 and not effect_types[row.job_type])) then
+      if row.available and in_batch and magma_in_batch and (os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')~='1' or not effect_types[tostring(row.job_type)..':'..tostring(row.material_category)]) and (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' or row.job_type~=209 or not effect_types[209]) and (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' or (#catalog.effects<8 and not effect_types[row.job_type])) then
       effect_types[row.job_type]=true;effect_types[tostring(row.job_type)..':'..tostring(row.material_category)]=true
       gui.simulateInput(view,'LEAVESCREEN');select_map(target);assert(click_label('Add new task'))
       local clicked=false
@@ -1653,6 +1669,7 @@ local ok,err=xpcall(function()
  for _,a in ipairs(prior_index)do indexed:insert('#',a)end
  assert(catalog_ok,catalog_err)
 end,debug.traceback)
+for _,tile in ipairs(magma_tiles)do tile.upper.tiletype[tile.x][tile.y]=tile.tile;tile.lower.designation[tile.x][tile.y].whole=tile.designation end
 for index=#custom_supplies,1,-1 do assert(dfhack.items.remove(custom_supplies[index]),'Custom supply cleanup failed')end
 for _,prior in ipairs(fuel_flags)do prior.item.flags.forbid=prior.forbid end
 for _,prior in ipairs(dye_names)do prior.color.name=prior.name;assert(prior.color.name==prior.name)end

@@ -22,7 +22,7 @@ func run() -> void:
 	var craft:=OS.get_environment("DF3D_WORKSHOP_CRAFT_RUNTIME")=="1"
 	var prefix: String="craft" if craft else "glass" if glass else "clothier"
 	var icons=preload("res://scripts/location_staff_indicators.gd")
-	owner.open_workshop(int(family.building_id),icons.WORKSHOPS["3"] if craft else icons.FURNACES["2"] if glass else icons.WORKSHOPS["13"])
+	owner.open_workshop(int(family.building_id),icons.WORKSHOPS["3"] if craft else icons.FURNACES[family.kind.split(":")[1]] if glass else icons.WORKSHOPS["13"])
 	await settle(service,func():return owner.state.phase==owner.state.Phase.Ready and owner.tasks.phase==owner.tasks.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
 	for invalid in (["craft:1","craft:02","craft:33","craft:65"] if craft else ["glass:0","glass:03","glass:6","glass:4097"] if glass else ["clothier:0","clothier:04","clothier:16","clothier:4097"]):
 		var rejected:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_id":int(family.building_id),"task_category":invalid})

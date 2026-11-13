@@ -27,6 +27,8 @@ inline bool workOrderCatalogSupported() {
             {0x8c5938,0x45,UINT64_C(0x6ee9cdb87491c59c)}, // butcher root jobs104/151/33
             {0x8c6cbb,0x3d,UINT64_C(0x60298931b3031029)}, // mechanic rock mechanisms + traction bench
             {0x8c5078,0x5e3,UINT64_C(0x6340566cdcdeff62)}, // glass root and material-page membership
+            {0x8c4fe7,0x2d,UINT64_C(0xd0ba0f7dda7fb9fc)}, // furnace power gate and dispatch
+            {0x8c565c,0x20,UINT64_C(0xd0e6301c05fbbc06)}, // ordinary/magma pairs share native branches
             {0x8c5036,0x21,UINT64_C(0x4280d302be848fe3)}, // kiln root Collect clay membership
             {0x8c812d,0x4d2,UINT64_C(0xa0bb18750d912459)}, // clothier fabric/task membership
             {0x8c571c,0x106,UINT64_C(0xe7e3ae7701fd626a)}, // jeweler job types + encrust targets
@@ -161,7 +163,7 @@ inline std::optional<std::vector<df::manager_order_template>> workshopTaskTempla
     if(!building)return std::nullopt;
     const auto type=building->getType();const auto subtype=building->getSubtype();
     const bool forge=int(type)==13 && (subtype==5 || subtype==6);
-    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==2 || subtype==3 || subtype==4 || subtype==7 || subtype==9 || subtype==14 || subtype==16 || subtype==17 || subtype==18 || subtype==20 || subtype==8 || subtype==10 || subtype==11 || subtype==12 || subtype==13 || subtype==22 || subtype==19 || subtype==15 || subtype==23)) || (int(type)==5 && (subtype==0 || subtype==1 || subtype==2 || subtype==3))))return std::nullopt;
+    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==2 || subtype==3 || subtype==4 || subtype==7 || subtype==9 || subtype==14 || subtype==16 || subtype==17 || subtype==18 || subtype==20 || subtype==8 || subtype==10 || subtype==11 || subtype==12 || subtype==13 || subtype==22 || subtype==19 || subtype==15 || subtype==23)) || (int(type)==5 && (subtype>=0 && subtype<=6))))return std::nullopt;
     auto rows=nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
     // Native8c6cbb admits only generic rock mechanisms and traction benches.
     // Classifier311580 also assigns explicit-metal mechanisms here; those
@@ -213,7 +215,7 @@ inline std::optional<std::vector<df::manager_order_template>> workshopTaskTempla
 // Caption8c28f0 delegates to this semantic formatter; never construct its widget.
 inline std::optional<std::vector<WorkshopForgeChoice>> workshopMaterialChoices(df::building* building) {
     if(!workOrderCatalogSupported() || !building)return std::nullopt;
-    const bool glass=int(building->getType())==5 && building->getSubtype()==2;
+    const bool glass=int(building->getType())==5 && (building->getSubtype()==2 || building->getSubtype()==5);
     const bool craft=int(building->getType())==13 && building->getSubtype()==3;
     if(!glass && !craft && !(int(building->getType())==13 && building->getSubtype()==13))return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));

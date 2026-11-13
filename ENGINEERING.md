@@ -17785,6 +17785,41 @@ also pass. Owned DF7240 exits unsaved with source/preferences preserved;
 30FPS GPU60C/1% is a sample. Only the three documented Godot diagnostics remain.
 MSVC and Core19 pass; fixture contents_material_reference records provenance.
 
+Magma furnaces reuse the existing owned native providers. Pinned dispatch
+8c4fe7 and table8c565c show ordinary/magma pairs1/4,2/5,3/6 sharing task
+branches. Glass material choices admit both subtypes; native order classification
+already maps the builtin variants. Raw reaction restrictions remain exact.
+The adapter calls native building isUnpowered before offering tasks, matching
+gates8c4fed and8c56d2. Existing jobs retain editable templates; unpowered
+buildings offer no new choices. Offline checks reject a stale powered recipe.
+
+Protected111900/112105 on2026-11-13 compare40 magma smelter choices,
+29 refusals and all11 available job creations in batches10+1.112334 checks
+magma glass's five root choices, three35-row material pages, Back/invalid
+selectors and six first/last job creations.112426 checks15 magma kiln choices,
+seven refusals and seven created jobs. Captured job fields/inputs match native.
+Glass raw JSON precedes its post-viewer equality assertions, so only its native
+effects are serialized; the protected lane verifies the comparison afterward.
+These paused queue checks do not establish worker execution, consumption or
+finished products. MagmaForge and custom child-category workflows remain.
+
+Powered fixtures temporarily open a noncenter footprint tile above7/7 magma;
+native isUnpowered becomes false without overriding the predicate. Original
+tile type, designation, furnace type and queues are restored.112512 leaves
+the smelter unpowered: both clients retain Tasks with no choices.
+Owned DF3816/21808/33920/35804/3940 exit unsaved with source saves/preferences
+preserved.30FPS GPU58-61C samples are observations, not peaks. Only the three
+documented Godot diagnostics remain. MSVC, engine state/composition/adapter
+QA build/qa/magma-workshops and Core19 pass.
+
+Smelter first-batch root, glass root/three pages, kiln root and unpowered
+Tasks/contents crops432,106..888,676 match native pixels.112105 captured the
+previous native panel, so its image is excluded; its remaining job effect
+still matches.111719 overfilled the diagnostic queue,112159 overwrote glass
+navigation effects and111106 exposed the power prerequisite; none is accepted
+as a passing run. Fixture magma_furnace_reference records evidence and omissions.
+Whole workshop public exposure remains gated.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

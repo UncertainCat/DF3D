@@ -71,9 +71,9 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  local memorial_page=stone and category=='stone:memorial'
  if stone and category~='' and not memorial_page and category:sub(1,9)~='reaction:' then return nil,'Invalid memorial category' end
  local extra=({Bowyers=true,Siege=true,Fishery=true,Loom=true,Quern=true,Kennels=true,Ashery=true})[k]
- local ordinary=extra or stone or k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Kiln' or k=='Farmers' or k=='Millstone' or k=='Tanners' or k=='Leatherworks' or k=='Jewelers' or k=='Mechanics' or k=='Butchers'
+ local ordinary=extra or stone or k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Kiln' or k=='MagmaKiln' or k=='Farmers' or k=='Millstone' or k=='Tanners' or k=='Leatherworks' or k=='Jewelers' or k=='Mechanics' or k=='Butchers'
  local clothier=k=='Clothiers'
- local glass=k=='GlassFurnace'
+ local glass=k=='GlassFurnace' or k=='MagmaGlassFurnace'
  local craft=k=='Craftsdwarfs'
  local craft_material=nil
  if craft and category~='' and category:sub(1,9)~='reaction:' then
@@ -93,7 +93,7 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
   if not fabric then return nil,'Invalid clothier category' end
   out.parent=''
  end
- local smelter=k=='Smelter'
+ local smelter=k=='Smelter' or k=='MagmaSmelter'
  local supported=dyer or forge or ordinary or clothier or glass or craft or smelter or k=='Still' or k=='Custom'
  if category~='' and not supported then return nil,'Unsupported workshop category' end
  if supported then
@@ -113,6 +113,9 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
    out.categories[at]=row
   end end
  end
+ -- Native task builders8c4fed/8c56d2 stop at the semantic power predicate.
+ -- Keep editable templates for existing jobs, but offer no new task choices.
+ if b:isUnpowered() then out.categories={};return out end
  if stone then
   local memorials=native_memorial(b.id);out.memorial_ids={}
   for _,row in ipairs(memorials)do

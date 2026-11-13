@@ -11813,5 +11813,523 @@
         }
       }
     ]
+  },
+  "stone_memorial_navigation_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-225052",
+    "scope": "Native discovery only, no runtime Stoneworker provider or viewer/job-effect acceptance. Existing completed workshop. Memorial category7 has Cancel, not Back; Cancel returns to Tasks and Add new task reopens root.",
+    "root_builtin_count": 19,
+    "root_descriptors_match_order_catalog": true,
+    "compared_fields": [
+      "job_type",
+      "item_subtype",
+      "mat_type",
+      "mat_index",
+      "material_category",
+      "specflag",
+      "specdata",
+      "art_type",
+      "art_id",
+      "art_subid"
+    ],
+    "memorial_count": 66,
+    "memorial_rows": [
+      {
+        "caption": "Såkzul Uzolräm (engrave memorial)",
+        "specdata": 9795,
+        "priority": 1,
+        "info": "Ghost, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Uja Uzinpictham (engrave memorial)",
+        "specdata": 3335,
+        "priority": 1,
+        "info": "Ghost, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Ast Cattenmesir (engrave memorial)",
+        "specdata": 9270,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Ast Kathilsazir (engrave memorial)",
+        "specdata": 10106,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Dastot èzumral (engrave memorial)",
+        "specdata": 9266,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Dastot Gitnuksigun (engrave memorial)",
+        "specdata": 10289,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Datan Avuzdakon (engrave memorial)",
+        "specdata": 9493,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Dîshmab Zimkelnomal (engrave memorial)",
+        "specdata": 10109,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "èrith Kegethetur (engrave memorial)",
+        "specdata": 10196,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Goden Abanshigós (engrave memorial)",
+        "specdata": 9377,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Monom Eggutmeng (engrave memorial)",
+        "specdata": 9556,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Necar Tirinpirni (engrave memorial)",
+        "specdata": 5200,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Oddom Tekkudzaneg (engrave memorial)",
+        "specdata": 10004,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Umil Kespomba (engrave memorial)",
+        "specdata": 8255,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Zas Rigòthrosat (engrave memorial)",
+        "specdata": 9264,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Zulban Bakustoslan (engrave memorial)",
+        "specdata": 10049,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Aban Thîkutsolon (engrave memorial)",
+        "specdata": 10011,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Ber Endoksibrek (engrave memorial)",
+        "specdata": 9636,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Degël Eriblibad (engrave memorial)",
+        "specdata": 9376,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Kol Asobstettad (engrave memorial)",
+        "specdata": 9265,
+        "priority": 1002,
+        "info": "Entombed, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Lum Licpuja (engrave memorial)",
+        "specdata": 2995,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Rimtar Ebalrovod (engrave memorial)",
+        "specdata": 9557,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Rîsen Bomrekód (engrave memorial)",
+        "specdata": 1880,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Thur Sathreliki (engrave memorial)",
+        "specdata": 2879,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Tun Dodóktomêm (engrave memorial)",
+        "specdata": 9731,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Udib Keshansåkzul (engrave memorial)",
+        "specdata": 1079,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Vabôk Odgúblòr (engrave memorial)",
+        "specdata": 6675,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Zuglar Rithdakon (engrave memorial)",
+        "specdata": 9634,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Äs Gemuroslan (engrave memorial)",
+        "specdata": 10561,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Aslot Amxuzesm (engrave memorial)",
+        "specdata": 10273,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Cadi Innahhibor (engrave memorial)",
+        "specdata": 10249,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Dostngosp Oguspngom (engrave memorial)",
+        "specdata": 10170,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Em Slobustâsost (engrave memorial)",
+        "specdata": 10481,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Fikod Atheldarùd (engrave memorial)",
+        "specdata": 4285,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Fikod Eslokum (engrave memorial)",
+        "specdata": 10562,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Ithithe Thilunanina (engrave memorial)",
+        "specdata": 10487,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Kel Oddomoslan (engrave memorial)",
+        "specdata": 7017,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Kurik Agzes (engrave memorial)",
+        "specdata": 10335,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Mori Kunodus (engrave memorial)",
+        "specdata": 4055,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Ngokang Zusmusmaslot (engrave memorial)",
+        "specdata": 10169,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Ngom Urarobxog (engrave memorial)",
+        "specdata": 10171,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Nine ílimereya (engrave memorial)",
+        "specdata": 10180,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Okom Soxoslar Osplu Onsmost (engrave memorial)",
+        "specdata": 24,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Osta Ozudsnosstrosp (engrave memorial)",
+        "specdata": 10396,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Pobe Ecenpapos (engrave memorial)",
+        "specdata": 9545,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Rakbin Komodoto (engrave memorial)",
+        "specdata": 10540,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Riñih Goctaape (engrave memorial)",
+        "specdata": 5946,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Smunstu Kugmeomosp (engrave memorial)",
+        "specdata": 10084,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Smunstu Uksossad (engrave memorial)",
+        "specdata": 10398,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Snodub Songspösp (engrave memorial)",
+        "specdata": 10353,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Stozu Stosbûbuxzo (engrave memorial)",
+        "specdata": 10395,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Therset Damsouthra Candolalgi (engrave memorial)",
+        "specdata": 4526,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Vadane Nelolefari (engrave memorial)",
+        "specdata": 10182,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Zocol Nentukònul (engrave memorial)",
+        "specdata": 10536,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Zolak Ostaono (engrave memorial)",
+        "specdata": 10085,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Catten ònulsolon (engrave memorial)",
+        "specdata": 10107,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Datan Mosustomêm (engrave memorial)",
+        "specdata": 10008,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Donkey (engrave memorial)",
+        "specdata": 9635,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Elephant (engrave memorial)",
+        "specdata": 9546,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Horse (engrave memorial)",
+        "specdata": 10183,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Inod Gusilmilol (engrave memorial)",
+        "specdata": 9558,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Momuz Zulbanastis (engrave memorial)",
+        "specdata": 9997,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Mule (engrave memorial)",
+        "specdata": 9637,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Tholtig Nolrith (engrave memorial)",
+        "specdata": 10209,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Vabôk Gusilgébar (engrave memorial)",
+        "specdata": 9796,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Yak Bull (engrave memorial)",
+        "specdata": 10181,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      }
+    ],
+    "navigation": {
+      "cancel_returns_tasks": true,
+      "reopen_restores_root": true
+    },
+    "native_branch": {
+      "rva": "8c6d87..8c75e8",
+      "sha256": "9a2d9c988cfa271cb62378e5081a6c750a477c6685604231058fcaa827048c96",
+      "candidate_branch": "8c6da8..8c7018",
+      "row_status_priority_branch": "8c7070..8c72d5",
+      "root_branch": "8c7347..8c75e8",
+      "semantic_predicates": [
+        "13d50f0 placed memorial",
+        "13d51b0 burial",
+        "13d5320 either predicate",
+        "13765f0 affiliation predicate (further audit required)"
+      ]
+    },
+    "omissions": [
+      "Complete owned candidate/priority/text provider",
+      "Recipe status-line transport and rendering",
+      "Viewer navigation/actions",
+      "Job creation/execution",
+      "Other status/color cases",
+      "Native uninitialized item_type equivalence"
+    ],
+    "source_preservation": "Owned DF4376 exited unsaved; source unchanged",
+    "sha256": {
+      "workshop-native.json": "ce1885b9f608f64b191c7346465d135cf1d172565ff3ae0a1406f4c9a8deac01",
+      "result.json": "8dd46631a1e58e1afb095848a353b12170a0ca170af944731fef2790d6ebb755",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "workshop-stone-root.png": "5dde8654f0f35b843092389bb97e2a088b8763f678f289d8e692b9dc4beb8131",
+      "workshop-stone-memorials.png": "fddfcd2a9509d51b0c3db1c67f5c6efbc22de1f586ec27a9a5f7dab3dadb37d5",
+      "workshop-stone-memorial-cancelled.png": "d66593a802a791d575e01ffb2514e779823d6678ac928908e6e177b1ac997007",
+      "workshop-stone-reopened-root.png": "5dde8654f0f35b843092389bb97e2a088b8763f678f289d8e692b9dc4beb8131"
+    }
   }
 }

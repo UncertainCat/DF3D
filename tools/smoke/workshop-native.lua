@@ -275,7 +275,7 @@ local ok,err=xpcall(function()
   result.task_catalogs={};local seen={}
   for _,target in ipairs(df.global.world.buildings.all)do
    local type=target:getType();local key=type..':'..target:getSubtype()..':'..target:getCustomType()
-   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')~='1' or key=='5:2:-1' or key=='5:3:-1') and (os.getenv('DF3D_WORKSHOP_CRAFT_NAV')~='1' or key=='13:3:-1') and (os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')~='1' or key=='5:2:-1') and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')=='1' and key=='13:10:-1') or (os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')=='1' and key=='13:8:-1') or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1' and key=='5:3:-1') or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
+   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and (os.getenv('DF3D_WORKSHOP_STONE_NAV')~='1' or key=='13:2:-1') and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')~='1' or key=='5:2:-1' or key=='5:3:-1') and (os.getenv('DF3D_WORKSHOP_CRAFT_NAV')~='1' or key=='13:3:-1') and (os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')~='1' or key=='5:2:-1') and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')=='1' and key=='13:10:-1') or (os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')=='1' and key=='13:8:-1') or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1' and key=='5:3:-1') or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
     seen[key]=true;select_map(target)
     assert(click_label('Add new task'),'Native task catalog did not open: '..key)
     local function read_rows()
@@ -290,6 +290,7 @@ local ok,err=xpcall(function()
       row.specflag=job.specflag.whole;row.specdata=job.specdata.hist_figure_id
       row.art_type=job.art_specifier;row.art_id=job.art_specifier_id1;row.art_subid=job.art_specifier_id2
       row.available=not job.show_help_instead;row.objection=dfhack.df2utf(job.objection);row.priority=job.list_priority
+      if os.getenv('DF3D_WORKSHOP_STONE_NAV')=='1'then row.info=dfhack.df2utf(job.info)end
      elseif df.interface_button_building_category_selectorst:is_instance(button)then
       local selector=df.reinterpret_cast(df.interface_button_building_category_selectorst,button)
       row.category=selector.category
@@ -379,6 +380,25 @@ local ok,err=xpcall(function()
        pending[#pending+1]={path=path,rows=read_rows(),reaction_parent=row.custom_category}
       end
      end
+    end
+    if os.getenv('DF3D_WORKSHOP_STONE_NAV')=='1'then
+     gui.simulateInput(view,'LEAVESCREEN');select_map(target);assert(click_label('Add new task'))
+     shot('stone-root')
+     local category
+     for _,row in ipairs(rows)do if row.category==7 then category=row;break end end
+     assert(category and click_label(category.caption),'Native memorial category missing')
+     local child=read_rows();shot('stone-memorials')
+     assert(click_label('Cancel'),'Native memorial Cancel missing')
+     shot('stone-memorial-cancelled')
+     assert(click_label('Add new task'),'Native memorial Cancel did not return to Tasks')
+     local returned=read_rows()
+     local function semantic(values)
+      local copy={};for _,entry in ipairs(values)do local row={};for field,value in pairs(entry)do if field~='item_type'then row[field]=value end end;copy[#copy+1]=row end
+      return json.encode(copy)
+     end
+     assert(semantic(rows)==semantic(returned),'Memorial reopen did not restore root')
+     catalog.memorial_navigation={rows=child,cancel_returns_tasks=true,reopen_restores_root=true}
+     shot('stone-reopened-root')
     end
     if os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')=='1' or os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_CRAFT_NAV')=='1'then
      local glass=os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1'

@@ -17510,6 +17510,26 @@ worker execution/products and uninitialized item_type equivalence remain
 unqualified. See native_workshop.json.craft_runtime_reference. Whole workshop
 exposure remains gated.
 
+Stoneworker discovery225052 on2026-11-12 captures native category7, Engrave
+memorial slab, separately from the ordinary root recipes. Its66 candidates
+are job211 descriptors with the historical-figure ID in specdata. The page
+has Cancel, not Back: Cancel returns to Tasks and Add new task reopens root.
+The19 root builtin descriptors match the independent order catalog; that
+catalog has no named memorial recipes. Native8c6da8..8c7018 gathers candidates
+using dead/ghost state, incident/site state, figure mapping and existing slabs;
+8c7070..8c72d5 builds status strings and list priorities. Semantic predicates
+13d50f0/13d51b0 inspect placed memorials/burial, with13d5320 combining them.
+The captured priorities distinguish ghosts1; unmemorialized1000/2000/3000;
+and memorialized or entombed1002. Status text is separate from objections and
+must not disable these available choices. The screenshot shows magenta ghost
+and yellow unmemorialized lines; other status colors remain unaudited.
+Current ProductionRecipe transports only key/name/requirements/availability,
+so full memorial presentation requires an explicit status-line contract and
+owned candidate/text/priority provider. Runtime and viewer/job-effect acceptance
+remain pending. Owned DF4376 exited unsaved; source saves and queues remained
+unchanged. Native capture used30FPS with a41C GPU sample. See
+native_workshop.json.stone_memorial_navigation_reference.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

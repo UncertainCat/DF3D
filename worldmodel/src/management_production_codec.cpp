@@ -142,6 +142,8 @@ ProductionState decodeProduction(const m::ProductionState* p) {
       n.buildings.push_back({v->id(), v->origin()->x(), v->origin()->y(), v->origin()->z(),
                              str(v->name()), str(v->kind()), v->build_stage(), v->max_stage(),
                              v->queue_size()});
+  if(p->task_category())n.taskCategory=p->task_category()->str();
+  if(p->task_categories())for(const auto* v:*p->task_categories())n.taskCategories.push_back({str(v->key()),str(v->name())});
   if (p->recipes())
     for (const auto* v : *p->recipes()) {
       ProductionRecipe row{str(v->key()), str(v->name()), reqs(v->requirements())};
@@ -320,7 +322,7 @@ flatbuffers::Offset<m::ProductionRequest> encodeProduction(flatbuffers::FlatBuff
   return m::CreateProductionRequest(b, p.buildingId, p.jobId, b.CreateString(p.recipe),
                                     b.CreateString(p.query), p.cursor, p.repeat, p.suspend,
                                     p.cancel, p.season, p.cropId, p.expectedRevision,static_cast<m::FarmOperation>(p.farmOperation),p.seasonalFertilization,
-                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem,p.buildingHeader,p.workshopWorkers,p.workerId,p.workerListRevision,p.workerValue,p.workshopOrders,p.generalOrderDelta,p.generalOrderValue,p.contentsItemId,p.priority,p.expectedPriority);
+                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem,p.buildingHeader,p.workshopWorkers,p.workerId,p.workerListRevision,p.workerValue,p.workshopOrders,p.generalOrderDelta,p.generalOrderValue,p.contentsItemId,p.priority,p.expectedPriority,b.CreateString(p.taskCategory));
 }
 
 flatbuffers::Offset<m::WorkOrderArtRequest> encodeArtRequest(flatbuffers::FlatBufferBuilder& b,const WorkOrderArtRequest& a) {

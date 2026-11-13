@@ -110,6 +110,11 @@ Dictionary writeDraftValue(const wm::WorkOrderArtDraftValue& value) {
 
 void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   Dictionary prod;
+  if(s.taskCategory) {
+    prod["task_category"]=String::utf8(s.taskCategory->c_str());Array categories;
+    for(const auto& v:s.taskCategories){Dictionary row;row["key"]=String::utf8(v.key.c_str());row["name"]=String::utf8(v.name.c_str());categories.push_back(row);}
+    prod["task_categories"]=categories;
+  }
   const auto& p = s;
   auto reqs = [](const auto& values) {
     Array out;
@@ -614,6 +619,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
 }
 
 bool validateProductionShape(const Dictionary& data, String& error) {
+  if(data.has("task_category") && data["task_category"].get_type()!=Variant::STRING){error="Wrong management field type: task_category";return false;}
   if(data.has("workshop_orders") && data["workshop_orders"].get_type()!=Variant::BOOL){error="Wrong management field type: workshop_orders";return false;}
   if(!managementDictionaryTypes(data, {"general_order_delta", "general_order_value"}, error))return false;
   if(data.has("workshop_workers") && data["workshop_workers"].get_type()!=Variant::BOOL){error="Wrong management field type: workshop_workers";return false;}
@@ -683,6 +689,9 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.season = int8_t(n("season", -1, -1, 3));
   String recipe = data.get("recipe", String());
   value.recipe = recipe.utf8().get_data();
+  String category=data.get("task_category",String());
+  const auto categoryBytes=category.utf8();value.taskCategory.assign(categoryBytes.get_data(),categoryBytes.length());
+  if(value.taskCategory.size()>256)valid=false;
   if (value.recipe.size() > 128) valid = false;
   String query = data.get("query", String());
   value.query = query.utf8().get_data();

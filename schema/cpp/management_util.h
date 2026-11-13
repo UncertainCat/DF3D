@@ -183,8 +183,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 205;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v205";
+inline constexpr uint32_t kManagementVersion = 206;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v206";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -955,6 +955,12 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
         p->repeat() < -1 || p->repeat()>1 || p->suspend() < -1 || p->suspend()>1 ||
         p->season() < -1 || p->season()>3 || (p->query() && p->query()->size()>(r.action()==ManagementAction::ProductionInspect?138:128)) ||
         (p->recipe() && p->recipe()->size()>128)) return "invalid production request";
+    if(p->task_category() && p->task_category()->size()) {
+      if(p->task_category()->size()>256 || p->building_id()<0 ||
+         (r.action()!=ManagementAction::ProductionInspect && r.action()!=ManagementAction::ProductionQueue) ||
+         p->workshop_orders() || p->workshop_workers() || p->building_header() || p->contents() ||
+         p->independent_item() || p->locate_item())return "invalid workshop task category";
+    }
     if(p->priority() < -1 || p->priority()>1 || p->expected_priority() < -1 || p->expected_priority()>1)return "invalid production priority";
     if(p->priority()==-1 ? p->expected_priority()!=-1 :
        (r.action()!=ManagementAction::ProductionJobEdit || p->expected_priority()<0 || p->priority()==p->expected_priority() ||
@@ -2887,6 +2893,14 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         p->current_season() < -1 || p->current_season()>3 || p->selected_building() < -1 || p->created_job() < -1 ||
         (p->detail() && p->detail()->size()>2048)) return "invalid production state";
     auto textOk=[](const flatbuffers::String* t,size_t limit){return t && t->size()<=limit;};
+    if(p->task_category()) {
+      if(!textOk(p->task_category(),256) || !p->task_categories() || p->task_categories()->size()>128 || p->selected_building()<0)
+        return "invalid workshop category state";
+      std::set<std::string> categories;
+      for(const auto* row:*p->task_categories())
+        if(!row || !textOk(row->key(),256) || !row->key()->size() || !categories.insert(row->key()->str()).second ||
+           row->key()->str()==p->task_category()->str() || !textOk(row->name(),512))return "invalid workshop category row";
+    } else if(p->task_categories() && p->task_categories()->size())return "workshop category context required";
     auto requirementsOk=[&](const auto* values){
       if(!values || values->size()>16) return false;
       for(const auto* v:*values) if(!v || !textOk(v->description(),512) || v->quantity()<0 || v->quantity()>1000000 || v->item_type() < -1) return false;

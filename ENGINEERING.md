@@ -15836,6 +15836,23 @@ tick. Fertilizer transport is verified above; lifecycle faults and viewer contro
 
 ### Native farm and workshop providers
 
+Management206 adds `ProductionRequest.task_category` and optional
+`ProductionState.task_category`/`task_categories`. Keys are opaque bounded
+strings, not menu ordinals or pointers. An empty request selects root; a missing
+response context retains unknown/legacy support instead of inventing an empty
+root menu. Known contexts require a category vector; duplicate/self keys and
+oversized fields reject. Non-root requests are valid only for task inspection
+or queueing and cannot be mixed with worker, contents or header reads.
+The migration deliberately rejects non-root requests before dispatch until the
+native provider and viewer navigation are connected. Root task behavior is
+unchanged. Both peers must use `Local\df3d_management_v206`.
+Core19 and Godot management/workshop-state checks pass in
+`build/qa/workshop-category-contract`. Protected192406 on2026-11-12 verifies the
+staged rejection, omitted unknown category metadata and existing root choices,
+Priority, Details and subtype job effects. Owned DF35728 exits unsaved with
+source/prefs preserved; Godot diagnostics are the three documented signatures.
+`native_workshop.json.category_contract_reference` retains the migration evidence.
+
 The existing `bridge/plugin/production.lua` adapter is not a complete native
 building-management provider. Carpenters/Kitchen/WoodFurnace builtin choices now
 come from the owned native Work orders template builder and exact workshop

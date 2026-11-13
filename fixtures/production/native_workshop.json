@@ -5283,5 +5283,15 @@
     "source_preserved": true,
     "owned_process_closed_unsaved": true,
     "diagnostics": "passed_with_known_issues"
+  },
+  "category_contract_reference": {
+    "management_version": 206,
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-192406",
+    "bridge_sha256": "843C15555EA6ACA731ACAF9E98DB28D9D993EC2D1762C0B1A9F658E7E67241B6",
+    "source_sha256": "0a4388f8e25ad7c6150b2ed97332a89e34e6e22754228cb0166d2e991fbca9fa",
+    "scope": "Migration only: non-root category request rejected before dispatch; absent category context remains unknown. Root catalog, Priority, Details and wooden-spike effects regressions pass; category UI remains unfinished.",
+    "source_preserved": true,
+    "owned_process_closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues"
   }
 }

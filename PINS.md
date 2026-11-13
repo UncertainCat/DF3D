@@ -22,8 +22,15 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Management205 adds workshop job Priority intent and observation fields.
-Rebuild both peers: `Local\df3d_management_v205` isolates Management204.
+Management206 adds an opaque workshop `task_category` request and optional
+category context/list observations. Rebuild both peers:
+`Local\df3d_management_v206` isolates Management205. Empty requests select root;
+absent response context means category support is unknown, not a known empty
+menu. Category keys are bounded at256 bytes, captions512, and lists128 entries.
+The migration rejects non-root category requests until semantic dispatch and
+navigation are connected; existing root task workflows remain available.
+
+Management205 introduced workshop job Priority intent and observation fields.
 ProductionJobEdit carries desired `priority` and displayed `expected_priority`
 as0/1; the two must differ, and Priority cannot be mixed with another edit.
 Job observations use-1 for unknown/legacy, so old recordings do not invent an

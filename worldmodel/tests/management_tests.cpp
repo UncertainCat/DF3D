@@ -500,14 +500,52 @@ TEST_CASE("area response rejects corrupt footprints and ambiguous identities") {
     CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
   }
 }
+TEST_CASE("workshop category context preserves unknown and rejects malformed navigation") {
+  for(int defect=0;defect<8;++defect) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto key=b.CreateString(defect==4?std::string(257,'x'):"reaction:INSTRUMENTS");
+    const auto name=b.CreateString(defect==5?std::string(513,'x'):"Native category");
+    std::vector<flatbuffers::Offset<mm::ProductionTaskCategory>> rows;
+    if(defect!=1)rows.push_back(mm::CreateProductionTaskCategory(b,key,name));
+    if(defect==3)rows.push_back(mm::CreateProductionTaskCategory(b,key,name));
+    const auto categories=b.CreateVector(rows);
+    const auto category=b.CreateString(defect==6?"reaction:INSTRUMENTS":"");
+    mm::ProductionStateBuilder state(b);state.add_selected_building(72);
+    if(defect!=1 && defect!=2)state.add_task_category(category);
+    if(defect!=7)state.add_task_categories(categories);
+    const auto production=state.Finish();
+    mm::ManagementStateBuilder result(b);result.add_revision(1);result.add_world_epoch(7);
+    result.add_schema_version(mm::kManagementVersion);result.add_action(mm::ManagementAction::ProductionInspect);
+    result.add_status(mm::ManagementStatus::Ok);result.add_production(production);b.Finish(result.Finish());
+    const auto* wire=flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer());
+    CHECK(mm::validateManagementState(*wire).has_value()==(defect>=2));
+    if(defect<2) {
+      const auto decoded=wm::detail::management::decodeProduction(wire->production());
+      CHECK(decoded.taskCategory.has_value()==(defect==0));
+      CHECK(decoded.taskCategories.size()==(defect==0?1:0));
+      if(defect==0)CHECK(decoded.taskCategories[0].key=="reaction:INSTRUMENTS");
+    }
+  }
+  ManagementPublisher p;p.publish(1);auto c=openClient(p);auto [seq,id]=claim(p,*c);
+  for(int defect=0;defect<4;++defect) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::ProductionInspect;r.production.buildingId=72;
+    r.production.taskCategory=defect==0?std::string(257,'x'):"reaction:INSTRUMENTS";
+    if(defect==1)r.production.buildingHeader=true;
+    if(defect==2)r.action=wm::ManagementAction::ProductionList;
+    if(defect==3)r.production.buildingId=-1;
+    CHECK(c->send(r)==0);
+  }
+}
 TEST_CASE("production requests retain job identity sentinels and shared ownership") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
   wm::ManagementRequest queue;queue.action=wm::ManagementAction::ProductionQueue;
   queue.production.buildingId=72;queue.production.recipe="builtin:12:-1";queue.production.repeat=1;
+  queue.production.taskCategory="reaction:INSTRUMENTS";
   CHECK(c->send(queue)==0);
   auto [seq,id]=claim(p,*c);
   seq=c->send(queue);REQUIRE(seq>0);auto* r=p.pop();REQUIRE(r->production());CHECK(r->area()==nullptr);
   CHECK(r->production()->building_id()==72);CHECK(r->production()->recipe()->str()=="builtin:12:-1");
+  REQUIRE(r->production()->task_category());CHECK(r->production()->task_category()->str()=="reaction:INSTRUMENTS");
   CHECK(r->production()->repeat()==1);CHECK(r->production()->suspend()==-1);CHECK(r->world_epoch()==7);
   CHECK(c->send(queue)==0);p.publish(3,id,seq,7,mm::ManagementAction::ProductionQueue);REQUIRE(c->poll());
   wm::ManagementRequest edit;edit.action=wm::ManagementAction::ProductionJobEdit;

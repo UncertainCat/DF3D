@@ -1547,11 +1547,13 @@ table ProductionRequest {
   contents_item_id:int32 = -1; // Child target; item_id and expected_revision identify its containing item.
   priority:int8 = -1; // -1 unchanged; 0/1 desired do_now state.
   expected_priority:int8 = -1; // Required displayed state for a Priority edit.
+  task_category:string; // Opaque native category key; empty selects the root.
 }
 table ProductionRequirement { description:string; quantity:int32; item_type:int16 = -1; }
 // Absent on legacy observations and providers without native availability evidence.
 table ProductionAvailability { available:bool; objection:string; }
 table ProductionRecipe { key:string; name:string; requirements:[ProductionRequirement]; availability:ProductionAvailability; }
+table ProductionTaskCategory { key:string; name:string; }
 table ProductionJob {
   id:int32; name:string; job_type:int16; repeat:bool; suspended:bool;
   worker_id:int32 = -1; worker_name:string; completion_timer:int32 = -1;
@@ -1691,6 +1693,8 @@ table ProductionState {
   building_header:BuildingHeaderState;
   workshop_workers:WorkshopWorkersState;
   workshop_orders:WorkshopOrdersState;
+  task_category:string; // Absent means category support is unknown (legacy/provider).
+  task_categories:[ProductionTaskCategory];
 }
 // Details is a distinct intent; choice IDs refer to the observed native catalog.
 // Artwork subject IDs are simulation IDs, not Details choice ordinals.
@@ -2502,7 +2506,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 205;
+  schema_version:uint32 = 206;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2573,7 +2577,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 205;
+  schema_version:uint32 = 206;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

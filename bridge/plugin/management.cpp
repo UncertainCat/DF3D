@@ -1089,7 +1089,9 @@ void publish() {
     if(p.assigned){const auto& a=*p.assigned;assigned=m::CreateWorkshopAssignedWorker(b,a.id,b.CreateString(a.caption),a.specializationVisible,a.canSpecialize,a.specialized);}
     workshopWorkers=m::CreateWorkshopWorkersState(b,p.buildingId,p.profileRevision,b.CreateVector(p.permittedWorkers),p.revision,p.cursor,p.nextCursor,p.total,b.CreateVector(rows),p.outcome,p.unitId,assigned,p.operation);
   }
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders);
+  std::vector<flatbuffers::Offset<m::ProductionTaskCategory>> taskCategories;
+  for(const auto& v:production.taskCategories)taskCategories.push_back(m::CreateProductionTaskCategory(b,b.CreateString(v.key),b.CreateString(v.name)));
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders,production.taskCategory?b.CreateString(*production.taskCategory):0,production.taskCategory?b.CreateVector(taskCategories):0);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
@@ -6823,6 +6825,8 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
       return;
     }
     if(!m::runtimeManagementAction(action)){status=m::ManagementStatus::Rejected;message="Native screen adapters are retired; semantic replacement unfinished";publish();return;}
+    // Category navigation is staged until the semantic provider consumes it.
+    if(const auto* p=r->production();p && p->task_category() && p->task_category()->size()){status=m::ManagementStatus::Rejected;message.clear();publish();return;}
     status = m::ManagementStatus::Pending;
   }
   if (status == m::ManagementStatus::Pending) {

@@ -20,6 +20,9 @@ func run() -> void:
 	owner.open_workshop(int(reference.building_id),"BUILDING_ICON_WORKSHOP_CARPENTER")
 	await settle(service,func():return owner.state.phase==owner.state.Phase.Ready and owner.tasks.phase==owner.tasks.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
 	var task_choices: Array=owner.tasks.recipes()
+	check(not owner.tasks.snapshot.has("task_category"),"Staged category support was invented")
+	var staged_category:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_id":int(reference.building_id),"task_category":"reaction:INSTRUMENTS"})
+	check(staged_category.get("status")==C.ManagementStatus.Rejected,"Staged category request was silently treated as root")
 	check(task_choices.size()==reference.task_choices.size(),"Native root task count differs")
 	for index in mini(task_choices.size(),reference.task_choices.size()):
 		var expected: Dictionary=reference.task_choices[index]

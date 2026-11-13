@@ -12310,7 +12310,7 @@
         "13d50f0 placed memorial",
         "13d51b0 burial",
         "13d5320 either predicate",
-        "13765f0 affiliation predicate (further audit required)"
+        "13765f0: profession STANDARD/CHILD/BABY and caste PET/PET_EXOTIC (calls 1376500); not a general affiliation predicate"
       ]
     },
     "omissions": [
@@ -12318,7 +12318,7 @@
       "Recipe status-line transport and rendering",
       "Viewer navigation/actions",
       "Job creation/execution",
-      "Other status/color cases",
+      "Rendered verification of remaining status/color cases",
       "Native uninitialized item_type equivalence"
     ],
     "source_preservation": "Owned DF4376 exited unsaved; source unchanged",
@@ -12330,6 +12330,32 @@
       "workshop-stone-memorials.png": "fddfcd2a9509d51b0c3db1c67f5c6efbc22de1f586ec27a9a5f7dab3dadb37d5",
       "workshop-stone-memorial-cancelled.png": "d66593a802a791d575e01ffb2514e779823d6678ac928908e6e177b1ac997007",
       "workshop-stone-reopened-root.png": "5dde8654f0f35b843092389bb97e2a088b8763f678f289d8e692b9dc4beb8131"
+    },
+    "status_render_reference": {
+      "scope": "Static audit of installed DF53.16; supplements the existing native screenshots, not viewer acceptance.",
+      "getters": {
+        "objection": "8b16d0: button+98",
+        "info": "67170: button+b8",
+        "color": "1b9ee0..1b9f1b"
+      },
+      "precedence": "Renderer1854c9..185691 draws nonempty objection in red; only otherwise draws nonempty info at the same second-line position.",
+      "memorial_priority_colors": {
+        "1": "bright magenta (13)",
+        "1000": "bright yellow (14)",
+        "all_other_priorities": "bright cyan (11)"
+      },
+      "color_rule": "Job211 only: priority1 uses packed01010005, priority1000 uses01010006, all others use01010003. Non-memorial info also uses01010003.",
+      "position": "Renderer185615..185635: row origin plus2 cells in X and Y; same position as objection. Text is not truncated in this branch.",
+      "sha256": {
+        "1b9ee0..1b9f1b": "f990fd17935fe1172d80557a447f378e470ff7041adcb11369ea90f44fc59f6c",
+        "13765f0..1376617": "0fc6d55af64957ce7e519d8bf6f0b85c0faa6477b1b9cc98bb7b85c976adeae5",
+        "1376500..13765f0": "90b1cdfc1df81f9fd845b52cc002a94ebbfdcd0301494b5b5a5f55feaba3a1f1",
+        "1854c9..185691": "10e536c15dff45fc828d25ec6740b842d8dce47bbe8f0f761572eca2a9096392"
+      },
+      "limitations": [
+        "Other priority colors established by code, not newly captured screenshots",
+        "No runtime widget or renderer calls authorized by this audit"
+      ]
     }
   }
 }

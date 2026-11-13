@@ -17521,8 +17521,17 @@ using dead/ghost state, incident/site state, figure mapping and existing slabs;
 13d50f0/13d51b0 inspect placed memorials/burial, with13d5320 combining them.
 The captured priorities distinguish ghosts1; unmemorialized1000/2000/3000;
 and memorialized or entombed1002. Status text is separate from objections and
-must not disable these available choices. The screenshot shows magenta ghost
-and yellow unmemorialized lines; other status colors remain unaudited.
+must not disable these available choices. Renderer1854c9..185691 gives a
+nonempty objection precedence over info at the same second-line position
+(row origin plus2 cells in X/Y). The info color routine1b9ee0..1b9f1b uses
+bright magenta for memorial priority1, bright yellow only for priority1000,
+and bright cyan for all other priorities. Thus unmemorialized2000/3000 rows
+are cyan, not yellow. These remaining colors are established by code, not
+additional rendered acceptance. No runtime calls into this renderer are allowed.
+The priority predicate13765f0 is not general affiliation: it requires
+profession STANDARD/CHILD/BABY and calls1376500 to check caste PET/PET_EXOTIC.
+Use that native semantic predicate with the unit, rather than substituting
+DFHack isAnimal, whose implementation tests different conditions.
 Current ProductionRecipe transports only key/name/requirements/availability,
 so full memorial presentation requires an explicit status-line contract and
 owned candidate/text/priority provider. Runtime and viewer/job-effect acceptance

@@ -61,6 +61,13 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  local ordinary=k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Kiln' or k=='Farmers' or k=='Millstone' or k=='Tanners' or k=='Leatherworks' or k=='Jewelers' or k=='Mechanics' or k=='Butchers'
  local clothier=k=='Clothiers'
  local glass=k=='GlassFurnace'
+ local craft=k=='Craftsdwarfs'
+ local craft_material=nil
+ if craft and category~='' and category:sub(1,9)~='reaction:' then
+  craft_material=({['craft:0']=0,['craft:2']=2,['craft:32']=32,['craft:64']=64})[category]
+  if craft_material==nil then return nil,'Invalid craft category' end
+  out.parent=''
+ end
  local glass_material=nil
  if glass and category~='' and category:sub(1,9)~='reaction:' then
   glass_material=({['glass:3']=3,['glass:4']=4,['glass:5']=5})[category]
@@ -74,11 +81,11 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
   out.parent=''
  end
  local smelter=k=='Smelter'
- local supported=forge or ordinary or clothier or glass or smelter or k=='Still'
+ local supported=forge or ordinary or clothier or glass or craft or smelter or k=='Still'
  if category~='' and not supported then return nil,'Unsupported workshop category' end
  if supported then
   out.category=category;out.categories={}
-  if not fabric and not glass_material and (not forge or category=='' or category:sub(1,9)=='reaction:') then out.categories=native_categories(b.id,category) end
+  if not fabric and not glass_material and craft_material==nil and (not forge or category=='' or category:sub(1,9)=='reaction:') then out.categories=native_categories(b.id,category) end
   out.editable_templates=native_templates(b.id)
   if k=='Butchers' then
    -- Pinned native8c5938..8c597d includes Catch live land animal at root,
@@ -86,14 +93,15 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
    -- input generation below still own its wording and requirements.
    out.editable_templates[#out.editable_templates+1]={job_type=df.job_type.CatchLiveLandAnimal}
   end
-  for i=2,#out.categories do
+  -- Craft's native root retains reaction-category construction order.
+  if not craft then for i=2,#out.categories do
    local row=out.categories[i];local at=i
    while at>1 and native_less(row.caption,out.categories[at-1].caption)do out.categories[at]=out.categories[at-1];at=at-1 end
    out.categories[at]=row
-  end
+  end end
  end
- local reaction_page=not fabric and not glass_material and (not forge or category=='' or category:sub(1,9)=='reaction:')
- if (clothier or glass) and category=='' then
+ local reaction_page=not fabric and not glass_material and craft_material==nil and (not forge or category=='' or category:sub(1,9)=='reaction:')
+ if (clothier or glass or craft) and category=='' then
   local categories=native_fabrics(b.id)
   for _,row in ipairs(out.categories)do categories[#categories+1]=row end
   out.categories=categories
@@ -119,13 +127,31 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  end
  -- Native owned templates supply the audited builtin branches. The order
  -- classifier alone is not sufficient evidence for additional families.
- if (category=='' and (ordinary or glass)) or fabric or glass_material then
+ if (category=='' and (ordinary or glass or craft)) or fabric or glass_material or craft_material~=nil then
   for _,fields in ipairs(out.editable_templates) do
-   if fields.job_type~=df.job_type.CustomReaction and (not fabric or (fields.material_category or {}).whole==fabric) and (not glass or (glass_material and fields.mat_type==glass_material) or (not glass_material and fields.job_type==df.job_type.CollectSand)) then
+   local craft_allowed=true
+   if craft then
+    local flags=(fields.material_category or {}).whole or 0
+    if craft_material==nil then
+     craft_allowed=fields.job_type==91 or fields.job_type==128 or
+      (fields.job_type==130 and (flags==512 or flags==1024 or flags==2048)) or
+      ((fields.job_type==82 or (fields.job_type>=230 and fields.job_type<=237)) and
+       ({[4]=true,[8]=true,[4096]=true,[512]=true,[1024]=true,[2048]=true,[16]=true})[flags])
+    elseif craft_material==0 then craft_allowed=fields.mat_type==0 and fields.job_type~=91
+    else craft_allowed=flags==craft_material and not (craft_material==2 and fields.job_type==123) end
+    if craft_allowed and craft_material==32 and fields.job_type==216 then
+     -- Native8c9061 selects BONE_MAT tools but emits a wood job. Preserve
+     -- the confirmed native effect until a correction is authorized.
+     local copy={};for key,value in pairs(fields)do copy[key]=value end
+     fields=copy;fields.material_category={whole=2}
+    end
+   end
+   if craft_allowed and fields.job_type~=df.job_type.CustomReaction and (not fabric or (fields.material_category or {}).whole==fabric) and (not glass or (glass_material and fields.mat_type==glass_material) or (not glass_material and fields.job_type==df.job_type.CollectSand)) then
    local key='builtin:'..fields.job_type..':'..(fields.mat_type or -1)
    if (fields.item_subtype or -1)>=0 then key=key..':subtype:'..fields.item_subtype end
    if fields.specflag and (fields.specflag.whole or 0)~=0 then key=key..':specflag:'..fields.specflag.whole end
    if fabric then key=key..':fabric:'..fabric end
+   if craft then key=key..':craft:'..tostring(craft_material or 'root')..':material:'..tostring((fields.material_category or {}).whole or 0)..':index:'..tostring(fields.mat_index or -1) end
    out[#out+1]={key=key,fields=fields,available=true,objection=''}
    end
   end

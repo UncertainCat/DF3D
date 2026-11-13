@@ -110,6 +110,7 @@ local function read_worker_reference(target)
 end
 local fuel_flags={}
 local furnace_fixtures={}
+local craft_tool_fixture
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
@@ -236,6 +237,18 @@ local ok,err=xpcall(function()
    end
    return {job_type=job.job_type,reaction_name=job.reaction_name,item_subtype=job.item_subtype,mat_type=job.mat_type,mat_index=job.mat_index,
     material_category=job.material_category.whole,specflag=job.specflag.whole,specdata=job.specdata.hist_figure_id,inputs=inputs}
+  end
+  if os.getenv('DF3D_WORKSHOP_CRAFT_BONE_TOOL')=='1'then
+   assert(os.getenv('DF3D_WORKSHOP_CRAFT_NAV')=='1','Bone tool probe requires Craft navigation')
+   local entity=assert(df.global.plotinfo.main.fortress_entity)
+   for _,id in ipairs(entity.resources.tool_type)do
+    local raw=df.global.world.raws.itemdefs.tools[id]
+    if raw and not raw.flags.NO_DEFAULT_JOB and not raw.flags.FURNITURE and not raw.flags.BONE_MAT then
+     craft_tool_fixture={raw=raw,id=id,bone=raw.flags.BONE_MAT};raw.flags.BONE_MAT=true;break
+    end
+   end
+   assert(craft_tool_fixture,'No suitable civilization tool for controlled bone probe')
+   result.craft_bone_tool={tool_id=craft_tool_fixture.id,raw_id=craft_tool_fixture.raw.id,prior_bone=craft_tool_fixture.bone}
   end
   if os.getenv('DF3D_WORKSHOP_SMELTER_NO_FUEL')=='1'then
    assert(os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1','Fuel scenario requires Smelter lane')
@@ -384,7 +397,26 @@ local ok,err=xpcall(function()
       assert(click_label('Back'),'Clothier Back missing')
       local returned=read_rows();assert(semantic_rows(returned)==semantic_rows(rows),'Clothier Back did not restore root')
       catalog.navigation[#catalog.navigation+1]={fabric=glass and root_row.material or root_row.material_category,caption=root_row.caption,rows=child,back_restored_root=true}
-      if os.getenv('DF3D_WORKSHOP_CLOTHIER_RUNTIME')=='1' or glass then
+      if craft_tool_fixture and root_row.material_category==32 then
+       local selected
+       for _,row in ipairs(child)do if row.job_type==216 and row.item_subtype==craft_tool_fixture.id then selected=row;break end end
+       assert(selected,'Controlled bone tool missing from native page')
+       result.craft_bone_tool.row=selected
+       assert(selected.material_category==2,'Native bone tool does not use the suspected wood category')
+       assert(click_label(root_row.caption))
+       local clicked=false
+       for scroll=0,128 do
+        if click_label(selected.caption)then clicked=true;break end
+        g.precise_mouse_x=600;g.precise_mouse_y=350;g.mouse_x=75;g.mouse_y=29
+        gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');view:render(dfhack.getTickCount())
+       end
+       assert(clicked,'Controlled bone tool not reachable')
+       local job=assert(target.jobs[#target.jobs-1]);assert(#target.jobs==#queue_ids+1)
+       result.craft_bone_tool.effect=family_effect(job)
+       assert(job.material_category.whole==2,'Bone tool job did not retain wood category')
+       assert(dfhack.job.removeJob(job));view:render(dfhack.getTickCount());assert(click_label('Add new task'))
+      end
+      if os.getenv('DF3D_WORKSHOP_CLOTHIER_RUNTIME')=='1' or glass or os.getenv('DF3D_WORKSHOP_CRAFT_RUNTIME')=='1'then
        local nav=catalog.navigation[#catalog.navigation];nav.effects={}
        for _,pick in ipairs({1,#child})do
         assert(click_label(root_row.caption))
@@ -403,6 +435,13 @@ local ok,err=xpcall(function()
        end
       end
      end end
+     if craft and os.getenv('DF3D_WORKSHOP_CRAFT_RUNTIME')=='1'then
+      for index,row in ipairs(rows)do if row.available and row.job_type and row.job_type~=209 then
+       assert(click_label(row.caption));local job=assert(target.jobs[#target.jobs-1]);assert(#target.jobs==#queue_ids+1)
+       catalog.root_effect={index=index,caption=row.caption,native=family_effect(job)}
+       assert(dfhack.job.removeJob(job));view:render(dfhack.getTickCount());assert(click_label('Add new task'));break
+      end end
+     end
      shot(prefix..'-back-root')
     end
     if os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')=='1'then
@@ -448,7 +487,7 @@ local ok,err=xpcall(function()
    end
   end
   shot('task-catalog-return')
-  if os.getenv('DF3D_WORKSHOP_CLOTHIER_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1'then
+  if os.getenv('DF3D_WORKSHOP_CLOTHIER_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_CRAFT_RUNTIME')=='1'then
    capture('workshop-wire')
    local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)
    for _,catalog in ipairs(result.task_catalogs)do
@@ -459,6 +498,12 @@ local ok,err=xpcall(function()
      assert(job);entry.viewer=family_effect(job);assert(json.encode(entry.native)==json.encode(entry.viewer),'Clothier task effect differs')
      assert(dfhack.job.removeJob(job))
     end end
+    if catalog.root_effect then
+     local id=assert(receipt.created['root:'..catalog.root_effect.index]);local job
+     for _,candidate in ipairs(target.jobs)do if candidate.id==id then job=candidate;break end end
+     assert(job and json.encode(catalog.root_effect.native)==json.encode(family_effect(job)),'Craft root task effect differs')
+     assert(dfhack.job.removeJob(job))
+    end
     assert(#target.jobs==#catalog.queue_ids)
     for i,id in ipairs(catalog.queue_ids)do assert(target.jobs[i-1].id==id)end
    end
@@ -1392,6 +1437,7 @@ local ok,err=xpcall(function()
 end,debug.traceback)
 for _,prior in ipairs(fuel_flags)do prior.item.flags.forbid=prior.forbid end
 for _,entry in ipairs(furnace_fixtures)do entry.building.type=entry.prior_type end
+if craft_tool_fixture then craft_tool_fixture.raw.flags.BONE_MAT=craft_tool_fixture.bone end
 assert(#building.jobs==#jobs,'Workshop capture changed job count'..(ok and '' or '\n'..tostring(err)))
 for i,id in ipairs(jobs)do assert(building.jobs[i-1].id==id,'Workshop capture changed job order')end
 select_map(original)

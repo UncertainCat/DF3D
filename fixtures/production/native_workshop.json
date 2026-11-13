@@ -11026,5 +11026,792 @@
       "workshop-craft-page-3.png": "9e841664eae0d9f858946d50e8db07c077427e46bf73a24c291ade07ef2cb87f",
       "workshop-craft-page-4.png": "639be15819378d9ab02b884cab10b869f936be54afb23c7ef43f9e8f079e37dc"
     }
+  },
+  "craft_runtime_reference": {
+    "scope": "Craft root and four owned material pages. Native captions/order/availability, four Back transitions, root Cancel, four invalid selectors and nine actual task creations per run. Job fields/input requirements compared by post-viewer lane assertions; stored effect records precede those comparisons and contain native only.",
+    "membership": "Pinned8c85ff..8c9a06 FNV64 5d04ed38ed239697. Audited order-catalog page filters, native material formatter14d1920, native root reaction categories in construction order; material children omit reactions. Omit wood toy123. Recipe keys include material flags, material index and page identity.",
+    "bone_tool_behavior": "Confirmed native bug, preserved without correction: controlled ITEM_TOOL_NEST_BOX BONE_MAT=true adds Make wooden nest box to Bone page; native8c9061 emits category2 and job input WOOD5. Raw flag restored after protected body. Viewer controlled run matches this task effect.",
+    "omissions": [
+      "All root and child task creation effects",
+      "Instrument category child workflow",
+      "Worker execution/products",
+      "Native uninitialized item_type equivalence"
+    ],
+    "runs": [
+      {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261112-224443",
+        "controlled_bone_tool": null,
+        "root_choices": 57,
+        "root_effect": {
+          "caption": "Decorate with horn",
+          "index": 8,
+          "native": {
+            "inputs": [
+              {
+                "flags1": 16,
+                "flags2": 34603008,
+                "flags3": 0,
+                "item_subtype": -1,
+                "item_type": -1,
+                "mat_index": -1,
+                "mat_type": -1,
+                "quantity": 1
+              },
+              {
+                "flags1": 1,
+                "flags2": 0,
+                "flags3": 0,
+                "item_subtype": -1,
+                "item_type": -1,
+                "mat_index": -1,
+                "mat_type": -1,
+                "quantity": 1
+              }
+            ],
+            "item_subtype": -1,
+            "job_type": 130,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 1024,
+            "reaction_name": "",
+            "specdata": -1,
+            "specflag": 0
+          }
+        },
+        "navigation": [
+          {
+            "selector": 0,
+            "count": 19,
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Make large rock gem",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 2048,
+                      "flags3": 64,
+                      "item_subtype": -1,
+                      "item_type": 4,
+                      "mat_index": -1,
+                      "mat_type": 0,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 237,
+                  "mat_index": -1,
+                  "mat_type": 0,
+                  "material_category": 0,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Make three rock mugs",
+                "index": 19,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 2048,
+                      "flags3": 64,
+                      "item_subtype": -1,
+                      "item_type": 4,
+                      "mat_index": -1,
+                      "mat_type": 0,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 122,
+                  "mat_index": -1,
+                  "mat_type": 0,
+                  "material_category": 0,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          },
+          {
+            "selector": 2,
+            "count": 18,
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Make large wooden gem",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 5,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 237,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 2,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Make wooden scroll rollers",
+                "index": 18,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 5,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": 19,
+                  "job_type": 216,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 2,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          },
+          {
+            "selector": 32,
+            "count": 15,
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Decorate with bone",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 16,
+                      "flags2": 33685504,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 1,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 130,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 32,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Make pair of bone gauntlets",
+                "index": 15,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 16,
+                      "flags2": 33685504,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": 0,
+                  "job_type": 116,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 32,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          },
+          {
+            "selector": 64,
+            "count": 12,
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Decorate with shell",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 16,
+                      "flags2": 33816576,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 1,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 130,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 64,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Make shell ring",
+                "index": 12,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 16,
+                      "flags2": 33816576,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 234,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 64,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          }
+        ],
+        "picker_crop": [
+          432,
+          106,
+          888,
+          676
+        ],
+        "crops": [
+          {
+            "page": "root",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-1",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-2",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-3",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-4",
+            "differing_pixels": 0
+          }
+        ],
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "source_preservation": "Owned DF2268 exited unsaved; Owned source unchanged",
+        "sha256": {
+          "workshop-native.json": "d545d330c5847cf1c55a3ec8f921c66cc67b9f2d8fc8d8bb8905cc8669a9d88a",
+          "result.json": "9841cf994622ed6839a3c946b98cbf522f329c7e9ebb7f82e60a49067b553955",
+          "workshop-wire-result.json": "e0e4141d4e034f76cd5d1e20b391ed2baf378f5e42a26eece3d6906850afb247",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "workshop-craft-root.png": "0580ba94084856020cdebc2eff9a64b0003ca705ec5c8afcbef8ccc61025ebb5",
+          "craft-root-live.png": "997edae811fd5729a87751adc13500d3b5f2bd7637d0f7f4cbe69417e5e89f36",
+          "workshop-craft-page-1.png": "eee7b269755b69f0c3cccb38a6bcfb73a7594b437c1ff8e7f965a7fb101bfad3",
+          "craft-page-1-live.png": "fceca37d39ff59524eac851818b4bbd82d500ae98997098060e74521d624f12d",
+          "workshop-craft-page-2.png": "ecf94772af30ccc7962e57f0b968ae025f93549f91abf37e5fe9a306ba65f9f7",
+          "craft-page-2-live.png": "a6fb0bdfaf9ae9cbb6ec902710caf3ae9ec6034f087655458ff013866711f074",
+          "workshop-craft-page-3.png": "9e841664eae0d9f858946d50e8db07c077427e46bf73a24c291ade07ef2cb87f",
+          "craft-page-3-live.png": "0bd407e18d59a3d5f6d2b568416524a8689bbb6c9c32d5d2f89fca60d9a5eb4c",
+          "workshop-craft-page-4.png": "639be15819378d9ab02b884cab10b869f936be54afb23c7ef43f9e8f079e37dc",
+          "craft-page-4-live.png": "9913552da42e63fe2bc8f6ba72acc4c6e1a8e6f77a6e618a45627da6b2e4f0d4"
+        }
+      },
+      {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261112-224539",
+        "controlled_bone_tool": {
+          "effect": {
+            "inputs": [
+              {
+                "flags1": 0,
+                "flags2": 0,
+                "flags3": 0,
+                "item_subtype": -1,
+                "item_type": 5,
+                "mat_index": -1,
+                "mat_type": -1,
+                "quantity": 1
+              }
+            ],
+            "item_subtype": 10,
+            "job_type": 216,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 2,
+            "reaction_name": "",
+            "specdata": -1,
+            "specflag": 0
+          },
+          "prior_bone": false,
+          "raw_id": "ITEM_TOOL_NEST_BOX",
+          "row": {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "available": true,
+            "caption": "Make wooden nest box",
+            "item_subtype": 10,
+            "item_type": 0,
+            "job_type": 216,
+            "leave": false,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 2,
+            "objection": "",
+            "priority": 1000,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          "tool_id": 10
+        },
+        "root_choices": 57,
+        "root_effect": {
+          "caption": "Decorate with horn",
+          "index": 8,
+          "native": {
+            "inputs": [
+              {
+                "flags1": 16,
+                "flags2": 34603008,
+                "flags3": 0,
+                "item_subtype": -1,
+                "item_type": -1,
+                "mat_index": -1,
+                "mat_type": -1,
+                "quantity": 1
+              },
+              {
+                "flags1": 1,
+                "flags2": 0,
+                "flags3": 0,
+                "item_subtype": -1,
+                "item_type": -1,
+                "mat_index": -1,
+                "mat_type": -1,
+                "quantity": 1
+              }
+            ],
+            "item_subtype": -1,
+            "job_type": 130,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 1024,
+            "reaction_name": "",
+            "specdata": -1,
+            "specflag": 0
+          }
+        },
+        "navigation": [
+          {
+            "selector": 0,
+            "count": 19,
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Make large rock gem",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 2048,
+                      "flags3": 64,
+                      "item_subtype": -1,
+                      "item_type": 4,
+                      "mat_index": -1,
+                      "mat_type": 0,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 237,
+                  "mat_index": -1,
+                  "mat_type": 0,
+                  "material_category": 0,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Make three rock mugs",
+                "index": 19,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 2048,
+                      "flags3": 64,
+                      "item_subtype": -1,
+                      "item_type": 4,
+                      "mat_index": -1,
+                      "mat_type": 0,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 122,
+                  "mat_index": -1,
+                  "mat_type": 0,
+                  "material_category": 0,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          },
+          {
+            "selector": 2,
+            "count": 18,
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Make large wooden gem",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 5,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 237,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 2,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Make wooden scroll rollers",
+                "index": 18,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 5,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": 19,
+                  "job_type": 216,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 2,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          },
+          {
+            "selector": 32,
+            "count": 16,
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Decorate with bone",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 16,
+                      "flags2": 33685504,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 1,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 130,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 32,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Make wooden nest box",
+                "index": 16,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 0,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": 5,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": 10,
+                  "job_type": 216,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 2,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          },
+          {
+            "selector": 64,
+            "count": 12,
+            "back_restored_root": true,
+            "effects": [
+              {
+                "caption": "Decorate with shell",
+                "index": 1,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 16,
+                      "flags2": 33816576,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    },
+                    {
+                      "flags1": 1,
+                      "flags2": 0,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 130,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 64,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              },
+              {
+                "caption": "Make shell ring",
+                "index": 12,
+                "native": {
+                  "inputs": [
+                    {
+                      "flags1": 16,
+                      "flags2": 33816576,
+                      "flags3": 0,
+                      "item_subtype": -1,
+                      "item_type": -1,
+                      "mat_index": -1,
+                      "mat_type": -1,
+                      "quantity": 1
+                    }
+                  ],
+                  "item_subtype": -1,
+                  "job_type": 234,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "material_category": 64,
+                  "reaction_name": "",
+                  "specdata": -1,
+                  "specflag": 0
+                }
+              }
+            ]
+          }
+        ],
+        "picker_crop": [
+          432,
+          106,
+          888,
+          676
+        ],
+        "crops": [
+          {
+            "page": "root",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-1",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-2",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-3",
+            "differing_pixels": 0
+          },
+          {
+            "page": "page-4",
+            "differing_pixels": 0
+          }
+        ],
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "source_preservation": "Owned DF31884 exited unsaved; Owned source unchanged",
+        "sha256": {
+          "workshop-native.json": "974c4703d82368ecbce1a288b3206f2e4e18d2aeb12ca16fafd8603f631764be",
+          "result.json": "aaefb8faea4f72ad0a163510345e81c9e20951885f4f6416982f5b1c01cd1be5",
+          "workshop-wire-result.json": "d673f7c19f2cf20491c7badcde5c4b46b2757f2d2fc6701bbb7a5b363d8b8456",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "workshop-craft-root.png": "0580ba94084856020cdebc2eff9a64b0003ca705ec5c8afcbef8ccc61025ebb5",
+          "craft-root-live.png": "997edae811fd5729a87751adc13500d3b5f2bd7637d0f7f4cbe69417e5e89f36",
+          "workshop-craft-page-1.png": "eee7b269755b69f0c3cccb38a6bcfb73a7594b437c1ff8e7f965a7fb101bfad3",
+          "craft-page-1-live.png": "fceca37d39ff59524eac851818b4bbd82d500ae98997098060e74521d624f12d",
+          "workshop-craft-page-2.png": "ecf94772af30ccc7962e57f0b968ae025f93549f91abf37e5fe9a306ba65f9f7",
+          "craft-page-2-live.png": "a6fb0bdfaf9ae9cbb6ec902710caf3ae9ec6034f087655458ff013866711f074",
+          "workshop-craft-page-3.png": "9665aa6717657ddf7b2030bdf02d76de92f01eda16b2bfd8e069139e5f0b9286",
+          "craft-page-3-live.png": "fc6b6dee0a9c1ef30cb43c8ea4ec05f4dcbf6bae9159ac1aac248a2f62dd647a",
+          "workshop-craft-page-4.png": "639be15819378d9ab02b884cab10b869f936be54afb23c7ef43f9e8f079e37dc",
+          "craft-page-4-live.png": "9913552da42e63fe2bc8f6ba72acc4c6e1a8e6f77a6e618a45627da6b2e4f0d4"
+        }
+      }
+    ]
   }
 }

@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Craftsdwarf's Bone page creates wood jobs for qualifying bone tools. | No correction approved; preserve native's wood category and input requirement. | Controlled native223829 on2026-11-12 temporarily enables BONE_MAT on civilization tool10 ITEM_TOOL_NEST_BOX. Bone page shows Make wooden nest box; clicking creates job216/category2 with WOOD5 input. Native8c9061 writes2 after testing BONE_MAT16. Viewer224539 matches. Flag and queues restored, source saves preserved. `native_workshop.json.craft_runtime_reference`. |
 | Zone Active toggles OR both low bits into the settings union regardless of zone type, changing unrelated options. | Implemented approved correction: change only Active, preserve zone settings, and omit the unrelated DFHack membership rebuild. | Independently reproduced through native clicks in protected170600 on2026-11-12: Tomb permissions both enabled to disabled, archery dir_x1 to3; re-enabling retains the corruption. Viewer171315 passes10 clicks across5 types and stale-edit rejection. `native_zone_defaults.json.active_toggle_reference`; reproduction below. |
 | Justice's Name sort tooltip advertises Ctrl+n, but the native sort command leaves the list unchanged. | No correction approved or implemented; preserve inactive shortcut. | Protected130514 on2026-11-12 sends UNITLIST_SORT_NAME before filter focus in Guard, Convicts, Interrogate and Convict. Native priorities and ordered row IDs remain unchanged; FILTER works in the same lists. `native_justice.json.filter_keyboard_reference`. |
 | Justice witness captions can extend past the panel edge. | No correction approved or implemented; preserve native full captions. | Protected150238 on2026-11-12 rebuilds a case after a controlled long witness name. Constructor14195c0 sets a120-cell minimum and the caption draws past the panel. `native_justice.json.witness_intrinsic_width_reference`. |
@@ -17478,13 +17479,36 @@ Wood uses civilization ammunition resources+190 and non-furniture tools+280 with
 HARD_MAT0 or WOOD_MAT6, excluding NO_DEFAULT_JOB17. Bone/shell clothing uses
 raw flags3/4 respectively. Rock includes weapons with raw flag0 and non-furniture
 tools with HARD_MAT0 or STONE_MAT14. Shell tools require SHELL_MAT15.
-There is an unresolved disassembly-only caveat:8c9010..8c906b selects bone tools
-but8c9061 writes category2 (wood), rather than32. No qualifying bone tool appears
-in this capture; it is not a live-confirmed defect or an approved correction.
-Do not generalize the captured catalog match to that case. Runtime integration
-and viewer/job-effect acceptance remain pending. Owned DF46024 exited unsaved,
+Native8c9010..8c906b selects bone tools but8c9061 writes category2 (wood),
+rather than32. No qualifying bone tool appears in this baseline; the controlled
+capture below independently confirms that defect. Owned DF46024 exited unsaved,
 source saves and queues remained unchanged, and the capture used30FPS with a41C
 GPU sample. See native_workshop.json.craft_navigation_reference.
+
+Craftsdwarf runtime now exposes owned canonical craft:0/2/32/64 pages through
+the shared native material formatter and audited order-template filters.
+Root reaction categories retain native construction order (instrument piece
+before instrument); material children omit reactions and return directly to
+root. Recipe identities include material category, material index and page so
+root craft variants and multiple metal-strand ores cannot collide. Native's
+wooden-toy omission and confirmed bone-tool wood category are preserved.
+Controlled native223829 temporarily enables BONE_MAT on existing civilization
+tool10 ITEM_TOOL_NEST_BOX. The Bone page offers Make wooden nest box; clicking
+creates category2/job216 with a WOOD5 input. The raw flag is restored afterward.
+This is recorded as an uncorrected native defect in the bug register.
+Protected224443/224539 on2026-11-12 verify the ordinary and controlled cases:
+57 root choices, four material pages (19/18/15/12 ordinary; bone16 controlled),
+four Back transitions, Cancel, invalid selectors and nine actual job creations
+per run. Creation fields and input requirements match native, including the
+controlled wooden nest box. All ten picker crops432,106..888,676 are
+pixel-identical. Original queues and raw flags are restored; owned DF2268/31884
+exit unsaved and source saves remain unchanged. Core19 and headless
+state/composition/adapter checks pass. Both live captures contain only the
+three documented Godot diagnostics; serial30FPS GPU samples40-44C are not
+continuous peaks. All-task creation effects, instrument-child workflows,
+worker execution/products and uninitialized item_type equivalence remain
+unqualified. See native_workshop.json.craft_runtime_reference. Whole workshop
+exposure remains gated.
 
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.

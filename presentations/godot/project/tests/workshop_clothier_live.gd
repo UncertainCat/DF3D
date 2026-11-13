@@ -19,11 +19,12 @@ func run() -> void:
 	var owner=preload("res://scripts/workshop_panel.gd").new();root.add_child(owner);owner.configure(world,service,host)
 	var family: Dictionary=reference.task_catalogs[0]
 	var glass:=OS.get_environment("DF3D_WORKSHOP_GLASS_RUNTIME")=="1"
-	var prefix: String="glass" if glass else "clothier"
+	var craft:=OS.get_environment("DF3D_WORKSHOP_CRAFT_RUNTIME")=="1"
+	var prefix: String="craft" if craft else "glass" if glass else "clothier"
 	var icons=preload("res://scripts/location_staff_indicators.gd")
-	owner.open_workshop(int(family.building_id),icons.FURNACES["2"] if glass else icons.WORKSHOPS["13"])
+	owner.open_workshop(int(family.building_id),icons.WORKSHOPS["3"] if craft else icons.FURNACES["2"] if glass else icons.WORKSHOPS["13"])
 	await settle(service,func():return owner.state.phase==owner.state.Phase.Ready and owner.tasks.phase==owner.tasks.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
-	for invalid in (["glass:0","glass:03","glass:6","glass:4097"] if glass else ["clothier:0","clothier:04","clothier:16","clothier:4097"]):
+	for invalid in (["craft:1","craft:02","craft:33","craft:65"] if craft else ["glass:0","glass:03","glass:6","glass:4097"] if glass else ["clothier:0","clothier:04","clothier:16","clothier:4097"]):
 		var rejected:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_id":int(family.building_id),"task_category":invalid})
 		check(rejected.get("status")==C.ManagementStatus.Rejected,"Invalid fabric accepted")
 	owner.panel.tasks.choose_mode(true)
@@ -59,6 +60,15 @@ func run() -> void:
 			created[str(int(nav.fabric))+":"+str(int(entry.index))]=id
 			owner.panel.tasks.choose_mode(true)
 			await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready)
+	if family.has("root_effect"):
+		var entry: Dictionary=family.root_effect
+		click(owner.panel.tasks.global_position+Vector2(24,84+(int(entry.index)-1)*36))
+		await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+		var id: int=owner.tasks.snapshot.get("created_job",-1)
+		check(id>=0 and not owner.panel.tasks.picking,"Craft root task did not queue")
+		created["root:"+str(int(entry.index))]=id
+		owner.panel.tasks.choose_mode(true)
+		await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready)
 	click(owner.panel.tasks.global_position+Vector2(owner.panel.tasks.size.x-48,12))
 	check(not owner.panel.tasks.picking,"Clothier root Cancel failed")
 	owner.close_panel();owner.queue_free();await process_frame

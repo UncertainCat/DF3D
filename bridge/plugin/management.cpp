@@ -5935,7 +5935,7 @@ void run(color_ostream& out) {
       if(!rows)return luaL_error(state,"Native workshop materials unavailable");
       lua_newtable(state);int index=0;
       for(const auto& row:*rows){lua_newtable(state);field(state,"caption",row.caption);
-        field(state,"key",std::string(int(building->getType())==5?"glass:":"clothier:")+std::to_string(row.category));lua_rawseti(state,-2,++index);}
+        field(state,"key",std::string(int(building->getType())==5?"glass:":building->getSubtype()==3?"craft:":"clothier:")+std::to_string(row.category));lua_rawseti(state,-2,++index);}
       return 1;
     });lua_setfield(L,-2,"workshop_material_choices");
     lua_pushcfunction(L,[](lua_State* state)->int {

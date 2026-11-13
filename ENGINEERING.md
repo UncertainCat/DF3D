@@ -17600,6 +17600,15 @@ uses dye counts. Runtime must own these searches, not use the native menu.
 Controlled type/stage changes were restored, DF10672 exited unsaved, and
 source saves/preferences were preserved; serial30FPS sampled39C.
 See native_workshop.json.dyer_navigation_reference for rows and evidence hashes.
+The owned `workshop_dye_native.h` target provider calls inventory searcha29630
+and color mixer7dc570 with independent vectors/filters and the workshop's
+position. Native inline enumeration8c597d..8c6cbb is byte-pinned; no menu or
+widget state is consumed. Protected235100 compares all811 choices against
+the four native pages for membership, availability counts and alpha_order.
+It passes, restores controlled type/stage, preserves source saves/preferences,
+and closes owned DF4368 unsaved. Serial30FPS sampled39C. This provider is
+currently diagnostic-only: caption sorting, availability text, color swatches,
+ingredient menus and actual task effects still need integration and acceptance.
 Ingredient submenu navigation, creation effects and DF3D implementation remain
 unfinished. An earlier
 controlled discovery232955 exited while entering Tint cloth aqua; source

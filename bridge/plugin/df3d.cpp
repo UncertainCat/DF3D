@@ -106,6 +106,7 @@
 #include "job_settings_native.h"
 #include "job_art_native.h"
 #include "work_order_dye_native.h"
+#include "workshop_dye_native.h"
 #include "work_order_art_native.h"
 #include "df/job_item.h"
 #include "musical_detail_native.h"
@@ -3589,6 +3590,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(const auto& choice:*choices) {
             Json::Value row(Json::objectValue);row["category"]=choice.category;
             row["material_index"]=choice.materialIndex;row["caption"]=DF2UTF(choice.caption);rows.append(std::move(row));
+          }
+          out.print("{}",Json::FastWriter().write(rows));return CR_OK;
+        }
+        if(parameters[0]=="workshop-dye-targets-probe") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          int32_t ids[2];
+          for(int i=0;i<2;++i) {
+            const auto& raw=parameters[i+1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),ids[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || ids[i]<0)return CR_WRONG_USAGE;
+          }
+          const auto choices=df3d_production::workshopDyeTargets(df::building::find(ids[0]),ids[1]);
+          if(!choices)return CR_FAILURE;
+          Json::Value rows(Json::arrayValue);
+          for(const auto& choice:*choices) {
+            Json::Value row(Json::objectValue);row["color"]=choice.color;row["available"]=choice.available;
+            row["alpha_order"]=choice.alphaOrder;row["tint"]=choice.tint;rows.append(std::move(row));
           }
           out.print("{}",Json::FastWriter().write(rows));return CR_OK;
         }

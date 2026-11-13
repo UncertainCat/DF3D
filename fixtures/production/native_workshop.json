@@ -27538,6 +27538,58 @@
       "No DF3D provider or rendered parity acceptance.",
       "Earlier Tint cloth aqua exit remains unisolated; shallow navigation does not resolve it.",
       "Recorded job.item_type is uninitialized native button data, not an accepted semantic field."
-    ]
+    ],
+    "owned_provider_reference": {
+      "source": "build/stockpile-storage-native-farm-discovery-20261112-235100",
+      "scope": "Native color mixer and building-aware inventory search with owned storage. All 811 target choices compared to native menu membership, availability counts and alpha_order by protected assertions.",
+      "pages": [
+        {
+          "path": [
+            {
+              "caption": "Dye cloth a specific color (opens menu)",
+              "index": 1
+            }
+          ],
+          "compared": 232
+        },
+        {
+          "path": [
+            {
+              "caption": "Dye leather a specific color (opens menu)",
+              "index": 2
+            }
+          ],
+          "compared": 232
+        },
+        {
+          "path": [
+            {
+              "caption": "Dye thread a specific color (opens menu)",
+              "index": 3
+            }
+          ],
+          "compared": 232
+        },
+        {
+          "path": [
+            {
+              "caption": "Mix dye (opens menu)",
+              "index": 4
+            }
+          ],
+          "compared": 115
+        }
+      ],
+      "sha256": {
+        "workshop-native.json": "9a1495d64b601eb36d1525c26dded4bdf0b1a4707dba89547c4df8d0f108945c",
+        "result.json": "8637ad96fa5d7b7c095734b4099d88f90587a460424969df043576c162b064e8"
+      },
+      "cleanup": "Owned DF4368 closed unsaved; source saves, preferences and controlled workshop type/stage restored.",
+      "omissions": [
+        "Caption sorting/rendering not provided by this helper.",
+        "No ingredient submenus or task effects.",
+        "No viewer integration or public exposure."
+      ]
+    }
   }
 }

@@ -342,6 +342,25 @@ local ok,err=xpcall(function()
      assert(#pending<=512,'Native task category discovery exceeded page bound')
      local page=pending[next_page];next_page=next_page+1
      catalog.pages[#catalog.pages+1]=page
+     if os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and #page.path==1 then
+      local jobs={191,244,190,243};local job=assert(jobs[page.path[1].index])
+      local encoded,status=dfhack.run_command_silent('df3d','workshop-dye-targets-probe',tostring(target.id),tostring(job))
+      assert(status==0,encoded);page.owned_dye_targets=json.decode(encoded)
+      assert(#page.rows==#page.owned_dye_targets,'Dyer target count differs')
+      local expected={}
+      for _,row in ipairs(page.rows)do
+       local tint=row.color~=nil;local color=tint and row.color or row.specdata
+       local count=tonumber((row.info or ''):match('At least ([%d,]+)')or '0')
+       assert(count~=nil,'Dyer count format needs native-number decoding')
+       expected[tostring(tint)..':'..color]={count=count,alpha_order=row.alpha_order}
+      end
+      for _,row in ipairs(page.owned_dye_targets)do
+       local key=tostring(row.tint)..':'..row.color;local native=assert(expected[key],'Missing native Dyer target '..key)
+       assert(native.count==row.available and native.alpha_order==row.alpha_order,'Dyer target availability differs: '..key)
+       expected[key]=nil
+      end
+      assert(next(expected)==nil,'Dyer target provider omitted native choices')
+     end
      if (key=='13:5:-1' or key=='13:6:-1') and #page.path==2 and page.path[1].index<=6 then
       local category=page.path[1].index-1;local parent
       for _,candidate in ipairs(catalog.pages)do

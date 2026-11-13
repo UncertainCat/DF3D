@@ -3561,14 +3561,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="workshop-forge-choices-probe") {
-          if(parameters.size()!=3)return CR_WRONG_USAGE;
-          int32_t values[2];
-          for(int i=0;i<2;++i) {
+          if(parameters.size()!=3 && parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t values[3];
+          for(size_t i=0;i<parameters.size()-1;++i) {
             const auto& raw=parameters[i+1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
             if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
           }
-          if(values[1]==6) {
-            const auto choices=df3d_production::workshopForgeClothing(df::building::find(values[0]));if(!choices)return CR_FAILURE;
+          if(values[1]==6 || parameters.size()==4) {
+            if(values[1]==6 && parameters.size()!=3)return CR_WRONG_USAGE;
+            const auto choices=values[1]==6?df3d_production::workshopForgeClothing(df::building::find(values[0])):
+                df3d_production::workshopForgeTasks(df::building::find(values[0]),values[1],values[2]);
+            if(!choices)return CR_FAILURE;
             Json::Value rows(Json::arrayValue);
             for(const auto& choice:*choices) {
               Json::Value row;row["job_type"]=int(choice.job_type);row["item_subtype"]=choice.item_subtype;

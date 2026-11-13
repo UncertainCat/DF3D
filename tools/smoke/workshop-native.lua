@@ -235,6 +235,24 @@ local ok,err=xpcall(function()
      assert(#pending<=512,'Native task category discovery exceeded page bound')
      local page=pending[next_page];next_page=next_page+1
      catalog.pages[#catalog.pages+1]=page
+     if (key=='13:5:-1' or key=='13:6:-1') and #page.path==2 and page.path[1].index<=6 then
+      local category=page.path[1].index-1;local parent
+      for _,candidate in ipairs(catalog.pages)do
+       if #candidate.path==1 and candidate.path[1].index==page.path[1].index then parent=candidate;break end
+      end
+      local material=assert(parent).rows[page.path[2].index].matgloss
+      assert(material~=nil,'Forge task path did not select a material')
+      local encoded,status=dfhack.run_command_silent('df3d','workshop-forge-choices-probe',tostring(target.id),tostring(category),tostring(material))
+      assert(status==0,encoded);page.owned_forge_tasks=json.decode(encoded)
+      local native={}
+      for _,row in ipairs(page.rows)do if row.job_type then
+       local copy={};for _,field in ipairs({'job_type','item_subtype','mat_type','mat_index','material_category','specflag','specdata','art_type','art_id','art_subid','caption'})do copy[field]=row[field]end
+       native[#native+1]=copy
+      end end
+      local comparison=assert(io.open(out..'/workshop-forge-task-comparison.json','w'))
+      comparison:write(json.encode({category=category,material=material,native=native,owned=page.owned_forge_tasks}));comparison:close()
+      assert(json.encode(native)==json.encode(page.owned_forge_tasks),'Forge task descriptors differ: '..category..'/'..material)
+     end
      if page.reaction_parent~=nil then
       local encoded,status=dfhack.run_command_silent('df3d','workshop-reaction-categories-probe',tostring(target.id),page.reaction_parent)
       assert(status==0,encoded);page.owned_categories=json.decode(encoded)

@@ -17356,10 +17356,29 @@ Cancel is not universal. Queue IDs and paused frame remain unchanged, source
 saves are preserved and owned DF43632 closes unsaved. Evidence is retained in
 `native_workshop_catalog.json.gz.owned_forge_choices_reference`. This supersedes
 195419's category/material-only evidence. The helpers are not yet connected to
-normal requests or the viewer; material-specific task rows, navigation ownership
-and job effects remain unfinished. The native uninitialized job.item_type is
+normal requests or the viewer; navigation ownership and job effects remain
+unfinished. Material-specific task rows are verified separately below. The native uninitialized job.item_type is
 excluded from descriptor comparison, not claimed equivalent. The run was serial
 at30 FPS, sampled GPU38C, with no Godot process.
+
+`workshopForgeTasks` supplies all six final material-selected task branches.
+It validates the material against the native category list, then composes pinned
+8ca541..8cb3b6 using civilization resources and semantic material/item eligibility
+8c03a0. Owned job descriptors retain native concrete subtypes; captions and sort
+use the existing native formatters. Metal mechanisms come from the forge trap
+branch, and siege-ammo subtype comes from the BALLISTA resource. The Work orders
+classifier is not used to decide forge task membership. The diagnostic accepts
+`workshop-forge-choices-probe id category material_index` for these pages.
+
+Protected200518 on2026-11-12 compares2108 task rows across135 material pages:
+all ordered captions and compared job/subtype/material/spec/art fields match.
+The full172-page workshop capture still passes reaction/category comparisons.
+Owned DF46560 closes unsaved with queue IDs, paused frame and source saves
+unchanged; serial30 FPS, sampled GPU38C. Evidence is retained in
+`native_workshop_catalog.json.gz.owned_forge_tasks_reference` and each page's
+`owned_forge_tasks`. This verifies descriptor generation, not job execution,
+job.item_type equivalence, availability/objection behavior for these new rows,
+magma-forge coverage or viewer integration. Normal forge routing remains gated.
 
 `workshopTaskTemplates` reuses the owned native template builder for
 Carpenter/Kitchen/WoodFurnace/Still descriptors. All categories remain available

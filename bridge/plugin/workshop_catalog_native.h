@@ -12,6 +12,9 @@
 #include "df/itemdef_helmst.h"
 #include "df/itemdef_glovesst.h"
 #include "df/itemdef_shoesst.h"
+#include "df/itemdef_siegeammost.h"
+#include "df/itemdef_trapcompst.h"
+#include "df/itemdef_toolst.h"
 #include <memory>
 
 namespace df3d_production {
@@ -133,6 +136,105 @@ inline std::optional<std::vector<df::manager_order_template>> workshopForgeCloth
                !addClothes(r.shoes_type,df::itemdef_shoesst::get_vector(),117,int32_t(i)))return std::nullopt;
         }
         if(!add(131,-1,int32_t(i)) || !add(132,-1,int32_t(i)))return std::nullopt;
+    }
+    for(size_t i=1;i<result.size();++i) {
+        auto row=std::move(result[i]);size_t at=i;
+        while(at>0) {
+            const auto less=workshopCaptionLess(row.name,result[at-1].name);if(!less)return std::nullopt;
+            if(!*less)break;
+            result[at]=std::move(result[at-1]);--at;
+        }
+        result[at]=std::move(row);
+    }
+    return result;
+}
+// Native8ca541..8cb3b6 supplies the final tasks after a forge material choice.
+// Membership is composed from that inline branch, not the Work orders shop
+// classifier (which assigns mechanisms elsewhere and loses siege subtypes).
+inline std::optional<std::vector<df::manager_order_template>> workshopForgeTasks(df::building* building,int32_t category,int32_t material) {
+    const auto choices=workshopForgeChoices(building,category);
+    if(!choices || category<0 || category>5 || !df::global::plotinfo ||
+       std::none_of(choices->begin(),choices->end(),[&](const auto& row){return row.materialIndex==material;}))return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base] {
+        const auto hash=[&](size_t at,size_t length) {
+            uint64_t value=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<length;++i){value^=base[at+i];value*=UINT64_C(1099511628211);}
+            return value;
+        };
+        return hash(0x8ca541,0xe75)==UINT64_C(0xb8a07ac314c3630f) &&
+            hash(0x8c03a0,0x17ad)==UINT64_C(0xedd2766250590831);
+    }();
+    if(!pinned)return std::nullopt;
+    static_assert(offsetof(df::historical_entity,resources)+offsetof(df::historical_entity::T_resources,siegeammo_type)==0x268);
+    static_assert(offsetof(df::historical_entity,resources)+offsetof(df::historical_entity::T_resources,tool_type)==0x280);
+    static_assert(offsetof(df::itemdef_siegeammost,ammo_class)==0xa8);
+    static_assert(offsetof(df::itemdef_trapcompst,flags)==0xd8);
+    static_assert(offsetof(df::itemdef_toolst,flags)==0xa8);
+    using Allowed=bool (*)(int16_t,int16_t,int16_t,int32_t);
+    using Flag=bool (*)(df::world*,int32_t,int16_t,int32_t);
+    const auto allowed=reinterpret_cast<Allowed>(base+0x8c03a0);
+    const auto flag=reinterpret_cast<Flag>(base+0x145bee0);
+    df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    auto* civ=df::historical_entity::find(df::global::plotinfo->civ_id);
+    std::vector<df::manager_order_template> result;
+    const auto add=[&](int32_t type,int16_t subtype=-1)->bool {
+        df::job job;job.job_type=df::job_type(type);job.item_subtype=subtype;job.mat_type=0;job.mat_index=material;
+        const auto caption=workshopJobCaption(job);if(!caption)return false;
+        df::manager_order_template row;
+        row.job_type=job.job_type;row.item_type=job.item_type;row.item_subtype=subtype;
+        row.mat_type=0;row.mat_index=material;row.specflag=job.specflag;row.specdata=job.specdata;
+        row.material_category=job.material_category;row.art_specifier=job.art_spec.type;
+        row.art_specifier_id1=job.art_spec.id;row.art_specifier_id2=job.art_spec.subid;row.name=*caption;
+        result.push_back(std::move(row));return true;
+    };
+    const auto armor=[&](const auto& ids,const auto& raws,int32_t job)->bool {
+        for(const int16_t id:ids) {
+            if(id<0 || size_t(id)>=raws.size() || !raws[id])return false;
+            if(raws[id]->props.flags.is_set(df::armor_general_flags::METAL) && !add(job,id))return false;
+        }
+        return true;
+    };
+    if(category==0 && civ) {
+        const auto& r=civ->resources;
+        for(auto id:r.weapon_type)if(allowed(24,id,0,material) && !add(96,id))return std::nullopt;
+        for(auto id:r.digger_type)if(std::find(r.weapon_type.begin(),r.weapon_type.end(),id)==r.weapon_type.end() &&
+            allowed(24,id,0,material) && !add(96,id))return std::nullopt;
+        for(auto id:r.ammo_type)if(allowed(39,id,0,material) && !add(129,id))return std::nullopt;
+    } else if(category==1 && civ) {
+        const auto& r=civ->resources;
+        if(!armor(r.armor_type,df::itemdef_armorst::get_vector(),100) ||
+           !armor(r.pants_type,df::itemdef_pantsst::get_vector(),102) ||
+           !armor(r.helm_type,df::itemdef_helmst::get_vector(),101) ||
+           !armor(r.gloves_type,df::itemdef_glovesst::get_vector(),116) ||
+           !armor(r.shoes_type,df::itemdef_shoesst::get_vector(),117))return std::nullopt;
+        for(auto id:r.shield_type)if(!add(118,id))return std::nullopt;
+    } else if(category==2) {
+        for(int32_t job:{119,120,124,126,125,76,80,67,68,198,199,79,78,73,70,71,72,77,75,193,203,204})
+            if(!add(job))return std::nullopt;
+    } else if(category==3) {
+        if(civ)for(auto id:civ->resources.siegeammo_type) {
+            const auto& raws=df::itemdef_siegeammost::get_vector();
+            if(id<0 || size_t(id)>=raws.size() || !raws[id])return std::nullopt;
+            if(raws[id]->ammo_class=="BALLISTA" && !add(133,id))return std::nullopt;
+        }
+        if(flag(df::global::world,58,0,material))for(int32_t job:{99,98,245})if(!add(job))return std::nullopt;
+    } else if(category==4) {
+        if(civ)for(auto id:civ->resources.trapcomp_type) {
+            const auto& raws=df::itemdef_trapcompst::get_vector();
+            if(id<0 || size_t(id)>=raws.size() || !raws[id])return std::nullopt;
+            if(raws[id]->flags.is_set(df::trapcomp_flags::METAL) && !add(140,id))return std::nullopt;
+        }
+        if(flag(df::global::world,11,0,material) && !add(139))return std::nullopt;
+    } else if(category==5) {
+        if(allowed(45,-1,0,material) && !add(97))return std::nullopt;
+        for(int32_t job:{82,122,123})if(!add(job))return std::nullopt;
+        if(civ)for(auto id:civ->resources.tool_type) {
+            const auto& raws=df::itemdef_toolst::get_vector();
+            if(id<0 || size_t(id)>=raws.size() || !raws[id])return std::nullopt;
+            if(!raws[id]->flags.is_set(df::tool_flags::NO_DEFAULT_JOB) && allowed(86,id,0,material) && !add(216,id))return std::nullopt;
+        }
+        for(int32_t job:{121,83,103,231,236,235,233,230,234,237,232})if(!add(job))return std::nullopt;
     }
     for(size_t i=1;i<result.size();++i) {
         auto row=std::move(result[i]);size_t at=i;

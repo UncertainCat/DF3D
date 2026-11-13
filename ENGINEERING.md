@@ -17359,12 +17359,25 @@ availability and refusal text. The picker crop432,106..888,676 has zero differin
 pixels. Actual clicks/scrolling create billon(use bars), Melt and magnetite,
 native gold and tetrahedrite smelting jobs; native fields and all inputs match.
 All29 unavailable rows reject both clicks and direct intents. Cancel works and
-original queue order is restored. Fuel-shortage scenarios, magma, execution,
+original queue order is restored. The fuel-shortage scenario is qualified below; magma, execution,
 products and job.item_type equivalence remain separate acceptance work.
 Owned DF10668 exits unsaved with source preservation; only the three known Godot
 diagnostics occur. Core19 and controller/composition/adapter checks pass. GPU
 samples40-41C at30FPS are not continuous peaks. Evidence is in
 native_workshop.json.smelter_runtime_reference. Public workshop exposure is gated.
+
+Protected220855 on2026-11-12 extends Smelter qualification to fuel shortage.
+The diagnostic temporarily forbids all102 fuel bars in the paused clone, then
+restores their original flags after its protected body. Native and viewer match
+all40 choices and refusal messages; every row rejects actual clicks and direct
+queue requests. Melt and available ore kinds report [Requires fuel], while
+absent ore kinds report [Requires ore, fuel]. Reaction fuel refusals take native
+precedence over missing reagents. The picker crop432,106..888,676 has zero
+differing pixels. Original queues and source saves are unchanged; owned DF42824
+exits unsaved. Core19 passes, with only three known Godot diagnostics in the
+live capture. GPU samples41-42C at30FPS are not continuous peaks. No product
+change was needed. See native_workshop.json.smelter_fuel_shortage_reference.
+This does not qualify magma supply or actual job execution.
 
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.

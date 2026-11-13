@@ -108,6 +108,7 @@ local function read_worker_reference(target)
  for i,id in ipairs(sorted_ids)do assert(actual_ids[i]==id,'Workshop native worker membership differs')end
  return {building_id=target.id,native_order=native_ids,member_ids=actual_ids,skills=native_skills,rows=semantic.rows,geometry=geometry,all_equal=true}
 end
+local fuel_flags={}
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
@@ -234,6 +235,13 @@ local ok,err=xpcall(function()
    end
    return {job_type=job.job_type,reaction_name=job.reaction_name,item_subtype=job.item_subtype,mat_type=job.mat_type,mat_index=job.mat_index,
     material_category=job.material_category.whole,specflag=job.specflag.whole,specdata=job.specdata.hist_figure_id,inputs=inputs}
+  end
+  if os.getenv('DF3D_WORKSHOP_SMELTER_NO_FUEL')=='1'then
+   assert(os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1','Fuel scenario requires Smelter lane')
+   for _,item in ipairs(df.global.world.items.other.BAR)do if item:getMaterial()==7 then
+    fuel_flags[#fuel_flags+1]={item=item,forbid=item.flags.forbid};item.flags.forbid=true
+   end end
+   result.fuel_scenario={forbidden_bars=#fuel_flags};assert(#fuel_flags>0,'Fuel scenario has no fuel bars')
   end
   result.task_catalogs={};local seen={}
   for _,target in ipairs(df.global.world.buildings.all)do
@@ -1342,6 +1350,7 @@ local ok,err=xpcall(function()
  for _,a in ipairs(prior_index)do indexed:insert('#',a)end
  assert(catalog_ok,catalog_err)
 end,debug.traceback)
+for _,prior in ipairs(fuel_flags)do prior.item.flags.forbid=prior.forbid end
 assert(#building.jobs==#jobs,'Workshop capture changed job count'..(ok and '' or '\n'..tostring(err)))
 for i,id in ipairs(jobs)do assert(building.jobs[i-1].id==id,'Workshop capture changed job order')end
 select_map(original)

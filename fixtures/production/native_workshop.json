@@ -8946,5 +8946,112 @@
       "workshop-wire-result.json": "26aaa9c392a07f882d2c29c1aa5ea7a5c3fe643f6fa0804eda0dded390c98996",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
     }
+  },
+  "smelter_fuel_shortage_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-220855",
+    "scope": "Controlled regular Smelter with all102 fuel bars forbidden in the paused unsaved clone. All40native/viewer choices/order/captions/refusals match; all40reject actual clicks and direct requests. Fuel flags restored after xpcall, no queue mutations. Existing fuel-present reference supplies complementary ore-present/absent cases. Magma and actual execution/products remain unverified.",
+    "builtin_rows": [
+      {
+        "caption": "Melt a metal object",
+        "available": false,
+        "objection": "[Requires fuel]"
+      },
+      {
+        "caption": "Smelt bismuthinite ore",
+        "available": false,
+        "objection": "[Requires ore, fuel]"
+      },
+      {
+        "caption": "Smelt cassiterite ore",
+        "available": false,
+        "objection": "[Requires ore, fuel]"
+      },
+      {
+        "caption": "Smelt galena ore",
+        "available": false,
+        "objection": "[Requires ore, fuel]"
+      },
+      {
+        "caption": "Smelt garnierite ore",
+        "available": false,
+        "objection": "[Requires ore, fuel]"
+      },
+      {
+        "caption": "Smelt hematite ore",
+        "available": false,
+        "objection": "[Requires ore, fuel]"
+      },
+      {
+        "caption": "Smelt horn silver ore",
+        "available": false,
+        "objection": "[Requires ore, fuel]"
+      },
+      {
+        "caption": "Smelt limonite ore",
+        "available": false,
+        "objection": "[Requires ore, fuel]"
+      },
+      {
+        "caption": "Smelt magnetite ore",
+        "available": false,
+        "objection": "[Requires fuel]"
+      },
+      {
+        "caption": "Smelt malachite ore",
+        "available": false,
+        "objection": "[Requires ore, fuel]"
+      },
+      {
+        "caption": "Smelt native aluminum ore",
+        "available": false,
+        "objection": "[Requires ore, fuel]"
+      },
+      {
+        "caption": "Smelt native copper ore",
+        "available": false,
+        "objection": "[Requires ore, fuel]"
+      },
+      {
+        "caption": "Smelt native gold ore",
+        "available": false,
+        "objection": "[Requires fuel]"
+      },
+      {
+        "caption": "Smelt native platinum ore",
+        "available": false,
+        "objection": "[Requires ore, fuel]"
+      },
+      {
+        "caption": "Smelt native silver ore",
+        "available": false,
+        "objection": "[Requires ore, fuel]"
+      },
+      {
+        "caption": "Smelt sphalerite ore",
+        "available": false,
+        "objection": "[Requires ore, fuel]"
+      },
+      {
+        "caption": "Smelt tetrahedrite ore",
+        "available": false,
+        "objection": "[Requires fuel]"
+      }
+    ],
+    "crop": [
+      432,
+      106,
+      888,
+      676
+    ],
+    "differing_pixels": 0,
+    "diagnostics": "passed_with_known_issues: separate-renderer, finalize, ObjectDB shutdown; no unclassified diagnostics",
+    "source_preservation": "Owned source unchanged; DF42824 exited unsaved",
+    "sha256": {
+      "workshop-native.json": "dc10b36a2b678ef0b700d83f7f81316dce95fd5b69873f70c65d17b446b676ab",
+      "workshop-family-1.png": "119452a789d5872d73e209cb77223f8f7aefdd9b6287630a40b8d9910490495d",
+      "family-1-live.png": "e296591f31d25e6078605c0865e1bf024a89b42a854a9d5edc93219f3d872765",
+      "workshop-wire-result.json": "98719e76985a2fec783bb27e957e63dd37542215d61c42f8eae7076d809ad35a",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
   }
 }

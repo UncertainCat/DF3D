@@ -121,6 +121,36 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ if os.getenv('DF3D_WORKSHOP_SHEET_LAYOUT')=='1'then
+  assert(#jobs==0,'Sheet layout reference needs empty queue')
+  local original_limit=building:getWorkshopProfile().max_general_orders
+  local created={}
+  local worked,problem=xpcall(function()
+   for i=1,2 do
+    assert(click_label('Add new task'));assert(click_label('Make bed'))
+    created[#created+1]=assert(building.jobs[#building.jobs-1])
+   end
+   result.sheet_layout={}
+   for _,size in ipairs{'small','wide','minimum','default'}do
+    resize_worker(size)
+    result.sheet_layout[#result.sheet_layout+1]={size=size,dimx=g.dimx,dimy=g.dimy}
+    for _,tab in ipairs{'Tasks','Workers','Work orders'}do
+     assert(click_label(tab),'Layout tab missing: '..tab)
+     shot('sheet-'..size..'-'..tab:gsub(' ','-'))
+    end
+    assert(click_label('Tasks'));assert(click_label('Add new task'))
+    shot('sheet-'..size..'-picker')
+    assert(click_label('Cancel'));assert(click_label('Add new task'))
+    assert(click_label('Cancel'));shot('sheet-'..size..'-return')
+   end
+   capture('workshop-wire')
+   local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)
+   assert(building:getWorkshopProfile().max_general_orders==original_limit,'Resized viewer changed original general-order limit')
+   result.sheet_layout_viewer=receipt.sheet_layout;shot('sheet-layout-complete')
+  end,debug.traceback)
+  for _,job in ipairs(created)do assert(dfhack.job.removeJob(job))end
+  resize_worker('default');assert(worked,problem);return
+ end
  if os.getenv('DF3D_WORKSHOP_WORKER_HOVER')=='1'then
   local profile=building:getWorkshopProfile();assert(#profile.permitted_workers==0)
   local assigned,specialized

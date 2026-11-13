@@ -48,15 +48,15 @@ func assigned_caption() -> String:
 	return value.left(38)+"..." if value.length()>=42 else value
 func _draw() -> void:
 	if state==null or state.phase!=state.Phase.Ready:return
-	patch(art.texture("BUTTON_RECTANGLE_DARK"),Rect2(0,0,456,36))
+	patch(art.texture("BUTTON_RECTANGLE"),Rect2(0,0,456,36))
 	var icon: Texture2D=art.texture("BUILDING_SHEET_ASSIGN_WORKER")
 	if icon!=null:draw_texture_rect(icon,assign_rect(),false)
 	if state.permitted_workers.is_empty():
-		caption("This workshop is free for anybody to use.",Vector2(56,22));return
+		caption("This workshop is free for anybody to use.",Vector2(56,24));return
 	if not state.assigned.is_empty():
 		patch(picture.texture(false),Rect2(0,0,40,36))
 		if unit_icon!=null:draw_texture_rect(unit_icon,Rect2(2,2,32,32),false)
-		caption(assigned_caption(),Vector2(56,22))
+		caption(assigned_caption(),Vector2(56,24))
 	var remove: Texture2D=art.texture("LOCATION_OCCUPATION_REMOVE_WORKER")
 	if remove!=null:draw_texture_rect(remove,remove_rect(),false)
 	caption("Only one master may be assigned to each workshop.",Vector2(56,58))

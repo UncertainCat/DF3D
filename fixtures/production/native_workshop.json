@@ -38620,5 +38620,394 @@
       "Absence is scoped to tested icon and caption positions at1200x800.",
       "No new viewer runtime change; existing worker action acceptance remains separate."
     ]
+  },
+  "sheet_layout_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261113-120803",
+    "sizes": [
+      {
+        "dimx": 120,
+        "dimy": 50,
+        "size": "small"
+      },
+      {
+        "dimx": 200,
+        "dimy": 75,
+        "size": "wide"
+      },
+      {
+        "dimx": 114,
+        "dimy": 46,
+        "size": "minimum"
+      },
+      {
+        "dimx": 150,
+        "dimy": 66,
+        "size": "default"
+      }
+    ],
+    "viewer": [
+      {
+        "jobs": 2,
+        "panel_position": [
+          176.0,
+          48.0
+        ],
+        "panel_size": [
+          488.0,
+          516.0
+        ],
+        "size": "small"
+      },
+      {
+        "jobs": 2,
+        "panel_position": [
+          816.0,
+          48.0
+        ],
+        "panel_size": [
+          488.0,
+          816.0
+        ],
+        "size": "wide"
+      },
+      {
+        "jobs": 2,
+        "panel_position": [
+          128.0,
+          48.0
+        ],
+        "panel_size": [
+          488.0,
+          468.0
+        ],
+        "size": "minimum"
+      },
+      {
+        "jobs": 2,
+        "panel_position": [
+          416.0,
+          52.0
+        ],
+        "panel_size": [
+          488.0,
+          708.0
+        ],
+        "size": "default"
+      }
+    ],
+    "comparisons": [
+      {
+        "size": "small",
+        "tab": "Tasks",
+        "crop": [
+          176,
+          48,
+          664,
+          564
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "small",
+        "tab": "Workers",
+        "crop": [
+          176,
+          48,
+          664,
+          564
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "small",
+        "tab": "Work-orders",
+        "crop": [
+          176,
+          48,
+          664,
+          564
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "small",
+        "tab": "picker",
+        "crop": [
+          176,
+          48,
+          664,
+          564
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "small",
+        "tab": "return",
+        "crop": [
+          176,
+          48,
+          664,
+          564
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "wide",
+        "tab": "Tasks",
+        "crop": [
+          816,
+          48,
+          1304,
+          864
+        ],
+        "different_pixels": 301,
+        "bounds": [
+          12,
+          735,
+          42,
+          775
+        ],
+        "status": "known_missing_furniture_legs"
+      },
+      {
+        "size": "wide",
+        "tab": "Workers",
+        "crop": [
+          816,
+          48,
+          1304,
+          864
+        ],
+        "different_pixels": 301,
+        "bounds": [
+          12,
+          735,
+          42,
+          775
+        ],
+        "status": "known_missing_furniture_legs"
+      },
+      {
+        "size": "wide",
+        "tab": "Work-orders",
+        "crop": [
+          816,
+          48,
+          1304,
+          864
+        ],
+        "different_pixels": 301,
+        "bounds": [
+          12,
+          735,
+          42,
+          775
+        ],
+        "status": "known_missing_furniture_legs"
+      },
+      {
+        "size": "wide",
+        "tab": "picker",
+        "crop": [
+          816,
+          48,
+          1304,
+          864
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "wide",
+        "tab": "return",
+        "crop": [
+          816,
+          48,
+          1304,
+          864
+        ],
+        "different_pixels": 301,
+        "bounds": [
+          12,
+          735,
+          42,
+          775
+        ],
+        "status": "known_missing_furniture_legs"
+      },
+      {
+        "size": "minimum",
+        "tab": "Tasks",
+        "crop": [
+          128,
+          48,
+          616,
+          516
+        ],
+        "different_pixels": 25990,
+        "bounds": [
+          10,
+          0,
+          488,
+          468
+        ],
+        "status": "excluded_incomplete_native_resize_frame"
+      },
+      {
+        "size": "minimum",
+        "tab": "Workers",
+        "crop": [
+          128,
+          48,
+          616,
+          516
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "minimum",
+        "tab": "Work-orders",
+        "crop": [
+          128,
+          48,
+          616,
+          516
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "minimum",
+        "tab": "picker",
+        "crop": [
+          128,
+          48,
+          616,
+          516
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "minimum",
+        "tab": "return",
+        "crop": [
+          128,
+          48,
+          616,
+          516
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "default",
+        "tab": "Tasks",
+        "crop": [
+          416,
+          52,
+          904,
+          760
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "default",
+        "tab": "Workers",
+        "crop": [
+          416,
+          52,
+          904,
+          760
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "default",
+        "tab": "Work-orders",
+        "crop": [
+          416,
+          52,
+          904,
+          760
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "default",
+        "tab": "picker",
+        "crop": [
+          416,
+          52,
+          904,
+          760
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "default",
+        "tab": "return",
+        "crop": [
+          416,
+          52,
+          904,
+          760
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      }
+    ],
+    "sha256": {
+      "workshop-native.json": "8cbb4eb9d8e1722f9f953b113e46d9e1707bce33c44272d4baeb80e9b8634051",
+      "workshop-wire-result.json": "75c6f7c9899fb3cd8f4c477acaeca614620a6e652c383c2ba493d06f60aba981",
+      "result.json": "bf87825fff94d64f5d82d8b14e5fc5a3a7fb67242280a70919492c9933526045"
+    },
+    "coverage": [
+      "Native and viewer two-job Tasks, unrestricted Workers, manager-absent Work orders, task picker, Cancel and return at960x600,1600x900,912x552,1200x800.",
+      "Viewer actual plus/minus clicks at each size, fresh semantic values and final native original-limit check.",
+      "Temporary native-created jobs removed; original queue order, paused frame, source saves and preferences preserved."
+    ],
+    "result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "godot-separate-thread-notice",
+      "godot-device-finalize",
+      "godot-shutdown-objects"
+    ],
+    "fixes": [
+      "Workers uses BUTTON_RECTANGLE rather than DARK and the native first-row baseline.",
+      "Work orders body retains360px height at all tested sizes; header/footer text baselines corrected.",
+      "Building contents now supplies existing appearance facts for TABLE and CHAIR, which were blank."
+    ],
+    "limits": [
+      "Tall-window table/chair icons still lack ID-selected leg overlays; quality/wear rendering needs native-backed item appearance, not placed-building substitution.",
+      "Minimum Tasks first resize PNG has native clipping/missing icon; excluded. The same run minimum return matches exactly;120447 minimum Tasks also matches.",
+      "No populated work-order rows or assigned Workers resize qualification.",
+      "Whole workshop remains staged."
+    ]
   }
 }

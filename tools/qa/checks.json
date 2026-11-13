@@ -4075,6 +4075,11 @@
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with DF3D_WORKSHOP_NATIVE=1 and DF3D_WORKSHOP_JOB_CONTROLS=1. Native job effects and composed Details gestures in an owned paused clone; never run standalone."
     },
     {
+      "path": "presentations/godot/project/tests/workshop_sheet_layout_live.gd",
+      "status": "manual",
+      "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with WORKSHOP_NATIVE and SHEET_LAYOUT flags. Native resized tabs and task picker with owned temporary jobs; never standalone."
+    },
+    {
       "path": "presentations/godot/project/tests/workshop_selector_layout_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with DF3D_WORKSHOP_NATIVE=1 and DF3D_WORKSHOP_SELECTOR_LAYOUT=1. Native geometry and composed viewer/filter/Escape checks in an owned paused clone. Never run standalone."

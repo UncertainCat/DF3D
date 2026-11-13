@@ -92,9 +92,9 @@ func caption(value: String,point: Vector2,color: Color) -> void:
 func _draw() -> void:
 	if state==null or state.snapshot.is_empty():return
 	if not state.snapshot.manager_available:
-		caption("A manager is required to add work orders to the shop.",Vector2(0,22),colors[12] if colors.size()>12 else Color.WHITE)
+		caption("A manager is required to add work orders to the shop.",Vector2(0,24),colors[12] if colors.size()>12 else Color.WHITE)
 	else:
-		caption("Work orders can be added specifically for this shop.",Vector2(0,22),Color.WHITE)
+		caption("Work orders can be added specifically for this shop.",Vector2(0,24),Color.WHITE)
 		var add: Texture2D=art.texture("WORK_ORDERS_CREATE_NEW")
 		if add!=null:draw_texture_rect(add,Rect2(424,0,32,36),false)
 	for index in visible_rows:
@@ -117,7 +117,7 @@ func _draw() -> void:
 		row_icon("WORK_ORDERS_CONDITIONS",Vector2(360,y))
 		if native.details_available:row_icon("WORK_ORDERS_DETAILS",Vector2(392,y))
 		row_icon("WORK_ORDERS_REMOVE",Vector2(424,y))
-	caption("General work orders allowed: "+(draft+("_" if cursor_visible else "") if editing and quantity_order<0 else str(state.snapshot.general_order_limit)),Vector2(0,size.y-14),Color.WHITE)
+	caption("General work orders allowed: "+(draft+("_" if cursor_visible else "") if editing and quantity_order<0 else str(state.snapshot.general_order_limit)),Vector2(0,size.y-12),Color.WHITE)
 	for index in 3:
 		var texture: Texture2D=art.texture(["WORK_ORDERS_ENTER_AMOUNT","WORK_ORDERS_INCREASE_AMOUNT","WORK_ORDERS_DECREASE_AMOUNT"][index])
 		if texture!=null:draw_texture_rect(texture,button_rect(index),false)

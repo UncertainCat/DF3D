@@ -17902,6 +17902,36 @@ it was merged into the existing cleanup before acceptance. Serial30FPS GPU
 samples59-61C are observations, not peaks. Core19 passes. The bridge and job
 effects are unchanged; whole workshop and management/release gates remain.
 
+Workshop sheet layout uses a360-pixel Work orders body at all supported tested
+sizes. Its header/footer captions use native baselines; Workers uses the normal
+BUTTON_RECTANGLE row background and the native first-row baseline. Building
+contents includes TABLE/CHAIR appearance through the existing item facts path.
+Their tall-window icons are no longer blank, but missing legs remain unqualified.
+Do not substitute placed-building artwork: item selectorc7fe08(Chair)/c7fa6d
+(Table) encodes quality, ID-derived variant and wear; c7ff90..c7ffb7 and
+c7fbf5..c7fc1c derive the two-bit variant via2471c0. The current five-field item
+appearance does not carry all these facts. A native-backed item appearance
+extension is still required before claiming complete furniture parity.
+
+Protected120803 on2026-11-13 exercises native/viewer two-job Tasks, unrestricted
+Workers, manager-absent Work orders, task picker and Cancel/return at960x600,
+1600x900,912x552 and1200x800. Actual plus/minus clicks read fresh semantic limits
+at every size, and native confirms the final original value. Fifteen full-panel
+crops match exactly. Four wide-window crops differ by301 pixels, confined to
+the table/chair artwork. Exclude the first minimum Tasks native capture: its
+right edge and header icon are incompletely drawn after resize. The same run's
+minimum return matches;120447 also supplies a matching minimum Tasks capture.
+This is a capture exclusion, not an approved native behavior exception.
+
+Earlier120123 exposed the row background, text/footer and blank-icon defects;
+120447 isolated the fixed footer position and remaining legs. Final owned
+DF34916 exits unsaved with original queue, source saves and preferences intact.
+Only three documented Godot diagnostics occur. Serial30FPS GPU samples60C are
+not peaks. Core19 and build/qa/workshop-sheet-layout state/composition checks
+pass. sheet_layout_reference retains comparisons and limits. Populated Work
+orders, assigned Workers at these sizes, furniture artwork and whole workshop
+public exposure remain separate acceptance requirements.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

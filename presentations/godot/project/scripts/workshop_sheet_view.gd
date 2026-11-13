@@ -54,7 +54,7 @@ func _layout_body() -> void:
 	if workers!=null:workers.visible=not removing and selected_tab==1 and not state.snapshot.is_empty()
 	if orders!=null:
 		orders.visible=not removing and selected_tab==2 and not state.snapshot.is_empty()
-		orders.size=Vector2(464,maxf(36,size.y-96) if int(size.y/12)<45 else 360)
+		orders.size=Vector2(464,360)
 	tasks.visible=not removing and selected_tab==0 and not state.snapshot.is_empty()
 	var expanded: bool=tasks.picking or int(size.y/12)<45
 	tasks.size=Vector2(464,maxf(0,size.y-66 if expanded else 390))

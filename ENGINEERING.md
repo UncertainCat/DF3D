@@ -15843,9 +15843,10 @@ response context retains unknown/legacy support instead of inventing an empty
 root menu. Known contexts require a category vector; duplicate/self keys and
 oversized fields reject. Non-root requests are valid only for task inspection
 or queueing and cannot be mixed with worker, contents or header reads.
-The migration deliberately rejects non-root requests before dispatch until the
-native provider and viewer navigation are connected. Root task behavior is
-unchanged. Both peers must use `Local\df3d_management_v206`.
+Native reaction-category dispatch and navigation are connected for Carpenter,
+Kitchen, Still and WoodFurnace. Keys resolve through the building's permitted
+raw category ancestry; invalid or unreachable keys reject. Both peers must use
+`Local\df3d_management_v206`.
 Core19 and Godot management/workshop-state checks pass in
 `build/qa/workshop-category-contract`. Protected192406 on2026-11-12 verifies the
 staged rejection, omitted unknown category metadata and existing root choices,
@@ -17311,9 +17312,9 @@ the button's item-type field into its job even when constructor `8b1600` has
 not initialized it; whether those values affect each job's behavior remains
 unresolved, so template equivalence must not discard them without further audit.
 
-`workshopBuiltinTaskTemplates` reuses the owned native template builder for
-Carpenter/Kitchen/WoodFurnace builtin descriptors, excluding CustomReaction
-templates. `production.lua` receives the full subtype/material/spec/art fields;
+`workshopTaskTemplates` reuses the owned native template builder for
+Carpenter/Kitchen/WoodFurnace/Still descriptors. All categories remain available
+for queued-job eligibility; only builtin templates become root builtin choices. `production.lua` receives the full subtype/material/spec/art fields;
 subtyped recipes have distinct opaque keys. Root reactions are appended through
 the existing native reader. Native builtin availability is explicit, enabling
 rows that previously had unknown availability. Material-specific Details edits
@@ -17334,6 +17335,22 @@ exposed the material-editability defect;185724 retained the old embedded adapter
 190047/190251 passed client assertions but failed a diagnostic-only job lookup;
 only190358 is final acceptance. Adapter regression forbids importing the old
 tables and verifies that material edits do not block subsequent tasks.
+
+Reaction category rows use native captions and ordering before task rows.
+Selecting a category clears search and sends its explicit key; the controller
+checks the echoed category and retires late replies after Cancel. Cancel returns
+to Tasks; Escape closes the sheet. No synthetic Back control is added. Category
+selection does not remove editability from jobs belonging to other categories.
+Native navigation192813 and composed live194027 on2026-11-12 establish the
+Carpenter instrument-parts path, actual Cancel, invalid-key rejection and task
+creation. The native and viewer reaction identifier, job type, material fields,
+subtype and input requirements match. Root36 choices and Priority/Details/spike
+regressions also pass. Captured submenu layout/caption inspected; whole-screen
+pixel identity, hotkeys, nested mod categories and other families are not claimed.
+Source saves remain unchanged; owned DF closed unsaved. Godot reports only the
+three documented diagnostics. `native_workshop.json.category_runtime_reference`
+retains the navigation and effect evidence. Builtin material/category paths,
+other families, complete hover and full workshop exposure remain unfinished.
 
 Native job captions delegate from `8c2310` to semantic formatter `d032b0`.
 `workshopJobCaption` calls that formatter directly with scalar job fields,

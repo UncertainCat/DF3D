@@ -27,8 +27,9 @@ category context/list observations. Rebuild both peers:
 `Local\df3d_management_v206` isolates Management205. Empty requests select root;
 absent response context means category support is unknown, not a known empty
 menu. Category keys are bounded at256 bytes, captions512, and lists128 entries.
-The migration rejects non-root category requests until semantic dispatch and
-navigation are connected; existing root task workflows remain available.
+Native reaction-category dispatch and navigation now consume this contract for
+Carpenter, Kitchen, Still and WoodFurnace. Invalid or unreachable keys reject;
+other workshop families and builtin category paths remain unfinished.
 
 Management205 introduced workshop job Priority intent and observation fields.
 ProductionJobEdit carries desired `priority` and displayed `expected_priority`

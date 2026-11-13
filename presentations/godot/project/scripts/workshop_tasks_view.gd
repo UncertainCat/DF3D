@@ -1,6 +1,6 @@
 extends Control
 # Staged Tasks body, native_workshop.json. The sheet owns header/tabs/contents.
-# Categories remain unfinished; Details and Priority use semantic actions.
+# Native category choices share the task rows; Cancel leaves the picker.
 signal details_requested(job_id: int)
 signal priority_requested(job_id: int)
 signal picker_changed
@@ -39,7 +39,7 @@ func refresh() -> void:
 	if target!=state.building_id:
 		target=state.building_id;picking=false;first=0;scrollbar.dragging=false;query_bytes.clear();search_focused=false
 	search_label.visible=picking
-	var rows: Array=state.recipes() if picking else state.jobs()
+	var rows: Array=state.choices() if picking else state.jobs()
 	scrollbar.position=Vector2(size.x-24,72)
 	scrollbar.size=Vector2(16,maxi(36,floori((size.y-72)/36)*36))
 	scrollbar.page=maxi(1,int(scrollbar.size.y/36))
@@ -50,7 +50,7 @@ func refresh() -> void:
 
 func choose_mode(value: bool) -> void:
 	picking=value;first=0;query_bytes.clear();search_focused=false
-	state.set_query("");refresh();picker_changed.emit()
+	state.reset_picker();refresh();picker_changed.emit()
 
 func query_text() -> String:
 	var text:=""
@@ -97,9 +97,11 @@ func _gui_input(event: InputEvent) -> void:
 	if picking:
 		if cancel_rect().has_point(event.position):choose_mode(false);accept_event();return
 		var index:=floori((event.position.y-72)/36)+first
-		var rows: Array=state.recipes()
+		var rows: Array=state.choices()
 		if event.position.x<8 or event.position.x>=size.x-24 or event.position.y<72 or index<first or index>=rows.size():return
 		var row: Dictionary=rows[index]
+		if row.get("category_choice",false):
+			first=0;query_bytes.clear();search_focused=false;state.open_category(row.key);accept_event();return
 		# Unknown availability is not evidence that this task can be selected.
 		if row.has("availability") and row.availability.available:
 			state.queue_task(row.key);choose_mode(false)
@@ -146,12 +148,12 @@ func _draw() -> void:
 		elif text.is_empty() and not search_focused:text="..."
 		search_label.text=text
 		if colors.size()==16:search_label.add_theme_color_override("font_color",colors[15 if search_focused or not query_bytes.is_empty() else 8])
-		var rows: Array=state.recipes()
+		var rows: Array=state.choices()
 		for index in mini(scrollbar.page,rows.size()-first):
 			var row: Dictionary=rows[first+index];var y:=72+index*36
 			patch("BUTTON_RECTANGLE",Rect2(0,y,size.x-8,36))
 			var known: bool=row.has("availability")
-			var enabled: bool=known and row.availability.available
+			var enabled: bool=row.get("category_choice",false) or (known and row.availability.available)
 			caption(row.name,Vector2(8,y+18),15 if enabled else 12)
 			if known and not enabled:caption(row.availability.objection,Vector2(16,y+30),4)
 		return

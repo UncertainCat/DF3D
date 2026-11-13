@@ -80,6 +80,28 @@ inline std::optional<std::vector<WorkshopReactionCategory>> workshopReactionCate
     }
     return result;
 }
+// Resolve an opaque key through the permitted category tree for this building.
+// A raw token alone is insufficient: its ancestors must be reachable too.
+inline std::optional<std::string> workshopTaskCategoryToken(df::building* building,const std::string& key) {
+    if(key.empty())return std::string{};
+    constexpr std::string_view prefix="reaction:";
+    if(key.size()>256 || !key.starts_with(prefix) || key.size()==prefix.size() || !df::global::world)return std::nullopt;
+    const auto token=key.substr(prefix.size());
+    std::vector<std::string> path;std::string current=token;
+    const auto& categories=df::global::world->raws.reactions.reaction_categories;
+    while(!current.empty()) {
+        if(std::find(path.begin(),path.end(),current)!=path.end())return std::nullopt;
+        const auto found=std::find_if(categories.begin(),categories.end(),[&](const auto* row){return row && row->id==current;});
+        if(found==categories.end())return std::nullopt;
+        path.push_back(current);current=(*found)->parent;
+    }
+    for(auto at=path.rbegin();at!=path.rend();++at) {
+        const auto children=workshopReactionCategories(building,current);if(!children)return std::nullopt;
+        if(std::none_of(children->begin(),children->end(),[&](const auto& row){return row.code==*at;}))return std::nullopt;
+        current=*at;
+    }
+    return token;
+}
 inline bool workshopInventoryReady() {
     static const bool ready=[] {
         if(!farmFunctions())return false;

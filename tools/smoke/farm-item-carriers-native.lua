@@ -5,7 +5,7 @@ local g=df.global.gps;local sheet=df.global.game.main_interface.view_sheets
 if os.getenv('DF3D_WORKSHOP_NATIVE')=='1'then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','workshop-native.lua')
  assert(loadfile(source))(out,view,records,b,capture,select_map)
- if os.getenv('DF3D_WORKSHOP_SELECTOR_LAYOUT')=='1'or os.getenv('DF3D_WORKSHOP_JOB_CONTROLS')=='1'or os.getenv('DF3D_WORKSHOP_TASK_CATALOG')=='1'then return end
+ if os.getenv('DF3D_WORKSHOP_SELECTOR_LAYOUT')=='1'or os.getenv('DF3D_WORKSHOP_JOB_CONTROLS')=='1'or os.getenv('DF3D_WORKSHOP_TASK_CATALOG')=='1'or os.getenv('DF3D_WORKSHOP_CATEGORY_NAV')=='1'then return end
 end
 local entry=assert(b.contained_items[0]);local item=entry.item
 local saved={flags=item.flags.whole,x=item.pos.x,y=item.pos.y,z=item.pos.z,refs={}}

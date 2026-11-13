@@ -112,6 +112,30 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ if os.getenv('DF3D_WORKSHOP_CATEGORY_NAV')=='1'then
+  local utils=require('utils');result.category_navigation={}
+  local function sample(name)
+   local rows={}
+   for _,button in ipairs(df.global.game.main_interface.building.filtered_button)do
+    rows[#rows+1]={caption=dfhack.df2utf(utils.call_with_string(button,'text')),type=tostring(button._type),leave=button.leave_button}
+   end
+   result.category_navigation[#result.category_navigation+1]={name=name,category=df.global.game.main_interface.building.current_custom_category_token,
+    query=sheet.building_job_filter_str,focused=sheet.entering_building_job_filter,open=sheet.open,rows=rows}
+   shot('category-'..name)
+  end
+  assert(click_label('Add new task'));sample('root')
+  assert(click_label('Make instrument piece'));sample('child')
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());sample('escape')
+  select_map(building);assert(click_label('Add new task'));assert(click_label('Make instrument piece'));sample('child-again')
+  assert(click_label('Cancel'));sample('cancel')
+  select_map(building);assert(click_label('Add new task'))
+  assert(click_label('...'))
+  assert(sheet.entering_building_job_filter)
+  for char in ('instrument'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(char:byte()))end
+  gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount());sample('filtered-root')
+  assert(click_label('Make instrument piece'));sample('filtered-child')
+  return
+ end
  if os.getenv('DF3D_WORKSHOP_TASK_CATALOG')=='1'then
   local utils=require('utils')
   result.task_catalogs={};local seen={}
@@ -225,8 +249,19 @@ local ok,err=xpcall(function()
     inputs[#inputs+1]={item_type=item.item_type,item_subtype=item.item_subtype,mat_type=item.mat_type,mat_index=item.mat_index,
      quantity=item.quantity,flags1=item.flags1.whole,flags2=item.flags2.whole,flags3=item.flags3.whole}
    end
-   return {job_type=job.job_type,item_subtype=job.item_subtype,mat_type=job.mat_type,mat_index=job.mat_index,material_category=job.material_category.whole,inputs=inputs}
+   return {job_type=job.job_type,reaction_name=job.reaction_name,item_subtype=job.item_subtype,mat_type=job.mat_type,mat_index=job.mat_index,material_category=job.material_category.whole,inputs=inputs}
   end
+  assert(click_label('Make instrument piece'))
+  local category_reference={key='reaction:'..df.global.game.main_interface.building.current_custom_category_token,rows={}}
+  for _,button in ipairs(df.global.game.main_interface.building.filtered_button)do
+   local job=df.reinterpret_cast(df.interface_button_building_new_jobst,button)
+   category_reference.rows[#category_reference.rows+1]={name=dfhack.df2utf(utils.call_with_string(button,'text')),available=not job.show_help_instead,objection=dfhack.df2utf(job.objection)}
+  end
+  shot('task-category-child');assert(click_label('Cancel'));assert(click_label('Add new task'));shot('task-category-root')
+  assert(click_label('Make instrument piece'));assert(category_reference.rows[1].available,'Category fixture needs available logs')
+  assert(click_label(category_reference.rows[1].name))
+  local category_job=assert(building.jobs[#building.jobs-1]);category_reference.effect=variant_effect(category_job)
+  assert(dfhack.job.removeJob(category_job));select_map(building);assert(click_label('Add new task'))
   assert(click_label('Make menacing wooden spike'))
   local variant=assert(building.jobs[#building.jobs-1]);local variant_reference=variant_effect(variant)
   assert(dfhack.job.removeJob(variant));select_map(building)
@@ -244,7 +279,7 @@ local ok,err=xpcall(function()
   end
   local worked,problem=xpcall(function()
    local priority_worker
-   result.job_controls={building_id=building.id,job_id=created.id,before=snapshot(),task_choices=task_choices,variant_reference=variant_reference}
+   result.job_controls={building_id=building.id,job_id=created.id,before=snapshot(),task_choices=task_choices,variant_reference=variant_reference,category_reference=category_reference}
    shot('job-controls-before')
    click(772,154);result.job_controls.priority_on=snapshot();shot('job-priority-on')
    assert(created.flags.do_now,'Native Priority did not set do_now')
@@ -317,6 +352,13 @@ local ok,err=xpcall(function()
    assert(dfhack.job.removeJob(viewer_variant))
    assert(json.encode(actual_variant)==json.encode(variant_reference),'Viewer task variant/input effects differ')
    result.job_controls.viewer_variant_effect=actual_variant
+   local viewer_category
+   for _,job in ipairs(building.jobs)do if job.id==wire.category_job_id then viewer_category=job;break end end
+   assert(viewer_category,'Viewer category job missing')
+   local category_effect=variant_effect(viewer_category);assert(dfhack.job.removeJob(viewer_category))
+   local category_comparison=assert(io.open(out..'/workshop-category-comparison.json','w'));category_comparison:write(json.encode({native=category_reference.effect,viewer=category_effect}));category_comparison:close()
+   assert(json.encode(category_effect)==json.encode(category_reference.effect),'Viewer category job/input effects differ')
+   result.job_controls.viewer_category_effect=category_effect
    result.job_controls.viewer_material_effect=material_effect();shot('job-viewer-after')
   end,debug.traceback)
   if df.global.game.main_interface.job_details.open then gui.simulateInput(view,'LEAVESCREEN')end

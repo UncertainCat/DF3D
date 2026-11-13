@@ -20,14 +20,29 @@ func run() -> void:
 	owner.open_workshop(int(reference.building_id),"BUILDING_ICON_WORKSHOP_CARPENTER")
 	await settle(service,func():return owner.state.phase==owner.state.Phase.Ready and owner.tasks.phase==owner.tasks.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
 	var task_choices: Array=owner.tasks.recipes()
-	check(not owner.tasks.snapshot.has("task_category"),"Staged category support was invented")
+	check(owner.tasks.snapshot.get("task_category","missing")=="" and owner.tasks.snapshot.get("task_categories",[]).size()==1,"Native root category missing")
 	var staged_category:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_id":int(reference.building_id),"task_category":"reaction:INSTRUMENTS"})
-	check(staged_category.get("status")==C.ManagementStatus.Rejected,"Staged category request was silently treated as root")
+	check(staged_category.get("status")==C.ManagementStatus.Rejected,"Unknown category request was silently treated as root")
 	check(task_choices.size()==reference.task_choices.size(),"Native root task count differs")
 	for index in mini(task_choices.size(),reference.task_choices.size()):
 		var expected: Dictionary=reference.task_choices[index]
 		var actual: Dictionary=task_choices[index]
 		check(actual.name==expected.name and actual.get("availability",{}).get("available")==expected.available and actual.get("availability",{}).get("objection")==expected.objection,"Native root task caption or availability differs")
+	owner.panel.tasks.choose_mode(true);await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-task-category-root-live.png")
+	click(owner.panel.tasks.global_position+Vector2(24,90))
+	await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready)
+	check(owner.tasks.category==reference.category_reference.key and owner.tasks.query.is_empty(),"Native category selection or cleared search differs")
+	var child: Array=owner.tasks.recipes()
+	check(child.size()==reference.category_reference.rows.size(),"Native child task count differs")
+	for index in mini(child.size(),reference.category_reference.rows.size()):
+		var expected: Dictionary=reference.category_reference.rows[index]
+		check(child[index].name==expected.name and child[index].availability.available==expected.available and child[index].availability.objection==expected.objection,"Native child task differs")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-task-category-child-live.png")
+	click(owner.panel.tasks.global_position+Vector2(owner.panel.tasks.size.x-48,12))
+	await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready)
+	check(not owner.panel.tasks.picking and owner.tasks.category.is_empty(),"Cancel did not return to Tasks")
 	# Build three jobs and compare actual Priority gestures with native queue effects.
 	var recipe_key:=""
 	for recipe in owner.tasks.recipes():
@@ -91,7 +106,14 @@ func run() -> void:
 	await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
 	var variant_id: int=owner.tasks.snapshot.get("created_job",-1)
 	check(variant_id>=0,"Native task variant did not queue")
+	owner.panel.tasks.choose_mode(true);await process_frame
+	click(owner.panel.tasks.global_position+Vector2(24,90))
+	await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready)
+	await process_frame;click(owner.panel.tasks.global_position+Vector2(24,90))
+	await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+	var category_job_id: int=owner.tasks.snapshot.get("created_job",-1)
+	check(category_job_id>=0 and category_job_id!=variant_id and not owner.panel.tasks.picking,"Category task gesture did not queue and return to Tasks")
 	owner.close_panel();owner.queue_free();await process_frame
 	host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
-	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"variant_id":variant_id,"materials":rows.size(),"priority_queue":true,"escape_return":true,"material_click":true,"parent_close":true}));file.close()
+	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"variant_id":variant_id,"category_job_id":category_job_id,"materials":rows.size(),"priority_queue":true,"escape_return":true,"material_click":true,"parent_close":true}));file.close()
 	world.detach_live();world.queue_free();await process_frame;quit(1 if failed else 0)

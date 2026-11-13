@@ -54,27 +54,40 @@ local function template_job(recipe,b,native_requirements)
  if not ok then delete_template(j);return nil,tostring(err) end
  return j
 end
-local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_builtins)
+local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_templates,native_categories,category)
  local out,keys={},{}
  local k=kind(b)
+ local supported=k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Still'
+ if category~='' and not supported then return nil,'Unsupported workshop category' end
+ if supported then
+  out.category=category;out.categories=native_categories(b.id,category)
+  out.editable_templates=native_templates(b.id)
+  for i=2,#out.categories do
+   local row=out.categories[i];local at=i
+   while at>1 and native_less(row.caption,out.categories[at-1].caption)do out.categories[at]=out.categories[at-1];at=at-1 end
+   out.categories[at]=row
+  end
+ end
  -- Native owned templates supply the audited builtin branches. The order
  -- classifier alone is not sufficient evidence for additional families.
- if k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' then
-  for _,fields in ipairs(native_builtins(b.id)) do
+ if category=='' and (k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace') then
+  for _,fields in ipairs(out.editable_templates) do
+   if fields.job_type~=df.job_type.CustomReaction then
    local key='builtin:'..fields.job_type..':'..(fields.mat_type or -1)
    if (fields.item_subtype or -1)>=0 then key=key..':subtype:'..fields.item_subtype end
    out[#out+1]={key=key,fields=fields,available=true,objection=''}
+   end
   end
  end
  -- Root reaction choices and current objections come from the native reader.
- if k=='Still' then
+ if k=='Still' and category=='' then
   -- Native8cb3c9..8cb3e9: root category adds ExtractFromPlants directly.
   -- Constructor8b169e leaves show_help_instead false; no inventory veto is
   -- applied to this builtin. Native input generation still owns its filters.
   out[#out+1]={key='builtin:'..df.job_type.ExtractFromPlants..':-1',fields={job_type=df.job_type.ExtractFromPlants},available=true,objection=''}
  end
  if k=='Still' or k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' then
-  for _,row in ipairs(native_reactions(b.id)) do
+  for _,row in ipairs(native_reactions(b.id,category)) do
    local r=df.global.world.raws.reactions.reactions[row.raw_index]
    if not r or r.code~=row.code then return nil,'Native reaction identity changed' end
    out[#out+1]={key='reaction:'..r.code,reaction=r,available=row.available,objection=utf(row.objection)}
@@ -102,6 +115,12 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
 end
 local function editable(j,rs)
  if j.flags.special or j.flags.by_manager then return false end
+ for _,fields in ipairs(rs.editable_templates or {})do
+  if fields.job_type==df.job_type.CustomReaction then
+   if j.job_type==fields.job_type and j.reaction_name==fields.reaction_name then return true end
+  elseif j.job_type==fields.job_type and j.item_subtype==(fields.item_subtype or -1) and
+   ((fields.mat_type or -1)==-1 or j.mat_type==fields.mat_type)then return true end
+ end
  for _,r in ipairs(rs) do
   if r.reaction then
    if j.job_type==df.job_type.CustomReaction and j.reaction_name==r.reaction.code then return true end
@@ -161,6 +180,10 @@ local function inspect(b,rs,native_caption)
  local result={ok=true,message='Production inspected',buildings={info(b)},selected_building=b.id,
   recipes={},production_jobs={},crops={},seasonal_crops={},current_season=-1}
  if kind(b)=='FarmPlot' then local ok,err=farm_state(b,result);if not ok then return fail(err) end;return result end
+ if rs.category~=nil then
+  result.task_category=rs.category;result.task_categories={}
+  for _,row in ipairs(rs.categories)do result.task_categories[#result.task_categories+1]={key=row.key,name=utf(row.caption)}end
+ end
  for _,r in ipairs(rs) do
   local row={key=r.key,name=r.name,requirements=r.requirements}
   if r.available~=nil then row.availability={available=r.available,objection=r.objection} end
@@ -217,7 +240,7 @@ return function(request)
   seed_scan.cursor=finish
   if finish<#all then return {ok=true,pending=true,message='Counting available seeds'} end
  end
- local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_builtin_templates);if not rs then return fail(err) end
+ local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_task_templates,request.workshop_task_categories,p.task_category or '');if not rs then return fail(err) end
  if request.action==16 then
   local result=inspect(b,rs,request.workshop_caption)
   if kind(b)~='FarmPlot' and p.query and p.query~='' then
@@ -226,6 +249,11 @@ return function(request)
     if request.workshop_caption_matches(recipe.native_caption,query) then filtered[#filtered+1]=result.recipes[i] end
    end
    result.recipes=filtered
+   if result.task_categories then
+    local categories={}
+    for i,row in ipairs(rs.categories)do if request.workshop_caption_matches(row.caption,query)then categories[#categories+1]=result.task_categories[i]end end
+    result.task_categories=categories
+   end
   end
   return result
  end

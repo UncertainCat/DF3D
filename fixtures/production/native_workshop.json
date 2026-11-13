@@ -5293,5 +5293,345 @@
     "source_preserved": true,
     "owned_process_closed_unsaved": true,
     "diagnostics": "passed_with_known_issues"
+  },
+  "category_runtime_reference": {
+    "management_version": 206,
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-194027",
+    "native_navigation_lane": "build/stockpile-storage-native-farm-discovery-20261112-192813",
+    "source_sha256": "e61fcd8a97f311f05bdb256ca68aeb0670af28c3dc90ad37f167eddd9fd57d83",
+    "navigation": [
+      {
+        "category": "",
+        "focused": false,
+        "name": "root",
+        "open": true,
+        "query": "",
+        "rows": [
+          {
+            "caption": "Make instrument piece (opens menu)",
+            "leave": false,
+            "type": "<type: interface_button_building_custom_category_selectorst>"
+          },
+          {
+            "caption": "Make bed",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make display case",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make enormous wooden corkscrew",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make four wooden blocks",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make menacing wooden spike",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make spiked wooden ball",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden altar",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden animal trap",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden armor stand",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden barrel",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden bin",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden bookcase",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden bucket",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden buckler",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden cabinet",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden cage",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden casket",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden chair",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden chest",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden crutch",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden door",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden floodgate",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden grate",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden hatch cover",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden minecart",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden pedestal",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden pipe section",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden shield",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden splint",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden stepladder",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden table",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden training axe",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden training spear",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden training sword",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden weapon rack",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Make wooden wheelbarrow",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ]
+      },
+      {
+        "category": "INSTRUMENT_PIECE",
+        "focused": false,
+        "name": "child",
+        "open": true,
+        "query": "",
+        "rows": [
+          {
+            "caption": "Make rít body",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ]
+      },
+      {
+        "category": "INSTRUMENT_PIECE",
+        "focused": false,
+        "name": "escape",
+        "open": false,
+        "query": "",
+        "rows": [
+          {
+            "caption": "Make rít body",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ]
+      },
+      {
+        "category": "INSTRUMENT_PIECE",
+        "focused": false,
+        "name": "child-again",
+        "open": true,
+        "query": "",
+        "rows": [
+          {
+            "caption": "Make rít body",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ]
+      },
+      {
+        "category": "",
+        "focused": false,
+        "name": "cancel",
+        "open": true,
+        "query": "",
+        "rows": [
+          {
+            "caption": "Button",
+            "leave": false,
+            "type": "<type: interface_button>"
+          }
+        ]
+      },
+      {
+        "category": "",
+        "focused": false,
+        "name": "filtered-root",
+        "open": true,
+        "query": "INSTRUMENT",
+        "rows": [
+          {
+            "caption": "Make instrument piece (opens menu)",
+            "leave": false,
+            "type": "<type: interface_button_building_custom_category_selectorst>"
+          }
+        ]
+      },
+      {
+        "category": "INSTRUMENT_PIECE",
+        "focused": false,
+        "name": "filtered-child",
+        "open": true,
+        "query": "",
+        "rows": [
+          {
+            "caption": "Make rít body",
+            "leave": false,
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ]
+      }
+    ],
+    "category": {
+      "effect": {
+        "inputs": [
+          {
+            "flags1": 0,
+            "flags2": 0,
+            "flags3": 0,
+            "item_subtype": -1,
+            "item_type": 5,
+            "mat_index": -1,
+            "mat_type": -1,
+            "quantity": 1
+          }
+        ],
+        "item_subtype": -1,
+        "job_type": 209,
+        "mat_index": -1,
+        "mat_type": -1,
+        "material_category": 0,
+        "reaction_name": "MAKE_ENT245 INS3_BODY"
+      },
+      "key": "reaction:INSTRUMENT_PIECE",
+      "rows": [
+        {
+          "available": true,
+          "name": "Make rít body",
+          "objection": ""
+        }
+      ]
+    },
+    "viewer_effect": {
+      "inputs": [
+        {
+          "flags1": 0,
+          "flags2": 0,
+          "flags3": 0,
+          "item_subtype": -1,
+          "item_type": 5,
+          "mat_index": -1,
+          "mat_type": -1,
+          "quantity": 1
+        }
+      ],
+      "item_subtype": -1,
+      "job_type": 209,
+      "mat_index": -1,
+      "mat_type": -1,
+      "material_category": 0,
+      "reaction_name": "MAKE_ENT245 INS3_BODY"
+    },
+    "scope": "Carpenter reaction category navigation, Cancel, invalid key rejection and selected reaction job/input effects. Root choices, Priority, Details and spike regression. No full workshop, builtin categories, hotkeys or nested mod category acceptance; job.item_type remains outside effect comparison.",
+    "source_preserved": true,
+    "owned_process_closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues"
   }
 }

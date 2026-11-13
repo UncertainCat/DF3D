@@ -1,7 +1,6 @@
 extends RefCounted
 # Staged workshop Tasks controller. DF owns choices, captions and queue effects.
-# Availability and ordering are native evidence; category navigation remains
-# pending. This controller never derives choices from recipe keys.
+# Choices and category keys come from DF; this controller never derives them.
 signal changed
 signal applied
 const C=preload("res://scripts/management_contract.gd")
@@ -13,6 +12,7 @@ var snapshot: Dictionary={}
 var ticket:=0
 var generation:=0
 var query:=""
+var category:=""
 
 func configure(source) -> void:
 	dispose();service=source
@@ -27,7 +27,7 @@ func close() -> void:
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
-	building_id=-1;snapshot={};query="";phase=Phase.Closed;changed.emit()
+	building_id=-1;snapshot={};query="";category="";phase=Phase.Closed;changed.emit()
 
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
@@ -40,7 +40,27 @@ func open(id: int) -> void:
 func refresh() -> void:
 	if building_id<0 or ticket!=0:return
 	snapshot={};phase=Phase.Reading
-	_send({"action":C.ManagementAction.ProductionInspect,"building_id":building_id,"query":query})
+	_send({"action":C.ManagementAction.ProductionInspect,"building_id":building_id,"query":query,"task_category":category})
+
+func reset_picker() -> void:
+	if phase not in [Phase.Ready,Phase.Reading]:return
+	if category.is_empty() and query.is_empty():return
+	generation+=1
+	var previous:=ticket;ticket=0
+	if service!=null and previous!=0:service.detach(previous)
+	category="";query="";refresh()
+
+func open_category(key: String) -> void:
+	if phase!=Phase.Ready or ticket!=0:return
+	for row in snapshot.get("task_categories",[]):
+		if row.key==key:
+			generation+=1;category=key;query="";refresh();return
+
+func choices() -> Array:
+	var rows: Array=[]
+	for value in snapshot.get("task_categories",[]):
+		var row: Dictionary=value.duplicate(true);row["category_choice"]=true;rows.append(row)
+	rows.append_array(recipes());return rows
 
 func set_query(value: String) -> void:
 	if value==query or building_id<0 or phase not in [Phase.Ready,Phase.Reading]:return
@@ -64,7 +84,7 @@ func queue_task(key: String) -> void:
 			found=true;break
 	if not found:return
 	phase=Phase.Applying
-	_send({"action":C.ManagementAction.ProductionQueue,"building_id":building_id,"recipe":key})
+	_send({"action":C.ManagementAction.ProductionQueue,"building_id":building_id,"recipe":key,"task_category":category})
 
 func cancel_task(id: int) -> void:
 	_edit(id,{"cancel":true})
@@ -109,6 +129,9 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	# an error after native worker release. Never retry an uncertain Priority edit.
 	if result.get("status",-1)!=C.ManagementStatus.Ok:_fail(Phase.Unknown if sent.has("priority") else Phase.Rejected);return
 	var data: Dictionary=result.get("production",{})
+	var expected_category: String=sent.get("task_category","")
+	if data.get("task_category","")!=expected_category or (not expected_category.is_empty() and not data.has("task_category")):
+		_fail(Phase.Unknown if editing else Phase.Rejected);return
 	if result.get("action",-1)!=sent.action or data.get("selected_building",-1)!=building_id or not data.get("jobs") is Array or not data.get("recipes") is Array:
 		_fail(Phase.Unknown if editing else Phase.Rejected);return
 	# A successful transport reply is insufficient: confirm the requested effect
@@ -129,5 +152,5 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 			if not selected.is_empty():_fail(Phase.Unknown);return
 		elif selected.is_empty() or (sent.has("repeat") and selected.get("repeat")!=bool(sent.repeat)) or (sent.has("suspend") and selected.get("suspended")!=bool(sent.suspend)) or (sent.has("priority") and (selected.get("priority")!=bool(sent.priority) or (sent.priority==1 and data.jobs[0].id!=sent.job_id))):
 			_fail(Phase.Unknown);return
-	snapshot=data.duplicate(true);phase=Phase.Ready;changed.emit()
+	category=expected_category;snapshot=data.duplicate(true);phase=Phase.Ready;changed.emit()
 	if editing:applied.emit()

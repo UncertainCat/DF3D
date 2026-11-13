@@ -128,7 +128,7 @@ local function req(action,p)
   end
   error('Missing injected requirements')
  end
- return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_builtin_templates=native_builtins,workshop_caption_matches=function(a,b)return a:lower():find(b:lower(),1,true)~=nil end,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)if id~=2 then return {} end;return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_task_templates=native_builtins,workshop_task_categories=function()return {}end,workshop_caption_matches=function(a,b)return a:lower():find(b:lower(),1,true)~=nil end,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)if id~=2 then return {} end;return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
 end
 local list=req(15,{cursor=0,query='#0'})
 assert(list.ok and #list.buildings==1 and list.buildings[1].id==0,'ID zero and numeric search')
@@ -202,7 +202,7 @@ local function req(action,p)
   end
   error('Missing injected requirements')
  end
- return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_builtin_templates=native_builtins,workshop_caption_matches=function(a,b)return a:lower():find(b:lower(),1,true)~=nil end,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)if id~=2 then return {} end;return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_task_templates=native_builtins,workshop_task_categories=function()return {}end,workshop_caption_matches=function(a,b)return a:lower():find(b:lower(),1,true)~=nil end,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)if id~=2 then return {} end;return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
 end
 local function refusal(action,p,message)
  local result=req(action,p)

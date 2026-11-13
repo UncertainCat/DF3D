@@ -5851,7 +5851,8 @@ void run(color_ostream& out) {
     });lua_setfield(L,-2,"workshop_reaction_allowed");
     lua_pushcfunction(L,[](lua_State* state)->int {
       auto* shop=df::building::find(int32_t(luaL_checkinteger(state,1)));
-      const auto rows=df3d_production::workshopReactionRows(shop,"");
+      const auto category=df3d_production::workshopTaskCategoryToken(shop,luaL_optstring(state,2,""));
+      const auto rows=category?df3d_production::workshopReactionRows(shop,*category):std::nullopt;
       if(!rows)return luaL_error(state,"Native workshop reaction choices unavailable");
       lua_newtable(state);int index=0;
       for(const auto& row:*rows) {
@@ -5864,11 +5865,23 @@ void run(color_ostream& out) {
     });lua_setfield(L,-2,"workshop_reactions");
     lua_pushcfunction(L,[](lua_State* state)->int {
       auto* shop=df::building::find(int32_t(luaL_checkinteger(state,1)));
-      const auto rows=df3d_production::workshopBuiltinTaskTemplates(shop);
+      const auto category=df3d_production::workshopTaskCategoryToken(shop,luaL_optstring(state,2,""));
+      const auto rows=category?df3d_production::workshopReactionCategories(shop,*category):std::nullopt;
+      if(!rows)return luaL_error(state,"Native workshop category unavailable");
+      lua_newtable(state);int index=0;
+      for(const auto& row:*rows) {
+        lua_newtable(state);field(state,"key","reaction:"+row.code);field(state,"caption",row.caption);
+        lua_rawseti(state,-2,++index);
+      }
+      return 1;
+    });lua_setfield(L,-2,"workshop_task_categories");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      auto* shop=df::building::find(int32_t(luaL_checkinteger(state,1)));
+      const auto rows=df3d_production::workshopTaskTemplates(shop);
       if(!rows)return luaL_error(state,"Native workshop builtin choices unavailable");
       lua_newtable(state);int index=0;
       for(const auto& row:*rows) {
-        lua_newtable(state);field(state,"job_type",int(row.job_type));
+        lua_newtable(state);field(state,"job_type",int(row.job_type));field(state,"reaction_name",row.reaction_name);
         field(state,"item_type",int(row.item_type));field(state,"item_subtype",row.item_subtype);
         field(state,"mat_type",row.mat_type);field(state,"mat_index",row.mat_index);
         lua_newtable(state);field(state,"whole",row.material_category.whole);lua_setfield(state,-2,"material_category");
@@ -5879,13 +5892,13 @@ void run(color_ostream& out) {
         lua_rawseti(state,-2,++index);
       }
       return 1;
-    });lua_setfield(L,-2,"workshop_builtin_templates");
+    });lua_setfield(L,-2,"workshop_task_templates");
     lua_pushcfunction(L,[](lua_State* state)->int {
       const auto result=df3d_production::setWorkshopPriority(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),lua_toboolean(state,3)!=0,lua_toboolean(state,4)!=0);
       if(result!=df3d_production::PriorityOutcome::Rejected)mutated=true;
       lua_pushboolean(state,result==df3d_production::PriorityOutcome::Applied);return 1;
     });lua_setfield(L,-2,"workshop_priority");
-    lua_newtable(L);field(L,"building_id",p->building_id());field(L,"job_id",p->job_id());field(L,"recipe",p->recipe()?p->recipe()->str():"");field(L,"query",p->query()?p->query()->str():"");field(L,"cursor",p->cursor());field(L,"repeat_job",p->repeat());field(L,"priority",p->priority());field(L,"expected_priority",p->expected_priority());field(L,"suspend",p->suspend());field(L,"cancel",p->cancel());field(L,"season",p->season());field(L,"crop_id",p->crop_id());lua_setfield(L,-2,"production");
+    lua_newtable(L);field(L,"building_id",p->building_id());field(L,"job_id",p->job_id());field(L,"recipe",p->recipe()?p->recipe()->str():"");field(L,"task_category",p->task_category()?p->task_category()->str():"");field(L,"query",p->query()?p->query()->str():"");field(L,"cursor",p->cursor());field(L,"repeat_job",p->repeat());field(L,"priority",p->priority());field(L,"expected_priority",p->expected_priority());field(L,"suspend",p->suspend());field(L,"cancel",p->cancel());field(L,"season",p->season());field(L,"crop_id",p->crop_id());lua_setfield(L,-2,"production");
   }
   if(const auto* w=r->work_order()) {
     lua_newtable(L);field(L,"id",w->id());field(L,"expected_revision",w->expected_revision());field(L,"recipe",w->recipe()?w->recipe()->str():"");field(L,"query",w->query()?w->query()->str():"");field(L,"cursor",w->cursor());
@@ -6335,6 +6348,8 @@ void run(color_ostream& out) {
   }
   if(action>=m::ManagementAction::ProductionList && action<=m::ManagementAction::FarmEdit) {
     production.nextCursor=uint32_t(number(L,"next_cursor"));production.selectedBuilding=int32_t(number(L,"selected_building",-1));production.createdJob=int32_t(number(L,"created_job",-1));production.currentSeason=int8_t(number(L,"current_season",-1));production.detail=text(L,"detail");
+    lua_getfield(L,-1,"task_category");const bool hasTaskCategory=lua_isstring(L,-1);lua_pop(L,1);
+    if(hasTaskCategory)production.taskCategory=text(L,"task_category");
     auto each=[&](const char* key,size_t cap,auto fn){lua_getfield(L,-1,key);if(lua_istable(L,-1)) for(size_t i=1;i<=lua_rawlen(L,-1)&&i<=cap;++i){lua_rawgeti(L,-1,i);fn();lua_pop(L,1);}lua_pop(L,1);};
     auto reqs=[&](){std::vector<ProductionRequirement> out;each("requirements",16,[&](){out.push_back({text(L,"description"),int32_t(number(L,"quantity")),int16_t(number(L,"item_type",-1))});});return out;};
     each("buildings",64,[&](){ProductionBuilding v;v.id=int32_t(number(L,"id",-1));v.x=int32_t(number(L,"x"));v.y=int32_t(number(L,"y"));v.z=int32_t(number(L,"z"));v.name=text(L,"name");v.kind=text(L,"kind");v.buildStage=int16_t(number(L,"build_stage"));v.maxStage=int16_t(number(L,"max_stage"));v.queueSize=uint16_t(number(L,"queue_size"));production.buildings.push_back(std::move(v));});
@@ -6344,6 +6359,7 @@ void run(color_ostream& out) {
       if(lua_istable(L,-1))row.availability=ProductionAvailability{boolean(L,"available"),text(L,"objection")};
       lua_pop(L,1);production.recipes.push_back(std::move(row));
     });
+    each("task_categories",128,[&](){production.taskCategories.push_back({text(L,"key"),text(L,"name")});});
     each("production_jobs",64,[&](){ProductionJob v;v.id=int32_t(number(L,"id",-1));v.jobType=int16_t(number(L,"job_type",-1));v.workerId=int32_t(number(L,"worker_id",-1));v.completionTimer=int32_t(number(L,"completion_timer",-1));v.name=text(L,"name");v.workerName=text(L,"worker_name");v.status=text(L,"status");v.repeat=boolean(L,"repeat_job");v.suspended=boolean(L,"suspended");v.priority=int8_t(number(L,"priority",-1));v.editable=boolean(L,"editable");v.attachedItems=uint16_t(number(L,"attached_items"));v.requirements=reqs();production.jobs.push_back(std::move(v));});
     each("crops",256,[&](){production.crops.push_back({int32_t(number(L,"id",-1)),text(L,"name"),uint8_t(number(L,"seasons")),uint32_t(number(L,"seeds"))});});
     each("seasonal_crops",4,[&](){production.seasonalCrops.push_back(int32_t(lua_tointeger(L,-1)));});
@@ -6825,8 +6841,6 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
       return;
     }
     if(!m::runtimeManagementAction(action)){status=m::ManagementStatus::Rejected;message="Native screen adapters are retired; semantic replacement unfinished";publish();return;}
-    // Category navigation is staged until the semantic provider consumes it.
-    if(const auto* p=r->production();p && p->task_category() && p->task_category()->size()){status=m::ManagementStatus::Rejected;message.clear();publish();return;}
     status = m::ManagementStatus::Pending;
   }
   if (status == m::ManagementStatus::Pending) {

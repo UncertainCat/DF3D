@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 #include <tuple>
 #include <set>
 #include "stocks_reply_pages.h"
@@ -2899,13 +2900,19 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         p->current_season() < -1 || p->current_season()>3 || p->selected_building() < -1 || p->created_job() < -1 ||
         (p->detail() && p->detail()->size()>2048)) return "invalid production state";
     auto textOk=[](const flatbuffers::String* t,size_t limit){return t && t->size()<=limit;};
+    const auto dyeOk=[&](const ProductionDyeStatus* d) {
+      if(!d)return true;
+      const auto channel=[](float value){return std::isfinite(value) && value>=0 && value<=1;};
+      return textOk(d->text(),4096) && d->color_id()>=0 && d->color_id()<1024 &&
+        channel(d->red()) && channel(d->green()) && channel(d->blue());
+    };
     if(p->task_category()) {
       if(!textOk(p->task_category(),256) || !p->task_categories() || p->task_categories()->size()>128 || p->selected_building()<0)
         return "invalid workshop category state";
       std::set<std::string> categories;
       for(const auto* row:*p->task_categories())
         if(!row || !textOk(row->key(),256) || !row->key()->size() || !categories.insert(row->key()->str()).second ||
-           row->key()->str()==p->task_category()->str() || !textOk(row->name(),512))return "invalid workshop category row";
+           row->key()->str()==p->task_category()->str() || !textOk(row->name(),512) || !dyeOk(row->dye()))return "invalid workshop category row";
     } else if(p->task_categories() && p->task_categories()->size())return "workshop category context required";
     if(p->task_parent() && (!p->task_category() || !p->task_category()->size() ||
        !textOk(p->task_parent(),256) || p->task_parent()->str()==p->task_category()->str()))
@@ -2929,6 +2936,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
          !(priority>=2000 && priority<=2002) &&
          !(priority>=3000 && priority<=3002))) return "invalid memorial status";
     }
+    if(p->recipes())for(const auto* v:*p->recipes())
+      if(!dyeOk(v->dye()) || (v->dye() && v->memorial()))return "invalid production dye status";
     ids.clear();
     if(p->jobs()) for(const auto* v:*p->jobs()) if(!v || v->id()<0 || !ids.insert(v->id()).second || v->worker_id() < -1 || v->job_type()<0 || v->completion_timer() < -1 || !textOk(v->name(),512) || !textOk(v->worker_name(),512) || !textOk(v->status(),512) || !requirementsOk(v->requirements()) || v->priority() < -1 || v->priority()>1 || v->can_move_up() < -1 || v->can_move_up()>1 || v->active() < -1 || v->active()>1) return "invalid production job";
     ids.clear();
@@ -3075,7 +3084,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(!m || m->unit_id()<0 || !ids.insert(m->unit_id()).second || !textOk(m->name(),512) || !textOk(m->position(),512) || !textOk(m->job(),512) || (m->offices() && m->offices()->size()>64))return "invalid manager role";
       std::set<int32_t> offices;if(m->offices())for(auto id:*m->offices())if(id<0 || !offices.insert(id).second)return "invalid manager office";
     }
-    std::set<std::string> keys;if(w->recipes())for(const auto* r:*w->recipes())if(!r || !r->key() || !r->key()->size() || !textOk(r->key(),128) || !keys.insert(r->key()->str()).second || !textOk(r->name(),512) || (r->requirements() && r->requirements()->size()) || r->availability() || r->memorial())return "invalid manager recipe";
+    std::set<std::string> keys;if(w->recipes())for(const auto* r:*w->recipes())if(!r || !r->key() || !r->key()->size() || !textOk(r->key(),128) || !keys.insert(r->key()->str()).second || !textOk(r->name(),512) || (r->requirements() && r->requirements()->size()) || r->availability() || r->memorial() || r->dye())return "invalid manager recipe";
   }
   if(const auto* c=s.citizen()) {
     if(c->outcome_unknown()) {

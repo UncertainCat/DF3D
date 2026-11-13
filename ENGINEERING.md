@@ -17613,8 +17613,15 @@ raw color names; direct tasks call semantic formatterd032b0. Availability uses
 the native numeric formatter and installed literals. Each row group sorts by
 alpha_order then DF's normalized caption comparator. This run preserves source
 saves/preferences and controlled types/stages, and closes DF10428 unsaved.
-The provider is currently diagnostic-only: viewer transport/rendering, color
-swatches, ingredient menus and actual task effects still need integration.
+ProductionRecipe and ProductionTaskCategory now accept optional ProductionDyeStatus:
+native availability text, descriptor color ID and raw RGB. The world model
+retains it independently of refusal text. Validation bounds the text to4096,
+color IDs to0..1023 (the provider's raw-count bound), and finite RGB to0..1;
+manager recipes reject the workshop-only payload. This additive Management208
+extension leaves absent legacy fields unknown, without fabricating color data.
+Core19 passes, including task/category round trips and malformed-color checks.
+The provider remains diagnostic-only: bridge/Godot serialization, rendering,
+ingredient menus and actual task effects still need integration and acceptance.
 Ingredient submenu navigation, creation effects and DF3D implementation remain
 unfinished. An earlier
 controlled discovery232955 exited while entering Tint cloth aqua; source

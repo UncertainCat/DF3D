@@ -5,6 +5,7 @@
 #include "client_mailbox.h"
 #include <memory>
 #include <iostream>
+#include <limits>
 #ifdef _WIN32
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -684,6 +685,49 @@ TEST_CASE("production response preserves native job progress and recipe requirem
   CHECK(f.detail=="Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.");
   seq=c->send({});REQUIRE(seq>0);p.pop();p.publish(5,id,seq);REQUIRE(c->poll());
   CHECK(c->state().production.jobs.empty());CHECK(c->state().production.createdJob==-1);
+}
+TEST_CASE("production dye data preserves optional color and text on tasks and categories") {
+  ManagementPublisher p;p.publish(1);auto c=openClient(p);auto [seq,id]=claim(p,*c);
+  wm::ManagementRequest req;req.action=wm::ManagementAction::ProductionInspect;req.production.buildingId=72;
+  seq=c->send(req);REQUIRE(seq>0);p.pop();
+  flatbuffers::FlatBufferBuilder b;
+  auto dye=mm::CreateProductionDyeStatus(b,b.CreateString("Synthetic dye count"),18,0.0f,0.5f,1.0f);
+  auto recipe=mm::CreateProductionRecipe(b,b.CreateString("dye:18"),b.CreateString("Synthetic task"),b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRequirement>>{}),0,0,dye);
+  auto legacy=mm::CreateProductionRecipe(b,b.CreateString("legacy"),b.CreateString("Synthetic legacy"),b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRequirement>>{}));
+  auto recipes=b.CreateVector(std::vector{recipe,legacy});
+  auto category=mm::CreateProductionTaskCategory(b,b.CreateString("tint:18"),b.CreateString("Synthetic category"),dye);
+  auto categories=b.CreateVector(std::vector{category});auto key=b.CreateString("dye");
+  mm::ProductionStateBuilder production(b);production.add_recipes(recipes);production.add_task_categories(categories);
+  production.add_task_category(key);production.add_selected_building(72);auto domain=production.Finish();
+  mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(3);
+  state.add_world_epoch(7);state.add_client_id(id);state.add_request_seq(seq);
+  state.add_action(mm::ManagementAction::ProductionInspect);state.add_status(mm::ManagementStatus::Ok);
+  state.add_production(domain);b.Finish(state.Finish());
+  REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
+  REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));REQUIRE(c->poll());
+  const auto& v=c->state().production;REQUIRE(v.recipes.size()==2);REQUIRE(v.taskCategories.size()==1);
+  REQUIRE(v.recipes[0].dye);REQUIRE(v.taskCategories[0].dye);CHECK_FALSE(v.recipes[1].dye);
+  for(const auto* d:{&*v.recipes[0].dye,&*v.taskCategories[0].dye}) {
+    CHECK(d->colorId==18);CHECK(d->text=="Synthetic dye count");
+    CHECK(d->red==0.0f);CHECK(d->green==0.5f);CHECK(d->blue==1.0f);
+  }
+}
+TEST_CASE("production dye validation rejects malformed color data on either row kind") {
+  for(bool category:{false,true})for(int variant=0;variant<8;++variant) {
+    flatbuffers::FlatBufferBuilder b;
+    auto dye=mm::CreateProductionDyeStatus(b,b.CreateString(std::string(variant==1?4097:0,'x')),
+      variant==2?-1:variant==3?1024:0,
+      variant==4?-0.01f:0,variant==5?1.01f:0,variant==6?std::numeric_limits<float>::quiet_NaN():variant==7?std::numeric_limits<float>::infinity():1);
+    auto recipe=mm::CreateProductionRecipe(b,b.CreateString("task"),b.CreateString("Synthetic"),b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRequirement>>{}),0,0,category?0:dye);
+    auto categories=b.CreateVector(std::vector{mm::CreateProductionTaskCategory(b,b.CreateString("child"),b.CreateString("Synthetic"),category?dye:0)});
+    auto recipes=b.CreateVector(std::vector{recipe});auto key=b.CreateString("root");
+    mm::ProductionStateBuilder production(b);production.add_recipes(recipes);production.add_task_categories(categories);
+    production.add_task_category(key);production.add_selected_building(72);auto domain=production.Finish();
+    mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(1);
+    state.add_action(mm::ManagementAction::ProductionInspect);state.add_status(mm::ManagementStatus::Ok);
+    state.add_production(domain);b.Finish(state.Finish());
+    CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value()==(variant!=0));
+  }
 }
 TEST_CASE("memorial recipe status validates native priorities and bounded text") {
   for(const auto priority : {1,1000,1001,1002,2000,2001,2002,3000,3001,3002,-1,0,2,1003}) {

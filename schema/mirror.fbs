@@ -1556,8 +1556,11 @@ table ProductionAvailability { available:bool; objection:string; }
 // Optional native memorial information. Absence in older recordings means unknown.
 // Priority is DF's memorial urgency/group ordering, not a renderer palette index.
 table ProductionMemorialStatus { text:string; priority:int = 1000; }
-table ProductionRecipe { key:string; name:string; requirements:[ProductionRequirement]; availability:ProductionAvailability; memorial:ProductionMemorialStatus; }
-table ProductionTaskCategory { key:string; name:string; }
+// Optional native dye color and informational availability text. Absence means unknown.
+// RGB is the raw descriptor color, independent of presentation palette/texture choices.
+table ProductionDyeStatus { text:string; color_id:int = -1; red:float; green:float; blue:float; }
+table ProductionRecipe { key:string; name:string; requirements:[ProductionRequirement]; availability:ProductionAvailability; memorial:ProductionMemorialStatus; dye:ProductionDyeStatus; }
+table ProductionTaskCategory { key:string; name:string; dye:ProductionDyeStatus; }
 table ProductionJob {
   id:int32; name:string; job_type:int16; repeat:bool; suspended:bool;
   worker_id:int32 = -1; worker_name:string; completion_timer:int32 = -1;

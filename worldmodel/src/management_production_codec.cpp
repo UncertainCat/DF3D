@@ -144,12 +144,18 @@ ProductionState decodeProduction(const m::ProductionState* p) {
                              v->queue_size()});
   if(p->task_category())n.taskCategory=p->task_category()->str();
   if(p->task_parent())n.taskParent=p->task_parent()->str();
-  if(p->task_categories())for(const auto* v:*p->task_categories())n.taskCategories.push_back({str(v->key()),str(v->name())});
+  const auto dyeStatus=[&](const auto* d){return ProductionDyeStatus{str(d->text()),d->color_id(),d->red(),d->green(),d->blue()};};
+  if(p->task_categories())for(const auto* v:*p->task_categories()) {
+    ProductionTaskCategory row{str(v->key()),str(v->name())};
+    if(const auto* d=v->dye())row.dye=dyeStatus(d);
+    n.taskCategories.push_back(std::move(row));
+  }
   if (p->recipes())
     for (const auto* v : *p->recipes()) {
       ProductionRecipe row{str(v->key()), str(v->name()), reqs(v->requirements())};
       if(const auto* a=v->availability())row.availability=ProductionAvailability{a->available(),str(a->objection())};
       if(const auto* m=v->memorial())row.memorial=ProductionMemorialStatus{str(m->text()),m->priority()};
+      if(const auto* d=v->dye())row.dye=dyeStatus(d);
       n.recipes.push_back(std::move(row));
     }
   if (p->jobs())

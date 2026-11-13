@@ -5,6 +5,7 @@ signal details_requested(job_id: int)
 signal priority_requested(job_id: int)
 signal picker_changed
 var art=preload("res://scripts/original_ui.gd").new()
+var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var state
 var colors: Array[Color]=[]
 var input_allowed: Callable
@@ -19,6 +20,7 @@ var search_label: Label
 
 func configure(world,model) -> void:
 	state=model;art.configure(world);theme=art.theme
+	picture.configure(world)
 	colors=art.installed_palette(world.assets_root())
 	size=Vector2(464,360);mouse_filter=Control.MOUSE_FILTER_STOP
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
@@ -129,8 +131,8 @@ func _gui_input(event: InputEvent) -> void:
 		5:state.cancel_task(job.id)
 	accept_event()
 
-func patch(token: String, rect: Rect2) -> void:
-	var texture: Texture2D=art.texture(token)
+func patch(token: String, rect: Rect2, override_texture: Texture2D=null) -> void:
+	var texture: Texture2D=override_texture if override_texture!=null else art.texture(token)
 	if texture==null:return
 	var columns:=int(rect.size.x/8);var rows:=int(rect.size.y/12)
 	for y in rows:
@@ -163,10 +165,18 @@ func _draw() -> void:
 			patch("BUTTON_RECTANGLE",Rect2(0,y-6,size.x-(24 if scrollbar.visible else 8),36))
 			var known: bool=row.has("availability")
 			var enabled: bool=row.get("category_choice",false) or (known and row.availability.available)
-			caption(row.name,Vector2(8,y+18),15 if enabled else 12)
+			var label_x:=8
+			if row.has("dye"):
+				var dye: Dictionary=row.dye
+				patch("BUTTON_PICTURE_BOX",Rect2(0,y-6,40,36),picture.texture(false))
+				draw_rect(Rect2(2,y-4,32,32),Color(dye.red,dye.green,dye.blue))
+				label_x=56
+			caption(row.name,Vector2(label_x,y+18),15 if enabled else 12)
 			# Native1854c9: objections take precedence over memorial info.
 			var objection: String=row.get("availability",{}).get("objection","")
-			if not objection.is_empty():caption(objection,Vector2(16,y+30),4)
+			if not objection.is_empty():caption(objection,Vector2(label_x+8,y+30),4)
+			elif row.has("dye"):
+				caption(row.dye.text,Vector2(label_x+8,y+30),11)
 			elif row.has("memorial"):
 				var priority: int=row.memorial.priority
 				# Native1b9ee0: only priority1000 is yellow; other non-ghost groups are cyan.

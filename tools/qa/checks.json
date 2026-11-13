@@ -4040,6 +4040,11 @@
   ],
   "exclusions": [
     {
+      "path": "presentations/godot/project/tests/workshop_dyer_live.gd",
+      "status": "manual",
+      "reason": "Protected Dyer menu navigation and native text/color comparison. Never standalone."
+    },
+    {
       "path": "presentations/godot/project/tests/workshop_stone_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with WORKSHOP_NATIVE, TASK_CATALOG, STONE_NAV and STONE_RUNTIME flags. Native memorial candidates, status rendering, cancellation and job effects. Never standalone."

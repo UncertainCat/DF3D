@@ -321,7 +321,11 @@ local ok,err=xpcall(function()
       row.color=selector.color_index;row.color_job=selector.job
       if os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1'then row.info=dfhack.df2utf(selector.info);row.prepare_interface=selector.prepare_interface end
      end
-     if os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1'then row.alpha_order=button.alpha_order end
+     if os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1'then
+      row.alpha_order=button.alpha_order
+      local color=row.color or row.specdata
+      if color and color>=0 then local raw=df.global.world.raws.descriptors.colors[color];row.swatch={red=raw.red,green=raw.green,blue=raw.blue}end
+     end
      rows[#rows+1]=row
     end
     return rows
@@ -567,6 +571,14 @@ local ok,err=xpcall(function()
   end
   if os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')=='1'then assert(#result.task_catalogs==(os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and 1 or (os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' and 7 or 8)),'Missing extra-family root catalog')end
   shot('task-catalog-return')
+  if os.getenv('DF3D_WORKSHOP_DYER_RUNTIME')=='1'then
+   capture('workshop-wire')
+   local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)
+   for _,catalog in ipairs(result.task_catalogs)do
+    local target=assert(df.building.find(catalog.building_id));assert(#target.jobs==#catalog.queue_ids)
+    for i,id in ipairs(catalog.queue_ids)do assert(target.jobs[i-1].id==id)end
+   end
+  end
   if os.getenv('DF3D_WORKSHOP_STONE_RUNTIME')=='1'then
    capture('workshop-wire')
    local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)

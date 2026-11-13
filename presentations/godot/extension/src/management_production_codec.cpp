@@ -7,6 +7,10 @@
 
 namespace df3d_godot::management {
 using namespace godot;
+static Dictionary productionDyeDictionary(const wm::ProductionDyeStatus& value) {
+  Dictionary result;result["text"]=String::utf8(value.text.c_str());result["color_id"]=value.colorId;
+  result["red"]=value.red;result["green"]=value.green;result["blue"]=value.blue;return result;
+}
 Dictionary itemRecipeDictionary(const wm::SelectionAppearance& source) {
   Dictionary result;Array pages,palettes,layers;
   for(const auto& name:source.tilePages)pages.push_back(String::utf8(name.c_str()));
@@ -113,7 +117,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   if(s.taskParent)prod["task_parent"]=String::utf8(s.taskParent->c_str());
   if(s.taskCategory) {
     prod["task_category"]=String::utf8(s.taskCategory->c_str());Array categories;
-    for(const auto& v:s.taskCategories){Dictionary row;row["key"]=String::utf8(v.key.c_str());row["name"]=String::utf8(v.name.c_str());categories.push_back(row);}
+    for(const auto& v:s.taskCategories){Dictionary row;row["key"]=String::utf8(v.key.c_str());row["name"]=String::utf8(v.name.c_str());if(v.dye)row["dye"]=productionDyeDictionary(*v.dye);categories.push_back(row);}
     prod["task_categories"]=categories;
   }
   const auto& p = s;
@@ -154,6 +158,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
       Dictionary memorial;memorial["text"]=String::utf8(v.memorial->text.c_str());
       memorial["priority"]=v.memorial->priority;row["memorial"]=memorial;
     }
+    if(v.dye)row["dye"]=productionDyeDictionary(*v.dye);
     recipes.push_back(row);
   }
   for (const auto& v : p.jobs) {

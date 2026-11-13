@@ -17620,8 +17620,20 @@ color IDs to0..1023 (the provider's raw-count bound), and finite RGB to0..1;
 manager recipes reject the workshop-only payload. This additive Management208
 extension leaves absent legacy fields unknown, without fabricating color data.
 Core19 passes, including task/category round trips and malformed-color checks.
-The provider remains diagnostic-only: bridge/Godot serialization, rendering,
-ingredient menus and actual task effects still need integration and acceptance.
+The bridge/Godot path now carries the root and first-level color pages through
+owned providers. Protected002240 on2026-11-13 compares all811 captions/order,
+availability strings, color IDs and RGB through the composed Tasks panel.
+Four Cancel/reopen flows restore the root, with queue IDs/order unchanged.
+Root and all four first-page crops432,106..888,676 have zero differing pixels;
+the cloth page was visually inspected. Swatches use the original installed
+BUTTON_PICTURE_BOX variants around32x32 raw RGB, matching renderer185004 and
+the native color texture; initial002002 lacked this frame and is not rendered
+acceptance. Owned DF32736 exits unsaved, source saves/preferences and controlled
+type/stage are restored. Serial30FPS sampled38C, not a measured peak.
+QA extension/state/composition/adapter and core19 pass; live has only the three
+documented Godot shutdown/thread diagnostics. See dyer_navigation_reference.
+Ingredient menus, actual task effects, lower-page rendering and broader input/
+lifecycle acceptance remain unfinished. The workshop public gate stays closed.
 Ingredient submenu navigation, creation effects and DF3D implementation remain
 unfinished. An earlier
 controlled discovery232955 exited while entering Tint cloth aqua; source

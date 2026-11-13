@@ -103,6 +103,7 @@
 #include "creature_needs_native.h"
 #include "workshop_catalog_native.h"
 #include "workshop_memorial_native.h"
+#include "workshop_dye_native.h"
 #include "workshop_priority_native.h"
 #include "workshop_workers_page.h"
 #include "workshop_orders_native.h"
@@ -963,12 +964,15 @@ void publish() {
   std::vector<flatbuffers::Offset<m::ProductionBuilding>> pb;
   for(const auto& v:production.buildings){m::TilePos p(v.x,v.y,v.z);pb.push_back(m::CreateProductionBuilding(b,v.id,b.CreateString(v.name),b.CreateString(v.kind),&p,v.buildStage,v.maxStage,v.queueSize));}
   std::vector<flatbuffers::Offset<m::ProductionRecipe>> pr;
+  const auto dyeStatus=[&](const std::optional<ProductionDyeStatus>& value) {
+    return value?m::CreateProductionDyeStatus(b,b.CreateString(value->text),value->colorId,value->red,value->green,value->blue):flatbuffers::Offset<m::ProductionDyeStatus>{};
+  };
   for(const auto& v:production.recipes) {
     flatbuffers::Offset<m::ProductionAvailability> availability;
     if(v.availability)availability=m::CreateProductionAvailability(b,v.availability->available,b.CreateString(v.availability->objection));
     flatbuffers::Offset<m::ProductionMemorialStatus> memorial;
     if(v.memorial)memorial=m::CreateProductionMemorialStatus(b,b.CreateString(v.memorial->text),v.memorial->priority);
-    pr.push_back(m::CreateProductionRecipe(b,b.CreateString(v.key),b.CreateString(v.name),reqs(v.requirements),availability,memorial));
+    pr.push_back(m::CreateProductionRecipe(b,b.CreateString(v.key),b.CreateString(v.name),reqs(v.requirements),availability,memorial,dyeStatus(v.dye)));
   }
   std::vector<flatbuffers::Offset<m::ProductionJob>> pj;
   for(const auto& v:production.jobs) pj.push_back(m::CreateProductionJob(b,v.id,b.CreateString(v.name),v.jobType,v.repeat,v.suspended,v.workerId,b.CreateString(v.workerName),v.completionTimer,v.attachedItems,v.editable,b.CreateString(v.status),reqs(v.requirements),v.priority,v.canMoveUp,v.active));
@@ -1093,7 +1097,7 @@ void publish() {
     workshopWorkers=m::CreateWorkshopWorkersState(b,p.buildingId,p.profileRevision,b.CreateVector(p.permittedWorkers),p.revision,p.cursor,p.nextCursor,p.total,b.CreateVector(rows),p.outcome,p.unitId,assigned,p.operation);
   }
   std::vector<flatbuffers::Offset<m::ProductionTaskCategory>> taskCategories;
-  for(const auto& v:production.taskCategories)taskCategories.push_back(m::CreateProductionTaskCategory(b,b.CreateString(v.key),b.CreateString(v.name)));
+  for(const auto& v:production.taskCategories)taskCategories.push_back(m::CreateProductionTaskCategory(b,b.CreateString(v.key),b.CreateString(v.name),dyeStatus(v.dye)));
   auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders,production.taskCategory?b.CreateString(*production.taskCategory):0,production.taskCategory?b.CreateVector(taskCategories):0,production.taskParent?b.CreateString(*production.taskParent):0);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
@@ -5964,6 +5968,36 @@ void run(color_ostream& out) {
       }
       return 1;
     });lua_setfield(L,-2,"workshop_memorial_choices");
+    lua_pushcfunction(L,([](lua_State* state)->int {
+      auto* shop=df::building::find(int32_t(luaL_checkinteger(state,1)));
+      const int32_t job=int32_t(luaL_checkinteger(state,2));
+      if(!shop || int(shop->getType())!=13 || shop->getSubtype()!=21 || !df3d_production::workOrderDyeReady())return luaL_error(state,"Native Dyer unavailable");
+      lua_newtable(state);int index=0;
+      if(job==0) {
+        // Native root8c657f and category captions, captured in dyer_navigation_reference.
+        const auto* base=reinterpret_cast<const char*>(GetModuleHandleW(nullptr));
+        struct Root {int job;size_t rva;const char* expected;};
+        const Root roots[]={{191,0x16bed18,"Dye cloth a specific color"},{244,0x16becf0,"Dye leather a specific color"},{190,0x16becd0,"Dye thread a specific color"},{243,0x16bed10,"Mix dye"}};
+        for(const auto& root:roots) {
+          if(std::memcmp(base+root.rva,root.expected,std::strlen(root.expected)+1)!=0 || std::memcmp(base+0x1615870," (opens menu)",14)!=0)return luaL_error(state,"Native Dyer caption unavailable");
+          lua_newtable(state);field(state,"job_type",root.job);field(state,"caption",std::string(base+root.rva)+std::string(base+0x1615870));lua_rawseti(state,-2,++index);
+        }
+      } else {
+        const auto rows=df3d_production::workshopDyeTargets(shop,job);
+        if(!rows)return luaL_error(state,"Native Dyer targets unavailable");
+        for(const auto& row:*rows) {
+          const auto* color=df::global::world->raws.descriptors.colors[size_t(row.color)];
+          lua_newtable(state);field(state,"color",row.color);field(state,"tint",row.tint);
+          field(state,"caption",row.caption);field(state,"alpha_order",row.alphaOrder);
+          lua_newtable(state);field(state,"text",DF2UTF(row.info));field(state,"color_id",row.color);
+          lua_pushnumber(state,color->red);lua_setfield(state,-2,"red");
+          lua_pushnumber(state,color->green);lua_setfield(state,-2,"green");
+          lua_pushnumber(state,color->blue);lua_setfield(state,-2,"blue");
+          lua_setfield(state,-2,"dye");lua_rawseti(state,-2,++index);
+        }
+      }
+      return 1;
+    }));lua_setfield(L,-2,"workshop_dye_targets");
     lua_pushcfunction(L,[](lua_State* state)->int {
       const auto result=df3d_production::setWorkshopPriority(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),lua_toboolean(state,3)!=0,lua_toboolean(state,4)!=0);
       if(result!=df3d_production::PriorityOutcome::Rejected)mutated=true;
@@ -6434,6 +6468,14 @@ void run(color_ostream& out) {
     if(hasTaskCategory)production.taskCategory=text(L,"task_category");
     lua_getfield(L,-1,"task_parent");const bool hasTaskParent=lua_isstring(L,-1);lua_pop(L,1);
     if(hasTaskParent)production.taskParent=text(L,"task_parent");
+    const auto readDye=[&]()->std::optional<ProductionDyeStatus> {
+      lua_getfield(L,-1,"dye");std::optional<ProductionDyeStatus> result;
+      if(lua_istable(L,-1)) {
+        const auto channel=[&](const char* key){lua_getfield(L,-1,key);const float value=float(lua_tonumber(L,-1));lua_pop(L,1);return value;};
+        result=ProductionDyeStatus{text(L,"text"),int32_t(number(L,"color_id",-1)),channel("red"),channel("green"),channel("blue")};
+      }
+      lua_pop(L,1);return result;
+    };
     auto each=[&](const char* key,size_t cap,auto fn){lua_getfield(L,-1,key);if(lua_istable(L,-1)) for(size_t i=1;i<=lua_rawlen(L,-1)&&i<=cap;++i){lua_rawgeti(L,-1,i);fn();lua_pop(L,1);}lua_pop(L,1);};
     auto reqs=[&](){std::vector<ProductionRequirement> out;each("requirements",16,[&](){out.push_back({text(L,"description"),int32_t(number(L,"quantity")),int16_t(number(L,"item_type",-1))});});return out;};
     each("buildings",64,[&](){ProductionBuilding v;v.id=int32_t(number(L,"id",-1));v.x=int32_t(number(L,"x"));v.y=int32_t(number(L,"y"));v.z=int32_t(number(L,"z"));v.name=text(L,"name");v.kind=text(L,"kind");v.buildStage=int16_t(number(L,"build_stage"));v.maxStage=int16_t(number(L,"max_stage"));v.queueSize=uint16_t(number(L,"queue_size"));production.buildings.push_back(std::move(v));});
@@ -6444,9 +6486,9 @@ void run(color_ostream& out) {
       lua_pop(L,1);
       lua_getfield(L,-1,"memorial");
       if(lua_istable(L,-1))row.memorial=ProductionMemorialStatus{text(L,"text"),int32_t(number(L,"priority",1000))};
-      lua_pop(L,1);production.recipes.push_back(std::move(row));
+      lua_pop(L,1);row.dye=readDye();production.recipes.push_back(std::move(row));
     });
-    each("task_categories",128,[&](){production.taskCategories.push_back({text(L,"key"),text(L,"name")});});
+    each("task_categories",128,[&](){production.taskCategories.push_back({text(L,"key"),text(L,"name"),readDye()});});
     each("production_jobs",64,[&](){ProductionJob v;v.id=int32_t(number(L,"id",-1));v.jobType=int16_t(number(L,"job_type",-1));v.workerId=int32_t(number(L,"worker_id",-1));v.completionTimer=int32_t(number(L,"completion_timer",-1));v.name=text(L,"name");v.workerName=text(L,"worker_name");v.status=text(L,"status");v.repeat=boolean(L,"repeat_job");v.suspended=boolean(L,"suspended");v.priority=int8_t(number(L,"priority",-1));v.canMoveUp=int8_t(number(L,"can_move_up",-1));v.active=int8_t(number(L,"active",-1));v.editable=boolean(L,"editable");v.attachedItems=uint16_t(number(L,"attached_items"));v.requirements=reqs();production.jobs.push_back(std::move(v));});
     each("crops",256,[&](){production.crops.push_back({int32_t(number(L,"id",-1)),text(L,"name"),uint8_t(number(L,"seasons")),uint32_t(number(L,"seeds"))});});
     each("seasonal_crops",4,[&](){production.seasonalCrops.push_back(int32_t(lua_tointeger(L,-1)));});

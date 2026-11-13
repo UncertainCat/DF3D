@@ -54,9 +54,12 @@ local function template_job(recipe,b,native_requirements)
  if not ok then delete_template(j);return nil,tostring(err) end
  return j
 end
-local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_templates,native_categories,category,native_forge,native_fabrics,native_smelter,native_memorial)
+local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_templates,native_categories,category,native_forge,native_fabrics,native_smelter,native_memorial,native_dye)
  local out,keys={},{}
  local k=kind(b)
+ local dyer=k=='Dyers'
+ local dye_job=dyer and tonumber(category:match('^dyer:(%d+)$')) or nil
+ if dyer and category~='' and category:sub(1,9)~='reaction:' and not ({[190]=true,[191]=true,[244]=true,[243]=true})[dye_job] then return nil,'Invalid Dyer category' end
  local forge=k=='MetalsmithsForge' or k=='MagmaForge'
  local stone=k=='Masons'
  local memorial_page=stone and category=='stone:memorial'
@@ -85,12 +88,12 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
   out.parent=''
  end
  local smelter=k=='Smelter'
- local supported=forge or ordinary or clothier or glass or craft or smelter or k=='Still'
+ local supported=dyer or forge or ordinary or clothier or glass or craft or smelter or k=='Still'
  if category~='' and not supported then return nil,'Unsupported workshop category' end
  if supported then
   out.category=category;out.categories={}
-  if not memorial_page and not fabric and not glass_material and craft_material==nil and (not forge or category=='' or category:sub(1,9)=='reaction:') then out.categories=native_categories(b.id,category) end
-  out.editable_templates=native_templates(b.id)
+  if not dye_job and not memorial_page and not fabric and not glass_material and craft_material==nil and (not forge or category=='' or category:sub(1,9)=='reaction:') then out.categories=native_categories(b.id,category) end
+  out.editable_templates=dyer and {{job_type=190},{job_type=191},{job_type=244}} or native_templates(b.id)
   if k=='Butchers' then
    -- Pinned native8c5938..8c597d includes Catch live land animal at root,
    -- although the independent order catalog omits it. Native caption and
@@ -115,7 +118,24 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
   end
   if category=='' then table.insert(out.categories,1,{key='stone:memorial',caption=memorials.caption}) end
  end
- local reaction_page=not memorial_page and not fabric and not glass_material and craft_material==nil and (not forge or category=='' or category:sub(1,9)=='reaction:')
+ if dyer then
+  if category=='' then
+   local categories={}
+   for _,row in ipairs(native_dye(b.id,0))do categories[#categories+1]={key='dyer:'..row.job_type,caption=row.caption}end
+   for _,row in ipairs(out.categories)do categories[#categories+1]=row end
+   out.categories=categories
+   for _,fields in ipairs(out.editable_templates)do
+    out[#out+1]={key='dyer:generic:'..fields.job_type,fields={job_type=fields.job_type,specdata={hist_figure_id=-1},art_spec={type=-1,id=-1,subid=-1}},available=true,objection=''}
+   end
+  elseif dye_job then
+   for _,row in ipairs(native_dye(b.id,dye_job))do
+    local key='dyer:'..dye_job..':'..row.color
+    if row.tint then out.categories[#out.categories+1]={key=key,caption=row.caption,dye=row.dye}
+    else out[#out+1]={key=key,fields={job_type=dye_job,specdata={hist_figure_id=row.color},art_spec={type=-1,id=-1,subid=row.color}},available=true,objection='',dye=row.dye,alpha_order=row.alpha_order}end
+   end
+  end
+ end
+ local reaction_page=not dye_job and not memorial_page and not fabric and not glass_material and craft_material==nil and (not forge or category=='' or category:sub(1,9)=='reaction:')
  if (clothier or glass or craft) and category=='' then
   local categories=native_fabrics(b.id)
   for _,row in ipairs(out.categories)do categories[#categories+1]=row end
@@ -210,7 +230,8 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
    local previous=out[at-1]
    local priority=row.memorial and row.memorial.priority or 1000
    local previous_priority=previous.memorial and previous.memorial.priority or 1000
-   if priority>previous_priority or (priority==previous_priority and not native_less(row.native_caption,previous.native_caption))then break end
+   local alpha,previous_alpha=row.alpha_order or 0,previous.alpha_order or 0
+   if priority>previous_priority or (priority==previous_priority and (alpha>previous_alpha or (alpha==previous_alpha and not native_less(row.native_caption,previous.native_caption))))then break end
    out[at]=previous;at=at-1
   end
   out[at]=row
@@ -289,12 +310,13 @@ local function inspect(b,rs,native_caption,native_active)
  if rs.category~=nil then
   result.task_category=rs.category;result.task_categories={}
   result.task_parent=rs.parent
-  for _,row in ipairs(rs.categories)do result.task_categories[#result.task_categories+1]={key=row.key,name=utf(row.caption)}end
+  for _,row in ipairs(rs.categories)do result.task_categories[#result.task_categories+1]={key=row.key,name=utf(row.caption),dye=row.dye}end
  end
  for _,r in ipairs(rs) do
   local row={key=r.key,name=r.name,requirements=r.requirements}
   if r.available~=nil then row.availability={available=r.available,objection=r.objection} end
   if r.memorial then row.memorial=r.memorial end
+  if r.dye then row.dye=r.dye end
   result.recipes[#result.recipes+1]=row
  end
  if #b.jobs>64 then return fail('Workshop queue exceeds bounded inspector') end
@@ -348,7 +370,7 @@ return function(request)
   seed_scan.cursor=finish
   if finish<#all then return {ok=true,pending=true,message='Counting available seeds'} end
  end
- local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_task_templates,request.workshop_task_categories,p.task_category or '',request.workshop_forge_page,request.workshop_material_choices,request.workshop_smelter_choices,request.workshop_memorial_choices);if not rs then return fail(err) end
+ local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_task_templates,request.workshop_task_categories,p.task_category or '',request.workshop_forge_page,request.workshop_material_choices,request.workshop_smelter_choices,request.workshop_memorial_choices,request.workshop_dye_targets);if not rs then return fail(err) end
  if request.action==16 then
   local result=inspect(b,rs,request.workshop_caption,request.workshop_job_active)
   if kind(b)~='FarmPlot' and p.query and p.query~='' then

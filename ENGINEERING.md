@@ -17532,9 +17532,13 @@ The priority predicate13765f0 is not general affiliation: it requires
 profession STANDARD/CHILD/BABY and calls1376500 to check caste PET/PET_EXOTIC.
 Use that native semantic predicate with the unit, rather than substituting
 DFHack isAnimal, whose implementation tests different conditions.
-Current ProductionRecipe transports only key/name/requirements/availability,
-so full memorial presentation requires an explicit status-line contract and
-owned candidate/text/priority provider. Runtime and viewer/job-effect acceptance
+ProductionRecipe now has an optional memorial record carrying native status
+text and priority. The world model retains it independently of availability;
+absent legacy observations remain unknown. This additive field leaves
+Management208 unchanged: older readers ignore it, and older recordings do not
+acquire fabricated memorial facts. Manager recipes reject this workshop-only
+record. Bridge publication, presentation wiring and the owned candidate/text/
+priority provider remain pending. Runtime and viewer/job-effect acceptance
 remain pending. Owned DF4376 exited unsaved; source saves and queues remained
 unchanged. Native capture used30FPS with a41C GPU sample. See
 native_workshop.json.stone_memorial_navigation_reference.

@@ -612,6 +612,8 @@ TEST_CASE("production response preserves native job progress and recipe requirem
   flatbuffers::FlatBufferBuilder b;mm::TilePos pos(2,3,4);
   auto need=mm::CreateProductionRequirement(b,b.CreateString("Wood"),1,5);
   auto needs=b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRequirement>>{need});
+  auto memorial=mm::CreateProductionMemorialStatus(b,b.CreateString("Ghost, no slabs engraved"),1);
+  auto memorialRecipe=mm::CreateProductionRecipe(b,b.CreateString("builtin:211:9795"),b.CreateString("Synthetic memorial"),b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRequirement>>{}),0,memorial);
   auto recipe=mm::CreateProductionRecipe(b,b.CreateString("builtin:12:-1"),b.CreateString("Construct bed"),needs);
   auto name=b.CreateString("Construct bed"),worker=b.CreateString("Urist"),status=b.CreateString("Worker assigned");
   mm::ProductionJobBuilder job(b);job.add_id(504);job.add_job_type(12);job.add_name(name);
@@ -625,7 +627,7 @@ TEST_CASE("production response preserves native job progress and recipe requirem
   auto suspendedRecord=suspended.Finish();
   auto building=mm::CreateProductionBuilding(b,72,b.CreateString("Carpenters #72"),b.CreateString("Carpenters"),&pos,2,3,2);
   auto buildings=b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionBuilding>>{building});
-  auto recipes=b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRecipe>>{recipe});
+  auto recipes=b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRecipe>>{recipe,memorialRecipe});
   auto jobs=b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionJob>>{jobRecord,suspendedRecord});
   auto detail=b.CreateString("Native workers select and haul inputs; queueing does not guarantee materials or labor. Work orders are not yet exposed.");
   mm::ProductionStateBuilder state(b);state.add_buildings(buildings);state.add_recipes(recipes);
@@ -636,12 +638,17 @@ TEST_CASE("production response preserves native job progress and recipe requirem
   result.add_production(production);b.Finish(result.Finish());
   REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
   REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));REQUIRE(c->poll());
-  const auto& v=c->state().production;REQUIRE(v.jobs.size()==2);REQUIRE(v.recipes.size()==1);REQUIRE(v.buildings.size()==1);
+  const auto& v=c->state().production;REQUIRE(v.jobs.size()==2);REQUIRE(v.recipes.size()==2);REQUIRE(v.buildings.size()==1);
   CHECK(v.selectedBuilding==72);CHECK(v.createdJob==504);CHECK(v.buildings[0].z==4);
   CHECK(v.jobs[0].id==504);CHECK(v.jobs[0].workerId==42);CHECK(v.jobs[0].workerName=="Urist");
   CHECK(v.jobs[0].completionTimer==17);CHECK(v.jobs[0].attachedItems==1);CHECK(v.jobs[0].repeat);CHECK(v.jobs[0].editable);
   REQUIRE(v.jobs[0].requirements.size()==1);CHECK(v.jobs[0].requirements[0].quantity==1);
   CHECK(v.recipes[0].requirements[0].description=="Wood");
+  CHECK_FALSE(v.recipes[0].memorial.has_value());
+  REQUIRE(v.recipes[1].memorial.has_value());
+  CHECK(v.recipes[1].memorial->text=="Ghost, no slabs engraved");
+  CHECK(v.recipes[1].memorial->priority==1);
+  CHECK_FALSE(v.recipes[1].availability.has_value());
   CHECK(v.nextCursor==80);CHECK(v.currentSeason==-1);CHECK(v.crops.empty());CHECK(v.seasonalCrops.empty());
   CHECK(v.detail=="Native workers select and haul inputs; queueing does not guarantee materials or labor. Work orders are not yet exposed.");
   const auto& buildingValue=v.buildings[0];
@@ -677,6 +684,25 @@ TEST_CASE("production response preserves native job progress and recipe requirem
   CHECK(f.detail=="Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.");
   seq=c->send({});REQUIRE(seq>0);p.pop();p.publish(5,id,seq);REQUIRE(c->poll());
   CHECK(c->state().production.jobs.empty());CHECK(c->state().production.createdJob==-1);
+}
+TEST_CASE("memorial recipe status validates native priorities and bounded text") {
+  for(const auto priority : {1,1000,1001,1002,2000,2001,2002,3000,3001,3002,-1,0,2,1003}) {
+    for(const auto length : {0,4096,4097}) {
+      flatbuffers::FlatBufferBuilder b;
+      auto memorial=mm::CreateProductionMemorialStatus(b,b.CreateString(std::string(length,'x')),priority);
+      auto recipe=mm::CreateProductionRecipe(b,b.CreateString("memorial"),b.CreateString("Synthetic memorial"),b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRequirement>>{}),0,memorial);
+      auto recipes=b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRecipe>>{recipe});
+      mm::ProductionStateBuilder production(b);production.add_recipes(recipes);auto domain=production.Finish();
+      mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(1);
+      state.add_action(mm::ManagementAction::ProductionInspect);state.add_status(mm::ManagementStatus::Ok);
+      state.add_production(domain);b.Finish(state.Finish());
+      const auto error=mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer()));
+      const bool validPriority=priority==1 || (priority>=1000 && priority<=1002) ||
+        (priority>=2000 && priority<=2002) || (priority>=3000 && priority<=3002);
+      INFO(error.value_or("valid"));
+      CHECK(error.has_value()==(!validPriority || length>4096));
+    }
+  }
 }
 TEST_CASE("work orders share ownership and retain revision and unchanged-field sentinels") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);

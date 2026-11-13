@@ -299,7 +299,8 @@ struct ProductionRequest {
 struct ProductionRequirement { std::string description; int32_t quantity=0; int16_t itemType=-1; };
 struct ProductionAvailability { bool available=false; std::string objection; };
 struct ProductionTaskCategory { std::string key,name; };
-struct ProductionRecipe { std::string key,name; std::vector<ProductionRequirement> requirements; std::optional<ProductionAvailability> availability; };
+struct ProductionMemorialStatus { std::string text; int32_t priority=1000; };
+struct ProductionRecipe { std::string key,name; std::vector<ProductionRequirement> requirements; std::optional<ProductionAvailability> availability; std::optional<ProductionMemorialStatus> memorial; };
 struct ProductionJob {
   int32_t id=-1,workerId=-1,completionTimer=-1;
   int16_t jobType=-1;

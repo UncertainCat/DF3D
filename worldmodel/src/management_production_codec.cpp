@@ -149,6 +149,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     for (const auto* v : *p->recipes()) {
       ProductionRecipe row{str(v->key()), str(v->name()), reqs(v->requirements())};
       if(const auto* a=v->availability())row.availability=ProductionAvailability{a->available(),str(a->objection())};
+      if(const auto* m=v->memorial())row.memorial=ProductionMemorialStatus{str(m->text()),m->priority()};
       n.recipes.push_back(std::move(row));
     }
   if (p->jobs())

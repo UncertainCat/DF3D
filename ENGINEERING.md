@@ -17863,6 +17863,20 @@ failed on a test-driver type annotation, fixed before acceptance; no product
 failure is inferred. Whole workshop exposure and full management/release
 acceptance remain pending.
 
+Protected114826 on2026-11-13 captures workshop Tasks hover messages with
+native pointer input and Rename/Remove-building positive controls. Repeat,
+Priority and Suspend have distinct on/off messages (305/306,307/308,311/312);
+Details310 differs from the global Tasks wording, and Cancel313 matches it.
+Add new task and the absent first-row Move up control yield no instruction.
+The diagnostic restores the hidden-window pointer immediately before reading;
+reading after a frame sleep produced false negatives in114432, rejected by
+the114543 positive control. The corrected114642 probe returned Repeat306.
+Use task_hover_reference in native_workshop.json for verbatim lines. Enabled
+Move up, viewer wiring and rendered/lifecycle verification remain pending;
+the screenshot handshake does not preserve tooltip pixels. Owned DF34328
+exits unsaved with the queue/source saves/preferences preserved. Serial30FPS
+GPU samples59-61C are observations, not peaks. Core19 passes.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

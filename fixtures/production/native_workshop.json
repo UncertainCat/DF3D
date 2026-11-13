@@ -38306,5 +38306,191 @@
       "Full workshop and management release acceptance remain pending."
     ],
     "failed_attempt": "113836 native capture passed but viewer test failed to parse an untyped local; corrected before accepted run."
+  },
+  "task_hover_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261113-114826",
+    "scope": "Paused native pointer input on a created carpenter Make bed task; positive controls before and after sampling. Native screen text captured immediately after restoring the hidden-window pointer.",
+    "samples": [
+      {
+        "enabled": true,
+        "instruction": 301,
+        "kind": "rename-control",
+        "lines": [
+          "Name this building."
+        ],
+        "x": 800,
+        "y": 82
+      },
+      {
+        "enabled": true,
+        "instruction": 306,
+        "kind": "repeat",
+        "lines": [
+          "Click to set this task",
+          "to repeat indefinitely."
+        ],
+        "x": 748,
+        "y": 154
+      },
+      {
+        "enabled": true,
+        "instruction": 308,
+        "kind": "priority",
+        "lines": [
+          "Click to set this task",
+          "as highest priority",
+          "among all tasks",
+          "everywhere."
+        ],
+        "x": 772,
+        "y": 154
+      },
+      {
+        "enabled": true,
+        "instruction": -1,
+        "kind": "move-up",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ],
+        "x": 796,
+        "y": 154
+      },
+      {
+        "enabled": true,
+        "instruction": 310,
+        "kind": "details",
+        "lines": [
+          "Set details for this",
+          "task, such as the",
+          "material to be used."
+        ],
+        "x": 820,
+        "y": 154
+      },
+      {
+        "enabled": true,
+        "instruction": 312,
+        "kind": "suspend",
+        "lines": [
+          "Click to suspend the",
+          "task.  Assigned workers",
+          "are removed from",
+          "suspended tasks."
+        ],
+        "x": 844,
+        "y": 154
+      },
+      {
+        "enabled": true,
+        "instruction": 313,
+        "kind": "remove",
+        "lines": [
+          "Cancel this task."
+        ],
+        "x": 868,
+        "y": 154
+      },
+      {
+        "enabled": true,
+        "instruction": -1,
+        "kind": "add",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ],
+        "x": 744,
+        "y": 190
+      },
+      {
+        "enabled": true,
+        "instruction": 305,
+        "kind": "repeat-on",
+        "lines": [
+          "This task is set to",
+          "repeat indefinitely."
+        ],
+        "x": 748,
+        "y": 154
+      },
+      {
+        "enabled": true,
+        "instruction": 307,
+        "kind": "priority-on",
+        "lines": [
+          "This task is highest",
+          "priority among all",
+          "tasks everywhere."
+        ],
+        "x": 772,
+        "y": 154
+      },
+      {
+        "enabled": true,
+        "instruction": 311,
+        "kind": "suspend-on",
+        "lines": [
+          "This task has been",
+          "suspended."
+        ],
+        "x": 844,
+        "y": 154
+      },
+      {
+        "enabled": true,
+        "instruction": 302,
+        "kind": "remove-control",
+        "lines": [
+          "Remove this building."
+        ],
+        "x": 832,
+        "y": 82
+      }
+    ],
+    "sha256": {
+      "workshop-native.json": "f33c86959690ddb491cf6a9ba821a3fed9c5cb398f2aeea4833a6a206a83795a",
+      "result.json": "0abe2e9b9a6096cb128f85388f2f8a4c58947c8fa4c65de9235b702efdd6e74b",
+      "workshop-task-hover.png": "e8761ed0c71b26cbc52f53ce141ed0aa027333dd85ccc72e2bbd8a2c0c0c05aa"
+    },
+    "limits": [
+      "Move up is absent for the first row; enabled Move up help remains unqualified.",
+      "No tooltip pixel comparison: the screenshot handshake resets the pointer.",
+      "Viewer hover implementation and rendered/lifecycle qualification remain pending."
+    ],
+    "discarded_attempts": {
+      "114432": "Read after a frame sleep lost the hidden-window pointer; all-negative samples are not accepted.",
+      "114543": "Positive rename control detected the pointer-reset error.",
+      "114642": "After pointer restoration, Repeat correctly returned native instruction306 rather than the obsolete negative expectation."
+    }
   }
 }

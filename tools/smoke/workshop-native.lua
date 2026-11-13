@@ -121,6 +121,44 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ if os.getenv('DF3D_WORKSHOP_TASK_HOVER')=='1'then
+  assert(#jobs==0,'Hover reference needs an empty workshop queue')
+  assert(click_label('Add new task'));assert(click_label('Make bed'))
+  local created=assert(building.jobs[0]);assert(#building.jobs==1)
+  local worked,problem=xpcall(function()
+   local script=require('gui.script');result.task_hover={}
+   for _,target in ipairs{{'rename-control',800,82},{'repeat',748,154},{'priority',772,154},{'move-up',796,154},{'details',820,154},{'suspend',844,154},{'remove',868,154},{'add',744,190},{'repeat-on',748,154,true},{'priority-on',772,154,true},{'suspend-on',844,154,true},{'remove-control',832,82}}do
+    if target[4] then
+     g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+     df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+     df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+    end
+    local deadline=dfhack.getTickCount()+700
+    repeat
+     g.precise_mouse_x=target[2];g.precise_mouse_y=target[3]
+     g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+     df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+     gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+    until dfhack.getTickCount()>=deadline
+    g.precise_mouse_x=target[2];g.precise_mouse_y=target[3]
+    g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+    gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+    local sample={kind=target[1],x=target[2],y=target[3],instruction=df.global.game.main_interface.current_hover,enabled=df.global.game.main_interface.hover_instructions_on,lines={}}
+    local expected=({['rename-control']=301,['remove-control']=302})[target[1]]
+    if expected then assert(sample.instruction==expected and sample.enabled,'Workshop hover positive control differs: '..target[1])end
+    for yy=0,17 do
+     local chars={};for xx=g.dimx-24,g.dimx-1 do local ch=dfhack.screen.readTile(xx,yy).ch;chars[#chars+1]=ch>=32 and string.char(ch%256)or' 'end
+     sample.lines[#sample.lines+1]=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')
+    end
+    while #sample.lines>0 and sample.lines[#sample.lines]==''do table.remove(sample.lines)end
+    result.task_hover[#result.task_hover+1]=sample
+   end
+   shot('task-hover')
+  end,debug.traceback)
+  assert(dfhack.job.removeJob(created));assert(worked,problem)
+  return
+ end
  if os.getenv('DF3D_WORKSHOP_FORGE_CHOICES')=='1'then
   local utils=require('utils');local forge
   for _,b in ipairs(df.global.world.buildings.other.WORKSHOP_ANY)do

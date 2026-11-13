@@ -220,7 +220,7 @@ local function inspect(b,rs,native_caption)
   result.production_jobs[#result.production_jobs+1]={id=j.id,name=utf(native_caption(j)),job_type=j.job_type,
    repeat_job=j.flags['repeat'],suspended=j.flags.suspend,priority=j.flags.do_now and 1 or 0,worker_id=worker and worker.id or -1,
    worker_name=worker and utf(dfhack.units.getReadableName(worker)) or '',completion_timer=j.completion_timer,
-   attached_items=#j.items,editable=editable(j,rs),status=status,requirements=requirements(j)}
+   attached_items=#j.items,editable=editable(j,rs),can_move_up=(editable(j,rs) and #result.production_jobs>0) and 1 or 0,status=status,requirements=requirements(j)}
  end
  result.detail=(#rs==0 and 'Recipe creation for this building family is not supported yet. ' or '')..'Native workers select and haul inputs; queueing does not guarantee materials or labor. Work orders are not yet exposed.'
  local profile=b:getWorkshopProfile()
@@ -307,7 +307,9 @@ return function(request)
   local job
   for _,candidate in ipairs(b.jobs) do if candidate.id==p.job_id then job=candidate;break end end
   if not job or J.getHolder(job)~=b or not editable(job,rs) then return fail('Job is not an editable production job in this building') end
-  if p.priority~=nil and p.priority>=0 then
+  if p.expected_previous_job_id~=nil and p.expected_previous_job_id>=0 then
+   if not request.workshop_move_up(b.id,job.id,p.expected_previous_job_id) then return fail('') end
+  elseif p.priority~=nil and p.priority>=0 then
    if not request.workshop_priority(b.id,job.id,p.expected_priority==1,p.priority==1) then return fail('') end
   elseif p.cancel then
    if not J.removeJob(job) then return fail('Native job cancellation rejected') end

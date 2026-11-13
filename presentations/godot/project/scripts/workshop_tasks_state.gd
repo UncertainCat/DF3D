@@ -91,6 +91,13 @@ func queue_task(key: String) -> void:
 	phase=Phase.Applying
 	_send({"action":C.ManagementAction.ProductionQueue,"building_id":building_id,"recipe":key,"task_category":category})
 
+func move_up(id: int) -> void:
+	if phase!=Phase.Ready or ticket!=0:return
+	var rows: Array=snapshot.get("jobs",[])
+	for index in range(1,rows.size()):
+		if rows[index].id==id and rows[index].get("can_move_up",false):
+			_edit(id,{"expected_previous_job_id":rows[index-1].id});return
+
 func cancel_task(id: int) -> void:
 	_edit(id,{"cancel":true})
 
@@ -132,7 +139,7 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	if result.get("outcome","")=="unknown":_fail(Phase.Unknown);return
 	# The legacy production reply does not distinguish pre-write rejection from
 	# an error after native worker release. Never retry an uncertain Priority edit.
-	if result.get("status",-1)!=C.ManagementStatus.Ok:_fail(Phase.Unknown if sent.has("priority") else Phase.Rejected);return
+	if result.get("status",-1)!=C.ManagementStatus.Ok:_fail(Phase.Unknown if sent.has("priority") or sent.has("expected_previous_job_id") else Phase.Rejected);return
 	var data: Dictionary=result.get("production",{})
 	var expected_category: String=sent.get("task_category","")
 	if data.get("task_category","")!=expected_category or (not expected_category.is_empty() and not data.has("task_category")):
@@ -157,5 +164,11 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 			if not selected.is_empty():_fail(Phase.Unknown);return
 		elif selected.is_empty() or (sent.has("repeat") and selected.get("repeat")!=bool(sent.repeat)) or (sent.has("suspend") and selected.get("suspended")!=bool(sent.suspend)) or (sent.has("priority") and (selected.get("priority")!=bool(sent.priority) or (sent.priority==1 and data.jobs[0].id!=sent.job_id))):
 			_fail(Phase.Unknown);return
+	if sent.has("expected_previous_job_id"):
+		var expected: Array=snapshot.get("jobs",[]).map(func(row):return row.id)
+		var index:=expected.find(sent.job_id)
+		if index<=0 or expected[index-1]!=sent.expected_previous_job_id:_fail(Phase.Unknown);return
+		expected[index]=sent.expected_previous_job_id;expected[index-1]=sent.job_id
+		if data.jobs.map(func(row):return row.id)!=expected:_fail(Phase.Unknown);return
 	category=expected_category;parent=data.get("task_parent",null);snapshot=data.duplicate(true);phase=Phase.Ready;changed.emit()
 	if editing:applied.emit()

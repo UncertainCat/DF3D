@@ -17234,13 +17234,30 @@ Management208 carries the expected preceding job ID as an exclusive Move up
 intent, rejecting invalid/self IDs and mixed edits. ProductionJob.can_move_up
 is tri-state; legacy observations remain unknown and absent in the Godot dictionary.
 Bridge/model/client codecs preserve it without synthesizing availability.
-The migration explicitly rejects Move up before mutation; runtime dispatch and
-the viewer control remain pending. Both peers require208 and mailbox
+The migration initially rejected Move up before mutation; native dispatch and
+the staged viewer control now use the contract as described below. Both peers require208 and mailbox
 Local\df3d_management_v208. Core19 and management-contract/controller QA pass.
 Protected211513 verifies typed Move up rejection, absent capability, and existing
 Priority/Details/category/spike/reaction workflows. Owned DF43100 closes unsaved
 with source preservation; only three known Godot diagnostics occur. See
 native_workshop.json.move_up_contract_reference.
+
+Workshop Move up dispatch validates both job holders and the displayed preceding
+job ID before applying the pinned native adjacent swap in workshop_priority_native.h.
+The adapter reports known capability only for editable jobs below the first row.
+The viewer uses installed BUILDING_JOBS_PRIORITY_UP artwork, disables duplicate
+pending edits and confirms the complete returned queue order. Unknown legacy
+capability supplies no action; late replies cannot reopen a closed panel, and
+unconfirmed outcomes are never replayed. Protected211937 on2026-11-12 repeats
+native's five clicks through the actual viewer, matching queue/worker/priority
+observations and rejecting a stale predecessor without moving jobs. The arrow
+column784,136..808,244 matches native with zero differing pixels. Existing
+Priority worker release, Details and task-creation regressions still pass.
+Owned DF45504 closes unsaved with source preservation; only three known Godot
+diagnostics occur. Core19 and controller/composition/adapter checks pass.
+See native_workshop.json.move_up_runtime_reference. This qualifies the captured
+Make bed sequence; full workshop hover, remaining artwork and other families
+remain separate acceptance work.
 
 Workshop Priority dispatch uses `workshop_priority_native.h`: validate the
 building/job and displayed flag at a safe point, reproduce the pinned inline
@@ -17259,8 +17276,7 @@ to the displaced job in each side; native and viewer both release it. Stale
 expected Priority is rejected without changing the job. The three Priority
 icons match all RGB pixels in crop760,136,784,244, and the existing Details
 panel and material-effect checks still pass. This qualifies the Make bed case,
-not all job families or the whole workshop. Native move-up arrows and some
-contained-item artwork are still missing. State tests cover unknown legacy
+not all job families or the whole workshop. Native Move up is implemented below; some contained-item artwork remains missing. State tests cover unknown legacy
 observations, duplicate suppression and a flag-only reply without queue movement.
 `workshop-priority-state` passes state/composition; `workshop-priority-runtime`
 passes composition/production-adapter checks; core19 passes. Owned DF37912

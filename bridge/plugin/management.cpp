@@ -4006,10 +4006,6 @@ void run(color_ostream& out) {
     }
     publish();return;
   }
-  // Contract migration: reject Move up until its semantic dispatch is installed.
-  if(r->action()==m::ManagementAction::ProductionJobEdit && r->production() && r->production()->expected_previous_job_id()>=0) {
-    message.clear();status=m::ManagementStatus::Rejected;production={};publish();return;
-  }
   if(r->action()==m::ManagementAction::FarmEdit) {
     message.clear();status=m::ManagementStatus::Rejected;production={};
     production.farmEditOutcome=m::FarmEditOutcome::Rejected;
@@ -5938,7 +5934,12 @@ void run(color_ostream& out) {
       if(result!=df3d_production::PriorityOutcome::Rejected)mutated=true;
       lua_pushboolean(state,result==df3d_production::PriorityOutcome::Applied);return 1;
     });lua_setfield(L,-2,"workshop_priority");
-    lua_newtable(L);field(L,"building_id",p->building_id());field(L,"job_id",p->job_id());field(L,"recipe",p->recipe()?p->recipe()->str():"");field(L,"task_category",p->task_category()?p->task_category()->str():"");field(L,"query",p->query()?p->query()->str():"");field(L,"cursor",p->cursor());field(L,"repeat_job",p->repeat());field(L,"priority",p->priority());field(L,"expected_priority",p->expected_priority());field(L,"suspend",p->suspend());field(L,"cancel",p->cancel());field(L,"season",p->season());field(L,"crop_id",p->crop_id());lua_setfield(L,-2,"production");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const bool applied=df3d_production::moveWorkshopJobUp(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),int32_t(luaL_checkinteger(state,3)));
+      if(applied)mutated=true;
+      lua_pushboolean(state,applied);return 1;
+    });lua_setfield(L,-2,"workshop_move_up");
+    lua_newtable(L);field(L,"building_id",p->building_id());field(L,"job_id",p->job_id());field(L,"recipe",p->recipe()?p->recipe()->str():"");field(L,"task_category",p->task_category()?p->task_category()->str():"");field(L,"query",p->query()?p->query()->str():"");field(L,"cursor",p->cursor());field(L,"repeat_job",p->repeat());field(L,"priority",p->priority());field(L,"expected_priority",p->expected_priority());field(L,"expected_previous_job_id",p->expected_previous_job_id());field(L,"suspend",p->suspend());field(L,"cancel",p->cancel());field(L,"season",p->season());field(L,"crop_id",p->crop_id());lua_setfield(L,-2,"production");
   }
   if(const auto* w=r->work_order()) {
     lua_newtable(L);field(L,"id",w->id());field(L,"expected_revision",w->expected_revision());field(L,"recipe",w->recipe()?w->recipe()->str():"");field(L,"query",w->query()?w->query()->str():"");field(L,"cursor",w->cursor());

@@ -7510,5 +7510,25 @@
     "source_preserved": true,
     "closed_unsaved": true,
     "diagnostics": "passed_with_known_issues"
+  },
+  "move_up_runtime_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-211937",
+    "source_sha256": "0aed8ca9aebd29dd8823ee6d3ebd124f93c169ffaa464da6243c6334960ccb7c",
+    "bridge_sha256": "af3497dbb5e73b163c1a62261ecb49f30bff09650bdfd69d50bfba6e2d350bee",
+    "scope": "Composed Move up middle/last/first no-op sequence, native queue/worker/priority equality, stale predecessor rejection, followed by Priority/Details/category/task creation regressions.",
+    "pixel_comparison": {
+      "native": "workshop-job-move-up-middle.png",
+      "viewer": "workshop-move-up-middle-live.png",
+      "crop": [
+        784,
+        136,
+        808,
+        244
+      ],
+      "differing_pixels": 0
+    },
+    "source_preserved": true,
+    "closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues: three documented Godot diagnostics, no unclassified errors"
   }
 }

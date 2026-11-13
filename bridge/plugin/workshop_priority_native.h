@@ -5,6 +5,24 @@
 
 namespace df3d_production {
 enum class PriorityOutcome { Rejected, Applied, Unknown };
+// Native1ad17c..1ad1e4 swaps adjacent simulation jobs without changing flags
+// or releasing workers. An observed predecessor prevents stale-row movement.
+inline bool moveWorkshopJobUp(int32_t buildingId,int32_t jobId,int32_t previousId) {
+    if(!farmFunctions() || jobId<0 || previousId<0 || jobId==previousId)return false;
+    static const bool pinned=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x68;++i){hash^=base[0x1ad17c+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x8bb0f2a462f8e04b);
+    }();
+    auto* building=df::building::find(buildingId);
+    if(!pinned || !building || building->jobs.size()<2 || building->jobs.size()>64)return false;
+    auto found=std::find_if(building->jobs.begin(),building->jobs.end(),[jobId](auto* j){return j && j->id==jobId;});
+    if(found==building->jobs.end() || found==building->jobs.begin() || !*(found-1) ||
+       (*(found-1))->id!=previousId || DFHack::Job::getHolder(*found)!=building || DFHack::Job::getHolder(*(found-1))!=building)return false;
+    std::iter_swap(found,found-1);
+    return true;
+}
 // Native1ad296..1ad3ff inlines this effect in the sheet's feed handler.
 // Use simulation records only; never invoke the handler or its menu iterator.
 inline PriorityOutcome setWorkshopPriority(int32_t buildingId,int32_t jobId,bool expected,bool desired) {

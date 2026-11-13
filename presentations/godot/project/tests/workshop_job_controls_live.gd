@@ -53,10 +53,26 @@ func run() -> void:
 		owner.tasks.queue_task(recipe_key);await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
 		job_ids.append(owner.tasks.snapshot.created_job)
 	var native_ids: Array=[]
-	for row in owner.tasks.jobs():check(not row.has("can_move_up"),"Migration invented Move up capability")
-	var staged_move:=await request("production",{"action":C.ManagementAction.ProductionJobEdit,"building_id":int(reference.building_id),"job_id":int(job_ids[1]),"expected_previous_job_id":int(job_ids[0])})
-	check(staged_move.get("status")==C.ManagementStatus.Rejected,"Unimplemented Move up was silently accepted")
 	for row in reference.priority_queue[0].rows:native_ids.append(int(row.id))
+	for sample in reference.move_up.slice(1):
+		var target: int=job_ids[native_ids.find(int(sample.target))]
+		await process_frame
+		var current: Array=owner.tasks.jobs()
+		for index in current.size():
+			check(current[index].get("can_move_up")==bool(index>0),"Move up capability differs")
+			if current[index].id==target:click(Vector2(796,154+index*36));break
+		await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+		current=owner.tasks.jobs()
+		for index in current.size():
+			var expected: Dictionary=sample.rows[index]
+			check(current[index].id==job_ids[native_ids.find(int(expected.id))] and current[index].worker_id==int(expected.worker_id) and current[index].priority==expected.do_now,"Move up queue/worker/flag effect differs")
+		if sample.name=="middle-up":
+			await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/workshop-move-up-middle-live.png")
+	var stale_move:=await request("production",{"action":C.ManagementAction.ProductionJobEdit,"building_id":int(reference.building_id),"job_id":int(job_ids[1]),"expected_previous_job_id":int(job_ids[2])})
+	check(stale_move.get("status")==C.ManagementStatus.Rejected,"Stale Move up predecessor accepted")
+	owner.tasks.refresh();await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready)
+	check(owner.tasks.jobs().map(func(row):return row.id)==job_ids,"Stale Move up changed queue")
 	for sample in reference.priority_queue.slice(1):
 		var target: int=job_ids[native_ids.find(int(sample.target))]
 		await process_frame

@@ -123,6 +123,7 @@ func _gui_input(event: InputEvent) -> void:
 	match floori((event.position.x-304)/24):
 		0:state.set_repeat(job.id,not job.repeat)
 		1:priority_requested.emit(job.id)
+		2:state.move_up(job.id)
 		3:details_requested.emit(job.id)
 		4:state.set_suspended(job.id,not job.suspended)
 		5:state.cancel_task(job.id)
@@ -170,8 +171,9 @@ func _draw() -> void:
 	for index in jobs.size():
 		var job: Dictionary=jobs[index];var y:=36+index*36
 		caption(job.name,Vector2(0,y+18),11)
-		for entry in [[0,"BUILDING_JOBS_REPEAT"+("_ACTIVE" if job.repeat else "")],[1,"BUILDING_JOBS_DO_NOW"+("_ACTIVE" if job.get("priority",false) else "")],[3,"STOCKS_VIEW_ITEM"],[4,"BUILDING_JOBS_SUSPENDED"+("_ACTIVE" if job.suspended else "")],[5,"BUILDING_JOBS_REMOVE"]]:
+		for entry in [[0,"BUILDING_JOBS_REPEAT"+("_ACTIVE" if job.repeat else "")],[1,"BUILDING_JOBS_DO_NOW"+("_ACTIVE" if job.get("priority",false) else "")],[2,"BUILDING_JOBS_PRIORITY_UP"],[3,"STOCKS_VIEW_ITEM"],[4,"BUILDING_JOBS_SUSPENDED"+("_ACTIVE" if job.suspended else "")],[5,"BUILDING_JOBS_REMOVE"]]:
 			if entry[0]==1 and not job.has("priority"):continue
+			if entry[0]==2 and (index==0 or not job.get("can_move_up",false)):continue
 			var texture: Texture2D=art.texture(entry[1])
 			if texture!=null:draw_texture_rect(texture,Rect2(304+entry[0]*24,y-6,24,36),false)
 	patch("HORIZONTAL_OPTION_ACTIVE",Rect2(add_rect().position-Vector2(0,6),add_rect().size+Vector2(0,12)));caption("Add new task",add_rect().position+Vector2(8,18),10)

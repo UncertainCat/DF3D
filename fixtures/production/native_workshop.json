@@ -8732,5 +8732,219 @@
       "workshop-clothier-page-3.png": "93b7cdfb5a6057c2b89f8544c52c3b33aa0710daa4b1554289ffd522890e5e3c",
       "clothier-page-3-live.png": "057145b63b98f89ba9c808b0403fd17bf85714eb432e59088350e95eb1a5e5a8"
     }
+  },
+  "smelter_runtime_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-220626",
+    "native_membership": "Furnace8c4fc0 dispatches Smelter1/MagmaSmelter4 to8c3fe0. Root builtin branch8c47c1..8c4935 adds Melt90 and METAL_ORE flagged inorganics as Smelt89. Owned native collectors provide counts and fuel; no widgets/menu vectors read.",
+    "scope": "Regular Smelter fuel-present fixture: all40choices/order/captions/availability/refusals and Cancel match; actual clicks and scrolling create five jobs and reject29 unavailable choices. Native job fields and all input requirements match, excluding job.item_type. Original queues restored. Fuel-shortage, magma, worker execution and products remain unverified.",
+    "crop": [
+      432,
+      106,
+      888,
+      676
+    ],
+    "differing_pixels": 0,
+    "effects": [
+      {
+        "caption": "Make billon bars (use bars)",
+        "index": 2,
+        "matched_native_job": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": 2,
+              "mat_type": 0,
+              "quantity": 150
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": 3,
+              "mat_type": 0,
+              "quantity": 150
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 209,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "BILLON_MAKING2",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Melt a metal object",
+        "index": 24,
+        "matched_native_job": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 5120,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": -1,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 90,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Smelt magnetite ore",
+        "index": 32,
+        "matched_native_job": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": 221,
+              "mat_type": 0,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 89,
+          "mat_index": 221,
+          "mat_type": 0,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Smelt native gold ore",
+        "index": 36,
+        "matched_native_job": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": 189,
+              "mat_type": 0,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 89,
+          "mat_index": 189,
+          "mat_type": 0,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Smelt tetrahedrite ore",
+        "index": 40,
+        "matched_native_job": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": 201,
+              "mat_type": 0,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 89,
+          "mat_index": 201,
+          "mat_type": 0,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      }
+    ],
+    "refused": 29,
+    "diagnostics": "passed_with_known_issues: separate-renderer, finalize, ObjectDB shutdown; no unclassified diagnostics",
+    "source_preservation": "Owned source unchanged; DF10668 exited unsaved",
+    "sha256": {
+      "workshop-native.json": "2003a3f0549536cb1ff90541e49144851a1918ec7e328861d3bcd374229a6659",
+      "workshop-family-1.png": "43815bae406f5aaca15a86375f506ca2137fafd6bf21449318fe51a549c6a145",
+      "family-1-live.png": "cddca87102fcacf6e13dfce37db17ff1acc849910f49a124fc49b321c079ef5e",
+      "workshop-wire-result.json": "26aaa9c392a07f882d2c29c1aa5ea7a5c3fe643f6fa0804eda0dded390c98996",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
   }
 }

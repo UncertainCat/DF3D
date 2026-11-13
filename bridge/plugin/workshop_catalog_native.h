@@ -346,6 +346,10 @@ inline bool workshopInventoryReady() {
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0x8c47c1,0x174,UINT64_C(0xd1e879364ce98037)},
+            {0x8c565c,0x20,UINT64_C(0xd0e6301c05fbbc06)},
+            {0x16beb60,0xe,UINT64_C(0x05fdc653d33aa035)},
+            {0x16beb90,0x14,UINT64_C(0x2a3e0c024472d5a1)},
             {0x1fb050,0x123,UINT64_C(0x3ea393db12f2c677)},
             {0xed7490,0x3f3,UINT64_C(0xfaa78e37515c7a6b)},
             {0xa29630,0x177b,UINT64_C(0xd483c9c32e4f7fc5)},
@@ -366,6 +370,11 @@ inline bool workshopInventoryReady() {
         return true;
     }();return ready;
 }
+struct WorkshopSmelterRow {
+    int32_t jobType=-1,materialIndex=-1;
+    bool available=false;
+    std::string objection;
+};
 struct WorkshopReactionRow {
     int32_t rawIndex=-1;
     std::string code,caption,objection;
@@ -375,7 +384,7 @@ struct WorkshopReactionRow {
 // and reagent methods operate on independent filter/collector/precalc storage.
 // The world supplies read-only item/raw records, never native menu vectors.
 inline std::optional<std::vector<WorkshopReactionRow>> workshopReactionRows(
-    df::building* building,const std::string& category) {
+    df::building* building,const std::string& category,std::vector<WorkshopSmelterRow>* smelter=nullptr) {
     if(!building || !df::global::world || !workshopInventoryReady())return std::nullopt;
     static_assert(sizeof(df::job_item_filter)==0x110);
     static_assert(offsetof(df::job_item_filter,item_vector)==0x10);
@@ -423,6 +432,19 @@ inline std::optional<std::vector<WorkshopReactionRow>> workshopReactionRows(
         fuelFilter.item_type=df::item_type(0);fuelFilter.mat_type=7;fuelFilter.item_vector=&bars;
         fuelFilter.building=building;fuelFilter.pos=df::coord(building->x1,building->y1,building->z);
         fuel=reinterpret_cast<Find>(base+0xa26990)(&fuelFilter)!=nullptr;
+    }
+    if(smelter) {
+        if(!category.empty() || int(building->getType())!=5 || (building->getSubtype()!=1 && building->getSubtype()!=4))return std::nullopt;
+        const auto fuelText=std::string(reinterpret_cast<const char*>(base+0x16beb80),15);
+        smelter->push_back({90,-1,fuel,fuel?std::string{}:fuelText});
+        for(size_t i=0;i<inorganics.size();++i) {
+            if(!inorganics[i] || !inorganics[i]->flags.is_set(df::inorganic_flags::METAL_ORE))continue;
+            const bool ore=counts[i]>0;
+            const auto objection=ore?(fuel?std::string{}:fuelText):
+                std::string(reinterpret_cast<const char*>(base+(fuel?0x16beb60:0x16beb90)),fuel?14:20);
+            smelter->push_back({89,int32_t(i),fuel && ore,objection});
+        }
+        return std::vector<WorkshopReactionRow>{};
     }
     std::vector<WorkshopReactionRow> result;
     const auto& reactions=df::global::world->raws.reactions.reactions;

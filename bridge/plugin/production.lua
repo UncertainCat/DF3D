@@ -54,7 +54,7 @@ local function template_job(recipe,b,native_requirements)
  if not ok then delete_template(j);return nil,tostring(err) end
  return j
 end
-local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_templates,native_categories,category,native_forge,native_fabrics)
+local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_templates,native_categories,category,native_forge,native_fabrics,native_smelter)
  local out,keys={},{}
  local k=kind(b)
  local forge=k=='MetalsmithsForge' or k=='MagmaForge'
@@ -66,7 +66,8 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
   if not fabric then return nil,'Invalid clothier category' end
   out.parent=''
  end
- local supported=forge or ordinary or clothier or k=='Still'
+ local smelter=k=='Smelter'
+ local supported=forge or ordinary or clothier or smelter or k=='Still'
  if category~='' and not supported then return nil,'Unsupported workshop category' end
  if supported then
   out.category=category;out.categories={}
@@ -114,6 +115,12 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
    if fabric then key=key..':fabric:'..fabric end
    out[#out+1]={key=key,fields=fields,available=true,objection=''}
    end
+  end
+ end
+ if smelter and category=='' then
+  for _,row in ipairs(native_smelter(b.id))do
+   local fields={job_type=row.job_type,mat_type=row.mat_type,mat_index=row.mat_index}
+   out[#out+1]={key='smelter:'..row.job_type..':'..row.mat_index,fields=fields,available=row.available,objection=utf(row.objection)}
   end
  end
  -- Root reaction choices and current objections come from the native reader.
@@ -278,7 +285,7 @@ return function(request)
   seed_scan.cursor=finish
   if finish<#all then return {ok=true,pending=true,message='Counting available seeds'} end
  end
- local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_task_templates,request.workshop_task_categories,p.task_category or '',request.workshop_forge_page,request.workshop_clothier_fabrics);if not rs then return fail(err) end
+ local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_task_templates,request.workshop_task_categories,p.task_category or '',request.workshop_forge_page,request.workshop_clothier_fabrics,request.workshop_smelter_choices);if not rs then return fail(err) end
  if request.action==16 then
   local result=inspect(b,rs,request.workshop_caption,request.workshop_job_active)
   if kind(b)~='FarmPlot' and p.query and p.query~='' then

@@ -19,7 +19,8 @@ func run() -> void:
 	var owner=preload("res://scripts/workshop_panel.gd").new();root.add_child(owner);owner.configure(world,service,host)
 	var checked:=0;var created: Dictionary={};var refused:=0
 	for family in reference.task_catalogs:
-		owner.open_workshop(int(family.building_id),preload("res://scripts/location_staff_indicators.gd").WORKSHOPS[family.kind.split(":")[1]])
+		var icons=preload("res://scripts/location_staff_indicators.gd")
+		owner.open_workshop(int(family.building_id),(icons.FURNACES if family.kind.begins_with("5:") else icons.WORKSHOPS)[family.kind.split(":")[1]])
 		await settle(service,func():return owner.state.phase==owner.state.Phase.Ready and owner.tasks.phase==owner.tasks.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
 		owner.panel.tasks.choose_mode(true)
 		var choices: Array=owner.tasks.choices()
@@ -45,13 +46,16 @@ func run() -> void:
 		for i in choices.size():
 			if not choices[i].has("availability") or choices[i].availability.available:continue
 			owner.panel.tasks.choose_mode(true)
-			click(owner.panel.tasks.global_position+Vector2(24,84+i*36))
+			for step in 128:
+				if i<owner.panel.tasks.first+owner.panel.tasks.scrollbar.page:break
+				var wheel:=InputEventMouseButton.new();wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true;wheel.position=owner.panel.tasks.global_position+Vector2(60,120);root.push_input(wheel);await process_frame
+			click(owner.panel.tasks.global_position+Vector2(24,84+(i-owner.panel.tasks.first)*36))
 			check(owner.panel.tasks.picking and owner.tasks.phase==owner.tasks.Phase.Ready,"Unavailable family row accepted a click")
 			var rejected:=await request("production",{"action":C.ManagementAction.ProductionQueue,"building_id":int(family.building_id),"recipe":choices[i].key,"task_category":""})
 			check(rejected.get("status")==C.ManagementStatus.Rejected,"Unavailable family task was queued")
 			refused+=1
 		owner.close_panel();checked+=1
-	check(checked==(1 if OS.get_environment("DF3D_WORKSHOP_LEATHER_RUNTIME")=="1" or OS.get_environment("DF3D_WORKSHOP_JEWELER_RUNTIME")=="1" else 3),"Missing family reference")
+	check(checked==(1 if OS.get_environment("DF3D_WORKSHOP_LEATHER_RUNTIME")=="1" or OS.get_environment("DF3D_WORKSHOP_JEWELER_RUNTIME")=="1" or OS.get_environment("DF3D_WORKSHOP_SMELTER_RUNTIME")=="1" else 3),"Missing family reference")
 	owner.queue_free();await process_frame
 	host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"families":checked,"created":created,"refused":refused}));file.close()

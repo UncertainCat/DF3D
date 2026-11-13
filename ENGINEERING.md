@@ -17344,6 +17344,28 @@ helper refreshed native layout; no runtime navigation defect was established.
 The helper now redraws before clicking. See native_workshop.json.clothier_runtime_reference.
 Public workshop exposure remains gated on complete workflows and other families.
 
+Regular Smelter Tasks uses the existing native reaction provider and a new
+builtin result from its owned inventory calculation. Furnace dispatcher8c4fc0
+routes subtypes1/4 to8c3fe0. Its root8c47c1..8c4935 adds Melt90 and Smelt89 for
+inorganics with METAL_ORE flag9. Melt availability checks fuel only; Smelt checks
+native-collected boulder counts and fuel. Refusals use installed strings for
+ore, fuel or both. The provider calls native1fb050/a29630/a26990 with owned
+filters and copied item vectors, restoring random/material scratch; it does
+not invoke widget constructors or read native menus. Task keys include ore
+material index. Only regular Smelter is enabled here; magma remains unqualified.
+
+Protected220626 on2026-11-12 matches all40 choices, captions, ordering,
+availability and refusal text. The picker crop432,106..888,676 has zero differing
+pixels. Actual clicks/scrolling create billon(use bars), Melt and magnetite,
+native gold and tetrahedrite smelting jobs; native fields and all inputs match.
+All29 unavailable rows reject both clicks and direct intents. Cancel works and
+original queue order is restored. Fuel-shortage scenarios, magma, execution,
+products and job.item_type equivalence remain separate acceptance work.
+Owned DF10668 exits unsaved with source preservation; only the three known Godot
+diagnostics occur. Core19 and controller/composition/adapter checks pass. GPU
+samples40-41C at30FPS are not continuous peaks. Evidence is in
+native_workshop.json.smelter_runtime_reference. Public workshop exposure is gated.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

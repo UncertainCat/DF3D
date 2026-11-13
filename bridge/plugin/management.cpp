@@ -5938,6 +5938,15 @@ void run(color_ostream& out) {
       return 1;
     });lua_setfield(L,-2,"workshop_clothier_fabrics");
     lua_pushcfunction(L,[](lua_State* state)->int {
+      std::vector<df3d_production::WorkshopSmelterRow> rows;
+      if(!df3d_production::workshopReactionRows(df::building::find(int32_t(luaL_checkinteger(state,1))),"",&rows))return luaL_error(state,"Native smelter choices unavailable");
+      lua_newtable(state);int index=0;
+      for(const auto& row:rows){lua_newtable(state);field(state,"job_type",row.jobType);
+        field(state,"mat_type",row.materialIndex<0?-1:0);field(state,"mat_index",row.materialIndex);
+        field(state,"available",row.available);field(state,"objection",row.objection);lua_rawseti(state,-2,++index);}
+      return 1;
+    });lua_setfield(L,-2,"workshop_smelter_choices");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto result=df3d_production::setWorkshopPriority(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),lua_toboolean(state,3)!=0,lua_toboolean(state,4)!=0);
       if(result!=df3d_production::PriorityOutcome::Rejected)mutated=true;
       lua_pushboolean(state,result==df3d_production::PriorityOutcome::Applied);return 1;

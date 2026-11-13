@@ -69,6 +69,7 @@ local function shot(name)
  local file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
 end
 local function click_label(label)
+ if os.getenv('DF3D_WORKSHOP_DYER_PAGES')=='1' and #label>40 then label=label:sub(1,40)end
  for _,row in ipairs(lines())do local x=row.text:lower():find(label:lower(),1,true);if x then
   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
   g.precise_mouse_x=(x-1)*8+4;g.precise_mouse_y=row.y*12+10;g.mouse_x=x-1;g.mouse_y=row.y
@@ -110,6 +111,7 @@ local function read_worker_reference(target)
 end
 local fuel_flags={}
 local furnace_fixtures={}
+local dye_names={}
 local workshop_fixtures={}
 local workshop_fixture_ids={}
 local craft_tool_fixture
@@ -237,8 +239,10 @@ local ok,err=xpcall(function()
     inputs[#inputs+1]={item_type=i.item_type,item_subtype=i.item_subtype,mat_type=i.mat_type,mat_index=i.mat_index,quantity=i.quantity,
      flags1=i.flags1.whole,flags2=i.flags2.whole,flags3=i.flags3.whole}
    end
-   return {job_type=job.job_type,reaction_name=job.reaction_name,item_subtype=job.item_subtype,mat_type=job.mat_type,mat_index=job.mat_index,
+   local effect={job_type=job.job_type,reaction_name=job.reaction_name,item_subtype=job.item_subtype,mat_type=job.mat_type,mat_index=job.mat_index,
     material_category=job.material_category.whole,specflag=job.specflag.whole,specdata=job.specdata.hist_figure_id,inputs=inputs}
+   if os.getenv('DF3D_WORKSHOP_DYER_RUNTIME')=='1'then effect.art_type=job.art_spec.type;effect.art_id=job.art_spec.id;effect.art_subid=job.art_spec.subid end
+   return effect
   end
   if os.getenv('DF3D_WORKSHOP_CRAFT_BONE_TOOL')=='1'then
    assert(os.getenv('DF3D_WORKSHOP_CRAFT_NAV')=='1','Bone tool probe requires Craft navigation')
@@ -278,6 +282,13 @@ local ok,err=xpcall(function()
    if os.getenv('DF3D_WORKSHOP_DYER_INGREDIENT_NAV')=='1'then
     local encoded,status=dfhack.run_command_silent('df3d','workshop-dye-counts-probe')
     assert(status==0,encoded);result.dyer_ingredient_counts=json.decode(encoded)
+   end
+   if os.getenv('DF3D_WORKSHOP_DYER_PAGES')=='1'then
+    for _,color in ipairs(df.global.world.raws.descriptors.colors)do
+     dye_names[#dye_names+1]={color=color,name=color.name}
+     color.name=color.name..string.rep('x',math.max(0,140-#color.name))
+    end
+    result.dyer_long_names=true
    end
    local types=os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and {21} or (os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' and {7,9,14,16,17,18,20} or {7,9,14,16,17,18,20,21})
    for _,target in ipairs(df.global.world.buildings.all)do
@@ -362,6 +373,21 @@ local ok,err=xpcall(function()
        local native=page.rows[index]
        assert(row.caption==native.caption and row.info==native.info and row.alpha_order==native.alpha_order and row.color==target_color and not row.tint,'Dyer ingredient row differs at '..index)
       end
+      if os.getenv('DF3D_WORKSHOP_DYER_RUNTIME')=='1'then
+       gui.simulateInput(view,'LEAVESCREEN');select_map(target);assert(click_label('Add new task'))
+       for _,step in ipairs(page.path)do
+        local clicked=false
+        for scroll=0,128 do
+         if click_label(step.caption)then clicked=true;break end
+         g.precise_mouse_x=600;g.precise_mouse_y=350;g.mouse_x=75;g.mouse_y=29
+         gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');view:render(dfhack.getTickCount())
+        end
+        assert(clicked,'Dyer effect category unreachable')
+       end
+       assert(click_label(first.caption));local created=assert(target.jobs[#target.jobs-1])
+       assert(#target.jobs==#queue_ids+1,'Dyer native selection must append exactly one job')
+       page.effect=family_effect(created);assert(dfhack.job.removeJob(created))
+      end
      end
      if os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and #page.path==1 then
       local jobs={191,244,190,243};local job=assert(jobs[page.path[1].index])
@@ -420,7 +446,9 @@ local ok,err=xpcall(function()
       end
      end
      for index,row in ipairs(page.rows)do
-      local dyer_child=os.getenv('DF3D_WORKSHOP_DYER_INGREDIENT_NAV')=='1' and #page.path==1 and page.path[1].index==1 and index==1
+      local requested_color=tonumber(os.getenv('DF3D_WORKSHOP_DYER_TARGET')or '')
+      local dyer_child=os.getenv('DF3D_WORKSHOP_DYER_INGREDIENT_NAV')=='1' and #page.path==1 and page.path[1].index==1 and
+       (requested_color and row.color==requested_color or not requested_color and index==1)
       if (os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')~='1' or (os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and #page.path==0) or dyer_child) and not row.leave and (row.category~=nil or row.custom_category~=nil or row.material~=nil or row.color~=nil)then
        assert(#page.path<8,'Native task category discovery exceeded depth bound')
        gui.simulateInput(view,'LEAVESCREEN');select_map(target)
@@ -593,7 +621,15 @@ local ok,err=xpcall(function()
    capture('workshop-wire')
    local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)
    for _,catalog in ipairs(result.task_catalogs)do
-    local target=assert(df.building.find(catalog.building_id));assert(#target.jobs==#catalog.queue_ids)
+    local target=assert(df.building.find(catalog.building_id))
+    for index,page in ipairs(catalog.pages)do if page.effect then
+     local id=assert(receipt.created[tostring(index)]);local job
+     for _,candidate in ipairs(target.jobs)do if candidate.id==id then job=candidate;break end end
+     assert(job and #target.jobs==#catalog.queue_ids+1,'Dyer viewer must append exactly one job')
+     page.viewer_effect=family_effect(job);assert(json.encode(page.effect)==json.encode(page.viewer_effect),'Dyer job effect differs')
+     assert(dfhack.job.removeJob(job))
+    end end
+    assert(#target.jobs==#catalog.queue_ids)
     for i,id in ipairs(catalog.queue_ids)do assert(target.jobs[i-1].id==id)end
    end
   end
@@ -1565,6 +1601,7 @@ local ok,err=xpcall(function()
  assert(catalog_ok,catalog_err)
 end,debug.traceback)
 for _,prior in ipairs(fuel_flags)do prior.item.flags.forbid=prior.forbid end
+for _,prior in ipairs(dye_names)do prior.color.name=prior.name;assert(prior.color.name==prior.name)end
 for _,entry in ipairs(furnace_fixtures)do entry.building.type=entry.prior_type end
 for _,entry in ipairs(workshop_fixtures)do entry.building.type=entry.prior_type;entry.building.construction_stage=entry.prior_stage end
 if craft_tool_fixture then craft_tool_fixture.raw.flags.BONE_MAT=craft_tool_fixture.bone end

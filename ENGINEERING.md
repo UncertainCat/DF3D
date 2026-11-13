@@ -17665,10 +17665,50 @@ native submenu and owned provider in this run. These are semantic mixer counts,
 not captures of every native menu or encoded payload-size measurements.
 Owned DF44964 exits unsaved with source saves/preferences and controlled
 type/stage restored; serial30FPS sampled39C. Full count provenance is in
-ingredient_reference.capacity_reference. Ingredient integration will use
-bounded reply chunks assembled into a complete viewer menu; that transport
-is not implemented yet. Raising a cap only to fit cerulean is insufficient.
-Ingredient submenu navigation, creation effects and DF3D implementation remain
+ingredient_reference.capacity_reference. Management209 implements bounded byte
+chunks assembled into a complete viewer reply. Inspect/Queue/JobEdit execute
+once; subsequent Inspect requests contain only an original request sequence
+and aligned offset, and read retained bytes without semantic dispatch. Stocks
+and Production share the64MiB retention budget but reject cross-family reads.
+World changes, replacement requests and eviction retire captures; failed reads
+never replay edits. The client verifies the original action, epoch, identity
+and complete FlatBuffer before publishing any result. Both peers must rebuild
+for `Local\df3d_management_v209`; old recordings imply no new recipe facts.
+Production recipes allow16384 entries; Work orders keep their independent128
+limit. Dyer ingredient navigation calls the owned native provider with a target
+color and carries each ordered substrate/dye pair (unordered for Mix) in the
+job descriptor. Ingredient rows carry native information with color_id=-1 and
+zero RGB, so the viewer omits the swatch. Picker captions follow native
+185354..185426: truncate against inclusive button bounds and replace the final
+three cells with periods, retaining full semantic captions for search/selection.
+The earlier transport-only root build and all19 core checks pass in
+production-reply-wire-build.log. Synthetic transport covers Inspect, Queue and
+JobEdit success, expired captures, wrong family, duplicate offset, world change,
+wrong completed action and duplicate delivery without command replay. Shared
+store tests establish cross-family rejection and aggregate-budget eviction.
+Protected103102 on2026-11-13 verifies172 cerulean cloth ingredients;103316
+verifies the largest tint list,938 copper ingredients. Both compare every row's
+caption, order and information plus811 first-level rows. Actual first-choice
+clicks append exactly one job matching native target/pair fields and inputs.
+Root, four color pages and ingredient viewport each match native with zero
+differing pixels in crop432,106..888,676. The ingredient image was inspected.
+Controlled103623 extends raw color names to140 bytes, restores them afterward,
+and verifies938 rows through actual retained replies: original Inspect sequence13
+is followed by next logical request16, establishing two continuation reads.
+The selected job still appears exactly once and matches native. All six panel
+crops also match in this case. Earlier103516 failed in the diagnostic click
+finder because it searched for an ellipsized-away suffix; the corrected harness
+clicks the visible prefix. This was not a product failure or native exception.
+All owned games exit unsaved with source preservation;30FPS serial GPU samples
+45–57C are observations, not peak measurements. Only the three documented
+Godot shutdown signatures remain. Fixture ingredient_reference.runtime_reference
+retains hashes and limitations. Headless shared Stocks paging regression103817
+also passes the oversized read and visibility edit/restoration checks; source
+and temporary material strings are restored, owned DF5920 exits unsaved.
+Core19 and engine state/composition/adapter checks pass; the interrupted extension
+build left invalid generated objects, repaired before acceptance in
+build/qa/dyer-ingredients-wire-repaired-all. Thread, leather and Mix ingredient
+branches, other ingredient creations and worker execution/products remain
 unfinished. An earlier
 controlled discovery232955 exited while entering Tint cloth aqua; source
 saves were unchanged. The cause has not been isolated, so this is not a

@@ -143,6 +143,15 @@ func caption(text: String, point: Vector2, color: int) -> void:
 	if theme.default_font!=null and colors.size()==16:
 		theme.default_font.draw_string(get_canvas_item(),point,text,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[color])
 
+func picker_caption(text: String) -> String:
+	# Native185354..185426 measures the inclusive button bounds, then
+	# replaces the final three cells after truncation. Swatches do not alter it.
+	var columns:=int((size.x-(24 if scrollbar.visible else 8))/8)
+	if text.length()<columns-2:return text
+	var limit:=maxi(0,columns-3)
+	var shortened:=text.left(limit)
+	return shortened.left(limit-3)+"..." if limit>3 else shortened
+
 func _draw() -> void:
 	if state==null:return
 	if picking:
@@ -166,12 +175,12 @@ func _draw() -> void:
 			var known: bool=row.has("availability")
 			var enabled: bool=row.get("category_choice",false) or (known and row.availability.available)
 			var label_x:=8
-			if row.has("dye"):
+			if row.has("dye") and int(row.dye.color_id)>=0:
 				var dye: Dictionary=row.dye
 				patch("BUTTON_PICTURE_BOX",Rect2(0,y-6,40,36),picture.texture(false))
 				draw_rect(Rect2(2,y-4,32,32),Color(dye.red,dye.green,dye.blue))
 				label_x=56
-			caption(row.name,Vector2(label_x,y+18),15 if enabled else 12)
+			caption(picker_caption(row.name),Vector2(label_x,y+18),15 if enabled else 12)
 			# Native1854c9: objections take precedence over memorial info.
 			var objection: String=row.get("availability",{}).get("objection","")
 			if not objection.is_empty():caption(objection,Vector2(label_x+8,y+30),4)

@@ -32966,6 +32966,211 @@
           "No encoded full-menu byte-size measurement.",
           "No viewer ingredient transport or task effects."
         ]
+      },
+      "runtime_reference": {
+        "protocol": 209,
+        "runs": [
+          {
+            "lane": "build/stockpile-storage-native-farm-discovery-20261113-103102",
+            "scope": "Cloth cerulean; ordinary raw names",
+            "ingredient_rows": 172,
+            "first_level_rows": 811,
+            "created_job": 382797,
+            "native_effect": {
+              "art_id": 112,
+              "art_subid": 67,
+              "art_type": -1,
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 2,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 58,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 10000
+                },
+                {
+                  "flags1": 16,
+                  "flags2": 1,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 191,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": 18,
+              "specflag": 0
+            },
+            "paging": {},
+            "panel_crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "compared_panel_states": 6,
+            "differing_pixels": 0,
+            "owned_df_pid": 33084,
+            "source_preserved": true,
+            "closed_unsaved": true,
+            "diagnostics": "passed_with_known_issues: separate-render-thread, finalize, ObjectDB shutdown only",
+            "sha256": {
+              "result.json": "a860a6cbe1ca699ab66170981d7808e5d1999e4fe83af9fd458524925cc33b1d",
+              "workshop-native.json": "72d5ad3aacf06af1a2fffdb29830b5d52f1500e4bce8b683d25fef75a8858209",
+              "workshop-wire-result.json": "f386b398347c267cf66a8cdf6e77090dd85b86b6ce781b3f2fb7e60a92197b7f",
+              "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+              "dyer-ingredients-5-live.png": "ceb945c8bc2ec5b3072bd6809044579a387f455b7f3183d1ee666a7e838f901d",
+              "workshop-dyer-ingredients-1.png": "8141116ee723e5d7991e3b7970cc29bfc605fd4a76cb8f47de44f7acd9e658e9"
+            }
+          },
+          {
+            "lane": "build/stockpile-storage-native-farm-discovery-20261113-103316",
+            "scope": "Cloth copper; largest native tint list",
+            "ingredient_rows": 938,
+            "first_level_rows": 811,
+            "created_job": 382797,
+            "native_effect": {
+              "art_id": 0,
+              "art_subid": 15,
+              "art_type": -1,
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 2,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 58,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 10000
+                },
+                {
+                  "flags1": 16,
+                  "flags2": 1,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 191,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": 26,
+              "specflag": 0
+            },
+            "paging": {},
+            "panel_crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "compared_panel_states": 6,
+            "differing_pixels": 0,
+            "owned_df_pid": 12496,
+            "source_preserved": true,
+            "closed_unsaved": true,
+            "diagnostics": "passed_with_known_issues: separate-render-thread, finalize, ObjectDB shutdown only",
+            "sha256": {
+              "result.json": "e8bbd0b7384a0bdcce2f3977ecd783f1f7fe82ad28f61f7021546235b7f7dbde",
+              "workshop-native.json": "182d0b9bcdc8e081396fc10ce47f705221c1320a6d883cb88ef573e196e50669",
+              "workshop-wire-result.json": "f386b398347c267cf66a8cdf6e77090dd85b86b6ce781b3f2fb7e60a92197b7f",
+              "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+              "dyer-ingredients-5-live.png": "d6b16a8bb8c74d11382e227ba8b955643940ef2d64aa32de446d02cc5992811c",
+              "workshop-dyer-ingredients-31.png": "aa5bebe02c32db224fc76f7721f4e3f7bbca52830195ed7acf3863b9590bbd29"
+            }
+          },
+          {
+            "lane": "build/stockpile-storage-native-farm-discovery-20261113-103623",
+            "scope": "Cloth copper; controlled 140-byte raw color names force reply continuations",
+            "ingredient_rows": 938,
+            "first_level_rows": 811,
+            "created_job": 382797,
+            "native_effect": {
+              "art_id": 0,
+              "art_subid": 15,
+              "art_type": -1,
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 2,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 58,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 10000
+                },
+                {
+                  "flags1": 16,
+                  "flags2": 1,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 191,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": 26,
+              "specflag": 0
+            },
+            "paging": {
+              "next": 16,
+              "original": 13
+            },
+            "panel_crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "compared_panel_states": 6,
+            "differing_pixels": 0,
+            "owned_df_pid": 7284,
+            "source_preserved": true,
+            "closed_unsaved": true,
+            "diagnostics": "passed_with_known_issues: separate-render-thread, finalize, ObjectDB shutdown only",
+            "sha256": {
+              "result.json": "490efad3645c5fad26d9ebcc4987839abf44290f5fd60eac031df73cc73e2381",
+              "workshop-native.json": "97c55fb4d824dee2e413db563dddb3eb88d309e529e225fa2e3c4e9ef93adc75",
+              "workshop-wire-result.json": "634de3da6cc8f206307d907dd7e925d97f282d451f5fbf254ae1b004ff73dfb2",
+              "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+              "dyer-ingredients-5-live.png": "31e5468646a6c65a35c5948fe9ff0b7444221006dd76042eb4314fc230a215e7",
+              "workshop-dyer-ingredients-31.png": "8b5184e233ff6323f5deb715c3e97d1a76e18fd9177254764072fb3e4a3da502"
+            }
+          }
+        ],
+        "semantics": "Native provider supplies pairs, captions, information and order. Actual first-row click appends exactly one matching job, then diagnostic cleanup removes it. No runtime native menu inputs.",
+        "omissions": [
+          "Thread, leather and Mix ingredient branches remain unqualified.",
+          "Only the first ingredient job was created in each list; worker execution/products are not covered.",
+          "Uninitialized native job.item_type remains excluded from comparison.",
+          "Controlled names establish paging, not normal maximum serialized menu size."
+        ],
+        "failed_attempt": "103516 could not find a full long native caption after native ellipsis; harness now clicks its visible prefix. Source preserved; no accepted result."
       }
     }
   }

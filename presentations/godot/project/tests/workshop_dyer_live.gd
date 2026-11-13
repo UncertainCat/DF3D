@@ -1,5 +1,5 @@
 extends "res://tests/workshop_selector_layout_live.gd"
-# Protected native Dyer first-level menu comparison; no task creation.
+# Protected native Dyer menus, with optional ingredient creation comparison.
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/workshop-native.json"))
@@ -47,7 +47,42 @@ func run() -> void:
 		owner.panel.tasks.choose_mode(true)
 		await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready)
 		check(owner.tasks.choices()==roots,"Dyer root reopen differs")
+	var created: Dictionary={}
+	var paging: Dictionary={}
+	if reference.get("dyer_long_names",false):
+		var large:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_id":int(family.building_id),"task_category":"dyer:191:26"})
+		var next:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_id":int(family.building_id)})
+		paging={"original":large.get("request_seq",0),"next":next.get("request_seq",0)}
+		check(large.get("status")==C.ManagementStatus.Ok and int(paging.next)-int(paging.original)>1,"Large Dyer reply did not complete through continuations")
+	for page_index in family.pages.size():
+		var page: Dictionary=family.pages[page_index]
+		if page.path.size()!=2:continue
+		for step in page.path:
+			for scroll in 128:
+				if int(step.index)-1<owner.panel.tasks.first+owner.panel.tasks.scrollbar.page:break
+				var wheel:=InputEventMouseButton.new();wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true
+				wheel.position=owner.panel.tasks.global_position+Vector2(60,120);root.push_input(wheel);await process_frame
+			click(owner.panel.tasks.global_position+Vector2(24,84+(int(step.index)-1-owner.panel.tasks.first)*36))
+			await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready)
+		var choices: Array=owner.tasks.choices()
+		check(choices.size()==page.rows.size(),"Dyer ingredient count differs")
+		for i in mini(choices.size(),page.rows.size()):
+			check(choices[i].name==page.rows[i].caption,"Dyer ingredient caption/order differs")
+			check(choices[i].dye.text==page.rows[i].info and int(choices[i].dye.color_id)==-1,"Dyer ingredient text/swatch differs")
+		await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/dyer-ingredients-"+str(page_index)+"-live.png")
+		if page.has("effect"):
+			click(owner.panel.tasks.global_position+Vector2(24,84))
+			await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+			var id: int=owner.tasks.snapshot.get("created_job",-1)
+			check(id>=0 and not owner.panel.tasks.picking,"Dyer ingredient task did not queue")
+			created[str(page_index+1)]=id
+		else:
+			click(owner.panel.tasks.global_position+Vector2(owner.panel.tasks.size.x-48,12))
+			await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready)
+		owner.panel.tasks.choose_mode(true)
+		await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready)
 	owner.close_panel();owner.queue_free();await process_frame
 	host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
-	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed}));file.close()
+	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"created":created,"paging":paging}));file.close()
 	world.detach_live();world.queue_free();await process_frame;quit(1 if failed else 0)

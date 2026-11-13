@@ -58,7 +58,13 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  local out,keys={},{}
  local k=kind(b)
  local dyer=k=='Dyers'
- local dye_job=dyer and tonumber(category:match('^dyer:(%d+)$')) or nil
+ local dye_job,dye_target
+ if dyer then
+  local job,target=category:match('^dyer:(%d+):(%d+)$')
+  if not job then job=category:match('^dyer:(%d+)$')end
+  dye_job=tonumber(job);dye_target=tonumber(target)
+  if job and (tostring(dye_job)~=job or (target and (tostring(dye_target)~=target or dye_target>=1024)))then return nil,'Invalid Dyer category' end
+ end
  if dyer and category~='' and category:sub(1,9)~='reaction:' and not ({[190]=true,[191]=true,[244]=true,[243]=true})[dye_job] then return nil,'Invalid Dyer category' end
  local forge=k=='MetalsmithsForge' or k=='MagmaForge'
  local stone=k=='Masons'
@@ -128,9 +134,14 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
     out[#out+1]={key='dyer:generic:'..fields.job_type,fields={job_type=fields.job_type,specdata={hist_figure_id=-1},art_spec={type=-1,id=-1,subid=-1}},available=true,objection=''}
    end
   elseif dye_job then
-   for _,row in ipairs(native_dye(b.id,dye_job))do
+   for _,row in ipairs(native_dye(b.id,dye_job,dye_target))do
     local key='dyer:'..dye_job..':'..row.color
-    if row.tint then out.categories[#out.categories+1]={key=key,caption=row.caption,dye=row.dye}
+    if dye_target then
+     key=key..':'..row.first..':'..row.second
+     out[#out+1]={key=key,fields={job_type=dye_job,mat_index=dye_job==243 and row.color or -1,
+      specdata={hist_figure_id=dye_job==243 and -1 or row.color},art_spec={type=-1,id=row.first,subid=row.second}},
+      available=true,objection='',dye=row.dye,alpha_order=row.alpha_order}
+    elseif row.tint then out.categories[#out.categories+1]={key=key,caption=row.caption,dye=row.dye}
     else out[#out+1]={key=key,fields={job_type=dye_job,specdata={hist_figure_id=row.color},art_spec={type=-1,id=-1,subid=row.color}},available=true,objection='',dye=row.dye,alpha_order=row.alpha_order}end
    end
   end
@@ -236,7 +247,7 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
   end
   out[at]=row
  end
- if #out>128 then return nil,'Recipe catalog exceeds bounded 128 entries' end
+ if #out>16384 then return nil,'Recipe catalog exceeds bounded 16384 entries' end
  return out
 end
 local function editable(j,rs)

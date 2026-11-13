@@ -17465,6 +17465,27 @@ documented Godot signatures. Serial30FPS GPU samples40-42C are not continuous
 peaks. Worker execution, animal capture effects/products and uninitialized
 item_type equivalence remain unqualified. See native_workshop.json.butcher_runtime_reference.
 
+Craftsdwarf native discovery223535 on2026-11-12 establishes four material pages:
+rock (mat_type0), wood (category2), bone32 and shell64. Actual clicks and Back
+restore the root for all four. The independent order catalog matches111 builtin
+descriptors across root47/rock19/wood18/bone15/shell12 after omitting the wooden
+toy123 absent from native's wood branch. Reaction/category choices are separate.
+Native8c85ff..8c9a06 supplies the page membership;8c85da resets the material and
+category for Back, and children bypass reactions. Root includes decoration130
+for ivory/horn/pearl, totem128, inorganic DEEP_SPECIAL15 metal strands91 and
+craft/jewelry combinations for cloth, silk, yarn, ivory, horn, pearl and leather.
+Wood uses civilization ammunition resources+190 and non-furniture tools+280 with
+HARD_MAT0 or WOOD_MAT6, excluding NO_DEFAULT_JOB17. Bone/shell clothing uses
+raw flags3/4 respectively. Rock includes weapons with raw flag0 and non-furniture
+tools with HARD_MAT0 or STONE_MAT14. Shell tools require SHELL_MAT15.
+There is an unresolved disassembly-only caveat:8c9010..8c906b selects bone tools
+but8c9061 writes category2 (wood), rather than32. No qualifying bone tool appears
+in this capture; it is not a live-confirmed defect or an approved correction.
+Do not generalize the captured catalog match to that case. Runtime integration
+and viewer/job-effect acceptance remain pending. Owned DF46024 exited unsaved,
+source saves and queues remained unchanged, and the capture used30FPS with a41C
+GPU sample. See native_workshop.json.craft_navigation_reference.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

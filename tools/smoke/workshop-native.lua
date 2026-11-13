@@ -262,7 +262,7 @@ local ok,err=xpcall(function()
   result.task_catalogs={};local seen={}
   for _,target in ipairs(df.global.world.buildings.all)do
    local type=target:getType();local key=type..':'..target:getSubtype()..':'..target:getCustomType()
-   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')~='1' or key=='5:2:-1' or key=='5:3:-1') and (os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')~='1' or key=='5:2:-1') and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')=='1' and key=='13:10:-1') or (os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')=='1' and key=='13:8:-1') or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1' and key=='5:3:-1') or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
+   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')~='1' or key=='5:2:-1' or key=='5:3:-1') and (os.getenv('DF3D_WORKSHOP_CRAFT_NAV')~='1' or key=='13:3:-1') and (os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')~='1' or key=='5:2:-1') and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')=='1' and key=='13:10:-1') or (os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')=='1' and key=='13:8:-1') or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1' and key=='5:3:-1') or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
     seen[key]=true;select_map(target)
     assert(click_label('Add new task'),'Native task catalog did not open: '..key)
     local function read_rows()
@@ -367,9 +367,10 @@ local ok,err=xpcall(function()
       end
      end
     end
-    if os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')=='1' or os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1'then
+    if os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')=='1' or os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_CRAFT_NAV')=='1'then
      local glass=os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1'
-     local prefix=glass and 'glass' or 'clothier'
+     local craft=os.getenv('DF3D_WORKSHOP_CRAFT_NAV')=='1'
+     local prefix=craft and 'craft' or glass and 'glass' or 'clothier'
      local function semantic_rows(values)
       local copy={};for _,entry in ipairs(values)do local row={};for field,value in pairs(entry)do if field~='item_type'then row[field]=value end end;copy[#copy+1]=row end
       return json.encode(copy)
@@ -377,7 +378,7 @@ local ok,err=xpcall(function()
      catalog.navigation={}
      gui.simulateInput(view,'LEAVESCREEN');select_map(target);assert(click_label('Add new task'))
      shot(prefix..'-root')
-     for index,root_row in ipairs(rows)do if not glass or root_row.material~=nil then
+     for index,root_row in ipairs(rows)do if (not glass and not craft) or root_row.material~=nil then
       assert(click_label(root_row.caption),'Clothier fabric selection failed')
       local child=read_rows();shot(prefix..'-page-'..index)
       assert(click_label('Back'),'Clothier Back missing')

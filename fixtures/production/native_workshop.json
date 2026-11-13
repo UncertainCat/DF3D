@@ -10883,5 +10883,148 @@
       "workshop-family-10.png": "39a149e4c3f65fc71b93de857c054792d73a324f4c735213b64499b05da0e77f",
       "family-10-live.png": "f3b7818c7c264ddafa3f65dfbc9ce1bb0b7fbc70e5ff0631ab81e8fbe3a8b944"
     }
+  },
+  "craft_navigation_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-223535",
+    "scope": "Native discovery only; no runtime Craftsdwarf support or viewer acceptance. Existing completed workshop. Four actual material selections and Back transitions restore root, source and queues unchanged.",
+    "root_selectors": [
+      {
+        "caption": "rock (opens menu)",
+        "leave": false,
+        "material": 0,
+        "material_category": 0,
+        "matgloss": -1,
+        "type": "<type: interface_button_building_material_selectorst>"
+      },
+      {
+        "caption": "wood (opens menu)",
+        "leave": false,
+        "material": -1,
+        "material_category": 2,
+        "matgloss": -1,
+        "type": "<type: interface_button_building_material_selectorst>"
+      },
+      {
+        "caption": "bone (opens menu)",
+        "leave": false,
+        "material": -1,
+        "material_category": 32,
+        "matgloss": -1,
+        "type": "<type: interface_button_building_material_selectorst>"
+      },
+      {
+        "caption": "shell (opens menu)",
+        "leave": false,
+        "material": -1,
+        "material_category": 64,
+        "matgloss": -1,
+        "type": "<type: interface_button_building_material_selectorst>"
+      }
+    ],
+    "pages": [
+      {
+        "name": "root",
+        "builtin_count": 47,
+        "all_descriptors_equal": true,
+        "excluded_templates": []
+      },
+      {
+        "name": "rock (opens menu)",
+        "builtin_count": 19,
+        "all_descriptors_equal": true,
+        "excluded_templates": []
+      },
+      {
+        "name": "wood (opens menu)",
+        "builtin_count": 18,
+        "all_descriptors_equal": true,
+        "excluded_templates": [
+          {
+            "art_id": -1,
+            "art_subid": -1,
+            "art_type": -1,
+            "caption": "Make wooden toy",
+            "compare": "make wooden toy",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 123,
+            "mat_index": -1,
+            "mat_type": -1,
+            "material_category": 2,
+            "reaction": "",
+            "specdata": -1,
+            "specflag": 0
+          }
+        ]
+      },
+      {
+        "name": "bone (opens menu)",
+        "builtin_count": 15,
+        "all_descriptors_equal": true,
+        "excluded_templates": []
+      },
+      {
+        "name": "shell (opens menu)",
+        "builtin_count": 12,
+        "all_descriptors_equal": true,
+        "excluded_templates": []
+      }
+    ],
+    "compared_fields": [
+      "job_type",
+      "item_subtype",
+      "mat_type",
+      "mat_index",
+      "material_category",
+      "specflag",
+      "specdata",
+      "art_type",
+      "art_id",
+      "art_subid"
+    ],
+    "branch_rva": "8c85ff..8c9a06",
+    "branch_sha256": "14629a1001fbfff372068eb15842e4c4b0c491e454798daf22ad37f1868b676c",
+    "bone_tool_caveat": "Disassembly8c9010..8c906b selects BONE_MAT16 tools excluding NO_DEFAULT_JOB17 and FURNITURE8, but8c9061 writes material_category2 (wood). Current raw/civilization fixture has no qualifying bone tool, so no live reproduction or correction is claimed. Independent catalog parity must not be generalized to this case.",
+    "navigation": [
+      {
+        "caption": "rock (opens menu)",
+        "task_count": 19,
+        "back_restored_root": true
+      },
+      {
+        "caption": "wood (opens menu)",
+        "task_count": 18,
+        "back_restored_root": true
+      },
+      {
+        "caption": "bone (opens menu)",
+        "task_count": 15,
+        "back_restored_root": true
+      },
+      {
+        "caption": "shell (opens menu)",
+        "task_count": 12,
+        "back_restored_root": true
+      }
+    ],
+    "omissions": [
+      "Runtime owned provider",
+      "Viewer rendering/actions",
+      "Job creation/execution/products",
+      "Controlled bone-tool case",
+      "Native uninitialized item_type equivalence"
+    ],
+    "source_preservation": "Owned DF46024 exited unsaved; source unchanged",
+    "sha256": {
+      "workshop-native.json": "a8341874f1b06dd4cb541c4787bff1de9a2cb551310d1353d4aef9df286c40e7",
+      "result.json": "68dca4823f5e17c5cffc5719ea92632528dc581d3fe833d77581981d11263094",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "workshop-craft-root.png": "0580ba94084856020cdebc2eff9a64b0003ca705ec5c8afcbef8ccc61025ebb5",
+      "workshop-craft-back-root.png": "0580ba94084856020cdebc2eff9a64b0003ca705ec5c8afcbef8ccc61025ebb5",
+      "workshop-craft-page-1.png": "eee7b269755b69f0c3cccb38a6bcfb73a7594b437c1ff8e7f965a7fb101bfad3",
+      "workshop-craft-page-2.png": "ecf94772af30ccc7962e57f0b968ae025f93549f91abf37e5fe9a306ba65f9f7",
+      "workshop-craft-page-3.png": "9e841664eae0d9f858946d50e8db07c077427e46bf73a24c291ade07ef2cb87f",
+      "workshop-craft-page-4.png": "639be15819378d9ab02b884cab10b869f936be54afb23c7ef43f9e8f079e37dc"
+    }
   }
 }

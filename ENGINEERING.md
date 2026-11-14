@@ -9140,16 +9140,17 @@ panels. Supplying an owned sheet alone does not isolate those side effects.
 Keep the runtime projection independently owned and call the semantic leaves
 already audited for hover:137bd50 visibility,14da20 unit footprint and5587b0
 building extent membership. Do not substitute the hover list itself: hover
-also includes projectiles, flows and different vermin records.
+also includes projectiles and flows; its vermin rows expose different identities
+and include records excluded by selection's flags.
 
 Static audit of1a0d60 establishes the ordinary fortress selection projection:
 active units in vector order after mask0x2000002 and the two native predicates;
 non-garbage items at the exact tile in map-block item order; the last matching
 occupancy-setting visible building, excluding Stockpile29/Civzone30; and
-eligible creature-handler vermin records. Native14da20 can accept adjacent
+eligible vermin caste identities resolved through creature raws. Native14da20 can accept adjacent
 tiles for the unit's expanded footprint, unlike inspector center-tile matching.
 Unit alternatives collapse to UNIT_LIST at six units. The item collapse
-threshold is max(2,6-min(unit_count,6)-building_present). Tab order is units
+threshold is max(2,6-(unit_count<6?unit_count:0)-building_present). Tab order is units
 or UNIT_LIST, vermin, building, items or ITEM_LIST, then engraving/planned
 engraving. Default selection instead prioritizes units, building, items,
 vermin, then the remaining tab. A sole tab is hidden when both unit and item
@@ -9159,6 +9160,27 @@ the bridge must own their projection, rather than duplicate it in Godot.
 and branch ranges. This is static discovery, not live provider acceptance.
 Grouped lists, engraving/vermin destinations, native tab artwork and selection
 handoff still require implementation and verification before public routing.
+
+`tile_selection_native.h` now implements this owned projection, exposed for
+protected diagnostics by `df3d tile-selection-read x y z`. It returns native
+unit/item/caste IDs, building identity, grouped tab identities and the default
+target; it never opens or reads the native sheet. Hidden/unavailable tiles and
+oversized collections fail closed. Full collector bytes and the reused leaf
+functions are pinned. There is no public viewer route or new protocol yet.
+
+Protected152748 on2026-11-14 compares four actual native map selections with
+the provider: a Carpenter, a farm, a building with eight loose ground items
+(BUILDING then ITEM_LIST), and one unit. Candidate order, grouping, default
+target and single-tab suppression match; each read leaves the native sheet
+identities/lists unchanged. Owned DF2216 exits unsaved with source/preferences
+preserved; graphics are capped30FPS with51C/4% sampled GPU load. MSVC and core19
+pass. selection_reference.provider_reference retains cases and hashes.
+Earlier152539 qualifies two single-building cases;152646 adds a unit but its
+item fixture chose stored items, so it is not item-group evidence. Six-unit
+grouping, expanded unit footprints, hidden tiles, engraving/vermin and the
+full UI-state guard remain outside this live qualification. The static item
+threshold was corrected during implementation: six or more units collapse
+first, restoring the six-slot item allowance before the building deduction.
 
 Protected contents oracle220127 on2026-10-28 observes40 PERM seed entries in
 farm968. The six visible View controls open the first six `contained_items`

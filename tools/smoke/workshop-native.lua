@@ -128,6 +128,46 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ if os.getenv('DF3D_TILE_SELECTION')=='1'then
+  local function ids(vector)local values={};for _,id in ipairs(vector)do values[#values+1]=id end;return values end
+  local function observe()
+   local tabs={};for i,kind in ipairs(sheet.tab)do tabs[#tabs+1]={kind=kind,id=sheet.tab_id[i]}end
+   return {valid=true,units=ids(sheet.viewing_unid),items=ids(sheet.viewing_itid),vermin=ids(sheet.viewing_vermin_combined_id),
+    building=sheet.viewing_bldid,tabs=tabs,active_kind=sheet.active_sheet,active_id=sheet.active_id}
+  end
+  result.tile_selection_reference={cases={}}
+  local targets={building,original}
+  local counts={};local fullest
+  for _,item in ipairs(df.global.world.items.all)do
+   local p=item.pos
+   if p.z==building.z and p.x>=0 and p.y>=0 and item.flags.on_ground and not item.flags.garbage_collect then
+    local d=dfhack.maps.getTileFlags(p.x,p.y,p.z)
+    if d and not d.hidden then
+     local key=p.x..','..p.y;local row=counts[key]or{centerx=p.x,centery=p.y,z=p.z,count=0,id='items'}
+     row.count=row.count+1;counts[key]=row
+     if not fullest or row.count>fullest.count then fullest=row end
+    end
+   end
+  end
+  assert(fullest and fullest.count>=6,'Selection fixture needs a populated item tile');targets[#targets+1]=fullest
+  for _,unit in ipairs(df.global.world.units.active)do
+   local p=unit.pos;local d=dfhack.maps.getTileFlags(p.x,p.y,p.z)
+   if p.z==building.z and d and not d.hidden and not unit.flags1.inactive and not unit.flags1.caged and not unit.flags1.hidden_in_ambush then
+    targets[#targets+1]={centerx=p.x,centery=p.y,z=p.z,id='unit'};break
+   end
+  end
+  for _,target in ipairs(targets)do
+   select_map(target)
+   local before=observe()
+   local output,code=dfhack.run_command_silent('df3d','tile-selection-read',tostring(target.centerx),tostring(target.centery),tostring(target.z))
+   assert(code==0,output);local actual=json.decode(output)
+   result.tile_selection_reference.cases[#result.tile_selection_reference.cases+1]={tile={target.centerx,target.centery,target.z},native=before,actual=actual}
+   shot('selection-'..target.id)
+   assert(json.encode(observe())==json.encode(before),'Selection provider changed native sheet')
+   assert(json.encode(actual)==json.encode(before),'Selection provider differs from native')
+  end
+  return
+ end
  if os.getenv('DF3D_WORKSHOP_CONNECTIONS')=='1'then
   local function click(x,y)
    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1

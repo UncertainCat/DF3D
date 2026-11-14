@@ -12809,6 +12809,169 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "provider_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-152748",
+      "status": "passed",
+      "cases": [
+        {
+          "actual": {
+            "active_id": 4,
+            "active_kind": 2,
+            "building": 4,
+            "items": [],
+            "tabs": [],
+            "units": [],
+            "valid": true,
+            "vermin": []
+          },
+          "native": {
+            "active_id": 4,
+            "active_kind": 2,
+            "building": 4,
+            "items": [],
+            "tabs": [],
+            "units": [],
+            "valid": true,
+            "vermin": []
+          },
+          "tile": [
+            106,
+            92,
+            165
+          ]
+        },
+        {
+          "actual": {
+            "active_id": 968,
+            "active_kind": 2,
+            "building": 968,
+            "items": [],
+            "tabs": [],
+            "units": [],
+            "valid": true,
+            "vermin": []
+          },
+          "native": {
+            "active_id": 968,
+            "active_kind": 2,
+            "building": 968,
+            "items": [],
+            "tabs": [],
+            "units": [],
+            "valid": true,
+            "vermin": []
+          },
+          "tile": [
+            137,
+            119,
+            165
+          ]
+        },
+        {
+          "actual": {
+            "active_id": 74,
+            "active_kind": 2,
+            "building": 74,
+            "items": [
+              1886,
+              1971,
+              1972,
+              1993,
+              1994,
+              4828,
+              4917,
+              4981
+            ],
+            "tabs": [
+              {
+                "id": 74,
+                "kind": 2
+              },
+              {
+                "id": -1,
+                "kind": 6
+              }
+            ],
+            "units": [],
+            "valid": true,
+            "vermin": []
+          },
+          "native": {
+            "active_id": 74,
+            "active_kind": 2,
+            "building": 74,
+            "items": [
+              1886,
+              1971,
+              1972,
+              1993,
+              1994,
+              4828,
+              4917,
+              4981
+            ],
+            "tabs": [
+              {
+                "id": 74,
+                "kind": 2
+              },
+              {
+                "id": -1,
+                "kind": 6
+              }
+            ],
+            "units": [],
+            "valid": true,
+            "vermin": []
+          },
+          "tile": [
+            102,
+            70,
+            165
+          ]
+        },
+        {
+          "actual": {
+            "active_id": 988,
+            "active_kind": 0,
+            "building": -1,
+            "items": [],
+            "tabs": [],
+            "units": [
+              988
+            ],
+            "valid": true,
+            "vermin": []
+          },
+          "native": {
+            "active_id": 988,
+            "active_kind": 0,
+            "building": -1,
+            "items": [],
+            "tabs": [],
+            "units": [
+              988
+            ],
+            "valid": true,
+            "vermin": []
+          },
+          "tile": [
+            127,
+            61,
+            165
+          ]
+        }
+      ],
+      "native_sheet_unchanged": true,
+      "owned_df_pid": 2216,
+      "source_preserved": true,
+      "scope": "Four native selections: Carpenter, farm, building plus eight ground items, single unit. No viewer/protocol acceptance; unit groups/expanded footprints, hidden tiles, vermin/engraving and full UI-state guard remain unqualified.",
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-152748/workshop-native.json": "55342cfe71401f00d4320ed96d98509ac7d01879993fc79e8cb67cfe2a30fcf5",
+        "build/stockpile-storage-native-farm-discovery-20261114-152748/result.json": "217876a4a3618f2be47bb3467b6b4485646a4f549b2bf69941451605aa1cabe5",
+        "build/stockpile-storage-native-farm-discovery-20261114-152748/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+      }
+    },
     "collector_audit": {
       "build": "DF53.16 Steam24557528",
       "date": "2026-11-14",
@@ -12826,7 +12989,7 @@
       "reuse": "tile_description_native.cpp pins137bd50,14da20,5587b0; hover collection itself is not the selection list.",
       "rules": {
         "unit_group_threshold": 6,
-        "item_group_threshold": "max(2,6-min(unit_count,6)-building_present)",
+        "item_group_threshold": "max(2,6-(unit_count<6?unit_count:0)-building_present)",
         "tab_order": [
           "units/group",
           "vermin",

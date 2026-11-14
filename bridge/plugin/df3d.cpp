@@ -89,6 +89,7 @@
 #include "creature_header_native.h"
 #include "creature_quote_native.h"
 #include "creature_follow_native.h"
+#include "tile_selection_native.h"
 #include "creature_expel_action_native.h"
 #include "creature_expel_preview_native.h"
 #include "creature_health_native.h"
@@ -3927,6 +3928,26 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               df3d_management::printStockpileCategory(out,values[0],uint32_t(values[1])):
               df3d_management::printStockpilePreset(out,values[0],values[1]);
           return ok?CR_OK:CR_FAILURE;
+        }
+        if(parameters[0]=="tile-selection-read") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t p[3]{};
+          for(size_t i=0;i<3;++i) {
+              const auto& v=parameters[i+1];
+              const auto parsed=std::from_chars(v.data(),v.data()+v.size(),p[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          }
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto selection=df3d_selection::collect(p[0],p[1],p[2]);
+          Json::Value value(Json::objectValue);value["valid"]=selection.has_value();
+          if(selection) {
+              const auto ids=[](const auto& source){Json::Value rows(Json::arrayValue);for(auto id:source)rows.append(id);return rows;};
+              value["units"]=ids(selection->units);value["items"]=ids(selection->items);value["vermin"]=ids(selection->vermin);
+              value["building"]=selection->building;value["active_kind"]=int(selection->active.kind);value["active_id"]=selection->active.id;
+              value["tabs"]=Json::Value(Json::arrayValue);
+              for(const auto& target:selection->tabs){Json::Value row(Json::objectValue);row["kind"]=int(target.kind);row["id"]=target.id;value["tabs"].append(row);}
+          }
+          out.print("{}",Json::FastWriter().write(value));return CR_OK;
         }
         if(parameters[0]=="tile-description-read") {
           if(parameters.size()!=4)return CR_WRONG_USAGE;

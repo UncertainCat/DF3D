@@ -40235,6 +40235,72 @@
         "build/stockpile-storage-native-farm-discovery-20261114-144045/workshop-connections-multiple-arrow-live.png": "f186d9c7b8ab0a11322802e5ed696d0c9e994c4d7f6ad9cb223f0749c560ec2a",
         "build/stockpile-storage-native-farm-discovery-20261114-144045/workshop-connections-multiple-bottom-live.png": "2f91d5cea790826e0fd9e09158df681ba39502d4b3c12d83e8581f4103bff7e9"
       }
+    },
+    "navigation_reference": {
+      "native_build": "DF 53.16 Steam 24557528",
+      "capture": "build/stockpile-storage-native-farm-discovery-20261114-151336",
+      "setup": "Paused completed Carpenter id4, Connections list open; another completed workshop id3 on the same level.",
+      "observations": {
+        "active_after_map": 4,
+        "hit": [
+          388,
+          490
+        ],
+        "other_id": 3,
+        "other_type": 13
+      },
+      "pages": [
+        {
+          "name": "jobs",
+          "active_id": 4,
+          "active_sub_tab": 0
+        },
+        {
+          "name": "connections-open",
+          "active_id": 4,
+          "active_sub_tab": 0
+        },
+        {
+          "name": "connections-parent-orders",
+          "active_id": 4,
+          "active_sub_tab": 0
+        },
+        {
+          "name": "connections-parent-tasks",
+          "active_id": 4,
+          "active_sub_tab": 0
+        },
+        {
+          "name": "connections-other-workshop",
+          "active_id": 4,
+          "active_sub_tab": 0
+        },
+        {
+          "name": "connections-navigation-done",
+          "active_id": 4,
+          "active_sub_tab": 0
+        },
+        {
+          "name": "connections-other-after-done",
+          "active_id": 3,
+          "active_sub_tab": 0
+        },
+        {
+          "name": "connections-return-workshop",
+          "active_id": 4,
+          "active_sub_tab": 0
+        }
+      ],
+      "conclusion": "Connections blocks parent Work orders tab and exposed-map selection. Identical map click after Done selects workshop3. Existing DF3D modal gate retained.",
+      "scope": "Native input reference only; no new viewer acceptance or public map-route qualification.",
+      "preservation": "Owned DF39352 exited unsaved; source save unchanged; preferences restored by wrapper.",
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-151336/workshop-native.json": "8f33307af560f2401b9cfe0ce8baf2f09b3e3c6cd0478ae46f4e6324c6b5c917",
+        "build/stockpile-storage-native-farm-discovery-20261114-151336/result.json": "c2ce8bfd5d9078bac16a82fac85c18b168bd546e41f596cbc1bbcd07ec5946a2",
+        "build/stockpile-storage-native-farm-discovery-20261114-151336/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "build/stockpile-storage-native-farm-discovery-20261114-151336/workshop-connections-other-workshop.png": "0c3608f970ef618edbff1894c6db89f2c1c42657572333f358343971781bc79a",
+        "build/stockpile-storage-native-farm-discovery-20261114-151336/workshop-connections-other-after-done.png": "00eee524d377f1e1f8496112fbbd9358396d712e368d2d2167eb58f595b04c44"
+      }
     }
   },
   "furnace_header_reference": {

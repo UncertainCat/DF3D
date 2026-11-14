@@ -18175,6 +18175,18 @@ Cleanup is now bounded and asserts each removal.143934 verifies restoration
 but its CONTEXT_SCROLL_DOWN inputs did not scroll; it is not wheel evidence.
 Wheel/thumb-drag behavior and narrow multirow layouts remain unqualified.
 
+Connections navigation reference151336 on2026-11-14 confirms that the open
+list blocks parent Work orders tab clicks and map selection. The diagnostic
+places another completed workshop below the list, clicks exposed map388,490,
+then closes Connections with Done and repeats the identical click. The first
+click retains Carpenter4; the second selects workshop3. The existing DF3D
+modal gate therefore remains unchanged. Owned DF39352 exits unsaved with
+source/preferences preserved; native graphics are capped30FPS, with52C/12%
+sampled GPU load. navigation_reference retains states and evidence hashes.
+Earlier150920 clicked under the panel;151237 could not position an exposed
+target. Neither failed diagnostic establishes map-selection behavior. This
+is native input evidence, not new viewer or public-map-route acceptance.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

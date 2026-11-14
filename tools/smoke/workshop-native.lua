@@ -142,6 +142,43 @@ local ok,err=xpcall(function()
    result.connections_reference.vectors[field]=ids
   end
   click(768,82);shot('connections-open')
+  if os.getenv('DF3D_WORKSHOP_CONNECTIONS_NAV')=='1'then
+   assert(click_label('Work orders'));shot('connections-parent-orders')
+   assert(sheet.active_sub_tab==0,'Connections allowed parent Work orders tab')
+   assert(click_label('Tasks'));shot('connections-parent-tasks')
+   local other
+   for _,candidate in ipairs(df.global.world.buildings.other.WORKSHOP_ANY)do
+    local d=dfhack.maps.getTileFlags(candidate.centerx,candidate.centery,candidate.z)
+    if candidate.id~=building.id and candidate.z==building.z and d and not d.hidden and candidate:getBuildStage()==candidate:getMaxBuildStage()then other=candidate;break end
+   end
+   assert(other,'No second workshop for Connections navigation')
+   result.connections_reference.navigation={other_id=other.id,other_type=other:getType()}
+   -- The common map helper puts its target underneath the Connections panel.
+   -- Put this diagnostic target below it and record the actual exposed-map hit.
+   dfhack.gui.revealInDwarfmodeMap({x=other.centerx,y=other.centery,z=other.z},true)
+   df.global.window_x=math.max(0,other.centerx-8)
+   local hit
+   for offset=8,40 do
+    df.global.window_y=math.max(0,other.centery-offset)
+    view:render(dfhack.getTickCount())
+    for y=40,62 do for x=4,49 do
+     g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+10;g.mouse_x=x;g.mouse_y=y
+     local pos=dfhack.gui.getMousePos(true)
+     if not hit and pos and pos.x==other.centerx and pos.y==other.centery and pos.z==other.z then hit={x*8+4,y*12+10}end
+    end end
+    if hit then break end
+   end
+   assert(hit,'No exposed map hit below Connections')
+   result.connections_reference.navigation.hit=hit
+   click(hit[1],hit[2]);shot('connections-other-workshop')
+   result.connections_reference.navigation.active_after_map=sheet.active_id
+   assert(sheet.active_id==building.id,'Connections allowed map selection')
+   assert(click_label('Done'));shot('connections-navigation-done')
+   click(hit[1],hit[2]);shot('connections-other-after-done')
+   assert(sheet.active_id==other.id,'Exposed map baseline did not select other workshop')
+   select_map(building);shot('connections-return-workshop')
+   return
+  end
   click(80,82);shot('connections-give')
   assert(click_label('Cancel'));shot('connections-give-cancel')
   click(112,82);shot('connections-take')

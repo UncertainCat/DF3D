@@ -18016,6 +18016,33 @@ hashes, native state and limits. This qualifies an idle Carpenter; active-worker
 and queued-production removal, Furnace header edits, Connections and public
 map selection remain separate work before workshop exposure.
 
+Workshop Connections is not wired in the viewer yet. Protected native135821
+on2026-11-14 establishes the workflow: header click768,82 opens a separate
+panel at56,52, width328 and height420. Give/Take buttons80/112,82 switch to a
+120-pixel-high picker and hide the workshop sheet. The native prompts are
+"Select a stockpile to" followed by "give to." or "take from."; workshops
+cannot be target endpoints here. Cancel restores the workshop plus list, Done
+closes only Connections, and a successful map pick restores the workshop/list.
+A single linked row appears at64,136 with the native stockpile caption and
+remove control centered352,154 (the probe clicks360,154 inside that control).
+Native Give changes workshop.give_to_pile and pile.take_from_workshop; Take
+changes workshop.take_from_pile and pile.give_to_workshop. Removing each row
+restores both endpoint vectors, including unrelated entries on the pile.
+Owned DF15288 exits unsaved, source saves/preferences preserved. The initial
+135507 diagnostic used wrong body coordinates and is not acceptance.
+workshop_connections_reference retains native pages, effects and image hashes.
+This is discovery, not viewer qualification or multiple-row ordering evidence.
+
+Implementation can reuse nativeStockpileLink in stockpile_native.cpp, already
+backing AreaOperation.WorkshopLink with owned vector copies and pinned native
+insert/erase/find primitives. The current list path and nativeStockpileLinkTarget
+accept stockpile sources only. Do not reuse their workshop-target fallback for
+the workshop picker: native allows stockpile destinations only. The missing
+workshop list/target semantics need their own validated source identity and
+revision, then the shared Connections view can receive the workshop-only
+prompt and local selection/retirement ownership. Keep the public workshop gate
+closed until that path is implemented and exercised.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

@@ -121,6 +121,58 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ if os.getenv('DF3D_WORKSHOP_CONNECTIONS')=='1'then
+  local function click(x,y)
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+   df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  end
+  result.connections_reference={can_link=building:canLinkToStockpile(),vectors={}}
+  local links=building:getWorkshopProfile().links
+  for _,field in ipairs{'give_to_pile','take_from_pile','give_to_workshop','take_from_workshop'}do
+   local ids={};for _,target in ipairs(links[field])do ids[#ids+1]=target.id end
+   result.connections_reference.vectors[field]=ids
+  end
+  click(768,82);shot('connections-open')
+  click(80,82);shot('connections-give')
+  assert(click_label('Cancel'));shot('connections-give-cancel')
+  click(112,82);shot('connections-take')
+  assert(click_label('Cancel'));assert(click_label('Done'));shot('connections-done')
+  if os.getenv('DF3D_WORKSHOP_CONNECTIONS_EFFECTS')=='1'then
+   assert(#links.give_to_pile==0 and #links.take_from_pile==0,'Link fixture needs unlinked workshop')
+   local pile
+   for _,candidate in ipairs(df.global.world.buildings.other.STOCKPILE)do
+    local d=dfhack.maps.getTileFlags(candidate.centerx,candidate.centery,candidate.z)
+    if candidate.z==building.z and d and not d.hidden then pile=candidate;break end
+   end
+   assert(pile,'No visible stockpile for workshop link')
+   result.connections_reference.pile_id=pile.id
+   local before_pile={}
+   for _,field in ipairs{'take_from_workshop','give_to_workshop'}do
+    before_pile[field]={};for _,target in ipairs(pile.links[field])do before_pile[field][#before_pile[field]+1]=target.id end
+   end
+   local function contains(rows,id)for _,row in ipairs(rows)do if row.id==id then return true end end;return false end
+   click(768,82);click(80,82);select_map(pile)
+   assert(#links.give_to_pile==1 and links.give_to_pile[0].id==pile.id,'Native workshop give pick failed')
+   assert(contains(pile.links.take_from_workshop,building.id),'Native give missing reciprocal link')
+   shot('connections-linked-give')
+   if click_label('Cancel')then shot('connections-linked-give-cancel')end
+   click(360,154)
+   assert(#links.give_to_pile==0 and not contains(pile.links.take_from_workshop,building.id),'Native workshop unlink failed');shot('connections-unlinked')
+   click(112,82);select_map(pile)
+   assert(#links.take_from_pile==1 and links.take_from_pile[0].id==pile.id and contains(pile.links.give_to_workshop,building.id),'Native take missing reciprocal link')
+   shot('connections-linked-take');click(360,154)
+   assert(#links.take_from_pile==0 and not contains(pile.links.give_to_workshop,building.id),'Native take unlink failed')
+   for field,ids in pairs(before_pile)do assert(#pile.links[field]==#ids);for i,id in ipairs(ids)do assert(pile.links[field][i-1].id==id)end end
+   result.connections_reference.effects={give=true,take=true,reciprocal=true,unlink=true,original_pile_vectors_restored=true}
+   assert(click_label('Done'));shot('connections-effects-restored')
+  end
+  for field,ids in pairs(result.connections_reference.vectors)do
+   assert(#links[field]==#ids);for i,id in ipairs(ids)do assert(links[field][i-1].id==id)end
+  end
+  return
+ end
  if os.getenv('DF3D_WORKSHOP_HEADER')=='1'then
   assert(#jobs==0,'Header reference requires empty queue')
   local name=building.name

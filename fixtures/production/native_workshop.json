@@ -39702,5 +39702,148 @@
       "134228: client rejected workshop edit receipt under chest-only validator; no acceptance",
       "134340: diagnostic confirmed header rejection while contents remained ready; no acceptance"
     ]
+  },
+  "workshop_connections_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261114-135821",
+    "reference": {
+      "can_link": true,
+      "effects": {
+        "give": true,
+        "original_pile_vectors_restored": true,
+        "reciprocal": true,
+        "take": true,
+        "unlink": true
+      },
+      "pile_id": 121,
+      "vectors": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "take_from_pile": [],
+        "take_from_workshop": []
+      }
+    },
+    "pages": [
+      {
+        "active_id": 4,
+        "active_sub_tab": 0,
+        "name": "connections-open",
+        "panel_text": [
+          {
+            "y": 6,
+            "text": "                               Done"
+          }
+        ]
+      },
+      {
+        "active_id": 4,
+        "active_sub_tab": 0,
+        "name": "connections-give",
+        "panel_text": [
+          {
+            "y": 5,
+            "text": "Select a stockpile to"
+          },
+          {
+            "y": 6,
+            "text": "give to.                      Cancel"
+          }
+        ]
+      },
+      {
+        "active_id": 4,
+        "active_sub_tab": 0,
+        "name": "connections-give-cancel",
+        "panel_text": [
+          {
+            "y": 6,
+            "text": "                               Done"
+          }
+        ]
+      },
+      {
+        "active_id": 4,
+        "active_sub_tab": 0,
+        "name": "connections-take",
+        "panel_text": [
+          {
+            "y": 5,
+            "text": "Select a stockpile to"
+          },
+          {
+            "y": 6,
+            "text": "take from.                    Cancel"
+          }
+        ]
+      },
+      {
+        "active_id": 4,
+        "active_sub_tab": 0,
+        "name": "connections-done",
+        "panel_text": []
+      },
+      {
+        "active_id": 4,
+        "active_sub_tab": 0,
+        "name": "connections-linked-give",
+        "panel_text": [
+          {
+            "y": 6,
+            "text": "                               Done"
+          },
+          {
+            "y": 12,
+            "text": "       Stockpile #2"
+          }
+        ]
+      },
+      {
+        "active_id": 4,
+        "active_sub_tab": 0,
+        "name": "connections-unlinked",
+        "panel_text": [
+          {
+            "y": 6,
+            "text": "                               Done"
+          }
+        ]
+      },
+      {
+        "active_id": 4,
+        "active_sub_tab": 0,
+        "name": "connections-linked-take",
+        "panel_text": [
+          {
+            "y": 6,
+            "text": "                               Done"
+          },
+          {
+            "y": 12,
+            "text": "       Stockpile #2"
+          }
+        ]
+      },
+      {
+        "active_id": 4,
+        "active_sub_tab": 0,
+        "name": "connections-effects-restored",
+        "panel_text": []
+      }
+    ],
+    "images": {
+      "workshop-connections-done.png": "9debde5859c8b1ebb8ecbe4cd9a111c45761ce7b8e14530174eb094852a9f3a6",
+      "workshop-connections-effects-restored.png": "252ade01ca8c86916b2919ac34d66c896329e344f7cf1142d0951fa3dfc1ee84",
+      "workshop-connections-give-cancel.png": "ecf4b95c2a34e03a83b405625b44af20cad27d766098bfd5a00aee34c5897175",
+      "workshop-connections-give.png": "c2b7dd20c68303cb25e09883dd8cbb5097ca166e0a49c9d8ee3616b4870475af",
+      "workshop-connections-linked-give.png": "31e3490d852e91d5c20a8341f74252da09ac1a3b61b2905f15e6958c4849ee1d",
+      "workshop-connections-linked-take.png": "c777dfb4e939dc7341d79317e87e33691dd553436b065445d67632c26f5c740c",
+      "workshop-connections-open.png": "ecf4b95c2a34e03a83b405625b44af20cad27d766098bfd5a00aee34c5897175",
+      "workshop-connections-take.png": "0e003d542e5e0c489071268f64d5512626f69d8d24a2e442af44bb1dbf922bbb",
+      "workshop-connections-unlinked.png": "5af16f2f8067cf6e888eb1e0e968c8a807be398816ad5e9f3370c538f0f04047"
+    },
+    "owned_df_pid": 15288,
+    "source_preserved": true,
+    "closed_unsaved": true,
+    "scope": "Native discovery only. Empty list, Give/Take prompt cancellation, one stockpile linked in each direction, reciprocal effects and unlink restoration. No viewer, multiple-row ordering, duplicates/reversal, overflow or alternate window qualification.",
+    "failed_attempt": "135507 clicked old workshop-body coordinates after opening left-side Connections panel; Cancel assertion failed. Corrected to native buttons80/112,82. Not acceptance."
   }
 }

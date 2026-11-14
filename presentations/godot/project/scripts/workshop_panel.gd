@@ -19,11 +19,16 @@ var details_view
 var global_orders_mode:=false
 var job_details=preload("res://scripts/job_settings_state.gd").new()
 var job_details_view
+var connections=preload("res://scripts/workshop_connections_state.gd").new()
+var connections_view
+var connection_world
+var camera: Camera3D
 
 func _init() -> void:
 	state=preload("res://scripts/building_header_state.gd").new()
 
 func configure(world,service,host,help=null) -> void:
+	connection_world=world;connections.configure(service)
 	tasks.configure(service);workers.configure(service);orders.configure(service);candidate_modes.configure(service);order_choices.configure(service)
 	conditions.configure(service)
 	global_orders.configure(service)
@@ -32,6 +37,22 @@ func configure(world,service,host,help=null) -> void:
 	job_details.configure(service)
 	candidate_modes.applied.connect(func():refreshing_modes=true;candidate_modes.clear();workers.refresh())
 	super.configure(world,service,host,help)
+	connections_view=preload("res://scripts/area_links_view.gd").new();canvas.add_child(connections_view)
+	connections_view.stockpile_only=true;connections_view.configure(world)
+	var border=connections_view.art.make_style("HOVER_RECTANGLE",8)
+	border.set_texture_margin(SIDE_TOP,12);border.set_texture_margin(SIDE_BOTTOM,12)
+	for side in [SIDE_LEFT,SIDE_RIGHT]:border.set_content_margin(side,8)
+	for side in [SIDE_TOP,SIDE_BOTTOM]:border.set_content_margin(side,12)
+	connections_view.add_theme_stylebox_override("panel",border);connections_view.hide()
+	connections.changed.connect(_connections_changed)
+	connections_view.pick_requested.connect(func(direction):
+		if play_enabled and ui_host.allows_panel_input(self):connections.begin_pick(direction))
+	connections_view.unlink_requested.connect(func(row):
+		if play_enabled and ui_host.allows_panel_input(self):connections.unlink(row))
+	connections_view.done.connect(_back_connections)
+	panel.connections_requested.connect(func():
+		if play_enabled and ui_host.allows_panel_input(self) and panel.tasks_allowed():
+			connections_view.reset_scroll();connections.open(state.building_id))
 	panel.configure_tasks(world,tasks,"",help)
 	panel.configure_workers(world,workers)
 	panel.configure_orders(world,orders,help)
@@ -82,7 +103,7 @@ func configure(world,service,host,help=null) -> void:
 	panel.workers.choose_requested.connect(_open_picker)
 	panel.workers.unit_requested.connect(func(id):unit_requested.emit(id))
 	panel.tab_requested.connect(_select_tab)
-	panel.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not selector.visible and not order_picker.visible and not conditions_view.visible and not global_orders_view.visible and not details_view.visible and not _job_details_open()
+	panel.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not selector.visible and not order_picker.visible and not conditions_view.visible and not global_orders_view.visible and not details_view.visible and not _job_details_open() and not _connections_open()
 	workers.changed.connect(_workers_changed)
 	workers.applied.connect(state.refresh)
 	workers.applied.connect(contents.refresh)
@@ -91,6 +112,7 @@ func configure(world,service,host,help=null) -> void:
 
 func _create_view():return preload("res://scripts/workshop_sheet_view.gd").new()
 func _open_state(id: int,_season: int) -> void:
+	connections.close()
 	_close_job_details()
 	_close_conditions()
 	_close_order_picker();_close_picker();workers.close();tasks.close();orders.close();panel.selected_tab=0;state.open(id)
@@ -106,6 +128,7 @@ func _state_changed() -> void:
 	super._state_changed()
 	if opening:return
 	if state.building_id<0 or state.snapshot.get("removing",false):
+		connections.close()
 		_close_job_details()
 		_close_conditions()
 		_close_order_picker();_close_picker();workers.close();tasks.close();orders.close()
@@ -113,12 +136,14 @@ func _state_changed() -> void:
 	if _job_details_open():panel.hide()
 
 func close_panel() -> void:
+	connections.close()
 	_close_job_details()
 	global_orders_mode=false
 	_close_conditions()
 	_close_order_picker();_close_picker();workers.close();tasks.close();orders.close();super.close_panel()
 
 func _exit_tree() -> void:
+	connections.dispose()
 	job_details.dispose()
 	details.dispose()
 	global_orders.dispose()
@@ -198,6 +223,10 @@ func _workers_changed() -> void:
 	if selector!=null and selector.visible and workers.phase!=workers.Phase.Ready:_close_picker()
 func _process(delta: float) -> void:
 	super._process(delta)
+	if connections_view!=null:
+		var viewport:=get_viewport().get_visible_rect().size
+		var view:=viewport/Preferences.effective_scale_vector(viewport)
+		connections_view.position=Vector2(56,48+fposmod(view.y,12)*0.5)
 	if job_details_view!=null:
 		var viewport:=get_viewport().get_visible_rect().size
 		job_details_view.layout(viewport/Preferences.effective_scale_vector(viewport))
@@ -218,6 +247,10 @@ func _process(delta: float) -> void:
 		var view:=viewport/Preferences.effective_scale_vector(viewport)
 		selector.layout(view);selector.position=Vector2(32,48+fposmod(view.y,12)*0.5)
 func _input(event: InputEvent) -> void:
+	if _connections_open():
+		if play_enabled and ui_host.allows_panel_input(self) and event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
+			_back_connections();get_viewport().set_input_as_handled()
+		return
 	if _job_details_open():return
 	if details_view!=null and details_view.visible:return
 	if global_orders_view!=null and global_orders_view.visible:return
@@ -232,7 +265,8 @@ func _input(event: InputEvent) -> void:
 		return
 	super._input(event)
 func handle_escape() -> void:
-	if _job_details_open():job_details_view.back()
+	if _connections_open():_back_connections()
+	elif _job_details_open():job_details_view.back()
 	elif details_view!=null and details_view.visible:details_view.back()
 	elif conditions_view!=null and conditions_view.visible:_back_conditions()
 	elif global_orders_view!=null and global_orders_view.visible:_close_global_orders()
@@ -253,3 +287,26 @@ func _open_job_details(id: int) -> void:
 	for row in tasks.jobs():
 		if row.id==id and row.editable:
 			job_details.open(state.building_id,id);return
+
+func _connections_open() -> bool:
+	return connections.building_id>=0
+func _connections_changed() -> void:
+	if connections_view==null:return
+	connections_view.visible=_connections_open()
+	connections_view.display(connections.rows,connections.picking,connections.give,connections.phase==connections.Phase.Ready)
+	# PanelContainer minimum sizes can grow but do not shrink automatically.
+	connections_view.size=Vector2(328,120 if connections.picking else 420)
+	modal_input=_connections_open()
+	if ui_host!=null:ui_host._sync_input()
+	if panel!=null:panel.visible=state.building_id>=0 and not connections.picking and not _job_details_open()
+func _back_connections() -> void:
+	if not play_enabled or not ui_host.allows_panel_input(self):return
+	if connections.picking:connections.cancel_pick()
+	else:connections.close()
+func _unhandled_input(event: InputEvent) -> void:
+	if not _connections_open() or not play_enabled or not ui_host.allows_panel_input(self):return
+	if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT:
+		if event.pressed and camera!=null and connections.phase==connections.Phase.Picking:
+			var tile: Vector3i=connection_world.pick_tile(camera.project_ray_origin(event.position),camera.project_ray_normal(event.position),connection_world.get_top_z())
+			connections.pick(tile)
+		get_viewport().set_input_as_handled()

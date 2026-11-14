@@ -199,6 +199,7 @@ func controller(id: String):
 		ensure_follow()
 		panel.holder_requested.connect(open_building_holder)
 		if id=="workshop":
+			panel.camera=view.camera_rig.get_node("Camera3D")
 			panel.unit_requested.connect(func(unit_id):open_item_carrier(2,unit_id))
 			panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
 		panel.item_owner.configure_follow(item_follow)

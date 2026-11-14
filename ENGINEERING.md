@@ -18016,7 +18016,7 @@ hashes, native state and limits. This qualifies an idle Carpenter; active-worker
 and queued-production removal, Furnace header edits, Connections and public
 map selection remain separate work before workshop exposure.
 
-Workshop Connections is not wired in the viewer yet. Protected native135821
+Workshop Connections is wired through the staged workshop owner. Protected native135821
 on2026-11-14 establishes the workflow: header click768,82 opens a separate
 panel at56,52, width328 and height420. Give/Take buttons80/112,82 switch to a
 120-pixel-high picker and hide the workshop sheet. The native prompts are
@@ -18053,9 +18053,25 @@ signatures (passed_with_known_issues). MSVC bridge, root/client builds, core19,
 area adapter and UI composition checks pass. The fixture's
 semantic_provider_reference retains receipts and evidence hashes.
 This does not qualify rendered Connections or multiple native row ordering.
-The shared Connections view still needs its workshop-only prompt and local
-selection/retirement owner. Keep the public workshop gate closed until the
-visible workflow is implemented and exercised.
+The staged workshop owner now uses the shared Connections view with native
+workshop icons, stockpile-only prompts, white text and workshop row padding.
+The owner holds the workshop source receipt through target lookup, reads the
+destination stockpile receipt before mutation, and retires reads on close or
+session change. Sent edits remain owned by the action service and are never
+replayed. Picking hides the parent; Cancel restores it, and Done closes only
+the Connections window and releases its world-input gate.
+
+Protected main-scene142643 on2026-11-14 passes the header route, Cancel,
+viewport map clicks for Take reversal and Give restoration, visible Remove,
+Done and late-read closure. The single Give list and Give picker crops at
+1200x800 match native exactly. Native reciprocal-vector postconditions pass;
+owned DF7460 exits unsaved with source saves/preferences preserved. Only the
+three documented Godot separate-thread/shutdown diagnostics occur. GPU sample
+56C/4%, serial30FPS; this is a sample, not a peak measurement. The fixture's
+main_scene_reference retains evidence hashes. Earlier142303/142504 failed
+render/control checks and are not acceptance. Other window sizes, multiple-row
+scrolling and the broader workshop workflow remain unqualified; keep the public
+workshop gate closed.
 
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.

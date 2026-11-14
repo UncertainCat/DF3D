@@ -40050,6 +40050,46 @@
         "build/stockpile-storage-native-farm-discovery-20261114-141612/workshop-native.json": "c8548063d413c17dece8b4e7011a24fd5197daf6906ee58180180607efc4bcf5",
         "build/stockpile-storage-native-farm-discovery-20261114-141612/workshop-wire-result.json": "9b628550f9bd946027d98c5881ee0301fb739edb9140b380442494b8080fd3d0"
       }
+    },
+    "main_scene_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-142643",
+      "status": "passed_with_known_issues",
+      "scope": "Main scene factory/header Connections click; native-identical single Give row and Give picker crops at1200x800; Cancel returns parent, actual projected stockpile clicks reverse to Take and restore Give, visible Remove unlinks, Done releases modal input, closing during a queued read prevents late reopening. Native reciprocal vectors checked after viewer restoration.",
+      "owned_df_pid": 7460,
+      "closed_unsaved": true,
+      "source_preserved": true,
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "limitations": [
+        "Other viewport sizes and multirow scrolling remain unqualified.",
+        "Public workshop selection remains gated."
+      ],
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-142643/result.json": "e2041be3d54e9fe969b8cb0e437dcca9f96ac85167187fa159b56cdd376c8524",
+        "build/stockpile-storage-native-farm-discovery-20261114-142643/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "build/stockpile-storage-native-farm-discovery-20261114-142643/workshop-native.json": "90c9bef9182dc296ccffab261a668eabf34d5c9dc060d1adbcf9f1b74d406b6b",
+        "build/stockpile-storage-native-farm-discovery-20261114-142643/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+        "build/stockpile-storage-native-farm-discovery-20261114-142643/workshop-connections-linked-give-live.png": "f0b07d42b4e181e97a8b62bcb12df89fc66261915ca31a886b0b824a19653136",
+        "build/stockpile-storage-native-farm-discovery-20261114-142643/workshop-connections-give-live.png": "9eb0a47af610cfae6c138b638add6473c5056a241f15431e30487cbccc95fd65"
+      }
     }
   }
 }

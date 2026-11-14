@@ -1,6 +1,8 @@
 extends Node
 signal input_gate_changed
 signal views_reset
+signal panel_activated(controller: Node)
+signal panel_released(controller: Node)
 # Sole owner of local panel and world-input transitions. Requests live elsewhere.
 var interaction
 var active: Node
@@ -44,6 +46,7 @@ func activate(controller: Node) -> bool:
 	active = controller
 	interaction.cancel_selection()
 	_sync_input()
+	panel_activated.emit(controller)
 	return true
 
 func release(controller: Node) -> void:
@@ -51,6 +54,7 @@ func release(controller: Node) -> void:
 	_set_panel_focus(true)
 	active = null
 	_sync_input()
+	panel_released.emit(controller)
 
 func close_active() -> void:
 	_set_panel_focus(true)

@@ -1,6 +1,53 @@
 extends SceneTree
 # Exercise the real main-scene wiring and lazy product registry, offline.
 var failures := 0
+class SelectionService:
+	extends RefCounted
+	signal session_changed
+	var calls: Array=[]
+	var detached: Array=[]
+	func submit(_domain,request,observer):
+		calls.append([request,observer]);return calls.size()
+	func detach(ticket):detached.append(ticket)
+	func reply(ticket: int,kind: int,id: int,receipt: int):
+		var c=preload("res://scripts/management_contract.gd")
+		var request: Dictionary=calls[ticket-1][0]
+		calls[ticket-1][1].call(ticket,{"status":c.ManagementStatus.Ok,"action":c.ManagementAction.Selection,"selection":{
+			"complete":true,"open":true,"tile":Vector3i(1,2,3),"receipt":receipt,"kind":kind,"id":id,
+			"alternatives":[{"kind":c.SelectionKind.ItemList,"id":-1}],"members":[{"kind":c.SelectionKind.Item,"id":42}]}},request)
+class SelectionPanel:
+	extends Node
+	var ui_host
+	var modal_input:=false
+	func set_play_enabled(_value):pass
+	func close_panel():ui_host.release(self)
+
+func check_selection_navigation(host) -> void:
+	var c=preload("res://scripts/management_contract.gd")
+	var service:=SelectionService.new()
+	var first:=SelectionPanel.new();root.add_child(first);host.register(first)
+	var second:=SelectionPanel.new();root.add_child(second);host.register(second)
+	var navigation=preload("res://scripts/tile_selection_navigation.gd").new()
+	navigation.configure(service,host,func(kind,_id,_tile):
+		var target=first if kind==c.SelectionKind.Building else second
+		return target if host.activate(target) else null)
+	navigation.open(Vector3i(1,2,3));service.reply(1,c.SelectionKind.Building,74,1)
+	check(host.active==first and navigation.state.snapshot.get("receipt")==1,"Selection acquires first detail owner")
+	navigation.state.choose_alternative(0);service.reply(2,c.SelectionKind.ItemList,-1,2)
+	check(host.active==second and navigation.state.snapshot.get("receipt")==2,"Confirmed handoff retains selection through old-panel closure")
+	navigation.state.choose_member(0);service.reply(3,c.SelectionKind.Item,42,3)
+	check(host.active==second and navigation.state.snapshot.get("id")==42,"Same-controller handoff retains selection")
+	host.set_overlay_blocked(true);host.set_overlay_blocked(false)
+	check(navigation.state.snapshot.get("receipt")==3,"Overlay input gates preserve navigation context")
+	host.activate(second)
+	check(navigation.state.snapshot.is_empty(),"External same-controller activation retires selection")
+	navigation.open(Vector3i(1,2,3));host.close_active();service.reply(4,c.SelectionKind.Building,74,4)
+	check(host.active==null and navigation.state.snapshot.is_empty() and 4 in service.detached,"Closing while pending ignores late target")
+	navigation.open(Vector3i(1,2,3));host.activate(first);service.reply(5,c.SelectionKind.Item,42,5)
+	check(host.active==first and navigation.state.snapshot.is_empty(),"Unrelated activation retires pending selection")
+	navigation.open(Vector3i(1,2,3));host.reset_local_views();service.reply(6,c.SelectionKind.Item,42,6)
+	check(host.active==null and navigation.state.snapshot.is_empty(),"View reset retires pending navigation")
+	navigation.dispose();first.queue_free();second.queue_free()
 func check(value: bool, message: String) -> void:
 	if not value:
 		failures += 1
@@ -288,6 +335,7 @@ func run():
 	places.information_requested.emit("Tasks")
 	check(ui.host.active==null,"Closed Places cannot steal input")
 	check(not ui.Registry.PANEL_ROUTES.values().has("places"),"Internal handoffs do not expose Places launcher")
+	check_selection_navigation(ui.host)
 	print("ui_composition_test: ", "PASS" if failures == 0 else "FAIL", " failures=", failures)
 	scene.queue_free()
 	await process_frame

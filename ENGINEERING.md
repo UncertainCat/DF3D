@@ -9284,6 +9284,18 @@ and preferences are preserved. Both graphical clients are capped30FPS; sampled
 GPU49–51C/4–5% is not a continuous peak. selection_reference.group_body_reference
 retains bounded evidence and hashes.
 
+`tile_selection_navigation.gd` owns selection lifetime across synchronous detail
+handoffs. Host activation/release signals distinguish a confirmed selection
+transition from unrelated navigation, including reopening the same controller.
+Closing the displayed owner while OpenTile is pending detaches that request;
+late replies cannot reopen it. Overlay input gating preserves the receipt,
+while view reset retires it. Controllers keep ownership of their own actions.
+Headless ui_composition_test in selection-navigation-ownership exercises the
+real host with injected selection replies: building/group/member transitions,
+same-controller replacement, pending close, unrelated activation and reset.
+This is ownership acceptance only; public composition and rendered handoff
+remain unfinished.
+
 The view remains staged. Public map routing, main-scene detail handoff,
 unit-member text/art, long captions, overflow, resizing and hover still require
 implementation or acceptance. The eight dolomite rows do not establish artwork

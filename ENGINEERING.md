@@ -9256,6 +9256,23 @@ retains names, destinations, renderer provenance and hashes. Long captions,
 unit-member text, group artwork/rendering, full lifecycle and public main-scene
 routing remain outside this acceptance.
 
+The staged `tile_selection_group_view.gd` now renders ordered item-member names
+and native36-pixel row/picture frames, forwarding row indices to the selection
+owner. Receipt changes reset local scrolling and artwork; late artwork for old
+receipts is ignored. Pending navigation disables row and scrollbar input. It
+uses the shared scrollbar but overflow/resize/hover parity is not yet qualified.
+
+The expanded tile_selection_tabs_capture compares eight complete row frames
+and short captions against native161327, excluding32x32 icon interiors. The
+472x288 region matches exactly; a second-row click submits member index1 with
+the displayed receipt, and a pending second click submits nothing. Known Godot
+diagnostics only. `selection_reference.group_body_reference` records the scope.
+Item artwork still needs semantic appearance transport: reuse the existing
+owned itemAppearance provider and ItemInspectionAppearance contract, not stale
+world-inspector summaries or one full detail-sheet request per visible row.
+The view is not connected to public map routing; icons, long captions, overflow
+and main-scene detail handoff remain unfinished.
+
 Protected contents oracle220127 on2026-10-28 observes40 PERM seed entries in
 farm968. The six visible View controls open the first six `contained_items`
 IDs in vector order. After closing the item sheet and reselecting the farm,

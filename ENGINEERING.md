@@ -18070,6 +18070,24 @@ no native sheet scratch or new wire fields are introduced. Active-worker and
 queued-production removal, and other furnace subtypes, remain outside this
 idle Smelter header qualification.
 
+Item View-building navigation now returns to staged Workshop and Furnace
+owners as well as Farm/Chest. The native item-holder receipt supplies type/ID;
+visible resident building semantics must agree (Furnace6 or Workshop14 in the
+world model) and report completion. Existing native-derived subtype artwork
+mapping resolves the icon, including its custom-workshop fallback. Unknown,
+unavailable or mismatched resident targets remain closed; the fresh header
+read supplies edit authority rather than the mirror observation.
+
+Protected150546(Smelter) and150652(Carpenter) on2026-11-14 click the actual
+contained-item View and item holder controls in the main scene, check target
+identity and input-owner handoff, and compare the restored workshop panel to
+native pixels. Both retain the accepted rename/removal/late-read checks.
+Owned DF35540/37800 exit unsaved with source/preferences preserved. Only the
+three known Godot diagnostics occur; serial30FPS GPU52C/9-13% samples are not
+peaks. UI composition and core19 pass. item_holder_navigation_reference retains
+scope and hashes. This fixes the staged item return path; ordinary map selection
+and public workshop promotion remain separate acceptance work.
+
 Workshop Connections is wired through the staged workshop owner. Protected native135821
 on2026-11-14 establishes the workflow: header click768,82 opens a separate
 panel at56,52, width328 and height420. Give/Take buttons80/112,82 switch to a

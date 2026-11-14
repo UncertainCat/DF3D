@@ -40460,5 +40460,84 @@
       "build/stockpile-storage-native-farm-discovery-20261114-150102/workshop-orders-arrow-live.png": "132d750f992cf5ff41e510f3b16604195ee84fd7061252cca06f9602565243ca",
       "build/stockpile-storage-native-farm-discovery-20261114-150102/workshop-orders-bottom-live.png": "39119eb41fd429ecb5670134e92f831844f87b8fff372894ea6bd45af8410080"
     }
+  },
+  "item_holder_navigation_reference": {
+    "scope": "Actual main-scene contained-item View click and item holder View-building click return to the same workshop owner, retiring the item panel. Native-type/ID receipt checked against resident semantic building kind; header re-read supplies fresh action authority. Returned Carpenter and Smelter panels match native captures. Existing rename/removal/late-read checks also pass.",
+    "limits": [
+      "Completed, visible resident building targets only.",
+      "Normal map-selection promotion remains separate."
+    ],
+    "runs": [
+      {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-150546",
+        "kind": "Smelter",
+        "owned_df_pid": 35540,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "status": "passed_with_known_issues",
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "hashes": {
+          "build/stockpile-storage-native-farm-discovery-20261114-150546/result.json": "72e5f7211ff0577eb1e6efcb3cf8e884b5e0d2542daf87b5f433a183624f331a",
+          "build/stockpile-storage-native-farm-discovery-20261114-150546/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261114-150546/workshop-native.json": "96abe4bfa0e5a78a197a1824e0fdaf106323e8b55b6a109093d2630bcd8db804",
+          "build/stockpile-storage-native-farm-discovery-20261114-150546/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261114-150546/workshop-header-cancel-live.png": "ab1e98bb9f9a37551d1d070358e6db847b7183256b70f6d598f553a53dd00b5a"
+        }
+      },
+      {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-150652",
+        "kind": "Carpenter",
+        "owned_df_pid": 37800,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "status": "passed_with_known_issues",
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "hashes": {
+          "build/stockpile-storage-native-farm-discovery-20261114-150652/result.json": "0293dee3fa19e3c042825eb8e2b7d7aa20ac853602c4f3a99f7acf8afa0e7aef",
+          "build/stockpile-storage-native-farm-discovery-20261114-150652/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261114-150652/workshop-native.json": "9150076c5b9370816a26d9292883dbe9fd3494463ecf206eab5be0edaa30e85a",
+          "build/stockpile-storage-native-farm-discovery-20261114-150652/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261114-150652/workshop-header-cancel-live.png": "6c6a7b3de568c8db9a9ab8616c1fa351e2c54a39f0cbfac11dee4a0ec75b2b7f"
+        }
+      }
+    ]
   }
 }

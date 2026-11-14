@@ -114,6 +114,18 @@ func ensure_agreement_tracker():
 func open_building_holder(kind: int,id: int) -> void:
 	if kind==4:controller("farm").open_target(id)
 	elif kind==10:controller("chest").open_target(id)
+	elif kind in [5,13]:
+		# The item receipt supplies native type/ID; resident semantics supply the
+		# subtype artwork. The opened header still obtains fresh action authority.
+		if not host.play_enabled:return
+		var target: Dictionary=world.inspect_entity(3,id)
+		if target.get("building_kind",-1)!=(6 if kind==5 else 14) or not target.get("complete",false):return
+		var mapping=preload("res://scripts/location_staff_indicators.gd")
+		var icon: Dictionary=mapping.art_for({"kind":2 if kind==5 else 1,"subtype":target.get("subtype",-1),"custom_code":target.get("custom","")})
+		if icon.is_empty() or icon.get("token","").is_empty():return
+		var token: String=icon.token
+		if not icon.get("fallback","").is_empty() and world.ui_texture(token)==null:token=icon.fallback
+		controller("workshop").open_workshop(id,token)
 
 func open_item_carrier(kind: int,id: int) -> void:
 	if kind!=2 or not host.play_enabled:return

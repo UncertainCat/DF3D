@@ -45,6 +45,17 @@ func exercise(expected: Dictionary) -> void:
 	if not await workshop_ready():return
 	check(not owner.state.snapshot.removing and owner.tasks.jobs().is_empty(),"Cancel removal did not restore empty workshop")
 	await capture_header("cancel")
+	# Follow the actual contained-item View action, then return through its holder.
+	if not check(not owner.contents.snapshot.rows.is_empty(),"Holder navigation needs a contained item"):return
+	var item_id: int=owner.contents.snapshot.rows[0].id
+	await pointer(owner.panel.contents.get_global_transform_with_canvas()*owner.panel.contents.control_rect(0,1).get_center())
+	if not await settle(owner.item_owner.state):return
+	check(scene._ui.host.active==owner.item_owner and owner.item_owner.state.item_id==item_id,"Contents View did not open item")
+	check(owner.item_owner.state.snapshot.get("holder",{}).get("id",-1)==int(expected.building_id),"Item holder identity differs")
+	await pointer(owner.item_owner.panel.get_global_transform_with_canvas()*owner.item_owner.panel.holder_rect().get_center())
+	if not await workshop_ready():return
+	check(scene._ui.host.active==owner and owner.state.building_id==int(expected.building_id) and not owner.item_owner.panel.visible,"Item holder did not return to workshop owner")
+	await capture_header("cancel")
 	owner.close_panel();owner.open_workshop(int(expected.building_id),("BUILDING_ICON_FURNACE_SMELTER" if expected.get("building_type",13)==5 else "BUILDING_ICON_WORKSHOP_CARPENTER"));owner.close_panel();await drain();await process_frame
 	check(scene._ui.host.active==null and not owner.panel.visible and owner.tasks.building_id==-1,"Late read revived closed workshop")
 	exercised=true

@@ -12809,6 +12809,109 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "caption_owner_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-161327",
+      "status": "passed_with_known_issues",
+      "native_group_renderer": {
+        "branch": "view_sheet_type6 ->159aff via jump table19e488",
+        "range": [
+          "159aff",
+          "15a285"
+        ],
+        "sha256": "112e0afc5703c1ba853f190e420bd8ff60fc813d3fc7b1d8ea99bda6f10509e0",
+        "caption_call": "15a12e..15a147 ->c65450(item,owned_string,false,-1)"
+      },
+      "native_names": {
+        "1886": "dolomite blocks",
+        "1971": "dolomite blocks",
+        "1972": "dolomite blocks",
+        "1993": "dolomite blocks",
+        "1994": "dolomite blocks",
+        "4828": "dolomite blocks",
+        "4917": "dolomite blocks",
+        "4981": "dolomite blocks"
+      },
+      "members": [
+        {
+          "id": 1886,
+          "kind": 2,
+          "name": "dolomite blocks"
+        },
+        {
+          "id": 1971,
+          "kind": 2,
+          "name": "dolomite blocks"
+        },
+        {
+          "id": 1972,
+          "kind": 2,
+          "name": "dolomite blocks"
+        },
+        {
+          "id": 1993,
+          "kind": 2,
+          "name": "dolomite blocks"
+        },
+        {
+          "id": 1994,
+          "kind": 2,
+          "name": "dolomite blocks"
+        },
+        {
+          "id": 4828,
+          "kind": 2,
+          "name": "dolomite blocks"
+        },
+        {
+          "id": 4917,
+          "kind": 2,
+          "name": "dolomite blocks"
+        },
+        {
+          "id": 4981,
+          "kind": 2,
+          "name": "dolomite blocks"
+        }
+      ],
+      "owner_destinations": [
+        {
+          "id": 74,
+          "kind": 3,
+          "tile": "(102, 70, 165)"
+        },
+        {
+          "id": -1,
+          "kind": 7,
+          "tile": "(102, 70, 165)"
+        },
+        {
+          "id": 1886,
+          "kind": 2,
+          "tile": "(102, 70, 165)"
+        }
+      ],
+      "late_reply_after_close_ignored": true,
+      "owned_df_pid": 34220,
+      "closed_unsaved": true,
+      "source_preserved": true,
+      "gpu_sample": {
+        "fps_cap": 30,
+        "temperature_c": 52,
+        "utilization_percent": 9
+      },
+      "limitations": [
+        "Native caption comparison uses eight short dolomite-block names, not long-name display truncation.",
+        "Unit member captions, group artwork, main-scene routing and broader owner lifecycle are not qualified."
+      ],
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-161327/result.json": "89f716122790fe618f814c74a6b064f68abcd8cfe06b67b9438e129b35fe5777",
+        "build/stockpile-storage-native-farm-discovery-20261114-161327/workshop-native.json": "1193e0628b65d24c73f02004384669fb841c4116beb82ea72f44062e6964f11f",
+        "build/stockpile-storage-native-farm-discovery-20261114-161327/workshop-wire-result.json": "6043335e70c4b8884ec26d7ccd0a13585c3827b4ba2fa627b8f0ab6403659fdd",
+        "build/stockpile-storage-native-farm-discovery-20261114-161327/workshop-wire.stdout.log": "5d4badbd1029a4f5ad2ca16abb1f00bdc32ca6dd795ec5a3693545239f65b23f",
+        "build/stockpile-storage-native-farm-discovery-20261114-161327/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+        "build/stockpile-storage-native-farm-discovery-20261114-161327/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+      }
+    },
     "layout_reference": {
       "run": "build/stockpile-storage-native-farm-discovery-20261114-160405",
       "status": "native passed; rendered component passed_with_known_issues",

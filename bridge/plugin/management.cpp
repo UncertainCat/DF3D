@@ -630,9 +630,25 @@ struct TileSelectionSession {
   m::TilePos tile;
   df3d_selection::Selection source;
   df3d_selection::Target active;
+  std::vector<std::string> memberNames;
 };
 std::optional<TileSelectionSession> tileSelectionOwner,tileSelectionReply;
 uint64_t nextTileSelectionReceipt=0;
+bool prepareTileSelectionReply(TileSelectionSession& value) {
+  value.memberNames.clear();
+  if(value.active.kind!=df::view_sheet_type::ITEM_LIST)return true;
+  size_t bytes=0;
+  for(auto id:value.source.items) {
+    // Native item-group renderer15a12e..15a147 uses the same independently
+    // owned formatter and arguments as building contents: false, -1.
+    auto caption=df3d_production::buildingItemCaption(df::item::find(id));
+    if(!caption)return false;
+    auto text=DF2UTF(*caption);bytes+=text.size();
+    if(text.size()>512 || bytes>131072 || text.find('\0')!=std::string::npos)return false;
+    value.memberNames.push_back(std::move(text));
+  }
+  return true;
+}
 void clearResult() {
   tileSelectionReply.reset();
   creatureHeader.reset();
@@ -1319,8 +1335,10 @@ void publish() {
     for(const auto& target:value.source.tabs)tabs.push_back(m::CreateSelectionIdentity(b,kind(target.kind),target.id,empty));
     const auto memberKind=value.active.kind==df::view_sheet_type::UNIT_LIST?m::SelectionKind::Unit:m::SelectionKind::Item;
     if(value.active.kind==df::view_sheet_type::UNIT_LIST || value.active.kind==df::view_sheet_type::ITEM_LIST)
-      for(auto id:value.active.kind==df::view_sheet_type::UNIT_LIST?value.source.units:value.source.items)
-        members.push_back(m::CreateSelectionIdentity(b,memberKind,id,empty));
+      for(auto id:value.active.kind==df::view_sheet_type::UNIT_LIST?value.source.units:value.source.items) {
+        const auto name=members.size()<value.memberNames.size()?b.CreateString(value.memberNames[members.size()]):empty;
+        members.push_back(m::CreateSelectionIdentity(b,memberKind,id,name));
+      }
     const auto alternatives=b.CreateVector(tabs),memberRows=b.CreateVector(members);
     const auto items=b.CreateVector(std::vector<flatbuffers::Offset<m::SelectionItem>>{});
     const auto overview=b.CreateVector(std::vector<flatbuffers::Offset<m::SelectionText>>{});
@@ -5259,6 +5277,7 @@ void run(color_ostream& out) {
       TileSelectionSession value;value.client=client;value.epoch=epoch;value.tile=*q.tile();
       if(source->active.kind!=df::view_sheet_type::NONE) {
         value.source=std::move(*source);value.active=value.source.active;
+        if(!prepareTileSelectionReply(value)){finish();return;}
         value.receipt=++nextTileSelectionReceipt;tileSelectionOwner=value;
       }
       tileSelectionReply=std::move(value);status=m::ManagementStatus::Ok;finish();return;
@@ -5283,6 +5302,7 @@ void run(color_ostream& out) {
       owner.active={units?df::view_sheet_type::UNIT:df::view_sheet_type::ITEM,members[q.index()]};
       owner.receipt=++nextTileSelectionReceipt;
     } else if(q.operation()!=m::SelectionOperation::Inspect){finish();return;}
+    if(!prepareTileSelectionReply(owner)){tileSelectionOwner.reset();finish();return;}
     tileSelectionReply=owner;status=m::ManagementStatus::Ok;finish();return;
   }
   if(r->action()==m::ManagementAction::WorldHover) {

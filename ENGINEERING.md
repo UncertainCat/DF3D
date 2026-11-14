@@ -9187,8 +9187,8 @@ Management protocol210 enables the owned Selection transport and appends typed,
 ordered `members` to SelectionState plus SelectMember to SelectionOperation.
 UnitList, ItemList, Engraving and PlannedEngraving require ID-1 and a tile;
 ordinary targets require nonnegative IDs. Group members have unique object IDs
-and matching unit/item kinds, bounded4096. Legacy descriptions/captions remain
-blank; this transport supplies identity, not detail-sheet content.
+and matching unit/item kinds, bounded4096. Item members include native full
+captions; unit names and legacy detail-sheet descriptions remain blank.
 
 OpenTile establishes a client/world-bound receipt. Inspect, SelectAlternative
 and SelectMember re-collect candidates and reject changed membership/order;
@@ -9228,6 +9228,33 @@ map selection because the open panel intercepted it;160405 explicitly dismisses
 the sheet before the next case. Building icons, other sizes, item-row content,
 scrolling, hover and actual owner integration remain unfinished. The component
 is not connected to public routing and is not full selection UI acceptance.
+
+Item-group captions use the existing pinned native c65450 formatter with owned
+string storage, false and-1 arguments, matching renderer15a12e..15a147. The
+renderer switch at153235 selects159aff for ITEM_LIST6 through19e488; the loop
+iterates viewing_itid in order and performs display-only truncation afterward.
+The bridge formats current item members at safe points before publishing,
+rejecting unavailable captions or payload bounds rather than inventing names.
+Protocol210's existing name field carries UTF-8; no wire-layout change.
+
+`tile_selection_state.gd` owns asynchronous navigation, confirmed target signals
+and receipt replacement. It blocks duplicate input while pending, rejects a
+navigation reply with the wrong target/unchanged receipt, retires local ownership
+on close/session changes and ignores late replies. Local close sends no blind
+cleanup request; the bridge's single bounded selection is replaced by the next
+OpenTile or world change. Main-scene ownership remains unconnected.
+
+Protected161327 on2026-11-14 matches all eight native rendered item captions and
+exercises this state owner through the real semantic service: building74,
+ItemList-1, item1886, followed by close during a sent OpenTile. The late reply
+never reopens the owner or emits another target. Core19 and MSVC pass. Source
+saves/preferences are preserved, DF34220 exits unsaved, clients run30FPS with
+52C/9% sampled GPU. Only known Godot diagnostics remain. Native161144 failed the
+caption oracle because it retained zero-filled background cells after text;
+161327 corrects that diagnostic decoding. `selection_reference.caption_owner_reference`
+retains names, destinations, renderer provenance and hashes. Long captions,
+unit-member text, group artwork/rendering, full lifecycle and public main-scene
+routing remain outside this acceptance.
 
 Protected contents oracle220127 on2026-10-28 observes40 PERM seed entries in
 farm968. The six visible View controls open the first six `contained_items`

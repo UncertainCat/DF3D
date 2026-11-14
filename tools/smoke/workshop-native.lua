@@ -185,6 +185,12 @@ local ok,err=xpcall(function()
     click((g.dimx-35)*8,104)
     assert(sheet.active_sheet==df.view_sheet_type.ITEM_LIST,'Item group tab click missed')
     layout('item-group')
+    result.tile_selection_reference.item_names={}
+    for i,id in ipairs(before.items)do
+     local bytes={}
+     for x=g.dimx-90,g.dimx-40 do local ch=dfhack.screen.readTile(x,9+(i-1)*3).ch%256;bytes[#bytes+1]=string.char(ch==0 and 32 or ch)end
+     result.tile_selection_reference.item_names[tostring(id)]=dfhack.df2utf(table.concat(bytes)):gsub('%s+$','')
+    end
     click((g.dimx-75)*8,118)
     assert(sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==before.items[1],'Group row did not select first item')
     layout('item-member')

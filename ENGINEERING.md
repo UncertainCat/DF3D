@@ -9128,8 +9128,37 @@ The staged farm sheet currently leaves this section blank. Its native reader,
 ordering and item-action paths must be located and exposed before full farm
 acceptance. Existing `context_inspector` alternatives always render choices and
 use WorldModel unit/building/item enumeration; that is not proof of native
-selection parity. Selection integration, grouped alternatives and contained-item
-controls remain unfinished, and the farm route remains staged.
+selection parity. Selection integration and grouped alternatives remain
+unfinished; contained-item controls are qualified in the subsequent sections.
+The farm route remains staged.
+
+The DF53.16 map-click path at35d307 calls tile selection1a0d60 with explicit
+int16 coordinates and the sheet context. This is the native selection source,
+but **not a safe runtime entry point**: its reset14e580, tutorial branches and
+activation tail1a1795..1a1b81 touch native menu state, graphics and other
+panels. Supplying an owned sheet alone does not isolate those side effects.
+Keep the runtime projection independently owned and call the semantic leaves
+already audited for hover:137bd50 visibility,14da20 unit footprint and5587b0
+building extent membership. Do not substitute the hover list itself: hover
+also includes projectiles, flows and different vermin records.
+
+Static audit of1a0d60 establishes the ordinary fortress selection projection:
+active units in vector order after mask0x2000002 and the two native predicates;
+non-garbage items at the exact tile in map-block item order; the last matching
+occupancy-setting visible building, excluding Stockpile29/Civzone30; and
+eligible creature-handler vermin records. Native14da20 can accept adjacent
+tiles for the unit's expanded footprint, unlike inspector center-tile matching.
+Unit alternatives collapse to UNIT_LIST at six units. The item collapse
+threshold is max(2,6-min(unit_count,6)-building_present). Tab order is units
+or UNIT_LIST, vermin, building, items or ITEM_LIST, then engraving/planned
+engraving. Default selection instead prioritizes units, building, items,
+vermin, then the remaining tab. A sole tab is hidden when both unit and item
+counts are at most one. These rules are inline in the audited collector;
+the bridge must own their projection, rather than duplicate it in Godot.
+`native_farm.json.selection_reference.collector_audit` records byte provenance
+and branch ranges. This is static discovery, not live provider acceptance.
+Grouped lists, engraving/vermin destinations, native tab artwork and selection
+handoff still require implementation and verification before public routing.
 
 Protected contents oracle220127 on2026-10-28 observes40 PERM seed entries in
 farm968. The six visible View controls open the first six `contained_items`

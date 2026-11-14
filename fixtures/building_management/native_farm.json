@@ -12809,6 +12809,66 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "collector_audit": {
+      "build": "DF53.16 Steam24557528",
+      "date": "2026-11-14",
+      "source": "Installed PE static disassembly; map-click call35d307.",
+      "runtime_callability": "Do not call full1a0d60: reset14e580, tutorial branches and activation1a1795..1a1b81 mutate native UI/global state even with owned context.",
+      "ranges": {
+        "units": "1a0da3..1a0e18",
+        "items": "1a0e19..1a0f81",
+        "buildings": "1a0f82..1a1100",
+        "vermin": "1a1101..1a11e2",
+        "grouping_tabs": "1a1294..1a1794",
+        "default": "1a1967..1a1b79",
+        "single_tab_suppression": "1a1b82..1a1be6"
+      },
+      "reuse": "tile_description_native.cpp pins137bd50,14da20,5587b0; hover collection itself is not the selection list.",
+      "rules": {
+        "unit_group_threshold": 6,
+        "item_group_threshold": "max(2,6-min(unit_count,6)-building_present)",
+        "tab_order": [
+          "units/group",
+          "vermin",
+          "building",
+          "items/group",
+          "engraving/planned engraving"
+        ],
+        "default_order": [
+          "units/group",
+          "building",
+          "items/group",
+          "vermin",
+          "remaining tab"
+        ],
+        "building": "last eligible in world.buildings.all; Stockpile29/Civzone30 excluded",
+        "items": "block vector order, exact tile, exclude garbage_collect",
+        "single_tab": "hide only when both unit_count and item_count <=1"
+      },
+      "sha256": {
+        "collector": {
+          "rva": "0x1a0d60",
+          "length": "0xf42",
+          "value": "e6615c3e76fec59475787f0e3188db664fa1b316afc093886cf7887a0cf2221a"
+        },
+        "unit_footprint": {
+          "rva": "0x14da20",
+          "length": "0x12c",
+          "value": "0789db1dee9e059b1a5b6f7a383b6fddc9dc33bb20e29c603f1204fff28e0096"
+        },
+        "visibility": {
+          "rva": "0x137bd50",
+          "length": "0x2d0",
+          "value": "e69414209dacc2ca8b2a657ab0ebeea158a6ca583becb61e7934d06656bee060"
+        },
+        "building_extent": {
+          "rva": "0x5587b0",
+          "length": "0x79",
+          "value": "7b1aaebbbafc04207765a7261437156e9299506db1821d90b7a5a17ba303b485"
+        }
+      },
+      "acceptance": "Static discovery only. No provider, bridge contract, rendered strip, grouped destination or public route acceptance."
+    },
     "run": "build/stockpile-storage-native-farm-discovery-20261028-215347",
     "status": "passed",
     "cases": [

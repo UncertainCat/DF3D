@@ -305,6 +305,8 @@ local ok,err=xpcall(function()
    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
    result.tile_selection_reference.unit_group.member={kind=sheet.active_sheet,id=sheet.active_id}
+   local selected_unit=df.unit.find(sheet.active_id)
+   result.tile_selection_reference.unit_group.member.report_counts={#selected_unit.reports.log[0],#selected_unit.reports.log[1],#selected_unit.reports.log[2]}
    assert(sheet.active_sheet==df.view_sheet_type.UNIT and sheet.active_id==native.units[1],'Native unit row selection differs')
    shot('selection-unit-group-member')
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())

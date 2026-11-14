@@ -9383,8 +9383,8 @@ appearance transport, first-member navigation and stale-receipt rejection.
 The tile_selection_unit_capture compares the complete488x708 panel at416,52:
 all six captions, full-body pictures, row frames and shell match native pixels.
 Its second-row click submits index1/current receipt; closing retires the context.
-The standalone rendered check uses injected replies; a live main-scene unit
-handoff is still unqualified. Unit overflow/resize, long captions and other unit
+The standalone rendered check uses injected replies; the following scene run
+qualifies the live handoff. Unit overflow/resize, long captions and other unit
 states are not established by this six-row reference.
 
 Diagnostic setup changes only six units' positions, restoring them during
@@ -9395,9 +9395,27 @@ Godot diagnostics. Graphics are serial and capped30FPS; sampled GPU52-53C/4-5%
 is not a continuous peak. selection_reference.unit_group_reference retains the
 native observations and evidence hashes.
 
+Protected173358 on2026-11-14 qualifies actual main-scene UnitList -> unit988 ->
+UnitList navigation, Escape and reset while a read is pending. Both complete
+group panels and the creature header crop(416,52,488,156) match native pixels.
+Native sheet state remains unchanged. This does not qualify the complete
+Overview: earlier172750 correctly failed its full-panel comparison on the
+existing divider positions and cached randomized quote, plus an extra History
+button. The latter defect is fixed: renderer15b701..15b772 tests all three
+unit reports.log vectors at unit+ce8 and shows History iff any is nonempty.
+creature.lua sends history_eligibility from these authoritative vectors; Godot
+uses that fact instead of always showing the button. Old facts imply no button.
+The empty-report child verifies absence; nonempty-category coverage retains
+its separate earlier History workflow evidence and is not requalified here.
+
+Core19 and the rebuilt MSVC bridge pass. Live diagnostics have only the three
+known Godot signatures; DF25604 exits unsaved with source/preferences preserved.
+Graphics are serial30FPS; sampled GPU50-51C/5-16% is not a continuous peak.
+selection_reference.unit_group_scene_reference retains hashes and scope.
+
 Standalone selection-panel-capture also matches the complete group shell and
 checks pointer dispatch/closure through the real host with injected replies.
-Public map routing, other side-tab icons, unit-group detail handoff, engraving/vermin destinations,
+Public map routing, other side-tab icons, engraving/vermin destinations,
 long captions and hover remain unfinished; overflow/resize coverage is scoped
 to the preceding24-block reference. This fixture
 qualifies neither all specialized item artwork nor the individual detail

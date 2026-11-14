@@ -77,6 +77,13 @@ return function(request)
  end
  section(0,function(s)
   local r=record(s,u.id,result.name)
+  -- Native sheet renderer15b701..15b772 draws History iff one of the
+  -- three authoritative unit report vectors is nonempty (unit+ce8).
+  local history=record(s,-12,'')
+  fact(s,history,'record_type','history_eligibility')
+  local has_history=false
+  for category=0,2 do if #u.reports.log[category]>0 then has_history=true;break end end
+  fact(s,history,'eligible',has_history and 1 or 0)
   fact(s,r,'species',result.species);fact(s,r,'age',age);fact(s,r,'sex',u.sex)
   fact(s,r,'alive',U.isAlive(u) and 'yes' or 'no');fact(s,r,'citizen',U.isCitizen(u) and not U.isAnimal(u) and 'yes' or 'no')
   fact(s,r,'civilization_id',u.civ_id);fact(s,r,'historical_figure_id',u.hist_figure_id)

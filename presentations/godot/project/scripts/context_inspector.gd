@@ -453,6 +453,7 @@ func redraw():
 			var activity_color := 15
 			var customize_captions: Dictionary={}
 			var expel_eligible:=false
+			var history_eligible:=false
 			for section in detail.get("sections",[]):
 				if section.key!="identity": continue
 				for record in section.records:
@@ -463,6 +464,7 @@ func redraw():
 					if facts.get("record_type","")=="header_name": header_name=facts
 					if facts.get("record_type","")=="customize_captions":customize_captions=facts
 					if facts.get("record_type","")=="expel_eligibility":expel_eligible=int(facts.get("eligible",0))==1
+					if facts.get("record_type","")=="history_eligibility":history_eligible=int(facts.get("eligible",0))==1
 					if facts.get("record_type","")=="header_activity":
 						header_activity=str(facts.get("text",""));activity_color=int(facts.get("color",15))
 					for fact in record.facts:
@@ -499,7 +501,7 @@ func redraw():
 				button.pressed.connect(func():
 					if ui_host==null or ui_host.allows_panel_input(self):customize.open(int(selected.id)))
 				body.add_child(button)
-			if action_service!=null and not customize.opened:
+			if action_service!=null and history_eligible and not customize.opened:
 				history_button=TextureButton.new();history_button.name="CreatureHistory"
 				history_button.texture_normal=world.ui_texture("UNIT_SHEET_VIEW_REPORTS")
 				history_button.position=Vector2(368,0);history_button.size=Vector2(32,36)

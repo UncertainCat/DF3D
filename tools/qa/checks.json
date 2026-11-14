@@ -4120,6 +4120,11 @@
       "reason": "Protected TILE_SELECTION_SCENE lane: actual main-scene building/group/item navigation and native group crop. Never standalone."
     },
     {
+      "path": "presentations/godot/project/tests/tile_selection_unit_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected TILE_SELECTION_UNITS plus TILE_SELECTION_SCENE: main-scene group/creature navigation, native panel comparisons and retirement. Never standalone."
+    },
+    {
       "path": "presentations/godot/project/tests/tile_selection_unit_capture.gd",
       "status": "manual",
       "reason": "Rendered full unit-group panel from protected protocol212 TILE_SELECTION_UNITS plus wire capture. Set DF3D_SELECTION_REFERENCE and DF3D_DF_PATH; --max-fps 30. Never launches DF."

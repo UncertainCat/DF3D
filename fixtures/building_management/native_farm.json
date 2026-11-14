@@ -12809,6 +12809,44 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "unit_group_scene_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-173358",
+      "status": "passed_with_known_issues",
+      "owned_df_pid": 25604,
+      "owned_exit_unsaved": true,
+      "source_manifest_unchanged": true,
+      "scope": "Actual main scene: default UnitList, first creature, return via group tab, Escape, reset while request is sent and late reply. Both complete group panels and creature header crop416,52,488,156 match native pixels.",
+      "member": {
+        "id": 988,
+        "kind": 0,
+        "report_counts": [
+          0,
+          0,
+          0
+        ]
+      },
+      "history_visibility": "Renderer15b701..15b772 tests the three unit reports.log vectors at unit+ce8; any nonempty vector enables History. Bridge transports history_eligibility; missing legacy facts imply no button.",
+      "failed_reference": "172750 completed navigation but full detail differed: extra unconditional History button, existing Overview divider positions and cached randomized quote. Not parity acceptance.",
+      "limitations": [
+        "Complete Overview pixels are not accepted; divider positions and cached/randomized quotes remain outside this header comparison.",
+        "This empty-report fixture qualifies button absence. Positive History navigation retains separate existing evidence; all three nonempty categories have not been requalified here.",
+        "Unit-group overflow/resize and long captions remain unqualified; public map selection stays staged."
+      ],
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-173358/result.json": "0b444759e50d332623ee60152c6f8be0f45645affcc65e090ce2bb9e40462b44",
+        "build/stockpile-storage-native-farm-discovery-20261114-173358/workshop-native.json": "99653cf22651a530ea52d314dd98b0375a276da8f3143c1ff8914fbdc0667971",
+        "build/stockpile-storage-native-farm-discovery-20261114-173358/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+        "build/stockpile-storage-native-farm-discovery-20261114-173358/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "build/stockpile-storage-native-farm-discovery-20261114-173358/workshop-selection-unit-group.png": "ec2773494b89de89a095dfaadf007bfe39402fa30eee4d9d1945bd627c82efce",
+        "build/stockpile-storage-native-farm-discovery-20261114-173358/workshop-selection-unit-group-member.png": "94f679cd786ed45e80414b1bebd8801a603f43977dcc0bbbed828a40207ae89a",
+        "build/stockpile-storage-native-farm-discovery-20261114-173358/chest-scene-unit-group.png": "800e9bd31bf6588f4bf60800cc9b289c5360b55adda8f806c4a73c1fedd55c09",
+        "build/stockpile-storage-native-farm-discovery-20261114-173358/chest-scene-unit-group-return.png": "800e9bd31bf6588f4bf60800cc9b289c5360b55adda8f806c4a73c1fedd55c09",
+        "build/stockpile-storage-native-farm-discovery-20261114-173358/selection-unit-member-live.png": "256a5ad75c0320b6c0703df133c86a73674185a0b9585ad435c9b2c24aaa1389",
+        "build/stockpile-storage-native-farm-discovery-20261114-173358/workshop-wire.stdout.log": "7c2c219ca1009290323f4b8170a9a7449162191a0a99dc811ae67a055a04264b",
+        "build/stockpile-storage-native-farm-discovery-20261114-173358/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+        "build/notes/pm/unit-history-visibility.asm": "d8cae6a0073f81591dd5d8ba0d30232ab68580f3ebf120093838597c693eb36c"
+      }
+    },
     "unit_group_reference": {
       "run": "build/stockpile-storage-native-farm-discovery-20261114-171953",
       "discovery_run": "build/stockpile-storage-native-farm-discovery-20261114-171230",

@@ -12809,6 +12809,134 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "unit_group_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-171953",
+      "discovery_run": "build/stockpile-storage-native-farm-discovery-20261114-171230",
+      "status": "passed_with_known_issues",
+      "protocol": 212,
+      "scope": "Six real units temporarily colocated in a paused owned clone; native/provider/typed order, captions, full-body appearance and first-member destination agree. Full 488x708 composed panel matches native pixels. Second-row click uses index1/current receipt; close retires context; stale receipt rejects.",
+      "native": {
+        "actual": {
+          "active_id": -1,
+          "active_kind": 5,
+          "building": 74,
+          "items": [
+            1886,
+            1971,
+            1972,
+            1993,
+            1994,
+            4828,
+            4917,
+            4981
+          ],
+          "tabs": [
+            {
+              "id": -1,
+              "kind": 5
+            },
+            {
+              "id": 74,
+              "kind": 2
+            },
+            {
+              "id": -1,
+              "kind": 6
+            }
+          ],
+          "units": [
+            988,
+            1017,
+            2345,
+            2346,
+            2569,
+            2571
+          ],
+          "valid": true,
+          "vermin": []
+        },
+        "dimx": 150,
+        "dimy": 66,
+        "member": {
+          "id": 988,
+          "kind": 0
+        },
+        "names": {
+          "1017": "Stodir Tangakurvad, bookkeeper, ♂",
+          "2345": "Leto Jamaslonel, Human Bard, ♂",
+          "2346": "Rûxu Kodkasprax, Porcupine Man Bard, ♂",
+          "2569": "Jasro Thersetdak, Human Poet, ♂",
+          "2571": "Meng Okilnomal, Bard, ♀",
+          "988": "îton Unibmamot, Dwarven Child, ♀"
+        },
+        "native": {
+          "active_id": -1,
+          "active_kind": 5,
+          "building": 74,
+          "items": [
+            1886,
+            1971,
+            1972,
+            1993,
+            1994,
+            4828,
+            4917,
+            4981
+          ],
+          "tabs": [
+            {
+              "id": -1,
+              "kind": 5
+            },
+            {
+              "id": 74,
+              "kind": 2
+            },
+            {
+              "id": -1,
+              "kind": 6
+            }
+          ],
+          "units": [
+            988,
+            1017,
+            2345,
+            2346,
+            2569,
+            2571
+          ],
+          "valid": true,
+          "vermin": []
+        },
+        "tile": [
+          102,
+          70,
+          165
+        ]
+      },
+      "owned_df_pid": 31592,
+      "owned_exit_unsaved": true,
+      "source_manifest_unchanged": true,
+      "native_caption_call": "159898..1598ab -> 1330c30(unit, owned_string, true)",
+      "native_selector_call": "159771 flag0x400 -> f26e0; existing owned resolveUnitSelector",
+      "limitations": [
+        "Main-scene unit-group to detail handoff is not qualified by this standalone panel comparison.",
+        "Unit-group overflow, resize, long captions and other unit states remain unqualified.",
+        "General side-tab icons, engraving/vermin destinations and public map routing remain unfinished."
+      ],
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-171953/result.json": "b90c9cd5b16377f7fd2daba9807353573baa89b0b2575d919e82bb41826d3db0",
+        "build/stockpile-storage-native-farm-discovery-20261114-171953/workshop-native.json": "f1d1333c6269b25fcbd50eaf61cd504eaf6de179c969d695a86ba186c0fff244",
+        "build/stockpile-storage-native-farm-discovery-20261114-171953/workshop-wire-result.json": "0efcdec61526db8a1d60259048e4e683ae083e7db3ee3da5cc78c45b4f7da7c0",
+        "build/stockpile-storage-native-farm-discovery-20261114-171953/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "build/stockpile-storage-native-farm-discovery-20261114-171953/workshop-selection-unit-group.png": "e577079b1ba39ec10c60378da398ebe1f4905f0627ea6c4d511a706f5284ef9c",
+        "build/stockpile-storage-native-farm-discovery-20261114-171953/workshop-selection-unit-group-member.png": "806bb38a529c40e6632d64d317613e25eb69d07043fb34d5ecb98e076305ab45",
+        "build/stockpile-storage-native-farm-discovery-20261114-171953/selection-unit-group-viewer.png": "800e9bd31bf6588f4bf60800cc9b289c5360b55adda8f806c4a73c1fedd55c09",
+        "build/stockpile-storage-native-farm-discovery-20261114-171953/workshop-wire.stdout.log": "5d4badbd1029a4f5ad2ca16abb1f00bdc32ca6dd795ec5a3693545239f65b23f",
+        "build/stockpile-storage-native-farm-discovery-20261114-171953/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+        "build/notes/pm/selection212-unit-capture.log": "54b30abee3366099c381d0f6f80b76539d2dce44371cc306333790df6250203f"
+      }
+    },
     "scroll_reference": {
       "run": "build/stockpile-storage-native-farm-discovery-20261114-170819",
       "status": "passed_with_known_issues",

@@ -184,8 +184,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 211;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v211";
+inline constexpr uint32_t kManagementVersion = 212;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v212";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -2980,6 +2980,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     size_t appearanceBytes=0;
     auto identity=[&](const SelectionIdentity* e){
       if(!e || !targetId(e->kind(),e->id()) || (e->id()==-1 && !a->tile()) || !text(e->name(),512))return false;
+      if(const auto* unit=e->unit_appearance()) {
+        if(e->kind()!=SelectionKind::Unit || e->appearance() || e->item_type()!=-1 ||
+           validateOwnerAppearance(*unit,appearanceBytes) || appearanceBytes>256*1024)return false;
+      }
       const auto* look=e->appearance();
       if(!look)return e->item_type()==-1;
       if(e->kind()!=SelectionKind::Item || e->item_type()<0 || e->item_type()>92 || !validInspectionInstrument(*look,e->item_type()) ||

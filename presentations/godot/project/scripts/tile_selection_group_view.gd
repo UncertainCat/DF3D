@@ -1,5 +1,5 @@
 extends Control
-# Staged item-group body. Candidate order/captions belong to the bridge;
+# Staged unit/item-group body. Candidate order/captions belong to the bridge;
 # images resolve through the world API from owned semantic appearance data.
 const C=preload("res://scripts/management_contract.gd")
 var art=preload("res://scripts/original_ui.gd").new()
@@ -53,10 +53,12 @@ func _move_wheel(event: InputEventMouseButton) -> void:
 func refresh() -> void:
 	var next: int=state.snapshot.get("receipt",0)
 	if receipt!=next:first=0;icons.clear();receipt=next
-	rows=state.snapshot.get("members",[]) if state.snapshot.get("kind",0)==C.SelectionKind.ItemList else []
+	var grouped: bool=state.snapshot.get("kind",0) in [C.SelectionKind.ItemList,C.SelectionKind.UnitList]
+	rows=state.snapshot.get("members",[]) if grouped else []
 	for row in rows:
 		if row.has("appearance") and not icons.has(row.id):icons[row.id]=world.item_sheet_icon(row.item_type,row.appearance,row.id)
-	visible=state.snapshot.get("open",false) and state.snapshot.get("kind",0)==C.SelectionKind.ItemList
+		elif row.has("unit_appearance") and not icons.has(row.id):icons[row.id]=world.candidate_icon(row.unit_appearance)
+	visible=state.snapshot.get("open",false) and grouped
 	scrollbar.set_rows(rows.size(),first);scrollbar.visible=capacity>0 and rows.size()>capacity
 	if not allowed():scrollbar.dragging=false
 	queue_redraw()

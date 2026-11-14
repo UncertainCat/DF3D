@@ -35,7 +35,7 @@ func configure(source,service,host,route: Callable) -> void:
 func open_tile(tile: Vector3i) -> void:navigation.open(tile)
 
 func _route(kind: int,id: int,tile: Vector3i):
-	if kind==C.SelectionKind.ItemList:
+	if kind in [C.SelectionKind.ItemList,C.SelectionKind.UnitList]:
 		if not ui_host.activate(self):return null
 		panel.show();return self
 	return destination.call(kind,id,tile) if destination.is_valid() else null

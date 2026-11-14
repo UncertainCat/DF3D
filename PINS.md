@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management212 adds owned unit-selector appearance to selection identities.
+Unit captions use the existing native name field. Only Unit identities may
+carry unit appearance. Rebuild bridge and client together; the defaults/mailbox
+are212 (`Local\\df3d_management_v212`). Older recordings imply no unit-group
+artwork; do not fabricate it from the new field.
+
 Management211 adds item type and owned ItemInspectionAppearance to selection
 identities. ItemList members require those facts; other target kinds cannot carry
 item appearance. Rebuild both peers: `Local\df3d_management_v211` isolates210.

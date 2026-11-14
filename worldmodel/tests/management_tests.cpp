@@ -1613,11 +1613,13 @@ TEST_CASE("native selection groups retain tile identity without weakening object
 }
 
 TEST_CASE("selection unit groups carry typed ordered members") {
-  for(int fault=-1;fault<4;++fault) {
+  for(int fault=-1;fault<5;++fault) {
     flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");const mm::TilePos tile(1,2,3);
+    std::vector<mm::AppearanceLayer> layers;layers.emplace_back(fault==4?1:0,0,0,1,1,65535,0,0,0,0);
+    const auto look=mm::CreateSelectionAppearance(b,b.CreateVectorOfStrings(std::vector<std::string>{"UNIT_TEST"}),b.CreateVectorOfStrings(std::vector<std::string>{}),b.CreateVectorOfStructs(layers));
     std::vector<flatbuffers::Offset<mm::SelectionIdentity>> members;
     for(int i=0;i<(fault==2?5:6);++i)members.push_back(mm::CreateSelectionIdentity(b,
-      fault==0?mm::SelectionKind::Item:mm::SelectionKind::Unit,fault==1?42:42+i,empty));
+      fault==0?mm::SelectionKind::Item:mm::SelectionKind::Unit,fault==1?42:42+i,empty,-1,0,look));
     const auto rows=b.CreateVector(members);
     const auto alternatives=b.CreateVector(std::vector<flatbuffers::Offset<mm::SelectionIdentity>>{});
     const auto items=b.CreateVector(std::vector<flatbuffers::Offset<mm::SelectionItem>>{});
@@ -1630,7 +1632,7 @@ TEST_CASE("selection unit groups carry typed ordered members") {
     state.add_world_epoch(7);state.add_action(mm::ManagementAction::Selection);state.add_status(mm::ManagementStatus::Ok);state.add_selection(selected);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer());
     CHECK(mm::validateManagementState(*value).has_value()==(fault>=0));
-    if(fault<0){const auto decoded=wm::detail::management::decodeSelection(value->selection());REQUIRE(decoded.members.size()==6);CHECK(decoded.members.back().id==47);}
+    if(fault<0){const auto decoded=wm::detail::management::decodeSelection(value->selection());REQUIRE(decoded.members.size()==6);CHECK(decoded.members.back().id==47);REQUIRE(decoded.members[0].unitAppearance);CHECK(decoded.members[0].unitAppearance->tilePages[0]=="UNIT_TEST");}
   }
 }
 

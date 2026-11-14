@@ -9367,9 +9367,37 @@ not continuous peaks. Fixture selection_reference.scroll_reference retains
 states and hashes. Hover and scrollbar input while the saved offset exceeds
 the resized viewport's maximum remain unqualified.
 
+Management protocol212 appends optional unit-selector appearance to selection
+identities. Only Unit identities may carry it; the producer and validator share
+the256KiB aggregate appearance bound. Both defaults and mailbox are212
+(`Local\\df3d_management_v212`); rebuild bridge and client together. Older
+recordings imply no unit-group artwork. UnitList captions call pinned native
+1330c30 with true and an owned unit/body description context, matching renderer
+159898..1598ab. Full-body pictures use the existing owned unit selector, matching
+native159771 flag0x400. Neither operation borrows the native selection menu.
+The staged group panel renders both item and unit members using their distinct
+appearance facts; absent native unit artwork stays absent.
+
+Protected171953 on2026-11-14 verifies six mixed-species unit IDs, native captions,
+appearance transport, first-member navigation and stale-receipt rejection.
+The tile_selection_unit_capture compares the complete488x708 panel at416,52:
+all six captions, full-body pictures, row frames and shell match native pixels.
+Its second-row click submits index1/current receipt; closing retires the context.
+The standalone rendered check uses injected replies; a live main-scene unit
+handoff is still unqualified. Unit overflow/resize, long captions and other unit
+states are not established by this six-row reference.
+
+Diagnostic setup changes only six units' positions, restoring them during
+cleanup without advancing the paused simulation. Owned DF31592 exits unsaved;
+source saves and preferences are preserved. Bridge/extension builds and headless
+selection212-composition and core19 pass. Live/rendered checks have only the three known
+Godot diagnostics. Graphics are serial and capped30FPS; sampled GPU52-53C/4-5%
+is not a continuous peak. selection_reference.unit_group_reference retains the
+native observations and evidence hashes.
+
 Standalone selection-panel-capture also matches the complete group shell and
 checks pointer dispatch/closure through the real host with injected replies.
-Public map routing, other side-tab icons, unit groups, engraving/vermin destinations,
+Public map routing, other side-tab icons, unit-group detail handoff, engraving/vermin destinations,
 long captions and hover remain unfinished; overflow/resize coverage is scoped
 to the preceding24-block reference. This fixture
 qualifies neither all specialized item artwork nor the individual detail

@@ -125,6 +125,7 @@ local craft_tool_fixture
 local custom_supplies={}
 local magma_tiles={}
 local selection_moves={}
+local selection_units={}
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
@@ -273,6 +274,39 @@ local ok,err=xpcall(function()
     assert(not sheet.scrolling,'Native thumb retained drag after release')
     sample(probe[1])
    end
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  end
+  if os.getenv('DF3D_TILE_SELECTION_UNITS')=='1' then
+   -- Paused selection-only fixture: change positions without teleport's
+   -- posture, idle-area or rider mutations. No simulation frame may advance.
+   for _,unit in ipairs(df.global.world.units.active)do
+    if #selection_units>=6 then break end
+    if dfhack.units.isCitizen(unit) and not unit.flags1.inactive and not unit.flags1.caged and not unit.flags1.hidden_in_ambush and not unit.flags1.projectile then
+     selection_units[#selection_units+1]={unit=unit,pos={x=unit.pos.x,y=unit.pos.y,z=unit.pos.z}}
+     unit.pos:assign{x=fullest.centerx,y=fullest.centery,z=fullest.z}
+    end
+   end
+   assert(#selection_units==6,'Unit selection fixture needs six citizens')
+   gui.simulateInput(view,'LEAVESCREEN');select_map(fullest)
+   assert(sheet.active_sheet==df.view_sheet_type.UNIT_LIST,'Native six-unit grouping missing')
+   local native=observe()
+   local output,code=dfhack.run_command_silent('df3d','tile-selection-read',tostring(fullest.centerx),tostring(fullest.centery),tostring(fullest.z))
+   assert(code==0,output);local actual=json.decode(output)
+   assert(json.encode(native)==json.encode(actual),'Six-unit provider differs')
+   local names={}
+   for index,id in ipairs(native.units)do
+    local bytes={}
+    for x=g.dimx-90,g.dimx-40 do local ch=dfhack.screen.readTile(x,9+(index-1)*3).ch%256;bytes[#bytes+1]=string.char(ch==0 and 32 or ch)end
+    names[tostring(id)]=dfhack.df2utf(table.concat(bytes)):gsub('%s+$','')
+   end
+   result.tile_selection_reference.unit_group={tile={fullest.centerx,fullest.centery,fullest.z},native=native,actual=actual,names=names,dimx=g.dimx,dimy=g.dimy}
+   shot('selection-unit-group')
+   g.precise_mouse_x=600;g.precise_mouse_y=118;g.mouse_x=75;g.mouse_y=9
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+   gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
+   result.tile_selection_reference.unit_group.member={kind=sheet.active_sheet,id=sheet.active_id}
+   assert(sheet.active_sheet==df.view_sheet_type.UNIT and sheet.active_id==native.units[1],'Native unit row selection differs')
+   shot('selection-unit-group-member')
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   end
   if os.getenv('DF3D_TILE_SELECTION_RUNTIME')=='1' or os.getenv('DF3D_TILE_SELECTION_SCENE')=='1' then
@@ -2293,6 +2327,7 @@ local ok,err=xpcall(function()
  assert(catalog_ok,catalog_err)
 end,debug.traceback)
 for _,prior in ipairs(selection_moves)do assert(dfhack.items.moveToGround(prior.item,prior.pos),'Selection fixture restoration failed');prior.item.flags.whole=prior.flags end
+for _,prior in ipairs(selection_units)do prior.unit.pos:assign(prior.pos)end
 for _,tile in ipairs(magma_tiles)do tile.upper.tiletype[tile.x][tile.y]=tile.tile;tile.lower.designation[tile.x][tile.y].whole=tile.designation end
 for index=#custom_supplies,1,-1 do assert(dfhack.items.remove(custom_supplies[index]),'Custom supply cleanup failed')end
 for _,prior in ipairs(fuel_flags)do prior.item.flags.forbid=prior.forbid end

@@ -2814,7 +2814,7 @@ TEST_CASE("area validator checks the complete action operation matrix") {
       a.kind=op==15?wm::AreaKind::Stockpile:wm::AreaKind::Workshop;
       flatbuffers::FlatBufferBuilder wrong;codec::encodeRequest(wrong,request,1,2,3);
       CHECK(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(wrong.GetBufferPointer())).value_or("")==
-          "Workshop kind is only valid for workshop links");
+          (op==10?"":"Workshop kind is only valid for workshop links"));
     }
   }
 }

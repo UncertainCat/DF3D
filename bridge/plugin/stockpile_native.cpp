@@ -730,15 +730,19 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     }
     return result;
 }
-std::optional<df::building*> nativeStockpileLinkTarget(df::building_stockpilest& source,
+std::optional<df::building*> nativeStockpileLinkTarget(df::building& source,
     int16_t x,int16_t y,int16_t z,bool give) {
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     if(!df::global::world || !base || !supported(base))return std::nullopt;
     static const bool compatible=hash(base+0x5587b0,0x79)==0x14b4f3f138690067ULL &&
+        hash(base+0x3c2dcc,0xd)==0xbc6aad36378f39ebULL &&
         hash(base+0x3c9ff0,0x9c)==0xabd985a880f5b6dcULL;
     if(!compatible)return std::nullopt;
-    const auto& piles=give?source.links.give_to_pile:source.links.take_from_pile;
-    const auto& workshops=give?source.links.give_to_workshop:source.links.take_from_workshop;
+    const auto* links=source.getStockpileLinks();
+    const bool stockpile=source.getType()==df::building_type::Stockpile;
+    if(!links || (!stockpile && !source.canLinkToStockpile()))return std::nullopt;
+    const auto& piles=give?links->give_to_pile:links->take_from_pile;
+    const auto& workshops=give?links->give_to_workshop:links->take_from_workshop;
     if(!validStockpileLinkVector(piles,source.id) || !validStockpileLinkVector(workshops,source.id))return std::nullopt;
     using Contains=uint8_t (*)(df::building*,int16_t,int16_t,int16_t);
     using Find=int32_t (*)(int32_t,const void*);
@@ -757,6 +761,8 @@ std::optional<df::building*> nativeStockpileLinkTarget(df::building_stockpilest&
         if(!candidate)return std::nullopt;
         if(occupies(candidate) && find(candidate->id,&piles)<0)return candidate;
     }
+    // Native3c2dcc skips the second pass for a workshop source (mode1).
+    if(!stockpile)return static_cast<df::building*>(nullptr);
     for(auto* candidate:df::global::world->buildings.other.IN_PLAY) {
         if(!candidate)return std::nullopt;
         if(candidate->canLinkToStockpile() && occupies(candidate) && find(candidate->id,&workshops)<0)return candidate;

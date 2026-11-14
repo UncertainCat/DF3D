@@ -18033,15 +18033,29 @@ Owned DF15288 exits unsaved, source saves/preferences preserved. The initial
 workshop_connections_reference retains native pages, effects and image hashes.
 This is discovery, not viewer qualification or multiple-row ordering evidence.
 
-Implementation can reuse nativeStockpileLink in stockpile_native.cpp, already
-backing AreaOperation.WorkshopLink with owned vector copies and pinned native
-insert/erase/find primitives. The current list path and nativeStockpileLinkTarget
-accept stockpile sources only. Do not reuse their workshop-target fallback for
-the workshop picker: native allows stockpile destinations only. The missing
-workshop list/target semantics need their own validated source identity and
-revision, then the shared Connections view can receive the workshop-only
-prompt and local selection/retirement ownership. Keep the public workshop gate
-closed until that path is implemented and exercised.
+Workshop-source Links and LinkTarget now expose fresh owned projections of the
+semantic getStockpileLinks vectors. Lists use native vector order, pages of128,
+and a source revision covering identity, epoch, endpoint IDs and captions.
+Continuation pages require that receipt. LinkTarget uses the native stockpile
+pass and excludes the workshop fallback, matching pinned branch3c2dcc.
+WorkshopLink reuses the owned-vector/native insert/erase/find mutation path;
+its optional expected_list_revision validates the workshop source independently
+of expected_revision, which still validates the destination stockpile.
+Existing stockpile-side callers keep their prior receipt contract.
+
+Protected141612 on2026-11-14 verifies the typed provider against a native Give
+link: duplicate Give has no pick, opposite Take does; reversal changes the row,
+a stale source receipt is rejected, unlink empties the list, and Give restoration
+matches the initial row. Native checks confirm reciprocal vectors before final
+cleanup. Owned DF30688 exits unsaved with source saves/preferences preserved.
+The driver has only the three documented separate-render-thread/shutdown
+signatures (passed_with_known_issues). MSVC bridge, root/client builds, core19,
+area adapter and UI composition checks pass. The fixture's
+semantic_provider_reference retains receipts and evidence hashes.
+This does not qualify rendered Connections or multiple native row ordering.
+The shared Connections view still needs its workshop-only prompt and local
+selection/retirement owner. Keep the public workshop gate closed until the
+visible workflow is implemented and exercised.
 
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.

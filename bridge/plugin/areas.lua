@@ -56,8 +56,8 @@ local function validate_operation(r,a)
   return 'Area operation is not valid for this action'
  end
  local k=default(a,'kind',0)
- if not integer(k) or k<0 or k>2 or (k==2)~=(op==15) then return 'Workshop kind is only valid for workshop links' end
- local stock=op==1 or op==2 or op==3 or op==10 or op==13 or op==26
+ if not integer(k) or k<0 or k>2 or (op==15 and k~=2) or (k==2 and op~=15 and op~=10 and op~=26) then return 'Workshop kind is only valid for workshop links' end
+ local stock=op==1 or op==2 or op==3 or op==13 or ((op==10 or op==26) and k~=2)
  local zone=(op>=6 and op<=9) or op==11 or op==12 or op==14
  if stock and k~=0 or zone and k~=1 then return 'Area kind is not valid for this operation' end
  if op~=0 and (op~=26 and (a.x~=nil or a.y~=nil or a.z~=nil) or default(a,'width',1)~=1 or default(a,'height',1)~=1 or
@@ -69,7 +69,7 @@ local function validate_operation(r,a)
   return 'Legacy area fields cannot be combined with an operation'
  end
  local foreign={
-  {'expected_list_revision',0,{1,6,10,14}},{'list_key','',{1,2}},{'row_key','',{2}},{'scope',0,{2}},
+  {'expected_list_revision',0,{1,6,10,14,15}},{'list_key','',{1,2}},{'row_key','',{2}},{'scope',0,{2}},
   {'value',0,{2}},{'preset',0,{3}},{'name','',{4}},{'spans',false,{5}},{'paint_mode',0,{5}},
   {'paint_z',-1,{5}},{'location_id',-2,{7}},{'location_kind',0,{8}},{'profession',-1,{8}},
   {'deity_kind',-1,{8}},{'deity_id',-1,{8}},{'zone_settings',false,{9}},{'unit_id',-1,{11}},{'item_id',-1,{11}},
@@ -519,6 +519,31 @@ end
 local link_sources={{key='take_from_workshop',kind=2,direction=2},
  {key='give_to_workshop',kind=2,direction=1},
  {key='take_from_pile',kind=0,direction=2},{key='give_to_pile',kind=0,direction=1}}
+-- Same native33616d..33633b vector order for a workshop source. This is a
+-- fresh owned semantic projection; no native link-window/cache is consulted.
+local function workshop_links(b,epoch)
+ if not b or not b:canLinkToStockpile() or b:getBuildStage()~=b:getMaxBuildStage() or B.markedForRemoval(b) or
+    not visible{x=b.centerx,y=b.centery,z=b.z} then return nil,'Workshop is not available' end
+ local links=b:getStockpileLinks();if not links then return nil,'Workshop has no links' end
+ local hash=hash_integer(hash_integer(hash_integer(0xcbf29ce484222325,epoch),b.id),b:getType())
+ hash=hash_integer(hash,b:getBuildStage())
+ local rows={}
+ for _,source in ipairs(link_sources)do
+  local vector=links[source.key];if #vector>1024 then return nil,'Link limit reached; no endpoints changed' end
+  hash=hash_integer(hash,#vector);local previous=-1
+  for _,target in ipairs(vector)do
+   if not target or target.id<=previous or target.id==b.id or df.building.find(target.id)~=target or
+      (source.kind==0 and kind(target)~=0)then return nil,'Area no longer exists' end
+   previous=target.id;local caption=name(target)
+   if #caption>512 then return nil,'Area name exceeds reply limit' end
+   hash=hash_integer(hash,target.id);hash=hash_integer(hash,#caption)
+   for i=1,#caption do hash=hash_integer(hash,caption:byte(i))end
+   rows[#rows+1]={id=target.id,kind=source.kind,direction=source.direction,name=caption}
+  end
+ end
+ local revision=hash&0x7fffffffffffffff;if revision==0 then revision=1 end
+ return {rows=rows,revision=revision}
+end
 local location_kinds={INN_TAVERN=1,TEMPLE=2,LIBRARY=3,GUILDHALL=4,HOSPITAL=5}
 local function location_row(v,site_id)
  local k=location_kinds[df.abstract_building_type[v:getType()]]
@@ -1064,7 +1089,7 @@ end
 local function native_operation(r)
  sync_epoch(r.epoch)
  local a=r.area or {};local op=default(a,'operation',0);local steps=0
- local synchronous=r.synchronous_read==true and r.action==9 and (op==0 or op==1 or op==26) or
+ local synchronous=r.synchronous_read==true and r.action==9 and (op==0 or op==1 or op==26 or (op==10 and a.kind==2)) or
   r.synchronous_write==true and (r.action==13 and (op==0 or op==15) or r.action==11 and (op==0 or op==2 or op==3 or op==5 or op==7 or op==8 or op==9 or op==11 or op==12) or r.action==12 and op==0 or r.action==10 and (op==0 or op==5))
  local budget=synchronous and math.huge or default(r,'step_budget',0)
  local unknown_work=false
@@ -1295,11 +1320,38 @@ local function native_operation(r)
   return finish{ok=true,message='Native area created',areas={info(b,after)},building_id=b.id,
    hint_x=after.x,hint_y=after.y,hint_z=after.z,hint_width=after.width,hint_height=after.height}
  end
+ if a.kind==2 and (op==10 or op==26)then
+  unknown_work=true
+  local b=df.building.find(a.id);local observed,problem=workshop_links(b,r.epoch)
+  if not observed then return reject(problem) end
+  local expected=default(a,'expected_revision',0)
+  local list=default(a,'expected_list_revision',0)
+  if expected~=0 and expected~=observed.revision or list~=0 and list~=observed.revision then return reject('List changed; refresh') end
+  if op==26 then
+   local found,why=invoke(r.link_target,0,b);if not found then return reject(why) end
+   local rows={}
+   if found.building_id>=0 then
+    local target=df.building.find(found.building_id);if not target or kind(target)~=0 then return reject('Area no longer exists') end
+    rows[1]={id=target.id,kind=0,direction=default(a,'give',true) and 1 or 2,name=name(target)}
+   end
+   return finish{ok=true,message='',links=rows,list_revision=observed.revision}
+  end
+  local cursor=default(a,'cursor',0)
+  if not integer(cursor) or cursor<0 or cursor>#observed.rows or (cursor>0 and list==0)then return reject('Invalid link cursor') end
+  local rows={};for i=cursor+1,math.min(cursor+128,#observed.rows)do rows[#rows+1]=observed.rows[i] end
+  local next_cursor=cursor+#rows<#observed.rows and cursor+#rows or 0
+  return finish{ok=true,message='',links=rows,list_revision=observed.revision,build_phase=0,build_done=#observed.rows,build_total=#observed.rows,next_cursor=next_cursor,truncated=next_cursor~=0}
+ end
  local workshop
  if op==15 then
   workshop=df.building.find(default(a,'id',-1))
   if not workshop then return reject('Area no longer exists') end
   if not workshop:canLinkToStockpile() then return reject('This workshop cannot link to stockpiles') end
+  if default(a,'expected_list_revision',0)~=0 then
+   local observed,why=workshop_links(workshop,r.epoch)
+   if not observed then return reject(why) end
+   if observed.revision~=a.expected_list_revision then return reject('List changed; refresh') end
+  end
  end
  local b=df.building.find(op==15 and a.link_id or default(a,'id',-1))
  if not b or kind(b)<0 then return reject('Area no longer exists') end

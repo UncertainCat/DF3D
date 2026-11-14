@@ -277,9 +277,10 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
     default: break;
   }
   if(!allowed) return "Area operation is not valid for this action";
-  if(a.kind()>AreaKind::Workshop || (a.kind()==AreaKind::Workshop)!=(op==15))
+  if(a.kind()>AreaKind::Workshop || (op==15 && a.kind()!=AreaKind::Workshop) ||
+      (a.kind()==AreaKind::Workshop && op!=15 && op!=10 && op!=26))
     return "Workshop kind is only valid for workshop links";
-  const bool stock=op==1 || op==2 || op==3 || op==10 || op==13 || linkTarget;
+  const bool stock=op==1 || op==2 || op==3 || op==13 || ((op==10 || linkTarget) && a.kind()!=AreaKind::Workshop);
   const bool zone=(op>=6 && op<=9) || op==11 || op==12 || op==14 || multi || counts || locationChoices || locationDetails || staffCandidates || naming || recognition || religious || specialization;
   if((stock && a.kind()!=AreaKind::Stockpile) || (zone && a.kind()!=AreaKind::Zone))
     return "Area kind is not valid for this operation";
@@ -308,7 +309,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
       !a.expected_revision() || a.cursor() || present(a.query()))) return "invalid stockpile link target request";
   // Ordered like the appended schema fields, so malformed requests have stable errors.
   const std::pair<bool,const char*> foreign[]{
-    {a.expected_list_revision()!=0 && !(op==1 || op==6 || op==10 || op==14 || locationChoices || staffCandidates || staffEdit || religiousCandidates || religiousSelection), "expected_list_revision"},
+    {a.expected_list_revision()!=0 && !(op==1 || op==6 || op==10 || op==14 || op==15 || locationChoices || staffCandidates || staffEdit || religiousCandidates || religiousSelection), "expected_list_revision"},
     {present(a.list_key()) && op!=1 && op!=2, "list_key"},
     {present(a.row_key()) && op!=2, "row_key"},
     {a.scope()!=0 && op!=2, "scope"}, {a.value()!=0 && op!=2 && !locationAccess && !specializationSet, "value"},

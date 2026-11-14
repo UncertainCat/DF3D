@@ -2696,7 +2696,7 @@ int areaLinkTarget(lua_State* L) {
     lua_newtable(L);field(L,"ok",ok);field(L,"message","");field(L,"steps",1);
     field(L,"work_unknown",unknownWork);field(L,"building_id",id);return 1;
   };
-  auto* source=Lua::GetDFObject<df::building_stockpilest>(L,1);
+  auto* source=Lua::GetDFObject<df::building>(L,1);
   if(!source || !lua_isnil(L,2) || action!=m::ManagementAction::AreaInspect || request.empty())return reply(false);
   const auto* a=flatbuffers::GetRoot<m::ConstructionRequest>(request.data())->area();
   if(!a || a->operation()!=m::AreaOperation::LinkTarget || a->id()!=source->id || !a->origin())return reply(false);

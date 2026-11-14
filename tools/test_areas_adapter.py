@@ -246,7 +246,7 @@ def main():
             assert validator(request, request["area"]) == (None if allowed else "Area operation is not valid for this action"), (action, operation)
             if allowed:
                 request["area"]["kind"] = 0 if operation == 15 else 2
-                assert validator(request, request["area"]) == "Workshop kind is only valid for workshop links"
+                assert validator(request, request["area"]) == (None if operation == 10 else "Workshop kind is only valid for workshop links")
     foreign_fields = {"expected_list_revision": 1, "list_key": "x", "row_key": "x", "scope": 1, "value": 1,
         "preset": 1, "name": "x", "spans": lua.table_from([lua.table_from({"x": 1, "y": 1, "length": 1})]),
         "paint_mode": 1, "paint_z": 0, "location_id": -1, "location_kind": 1, "profession": 0,
@@ -2947,6 +2947,37 @@ def main():
     assert create_paint([{"x": 0, "y": 0, "length": 1}], categories=1)["message"] == "Legacy area fields cannot be combined with an operation"
     assert create_paint([{"x": 0, "y": 0, "length": 1}, {"x": 255, "y": 127, "length": 1}], kind=1, zone_type=0)["ok"]
     assert create_paint([{"x": 0, "y": 0, "length": 1}, {"x": 255, "y": 128, "length": 1}], kind=1, zone_type=0)["message"] == "Painted area would exceed 256 per side or 32,768 tiles"
+    # Workshop projections retain native order across pages and reject changed
+    # authority; their source is independent of stockpile geometry/settings.
+    probe = LuaRuntime(unpack_returned_tuples=True)
+    probe.execute("""
+    package.preload.utils=function()return {}end
+    local targets={}
+    for id=1,130 do targets[id]={id=id,kind=0,label='Pile '..id}end
+    local links={take_from_workshop={},give_to_workshop={},take_from_pile={},give_to_pile=targets}
+    shop={id=500,centerx=0,centery=0,z=0,canLinkToStockpile=function()return true end,
+      getType=function()return 13 end,getBuildStage=function()return 3 end,getMaxBuildStage=function()return 3 end,
+      getStockpileLinks=function()return links end}
+    df={global={world={frame_counter=0}},building={find=function(id)return id==500 and shop or targets[id]end},
+      building_stockpilest={is_instance=function(_,b)return b.kind==0 end},building_civzonest={is_instance=function()return false end}}
+    dfhack={units={},buildings={getName=function(b)return b.label end,markedForRemoval=function()return false end},
+      maps={isValidTilePos=function()return true end,getTileFlags=function()return {hidden=false}end},df2utf=function(s)return s end}
+    function change_caption()targets[130].label='Changed'end
+    function duplicate()targets[130].id=129 end
+    """)
+    workshop_adapter = probe.execute((Path(__file__).resolve().parents[1] / "bridge/plugin/areas.lua").read_text())
+    def workshop_read(cursor=0, revision=0):
+        return workshop_adapter(probe.table_from({"action":9,"epoch":1,"synchronous_read":True,
+            "area":probe.table_from({"id":500,"kind":2,"operation":10,"cursor":cursor,"expected_list_revision":revision})}))
+    first = workshop_read()
+    assert first["ok"] and len(first["links"]) == 128 and first["next_cursor"] == 128
+    second = workshop_read(128,first["list_revision"])
+    assert second["ok"] and len(second["links"]) == 2 and second["links"][1]["id"] == 129 and second["next_cursor"] == 0
+    assert not workshop_read(128)["ok"]
+    probe.globals().change_caption()
+    assert not workshop_read(128,first["list_revision"])["ok"]
+    probe.globals().duplicate()
+    assert not workshop_read()["ok"]
     print("AREAS_ADAPTER PASS")
 
 

@@ -10,7 +10,7 @@ extern "C" {
 namespace df3d_management {
 inline bool synchronousAreaRead(df3d::mirror::ManagementAction action,df3d::mirror::AreaOperation operation) {
     return action==df3d::mirror::ManagementAction::AreaInspect &&
-        (operation==df3d::mirror::AreaOperation::SettingsPage || operation==df3d::mirror::AreaOperation::None || operation==df3d::mirror::AreaOperation::LinkTarget);
+        (operation==df3d::mirror::AreaOperation::SettingsPage || operation==df3d::mirror::AreaOperation::None || operation==df3d::mirror::AreaOperation::LinkTarget || operation==df3d::mirror::AreaOperation::Links);
 }
 // Existing reads retain their builder/inline scheduling. Selected synchronous
 // operations report measured work plus opaque work outside those budgets.

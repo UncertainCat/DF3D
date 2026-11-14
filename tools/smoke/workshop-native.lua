@@ -133,7 +133,47 @@ local ok,err=xpcall(function()
    df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
   end
   local created={}
+  local order_ids={}
+  local function find_order(id)
+   for _,o in ipairs(df.global.world.manager_orders.all)do if o.id==id then return o end end
+  end
+  local manager_position,manager_index,manager_prior,manager_entries
   local worked,problem=xpcall(function()
+   if os.getenv('DF3D_WORKSHOP_SHEET_ORDERS')=='1'then
+    local fortress=assert(df.global.plotinfo.main.fortress_entity)
+    local responsibility=df.entity_position_responsibility.MANAGE_PRODUCTION
+    local assignment
+    for _,a in ipairs(fortress.positions.assignments)do
+     if a.histfig>=0 then
+      for _,u in ipairs(df.global.world.units.active)do
+       if u.hist_figure_id==a.histfig then
+        for _,p in ipairs(fortress.positions.own)do if p.id==a.position_id then manager_position=p;assignment=a;break end end
+       end
+       if manager_position then break end
+      end
+     end
+     if manager_position then break end
+    end
+    assert(manager_position,'Populated orders need an occupied office')
+    manager_index=fortress.assignments_by_type[responsibility];manager_entries={}
+    for _,a in ipairs(manager_index)do manager_entries[#manager_entries+1]=a end
+    manager_prior=manager_position.responsibilities[responsibility]
+    manager_position.responsibilities[responsibility]=true;manager_index:insert('#',assignment)
+    for _,o in ipairs(df.global.world.manager_orders.all)do assert(o.workshop_id~=building.id,'Expected no existing shop orders')end
+    local picker=df.global.game.main_interface.create_work_order
+    assert(click_label('Work orders'))
+    for i=1,2 do
+     click(880,154);assert(picker.open);click(600,94)
+     for char in ('make bed'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(char:byte()))end
+     gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
+     local id=df.global.world.manager_orders.manager_order_next_id
+     click(600,130);assert(not picker.open)
+     local order=assert(find_order(id));assert(order.workshop_id==building.id and order.job_type==df.job_type.ConstructBed)
+     order_ids[#order_ids+1]=id
+    end
+    result.sheet_orders={ids=order_ids,quantity=find_order(order_ids[1]).amount_left}
+    assert(click_label('Tasks'))
+   end
    if os.getenv('DF3D_WORKSHOP_SHEET_ASSIGNED')=='1'then
     assert(#profile.permitted_workers==0)
     assert(click_label('Workers'));click(448,154);click(80,106)
@@ -174,7 +214,19 @@ local ok,err=xpcall(function()
   end,debug.traceback)
   for _,job in ipairs(created)do assert(dfhack.job.removeJob(job))end
   if assigned then assigned.flags4.only_do_assigned_jobs=specialized;profile.permitted_workers:resize(0)end
-  resize_worker('default');assert(worked,problem);return
+  resize_worker('default')
+  if #order_ids>0 then
+   select_map(building);assert(click_label('Work orders'))
+   for _,id in ipairs(order_ids)do
+    assert(find_order(id));click(872,190)
+    assert(not find_order(id),'Native cleanup retained workshop order')
+   end
+  end
+  if manager_position then
+   manager_position.responsibilities[df.entity_position_responsibility.MANAGE_PRODUCTION]=manager_prior
+   manager_index:resize(0);for _,a in ipairs(manager_entries)do manager_index:insert('#',a)end
+  end
+  assert(worked,problem);return
  end
  if os.getenv('DF3D_WORKSHOP_WORKER_HOVER')=='1'then
   local profile=building:getWorkshopProfile();assert(#profile.permitted_workers==0)

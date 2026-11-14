@@ -39499,5 +39499,101 @@
       "One assigned dwarf in a completed Carpenter workshop; other assigned creature types and disallowed specialization remain separate.",
       "Whole workshop public exposure remains gated."
     ]
+  },
+  "populated_orders_layout_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261114-133545",
+    "scope": "Two native-created Make bed orders in Carpenter workshop, temporary occupied manager responsibility; paused unsaved clone. Actual quantity 12 then original 10 and general-order +/- at all four sizes. Native cleanup removes orders and restores office responsibility/index. No new overflow, Conditions, Details or worker execution qualification.",
+    "owned_df_pid": 38316,
+    "source_preserved": true,
+    "closed_unsaved": true,
+    "viewer_status": "passed_with_known_issues: three documented Godot shutdown/render-thread diagnostics",
+    "sizes": [
+      "960x600",
+      "1600x900",
+      "912x552",
+      "1200x800"
+    ],
+    "full_panel_pixel_differences": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "native_setup": {
+      "ids": [
+        109,
+        110
+      ],
+      "quantity": 10
+    },
+    "viewer": {
+      "sheet_layout": [
+        {
+          "jobs": 2,
+          "panel_position": [
+            176.0,
+            48.0
+          ],
+          "panel_size": [
+            488.0,
+            516.0
+          ],
+          "size": "small"
+        },
+        {
+          "jobs": 2,
+          "panel_position": [
+            816.0,
+            48.0
+          ],
+          "panel_size": [
+            488.0,
+            816.0
+          ],
+          "size": "wide"
+        },
+        {
+          "jobs": 2,
+          "panel_position": [
+            128.0,
+            48.0
+          ],
+          "panel_size": [
+            488.0,
+            468.0
+          ],
+          "size": "minimum"
+        },
+        {
+          "jobs": 2,
+          "panel_position": [
+            416.0,
+            52.0
+          ],
+          "panel_size": [
+            488.0,
+            708.0
+          ],
+          "size": "default"
+        }
+      ],
+      "success": true
+    },
+    "images": {
+      "workshop-sheet-default-Work-orders-live.png": "3fae78bb7b379cca04cd8de05ae5ca08d4e2483c9ddf7df8264ad65ea65cafff",
+      "workshop-sheet-default-Work-orders.png": "c1ab8c0bfea363e88ecabc9972c98decb33743b1c3bcc6b2062433ad159870fe",
+      "workshop-sheet-minimum-Work-orders-live.png": "7af805385498a49e12cc72fbce113d692f9ba3a3fec6b02ce0dd5f904d2f36d6",
+      "workshop-sheet-minimum-Work-orders.png": "680f69005ab0eb1a3818de4fdbe4f6b8dd84df1e6ff6f764f11aad9b1eedd575",
+      "workshop-sheet-small-Work-orders-live.png": "484fc6ba6100804fb239d887aaa857fa007a921ae14cb515da15647d629a3d2e",
+      "workshop-sheet-small-Work-orders.png": "d498700375cf6677151d107d6eefcebd80754f3c8a1c5e978e6f20e99248b74f",
+      "workshop-sheet-wide-Work-orders-live.png": "b515c7ed918a86c46e8a0254a458896c329192e1a267029ce1b46df1442f7417",
+      "workshop-sheet-wide-Work-orders.png": "499e986427d56023ab972908200a2942ad459741dcf5821f1668df83b2847b40"
+    },
+    "corrections": [
+      "Name/quantity baselines +2 pixels",
+      "Black underlay for shared quantity and Details row sprites"
+    ],
+    "initial_comparison_lane": "build/stockpile-storage-native-farm-discovery-20261114-133348",
+    "failed_diagnostic": "133304 stopped on nonexistent df.manager_order.find; replaced with owned diagnostic world-list lookup. Not acceptance."
   }
 }

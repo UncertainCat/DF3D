@@ -108,10 +108,10 @@ func _draw() -> void:
 		var name: String=row.name
 		if name.length()>=29:name=name.left(25)+"..."
 		var cyan: Color=colors[11] if colors.size()>11 else Color.WHITE
-		caption(name,Vector2(48,y+22),cyan)
+		caption(name,Vector2(48,y+24),cyan)
 		var quantity: String="∞/∞" if row.total==0 else str(row.remaining)+"/"+str(row.total)
 		if editing and quantity_order==row.id:quantity=draft+("_" if cursor_visible else "")
-		caption(quantity,Vector2(48,y+34),cyan)
+		caption(quantity,Vector2(48,y+36),cyan)
 		if native.validation_required:row_icon("WORK_ORDERS_VALIDATED" if row.validated else "WORK_ORDERS_NOT_VALIDATED",Vector2(296,y))
 		row_icon("WORK_ORDERS_ENTER_AMOUNT",Vector2(328,y))
 		row_icon("WORK_ORDERS_CONDITIONS",Vector2(360,y))
@@ -124,7 +124,10 @@ func _draw() -> void:
 
 func row_icon(token: String,point: Vector2) -> void:
 	var texture: Texture2D=art.texture(token)
-	if texture!=null:draw_texture_rect(texture,Rect2(point,Vector2(32,36)),false)
+	if texture!=null:
+		# Native workshop row controls retain black under these shared sprites.
+		if token in ["WORK_ORDERS_ENTER_AMOUNT","WORK_ORDERS_DETAILS"]:draw_rect(Rect2(point,Vector2(32,36)),Color.BLACK)
+		draw_texture_rect(texture,Rect2(point,Vector2(32,36)),false)
 
 func row_background(top: int) -> void:
 	var texture: Texture2D=art.texture("BUTTON_RECTANGLE")

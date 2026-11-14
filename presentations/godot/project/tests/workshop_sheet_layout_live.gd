@@ -25,6 +25,8 @@ func run() -> void:
 		for tab in 3:
 			click(owner.panel.global_position+owner.panel.tab_rect(tab).get_center())
 			await settle(service,func():return owner.panel.selected_tab==tab and (tab!=1 or owner.workers.phase==owner.workers.Phase.Ready) and (tab!=2 or owner.orders.phase==owner.orders.Phase.Ready))
+			if tab==2 and reference.has("sheet_orders"):
+				await settle(service,func():return owner.orders.rows.size()==2 and owner.orders.row_ticket==0)
 			if tab==1 and reference.has("sheet_assigned"):
 				await settle(service,func():return owner.panel.workers.unit_icon!=null)
 			await process_frame;await RenderingServer.frame_post_draw
@@ -45,6 +47,13 @@ func run() -> void:
 				if not check(owner.selector.visible and not owner.selector.rows.is_empty() and int(owner.selector.rows[0].unit_id)==worker_id,"Resized worker selector lost native first candidate"):quit(1);return
 				click(Vector2(80,106))
 				await settle(service,func():return worker_ready(owner) and owner.workers.assigned.get("id")==worker_id)
+		if reference.has("sheet_orders"):
+			var initial: int=reference.sheet_orders.quantity
+			for value in [12,initial]:
+				click(owner.panel.orders.global_position+Vector2(344,54))
+				for digit in str(value):number_key(KEY_0+digit.to_int(),digit.unicode_at(0))
+				number_key(KEY_ENTER)
+				await settle(service,func():return owner.orders.phase==owner.orders.Phase.Ready and owner.orders.rows.get(0,{}).get("remaining",-1)==value and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
 		var limit: int=owner.orders.snapshot.general_order_limit
 		click(owner.panel.orders.global_position+owner.panel.orders.button_rect(1).get_center())
 		await settle(service,func():return owner.orders.phase==owner.orders.Phase.Ready and owner.orders.snapshot.general_order_limit==limit+1)

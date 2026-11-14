@@ -17968,10 +17968,25 @@ Earlier120123 exposed the row background, text/footer and blank-icon defects;
 DF34916 exits unsaved with original queue, source saves and preferences intact.
 Only three documented Godot diagnostics occur. Serial30FPS GPU samples60C are
 not peaks. Core19 and build/qa/workshop-sheet-layout state/composition checks
-pass. sheet_layout_reference retains comparisons and limits. Populated Work
-orders, assigned Workers at these sizes and whole workshop public exposure
-remain separate acceptance requirements. Furniture icons are qualified by the
-subsequent132118 reference above.
+pass. sheet_layout_reference retains comparisons and limits. Assigned Workers
+and furniture icons are qualified by their later references. Whole workshop
+public exposure remains a separate acceptance requirement.
+
+Protected133545 on2026-11-14 qualifies two native-created Make bed Work orders
+at960x600,1600x900,912x552 and1200x800. All four full-panel crops match native
+pixels. Row name/quantity baselines are24/36; shared quantity and Details
+sprites retain a black underlay. Earlier133348 exposed these differences.
+Actual quantity entry changes the first order to12 then restores10 at each
+size, and general-order plus/minus restores the original limit. The diagnostic
+uses a temporary manager responsibility on an occupied office, restores its
+responsibility/index, and removes both orders with native controls. Owned
+DF38316 exits unsaved; source saves/preferences are preserved. The initial
+133304 diagnostic failed on a nonexistent XML find helper and is not acceptance.
+Only the three documented Godot diagnostics occur;30FPS GPU samples60C are not
+peaks. Core19 and build/qa/workshop-populated-orders state/composition checks
+pass. populated_orders_layout_reference retains hashes and scope. This does
+not qualify overflow scrolling, Conditions/Details navigation at these sizes,
+or worker execution; existing separate workflow evidence retains its scope.
 
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.

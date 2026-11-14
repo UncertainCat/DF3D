@@ -9413,6 +9413,34 @@ known Godot signatures; DF25604 exits unsaved with source/preferences preserved.
 Graphics are serial30FPS; sampled GPU50-51C/5-16% is not a continuous peak.
 selection_reference.unit_group_scene_reference retains hashes and scope.
 
+Engraving discovery174833 on2026-11-14 captures completed engraving129,78,165,
+planned designation130,78,165 and the actual Specify image button. The complete
+sheet shows a blue artwork title and white wrapped prose. Population1a9cc0
+resolves the first engraving at the tile, calls a48120 if art_id is-1, formats
+its language name via a94030/a946e0, then calls art-description1451b10 with
+category19, engraving quality and artist. The whole entry also writes native
+sheet state and must not be used as the runtime provider. Its semantic leaves,
+owned input requirements and cold initialization still need implementation/audit.
+Renderer1589ff uses terrain-description e7d330(false) if the title is absent;
+158e98 prefixes that terrain description with native Engraving for planned tiles.
+
+The observed engraving already has art3/subimage359; opening leaves those fields
+and flags unchanged. The planned fixture sets only designation bit0x100 on a
+revealed neighboring tile and restores it in cleanup; no job is created and no
+simulation frame advances. Specify image opens the shared image creator with
+historical-figure, site, civilization/group, existing-image, new-image and
+artist-choice options. This is a shared future dependency, not permission to
+reconstruct its choices in Godot. Attempted Escape leaves the picker open in
+this oracle; the historical image-cancelled PNG is not cancellation acceptance.
+Diagnostic output now names that observation after_escape. Option effects,
+actual cancellation, long prose, scrolling and resizing remain unqualified.
+
+No engraving bridge provider or viewer destination is implemented by this
+reference. Native-only174721 and174833 pass their assertions; owned DF37032/1300
+exit unsaved with source/preferences preserved. Core19 passes. Graphics are
+serial30FPS, sampled GPU53C/13-14%; these are not continuous peaks. Native strings,
+state and evidence hashes live in selection_reference.engraving_discovery_reference.
+
 Standalone selection-panel-capture also matches the complete group shell and
 checks pointer dispatch/closure through the real host with injected replies.
 Public map routing, other side-tab icons, engraving/vermin destinations,

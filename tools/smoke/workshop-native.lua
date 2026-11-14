@@ -126,6 +126,7 @@ local custom_supplies={}
 local magma_tiles={}
 local selection_moves={}
 local selection_units={}
+local selection_designations={}
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
@@ -138,6 +139,54 @@ local ok,err=xpcall(function()
     building=sheet.viewing_bldid,tabs=tabs,active_kind=sheet.active_sheet,active_id=sheet.active_id}
   end
   result.tile_selection_reference={cases={}}
+  if os.getenv('DF3D_TILE_SELECTION_ENGRAVING')=='1' then
+   local target
+   for _,engraving in ipairs(df.global.world.event.engravings)do
+    local p=engraving.pos;local d=dfhack.maps.getTileFlags(p)
+    if d and not d.hidden then target=engraving;break end
+   end
+   assert(target,'Engraving reference needs a revealed engraving')
+   local p=target.pos
+   local prior={art_id=target.art_id,art_subid=target.art_subid,flags=target.flags.whole}
+   select_map{centerx=p.x,centery=p.y,z=p.z}
+   if sheet.active_sheet~=df.view_sheet_type.ENGRAVING then
+    local index
+    for i,kind in ipairs(sheet.tab)do if kind==df.view_sheet_type.ENGRAVING then index=i;break end end
+    assert(index,'Engraving side tab missing')
+    g.precise_mouse_x=(g.dimx-35)*8;g.precise_mouse_y=52+index*36+16
+    g.mouse_x=g.precise_mouse_x//8;g.mouse_y=(g.precise_mouse_y-4)//12
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
+   end
+   assert(sheet.active_sheet==df.view_sheet_type.ENGRAVING,'Engraving tab did not open')
+   result.tile_selection_reference.engraving={tile={p.x,p.y,p.z},before=prior,
+    after={art_id=target.art_id,art_subid=target.art_subid,flags=target.flags.whole},
+    native=observe(),title=dfhack.df2utf(sheet.engraving_title),description=dfhack.df2utf(sheet.raw_description),lines=lines()}
+   shot('selection-engraving')
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   local planned
+   for dx=1,20 do
+    local q={x=p.x+dx,y=p.y,z=p.z};local d=dfhack.maps.getTileFlags(q)
+    local existing=false;for _,e in ipairs(df.global.world.event.engravings)do if e.pos.x==q.x and e.pos.y==q.y and e.pos.z==q.z then existing=true;break end end
+    if d and not d.hidden and not existing then planned=q;break end
+   end
+   assert(planned,'Planned engraving reference needs revealed neighboring tile')
+   local d=dfhack.maps.getTileFlags(planned);selection_designations[#selection_designations+1]={designation=d,whole=d.whole}
+   d.whole=d.whole|0x100
+   select_map{centerx=planned.x,centery=planned.y,z=planned.z}
+   assert(sheet.active_sheet==df.view_sheet_type.ENGRAVING_PLANNED,'Planned engraving is not default on fixture tile')
+   result.tile_selection_reference.engraving.planned={tile={planned.x,planned.y,planned.z},native=observe(),lines=lines()}
+   shot('selection-engraving-planned')
+   g.precise_mouse_x=500;g.precise_mouse_y=118;g.mouse_x=62;g.mouse_y=9
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+   gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
+   result.tile_selection_reference.engraving.planned.picker_lines=lines()
+   shot('selection-engraving-image-picker')
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   result.tile_selection_reference.engraving.planned.after_escape_lines=lines()
+   shot('selection-engraving-image-after-escape')
+   return
+  end
   local targets={building,original}
   local counts={};local fullest
   for _,item in ipairs(df.global.world.items.all)do
@@ -2330,6 +2379,7 @@ local ok,err=xpcall(function()
 end,debug.traceback)
 for _,prior in ipairs(selection_moves)do assert(dfhack.items.moveToGround(prior.item,prior.pos),'Selection fixture restoration failed');prior.item.flags.whole=prior.flags end
 for _,prior in ipairs(selection_units)do prior.unit.pos:assign(prior.pos)end
+for _,prior in ipairs(selection_designations)do prior.designation.whole=prior.whole end
 for _,tile in ipairs(magma_tiles)do tile.upper.tiletype[tile.x][tile.y]=tile.tile;tile.lower.designation[tile.x][tile.y].whole=tile.designation end
 for index=#custom_supplies,1,-1 do assert(dfhack.items.remove(custom_supplies[index]),'Custom supply cleanup failed')end
 for _,prior in ipairs(fuel_flags)do prior.item.flags.forbid=prior.forbid end

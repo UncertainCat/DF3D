@@ -12809,6 +12809,92 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "engraving_discovery_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-174833",
+      "status": "native_discovery_only",
+      "owned_df_pid": 1300,
+      "owned_exit_unsaved": true,
+      "source_manifest_unchanged": true,
+      "tile": [
+        129,
+        78,
+        165
+      ],
+      "before": {
+        "art_id": 3,
+        "art_subid": 359,
+        "flags": 1
+      },
+      "after": {
+        "art_id": 3,
+        "art_subid": 359,
+        "flags": 1
+      },
+      "title": "Anurresílizeg, \"The Wondrous Comedic Apes\"",
+      "description": "Engraved on the floor is an exceptionally designed image of dwarves by Oddom Tekkudzaneg.  The dwarves are traveling.  The artwork relates to the foundation of Baldmirror by The Rough Crystal of The Matched Clasps in the early spring of 100.  ",
+      "native": {
+        "active_id": -1,
+        "active_kind": 3,
+        "building": -1,
+        "items": [],
+        "tabs": [],
+        "units": [],
+        "valid": true,
+        "vermin": []
+      },
+      "planned_tile": [
+        134,
+        78,
+        165
+      ],
+      "planned_native": {
+        "active_id": -1,
+        "active_kind": 4,
+        "building": -1,
+        "items": [],
+        "tabs": [],
+        "units": [],
+        "valid": true,
+        "vermin": []
+      },
+      "picker_options": [
+        "Related to historical figure",
+        "Related to site",
+        "Related to civilization or other group",
+        "Existing image",
+        "Specify a new image",
+        "Allow artist to choose"
+      ],
+      "native_entry_points": {
+        "sheet_population": "1a9cc0",
+        "uninitialized_engraving": "a48120 when art_id==-1",
+        "name": "a94030 and a946e0 with copied language_name",
+        "art_description": "1451b10 at call1aa00b, image category19, engraving quality and artist",
+        "terrain_fallback": "e7d330 with final flagfalse",
+        "renderers": [
+          "1589ff..158e93",
+          "158e98..1591c4"
+        ]
+      },
+      "limitations": [
+        "No bridge engraving provider or viewer destination is implemented.",
+        "Whole sheet population reads/writes menu state and may initialize world artwork; it is not a runtime API. Leaf formatting and initialization ownership still require audit.",
+        "Observed completed engraving was already initialized; native before/after art_id/subid/flags match. Cold initialization is not live-qualified.",
+        "Planned fixture temporarily sets designation bit0x100 on a revealed neighboring tile; it does not create an engraving job or prove work completion. Flag restored at cleanup.",
+        "The historical image-cancelled PNG and cancelled_lines field record an unsuccessful Escape attempt: the picker remains open. These are not cancellation acceptance. Oracle labels now say after_escape.",
+        "Picker option effects, cancellation, long prose/scrolling and viewport variants remain unqualified."
+      ],
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-174833/result.json": "57695203291db0fd3bc191ac52ba806cbb2643bbd9eb9c893f3a3a173eeec359",
+        "build/stockpile-storage-native-farm-discovery-20261114-174833/workshop-native.json": "f18c9ad2f83ef9cecaa15479e7c13351453a87398c623eb46cb54dc10c573a4c",
+        "build/stockpile-storage-native-farm-discovery-20261114-174833/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "build/stockpile-storage-native-farm-discovery-20261114-174833/workshop-selection-engraving.png": "54f60ec1ec02cd8f12d5821ee41eb1c472458e8c99da3af182d90c2b2053fe12",
+        "build/stockpile-storage-native-farm-discovery-20261114-174833/workshop-selection-engraving-planned.png": "6bbc3309bd14c8577a96b57a9ab44a9bcb78693e59ba0d314168d903d57ecf1b",
+        "build/stockpile-storage-native-farm-discovery-20261114-174833/workshop-selection-engraving-image-picker.png": "2f12308fcc57f25e18b8c0ba5ddcdeb28e196df9016279fe0d85e2bd56c01e3b",
+        "build/stockpile-storage-native-farm-discovery-20261114-174833/workshop-selection-engraving-image-cancelled.png": "2f12308fcc57f25e18b8c0ba5ddcdeb28e196df9016279fe0d85e2bd56c01e3b",
+        "build/notes/pm/engraving-description-1a9cc0.asm": "82fc4c24a17d593ccf753d6ff00063fc006643effd3924187f136e73a4691a15"
+      }
+    },
     "unit_overview_grid_reference": {
       "run": "build/stockpile-storage-native-farm-discovery-20261114-174326",
       "status": "passed_with_known_issues",

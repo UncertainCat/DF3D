@@ -12810,9 +12810,9 @@
   },
   "selection_reference": {
     "scroll_reference": {
-      "run": "build/stockpile-storage-native-farm-discovery-20261114-170031",
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-170819",
       "status": "passed_with_known_issues",
-      "scope": "24 actual ground-item IDs and native captions match typed transport; nine full panel crops match native after row/page wheel, end arrow and resizing. No scroll input submits a member request. Positions/flags restored; owned source preserved.",
+      "scope": "24 real ground-item IDs/captions match typed transport; thirteen full panel crops match native after wheel/page/end-arrow, resizing, track and three thumb drags. Drags release capture; scroll input never submits a member request. Native resized-row item1194 matches viewer member index3 and current receipt. Positions/flags restored; owned source preserved.",
       "renderer_local_scroll_clamp": "159bad..159c0f",
       "samples": [
         {
@@ -12875,38 +12875,83 @@
           "dimx": 150,
           "dimy": 66,
           "first": 5,
-          "name": "default"
+          "name": "default",
+          "visible_first": 5
+        },
+        {
+          "dimx": 150,
+          "dimy": 66,
+          "first": 6,
+          "name": "track",
+          "visible_first": 6
+        },
+        {
+          "dimx": 150,
+          "dimy": 66,
+          "first": 0,
+          "name": "drag-top",
+          "visible_first": 0
+        },
+        {
+          "dimx": 150,
+          "dimy": 66,
+          "first": 2,
+          "name": "drag-middle",
+          "visible_first": 2
+        },
+        {
+          "dimx": 150,
+          "dimy": 66,
+          "first": 6,
+          "name": "drag-end"
         }
       ],
+      "row_after_resize": {
+        "actual": 1194,
+        "expected": 1194,
+        "kind": 1,
+        "stored": 5,
+        "visible": 3
+      },
       "limitations": [
-        "Hover artwork/timing/hitboxes are not accepted: viewport comparison moves pointer away.",
-        "Scrollbar track/drag, scrollbar input after enlargement and selecting a row after resize are not qualified.",
+        "Hover artwork/timing/hitboxes are not accepted: comparison moves pointer away.",
+        "Scrollbar input after enlargement with a retained out-of-range offset remains unqualified.",
+        "Resized-row dispatch uses composed controls with injected replies, not an additional live main-scene item handoff.",
         "Public map routing and other selection types remain staged."
       ],
       "hashes": {
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/result.json": "1a00c6288ebb112da1efec4e97f9b2205499e1c11910f47cc242b71ac12b58c0",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-wire-result.json": "cfadb35923dfad561924373eed5c1b59b6797acd3dd0114dd5fe00f78810e243",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-native.json": "80686cc00aed2216d1db200d52fe87c195102543c91435fa1b5ff1b1201ff887",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
-        "build/notes/pm/selection-scroll-final.log": "7abaafaf7f518ab4d8b5db4c63eb6df8e3bea41c3b62962ac835c332a1297309",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-top.png": "325231d853be5ce7cb989b6df05b3fd18781cd911fc696edd3303af3199cd276",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-top-viewer.png": "5c1cf84343b5350fdd64c682e4b5e8d7edc78b5c3f0ace396875e085450bc39b",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-wheel.png": "526897f7ee6f07ded81c110497c4076fb8e85adf341b884c322698131880efad",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-wheel-viewer.png": "d3af0f49bd81c0e2618f5402b2c7352d119676c10fed0891e7dec7bf3c3962ab",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-page.png": "d8e70e596465af2c5c2bb2c72da8c0fc52d0e1fb0d7d7e71397fadd59b4abe89",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-page-viewer.png": "0cbb7fd026fe836c0db35841f6962bddb52b4f69504fdf2448b077b9619b57f0",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-arrow.png": "d8e70e596465af2c5c2bb2c72da8c0fc52d0e1fb0d7d7e71397fadd59b4abe89",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-arrow-viewer.png": "0cbb7fd026fe836c0db35841f6962bddb52b4f69504fdf2448b077b9619b57f0",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-small.png": "4dc90a2d52d265ad1e4767bb75467a4558b04aca263d24a130794c76fdd01609",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-small-viewer.png": "b18eba7d3658c3a8e41392d718bc4ebcc7eb9902d0d7ccb42fef7175507760b7",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-minimum.png": "b93b78148008fc3ea0d6e874e7dabe1848760ac43fcec371e93d21369e8f89d4",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-minimum-viewer.png": "a7a01ccc2a3bcbdc9801d9c591db37a47e4361eb8b9efe07765a400ef3c903bf",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-wide.png": "b7463a0610d7f7ebf85e2832737244d1d64673d9737e9ab4f13cdd1cdca6da4f",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-wide-viewer.png": "291da2142e79d9760b884062afacc811ffa791015601ac39e89bf0af7125625a",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-wide-wheel.png": "07a076665ee68b769b31acd56016e8e7bd2d756fde8cdf42e1315f5a45d43ee2",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-wide-wheel-viewer.png": "291da2142e79d9760b884062afacc811ffa791015601ac39e89bf0af7125625a",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-default.png": "8f541b09313de832b4786b36f059f50d710ce3a8bd02aa67f84927932c60d704",
-        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-default-viewer.png": "dac286b48a995e777b4181c7145e27f408bd50e378f9bb733ec3b3fdd1f04514"
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/result.json": "b57ce19fa8eacb715f6aa246c0bb8b866402277932d94988975cf1c8c5428151",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-wire-result.json": "cfadb35923dfad561924373eed5c1b59b6797acd3dd0114dd5fe00f78810e243",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-native.json": "9e034e3f802cd4dd3cd9f4a3325b7a85172b54f401d6517c4afa9a084942e27e",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-resized-member.png": "eb98dc3d8687b7a4198550ba1adbe651c967cb00905a9f0541692dde1574cd03",
+        "build/notes/pm/selection-scroll-input-final.log": "40d3d04e12d291e7fa4fc1b90e20aeeae528ebaec50731b239017c567a4e2fe3",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-top.png": "325231d853be5ce7cb989b6df05b3fd18781cd911fc696edd3303af3199cd276",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/selection-scroll-top-viewer.png": "5c1cf84343b5350fdd64c682e4b5e8d7edc78b5c3f0ace396875e085450bc39b",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-wheel.png": "526897f7ee6f07ded81c110497c4076fb8e85adf341b884c322698131880efad",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/selection-scroll-wheel-viewer.png": "d3af0f49bd81c0e2618f5402b2c7352d119676c10fed0891e7dec7bf3c3962ab",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-page.png": "d8e70e596465af2c5c2bb2c72da8c0fc52d0e1fb0d7d7e71397fadd59b4abe89",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/selection-scroll-page-viewer.png": "0cbb7fd026fe836c0db35841f6962bddb52b4f69504fdf2448b077b9619b57f0",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-arrow.png": "d8e70e596465af2c5c2bb2c72da8c0fc52d0e1fb0d7d7e71397fadd59b4abe89",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/selection-scroll-arrow-viewer.png": "0cbb7fd026fe836c0db35841f6962bddb52b4f69504fdf2448b077b9619b57f0",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-small.png": "4dc90a2d52d265ad1e4767bb75467a4558b04aca263d24a130794c76fdd01609",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/selection-scroll-small-viewer.png": "b18eba7d3658c3a8e41392d718bc4ebcc7eb9902d0d7ccb42fef7175507760b7",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-minimum.png": "b93b78148008fc3ea0d6e874e7dabe1848760ac43fcec371e93d21369e8f89d4",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/selection-scroll-minimum-viewer.png": "a7a01ccc2a3bcbdc9801d9c591db37a47e4361eb8b9efe07765a400ef3c903bf",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-wide.png": "b1ee361b4094e9a3653271396610853a0ad0cd4eaf5dce21385091d14c1ecfec",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/selection-scroll-wide-viewer.png": "291da2142e79d9760b884062afacc811ffa791015601ac39e89bf0af7125625a",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-wide-wheel.png": "b1ee361b4094e9a3653271396610853a0ad0cd4eaf5dce21385091d14c1ecfec",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/selection-scroll-wide-wheel-viewer.png": "291da2142e79d9760b884062afacc811ffa791015601ac39e89bf0af7125625a",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-default.png": "8f541b09313de832b4786b36f059f50d710ce3a8bd02aa67f84927932c60d704",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/selection-scroll-default-viewer.png": "dac286b48a995e777b4181c7145e27f408bd50e378f9bb733ec3b3fdd1f04514",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-track.png": "d8e70e596465af2c5c2bb2c72da8c0fc52d0e1fb0d7d7e71397fadd59b4abe89",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/selection-scroll-track-viewer.png": "0cbb7fd026fe836c0db35841f6962bddb52b4f69504fdf2448b077b9619b57f0",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-drag-top.png": "325231d853be5ce7cb989b6df05b3fd18781cd911fc696edd3303af3199cd276",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/selection-scroll-drag-top-viewer.png": "5c1cf84343b5350fdd64c682e4b5e8d7edc78b5c3f0ace396875e085450bc39b",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-drag-middle.png": "aad49204e8a8e6c65aff1b33256e804d81ce9ca43e576b4641545ac754e8f332",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/selection-scroll-drag-middle-viewer.png": "8bf05112234630402e4b81e2ee872b34a07a1b3daf2f859b9057b4d4b6a1487a",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/workshop-selection-scroll-drag-end.png": "d8e70e596465af2c5c2bb2c72da8c0fc52d0e1fb0d7d7e71397fadd59b4abe89",
+        "build/stockpile-storage-native-farm-discovery-20261114-170819/selection-scroll-drag-end-viewer.png": "0cbb7fd026fe836c0db35841f6962bddb52b4f69504fdf2448b077b9619b57f0"
       }
     },
     "tab_artwork_reference": {

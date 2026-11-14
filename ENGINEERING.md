@@ -9340,25 +9340,32 @@ stored offset even when the displayed start remains clamped. The viewer keeps
 these two positions separate. Wheel input on the scrollbar uses the same group
 handler, and scrolling cannot submit a member-selection request.
 
-Protected170031 on2026-11-14 stages24 real loose blocks at the existing group
+Protected170819 on2026-11-14 stages24 real loose blocks at the existing group
 tile in the paused owned clone. Native/provider IDs and all native captions
-match typed transport. Nine captured states cover top, wheel, page, bottom-arrow
-at the end,960x600,912x552,1600x900, wheel-up after enlargement and1200x800
-restoration. Stored offsets are0/1/6/6/6/6/6/5/5; the wide viewport displays3
-while retaining6, then5 after upward input. All nine complete group-panel crops
-match in tile_selection_scroll_capture. The scrollbar uses its existing shared
-artwork; hover pixels are not qualified by the simulated-input native oracle.
-Viewer comparison moves the pointer away before drawing. Injected wheel events
-include releases and every scroll step asserts that no member request was sent.
+match typed transport. Thirteen captured panel states cover top, row/page wheel,
+end arrow,960x600,912x552,1600x900, wheel-up after enlargement,1200x800
+restoration, track click and top/middle/end thumb drags. All complete panel
+crops match in tile_selection_scroll_capture. Track advances0 to6; the three
+independent drags produce0/2/6 and release input capture. The wide viewport
+displays3 while retaining6, then5 after upward input. Clicking its first visible
+row opens item1194 in native; the viewer submits that same member index3 and
+the current receipt, rather than using stored offset5.
 
-Moved items' positions and flags are restored by the diagnostic cleanup, and
-owned DF35960 exits unsaved with source/preferences preserved. Core19 and
-selection-scroll-final composition pass; live/rendered diagnostics are limited
-to the three known signatures. Native and viewer graphics are capped30FPS;
-GPU samples55–59C/1–9% are observations, not continuous peaks. Fixture
-selection_reference.scroll_reference retains states and hashes. Hover,
-scrollbar track/drag, scrollbar input after enlargement and selecting a row
-whose displayed start differs from the stored offset remain unqualified.
+The scrollbar uses its existing shared artwork; hover pixels are not qualified
+by the simulated-input native oracle. Viewer comparison moves the pointer away
+before drawing. Injected wheel events include releases and every scroll step
+asserts that no member request was sent. The resize-row mapping check uses the
+composed panel with injected replies; actual main-scene member handoff retains
+the separate165118 qualification.
+
+Moved items' positions and flags are restored by diagnostic cleanup, and owned
+DF32124 exits unsaved with source/preferences preserved. Core19 passes; the
+unchanged runtime also has selection-scroll-final composition acceptance.
+Live/rendered diagnostics are limited to the three known signatures. Native
+and viewer graphics are capped30FPS; GPU samples55–56C/6–10% are observations,
+not continuous peaks. Fixture selection_reference.scroll_reference retains
+states and hashes. Hover and scrollbar input while the saved offset exceeds
+the resized viewport's maximum remain unqualified.
 
 Standalone selection-panel-capture also matches the complete group shell and
 checks pointer dispatch/closure through the real host with injected replies.

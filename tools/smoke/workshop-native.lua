@@ -247,7 +247,31 @@ local ok,err=xpcall(function()
    input('_MOUSE_L',(g.dimx-39)*8,(g.dimy-5)*12+4);sample('arrow')
    for _,size in ipairs{'small','minimum','wide','default'}do
     resize_worker(size);sample(size)
-    if size=='wide'then input('CONTEXT_SCROLL_UP',1000,154);sample('wide-wheel')end
+    if size=='wide'then
+     input('CONTEXT_SCROLL_UP',1000,154);sample('wide-wheel')
+     local retained=sheet.scroll_position
+     local visible=math.max(0,math.min(retained,#sheet.viewing_itid-(g.dimy-12)//3))
+     local expected=sheet.viewing_itid[visible]
+     input('_MOUSE_L',1000,114)
+     result.tile_selection_reference.scroll.row_after_resize={stored=retained,visible=visible,expected=expected,actual=sheet.active_id,kind=sheet.active_sheet}
+     shot('selection-scroll-resized-member')
+     input('_MOUSE_L',(g.dimx-35)*8,104)
+     assert(sheet.active_sheet==df.view_sheet_type.ITEM_LIST,'Resized member return missed group')
+     sheet.scroll_position=retained;view:render(dfhack.getTickCount())
+    end
+   end
+   -- Isolated native scrollbar input probes; scratch reset is diagnostic only.
+   sheet.scroll_position=0;sheet.scrolling=false;view:render(dfhack.getTickCount())
+   input('_MOUSE_L',888,700);sample('track')
+   for _,probe in ipairs{{'drag-top',100},{'drag-middle',400},{'drag-end',748}}do
+    sheet.scroll_position=0;sheet.scrolling=false;view:render(dfhack.getTickCount())
+    g.precise_mouse_x=888;g.precise_mouse_y=200;g.mouse_x=111;g.mouse_y=(200-4)//12
+    df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+    g.precise_mouse_y=probe[2];g.mouse_y=(probe[2]-4)//12
+    gui.simulateInput(view,{'_MOUSE_L_DOWN'})
+    df.global.enabler.mouse_lbut_lift=1;gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+    assert(not sheet.scrolling,'Native thumb retained drag after release')
+    sample(probe[1])
    end
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   end

@@ -11954,9 +11954,34 @@ evidence. Context, thought-text, native word-layout and core19 checks pass.
 DF11776/34812 close unsaved with source/preferences preserved; graphical work
 is serial30FPS, sampled GPU45–49C. The final live result has the known Godot
 renderer/finalize/two-ObjectDB diagnostics. No bridge change is involved.
-Other viewport sizes, long unbroken quotes and the existing two-pixel divider
-position remain outside this visual acceptance; active-emotion quote selection
-also remains unaccepted as described above.
+Other viewport sizes and long unbroken quotes remain outside this visual
+acceptance; active-emotion quote selection also remains unaccepted as described
+above. The divider mismatch is corrected by the following reference.
+
+Overview summaries now draw complete installed INTERIOR_BORDER_N_S/W_E cells,
+N_S_W_E intersections and the final N_W_E junction. They replace cropped pieces
+of HOVER_RECTANGLE, whose two-pixel lines had the wrong placement and no native
+junctions. creature_overview_grid retains the seven-text-row cell pitch and
+keeps border drawing outside container minimum-size calculations. The native
+color dispatch160a2b/table19ec30 maps facet kinds4/5 to bright7 (palette15) and
+value kinds6/7 to bright3 (palette11); label table19ec50 confirms those kinds.
+NativeText now preserves that distinction instead of coloring both cyan.
+
+Protected174326 on2026-11-14 compares the actual scene's complete header and
+eight-cell summary region(416,52,488,492), including all labels and divider
+junctions, with zero differing pixels. Group/member/group navigation, Escape
+and reset during a pending read also pass. Earlier173651/173846/174048 correctly
+failed on the170-pixel Private color difference after the borders matched;
+waiting extra frames did not fix it. This was a color defect, not lost data or
+clipping. These runs do not establish full Overview parity: the cached opening
+quote remains outside the comparison, as do other viewport dimensions and
+unusually long summary content.
+
+Core19 passes. Live diagnostics contain only the three known Godot signatures;
+owned DF15224 exits unsaved with source/preferences preserved. Serial graphics
+are capped30FPS; sampled GPU54C/16% is not a continuous peak. Bounded evidence
+and native color-dispatch hashes are in native_farm.json's
+selection_reference.unit_overview_grid_reference.
 
 Overview skill colors use native764a70's profession selector, transported as
 the numeric native_profession fact on each skill. Its pinned body and tables

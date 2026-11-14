@@ -22,14 +22,18 @@ func exercise(expected: Dictionary) -> void:
 		world.poll();await create_timer(0.05).timeout
 	check(not owner.creature_display.get("detail",{}).is_empty(),"Creature detail did not arrive")
 	check(selection.tabs.visible and selection.tabs.selected==-1,"Creature member lost selection tabs")
-	await process_frame;await RenderingServer.frame_post_draw
+	var facts_file:=FileAccess.open(directory+"/selection-unit-detail.json",FileAccess.WRITE)
+	facts_file.store_string(JSON.stringify(owner.creature_display));facts_file.close()
+	# Creature facts trigger an asynchronous control rebuild and font shaping.
+	for frame in 5:await process_frame
+	await RenderingServer.frame_post_draw
 	var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
 	var native:=Image.load_from_file(directory+"/workshop-selection-unit-group-member.png");native.convert(Image.FORMAT_RGB8)
 	actual.get_region(Rect2i(416,52,488,708)).save_png(directory+"/selection-unit-member-live.png")
-	# This handoff qualifies the header. Overview grid rounding and cached
-	# randomized quote text retain their separate fidelity limitations.
-	var header:=Rect2i(416,52,488,156)
-	check(actual.get_region(header).get_data()==native.get_region(header).get_data(),"Creature header differs from native")
+	# Compare header and Overview summaries, including all divider cells.
+	# Cached randomized quote text retains its separate fidelity limitation.
+	var header:=Rect2i(416,52,488,492)
+	check(actual.get_region(header).get_data()==native.get_region(header).get_data(),"Creature header or Overview grid differs from native")
 	var has_history: bool=sample.member.report_counts.any(func(count):return count>0)
 	check(is_instance_valid(owner.history_button)==has_history,"History visibility differs from native report vectors")
 	await pointer(Vector2(920,68))

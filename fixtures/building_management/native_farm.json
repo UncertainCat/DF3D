@@ -12809,6 +12809,62 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "unit_overview_grid_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-174326",
+      "status": "passed_with_known_issues",
+      "owned_df_pid": 15224,
+      "owned_exit_unsaved": true,
+      "source_manifest_unchanged": true,
+      "region": [
+        416,
+        52,
+        488,
+        492
+      ],
+      "scope": "Actual main-scene creature header and all eight Overview summary cells match native pixels, including text colors and full interior-border junctions. Unit group/member/group navigation, Escape and pending reset also pass.",
+      "native_border_tokens": [
+        "INTERIOR_BORDER_N_S",
+        "INTERIOR_BORDER_W_E",
+        "INTERIOR_BORDER_N_S_W_E",
+        "INTERIOR_BORDER_N_W_E"
+      ],
+      "native_colors": {
+        "dispatch_rva": "160a2b",
+        "table_rva": "19ec30",
+        "label_table_rva": "19ec50",
+        "facet_kinds": [
+          4,
+          5
+        ],
+        "facet_palette": 15,
+        "value_kinds": [
+          6,
+          7
+        ],
+        "value_palette": 11
+      },
+      "earlier_failures": [
+        "173651 and173846: grid borders matched, but Private was cyan rather than native white.",
+        "174048: additional layout settling did not change that170-pixel color mismatch; it was neither missing data nor clipping."
+      ],
+      "limitations": [
+        "Cached opening quote and complete Overview panel parity remain unqualified.",
+        "This reference covers a six-caption child at1200x800; other dimensions and unusually long summary content remain unqualified.",
+        "Other selection destinations and public map routing remain staged."
+      ],
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-174326/result.json": "6ca03f76069d91ae52aa1970efb17313c3226b53c26b2fe9e53fe576bae710a3",
+        "build/stockpile-storage-native-farm-discovery-20261114-174326/workshop-native.json": "0a40ee807b60ce35c87d964b54fac30fbe823b0ebecfede41c9020d2598fa5a9",
+        "build/stockpile-storage-native-farm-discovery-20261114-174326/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+        "build/stockpile-storage-native-farm-discovery-20261114-174326/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "build/stockpile-storage-native-farm-discovery-20261114-174326/workshop-selection-unit-group-member.png": "c02e9d5948987bc30c97cb3709b180bbef1c712eeb89f3445a2e71f3b27e2646",
+        "build/stockpile-storage-native-farm-discovery-20261114-174326/selection-unit-member-live.png": "697755579392e6b18988bd8343e8933e7976b81294479e71e9743242dc366416",
+        "build/stockpile-storage-native-farm-discovery-20261114-174326/selection-unit-detail.json": "faaf877bb1c3e49ff3aa1ac52532dc82ee2ea6defc1537c660c6d78cc14ea8c8",
+        "build/stockpile-storage-native-farm-discovery-20261114-174326/workshop-wire.stdout.log": "d102af3990077e113738b3384706ca9e16401caa601c28dfbc59aba0418e5be4",
+        "build/stockpile-storage-native-farm-discovery-20261114-174326/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+        "build/notes/pm/overview-summary-color-audit.json": "6ced803fe81a0a472524a9276d4ded99d03c4c382734eb9929cb16f3c08d0d09"
+      }
+    },
     "unit_group_scene_reference": {
       "run": "build/stockpile-storage-native-farm-discovery-20261114-173358",
       "status": "passed_with_known_issues",

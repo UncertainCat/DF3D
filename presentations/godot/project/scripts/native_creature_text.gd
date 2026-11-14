@@ -101,10 +101,11 @@ static func stable_magnitude_sort(values: Array):
  for i in values.size(): values[i]["order"]=i
  values.sort_custom(func(a,b): return absi(a.score)>absi(b.score) if absi(a.score)!=absi(b.score) else a.order<b.order)
 
+# Native160a2b table19ec30: facet kinds4/5 use bright7; value kinds6/7 bright3.
 static func add_personality(data: Dictionary, target: Array, category: String, id: int, positive: bool, score: int):
  for rule in data.get("overview_personality_labels",[]):
   if rule.category==category and int(rule.id)==id:
-   target.append({"score":score,"text":rule.positive.text if positive else rule.negative.text,"color":colors[11]})
+   target.append({"score":score,"text":rule.positive.text if positive else rule.negative.text,"color":colors[15 if category=="facet" else 11]})
    return
 
 static func value_bucket(value: int) -> int:

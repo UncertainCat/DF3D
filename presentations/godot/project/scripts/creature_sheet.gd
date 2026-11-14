@@ -242,14 +242,14 @@ func summary_line(cell: Control, value: String, color := Color.WHITE):
 func overview(parent: Node, detail: Dictionary):
  NativeText.load_text(owner.world)
  # Native summaries use equal columns and clipped single-line entries.
- var grid := GridContainer.new()
+ var grid := preload("res://scripts/creature_overview_grid.gd").new()
+ grid.configure(owner.world)
  grid.columns=2
  grid.size_flags_horizontal=Control.SIZE_EXPAND_FILL
  grid.add_theme_constant_override("h_separation",0)
  grid.add_theme_constant_override("v_separation",0)
  parent.add_child(grid)
  var cells: Array=[]
- var source: Texture2D=owner.world.ui_texture("HOVER_RECTANGLE")
  for i in 8:
   var panel := PanelContainer.new()
   panel.size_flags_horizontal=Control.SIZE_EXPAND_FILL
@@ -265,30 +265,6 @@ func overview(parent: Node, detail: Dictionary):
   cell.add_theme_constant_override("separation",0)
   panel.add_child(cell)
   cells.append(cell)
-  if source!=null:
-   # A plain Control keeps decorative lines out of container measurement.
-   var borders := Control.new()
-   borders.mouse_filter=Control.MOUSE_FILTER_IGNORE
-   panel.add_child(borders)
-   for vertical in [false,true]:
-    if vertical and i%2==1: continue
-    var atlas := AtlasTexture.new()
-    atlas.atlas=source
-    atlas.region=Rect2(2,12,2,12) if vertical else Rect2(8,2,8,2)
-    var line := TextureRect.new()
-    line.texture=atlas
-    line.expand_mode=TextureRect.EXPAND_IGNORE_SIZE
-    line.mouse_filter=Control.MOUSE_FILTER_IGNORE
-    borders.add_child(line)
-    line.set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE if vertical else Control.PRESET_BOTTOM_WIDE)
-    # PanelContainer gives the overlay the same inset rectangle as text.
-    # Extend decoration back to the cell edges so adjacent rules join.
-    if vertical:
-     line.offset_left=4; line.offset_right=6
-     line.offset_top=0 if i<2 else -4; line.offset_bottom=6
-    else:
-     line.offset_left=-4; line.offset_right=6
-     line.offset_top=4; line.offset_bottom=6
  var age := int(detail.get("age",-1))
  var sex_symbol: String={0:String.chr(0x2640),1:String.chr(0x2642)}.get(int(detail.get("sex",-1)),"")
  if age>=0: summary_line(cells[0],str(age)+" Years Old"+(", "+sex_symbol if not sex_symbol.is_empty() else ""))

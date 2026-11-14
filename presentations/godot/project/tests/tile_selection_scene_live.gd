@@ -1,6 +1,13 @@
 extends "res://tests/chest_scene_live.gd"
 func expected_filename() -> String:return "workshop-native.json"
 func result_filename() -> String:return "workshop-wire-result.json"
+func capture_tabs(label: String) -> void:
+	await process_frame;await RenderingServer.frame_post_draw
+	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	var native:=Image.load_from_file(directory+"/workshop-selection-"+label+".png");native.convert(Image.FORMAT_RGB8)
+	var region:=Rect2i(896,52,40,72)
+	image.get_region(region).save_png(directory+"/selection-tabs-"+label+"-live.png")
+	check(image.get_region(region).get_data()==native.get_region(region).get_data(),"Selection tab artwork differs: "+label)
 func selection_ready(model) -> bool:
 	var deadline:=Time.get_ticks_msec()+10000
 	while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
@@ -24,16 +31,19 @@ func exercise(expected: Dictionary) -> void:
 	if not await selection_ready(model):return
 	owner=ui.controller("inspector")
 	check(ui.host.active==owner and owner.selected.get("id")==int(sample.native.active_id),"Default floodgate destination differs")
+	await capture_tabs("tabs-building")
 	await pointer(Vector2(920,104))
 	if not await selection_ready(model):return
 	check(ui.host.active==selection and model.snapshot.kind==7,"Item-group tab lost selection ownership")
 	await panel_capture("selection-group","workshop-selection-item-group")
+	await capture_tabs("item-group")
 	await pointer(Vector2(600,118))
 	if not await selection_ready(model):return
 	var item=ui.controller("farm").item_owner
 	if not await settle(item.state):return
 	check(ui.host.active==item and item.state.item_id==int(sample.native.items[0]),"Group row opened wrong item")
 	check(selection.tabs.visible and selection.tabs.selected==-1,"Member did not retain unselected side tabs")
+	await capture_tabs("item-member")
 	await pointer(Vector2(920,104))
 	if not await selection_ready(model):return
 	check(ui.host.active==selection and not item.panel.visible,"Item-to-group handoff retained detail panel")

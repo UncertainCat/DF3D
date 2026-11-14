@@ -9316,9 +9316,26 @@ not trigger the viewer checkpoint; the trigger now accepts both wire and scene
 flags.164327/164504 correctly failed the initially incomplete route for the
 floodgate; neither is live handoff acceptance.
 
+Protected165118 on2026-11-14 adds complete40x72 side-tab comparisons in all
+three native states: building selected, group selected and item member selected.
+The floodgate uses installed BUILDING_ICON_FLOODGATE at tab+(10,2),32x32;
+selection_icon's material-colored map sprite is not the native tab artwork.
+Native164928 exposed that mismatch and is not acceptance. The staged panel
+now resolves this fixed icon from semantic BuildingKind10 and reuses the
+existing selection-icon API for other object alternatives, whose tab artwork
+still needs qualification. Group alternatives have no object icon.
+
+Both standalone selection-tab-icons and the actual main-scene165118 navigation
+pass the full tab comparisons and group-panel comparison. Escape/reset and
+late-reply guards still pass. Core19 passes; known Godot diagnostics only.
+DF13472 exits unsaved with source/prefs preserved, graphics capped30FPS;
+sampled GPU54–55C/5%. selection_reference.tab_artwork_reference retains the
+three native/viewer crops and evidence hashes. This proves the floodgate case,
+not general building/unit/item tab artwork or offscreen metadata availability.
+
 Standalone selection-panel-capture also matches the complete group shell and
 checks pointer dispatch/closure through the real host with injected replies.
-Public map routing, side-tab icons, unit groups, engraving/vermin destinations,
+Public map routing, other side-tab icons, unit groups, engraving/vermin destinations,
 long captions, overflow, resizing and hover remain unfinished. This fixture
 qualifies neither all specialized item artwork nor the individual detail
 panels' native fidelity. Building routing currently requires visible streamed

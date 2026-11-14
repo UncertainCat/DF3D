@@ -12809,6 +12809,35 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "tab_artwork_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-165118",
+      "status": "passed_with_known_issues",
+      "scope": "Complete 40x72 side tabs match native in building/group/member states, including fixed floodgate artwork. Actual main-scene roundtrip and full group panel still pass.",
+      "native_art": "BUILDING_ICON_FLOODGATE from installed graphics_building_icons.txt; semantic BuildingKind10, tab offset10,2 size32,32",
+      "region": [
+        896,
+        52,
+        40,
+        72
+      ],
+      "limitations": [
+        "Other building, unit and item tab artwork is not qualified.",
+        "Public map routing remains staged; native floodgate controls remain incomplete."
+      ],
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-165118/result.json": "b48d87e9af5f56641d4f9d8700685fd0d9130fdb945989ea92e62119f246600b",
+        "build/stockpile-storage-native-farm-discovery-20261114-165118/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+        "build/stockpile-storage-native-farm-discovery-20261114-165118/workshop-wire.stdout.log": "dd5b317cf9b60fdd30c8c74e1bf2747a309f4cacd5d654447b34e2fdc09751a3",
+        "build/stockpile-storage-native-farm-discovery-20261114-165118/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+        "build/stockpile-storage-native-farm-discovery-20261114-165118/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "build/stockpile-storage-native-farm-discovery-20261114-165118/selection-tabs-tabs-building-live.png": "afa9df7c7f3aa35c991f5866fef8200661a9a4449379f16725f1a241b0c2cbf7",
+        "build/stockpile-storage-native-farm-discovery-20261114-165118/workshop-selection-tabs-building.png": "21d469e27fdfb9cb205fc8d371c3e91e90ec2c1c06d04bbd8b780ca10524a70f",
+        "build/stockpile-storage-native-farm-discovery-20261114-165118/selection-tabs-item-group-live.png": "ca78f771e76ae01bab219e87e2cbee0aa05f080b5f17efe967af3f3d5326871b",
+        "build/stockpile-storage-native-farm-discovery-20261114-165118/workshop-selection-item-group.png": "7b997e615fe5bfaf879a1a57af7c6381137a3f170d0b9dd10d990a881bec292d",
+        "build/stockpile-storage-native-farm-discovery-20261114-165118/selection-tabs-item-member-live.png": "5883c023ed1e42f348980808af08742a19996f9500cfd7f8231d9eb4265de2f7",
+        "build/stockpile-storage-native-farm-discovery-20261114-165118/workshop-selection-item-member.png": "26c3da8b057a041b491a909a325b776ecdc98b038d30b71293b259c66033fbf9"
+      }
+    },
     "composed_group_reference": {
       "run": "build/stockpile-storage-native-farm-discovery-20261114-164634",
       "status": "passed_with_known_issues",

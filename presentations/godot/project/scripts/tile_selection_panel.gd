@@ -45,11 +45,24 @@ func _allows_tabs() -> bool:
 
 func _refresh() -> void:
 	var state=navigation.state
-	tabs.set_selection(state.snapshot)
+	var images: Array=[]
+	for target in state.snapshot.get("alternatives",[]):
+		# Reuse semantic selection artwork; groups deliberately have no object
+		# icon. Missing streamed appearance stays blank until qualified.
+		images.append(_alternative_icon(target))
+	tabs.set_selection(state.snapshot,images)
 	tabs.enabled=state.phase==state.Phase.Ready and state.ticket==0
 	if state.snapshot.is_empty():
 		panel.hide()
 		if ui_host.active==self:ui_host.release(self)
+
+func _alternative_icon(target: Dictionary):
+	if target.kind==C.SelectionKind.Building:
+		var building: Dictionary=world.inspect_entity(3,target.id)
+		# Native floodgate tabs use the fixed UI icon, not the material-colored
+		# open/closed terrain sprite returned by selection_icon.
+		if building.get("building_kind",0)==10:return world.ui_texture("BUILDING_ICON_FLOODGATE")
+	return world.selection_icon(target.kind,target.id) if target.kind in [C.SelectionKind.Unit,C.SelectionKind.Item,C.SelectionKind.Building] else null
 
 func close_panel() -> void:
 	panel.hide();ui_host.release(self);cancel_gesture()

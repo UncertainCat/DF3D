@@ -4107,7 +4107,7 @@
     {
       "path": "presentations/godot/project/tests/tile_selection_tabs_capture.gd",
       "status": "manual",
-      "reason": "Rendered native selection tabs and item-group frames/captions comparison (icons excluded). Set DF3D_SELECTION_REFERENCE to the protected layout lane and DF3D_DF_PATH to the pinned game; run with --max-fps 30. Requires native screenshots, never launches DF."
+      "reason": "Rendered native selection tabs and complete item-group rows including icons. Set DF3D_SELECTION_REFERENCE to a protocol211 protected layout+wire lane and DF3D_DF_PATH to the pinned game; run with --max-fps 30. Requires native screenshots, never launches DF."
     },
     {
       "path": "presentations/godot/project/tests/tile_selection_wire_live.gd",

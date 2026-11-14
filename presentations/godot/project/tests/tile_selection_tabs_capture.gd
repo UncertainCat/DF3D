@@ -5,6 +5,16 @@ class Service:
 	var request: Dictionary={}
 	func submit(_domain,value,_observer):request=value;return 1
 	func detach(_ticket):pass
+func typed(value: Variant) -> Variant:
+	if value is Dictionary:
+		var result: Dictionary={}
+		for key in value:result[key]=typed(value[key])
+		return result
+	if value is Array:
+		var result: Array=[]
+		for entry in value:result.append(typed(entry))
+		return result
+	return int(value) if value is float else value
 func run() -> void:
 	if DisplayServer.get_name()=="headless":quit(77);return
 	var directory:=OS.get_environment("DF3D_SELECTION_REFERENCE")
@@ -42,6 +52,9 @@ func run() -> void:
 		var members: Array=[]
 		for id in reference.tile_selection_reference["item-group"].state.items:
 			members.append({"kind":2,"id":int(id),"name":reference.tile_selection_reference.item_names[str(int(id))]})
+		var wire: Dictionary=typed(JSON.parse_string(FileAccess.get_file_as_string(directory+"/workshop-wire-result.json")))
+		for selection in wire.selections:
+			if selection.kind==7:members=selection.members;break
 		model.snapshot={"open":true,"receipt":9001,"kind":7,"id":-1,"members":members}
 		model.phase=model.Phase.Ready
 		var group=preload("res://scripts/tile_selection_group_view.gd").new();root.add_child(group);group.configure(world,model);group.position=Vector2.ZERO
@@ -50,7 +63,6 @@ func run() -> void:
 		var native:=Image.load_from_file(directory+"/workshop-selection-item-group.png");native.convert(Image.FORMAT_RGB8)
 		for y in members.size()*36:
 			for x in 472:
-				if x>=2 and x<34 and y%36>=2 and y%36<34:continue
 				if actual.get_pixel(x,y)!=native.get_pixel(424+x,100+y):fail("Selection group body differs at %d,%d"%[x,y]);return
 		click(Vector2(100,54))
 		if service.request.get("index",-1)!=1 or service.request.get("receipt",0)!=9001:fail("Group row missed selection owner");return

@@ -9197,8 +9197,8 @@ opening native UI. World changes/bridge stop clear ownership. Unsupported old
 InspectItem/ViewContainer operations remain rejected. The Godot adapter accepts
 String and StringName dictionary keys and rejects malformed fields.
 
-Rebuild bridge and client together: both schema defaults and the mailbox use210
-(`Local\\df3d_management_v210`). Earlier recordings imply no group-member data.
+Protocol211 supersedes the210 defaults and mailbox; rebuild bridge and client
+together. Recordings before210 imply no group-member data.
 Core19, extension build, management contract and UI composition checks pass.
 Protected160051 on2026-11-14 verifies four native default/alternative cases,
 eight ordered ItemList members, selecting the last member, stale/closed receipt
@@ -9262,16 +9262,32 @@ owner. Receipt changes reset local scrolling and artwork; late artwork for old
 receipts is ignored. Pending navigation disables row and scrollbar input. It
 uses the shared scrollbar but overflow/resize/hover parity is not yet qualified.
 
-The expanded tile_selection_tabs_capture compares eight complete row frames
-and short captions against native161327, excluding32x32 icon interiors. The
-472x288 region matches exactly; a second-row click submits member index1 with
-the displayed receipt, and a pending second click submits nothing. Known Godot
-diagnostics only. `selection_reference.group_body_reference` records the scope.
-Item artwork still needs semantic appearance transport: reuse the existing
-owned itemAppearance provider and ItemInspectionAppearance contract, not stale
-world-inspector summaries or one full detail-sheet request per visible row.
-The view is not connected to public map routing; icons, long captions, overflow
-and main-scene detail handoff remain unfinished.
+Management protocol211 adds typed ItemInspectionAppearance facts to selection
+identities. ItemList members require both item type and appearance. The bridge
+uses the existing owned itemAppearance provider at the safe point; Godot uses
+item_sheet_icon with the returned facts. No per-row detail-sheet request or
+native menu scratch is needed. Producer and consumer bound aggregate appearance
+data to256KiB; invalid/missing specialized facts fail closed. Both schema
+defaults and the mailbox use211 (`Local\\df3d_management_v211`); older recordings
+imply no group artwork, and bridge/client must be rebuilt together.
+
+Protected163450 on2026-11-14 verifies the final211 bridge and eight typed member
+appearances through the real semantic service, including navigation and receipt
+retirement. The expanded tile_selection_tabs_capture compares the entire472x288
+body with native: eight icons, row/picture frames and short captions match
+pixel-for-pixel with no excluded interiors. A second-row click submits member
+index1 with receipt9001; a pending second click submits nothing. The side-tab
+frame comparisons also pass. Core19, MSVC, extension and UI composition pass.
+Only the three documented Godot startup/shutdown diagnostics remain, so rendered
+acceptance is passed_with_known_issues. Owned DF15476 exits unsaved; source saves
+and preferences are preserved. Both graphical clients are capped30FPS; sampled
+GPU49–51C/4–5% is not a continuous peak. selection_reference.group_body_reference
+retains bounded evidence and hashes.
+
+The view remains staged. Public map routing, main-scene detail handoff,
+unit-member text/art, long captions, overflow, resizing and hover still require
+implementation or acceptance. The eight dolomite rows do not establish artwork
+parity for all specialized item types.
 
 Protected contents oracle220127 on2026-10-28 observes40 PERM seed entries in
 farm968. The six visible View controls open the first six `contained_items`

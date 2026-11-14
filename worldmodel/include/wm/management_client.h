@@ -13,7 +13,6 @@ struct SelectionRequest {
   int32_t x=-1,y=-1,z=-1,index=-1;
   uint64_t receipt=0;
 };
-struct SelectionIdentity { SelectionKind kind=SelectionKind::None; int32_t id=-1; std::string name; };
 struct SelectionText { SelectionSection section=SelectionSection::AgeSex; std::string text; };
 struct SelectionItem { int32_t id=-1; std::string name; };
 // Original-asset references; indexes are local to this appearance.
@@ -21,21 +20,6 @@ struct SelectionAppearance {
   std::vector<std::string> tilePages,palettes;
   std::vector<AppearanceLayer> layers;
   friend bool operator==(const SelectionAppearance&,const SelectionAppearance&)=default;
-};
-struct SelectionState {
-  bool open=false;
-  uint64_t receipt=0;
-  SelectionKind kind=SelectionKind::None;
-  int32_t id=-1,x=-1,y=-1,z=-1;
-  std::string title,subtitle,job,description;
-  std::vector<SelectionIdentity> alternatives;
-  std::vector<SelectionIdentity> members;
-  std::vector<SelectionItem> items;
-  std::vector<SelectionText> overview;
-  SelectionIdentity container;
-  int32_t weight=-1,value=-1;
-  bool passable=false,isDoor=false,complete=true;
-  SelectionAppearance portrait;
 };
 struct CreatureFact { std::string key,text; int64_t number=0; bool hasNumber=false; };
 struct CreatureRecord { int32_t id=-1,relatedId=-1; std::string name; std::vector<CreatureFact> facts; };
@@ -345,6 +329,22 @@ struct ItemContainerContentsFacts {
     int8_t materialInorganic=-1;std::string solidColor;
 };
 struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1;std::optional<ItemContainerContentsFacts> contents={};int8_t floodgateOpen=-1,doorOpen=-1,doorForbidden=-1,doorWear=-1,bucketLiquid=-1;std::string bucketLiquidColor; int8_t cageMaterialFamily=-1,cageOccupantEntity=-1;int32_t cageOccupantId=-1;std::string cageSolidColor;int8_t restraintRope=-1;std::string restraintSolidColor;std::optional<SelectionAppearance> portrait,cageOccupant;int8_t slabEngraving=-2;std::optional<SelectionAppearance> corpseSelector,legwearSelector;std::optional<std::string> craftGemColor;int8_t craftSoftMaterial=-1,artifactMood=-1,coffinUnused=-1; };
+struct SelectionIdentity { SelectionKind kind=SelectionKind::None; int32_t id=-1; std::string name; int16_t itemType=-1; std::optional<ItemInspectionAppearance> appearance; };
+struct SelectionState {
+  bool open=false;
+  uint64_t receipt=0;
+  SelectionKind kind=SelectionKind::None;
+  int32_t id=-1,x=-1,y=-1,z=-1;
+  std::string title,subtitle,job,description;
+  std::vector<SelectionIdentity> alternatives;
+  std::vector<SelectionIdentity> members;
+  std::vector<SelectionItem> items;
+  std::vector<SelectionText> overview;
+  SelectionIdentity container;
+  int32_t weight=-1,value=-1;
+  bool passable=false,isDoor=false,complete=true;
+  SelectionAppearance portrait;
+};
 struct BuildingContentsItem {
   int32_t id=-1,role=-1;std::string name;
   bool forbid=false,dump=false,melt=false,hidden=false,canDump=false,canMelt=false,inJob=false,inBuilding=false;

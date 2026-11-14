@@ -27,7 +27,8 @@ SelectionState decodeSelection(const m::SelectionState* a) {
   n.isDoor = a->is_door();
   n.complete = a->complete();
   auto identity = [](const m::SelectionIdentity* e) {
-    return SelectionIdentity{SelectionKind(e->kind()), e->id(), e->name()->str()};
+    SelectionIdentity value{SelectionKind(e->kind()), e->id(), e->name()->str()};
+    value.itemType=e->item_type();if(e->appearance())value.appearance=decodeInspectionAppearance(e->appearance());return value;
   };
   for (const auto* e : *a->alternatives())
     n.alternatives.push_back(identity(e));

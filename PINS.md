@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management211 adds item type and owned ItemInspectionAppearance to selection
+identities. ItemList members require those facts; other target kinds cannot carry
+item appearance. Rebuild both peers: `Local\df3d_management_v211` isolates210.
+Earlier recordings do not imply group artwork and must not synthesize it.
+
 Management210 connects the owned tile-selection provider. SelectionState.members
 contains typed unit/item group members, and SelectMember chooses a row using a
 client/world-bound receipt. Native group and engraving IDs use-1 with tile

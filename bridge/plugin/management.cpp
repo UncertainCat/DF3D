@@ -631,21 +631,36 @@ struct TileSelectionSession {
   df3d_selection::Selection source;
   df3d_selection::Target active;
   std::vector<std::string> memberNames;
+  std::vector<int16_t> memberTypes;
+  std::vector<std::optional<ItemInspectionAppearance>> memberAppearances;
 };
 std::optional<TileSelectionSession> tileSelectionOwner,tileSelectionReply;
 uint64_t nextTileSelectionReceipt=0;
+ItemInspectionAppearance copyInspectionAppearance(const df3d_production::ItemInspectionAppearance& a);
 bool prepareTileSelectionReply(TileSelectionSession& value) {
-  value.memberNames.clear();
+  value.memberNames.clear();value.memberTypes.clear();value.memberAppearances.clear();
   if(value.active.kind!=df::view_sheet_type::ITEM_LIST)return true;
-  size_t bytes=0;
+  size_t bytes=0,appearanceBytes=0;
   for(auto id:value.source.items) {
     // Native item-group renderer15a12e..15a147 uses the same independently
     // owned formatter and arguments as building contents: false, -1.
-    auto caption=df3d_production::buildingItemCaption(df::item::find(id));
+    auto* item=df::item::find(id);
+    auto caption=df3d_production::buildingItemCaption(item);
     if(!caption)return false;
     auto text=DF2UTF(*caption);bytes+=text.size();
     if(text.size()>512 || bytes>131072 || text.find('\0')!=std::string::npos)return false;
     value.memberNames.push_back(std::move(text));
+    auto appearance=df3d_production::itemAppearance(item);if(!appearance)return false;
+    const auto& look=*appearance;
+    appearanceBytes+=256+look.materialToken.size()+look.subtypeRaw.size()+look.colorToken.size()+
+      look.restraintSolidColor.size()+look.cageSolidColor.size()+look.bucketLiquidColor.size();
+    if(look.craftGemColor)appearanceBytes+=look.craftGemColor->size();
+    for(const auto* recipe:{&look.portrait,&look.corpseSelector,&look.cageOccupant,&look.legwearSelector})
+      if(*recipe && !df3d_production::validItemRecipe(**recipe,appearanceBytes))return false;
+    if(look.contents){appearanceBytes+=64+look.contents->solidColor.size();
+      for(const auto& row:look.contents->entries)appearanceBytes+=64+row.materialToken.size()+row.colorToken.size();}
+    if(appearanceBytes>256*1024)return false;
+    value.memberTypes.push_back(int16_t(item->getType()));value.memberAppearances.push_back(copyInspectionAppearance(*appearance));
   }
   return true;
 }
@@ -1337,7 +1352,9 @@ void publish() {
     if(value.active.kind==df::view_sheet_type::UNIT_LIST || value.active.kind==df::view_sheet_type::ITEM_LIST)
       for(auto id:value.active.kind==df::view_sheet_type::UNIT_LIST?value.source.units:value.source.items) {
         const auto name=members.size()<value.memberNames.size()?b.CreateString(value.memberNames[members.size()]):empty;
-        members.push_back(m::CreateSelectionIdentity(b,memberKind,id,name));
+        const auto index=members.size();
+        const auto look=index<value.memberAppearances.size()?encodeInspectionAppearance(value.memberAppearances[index]):flatbuffers::Offset<m::ItemInspectionAppearance>{};
+        members.push_back(m::CreateSelectionIdentity(b,memberKind,id,name,index<value.memberTypes.size()?value.memberTypes[index]:-1,look));
       }
     const auto alternatives=b.CreateVector(tabs),memberRows=b.CreateVector(members);
     const auto items=b.CreateVector(std::vector<flatbuffers::Offset<m::SelectionItem>>{});

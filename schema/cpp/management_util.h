@@ -184,8 +184,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 210;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v210";
+inline constexpr uint32_t kManagementVersion = 211;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v211";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -2977,7 +2977,24 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
        !a->alternatives() || a->alternatives()->size()>4096 || !a->items() || a->items()->size()>256 || !a->overview() || a->overview()->size()>32 || a->weight() < -1 || a->value() < -1) return "invalid selection state";
     if(a->tile() && (a->tile()->x()<0 || a->tile()->y()<0 || a->tile()->z()<0)) return "invalid selected tile";
     if(a->open() && a->id()==-1 && !a->tile())return "missing selected tile";
-    auto identity=[&](const SelectionIdentity* e){return e && targetId(e->kind(),e->id()) && (e->id()!=-1 || a->tile()) && text(e->name(),512);};
+    size_t appearanceBytes=0;
+    auto identity=[&](const SelectionIdentity* e){
+      if(!e || !targetId(e->kind(),e->id()) || (e->id()==-1 && !a->tile()) || !text(e->name(),512))return false;
+      const auto* look=e->appearance();
+      if(!look)return e->item_type()==-1;
+      if(e->kind()!=SelectionKind::Item || e->item_type()<0 || e->item_type()>92 || !validInspectionInstrument(*look,e->item_type()) ||
+         !text(look->material_token(),256) || !look->material_token()->size() || !text(look->subtype_raw(),128) ||
+         !text(look->color_token(),128) || look->stack()<1 || (look->flags()&~96))return false;
+      appearanceBytes+=256+look->material_token()->size()+look->subtype_raw()->size()+look->color_token()->size();
+      for(const auto* p:{look->portrait(),look->corpse_selector(),look->cage_occupant(),look->legwear_selector()})if(p)
+        if(validateOwnerAppearance(*p,appearanceBytes))return false;
+      for(const auto* t:{look->restraint_solid_color(),look->cage_solid_color(),look->bucket_liquid_color(),look->craft_gem_color()})if(t)appearanceBytes+=t->size();
+      if(const auto* c=look->contents()){
+        appearanceBytes+=64;if(c->solid_color())appearanceBytes+=c->solid_color()->size();
+        for(const auto* row:*c->entries())appearanceBytes+=64+row->material_token()->size()+row->color_token()->size();
+      }
+      return appearanceBytes<=256*1024;
+    };
     for(const auto* e:*a->alternatives()) if(!identity(e)) return "invalid selection identity";
     if((a->kind()==SelectionKind::UnitList || a->kind()==SelectionKind::ItemList) &&
        (!a->members() || a->members()->size()<(a->kind()==SelectionKind::UnitList?6u:2u)))return "missing selection group members";
@@ -2989,6 +3006,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       size_t bytes=0;
       for(const auto* e:*a->members()) {
         if(!e || e->kind()!=kind || !identity(e) || e->id()<0 || !members.insert(e->id()).second)return "invalid selection member";
+        if(kind==SelectionKind::Item && !e->appearance())return "missing selection item appearance";
         bytes+=e->name()->size();
       }
       if(bytes>131072)return "selection members too large";

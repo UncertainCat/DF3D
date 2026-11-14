@@ -12810,28 +12810,27 @@
   },
   "selection_reference": {
     "group_body_reference": {
-      "native_run": "build/stockpile-storage-native-farm-discovery-20261114-161327",
+      "native_run": "build/stockpile-storage-native-farm-discovery-20261114-163450",
+      "protocol": 211,
       "status": "passed_with_known_issues",
-      "scope": "Eight native item-group row backgrounds, picture frames and full short captions match pixel-for-pixel; icon interiors excluded because semantic appearance transport is pending. Second-row click submits SelectMember index1 with receipt9001; pending click ignored.",
+      "scope": "Eight native item-group rows match pixel-for-pixel, including icons, picture frames and short captions, with no excluded interiors. Typed wire includes all eight appearances. Second-row click submits SelectMember index1 with receipt9001; pending click ignored. Existing side-tab frame comparisons pass.",
       "crop": [
         424,
         100,
         472,
         288
       ],
-      "excluded_icon_in_each_row": [
-        2,
-        2,
-        32,
-        32
-      ],
       "limitations": [
-        "Artwork and main-scene integration remain unfinished.",
-        "Scrollable overflow, resizing, hover and long captions have not received live/rendered acceptance."
+        "Public map routing and main-scene detail handoff remain unfinished.",
+        "Scrollable overflow, resizing, hover, long captions and specialized item artwork are not qualified by these eight dolomite rows."
       ],
       "hashes": {
-        "build/stockpile-storage-native-farm-discovery-20261114-161327/viewer-item-group-body.png": "f14eedf85e7f789d33fed3c9b90f5c267e9af6d82bb969f8c7ab9fa648149130",
-        "build/notes/pm/selection-group-capture.log": "f5cd31564ea5eb55a0b7996255296429457f2f869eff9d8aeb3e3c9f5a45f23c"
+        "build/stockpile-storage-native-farm-discovery-20261114-163450/result.json": "6da02773dca4e960fa10af1d9bd37a33b1991855993cd71ae167d29fecfe933c",
+        "build/stockpile-storage-native-farm-discovery-20261114-163450/workshop-wire-result.json": "27f8535ad3d3994ef55085604beec03bc5061ef3fe6d8ca4876c72ee134a3853",
+        "build/stockpile-storage-native-farm-discovery-20261114-163450/workshop-selection-item-group.png": "7b997e615fe5bfaf879a1a57af7c6381137a3f170d0b9dd10d990a881bec292d",
+        "build/stockpile-storage-native-farm-discovery-20261114-163450/viewer-item-group-body.png": "b622ddd38228053a93a4f28af0e5453e7130d0c645325be806cfba179be89982",
+        "build/stockpile-storage-native-farm-discovery-20261114-163450/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "build/notes/pm/selection211-final-capture.log": "9f2949a15009bedfbbb1fc015c03a062c8f4b98ce410b8de5b99a27ea46725d6"
       }
     },
     "caption_owner_reference": {

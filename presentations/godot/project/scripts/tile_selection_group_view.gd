@@ -1,10 +1,11 @@
 extends Control
 # Staged item-group body. Candidate order/captions belong to the bridge;
-# images are supplied by the panel owner from semantic appearance data.
+# images resolve through the world API from owned semantic appearance data.
 const C=preload("res://scripts/management_contract.gd")
 var art=preload("res://scripts/original_ui.gd").new()
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var state
+var world
 var rows: Array=[]
 var icons: Dictionary={}
 var receipt:=0
@@ -14,7 +15,7 @@ var scrollbar
 var input_allowed: Callable
 
 func configure(source,model) -> void:
-	state=model;art.configure(source);picture.configure(source);theme=art.theme
+	world=source;state=model;art.configure(source);picture.configure(source);theme=art.theme
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
 	clip_contents=true
 	scrollbar=preload("res://scripts/area_location_scrollbar.gd").new();add_child(scrollbar);scrollbar.configure(source)
@@ -37,6 +38,8 @@ func refresh() -> void:
 	var next: int=state.snapshot.get("receipt",0)
 	if receipt!=next:first=0;icons.clear();receipt=next
 	rows=state.snapshot.get("members",[]) if state.snapshot.get("kind",0)==C.SelectionKind.ItemList else []
+	for row in rows:
+		if row.has("appearance") and not icons.has(row.id):icons[row.id]=world.item_sheet_icon(row.item_type,row.appearance,row.id)
 	visible=state.snapshot.get("open",false) and state.snapshot.get("kind",0)==C.SelectionKind.ItemList
 	first=clampi(first,0,maxi(0,rows.size()-capacity))
 	scrollbar.set_rows(rows.size(),first);scrollbar.visible=capacity>0 and rows.size()>capacity

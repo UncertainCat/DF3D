@@ -4105,6 +4105,11 @@
       "reason": "Protected workshop CONNECTIONS, CONNECTIONS_EFFECTS and CONNECTIONS_SCENE fixture; actual owner and visible Connections controls. Never standalone."
     },
     {
+      "path": "presentations/godot/project/tests/tile_selection_tabs_capture.gd",
+      "status": "manual",
+      "reason": "Rendered native selection frame comparison. Set DF3D_SELECTION_REFERENCE to the protected layout lane and DF3D_DF_PATH to the pinned game; run with --max-fps 30. Requires native screenshots, never launches DF."
+    },
+    {
       "path": "presentations/godot/project/tests/tile_selection_wire_live.gd",
       "status": "manual",
       "reason": "Protected TILE_SELECTION and TILE_SELECTION_RUNTIME native fixture; typed choices, grouped members and receipt navigation. Never standalone."

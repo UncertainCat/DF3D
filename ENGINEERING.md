@@ -9210,6 +9210,25 @@ results/hashes. Earlier155755/155926 failed adapter key validation and are not
 acceptance. Unit-group/footprint/hidden/engraving/vermin coverage, full UI-state
 guards, rendered tabs/group panels and normal map routing remain unfinished.
 
+The staged `tile_selection_tabs.gd` renders native right-edge alternatives using
+HOVER_TAB, HOVER_TAB_INACTIVE's individual variants and native inside corners.
+It emits ordered indices, takes artwork from its future owner and blocks input
+while disabled. Native160405 on2026-11-14 opens the ItemList tab and its first
+member through clicks; member selection leaves both tabs unselected. The group
+has eight36-pixel rows starting at424,100 at1200x800, with names/artwork and no
+additional group header. The group tab itself has no icon in this capture.
+
+`tile_selection_tabs_capture.gd` compares the complete group-tab frame/interior
+and building-tab left join in all three states pixel-for-pixel, and checks click
+index/disabled input. It passes with only known Godot diagnostics. Both native
+and rendered runs use30FPS; native sampled51C/9%, owned DF38484 exits unsaved
+with source/preferences preserved. `selection_reference.layout_reference`
+retains states and hashes. Capture160310 reached the group but failed the next
+map selection because the open panel intercepted it;160405 explicitly dismisses
+the sheet before the next case. Building icons, other sizes, item-row content,
+scrolling, hover and actual owner integration remain unfinished. The component
+is not connected to public routing and is not full selection UI acceptance.
+
 Protected contents oracle220127 on2026-10-28 observes40 PERM seed entries in
 farm968. The six visible View controls open the first six `contained_items`
 IDs in vector order. After closing the item sheet and reselecting the farm,

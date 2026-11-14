@@ -165,6 +165,31 @@ local ok,err=xpcall(function()
    shot('selection-'..target.id)
    assert(json.encode(observe())==json.encode(before),'Selection provider changed native sheet')
    assert(json.encode(actual)==json.encode(before),'Selection provider differs from native')
+   if os.getenv('DF3D_TILE_SELECTION_LAYOUT')=='1' and target.id=='items'then
+    local function click(x,y)
+     df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+     g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+     df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+     df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+    end
+    local function layout(name)
+     local cells={}
+     for y=4,math.min(g.dimy-1,35)do for x=g.dimx-98,g.dimx-30 do
+      local pen=dfhack.screen.readTile(x,y)
+      cells[#cells+1]={x=x,y=y,ch=pen.ch,fg=pen.fg,bg=pen.bg,bold=pen.bold,tile=pen.tile}
+     end end
+     result.tile_selection_reference[name]={state=observe(),cells=cells,dimensions={g.dimx,g.dimy}}
+     shot('selection-'..name)
+    end
+    layout('tabs-building')
+    click((g.dimx-35)*8,104)
+    assert(sheet.active_sheet==df.view_sheet_type.ITEM_LIST,'Item group tab click missed')
+    layout('item-group')
+    click((g.dimx-75)*8,118)
+    assert(sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==before.items[1],'Group row did not select first item')
+    layout('item-member')
+    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   end
   end
   if os.getenv('DF3D_TILE_SELECTION_RUNTIME')=='1'then
    local before=observe()

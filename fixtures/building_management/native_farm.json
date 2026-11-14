@@ -12809,6 +12809,139 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "layout_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-160405",
+      "status": "native passed; rendered component passed_with_known_issues",
+      "owned_df_pid": 38484,
+      "source_preserved": true,
+      "closed_unsaved": true,
+      "states": {
+        "tabs-building": {
+          "active_id": 74,
+          "active_kind": 2,
+          "building": 74,
+          "items": [
+            1886,
+            1971,
+            1972,
+            1993,
+            1994,
+            4828,
+            4917,
+            4981
+          ],
+          "tabs": [
+            {
+              "id": 74,
+              "kind": 2
+            },
+            {
+              "id": -1,
+              "kind": 6
+            }
+          ],
+          "units": [],
+          "valid": true,
+          "vermin": []
+        },
+        "item-group": {
+          "active_id": -1,
+          "active_kind": 6,
+          "building": 74,
+          "items": [
+            1886,
+            1971,
+            1972,
+            1993,
+            1994,
+            4828,
+            4917,
+            4981
+          ],
+          "tabs": [
+            {
+              "id": 74,
+              "kind": 2
+            },
+            {
+              "id": -1,
+              "kind": 6
+            }
+          ],
+          "units": [],
+          "valid": true,
+          "vermin": []
+        },
+        "item-member": {
+          "active_id": 1886,
+          "active_kind": 1,
+          "building": 74,
+          "items": [
+            1886,
+            1971,
+            1972,
+            1993,
+            1994,
+            4828,
+            4917,
+            4981
+          ],
+          "tabs": [
+            {
+              "id": 74,
+              "kind": 2
+            },
+            {
+              "id": -1,
+              "kind": 6
+            }
+          ],
+          "units": [],
+          "valid": true,
+          "vermin": []
+        }
+      },
+      "layout": {
+        "sheet_origin": [
+          416,
+          52
+        ],
+        "tab_origin": [
+          896,
+          52
+        ],
+        "tab_stride": [
+          0,
+          36
+        ],
+        "tab_size": [
+          40,
+          36
+        ],
+        "group_first_row": [
+          424,
+          100
+        ],
+        "group_row_height": 36
+      },
+      "observations": [
+        "ItemList tab click selects group; first row click opens item1886.",
+        "After member selection neither alternative is selected.",
+        "Eight group rows show native dolomite blocks captions; no group tab icon."
+      ],
+      "render_scope": "Complete second/group tab frame and interior plus first/building tab left join at1200x800, three active states. Pixel exact. Building icon, responsive layout and integrated panel ownership not accepted.",
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-160405/result.json": "91d7252377e22e60c9e044e5c91e390c0bfe9d8974c11b0f2642a5b761de79fe",
+        "build/stockpile-storage-native-farm-discovery-20261114-160405/workshop-native.json": "7162580ce580c0ca65f10b150f7038ebdd5c5bd953dfb7bfa1e8a503f1880ec8",
+        "build/stockpile-storage-native-farm-discovery-20261114-160405/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "build/stockpile-storage-native-farm-discovery-20261114-160405/workshop-selection-tabs-building.png": "21d469e27fdfb9cb205fc8d371c3e91e90ec2c1c06d04bbd8b780ca10524a70f",
+        "build/stockpile-storage-native-farm-discovery-20261114-160405/workshop-selection-item-group.png": "7b997e615fe5bfaf879a1a57af7c6381137a3f170d0b9dd10d990a881bec292d",
+        "build/stockpile-storage-native-farm-discovery-20261114-160405/workshop-selection-item-member.png": "26c3da8b057a041b491a909a325b776ecdc98b038d30b71293b259c66033fbf9",
+        "build/stockpile-storage-native-farm-discovery-20261114-160405/viewer-tabs-tabs-building.png": "61d29332478c12fde980ab154dc1add6ad19bd6ce5c0dd4046839dade01b1931",
+        "build/stockpile-storage-native-farm-discovery-20261114-160405/viewer-tabs-item-group.png": "fc8f2cef2fbd56e156efa4438a3751ed50f66947eae251e83f9f3ed290371f27",
+        "build/stockpile-storage-native-farm-discovery-20261114-160405/viewer-tabs-item-member.png": "b059f47ea5df081af7ad98e1bdf4a3e5d075ad2f3c91970751315d9c7741e986"
+      }
+    },
     "transport_reference": {
       "run": "build/stockpile-storage-native-farm-discovery-20261114-160051",
       "protocol": 210,

@@ -57,12 +57,12 @@ func _draw() -> void:
 		patch(picture.texture(false),Rect2(0,0,40,36))
 		if unit_icon!=null:draw_texture_rect(unit_icon,Rect2(2,2,32,32),false)
 		caption(assigned_caption(),Vector2(56,24))
-	var remove: Texture2D=art.texture("LOCATION_OCCUPATION_REMOVE_WORKER")
+	var remove: Texture2D=art.texture("BUILDING_SHEET_CLEAR_WORKER")
 	if remove!=null:draw_texture_rect(remove,remove_rect(),false)
-	caption("Only one master may be assigned to each workshop.",Vector2(56,58))
+	caption("Only one master may be assigned to each workshop.",Vector2(56,60))
 	if state.assigned.get("specialization_visible",false):
 		var specialized: bool=state.assigned.specialized
 		var mode: Texture2D=art.texture("WORKER_ONLY_DO_ASSIGNED_JOBS" if specialized else "WORKER_DO_ANY_AVAILABLE_JOB")
 		if mode!=null:draw_texture_rect(mode,Rect2(0,96,32,36),false)
-		caption(assigned_caption(),Vector2(56,106))
-		caption("will only do assigned tasks" if specialized else "will do available tasks anywhere",Vector2(56,118))
+		caption(assigned_caption(),Vector2(56,108))
+		caption("will only do assigned tasks" if specialized else "will do available tasks anywhere",Vector2(56,120))

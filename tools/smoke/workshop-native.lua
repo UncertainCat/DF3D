@@ -124,8 +124,24 @@ local ok,err=xpcall(function()
  if os.getenv('DF3D_WORKSHOP_SHEET_LAYOUT')=='1'then
   assert(#jobs==0,'Sheet layout reference needs empty queue')
   local original_limit=building:getWorkshopProfile().max_general_orders
+  local assigned,specialized
+  local profile=building:getWorkshopProfile()
+  local function click(x,y)
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+   df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  end
   local created={}
   local worked,problem=xpcall(function()
+   if os.getenv('DF3D_WORKSHOP_SHEET_ASSIGNED')=='1'then
+    assert(#profile.permitted_workers==0)
+    assert(click_label('Workers'));click(448,154);click(80,106)
+    assert(#profile.permitted_workers==1);assigned=assert(df.unit.find(profile.permitted_workers[0]))
+    specialized=assigned.flags4.only_do_assigned_jobs
+    result.sheet_assigned={unit_id=assigned.id,specialized=specialized}
+    assert(click_label('Tasks'))
+   end
    for i=1,2 do
     assert(click_label('Add new task'));assert(click_label('Make bed'))
     created[#created+1]=assert(building.jobs[#building.jobs-1])
@@ -137,6 +153,13 @@ local ok,err=xpcall(function()
     for _,tab in ipairs{'Tasks','Workers','Work orders'}do
      assert(click_label(tab),'Layout tab missing: '..tab)
      shot('sheet-'..size..'-'..tab:gsub(' ','-'))
+     if assigned and tab=='Workers'then
+      click((g.dimx-98)*8+32,48+(size=='default' and 4 or 0)+198)
+      assert(assigned.flags4.only_do_assigned_jobs~=specialized)
+      shot('sheet-'..size..'-Workers-mode')
+      click((g.dimx-98)*8+32,48+(size=='default' and 4 or 0)+198)
+      assert(assigned.flags4.only_do_assigned_jobs==specialized)
+     end
     end
     assert(click_label('Tasks'));assert(click_label('Add new task'))
     shot('sheet-'..size..'-picker')
@@ -146,9 +169,11 @@ local ok,err=xpcall(function()
    capture('workshop-wire')
    local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)
    assert(building:getWorkshopProfile().max_general_orders==original_limit,'Resized viewer changed original general-order limit')
+   if assigned then assert(#profile.permitted_workers==1 and profile.permitted_workers[0]==assigned.id and assigned.flags4.only_do_assigned_jobs==specialized,'Resized worker gestures changed initial assignment/mode')end
    result.sheet_layout_viewer=receipt.sheet_layout;shot('sheet-layout-complete')
   end,debug.traceback)
   for _,job in ipairs(created)do assert(dfhack.job.removeJob(job))end
+  if assigned then assigned.flags4.only_do_assigned_jobs=specialized;profile.permitted_workers:resize(0)end
   resize_worker('default');assert(worked,problem);return
  end
  if os.getenv('DF3D_WORKSHOP_WORKER_HOVER')=='1'then

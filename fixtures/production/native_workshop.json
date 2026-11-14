@@ -39353,5 +39353,151 @@
       "Live furniture subjects are citron wood table and paradise nut wood chair.",
       "Populated work-order rows, assigned Workers resize and whole workshop exposure remain separate requirements."
     ]
+  },
+  "assigned_worker_layout_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261114-132700",
+    "assigned": {
+      "specialized": false,
+      "unit_id": 5573
+    },
+    "sizes": [
+      {
+        "dimx": 120,
+        "dimy": 50,
+        "size": "small"
+      },
+      {
+        "dimx": 200,
+        "dimy": 75,
+        "size": "wide"
+      },
+      {
+        "dimx": 114,
+        "dimy": 46,
+        "size": "minimum"
+      },
+      {
+        "dimx": 150,
+        "dimy": 66,
+        "size": "default"
+      }
+    ],
+    "comparisons": [
+      {
+        "size": "small",
+        "tab": "Workers",
+        "crop": [
+          176,
+          48,
+          664,
+          564
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "small",
+        "tab": "Workers-mode",
+        "crop": [
+          176,
+          48,
+          664,
+          564
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "wide",
+        "tab": "Workers",
+        "crop": [
+          816,
+          48,
+          1304,
+          864
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "wide",
+        "tab": "Workers-mode",
+        "crop": [
+          816,
+          48,
+          1304,
+          864
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "minimum",
+        "tab": "Workers",
+        "crop": [
+          128,
+          48,
+          616,
+          516
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "minimum",
+        "tab": "Workers-mode",
+        "crop": [
+          128,
+          48,
+          616,
+          516
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "default",
+        "tab": "Workers",
+        "crop": [
+          416,
+          52,
+          904,
+          760
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "default",
+        "tab": "Workers-mode",
+        "crop": [
+          416,
+          52,
+          904,
+          760
+        ],
+        "different_pixels": 0
+      }
+    ],
+    "sha256": {
+      "workshop-native.json": "b6358f3151c776742cd7b410e7fef87bc8deaaa8dca5fe3fa99834447c79f908",
+      "workshop-wire-result.json": "75c6f7c9899fb3cd8f4c477acaeca614620a6e652c383c2ba493d06f60aba981",
+      "result.json": "26c7044a45243cce2415c05cd2a67fdfbb7c86c8a1b5b6795acfe8c1a2231ef5",
+      "workshop-sheet-minimum-Workers-mode.png": "fdf506a58abe57e886f57e6e80bea4f39227d1eb1fe2978af18da99ea06bfc1a",
+      "workshop-sheet-minimum-Workers-mode-live.png": "6e89d795512efd57ebd8553f5df220ffeca1bb02a47a06e927a0de3788aa1ab4"
+    },
+    "coverage": [
+      "Native pointer assignment and specialization toggle/restoration.",
+      "Viewer actual specialization toggle/restoration, Remove, Assign and first native-matching candidate click at960x600,1600x900,912x552,1200x800.",
+      "Fresh semantic receipts after each mutation; final native assignment/mode and limit readbacks unchanged before fixture cleanup.",
+      "Eight whole-panel crops match native pixels, including portrait, labels, button artwork and both work modes."
+    ],
+    "fixes": [
+      "Use native BUILDING_SHEET_CLEAR_WORKER rather than LOCATION_OCCUPATION_REMOVE_WORKER.",
+      "Move secondary explanation and mode captions to native baselines."
+    ],
+    "result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "godot-separate-thread-notice",
+      "godot-device-finalize",
+      "godot-shutdown-objects"
+    ],
+    "limits": [
+      "One assigned dwarf in a completed Carpenter workshop; other assigned creature types and disallowed specialization remain separate.",
+      "Whole workshop public exposure remains gated."
+    ]
   }
 }

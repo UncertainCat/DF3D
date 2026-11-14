@@ -25,8 +25,26 @@ func run() -> void:
 		for tab in 3:
 			click(owner.panel.global_position+owner.panel.tab_rect(tab).get_center())
 			await settle(service,func():return owner.panel.selected_tab==tab and (tab!=1 or owner.workers.phase==owner.workers.Phase.Ready) and (tab!=2 or owner.orders.phase==owner.orders.Phase.Ready))
+			if tab==1 and reference.has("sheet_assigned"):
+				await settle(service,func():return owner.panel.workers.unit_icon!=null)
 			await process_frame;await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/workshop-sheet-"+sample.size+"-"+["Tasks","Workers","Work-orders"][tab]+"-live.png")
+			if tab==1 and reference.has("sheet_assigned"):
+				var worker_id: int=reference.sheet_assigned.unit_id
+				var initial: bool=reference.sheet_assigned.specialized
+				check(owner.workers.assigned.get("id")==worker_id,"Assigned worker identity differs")
+				click(owner.panel.workers.global_position+owner.panel.workers.specialization_rect().get_center())
+				await settle(service,func():return worker_ready(owner) and owner.workers.assigned.specialized!=initial)
+				await process_frame;await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/workshop-sheet-"+sample.size+"-Workers-mode-live.png")
+				click(owner.panel.workers.global_position+owner.panel.workers.specialization_rect().get_center())
+				await settle(service,func():return worker_ready(owner) and owner.workers.assigned.specialized==initial)
+				click(owner.panel.workers.global_position+owner.panel.workers.remove_rect().get_center())
+				await settle(service,func():return worker_ready(owner) and owner.workers.permitted_workers.is_empty())
+				click(owner.panel.workers.global_position+owner.panel.workers.assign_rect().get_center());await process_frame
+				if not check(owner.selector.visible and not owner.selector.rows.is_empty() and int(owner.selector.rows[0].unit_id)==worker_id,"Resized worker selector lost native first candidate"):quit(1);return
+				click(Vector2(80,106))
+				await settle(service,func():return worker_ready(owner) and owner.workers.assigned.get("id")==worker_id)
 		var limit: int=owner.orders.snapshot.general_order_limit
 		click(owner.panel.orders.global_position+owner.panel.orders.button_rect(1).get_center())
 		await settle(service,func():return owner.orders.phase==owner.orders.Phase.Ready and owner.orders.snapshot.general_order_limit==limit+1)
@@ -46,3 +64,6 @@ func run() -> void:
 	owner.close_panel();owner.queue_free();host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"sheet_layout":samples}));file.close()
 	world.detach_live();world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func worker_ready(owner) -> bool:
+	return owner.workers.phase==owner.workers.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready

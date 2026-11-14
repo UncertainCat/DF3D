@@ -17096,6 +17096,26 @@ workshop selector uses the captured76-cell width; shared location selectors reta
 capture with only known renderer diagnostics. This does not establish public
 selection routing or completed selector indicators.
 
+Assigned Workers uses BUILDING_SHEET_CLEAR_WORKER, the second4x3 entry at
+native26558a4 selected by187af3..187b33, rather than the location-staff Remove
+asset. The explanation and specialization captions use native cell baselines.
+Protected132700 on2026-11-14 qualifies the assigned Carpenter row at960x600,
+1600x900,912x552 and1200x800. Eight whole-panel crops for both specialization
+states match native pixels, including the portrait. Actual viewer toggle/restore,
+Remove, Assign and first-candidate selection pass at every size, with fresh
+semantic receipts and native final assignment/mode validation. The minimum
+specialized image is inspected. Initial132458 exposed wrong artwork and2-pixel
+caption differences; its successful actions alone were not visual acceptance.
+
+The fixture restores the original empty profile, specialization flag, two
+native-created jobs and general-order limit. Owned DF28744 exits unsaved with
+source saves/preferences preserved. Only the three documented Godot diagnostics
+occur;30FPS GPU59-60C samples are not peaks. Core19 and
+build/qa/workshop-assigned-layout composition/build checks pass.
+assigned_worker_layout_reference records scope and hashes. This qualifies the
+sampled assigned dwarf, not every creature type or specialization refusal.
+Populated Work orders and whole workshop public routing remain unfinished.
+
 The assigned Workers body has no native hover instructions at its tested
 controls. Protected115739 on2026-11-13 samples unrestricted Assign/caption,
 assigned portrait/caption, Remove, Assign and both specialization states/icon

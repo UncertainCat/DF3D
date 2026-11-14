@@ -17989,6 +17989,27 @@ pass. populated_orders_layout_reference retains hashes and scope. This does
 not qualify overflow scrolling, Conditions/Details navigation at these sizes,
 or worker execution; existing separate workflow evidence retains its scope.
 
+Workshop Work orders now exposes the native overflow scrollbar. The control
+shares the existing owned row offset/page cache; it retires quantity entry
+before scrolling and obeys the sheet input gate. With overflow, row artwork
+and quantity/conditions/details/remove controls shift16 pixels left while the
+Add and general-limit controls retain their positions. The scrollbar occupies
+the freed16-pixel strip over the eight visible rows; hiding the view releases
+drag ownership.
+
+Protected150102 on2026-11-14 creates twelve Make bed orders through native
+controls under a temporary manager responsibility/index. The actual main-scene
+owner matches four full-panel top captures at960x600,1600x900,912x552,1200x800,
+and default one-row-down/bottom captures. Arrow offsets0/1/4/0 are verified.
+The last visible quantity control edits the twelfth order10 to12 and restores10.
+Native verifies restored quantities and general-order limit, removes all test
+orders, and restores the manager definition/index. Owned DF37104 exits unsaved
+with source/preferences preserved; only the three known Godot diagnostics occur.
+GPU52C/11% is a30FPS sample, not peak. UI composition and core19 pass.
+overflow_orders_reference retains IDs and evidence hashes. Initial145827
+captured overflow but cleanup used the old Remove X and failed; it is not
+acceptance. Wheel and thumb-drag gestures remain outside this arrow qualification.
+
 Workshop header editing uses the existing independent building authority for
 Box10, Workshop13 and Furnace5.
 Rename writes the native building name; Remove invokes native queueDestroy;

@@ -40400,5 +40400,65 @@
       "build/stockpile-storage-native-farm-discovery-20261114-145604/workshop-header-queued-remove-live.png": "2233195fdcc7e4ef5a0734a76af4c9320730af084055c6bbeb76e33a7f158b91",
       "build/stockpile-storage-native-farm-discovery-20261114-145604/workshop-header-queued-cancel-live.png": "6c6a7b3de568c8db9a9ab8616c1fa351e2c54a39f0cbfac11dee4a0ec75b2b7f"
     }
+  },
+  "overflow_orders_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261114-150102",
+    "scope": "Twelve native-created workshop Make bed orders; actual main-scene scrollbar top at960x600,1600x900,912x552,1200x800 and default one-row/bottom captures match native. Arrow offsets0/1/4/0; visible bottom-row quantity changes10->12->10 affect the twelfth order. Native restores all temporary orders and manager responsibility/index.",
+    "orders": {
+      "ids": [
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120
+      ],
+      "quantity": 10
+    },
+    "status": "passed_with_known_issues",
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "owned_df_pid": 37104,
+    "closed_unsaved": true,
+    "source_preserved": true,
+    "limits": [
+      "Scrollbar thumb dragging and wheel behavior are not established by these arrow-click checks."
+    ],
+    "hashes": {
+      "build/stockpile-storage-native-farm-discovery-20261114-150102/result.json": "e2d68a407e01cc133c439fd54c7001213836282f9710b58c45aa450361139068",
+      "build/stockpile-storage-native-farm-discovery-20261114-150102/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "build/stockpile-storage-native-farm-discovery-20261114-150102/workshop-native.json": "d09000c6ab828b7acabd09f19d5852bcc62eafb96793fe8efd74687fe2fcbb03",
+      "build/stockpile-storage-native-farm-discovery-20261114-150102/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+      "build/stockpile-storage-native-farm-discovery-20261114-150102/workshop-orders-small-live.png": "473c075f68618b9486e1b2163ecee2823d3852c4aa048f9afdfafa7069041e83",
+      "build/stockpile-storage-native-farm-discovery-20261114-150102/workshop-orders-wide-live.png": "1a179cfa11ea9a3cdaac99b6fbb9b53002f421af29d7c46c0d026ce80a401cd4",
+      "build/stockpile-storage-native-farm-discovery-20261114-150102/workshop-orders-minimum-live.png": "06984c4a76638b355812e0dbf532557651d06a0208618864f3fa758cceeaaa9a",
+      "build/stockpile-storage-native-farm-discovery-20261114-150102/workshop-orders-default-live.png": "ceb235da867dcd55525d5019520a5fb688195cf24a8064f0cecabf5075fee654",
+      "build/stockpile-storage-native-farm-discovery-20261114-150102/workshop-orders-arrow-live.png": "132d750f992cf5ff41e510f3b16604195ee84fd7061252cca06f9602565243ca",
+      "build/stockpile-storage-native-farm-discovery-20261114-150102/workshop-orders-bottom-live.png": "39119eb41fd429ecb5670134e92f831844f87b8fff372894ea6bd45af8410080"
+    }
   }
 }

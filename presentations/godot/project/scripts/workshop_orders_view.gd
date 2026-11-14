@@ -6,6 +6,7 @@ signal details_requested(id: int)
 # Row actions and details are still staged.
 var art=preload("res://scripts/original_ui.gd").new()
 var state
+var scrollbar=preload("res://scripts/area_location_scrollbar.gd").new()
 var input_allowed: Callable
 var colors: Array[Color]=[]
 var editing:=false
@@ -20,12 +21,15 @@ func configure(source,model,help=null) -> void:
 	hover_help=help
 	state=model;art.configure(source);theme=art.theme;colors=art.installed_palette(source.assets_root())
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
+	add_child(scrollbar);scrollbar.configure(source);scrollbar.hide()
+	scrollbar.input_allowed=func():return state.phase==state.Phase.Ready and (not input_allowed.is_valid() or input_allowed.call())
+	scrollbar.row_changed.connect(func(first):finish_entry();state.seek_rows(first,visible_rows))
 	mouse_exited.connect(leave_hover)
 	visibility_changed.connect(func():
-		if not is_visible_in_tree():leave_hover())
+		if not is_visible_in_tree():leave_hover();scrollbar.dragging=false)
 	state.changed.connect(func():
 		if state.phase not in [state.Phase.Ready,state.Phase.Applying]:editing=false
-		queue_redraw())
+		_sync_scrollbar();queue_redraw())
 func finish_entry() -> void:editing=false;quantity_order=-1;queue_redraw()
 func feed_key(event: InputEventKey) -> void:
 	if not editing or not event.pressed or event.ctrl_pressed or event.alt_pressed or event.meta_pressed:return
@@ -50,6 +54,7 @@ func _process(_delta: float) -> void:
 	var capacity:=maxi(0,int((size.y-72)/36))
 	if visible_rows!=capacity:
 		visible_rows=capacity;state.seek_rows(state.row_offset,capacity)
+	_sync_scrollbar()
 	if editing:
 		var phase:=Time.get_ticks_msec()%1000<500
 		if phase!=cursor_visible:cursor_visible=phase;queue_redraw()
@@ -66,13 +71,13 @@ func _gui_input(event: InputEvent) -> void:
 	if state.snapshot.get("manager_available",false) and Rect2(424,0,32,36).has_point(event.position):finish_entry();choose_requested.emit();accept_event();return
 	for index in visible_rows:
 		var row: Dictionary=state.rows.get(state.row_offset+index,{})
-		if not row.is_empty() and row.get("native_state",{}).get("details_available",false) and Rect2(392,36+index*36,32,36).has_point(event.position):
+		if not row.is_empty() and row.get("native_state",{}).get("details_available",false) and Rect2(row_control_x(392),36+index*36,32,36).has_point(event.position):
 			finish_entry();details_requested.emit(row.id);accept_event();return
-		if not row.is_empty() and Rect2(360,36+index*36,32,36).has_point(event.position):
+		if not row.is_empty() and Rect2(row_control_x(360),36+index*36,32,36).has_point(event.position):
 			finish_entry();conditions_requested.emit(row.id);accept_event();return
-		if not row.is_empty() and Rect2(424,36+index*36,32,36).has_point(event.position):
+		if not row.is_empty() and Rect2(row_control_x(424),36+index*36,32,36).has_point(event.position):
 			finish_entry();state.remove_order(row.id);accept_event();return
-		if not row.is_empty() and Rect2(328,36+index*36,32,36).has_point(event.position):
+		if not row.is_empty() and Rect2(row_control_x(328),36+index*36,32,36).has_point(event.position):
 			quantity_order=row.id;editing=true;draft="";queue_redraw();accept_event();return
 	if button_rect(0).has_point(event.position):quantity_order=-1;editing=true;draft="";queue_redraw();accept_event();return
 	for index in [1,2]:
@@ -112,11 +117,11 @@ func _draw() -> void:
 		var quantity: String="∞/∞" if row.total==0 else str(row.remaining)+"/"+str(row.total)
 		if editing and quantity_order==row.id:quantity=draft+("_" if cursor_visible else "")
 		caption(quantity,Vector2(48,y+36),cyan)
-		if native.validation_required:row_icon("WORK_ORDERS_VALIDATED" if row.validated else "WORK_ORDERS_NOT_VALIDATED",Vector2(296,y))
-		row_icon("WORK_ORDERS_ENTER_AMOUNT",Vector2(328,y))
-		row_icon("WORK_ORDERS_CONDITIONS",Vector2(360,y))
-		if native.details_available:row_icon("WORK_ORDERS_DETAILS",Vector2(392,y))
-		row_icon("WORK_ORDERS_REMOVE",Vector2(424,y))
+		if native.validation_required:row_icon("WORK_ORDERS_VALIDATED" if row.validated else "WORK_ORDERS_NOT_VALIDATED",Vector2(row_control_x(296),y))
+		row_icon("WORK_ORDERS_ENTER_AMOUNT",Vector2(row_control_x(328),y))
+		row_icon("WORK_ORDERS_CONDITIONS",Vector2(row_control_x(360),y))
+		if native.details_available:row_icon("WORK_ORDERS_DETAILS",Vector2(row_control_x(392),y))
+		row_icon("WORK_ORDERS_REMOVE",Vector2(row_control_x(424),y))
 	caption("General work orders allowed: "+(draft+("_" if cursor_visible else "") if editing and quantity_order<0 else str(state.snapshot.general_order_limit)),Vector2(0,size.y-12),Color.WHITE)
 	for index in 3:
 		var texture: Texture2D=art.texture(["WORK_ORDERS_ENTER_AMOUNT","WORK_ORDERS_INCREASE_AMOUNT","WORK_ORDERS_DECREASE_AMOUNT"][index])
@@ -133,5 +138,15 @@ func row_background(top: int) -> void:
 	var texture: Texture2D=art.texture("BUTTON_RECTANGLE")
 	if texture==null:return
 	for y in 3:
-		for x in 57:
-			draw_texture_rect_region(texture,Rect2(x*8,top+y*12,8,12),Rect2(0 if x==0 else 16 if x==56 else 8,y*12,8,12))
+		var columns:=55 if state.row_total>visible_rows and visible_rows>0 else 57
+		for x in columns:
+			draw_texture_rect_region(texture,Rect2(x*8,top+y*12,8,12),Rect2(0 if x==0 else 16 if x==columns-1 else 8,y*12,8,12))
+
+func row_control_x(base: int) -> int:
+	return base-(16 if state.row_total>visible_rows and visible_rows>0 else 0)
+func _sync_scrollbar() -> void:
+	if state==null:return
+	scrollbar.position=Vector2(440,36);scrollbar.size=Vector2(16,visible_rows*36)
+	scrollbar.page=visible_rows;scrollbar.set_rows(state.row_total,state.row_offset)
+	scrollbar.visible=is_visible_in_tree() and state.rows_available and visible_rows>0 and state.row_total>visible_rows
+	if not scrollbar.visible:scrollbar.dragging=false

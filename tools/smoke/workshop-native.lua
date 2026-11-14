@@ -342,7 +342,7 @@ local ok,err=xpcall(function()
     for _,o in ipairs(df.global.world.manager_orders.all)do assert(o.workshop_id~=building.id,'Expected no existing shop orders')end
     local picker=df.global.game.main_interface.create_work_order
     assert(click_label('Work orders'))
-    for i=1,2 do
+    for i=1,(os.getenv('DF3D_WORKSHOP_ORDERS_OVERFLOW')=='1' and 12 or 2)do
      click(880,154);assert(picker.open);click(600,94)
      for char in ('make bed'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(char:byte()))end
      gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
@@ -373,6 +373,11 @@ local ok,err=xpcall(function()
     for _,tab in ipairs{'Tasks','Workers','Work orders'}do
      assert(click_label(tab),'Layout tab missing: '..tab)
      shot('sheet-'..size..'-'..tab:gsub(' ','-'))
+     if os.getenv('DF3D_WORKSHOP_ORDERS_OVERFLOW')=='1' and size=='default' and tab=='Work orders'then
+      click(880,452);shot('orders-overflow-arrow')
+      for i=1,20 do click(880,452)end;shot('orders-overflow-bottom')
+      for i=1,20 do click(880,178)end
+     end
      if assigned and tab=='Workers'then
       click((g.dimx-98)*8+32,48+(size=='default' and 4 or 0)+198)
       assert(assigned.flags4.only_do_assigned_jobs~=specialized)
@@ -386,9 +391,13 @@ local ok,err=xpcall(function()
     assert(click_label('Cancel'));assert(click_label('Add new task'))
     assert(click_label('Cancel'));shot('sheet-'..size..'-return')
    end
-   capture('workshop-wire')
-   local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)
+   local receipt={}
+   if os.getenv('DF3D_WORKSHOP_ORDERS_OVERFLOW_NATIVE')~='1'then
+    capture('workshop-wire')
+    local file=assert(io.open(out..'/workshop-wire-result.json'));receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)
+   end
    assert(building:getWorkshopProfile().max_general_orders==original_limit,'Resized viewer changed original general-order limit')
+   if os.getenv('DF3D_WORKSHOP_ORDERS_OVERFLOW')=='1'then for _,id in ipairs(order_ids)do assert(find_order(id).amount_left==result.sheet_orders.quantity,'Overflow viewer changed original quantity')end end
    if assigned then assert(#profile.permitted_workers==1 and profile.permitted_workers[0]==assigned.id and assigned.flags4.only_do_assigned_jobs==specialized,'Resized worker gestures changed initial assignment/mode')end
    result.sheet_layout_viewer=receipt.sheet_layout;shot('sheet-layout-complete')
   end,debug.traceback)
@@ -398,7 +407,7 @@ local ok,err=xpcall(function()
   if #order_ids>0 then
    select_map(building);assert(click_label('Work orders'))
    for _,id in ipairs(order_ids)do
-    assert(find_order(id));click(872,190)
+    assert(find_order(id));local remaining=0;for _,o in ipairs(df.global.world.manager_orders.all)do if o.workshop_id==building.id then remaining=remaining+1 end end;click(remaining>8 and 856 or 872,190)
     assert(not find_order(id),'Native cleanup retained workshop order')
    end
   end

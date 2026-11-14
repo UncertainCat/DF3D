@@ -17988,6 +17988,34 @@ pass. populated_orders_layout_reference retains hashes and scope. This does
 not qualify overflow scrolling, Conditions/Details navigation at these sizes,
 or worker execution; existing separate workflow evidence retains its scope.
 
+Workshop header editing uses the existing independent building authority for
+Box10 and Workshop13. Furnace5 remains read-only pending its edit qualification.
+Rename writes the native building name; Remove invokes native queueDestroy;
+Cancel uses the pinned building-only1b00a3 routine. The transaction checks
+revision, completed stage, operation and postconditions, without reading sheet
+scratch. Workshop edit receipts are admitted by the shared response validator;
+there is no wire-layout or protocol209 change. Rename sessions remain owned by
+the action service so explicit typing finishes after the sheet closes, without
+replaying unknown outcomes.
+
+Protected135043 on2026-11-14 verifies this in the actual main scene. Native
+pointer/keyboard observations establish immediate typing, Enter remaining in
+the sheet, Escape preserving typed text while closing, queued DestroyBuilding,
+and Cancel clearing that job. Viewer gestures reproduce these effects, restore
+the original name and empty queue, and retire a queued read on close. Four
+full-panel crops (renamed/restored/remove/cancel) match native exactly. Native
+checks the final original name and queue independently. Owned DF37944 exits
+unsaved with saves/preferences preserved. Only the three documented Godot
+diagnostics occur;30FPS GPU sample58C is not a peak. Native-only133942 provides
+the initial reference;134228/134340 exposed the old chest-only response gate
+and are not acceptance. The updated model receipt tests cover Box and Workshop.
+MSVC, root/client builds, core19 and build/qa/workshop-header state/composition
+checks pass. The initial root link collided with the live session helper's file
+lock; rebuilding after lane exit passes. workshop_header_reference retains
+hashes, native state and limits. This qualifies an idle Carpenter; active-worker
+and queued-production removal, Furnace header edits, Connections and public
+map selection remain separate work before workshop exposure.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

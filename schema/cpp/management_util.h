@@ -2759,7 +2759,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(s.action()==ManagementAction::ProductionInspect) {
         if(outcome!=FarmEditOutcome::None || op!=FarmOperation::Crop || ((s.status()==ManagementStatus::Ok)!=(f!=nullptr)))return "invalid building header read";
       } else if(s.action()==ManagementAction::FarmEdit) {
-        if(f && f->type()!=10)return "unsupported building header edit target";
+        if(f && f->type()!=10 && f->type()!=13)return "unsupported building header edit target";
         if(outcome==FarmEditOutcome::None)return "missing building header outcome";
         if(outcome==FarmEditOutcome::Completed) {
           if(s.status()!=ManagementStatus::Ok || !f || f->stage()!=f->max_stage() || op<FarmOperation::Rename || op>FarmOperation::CancelRemoval ||

@@ -47,7 +47,7 @@ func _read() -> void:
 	_send({"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":building_id})
 
 func begin_name_entry() -> bool:
-	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("type",-1)!=10 or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
+	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("type",-1) not in [10,13] or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
 	var owner:=generation
 	var owned=load("res://scripts/farm_rename_session.gd").new()
 	service.add_child(owned);owned.configure(service,snapshot,true)
@@ -81,7 +81,7 @@ func request_removal() -> void:_edit(C.FarmOperation.Remove,{})
 func cancel_removal() -> void:_edit(C.FarmOperation.CancelRemoval,{})
 
 func _edit(operation: int,fields: Dictionary) -> void:
-	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1)!=10 or snapshot.stage!=snapshot.max_stage:return
+	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in [10,13] or snapshot.stage!=snapshot.max_stage:return
 	if snapshot.removing!=(operation==C.FarmOperation.CancelRemoval):return
 	var intent={"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":building_id,
 		"expected_revision":snapshot.revision,"farm_operation":operation}

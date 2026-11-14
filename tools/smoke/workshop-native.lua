@@ -121,6 +121,41 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ if os.getenv('DF3D_WORKSHOP_HEADER')=='1'then
+  assert(#jobs==0,'Header reference requires empty queue')
+  local name=building.name
+  local function key(value)gui.simulateInput(view,value);view:render(dfhack.getTickCount())end
+  local function click(x,y)
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+   df.global.enabler.mouse_lbut_lift=0;key('_MOUSE_L')
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  end
+  local function text(value)for i=1,#value do key(('STRING_A%03d'):format(value:byte(i)))end end
+  result.header_reference={original_name=dfhack.df2utf(name),states={}}
+  local function record(label)
+   local row={name=label,custom_name=dfhack.df2utf(building.name),editing=sheet.building_entering_nickname,open=sheet.open,removing=dfhack.buildings.markedForRemoval(building),jobs={}}
+   for _,j in ipairs(building.jobs)do row.jobs[#row.jobs+1]={id=j.id,type=j.job_type,flags=j.flags.whole}end
+   result.header_reference.states[#result.header_reference.states+1]=row;shot('header-'..label)
+  end
+  local worked,problem=xpcall(function()
+   click(800,82);text('lower workshop');assert(building.name==name..'lower workshop');record('draft')
+   key('SELECT');assert(not sheet.building_entering_nickname and sheet.open);record('renamed')
+   click(800,82);text(' appended');key('LEAVESCREEN');assert(building.name==name..'lower workshop appended' and not sheet.open);record('escape')
+   select_map(building);click(800,82);for i=1,100 do key('STRING_A000')end;text(name);key('SELECT');assert(building.name==name);record('restored')
+   click(832,82);assert(dfhack.buildings.markedForRemoval(building) and #building.jobs==1 and building.jobs[0].job_type==df.job_type.DestroyBuilding);record('remove')
+   assert(click_label('Cancel removal'));assert(#building.jobs==0 and not dfhack.buildings.markedForRemoval(building));record('cancel')
+   if os.getenv('DF3D_WORKSHOP_HEADER_RUNTIME')=='1'then
+    capture('workshop-wire')
+    local f=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(f:read('*a'));f:close();assert(receipt.success)
+    assert(building.name==name and #building.jobs==0 and not dfhack.buildings.markedForRemoval(building),'Viewer header did not restore name/queue')
+    result.header_reference.viewer=receipt;record('viewer-complete')
+   end
+  end,debug.traceback)
+  building.name=name
+  if dfhack.buildings.markedForRemoval(building)then select_map(building);assert(click_label('Cancel removal'))end
+  assert(worked,problem);return
+ end
  if os.getenv('DF3D_WORKSHOP_SHEET_LAYOUT')=='1'then
   assert(#jobs==0,'Sheet layout reference needs empty queue')
   local original_limit=building:getWorkshopProfile().max_general_orders

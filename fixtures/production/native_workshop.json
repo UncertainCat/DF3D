@@ -39595,5 +39595,112 @@
     ],
     "initial_comparison_lane": "build/stockpile-storage-native-farm-discovery-20261114-133348",
     "failed_diagnostic": "133304 stopped on nonexistent df.manager_order.find; replaced with owned diagnostic world-list lookup. Not acceptance."
+  },
+  "workshop_header_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261114-135043",
+    "native": {
+      "original_name": "",
+      "states": [
+        {
+          "custom_name": "lower workshop",
+          "editing": true,
+          "jobs": [],
+          "name": "draft",
+          "open": true,
+          "removing": false
+        },
+        {
+          "custom_name": "lower workshop",
+          "editing": false,
+          "jobs": [],
+          "name": "renamed",
+          "open": true,
+          "removing": false
+        },
+        {
+          "custom_name": "lower workshop appended",
+          "editing": true,
+          "jobs": [],
+          "name": "escape",
+          "open": false,
+          "removing": false
+        },
+        {
+          "custom_name": "",
+          "editing": false,
+          "jobs": [],
+          "name": "restored",
+          "open": true,
+          "removing": false
+        },
+        {
+          "custom_name": "",
+          "editing": false,
+          "jobs": [
+            {
+              "flags": 0,
+              "id": 382796,
+              "type": 88
+            }
+          ],
+          "name": "remove",
+          "open": true,
+          "removing": true
+        },
+        {
+          "custom_name": "",
+          "editing": false,
+          "jobs": [],
+          "name": "cancel",
+          "open": true,
+          "removing": false
+        },
+        {
+          "custom_name": "",
+          "editing": false,
+          "jobs": [],
+          "name": "viewer-complete",
+          "open": true,
+          "removing": false
+        }
+      ],
+      "viewer": {
+        "roundtrip": true,
+        "success": true,
+        "surface": "actual main scene"
+      }
+    },
+    "viewer": {
+      "roundtrip": true,
+      "success": true,
+      "surface": "actual main scene"
+    },
+    "owned_df_pid": 37944,
+    "source_preserved": true,
+    "closed_unsaved": true,
+    "pixel_identical": [
+      "renamed",
+      "restored",
+      "remove",
+      "cancel"
+    ],
+    "images": {
+      "workshop-header-cancel-live.png": "6c6a7b3de568c8db9a9ab8616c1fa351e2c54a39f0cbfac11dee4a0ec75b2b7f",
+      "workshop-header-cancel.png": "9debde5859c8b1ebb8ecbe4cd9a111c45761ce7b8e14530174eb094852a9f3a6",
+      "workshop-header-draft.png": "e46cd7c5b8dd9e5e6c4358f8c7246b4d3005f698dcb4b0306fdbe412f8a3c6a0",
+      "workshop-header-escape.png": "9d8858e1eeda2498f1c0057d6563979f5882492ecb6504722ba184fa73c28faa",
+      "workshop-header-remove-live.png": "2233195fdcc7e4ef5a0734a76af4c9320730af084055c6bbeb76e33a7f158b91",
+      "workshop-header-remove.png": "3c81dc5d49c48392845a3ad2bc47ca02d9134c12ce4c27baed4e6ffc274783f3",
+      "workshop-header-renamed-live.png": "0f4549d660b71e8b8817f2579016fb7954621181d1ed0986c2403c0ea1af3e2c",
+      "workshop-header-renamed.png": "5bc01943ea2cf77521e9700d7ab3177b4f42e79122dd322a86c0d1a0b9425543",
+      "workshop-header-restored-live.png": "6c6a7b3de568c8db9a9ab8616c1fa351e2c54a39f0cbfac11dee4a0ec75b2b7f",
+      "workshop-header-restored.png": "9debde5859c8b1ebb8ecbe4cd9a111c45761ce7b8e14530174eb094852a9f3a6",
+      "workshop-header-viewer-complete.png": "9debde5859c8b1ebb8ecbe4cd9a111c45761ce7b8e14530174eb094852a9f3a6"
+    },
+    "scope": "Completed idle Carpenter workshop, main-scene controller from shared factory. Typing/Enter, typing/Escape/reopen, restoration, removal/cancellation, queued-read close. No active worker, queued production jobs, Furnace header edits, Connections or public map-selection qualification.",
+    "failed_attempts": [
+      "134228: client rejected workshop edit receipt under chest-only validator; no acceptance",
+      "134340: diagnostic confirmed header rejection while contents remained ready; no acceptance"
+    ]
   }
 }

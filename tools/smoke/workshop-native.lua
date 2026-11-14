@@ -158,6 +158,16 @@ local ok,err=xpcall(function()
    assert(#links.give_to_pile==1 and links.give_to_pile[0].id==pile.id,'Native workshop give pick failed')
    assert(contains(pile.links.take_from_workshop,building.id),'Native give missing reciprocal link')
    shot('connections-linked-give')
+   if os.getenv('DF3D_WORKSHOP_CONNECTIONS_RESIZE')=='1'then
+    result.connections_reference.resize={}
+    for _,size in ipairs{'small','wide','minimum','default'}do
+     resize_worker(size)
+     result.connections_reference.resize[#result.connections_reference.resize+1]={size=size,dimx=g.dimx,dimy=g.dimy}
+     shot('connections-'..size..'-list')
+     click(math.max(32,(g.dimx-143)*8)+24,size=='default' and 82 or 78);shot('connections-'..size..'-give')
+     assert(click_label('Cancel'))
+    end
+   end
    if os.getenv('DF3D_WORKSHOP_CONNECTIONS_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_CONNECTIONS_SCENE')=='1'then
     capture('workshop-wire');local f=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(f:read('*a'));f:close();assert(receipt.success)
     assert(#links.give_to_pile==1 and links.give_to_pile[0].id==pile.id and #links.take_from_pile==0,'Semantic link roundtrip did not restore native give')

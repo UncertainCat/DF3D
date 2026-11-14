@@ -40090,6 +40090,48 @@
         "build/stockpile-storage-native-farm-discovery-20261114-142643/workshop-connections-linked-give-live.png": "f0b07d42b4e181e97a8b62bcb12df89fc66261915ca31a886b0b824a19653136",
         "build/stockpile-storage-native-farm-discovery-20261114-142643/workshop-connections-give-live.png": "9eb0a47af610cfae6c138b638add6473c5056a241f15431e30487cbccc95fd65"
       }
+    },
+    "responsive_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-143417",
+      "scope": "Native and main-scene single linked row plus Give picker at960x600,1600x900,912x552,1200x800; eight full-window-panel crops match. Native Add Give priority over overlapping Done is preserved. Main map-pick/reversal/unlink/restoration and close retirement pass.",
+      "status": "passed_with_known_issues",
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "owned_df_pid": 35772,
+      "closed_unsaved": true,
+      "source_preserved": true,
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-143417/result.json": "f900424a1a71f3d1ecc287f8f5b5d8a8053b5ee6c1459c887899d661180e7aed",
+        "build/stockpile-storage-native-farm-discovery-20261114-143417/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "build/stockpile-storage-native-farm-discovery-20261114-143417/workshop-native.json": "94e309794fb659535ead7fe89139dbdb5253ad86e72972681a7ae0955e90a0fd",
+        "build/stockpile-storage-native-farm-discovery-20261114-143417/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+        "build/stockpile-storage-native-farm-discovery-20261114-143417/workshop-connections-small-list-live.png": "47821b676b00b875c39214d26bb4b071f7629b6fb4018ccc3f48d0465829e212",
+        "build/stockpile-storage-native-farm-discovery-20261114-143417/workshop-connections-small-give-live.png": "8fabee512a4624aee5a8a13aff6e6c03197b0d3668eb8113fa61149b6920dd79",
+        "build/stockpile-storage-native-farm-discovery-20261114-143417/workshop-connections-wide-list-live.png": "f0b07d42b4e181e97a8b62bcb12df89fc66261915ca31a886b0b824a19653136",
+        "build/stockpile-storage-native-farm-discovery-20261114-143417/workshop-connections-wide-give-live.png": "9eb0a47af610cfae6c138b638add6473c5056a241f15431e30487cbccc95fd65",
+        "build/stockpile-storage-native-farm-discovery-20261114-143417/workshop-connections-minimum-list-live.png": "2823d99e669f372d8eb72335b7ce73d950c2073167a3b0bba0fb54786d415f72",
+        "build/stockpile-storage-native-farm-discovery-20261114-143417/workshop-connections-minimum-give-live.png": "fe50f6229199178e86f56b5f1f7c5b517d9091d79d5e57a9691471e1c4df5361",
+        "build/stockpile-storage-native-farm-discovery-20261114-143417/workshop-connections-default-list-live.png": "f0b07d42b4e181e97a8b62bcb12df89fc66261915ca31a886b0b824a19653136",
+        "build/stockpile-storage-native-farm-discovery-20261114-143417/workshop-connections-default-give-live.png": "9eb0a47af610cfae6c138b638add6473c5056a241f15431e30487cbccc95fd65"
+      }
     }
   }
 }

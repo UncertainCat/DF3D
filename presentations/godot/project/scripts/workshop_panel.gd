@@ -39,6 +39,7 @@ func configure(world,service,host,help=null) -> void:
 	super.configure(world,service,host,help)
 	connections_view=preload("res://scripts/area_links_view.gd").new();canvas.add_child(connections_view)
 	connections_view.stockpile_only=true;connections_view.configure(world)
+	connections_view.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self)
 	var border=connections_view.art.make_style("HOVER_RECTANGLE",8)
 	border.set_texture_margin(SIDE_TOP,12);border.set_texture_margin(SIDE_BOTTOM,12)
 	for side in [SIDE_LEFT,SIDE_RIGHT]:border.set_content_margin(side,8)
@@ -226,7 +227,7 @@ func _process(delta: float) -> void:
 	if connections_view!=null:
 		var viewport:=get_viewport().get_visible_rect().size
 		var view:=viewport/Preferences.effective_scale_vector(viewport)
-		connections_view.position=Vector2(56,48+fposmod(view.y,12)*0.5)
+		connections_view.layout_workshop(view)
 	if job_details_view!=null:
 		var viewport:=get_viewport().get_visible_rect().size
 		job_details_view.layout(viewport/Preferences.effective_scale_vector(viewport))

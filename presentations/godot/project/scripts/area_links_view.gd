@@ -4,9 +4,14 @@ signal unlink_requested(row: Dictionary)
 signal done
 var art = preload("res://scripts/original_ui.gd").new()
 var stockpile_only:=false
+var input_allowed: Callable
+var picking_now:=false
+var actions_enabled:=false
 var body: Control
 var prompt: Label
 var close: Button
+var close_caption: Label
+var close_caption_background: ColorRect
 var add_buttons: Array[Button] = []
 var scroll: ScrollContainer
 var rows_box: VBoxContainer
@@ -15,7 +20,7 @@ var scrollbar = preload("res://scripts/area_location_scrollbar.gd").new()
 
 func configure(source) -> void:
 	art.configure(source); theme = art.theme; texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	body = Control.new(); body.custom_minimum_size = Vector2(312,396); add_child(body)
+	body = Control.new(); body.custom_minimum_size = Vector2(0 if stockpile_only else 312,396); add_child(body)
 	for index in 2:
 		var button := icon_button(("STOCKPILE_CONNECTIONS_WORKSHOP_" if stockpile_only else "STOCKPILE_CONNECTIONS_") + ("ADD_GIVE_LINK" if index == 0 else "ADD_TAKE_LINK"))
 		button.position = Vector2(index * 32,0)
@@ -24,7 +29,7 @@ func configure(source) -> void:
 	prompt = Label.new(); prompt.position = Vector2(0,0); prompt.size = Vector2(208,36)
 	prompt.add_theme_font_size_override("font_size",12); body.add_child(prompt)
 	if stockpile_only:
-		prompt.add_theme_color_override("font_color",Color.WHITE);prompt.add_theme_constant_override("line_spacing",0)
+		prompt.add_theme_color_override("font_color",Color.WHITE);prompt.add_theme_constant_override("line_spacing",0);prompt.z_index=1
 	close = Button.new(); close.position = Vector2(216,0); close.size = Vector2(96,36)
 	close.add_theme_font_size_override("font_size",12)
 	if stockpile_only:
@@ -34,8 +39,14 @@ func configure(source) -> void:
 	for side in [SIDE_LEFT,SIDE_RIGHT,SIDE_TOP,SIDE_BOTTOM]: style.set_content_margin(side,0)
 	for state in ["normal","hover","pressed"]: close.add_theme_stylebox_override(state,style)
 	close.pressed.connect(func(): done.emit()); body.add_child(close)
+	if stockpile_only:
+		close_caption_background=ColorRect.new();close_caption_background.color=Color8(166,31,46);close_caption_background.z_index=1;close_caption_background.mouse_filter=Control.MOUSE_FILTER_IGNORE;close.add_child(close_caption_background)
+		close_caption=Label.new();close_caption.position=Vector2.ZERO;close_caption.size=Vector2(96,36);close_caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;close_caption.vertical_alignment=VERTICAL_ALIGNMENT_CENTER
+		close_caption.add_theme_font_size_override("font_size",12);close_caption.add_theme_color_override("font_color",Color.WHITE);close_caption.z_index=2;close_caption.mouse_filter=Control.MOUSE_FILTER_IGNORE;close.add_child(close_caption)
+
 	scroll = ScrollContainer.new(); scroll.position = Vector2(0,72); scroll.size = Vector2(312,324)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED; body.add_child(scroll)
+	if stockpile_only:scroll.clip_contents=false
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	rows_box = VBoxContainer.new(); rows_box.add_theme_constant_override("separation",0)
 	rows_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL; scroll.add_child(rows_box)
@@ -52,6 +63,12 @@ func reset_scroll() -> void:
 	scrollbar.set_rows(0); scrollbar.dragging = false; _apply_scroll()
 
 func _input(event: InputEvent) -> void:
+	if input_allowed.is_valid() and not input_allowed.call():return
+	# Native tests Add Give/Take before the overlapping Done button at narrow widths.
+	if stockpile_only and is_visible_in_tree() and not picking_now and actions_enabled and size.x<176 and event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and event.pressed:
+		var point: Vector2=body.get_global_transform_with_canvas().affine_inverse()*event.position
+		if Rect2(0,0,64,36).has_point(point):
+			pick_requested.emit(point.x<32);get_viewport().set_input_as_handled();return
 	if not is_visible_in_tree() or not scroll.visible or not event is InputEventMouseButton or not event.pressed: return
 	if event.button_index not in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]: return
 	var local: Vector2 = body.get_global_transform_with_canvas().affine_inverse() * event.position
@@ -67,10 +84,15 @@ func icon_button(token: String) -> Button:
 	return button
 
 func display(rows: Array, picking: bool, give: bool, enabled: bool) -> void:
+	picking_now=picking;actions_enabled=enabled
 	body.custom_minimum_size.y = 96 if picking else 396
 	prompt.visible = picking
 	prompt.text = ("Select a stockpile to\n" if stockpile_only else "Select a stockpile or\nworkshop to ") + ("give to." if give else "take from.")
 	close.text = "Cancel" if picking else "Done"
+	if stockpile_only:
+		close_caption.text=close.text;close.text=""
+		close_caption_background.position=Vector2((96-close_caption.text.length()*8)/2,12)
+		close_caption_background.size=Vector2(close_caption.text.length()*8,12)
 	for button in add_buttons: button.visible = not picking; button.disabled = not enabled
 	scroll.visible = not picking
 	scrollbar.set_rows(rows.size(),scrollbar.first)
@@ -91,7 +113,7 @@ func display(rows: Array, picking: bool, give: bool, enabled: bool) -> void:
 			var direction := icon_button(token); direction.mouse_filter = Control.MOUSE_FILTER_IGNORE; line.add_child(direction)
 			var label := Label.new(); label.position = Vector2(56,0); label.size = Vector2(216,36)
 			if stockpile_only:label.add_theme_color_override("font_color",Color.WHITE)
-			label.text = str(row.name); label.clip_text = true; label.tooltip_text = str(row.name)
+			label.text = str(row.name); label.clip_text = not stockpile_only; label.tooltip_text = str(row.name)
 			label.add_theme_font_size_override("font_size",12); label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER; line.add_child(label)
 			var remove := icon_button("STOCKPILE_CONNECTIONS_REMOVE")
 			remove.set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE); remove.offset_left = -40 if stockpile_only else -32; remove.offset_right = -8 if stockpile_only else 0
@@ -100,3 +122,14 @@ func display(rows: Array, picking: bool, give: bool, enabled: bool) -> void:
 		line.get_child(2).disabled = not enabled
 		line.get_child(1).size.x = scroll.size.x-88
 	_apply_scroll.call_deferred()
+
+func layout_workshop(viewport: Vector2) -> void:
+	if not stockpile_only or body==null:return
+	var parent_x: float=(floor(viewport.x/8)-98)*8
+	position=Vector2(maxf(32,parent_x-360),48+fposmod(viewport.y,12)*0.5)
+	size=Vector2(parent_x-position.x-32,120 if picking_now else 420)
+	close.position.x=size.x-112
+	scroll.size.x=maxf(0,size.x-16-(16 if cached_rows.size()>9 else 0))
+	scrollbar.position.x=size.x-32
+	for line in rows_box.get_children():
+		line.get_child(1).size.x=216

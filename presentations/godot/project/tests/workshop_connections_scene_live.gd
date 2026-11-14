@@ -11,7 +11,9 @@ func connection_capture(label: String,reference: String,height: int) -> void:
 	var motion:=InputEventMouseMotion.new();motion.position=Vector2(400,500);root.push_input(motion,true)
 	await process_frame;await process_frame;await RenderingServer.frame_post_draw
 	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
-	var region:=Rect2i(56,52,328,height)
+	var parent_x: int=(int(root.size.x)/8-98)*8
+	var left:=maxi(32,parent_x-360)
+	var region:=Rect2i(left,48+(int(root.size.y)%12)/2,parent_x-left-32,height)
 	var crop:=image.get_region(region);crop.save_png(directory+"/workshop-connections-"+label+"-live.png")
 	var native:=Image.load_from_file(directory+"/workshop-connections-"+reference+".png");native.convert(Image.FORMAT_RGB8)
 	check(crop.get_data()==native.get_region(region).get_data(),"Connections pixels differ: "+label)
@@ -31,6 +33,15 @@ func exercise(expected: Dictionary) -> void:
 	if not await connections_ready():return
 	check(owner.connections.rows.size()==1 and owner.connections.rows[0].direction==1,"Initial Give row missing")
 	await connection_capture("linked-give","linked-give",420)
+	if expected.connections_reference.has("resize"):
+		for sample in [["small",Vector2i(960,600)],["wide",Vector2i(1600,900)],["minimum",Vector2i(912,552)],["default",Vector2i(1200,800)]]:
+			root.size=sample[1]
+			await process_frame;await process_frame;await RenderingServer.frame_post_draw
+			await connection_capture(sample[0]+"-list",sample[0]+"-list",420)
+			await pointer(owner.connections_view.get_global_transform_with_canvas()*Vector2(24,30))
+			await connection_capture(sample[0]+"-give",sample[0]+"-give",120)
+			await pointer(owner.connections_view.get_global_transform_with_canvas()*Vector2(owner.connections_view.size.x-64,30))
+			if not await connections_ready():return
 	await pointer(Vector2(80,82));await process_frame
 	check(owner.connections.picking and not owner.panel.visible,"Give picker did not hide parent")
 	await connection_capture("give","give",120)

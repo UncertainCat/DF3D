@@ -7,6 +7,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
 | Craftsdwarf's Bone page creates wood jobs for qualifying bone tools. | No correction approved; preserve native's wood category and input requirement. | Controlled native223829 on2026-11-12 temporarily enables BONE_MAT on civilization tool10 ITEM_TOOL_NEST_BOX. Bone page shows Make wooden nest box; clicking creates job216/category2 with WOOD5 input. Native8c9061 writes2 after testing BONE_MAT16. Viewer224539 matches. Flag and queues restored, source saves preserved. `native_workshop.json.craft_runtime_reference`. |
+| Workshop Connections collapses at narrow widths, overlapping Done/Cancel with Add controls and spilling captions outside the panel. | No correction approved; preserve native layout and Add-button input priority. | Protected143039/143417 on2026-11-14: panel widths112 at960x600 and64 at912x552, versus328 at1200x800/1600x900. Resize a workshop's open Connections list, then click the Add Give position under Done: the native picker opens. Renderer33579a..3357de limits width to the space left of the workshop sheet. `native_workshop.json.workshop_connections_reference.responsive_reference`; eight viewer crops match. |
 | Zone Active toggles OR both low bits into the settings union regardless of zone type, changing unrelated options. | Implemented approved correction: change only Active, preserve zone settings, and omit the unrelated DFHack membership rebuild. | Independently reproduced through native clicks in protected170600 on2026-11-12: Tomb permissions both enabled to disabled, archery dir_x1 to3; re-enabling retains the corruption. Viewer171315 passes10 clicks across5 types and stale-edit rejection. `native_zone_defaults.json.active_toggle_reference`; reproduction below. |
 | Justice's Name sort tooltip advertises Ctrl+n, but the native sort command leaves the list unchanged. | No correction approved or implemented; preserve inactive shortcut. | Protected130514 on2026-11-12 sends UNITLIST_SORT_NAME before filter focus in Guard, Convicts, Interrogate and Convict. Native priorities and ordered row IDs remain unchanged; FILTER works in the same lists. `native_justice.json.filter_keyboard_reference`. |
 | Justice witness captions can extend past the panel edge. | No correction approved or implemented; preserve native full captions. | Protected150238 on2026-11-12 rebuilds a case after a controlled long witness name. Constructor14195c0 sets a120-cell minimum and the caption draws past the panel. `native_justice.json.witness_intrinsic_width_reference`. |
@@ -18069,9 +18070,24 @@ owned DF7460 exits unsaved with source saves/preferences preserved. Only the
 three documented Godot separate-thread/shutdown diagnostics occur. GPU sample
 56C/4%, serial30FPS; this is a sample, not a peak measurement. The fixture's
 main_scene_reference retains evidence hashes. Earlier142303/142504 failed
-render/control checks and are not acceptance. Other window sizes, multiple-row
+render/control checks and are not acceptance. At that baseline, other window sizes, multiple-row
 scrolling and the broader workshop workflow remain unqualified; keep the public
 workshop gate closed.
+
+Connections responsive follow-up143417 qualifies the single-row list and Give
+picker at960x600,1600x900,912x552,1200x800: all eight panel crops match native,
+with actual Give-button/Cancel navigation and the full map-link roundtrip.
+The left edge is max(32, workshop-left minus360); the right edge stays32 pixels
+before the workshop sheet. Native33579a..3357de narrows the panel to112/64 at
+the smaller widths, with overlapping controls and overflowing text; this defect
+is retained and recorded in the native bug register. Cancel's opaque caption
+background is drawn after the prompt, matching native overlap. Add buttons
+retain native precedence over Done where their hitboxes overlap. Owned DF35772
+exits unsaved with source/preferences preserved; only the same three known
+Godot diagnostics occur,30FPS with55C/15% sampled (not peak). Native-only143039
+establishes all four sizes;142920 used a fixed X on the wide window and is not
+acceptance.143210 isolated caption overlap and is superseded by143417.
+Multiple-row ordering/scrolling remains unqualified.
 
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.

@@ -4085,6 +4085,11 @@
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with WORKSHOP_NATIVE, HEADER and HEADER_RUNTIME flags. Main-scene rename/removal/cancellation against native captures; never standalone."
     },
     {
+      "path": "presentations/godot/project/tests/workshop_connections_multi_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected CONNECTIONS_MULTI and CONNECTIONS_MULTI_SCENE native fixture; multirow order and visible scrollbar checks. Never standalone."
+    },
+    {
       "path": "presentations/godot/project/tests/workshop_connections_scene_live.gd",
       "status": "manual",
       "reason": "Protected workshop CONNECTIONS, CONNECTIONS_EFFECTS and CONNECTIONS_SCENE fixture; actual owner and visible Connections controls. Never standalone."

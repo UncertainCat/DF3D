@@ -158,6 +158,49 @@ local ok,err=xpcall(function()
    assert(#links.give_to_pile==1 and links.give_to_pile[0].id==pile.id,'Native workshop give pick failed')
    assert(contains(pile.links.take_from_workshop,building.id),'Native give missing reciprocal link')
    shot('connections-linked-give')
+   if os.getenv('DF3D_WORKSHOP_CONNECTIONS_MULTI')=='1'then
+    local extras={};local backups={}
+    for _,candidate in ipairs(df.global.world.buildings.other.STOCKPILE)do
+     local d=dfhack.maps.getTileFlags(candidate.centerx,candidate.centery,candidate.z)
+     if candidate.id~=pile.id and candidate.z==building.z and d and not d.hidden and #extras<11 then
+      extras[#extras+1]=candidate;backups[candidate.id]={}
+      for _,field in ipairs{'take_from_workshop','give_to_workshop'}do
+       local ids={};for _,entry in ipairs(candidate.links[field])do ids[#ids+1]=entry.id end;backups[candidate.id][field]=ids
+      end
+     end
+    end
+    assert(#extras==11,'Multirow Connections fixture needs twelve visible same-level stockpiles')
+    for i,target in ipairs(extras)do click(i%2==0 and 80 or 112,82);select_map(target)end
+    local ordered={}
+    for _,source in ipairs{{'take_from_pile',2},{'give_to_pile',1}}do
+     for _,target in ipairs(links[source[1]])do ordered[#ordered+1]={id=target.id,direction=source[2],name=dfhack.df2utf(dfhack.buildings.getName(target))}end
+    end
+    assert(#ordered==12)
+    result.connections_reference.multiple={rows=ordered}
+    shot('connections-multiple-top')
+    g.precise_mouse_x=200;g.precise_mouse_y=200;g.mouse_x=25;g.mouse_y=16
+    click(368,452);shot('connections-multiple-arrow')
+    for i=1,20 do click(368,452)end
+    shot('connections-multiple-bottom')
+    if os.getenv('DF3D_WORKSHOP_CONNECTIONS_MULTI_SCENE')=='1'then
+     capture('workshop-wire');local f=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(f:read('*a'));f:close();assert(receipt.success)
+     result.connections_reference.multiple.viewer=receipt
+    end
+    assert(click_label('Done'));click(768,82)
+    for i=1,20 do click(368,140)end
+    for remaining=12,2,-1 do
+     assert(#links.take_from_pile+#links.give_to_pile==remaining)
+     local first=#links.take_from_pile>0 and links.take_from_pile[0] or links.give_to_pile[0]
+     click(remaining>9 and 336 or 360,first.id==pile.id and 190 or 154)
+     assert(#links.take_from_pile+#links.give_to_pile==remaining-1,'Native multirow unlink made no progress')
+    end
+    assert(#links.give_to_pile==1 and links.give_to_pile[0].id==pile.id)
+    for _,target in ipairs(extras)do
+     for field,ids in pairs(backups[target.id])do assert(#target.links[field]==#ids);for i,id in ipairs(ids)do assert(target.links[field][i-1].id==id)end end
+    end
+    result.connections_reference.multiple.restored=true
+    shot('connections-multiple-restored')
+   end
    if os.getenv('DF3D_WORKSHOP_CONNECTIONS_RESIZE')=='1'then
     result.connections_reference.resize={}
     for _,size in ipairs{'small','wide','minimum','default'}do

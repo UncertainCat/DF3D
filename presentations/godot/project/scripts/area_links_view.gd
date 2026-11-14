@@ -58,6 +58,13 @@ func configure(source) -> void:
 
 func _apply_scroll() -> void:
 	scroll.scroll_vertical = scrollbar.first * 36
+	if stockpile_only:
+		# Keep horizontal native caption overflow, but only draw/hit the nine visible rows.
+		for index in rows_box.get_child_count():
+			var line=rows_box.get_child(index)
+			var shown: bool=index>=scrollbar.first and index<scrollbar.first+9
+			line.modulate=Color(1,1,1,1 if shown else 0)
+			line.get_child(2).disabled=not actions_enabled or not shown or picking_now
 
 func reset_scroll() -> void:
 	scrollbar.set_rows(0); scrollbar.dragging = false; _apply_scroll()

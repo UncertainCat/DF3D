@@ -18087,7 +18087,22 @@ exits unsaved with source/preferences preserved; only the same three known
 Godot diagnostics occur,30FPS with55C/15% sampled (not peak). Native-only143039
 establishes all four sizes;142920 used a fixed X on the wide window and is not
 acceptance.143210 isolated caption overlap and is superseded by143417.
-Multiple-row ordering/scrolling remains unqualified.
+Multiple-row follow-up144045 qualifies twelve alternating Give/Take links
+created through native controls using existing visible same-level stockpiles.
+The owned provider matches all IDs, directions and native captions in Take-
+then-Give vector order. Main-scene top, one-down-arrow and bottom panel crops
+match native at1200x800, with first-row offsets0/1/3/0 and closure releasing
+input. The viewer masks rows outside its nine-row viewport while retaining
+native horizontal caption overflow. Native cleanup removes all eleven extra
+links and verifies each reciprocal vector before restoring the original link.
+Owned DF30660 exits unsaved with source/preferences preserved; only the same
+three known Godot diagnostics occur.30FPS GPU54C/9% sample is not a peak.
+The fixture's multiple_reference records rows, scope and evidence hashes.
+Earlier143721 stalled diagnostic cleanup by clicking the pre-scrollbar Remove
+X; only its owned DF36292 was terminated, and the lane reports failure.
+Cleanup is now bounded and asserts each removal.143934 verifies restoration
+but its CONTEXT_SCROLL_DOWN inputs did not scroll; it is not wheel evidence.
+Wheel/thumb-drag behavior and narrow multirow layouts remain unqualified.
 
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.

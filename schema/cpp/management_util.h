@@ -2963,13 +2963,23 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
 
   if(const auto* a=s.selection()) {
     auto text=[](const flatbuffers::String* v,size_t max){return v && v->size()<=max;};
-    if(a->kind()>SelectionKind::Vermin || a->id() < -1 || (a->open() && (!a->receipt() || a->kind()==SelectionKind::None || a->id()<0)) ||
+    // Native grouped lists and engraving tabs identify a tile, not an object.
+    // Their -1 sentinel must never be generalized to unit/item/building IDs.
+    auto targetId=[](SelectionKind kind,int32_t id) {
+      switch(kind) {
+        case SelectionKind::Unit:case SelectionKind::Item:case SelectionKind::Building:case SelectionKind::Vermin:return id>=0;
+        case SelectionKind::Engraving:case SelectionKind::PlannedEngraving:case SelectionKind::UnitList:case SelectionKind::ItemList:return id==-1;
+        default:return false;
+      }
+    };
+    if(a->kind()>SelectionKind::Vermin || a->id() < -1 || (a->open() && (!a->receipt() || !targetId(a->kind(),a->id()))) ||
        !text(a->title(),512) || !text(a->subtitle(),512) || !text(a->job(),512) || !text(a->description(),16384) ||
        !a->alternatives() || a->alternatives()->size()>256 || !a->items() || a->items()->size()>256 || !a->overview() || a->overview()->size()>32 || a->weight() < -1 || a->value() < -1) return "invalid selection state";
     if(a->tile() && (a->tile()->x()<0 || a->tile()->y()<0 || a->tile()->z()<0)) return "invalid selected tile";
-    auto identity=[&](const SelectionIdentity* e){return e && e->kind()>SelectionKind::None && e->kind()<=SelectionKind::Vermin && e->id()>=0 && text(e->name(),512);};
+    if(a->open() && a->id()==-1 && !a->tile())return "missing selected tile";
+    auto identity=[&](const SelectionIdentity* e){return e && targetId(e->kind(),e->id()) && (e->id()!=-1 || a->tile()) && text(e->name(),512);};
     for(const auto* e:*a->alternatives()) if(!identity(e)) return "invalid selection identity";
-    if(a->container() && !identity(a->container())) return "invalid selected container";
+    if(a->container() && (!identity(a->container()) || a->container()->id()<0)) return "invalid selected container";
     for(const auto* e:*a->items()) if(!e || e->id()<0 || !text(e->name(),512)) return "invalid selected item";
     size_t bytes=0;for(const auto* e:*a->overview()) {if(!e || e->section()>SelectionSection::UnmetNeeds || !text(e->text(),16384)) return "invalid unit overview";bytes+=e->text()->size();}if(bytes>65536)return "unit overview too large";
     if(const auto* p=a->portrait()) {

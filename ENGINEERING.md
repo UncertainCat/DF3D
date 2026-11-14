@@ -9182,6 +9182,17 @@ full UI-state guard remain outside this live qualification. The static item
 threshold was corrected during implementation: six or more units collapse
 first, restoring the six-slot item allowance before the building deduction.
 
+The reserved Selection transport now validates native tile-based identities:
+UnitList, ItemList, Engraving and PlannedEngraving require ID-1 and a tile;
+Unit, Item, Building and Vermin require nonnegative object/caste IDs. Containers
+cannot use the tile sentinel. The model round-trip preserves an ItemList
+alternative alongside object alternatives. The identity fault matrix checks
+all eight target kinds, missing tiles and invalid container/sentinel combinations;
+rebuilt worldmodel_tests and core19 pass. This changes validation only, without
+a wire-layout/version change. The producer, group-member payload and Godot
+adapter remain unfinished; the existing diagnostic is still the only exposed
+provider route.
+
 Protected contents oracle220127 on2026-10-28 observes40 PERM seed entries in
 farm968. The six visible View controls open the first six `contained_items`
 IDs in vector order. After closing the item sheet and reselecting the farm,

@@ -1530,16 +1530,18 @@ TEST_CASE("selection transport preserves native identity order and clears closed
   flatbuffers::FlatBufferBuilder b;
   auto unit=mm::CreateSelectionIdentity(b,mm::SelectionKind::Unit,4085,b.CreateString("Cerol"));
   auto door=mm::CreateSelectionIdentity(b,mm::SelectionKind::Building,1037,b.CreateString("Gabbro Door"));
+  auto group=mm::CreateSelectionIdentity(b,mm::SelectionKind::ItemList,-1,b.CreateString(""));
   auto overview=mm::CreateSelectionText(b,mm::SelectionSection::AgeSex,b.CreateString("5 Years Old"));
   std::vector<flatbuffers::Offset<mm::SelectionItem>> items;
   std::vector<mm::AppearanceLayer> layers{mm::AppearanceLayer(0,2,3,1,1,65535,-1,-1,0,0)};
   auto portrait=mm::CreateSelectionAppearance(b,b.CreateVector(std::vector{b.CreateString("PORTRAIT_TEST")}),
       b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{}),b.CreateVectorOfStructs(layers));
   const auto empty=b.CreateString("");const auto title=b.CreateString("Cerol");
-  const auto choices=b.CreateVector(std::vector{unit,door});const auto contents=b.CreateVector(items);
+  const auto choices=b.CreateVector(std::vector{unit,door,group});const auto contents=b.CreateVector(items);
   const auto sections=b.CreateVector(std::vector{overview});
   mm::SelectionStateBuilder page(b);page.add_open(true);page.add_receipt(77);
   page.add_kind(mm::SelectionKind::Unit);page.add_id(4085);page.add_title(title);
+  const mm::TilePos tile(102,70,165);page.add_tile(&tile);
   page.add_subtitle(empty);page.add_job(empty);page.add_description(empty);
   page.add_alternatives(choices);page.add_items(contents);page.add_overview(sections);page.add_portrait(portrait);
   auto selection=page.Finish();
@@ -1550,7 +1552,8 @@ TEST_CASE("selection transport preserves native identity order and clears closed
   REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
   REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));REQUIRE(client->poll());
   const auto& selected=client->state().selection;
-  REQUIRE(selected.alternatives.size()==2);CHECK(selected.alternatives[0].id==4085);CHECK(selected.alternatives[1].id==1037);
+  REQUIRE(selected.alternatives.size()==3);CHECK(selected.alternatives[0].id==4085);CHECK(selected.alternatives[1].id==1037);
+  CHECK(selected.alternatives[2].kind==wm::SelectionKind::ItemList);CHECK(selected.alternatives[2].id==-1);
   CHECK(selected.kind==wm::SelectionKind::Unit);CHECK(selected.receipt==77);
   REQUIRE(selected.overview.size()==1);CHECK(selected.overview[0].text=="5 Years Old");
   REQUIRE(selected.portrait.layers.size()==1);CHECK(selected.portrait.layers[0].tileX==2);CHECK(selected.portrait.tilePages[0]=="PORTRAIT_TEST");
@@ -1570,6 +1573,36 @@ TEST_CASE("selection rejects missing receipts, invalid tiles and unbounded index
     command.add_client_id(1);command.add_seq(1);command.add_world_epoch(7);
     command.add_action(mm::ManagementAction::Selection);command.add_selection(selection);b.Finish(command.Finish());
     CHECK(mm::validateConstructionRequest(*flatbuffers::GetRoot<mm::ConstructionRequest>(b.GetBufferPointer())).has_value()==(invalid>=0));
+  }
+}
+
+TEST_CASE("native selection groups retain tile identity without weakening object IDs") {
+  // Native152748: building74 plus an eight-item group with sentinel ID -1.
+  for(auto kind:{mm::SelectionKind::Unit,mm::SelectionKind::Item,mm::SelectionKind::Building,
+                mm::SelectionKind::Vermin,mm::SelectionKind::UnitList,mm::SelectionKind::ItemList,
+                mm::SelectionKind::Engraving,mm::SelectionKind::PlannedEngraving}) {
+    const bool grouped=kind==mm::SelectionKind::UnitList || kind==mm::SelectionKind::ItemList ||
+                       kind==mm::SelectionKind::Engraving || kind==mm::SelectionKind::PlannedEngraving;
+    for(int id:{-2,-1,74})for(bool tilePresent:{false,true})for(bool container:{false,true}) {
+      flatbuffers::FlatBufferBuilder b;
+      const auto empty=b.CreateString("");const mm::TilePos tile(102,70,165);
+      const auto identity=mm::CreateSelectionIdentity(b,kind,id,empty);
+      const auto alternatives=b.CreateVector(std::vector{identity});
+      const auto items=b.CreateVector(std::vector<flatbuffers::Offset<mm::SelectionItem>>{});
+      const auto overview=b.CreateVector(std::vector<flatbuffers::Offset<mm::SelectionText>>{});
+      mm::SelectionStateBuilder page(b);page.add_open(true);page.add_receipt(77);
+      page.add_kind(kind);page.add_id(id);if(tilePresent)page.add_tile(&tile);
+      page.add_title(empty);page.add_subtitle(empty);page.add_job(empty);page.add_description(empty);
+      page.add_alternatives(alternatives);page.add_items(items);page.add_overview(overview);
+      if(container)page.add_container(identity);
+      const auto selection=page.Finish();
+      mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(1);
+      state.add_world_epoch(7);state.add_action(mm::ManagementAction::Selection);
+      state.add_status(mm::ManagementStatus::Ok);state.add_selection(selection);b.Finish(state.Finish());
+      const bool valid=grouped?(id==-1 && tilePresent && !container):id>=0;
+      CAPTURE(int(kind));CAPTURE(id);CAPTURE(tilePresent);CAPTURE(container);
+      CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value()==!valid);
+    }
   }
 }
 

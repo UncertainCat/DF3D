@@ -263,10 +263,37 @@ local ok,err=xpcall(function()
    select_map(building);click(800,82);for i=1,100 do key('STRING_A000')end;text(name);key('SELECT');assert(building.name==name);record('restored')
    click(832,82);assert(dfhack.buildings.markedForRemoval(building) and #building.jobs==1 and building.jobs[0].job_type==df.job_type.DestroyBuilding);record('remove')
    assert(click_label('Cancel removal'));assert(#building.jobs==0 and not dfhack.buildings.markedForRemoval(building));record('cancel')
+   if os.getenv('DF3D_WORKSHOP_HEADER_QUEUED')=='1'then
+    assert(df.building_workshopst:is_instance(building))
+    for i=1,2 do assert(click_label('Add new task'));assert(click_label('Make bed'))end
+    assert(#building.jobs==2)
+    local worker
+    for _,unit in ipairs(df.global.world.units.active)do
+     if dfhack.units.isCitizen(unit) and not dfhack.units.isDead(unit) and not unit.job.current_job then worker=unit;break end
+    end
+    assert(worker and dfhack.job.addWorker(building.jobs[0],worker))
+    building.jobs[0].flags.working=true
+    result.header_reference.queued={worker_id=worker.id,before_ids={building.jobs[0].id,building.jobs[1].id},setup='Paused native-button fixture: two native Make bed jobs; addWorker and working=true on first job, no AI ticks.'}
+    record('queued')
+    click(832,82);record('queued-remove')
+    assert(#building.jobs==1 and building.jobs[0].job_type==df.job_type.DestroyBuilding,'Removal retained production jobs')
+    assert(not worker.job.current_job,'Removal retained production worker job')
+    result.header_reference.queued.worker_released=true
+    assert(click_label('Cancel removal'));record('queued-cancel')
+    assert(#building.jobs==0 and not dfhack.buildings.markedForRemoval(building))
+    result.header_reference.queued.cancel_empty=true
+    if os.getenv('DF3D_WORKSHOP_HEADER_QUEUED_RUNTIME')=='1'then
+     for i=1,2 do assert(click_label('Add new task'));assert(click_label('Make bed'))end
+     assert(#building.jobs==2 and dfhack.job.addWorker(building.jobs[0],worker));building.jobs[0].flags.working=true
+     result.header_reference.queued.viewer_before_ids={building.jobs[0].id,building.jobs[1].id}
+     record('queued-wire')
+    end
+   end
    if os.getenv('DF3D_WORKSHOP_HEADER_RUNTIME')=='1'then
     capture('workshop-wire')
     local f=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(f:read('*a'));f:close();assert(receipt.success)
     assert(building.name==name and #building.jobs==0 and not dfhack.buildings.markedForRemoval(building),'Viewer header did not restore name/queue')
+    if result.header_reference.queued then assert(not df.unit.find(result.header_reference.queued.worker_id).job.current_job,'Viewer removal retained production worker job')end
     result.header_reference.viewer=receipt;record('viewer-complete')
    end
   end,debug.traceback)

@@ -4080,6 +4080,11 @@
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with WORKSHOP_NATIVE and SHEET_LAYOUT flags. Native resized tabs and task picker with owned temporary jobs; never standalone."
     },
     {
+      "path": "presentations/godot/project/tests/workshop_queued_removal_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected HEADER, HEADER_QUEUED, HEADER_RUNTIME and HEADER_QUEUED_RUNTIME fixture; native worker/job cleanup via real main-scene Remove/Cancel. Never standalone."
+    },
+    {
       "path": "presentations/godot/project/tests/workshop_header_scene_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with WORKSHOP_NATIVE, HEADER and HEADER_RUNTIME flags. Main-scene rename/removal/cancellation against native captures; never standalone."

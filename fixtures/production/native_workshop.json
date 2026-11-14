@@ -40345,5 +40345,60 @@
       "build/stockpile-storage-native-farm-discovery-20261114-145209/workshop-header-remove-live.png": "7841ae28023849bc42e4bcc6dc9ffdda186ff717a824eabc4cbf4601ed37725d",
       "build/stockpile-storage-native-farm-discovery-20261114-145209/workshop-header-cancel-live.png": "ab1e98bb9f9a37551d1d070358e6db847b7183256b70f6d598f553a53dd00b5a"
     }
+  },
+  "queued_removal_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261114-145604",
+    "native_initial_lane": "build/stockpile-storage-native-farm-discovery-20261114-145445",
+    "scope": "Carpenter with two native Make bed jobs. Paused fixture assigns an idle citizen to first job with addWorker and working=true; no AI ticks. Native and actual-main-scene Remove discard production queue and release worker; Cancel yields empty queue. Both full panel crops match; final original name and no jobs/worker job verified natively.",
+    "native": {
+      "before_ids": [
+        382797,
+        382798
+      ],
+      "cancel_empty": true,
+      "setup": "Paused native-button fixture: two native Make bed jobs; addWorker and working=true on first job, no AI ticks.",
+      "viewer_before_ids": [
+        382800,
+        382801
+      ],
+      "worker_id": 996,
+      "worker_released": true
+    },
+    "status": "passed_with_known_issues",
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "owned_df_pid": 37720,
+    "closed_unsaved": true,
+    "source_preserved": true,
+    "limitations": [
+      "Controlled worker assignment establishes cleanup, not natural AI job execution.",
+      "Furnace populated-queue removal is not exercised here."
+    ],
+    "hashes": {
+      "build/stockpile-storage-native-farm-discovery-20261114-145604/result.json": "ec67a305cdbc245458efcb34bb1e72cc19f87cfc69053921502bf01c89f902d2",
+      "build/stockpile-storage-native-farm-discovery-20261114-145604/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "build/stockpile-storage-native-farm-discovery-20261114-145604/workshop-native.json": "7d094565d3787bb8a86fa7ca7a1e63a986be2101b6fdfda994aa2082d011c43f",
+      "build/stockpile-storage-native-farm-discovery-20261114-145604/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+      "build/stockpile-storage-native-farm-discovery-20261114-145604/workshop-header-queued-remove-live.png": "2233195fdcc7e4ef5a0734a76af4c9320730af084055c6bbeb76e33a7f158b91",
+      "build/stockpile-storage-native-farm-discovery-20261114-145604/workshop-header-queued-cancel-live.png": "6c6a7b3de568c8db9a9ab8616c1fa351e2c54a39f0cbfac11dee4a0ec75b2b7f"
+    }
   }
 }

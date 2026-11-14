@@ -18013,9 +18013,25 @@ and are not acceptance. The updated model receipt tests cover Box and Workshop.
 MSVC, root/client builds, core19 and build/qa/workshop-header state/composition
 checks pass. The initial root link collided with the live session helper's file
 lock; rebuilding after lane exit passes. workshop_header_reference retains
-hashes, native state and limits. This qualifies an idle Carpenter; active-worker
-and queued-production removal and public map selection remain separate work
-before workshop exposure; Furnace headers and Connections are qualified below.
+hashes, native state and limits. This baseline qualifies an idle Carpenter. Queued production and controlled
+worker cleanup, Furnace headers and Connections are qualified below; public
+map selection remains separate work before workshop exposure.
+
+Workshop queued-removal follow-up145604 on2026-11-14 starts with two Make bed
+jobs created through native controls. A paused diagnostic attaches an idle
+citizen to the first job with addWorker and working=true. Native-only145445
+establishes that Remove discards both production jobs and releases the worker;
+Cancel leaves an empty workshop, without restoring the discarded queue.
+The main-scene owner starts from a second identical setup, observes both job
+IDs and the active worker, then exercises actual Remove and Cancel controls.
+Both full-panel captures match native; native readback independently confirms
+an empty queue and cleared worker.current_job. Existing queueDestroy and
+cancel-removal semantic calls require no runtime change for this case.
+Owned DF37720 exits unsaved with source/preferences preserved. Only the three
+known Godot diagnostics occur;30FPS GPU52C/12% is a sample, not peak load.
+queued_removal_reference retains fixture setup, effects and evidence hashes.
+This qualifies controlled cleanup, not natural AI execution or Furnace
+populated-queue removal.
 
 Furnace header follow-up145209 on2026-11-14 qualifies an idle completed
 Smelter. Native-only144321 establishes the same rename/Enter/Escape and

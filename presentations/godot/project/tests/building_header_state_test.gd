@@ -122,6 +122,15 @@ func run() -> void:
 		model.edit_name_entry("AB");world.state.world_epoch=6;service.poll()
 		check(model.phase==Model.Phase.Unavailable and model.name_session==null and world.calls.size()==1+int(sent_name),"epoch retires typed name session")
 		await process_frame
+	for kind in [5,13]:
+		setup();model.open(278);service.poll();var production:=snapshot();production.type=kind;reply(production)
+		check(model.begin_name_entry(),"production name entry begins "+str(kind));model.finish_name_entry()
+		model.request_removal();service.poll()
+		check(world.calls[-1].request.get("farm_operation",-1)==C.FarmOperation.Remove,"production removal dispatched "+str(kind))
+		var removal: Dictionary=production.duplicate(true);removal.removing=true;removal.revision+=1;reply(removal,1,C.FarmOperation.Remove)
+		model.cancel_removal();service.poll();reply(production,1,C.FarmOperation.CancelRemoval)
+		check(model.phase==Model.Phase.Ready and not model.snapshot.removing,"production cancellation accepted "+str(kind))
+		await process_frame
 	model.dispose();service.free()
 	if failures==0:print("BUILDING_HEADER_STATE_PASS")
 	quit(0 if failures==0 else 1)

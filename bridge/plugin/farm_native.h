@@ -97,7 +97,7 @@ struct BuildingHeader {
 inline bool cancelBuildingRemoval(df::building* building) {
     const auto& native=farmFunctions();
     if(!native || !building ||
-       (building->getType()!=df::building_type::FarmPlot && building->getType()!=df::building_type::Box && building->getType()!=df::building_type::Workshop) || building->getBuildStage()!=building->getMaxBuildStage() ||
+       (building->getType()!=df::building_type::FarmPlot && building->getType()!=df::building_type::Box && building->getType()!=df::building_type::Workshop && building->getType()!=df::building_type::Furnace) || building->getBuildStage()!=building->getMaxBuildStage() ||
        building->jobs.size()>size_t(INT16_MAX))return false;
     bool removing=false;
     for(const auto* job:building->jobs) {

@@ -19,7 +19,7 @@ func type_text(value: String) -> void:
 	for character in value:key(0,character.unicode_at(0))
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("workshop")
-	owner.open_workshop(int(expected.building_id),"BUILDING_ICON_WORKSHOP_CARPENTER")
+	owner.open_workshop(int(expected.building_id),("BUILDING_ICON_FURNACE_SMELTER" if expected.get("building_type",13)==5 else "BUILDING_ICON_WORKSHOP_CARPENTER"))
 	if not await workshop_ready():return
 	await pointer(Vector2(800,82));type_text("lower workshop");key(KEY_ENTER)
 	await drain()
@@ -29,7 +29,7 @@ func exercise(expected: Dictionary) -> void:
 	await pointer(Vector2(800,82));type_text(" appended");key(KEY_ESCAPE)
 	await drain();await process_frame
 	check(scene._ui.host.active==null and owner.state.building_id==-1,"Escape retained workshop ownership")
-	owner.open_workshop(int(expected.building_id),"BUILDING_ICON_WORKSHOP_CARPENTER")
+	owner.open_workshop(int(expected.building_id),("BUILDING_ICON_FURNACE_SMELTER" if expected.get("building_type",13)==5 else "BUILDING_ICON_WORKSHOP_CARPENTER"))
 	if not await workshop_ready():return
 	check(owner.state.snapshot.custom_name==expected.header_reference.original_name+"lower workshop appended","Escape lost typed workshop name")
 	await pointer(Vector2(800,82))
@@ -45,6 +45,6 @@ func exercise(expected: Dictionary) -> void:
 	if not await workshop_ready():return
 	check(not owner.state.snapshot.removing and owner.tasks.jobs().is_empty(),"Cancel removal did not restore empty workshop")
 	await capture_header("cancel")
-	owner.close_panel();owner.open_workshop(int(expected.building_id),"BUILDING_ICON_WORKSHOP_CARPENTER");owner.close_panel();await drain();await process_frame
+	owner.close_panel();owner.open_workshop(int(expected.building_id),("BUILDING_ICON_FURNACE_SMELTER" if expected.get("building_type",13)==5 else "BUILDING_ICON_WORKSHOP_CARPENTER"));owner.close_panel();await drain();await process_frame
 	check(scene._ui.host.active==null and not owner.panel.visible and owner.tasks.building_id==-1,"Late read revived closed workshop")
 	exercised=true

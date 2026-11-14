@@ -40236,5 +40236,114 @@
         "build/stockpile-storage-native-farm-discovery-20261114-144045/workshop-connections-multiple-bottom-live.png": "2f91d5cea790826e0fd9e09158df681ba39502d4b3c12d83e8581f4103bff7e9"
       }
     }
+  },
+  "furnace_header_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261114-145209",
+    "native_initial_lane": "build/stockpile-storage-native-farm-discovery-20261114-144321",
+    "building_id": 58,
+    "type": "Smelter",
+    "states": [
+      {
+        "custom_name": "lower workshop",
+        "editing": true,
+        "jobs": [],
+        "name": "draft",
+        "open": true,
+        "removing": false
+      },
+      {
+        "custom_name": "lower workshop",
+        "editing": false,
+        "jobs": [],
+        "name": "renamed",
+        "open": true,
+        "removing": false
+      },
+      {
+        "custom_name": "lower workshop appended",
+        "editing": true,
+        "jobs": [],
+        "name": "escape",
+        "open": false,
+        "removing": false
+      },
+      {
+        "custom_name": "",
+        "editing": false,
+        "jobs": [],
+        "name": "restored",
+        "open": true,
+        "removing": false
+      },
+      {
+        "custom_name": "",
+        "editing": false,
+        "jobs": [
+          {
+            "flags": 0,
+            "id": 382796,
+            "type": 88
+          }
+        ],
+        "name": "remove",
+        "open": true,
+        "removing": true
+      },
+      {
+        "custom_name": "",
+        "editing": false,
+        "jobs": [],
+        "name": "cancel",
+        "open": true,
+        "removing": false
+      },
+      {
+        "custom_name": "",
+        "editing": false,
+        "jobs": [],
+        "name": "viewer-complete",
+        "open": true,
+        "removing": false
+      }
+    ],
+    "scope": "Idle completed Smelter, actual main-scene workshop owner with native furnace icon. Immediate rename/Enter, append/Escape/reopen, original name restoration, Remove/Cancel and pending-read closure. Four full panel crops match native. Native final name and empty queue restored.",
+    "status": "passed_with_known_issues",
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "owned_df_pid": 34572,
+    "closed_unsaved": true,
+    "source_preserved": true,
+    "limitations": [
+      "Active-worker or queued-production removal is not qualified by this idle fixture.",
+      "Other furnace subtypes are not exercised in this header run."
+    ],
+    "hashes": {
+      "build/stockpile-storage-native-farm-discovery-20261114-145209/result.json": "e7442798b38d0d31e3d2a3a625798dfaf08806295155f1f936d83a0c10b9e762",
+      "build/stockpile-storage-native-farm-discovery-20261114-145209/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "build/stockpile-storage-native-farm-discovery-20261114-145209/workshop-native.json": "96abe4bfa0e5a78a197a1824e0fdaf106323e8b55b6a109093d2630bcd8db804",
+      "build/stockpile-storage-native-farm-discovery-20261114-145209/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+      "build/stockpile-storage-native-farm-discovery-20261114-145209/workshop-header-renamed-live.png": "de3156a86c0bea4d01a48a9a631c2dc3673b1e7fead57585a772f3591e8feed2",
+      "build/stockpile-storage-native-farm-discovery-20261114-145209/workshop-header-restored-live.png": "ab1e98bb9f9a37551d1d070358e6db847b7183256b70f6d598f553a53dd00b5a",
+      "build/stockpile-storage-native-farm-discovery-20261114-145209/workshop-header-remove-live.png": "7841ae28023849bc42e4bcc6dc9ffdda186ff717a824eabc4cbf4601ed37725d",
+      "build/stockpile-storage-native-farm-discovery-20261114-145209/workshop-header-cancel-live.png": "ab1e98bb9f9a37551d1d070358e6db847b7183256b70f6d598f553a53dd00b5a"
+    }
   }
 }

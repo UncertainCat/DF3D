@@ -10172,7 +10172,7 @@ management100_wire_reference retains exact receipt revisions and binary hashes.
 The protected helper is registered in the QA manifest. Chest controller lifecycle,
 rendered composition and main-scene navigation remain unfinished and unexposed.
 
-building_header_state.gd owns one Box target and explicit header intents through
+building_header_state.gd owns one Box, Workshop or Furnace target and explicit header intents through
 the shared semantic action service. It retains displayed facts while awaiting an
 edit and changes them only on a valid typed receipt. Failure clears authority;
 refresh is explicit. Closing cancels queued work and detaches sent work, while
@@ -17990,11 +17990,11 @@ not qualify overflow scrolling, Conditions/Details navigation at these sizes,
 or worker execution; existing separate workflow evidence retains its scope.
 
 Workshop header editing uses the existing independent building authority for
-Box10 and Workshop13. Furnace5 remains read-only pending its edit qualification.
+Box10, Workshop13 and Furnace5.
 Rename writes the native building name; Remove invokes native queueDestroy;
 Cancel uses the pinned building-only1b00a3 routine. The transaction checks
 revision, completed stage, operation and postconditions, without reading sheet
-scratch. Workshop edit receipts are admitted by the shared response validator;
+scratch. Workshop and Furnace edit receipts are admitted by the shared response validator;
 there is no wire-layout or protocol209 change. Rename sessions remain owned by
 the action service so explicit typing finishes after the sheet closes, without
 replaying unknown outcomes.
@@ -18014,8 +18014,24 @@ MSVC, root/client builds, core19 and build/qa/workshop-header state/composition
 checks pass. The initial root link collided with the live session helper's file
 lock; rebuilding after lane exit passes. workshop_header_reference retains
 hashes, native state and limits. This qualifies an idle Carpenter; active-worker
-and queued-production removal, Furnace header edits, Connections and public
-map selection remain separate work before workshop exposure.
+and queued-production removal and public map selection remain separate work
+before workshop exposure; Furnace headers and Connections are qualified below.
+
+Furnace header follow-up145209 on2026-11-14 qualifies an idle completed
+Smelter. Native-only144321 establishes the same rename/Enter/Escape and
+Remove/Cancel effects. The main-scene workshop owner uses the installed
+BUILDING_ICON_FURNACE_SMELTER icon and reproduces all effects, original-name
+restoration and pending-read retirement. Four full-panel crops (renamed,
+restored, remove, cancel) match native exactly. Native independently verifies
+the original name and empty job queue. Owned DF34572 exits unsaved with source
+saves/preferences preserved; only the three documented Godot diagnostics occur.
+The run is capped30FPS;51C/8% is a sample, not peak load. MSVC bridge,
+root/client builds, core19 and building-header/UI-composition QA pass.
+furnace_header_reference retains state observations and evidence hashes.
+This extends the existing safe-point header operations and receipt validation;
+no native sheet scratch or new wire fields are introduced. Active-worker and
+queued-production removal, and other furnace subtypes, remain outside this
+idle Smelter header qualification.
 
 Workshop Connections is wired through the staged workshop owner. Protected native135821
 on2026-11-14 establishes the workflow: header click768,82 opens a separate

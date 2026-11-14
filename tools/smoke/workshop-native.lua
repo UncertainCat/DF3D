@@ -13,8 +13,15 @@ if os.getenv('DF3D_WORKSHOP_SELECTOR_LAYOUT')=='1'then
   if df.building_workshopst:is_instance(candidate) and candidate.type==df.workshop_type.Still then building=candidate;break end
  end
 end
+if os.getenv('DF3D_FURNACE_HEADER')=='1'then
+ building=nil
+ for _,candidate in ipairs(df.global.world.buildings.other.FURNACE_ANY)do
+  if df.building_furnacest:is_instance(candidate) and candidate.type==df.furnace_type.Smelter and candidate:getBuildStage()==candidate:getMaxBuildStage() and #candidate.jobs==0 then building=candidate;break end
+ end
+ assert(building,'Furnace header reference needs an idle completed smelter')
+end
 local jobs={};for _,job in ipairs(building.jobs)do jobs[#jobs+1]=job.id end
-local result={building_id=building.id,type=df.workshop_type[building.type],position={building.centerx,building.centery,building.z},jobs=jobs,pages={}}
+local result={building_id=building.id,building_type=building:getType(),type=(df.building_furnacest:is_instance(building) and df.furnace_type or df.workshop_type)[building.type],position={building.centerx,building.centery,building.z},jobs=jobs,pages={}}
 -- Diagnostic oracle only; runtime worker reads never traverse widgets.
 local function worker_list(container,depth)
  assert(depth<8,'Native worker widget tree too deep')

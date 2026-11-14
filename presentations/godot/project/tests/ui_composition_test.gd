@@ -336,6 +336,10 @@ func run():
 	check(ui.host.active==null,"Closed Places cannot steal input")
 	check(not ui.Registry.PANEL_ROUTES.values().has("places"),"Internal handoffs do not expose Places launcher")
 	check_selection_navigation(ui.host)
+	ui.open_tile_selection(Vector3i(1,2,3))
+	check(ui.tile_selection!=null and ui.tile_selection.navigation.state.service==ui.actions,"Staged selection uses main-scene semantic service")
+	ui.host.reset_local_views()
+	check(ui.tile_selection.navigation.state.snapshot.is_empty() and not ui.tile_selection.tabs.visible,"Main-scene reset retires staged selection")
 	print("ui_composition_test: ", "PASS" if failures == 0 else "FAIL", " failures=", failures)
 	scene.queue_free()
 	await process_frame

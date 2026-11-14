@@ -197,7 +197,7 @@ local ok,err=xpcall(function()
     gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
    end
   end
-  if os.getenv('DF3D_TILE_SELECTION_RUNTIME')=='1'then
+  if os.getenv('DF3D_TILE_SELECTION_RUNTIME')=='1' or os.getenv('DF3D_TILE_SELECTION_SCENE')=='1' then
    local before=observe()
    capture('workshop-wire')
    local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()

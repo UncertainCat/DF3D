@@ -1,4 +1,11 @@
 extends "res://tests/farm_body_capture.gd"
+class Interaction:
+	extends RefCounted
+	var construction_active:=false
+	var shell_blocked:=false
+	var shell_enabled:=true
+	var panel:=Control.new()
+	func cancel_selection():pass
 class Service:
 	extends RefCounted
 	signal session_changed
@@ -69,5 +76,27 @@ func run() -> void:
 		service.request={};click(Vector2(100,90))
 		if not service.request.is_empty():fail("Pending group accepted duplicate row");return
 		group.queue_free();await process_frame;model.dispose()
+		root.size=Vector2i(1200,800)
+		var host=preload("res://scripts/ui_host.gd").new();host.interaction=Interaction.new();root.add_child(host)
+		var owner=preload("res://scripts/tile_selection_panel.gd").new();root.add_child(owner)
+		owner.configure(world,service,host,Callable())
+		var alternatives: Array=[]
+		for row in reference.tile_selection_reference["item-group"].state.tabs:
+			alternatives.append({"kind":int(row.kind)+1,"id":int(row.id)})
+		owner.navigation.state.snapshot={"open":true,"receipt":9002,"kind":7,"id":-1,"members":members,"alternatives":alternatives}
+		owner.navigation.state.phase=owner.navigation.state.Phase.Ready
+		owner.navigation.state.changed.emit();owner.navigation._selected(7,-1,Vector3i(102,70,165))
+		await process_frame;await RenderingServer.frame_post_draw
+		actual=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
+		actual.save_png(directory+"/viewer-item-group-panel.png")
+		var region:=Rect2i(416,52,488,708)
+		# Side tabs cover the panel's rightmost eight pixels; the building
+		# tab icon remains outside this group-shell comparison.
+		if actual.get_region(region).get_data()!=native.get_region(region).get_data():fail("Composed item group panel differs");return
+		click(Vector2(600,154))
+		if service.request.get("index",-1)!=1 or service.request.get("receipt",0)!=9002:fail("Composed group did not route its row");return
+		host.close_active()
+		if owner.tabs.visible or not owner.navigation.state.snapshot.is_empty():fail("Closing group retained selection tabs");return
+		host.interaction.panel.free();owner.queue_free();host.queue_free();await process_frame
 	world.queue_free();await process_frame
 	print("TILE_SELECTION_TABS_CAPTURE_PASS");quit(0)

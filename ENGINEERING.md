@@ -9242,7 +9242,7 @@ and receipt replacement. It blocks duplicate input while pending, rejects a
 navigation reply with the wrong target/unchanged receipt, retires local ownership
 on close/session changes and ignores late replies. Local close sends no blind
 cleanup request; the bridge's single bounded selection is replaced by the next
-OpenTile or world change. Main-scene ownership remains unconnected.
+OpenTile or world change. The staged main-scene composition is described below.
 
 Protected161327 on2026-11-14 matches all eight native rendered item captions and
 exercises this state owner through the real semantic service: building74,
@@ -9293,13 +9293,37 @@ while view reset retires it. Controllers keep ownership of their own actions.
 Headless ui_composition_test in selection-navigation-ownership exercises the
 real host with injected selection replies: building/group/member transitions,
 same-controller replacement, pending close, unrelated activation and reset.
-This is ownership acceptance only; public composition and rendered handoff
-remain unfinished.
+This establishes ownership behavior; the subsequent protected scene run covers
+the composed item-group handoff.
 
-The view remains staged. Public map routing, main-scene detail handoff,
-unit-member text/art, long captions, overflow, resizing and hover still require
-implementation or acceptance. The eight dolomite rows do not establish artwork
-parity for all specialized item types.
+The staged tile_selection_panel composes the native group shell, item rows and
+side tabs. fortress_ui.open_tile_selection is an internal entry; ordinary map
+routing is unchanged. Confirmed items use the existing item panel; farms,
+boxes, workshops and furnaces use their staged controllers. Other buildings
+retain the existing inspector, whose incomplete native controls are not
+qualified by this selection work. Unsupported selection kinds fail closed.
+
+Protected164634 on2026-11-14 exercises actual main-scene pointer navigation:
+floodgate74 -> ItemList -> item1886 -> ItemList -> floodgate74. The full group
+panel crop(416,52,488,708) matches native pixels. Escape closes the owner and
+tabs; reset during a sent selection read prevents a late reopening. Native
+sheet identity/lists remain unchanged. DF36904 exits unsaved with source saves
+and preferences preserved; graphics are capped30FPS, sampled GPU53–55C/1–4%.
+Core19 and headless selection-panel-final pass. Only the three documented
+Godot diagnostics remain. selection_reference.composed_group_reference stores
+provenance. Earlier164224 ran native capture only because the scene flag did
+not trigger the viewer checkpoint; the trigger now accepts both wire and scene
+flags.164327/164504 correctly failed the initially incomplete route for the
+floodgate; neither is live handoff acceptance.
+
+Standalone selection-panel-capture also matches the complete group shell and
+checks pointer dispatch/closure through the real host with injected replies.
+Public map routing, side-tab icons, unit groups, engraving/vermin destinations,
+long captions, overflow, resizing and hover remain unfinished. This fixture
+qualifies neither all specialized item artwork nor the individual detail
+panels' native fidelity. Building routing currently requires visible streamed
+metadata, then its controller obtains fresh semantic authority; remote/offscreen
+selection and delayed metadata arrival are not qualified.
 
 Protected contents oracle220127 on2026-10-28 observes40 PERM seed entries in
 farm968. The six visible View controls open the first six `contained_items`

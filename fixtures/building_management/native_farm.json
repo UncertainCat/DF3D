@@ -12809,6 +12809,31 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "composed_group_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-164634",
+      "status": "passed_with_known_issues",
+      "scope": "Actual main-scene pointer navigation: floodgate74, ItemList, item1886, ItemList, floodgate74. Full group panel matches native pixels. Escape retires selection/tabs; reset suppresses a late reply. Native sheet unchanged. Source save preserved; owned DF exits unsaved.",
+      "crop": [
+        416,
+        52,
+        488,
+        708
+      ],
+      "limitations": [
+        "Public map routing remains unchanged.",
+        "Other building kinds and unit routes are not covered by this scene case.",
+        "Existing floodgate inspector native controls, side-tab icons, unit groups, engraving/vermin, overflow, hover and resizing remain unfinished."
+      ],
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-164634/result.json": "0898c5ef5cd312d1491d6a569fac2c65a748c5a8f52519038f63fb24c1080bd2",
+        "build/stockpile-storage-native-farm-discovery-20261114-164634/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+        "build/stockpile-storage-native-farm-discovery-20261114-164634/workshop-wire.stdout.log": "dd5b317cf9b60fdd30c8c74e1bf2747a309f4cacd5d654447b34e2fdc09751a3",
+        "build/stockpile-storage-native-farm-discovery-20261114-164634/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+        "build/stockpile-storage-native-farm-discovery-20261114-164634/chest-scene-selection-group.png": "61f31eb9e026cb3ce91f3663ae4b813d82ea87324de1685b08cfc20f2d3db263",
+        "build/stockpile-storage-native-farm-discovery-20261114-164634/workshop-selection-item-group.png": "7b997e615fe5bfaf879a1a57af7c6381137a3f170d0b9dd10d990a881bec292d",
+        "build/stockpile-storage-native-farm-discovery-20261114-164634/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+      }
+    },
     "group_body_reference": {
       "native_run": "build/stockpile-storage-native-farm-discovery-20261114-163450",
       "protocol": 211,

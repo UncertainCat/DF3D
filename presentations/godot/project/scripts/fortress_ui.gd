@@ -15,6 +15,7 @@ var agreement_tracker
 var tile_hover
 var item_follow
 var creature_follow
+var tile_selection
 var follow_frame: Array=[]
 
 func setup(owner, audio_panel, original_ui) -> void:
@@ -296,6 +297,36 @@ func open_destination(destination: String) -> void:
 
 func open_target(tile: Vector3i, kind: int, id: int) -> void:
 	if host.play_enabled: controller("inspector").open_target(tile,kind,id)
+
+# Staged native selection entry; normal map routing remains gated until the
+# remaining target kinds and composed live workflow are accepted.
+func open_tile_selection(tile: Vector3i) -> void:
+	if tile_selection==null:
+		tile_selection=preload("res://scripts/tile_selection_panel.gd").new()
+		add_child(tile_selection);tile_selection.configure(world,actions,host,_selection_destination)
+	tile_selection.open_tile(tile)
+
+func _selection_destination(kind: int,id: int,tile: Vector3i):
+	var c=preload("res://scripts/management_contract.gd")
+	if kind==c.SelectionKind.Item:
+		var target=controller("farm").item_owner
+		target.open_target(id);return target if host.active==target else null
+	if kind==c.SelectionKind.Unit:
+		var target=controller("inspector")
+		return target if target.open_target(tile,1,id,true) else null
+	if kind==c.SelectionKind.Building:
+		var info: Dictionary=world.inspect_entity(3,id)
+		if not info.get("complete",false):return null
+		var building_kind: int=info.get("building_kind",0)
+		if building_kind not in [5,6,11,14]:
+			# Keep existing building inspection available within staged selection.
+			# This does not qualify those incomplete native building controls.
+			var inspector=controller("inspector")
+			return inspector if inspector.open_target(tile,3,id,true) else null
+		open_building_holder(building_kind-1,id)
+		var target=controllers.get("farm" if building_kind==5 else "chest" if building_kind==11 else "workshop")
+		return target if target!=null and host.active==target and target.state.building_id==id else null
+	return null
 
 func open_notification(group:Dictionary) -> void:
 	if host.play_enabled: controller("alerts").open_group(group)

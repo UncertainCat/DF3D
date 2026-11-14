@@ -20,6 +20,9 @@ func configure(source,model) -> void:
 	clip_contents=true
 	scrollbar=preload("res://scripts/area_location_scrollbar.gd").new();add_child(scrollbar);scrollbar.configure(source)
 	scrollbar.input_allowed=allowed
+	scrollbar.wheel_enabled=false
+	scrollbar.mouse_force_pass_scroll_events=false
+	scrollbar.gui_input.connect(_scrollbar_wheel)
 	scrollbar.row_changed.connect(func(value):first=value;queue_redraw())
 	state.changed.connect(refresh);layout(708);refresh()
 
@@ -27,12 +30,25 @@ func layout(sheet_height: float) -> void:
 	position=Vector2(8,48);capacity=maxi(0,floori((sheet_height-60)/36))
 	size=Vector2(472,capacity*36)
 	scrollbar.position=Vector2(456,0);scrollbar.size=Vector2(16,size.y);scrollbar.page=capacity
-	first=clampi(first,0,maxi(0,rows.size()-capacity))
 	scrollbar.set_rows(rows.size(),first);scrollbar.visible=capacity>0 and rows.size()>capacity
 	queue_redraw()
 
 func allowed() -> bool:
 	return capacity>0 and state.phase==state.Phase.Ready and state.ticket==0 and (not input_allowed.is_valid() or input_allowed.call())
+
+# Native renderer clamps its local start without changing the retained scroll
+# position. Enlarging then shrinking the panel restores the prior position.
+func visible_first() -> int:return clampi(first,0,maxi(0,rows.size()-capacity))
+
+func _scrollbar_wheel(event: InputEvent) -> void:
+	if allowed() and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:_move_wheel(event)
+
+func _move_wheel(event: InputEventMouseButton) -> void:
+	var step:=capacity if event.shift_pressed else 1
+	# Native upward input decrements the saved position even when resizing has
+	# clamped the displayed start. It does not discard that retained offset.
+	first=maxi(0,first-step) if event.button_index==MOUSE_BUTTON_WHEEL_UP else mini(maxi(0,rows.size()-capacity),first+step)
+	scrollbar.set_rows(rows.size(),first);queue_redraw()
 
 func refresh() -> void:
 	var next: int=state.snapshot.get("receipt",0)
@@ -41,7 +57,6 @@ func refresh() -> void:
 	for row in rows:
 		if row.has("appearance") and not icons.has(row.id):icons[row.id]=world.item_sheet_icon(row.item_type,row.appearance,row.id)
 	visible=state.snapshot.get("open",false) and state.snapshot.get("kind",0)==C.SelectionKind.ItemList
-	first=clampi(first,0,maxi(0,rows.size()-capacity))
 	scrollbar.set_rows(rows.size(),first);scrollbar.visible=capacity>0 and rows.size()>capacity
 	if not allowed():scrollbar.dragging=false
 	queue_redraw()
@@ -54,10 +69,11 @@ func _gui_input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton or not event.pressed:return
 	if allowed():
 		if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
-			scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1))
+			_move_wheel(event)
 		elif event.button_index==MOUSE_BUTTON_LEFT:
-			var index:=first+floori(event.position.y/36)
-			if index>=first and index<mini(rows.size(),first+capacity):state.choose_member(index)
+			var start:=visible_first()
+			var index:=start+floori(event.position.y/36)
+			if index>=start and index<mini(rows.size(),start+capacity):state.choose_member(index)
 	accept_event()
 
 func patch(texture: Texture2D,top: Vector2,columns: int) -> void:
@@ -67,8 +83,9 @@ func patch(texture: Texture2D,top: Vector2,columns: int) -> void:
 
 func _draw() -> void:
 	var columns:=57 if rows.size()>capacity else 59
-	for offset in mini(capacity,rows.size()-first):
-		var row: Dictionary=rows[first+offset];var top:=Vector2(0,offset*36)
+	var start:=visible_first()
+	for offset in mini(capacity,rows.size()-start):
+		var row: Dictionary=rows[start+offset];var top:=Vector2(0,offset*36)
 		patch(art.texture("BUTTON_RECTANGLE"),top,columns);patch(picture.texture(false),top,5)
 		var icon: Texture2D=icons.get(row.id)
 		if icon!=null:draw_texture_rect(icon,Rect2(top+Vector2(2,2),Vector2(32,32)),false)

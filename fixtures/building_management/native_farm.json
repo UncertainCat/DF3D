@@ -12809,6 +12809,106 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "scroll_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-170031",
+      "status": "passed_with_known_issues",
+      "scope": "24 actual ground-item IDs and native captions match typed transport; nine full panel crops match native after row/page wheel, end arrow and resizing. No scroll input submits a member request. Positions/flags restored; owned source preserved.",
+      "renderer_local_scroll_clamp": "159bad..159c0f",
+      "samples": [
+        {
+          "dimx": 150,
+          "dimy": 66,
+          "first": 0,
+          "name": "top",
+          "visible_first": 0
+        },
+        {
+          "dimx": 150,
+          "dimy": 66,
+          "first": 1,
+          "name": "wheel",
+          "visible_first": 1
+        },
+        {
+          "dimx": 150,
+          "dimy": 66,
+          "first": 6,
+          "name": "page",
+          "visible_first": 6
+        },
+        {
+          "dimx": 150,
+          "dimy": 66,
+          "first": 6,
+          "name": "arrow",
+          "visible_first": 6
+        },
+        {
+          "dimx": 120,
+          "dimy": 50,
+          "first": 6,
+          "name": "small",
+          "visible_first": 6
+        },
+        {
+          "dimx": 114,
+          "dimy": 46,
+          "first": 6,
+          "name": "minimum",
+          "visible_first": 6
+        },
+        {
+          "dimx": 200,
+          "dimy": 75,
+          "first": 6,
+          "name": "wide",
+          "visible_first": 3
+        },
+        {
+          "dimx": 200,
+          "dimy": 75,
+          "first": 5,
+          "name": "wide-wheel",
+          "visible_first": 3
+        },
+        {
+          "dimx": 150,
+          "dimy": 66,
+          "first": 5,
+          "name": "default"
+        }
+      ],
+      "limitations": [
+        "Hover artwork/timing/hitboxes are not accepted: viewport comparison moves pointer away.",
+        "Scrollbar track/drag, scrollbar input after enlargement and selecting a row after resize are not qualified.",
+        "Public map routing and other selection types remain staged."
+      ],
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/result.json": "1a00c6288ebb112da1efec4e97f9b2205499e1c11910f47cc242b71ac12b58c0",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-wire-result.json": "cfadb35923dfad561924373eed5c1b59b6797acd3dd0114dd5fe00f78810e243",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-native.json": "80686cc00aed2216d1db200d52fe87c195102543c91435fa1b5ff1b1201ff887",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "build/notes/pm/selection-scroll-final.log": "7abaafaf7f518ab4d8b5db4c63eb6df8e3bea41c3b62962ac835c332a1297309",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-top.png": "325231d853be5ce7cb989b6df05b3fd18781cd911fc696edd3303af3199cd276",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-top-viewer.png": "5c1cf84343b5350fdd64c682e4b5e8d7edc78b5c3f0ace396875e085450bc39b",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-wheel.png": "526897f7ee6f07ded81c110497c4076fb8e85adf341b884c322698131880efad",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-wheel-viewer.png": "d3af0f49bd81c0e2618f5402b2c7352d119676c10fed0891e7dec7bf3c3962ab",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-page.png": "d8e70e596465af2c5c2bb2c72da8c0fc52d0e1fb0d7d7e71397fadd59b4abe89",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-page-viewer.png": "0cbb7fd026fe836c0db35841f6962bddb52b4f69504fdf2448b077b9619b57f0",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-arrow.png": "d8e70e596465af2c5c2bb2c72da8c0fc52d0e1fb0d7d7e71397fadd59b4abe89",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-arrow-viewer.png": "0cbb7fd026fe836c0db35841f6962bddb52b4f69504fdf2448b077b9619b57f0",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-small.png": "4dc90a2d52d265ad1e4767bb75467a4558b04aca263d24a130794c76fdd01609",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-small-viewer.png": "b18eba7d3658c3a8e41392d718bc4ebcc7eb9902d0d7ccb42fef7175507760b7",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-minimum.png": "b93b78148008fc3ea0d6e874e7dabe1848760ac43fcec371e93d21369e8f89d4",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-minimum-viewer.png": "a7a01ccc2a3bcbdc9801d9c591db37a47e4361eb8b9efe07765a400ef3c903bf",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-wide.png": "b7463a0610d7f7ebf85e2832737244d1d64673d9737e9ab4f13cdd1cdca6da4f",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-wide-viewer.png": "291da2142e79d9760b884062afacc811ffa791015601ac39e89bf0af7125625a",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-wide-wheel.png": "07a076665ee68b769b31acd56016e8e7bd2d756fde8cdf42e1315f5a45d43ee2",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-wide-wheel-viewer.png": "291da2142e79d9760b884062afacc811ffa791015601ac39e89bf0af7125625a",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/workshop-selection-scroll-default.png": "8f541b09313de832b4786b36f059f50d710ce3a8bd02aa67f84927932c60d704",
+        "build/stockpile-storage-native-farm-discovery-20261114-170031/selection-scroll-default-viewer.png": "dac286b48a995e777b4181c7145e27f408bd50e378f9bb733ec3b3fdd1f04514"
+      }
+    },
     "tab_artwork_reference": {
       "run": "build/stockpile-storage-native-farm-discovery-20261114-165118",
       "status": "passed_with_known_issues",

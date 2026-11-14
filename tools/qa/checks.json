@@ -4110,6 +4110,11 @@
       "reason": "Rendered native selection tabs and complete item-group rows including icons. Set DF3D_SELECTION_REFERENCE to a protocol211 protected layout+wire lane and DF3D_DF_PATH to the pinned game; run with --max-fps 30. Requires native screenshots, never launches DF."
     },
     {
+      "path": "presentations/godot/project/tests/tile_selection_scroll_capture.gd",
+      "status": "manual",
+      "reason": "Rendered item-group overflow from protected TILE_SELECTION_SCROLL plus wire capture. Set DF3D_SELECTION_REFERENCE and DF3D_DF_PATH; --max-fps 30. Never launches DF."
+    },
+    {
       "path": "presentations/godot/project/tests/tile_selection_scene_live.gd",
       "status": "manual",
       "reason": "Protected TILE_SELECTION_SCENE lane: actual main-scene building/group/item navigation and native group crop. Never standalone."

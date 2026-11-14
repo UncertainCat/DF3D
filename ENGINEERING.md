@@ -9333,10 +9333,38 @@ sampled GPU54–55C/5%. selection_reference.tab_artwork_reference retains the
 three native/viewer crops and evidence hashes. This proves the floodgate case,
 not general building/unit/item tab artwork or offscreen metadata availability.
 
+The item-group view supports row and page wheel scrolling while preserving
+native resize behavior. Renderer159bad..159c0f clamps only the displayed start;
+the stored offset survives a larger viewport. Upward input decrements that
+stored offset even when the displayed start remains clamped. The viewer keeps
+these two positions separate. Wheel input on the scrollbar uses the same group
+handler, and scrolling cannot submit a member-selection request.
+
+Protected170031 on2026-11-14 stages24 real loose blocks at the existing group
+tile in the paused owned clone. Native/provider IDs and all native captions
+match typed transport. Nine captured states cover top, wheel, page, bottom-arrow
+at the end,960x600,912x552,1600x900, wheel-up after enlargement and1200x800
+restoration. Stored offsets are0/1/6/6/6/6/6/5/5; the wide viewport displays3
+while retaining6, then5 after upward input. All nine complete group-panel crops
+match in tile_selection_scroll_capture. The scrollbar uses its existing shared
+artwork; hover pixels are not qualified by the simulated-input native oracle.
+Viewer comparison moves the pointer away before drawing. Injected wheel events
+include releases and every scroll step asserts that no member request was sent.
+
+Moved items' positions and flags are restored by the diagnostic cleanup, and
+owned DF35960 exits unsaved with source/preferences preserved. Core19 and
+selection-scroll-final composition pass; live/rendered diagnostics are limited
+to the three known signatures. Native and viewer graphics are capped30FPS;
+GPU samples55–59C/1–9% are observations, not continuous peaks. Fixture
+selection_reference.scroll_reference retains states and hashes. Hover,
+scrollbar track/drag, scrollbar input after enlargement and selecting a row
+whose displayed start differs from the stored offset remain unqualified.
+
 Standalone selection-panel-capture also matches the complete group shell and
 checks pointer dispatch/closure through the real host with injected replies.
 Public map routing, other side-tab icons, unit groups, engraving/vermin destinations,
-long captions, overflow, resizing and hover remain unfinished. This fixture
+long captions and hover remain unfinished; overflow/resize coverage is scoped
+to the preceding24-block reference. This fixture
 qualifies neither all specialized item artwork nor the individual detail
 panels' native fidelity. Building routing currently requires visible streamed
 metadata, then its controller obtains fresh semantic authority; remote/offscreen

@@ -124,6 +124,7 @@ local workshop_fixture_ids={}
 local craft_tool_fixture
 local custom_supplies={}
 local magma_tiles={}
+local selection_moves={}
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
@@ -196,6 +197,59 @@ local ok,err=xpcall(function()
     layout('item-member')
     gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
    end
+  end
+  if os.getenv('DF3D_TILE_SELECTION_SCROLL')=='1' then
+   -- Controlled paused clone only: collect loose blocks into one visible tile.
+   -- Restore their positions/flags below even when an assertion fails.
+   local count=fullest.count
+   for _,item in ipairs(df.global.world.items.all)do
+    if count>=24 then break end
+    local p=item.pos
+    if item:getType()==df.item_type.BLOCKS and item.flags.on_ground and not item.flags.in_job and not item.flags.garbage_collect
+       and not(p.x==fullest.centerx and p.y==fullest.centery and p.z==fullest.z)then
+     selection_moves[#selection_moves+1]={item=item,pos={x=p.x,y=p.y,z=p.z},flags=item.flags.whole}
+     assert(dfhack.items.moveToGround(item,{x=fullest.centerx,y=fullest.centery,z=fullest.z}))
+     count=count+1
+    end
+   end
+   assert(count==24,'Selection overflow fixture needs24 ground items')
+   gui.simulateInput(view,'LEAVESCREEN');select_map(fullest)
+   local native=observe()
+   local output,code=dfhack.run_command_silent('df3d','tile-selection-read',tostring(fullest.centerx),tostring(fullest.centery),tostring(fullest.z))
+   assert(code==0,output);local actual=json.decode(output)
+   assert(json.encode(actual)==json.encode(native),'Overflow selection provider differs')
+   result.tile_selection_reference.cases[3]={tile={fullest.centerx,fullest.centery,fullest.z},native=native,actual=actual}
+   local function input(key,x,y)
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+    g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+    df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,key);view:render(dfhack.getTickCount())
+    df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+   end
+   input('_MOUSE_L',(g.dimx-35)*8,104)
+   assert(sheet.active_sheet==df.view_sheet_type.ITEM_LIST)
+   result.tile_selection_reference.scroll={tile={fullest.centerx,fullest.centery,fullest.z},ids=ids(sheet.viewing_itid),samples={}}
+   local function sample(name)
+    local row={name=name,first=sheet.scroll_position,dimx=g.dimx,dimy=g.dimy}
+    result.tile_selection_reference.scroll.samples[#result.tile_selection_reference.scroll.samples+1]=row
+    shot('selection-scroll-'..name)
+    row.first=sheet.scroll_position
+    -- Renderer159bad..159c0f clamps a local copy, retaining the stored offset.
+    row.visible_first=math.max(0,math.min(row.first,#sheet.viewing_itid-(g.dimy-12)//3))
+    for i=0,math.min((g.dimy-12)//3-1,#sheet.viewing_itid-1-row.visible_first)do
+     local bytes={}
+     for x=g.dimx-90,g.dimx-42 do local ch=dfhack.screen.readTile(x,9+i*3).ch%256;bytes[#bytes+1]=string.char(ch==0 and 32 or ch)end
+     result.tile_selection_reference.item_names[tostring(sheet.viewing_itid[row.visible_first+i])]=dfhack.df2utf(table.concat(bytes)):gsub('%s+$','')
+    end
+   end
+   sample('top')
+   input('CONTEXT_SCROLL_DOWN',600,154);sample('wheel')
+   input('CONTEXT_SCROLL_PAGEDOWN',600,154);sample('page')
+   input('_MOUSE_L',(g.dimx-39)*8,(g.dimy-5)*12+4);sample('arrow')
+   for _,size in ipairs{'small','minimum','wide','default'}do
+    resize_worker(size);sample(size)
+    if size=='wide'then input('CONTEXT_SCROLL_UP',1000,154);sample('wide-wheel')end
+   end
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   end
   if os.getenv('DF3D_TILE_SELECTION_RUNTIME')=='1' or os.getenv('DF3D_TILE_SELECTION_SCENE')=='1' then
    local before=observe()
@@ -2214,6 +2268,7 @@ local ok,err=xpcall(function()
  for _,a in ipairs(prior_index)do indexed:insert('#',a)end
  assert(catalog_ok,catalog_err)
 end,debug.traceback)
+for _,prior in ipairs(selection_moves)do assert(dfhack.items.moveToGround(prior.item,prior.pos),'Selection fixture restoration failed');prior.item.flags.whole=prior.flags end
 for _,tile in ipairs(magma_tiles)do tile.upper.tiletype[tile.x][tile.y]=tile.tile;tile.lower.designation[tile.x][tile.y].whole=tile.designation end
 for index=#custom_supplies,1,-1 do assert(dfhack.items.remove(custom_supplies[index]),'Custom supply cleanup failed')end
 for _,prior in ipairs(fuel_flags)do prior.item.flags.forbid=prior.forbid end

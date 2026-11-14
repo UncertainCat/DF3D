@@ -7,12 +7,13 @@
 #include "df/view_sheet_type.h"
 
 namespace df3d_selection {
-struct Target {df::view_sheet_type kind=df::view_sheet_type::NONE;int32_t id=-1;};
+struct Target {df::view_sheet_type kind=df::view_sheet_type::NONE;int32_t id=-1;friend bool operator==(const Target&,const Target&)=default;};
 struct Selection {
     std::vector<int32_t> units,items,vermin;
     int32_t building=-1;
     std::vector<Target> tabs;
     Target active;
+    friend bool operator==(const Selection&,const Selection&)=default;
 };
 // Native1a0d60 interleaves its collection with tutorial/menu mutation and sheet
 // activation. Project its ordinary fortress branches into owned storage; call

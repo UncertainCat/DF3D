@@ -12809,6 +12809,152 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "transport_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-160051",
+      "protocol": 210,
+      "status": "passed_with_known_issues",
+      "scope": "Owned tile identities through Godot adapter: four native defaults and alternatives, eight ordered item members, last member selection, stale receipt rejection, current receipt retained after rejection, Back retirement. Native observed sheet unchanged. No rendered selection UI acceptance.",
+      "selections": [
+        {
+          "alternatives": [],
+          "complete": true,
+          "id": 4,
+          "kind": 3,
+          "members": [],
+          "open": true,
+          "receipt": 1,
+          "tile": "(106, 92, 165)"
+        },
+        {
+          "alternatives": [],
+          "complete": true,
+          "id": 968,
+          "kind": 3,
+          "members": [],
+          "open": true,
+          "receipt": 2,
+          "tile": "(137, 119, 165)"
+        },
+        {
+          "alternatives": [
+            {
+              "id": 74,
+              "kind": 3,
+              "name": ""
+            },
+            {
+              "id": -1,
+              "kind": 7,
+              "name": ""
+            }
+          ],
+          "complete": true,
+          "id": -1,
+          "kind": 7,
+          "members": [
+            {
+              "id": 1886,
+              "kind": 2,
+              "name": ""
+            },
+            {
+              "id": 1971,
+              "kind": 2,
+              "name": ""
+            },
+            {
+              "id": 1972,
+              "kind": 2,
+              "name": ""
+            },
+            {
+              "id": 1993,
+              "kind": 2,
+              "name": ""
+            },
+            {
+              "id": 1994,
+              "kind": 2,
+              "name": ""
+            },
+            {
+              "id": 4828,
+              "kind": 2,
+              "name": ""
+            },
+            {
+              "id": 4917,
+              "kind": 2,
+              "name": ""
+            },
+            {
+              "id": 4981,
+              "kind": 2,
+              "name": ""
+            }
+          ],
+          "open": true,
+          "receipt": 4,
+          "tile": "(102, 70, 165)"
+        },
+        {
+          "alternatives": [
+            {
+              "id": 74,
+              "kind": 3,
+              "name": ""
+            },
+            {
+              "id": -1,
+              "kind": 7,
+              "name": ""
+            }
+          ],
+          "complete": true,
+          "id": 4981,
+          "kind": 2,
+          "members": [],
+          "open": true,
+          "receipt": 5,
+          "tile": "(102, 70, 165)"
+        },
+        {
+          "alternatives": [],
+          "complete": true,
+          "id": 988,
+          "kind": 1,
+          "members": [],
+          "open": true,
+          "receipt": 6,
+          "tile": "(127, 61, 165)"
+        }
+      ],
+      "owned_df_pid": 13564,
+      "closed_unsaved": true,
+      "source_preserved": true,
+      "gpu_sample": {
+        "fps_cap": 30,
+        "temperature_c": 50,
+        "utilization_percent": 11
+      },
+      "diagnostics": [
+        "godot-separate-thread-notice",
+        "godot-device-finalize",
+        "godot-shutdown-objects"
+      ],
+      "limitations": [
+        "Unit groups, expanded footprints, hidden tiles, engraving/vermin destinations and full UI-state guard remain unqualified.",
+        "Captions, artwork, group panels, normal map routing and lifecycle UI remain unfinished."
+      ],
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-160051/result.json": "35ac33227e1e22205ee2960c326b94b284e7718c07dc84b83c943c477533e712",
+        "build/stockpile-storage-native-farm-discovery-20261114-160051/workshop-native.json": "f1fa141d0ed34288afca14141a462273fafc11f4081acf1bf23af0f4461fb775",
+        "build/stockpile-storage-native-farm-discovery-20261114-160051/workshop-wire-result.json": "bd4b10d0ef77a0389f23799bbae544d64f2fd83afd54b2fd285f0411bbf11c24",
+        "build/stockpile-storage-native-farm-discovery-20261114-160051/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "build/stockpile-storage-native-farm-discovery-20261114-160051/workshop-wire.stdout.log": "5d4badbd1029a4f5ad2ca16abb1f00bdc32ca6dd795ec5a3693545239f65b23f",
+        "build/stockpile-storage-native-farm-discovery-20261114-160051/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+      }
+    },
     "provider_reference": {
       "run": "build/stockpile-storage-native-farm-discovery-20261114-152748",
       "status": "passed",

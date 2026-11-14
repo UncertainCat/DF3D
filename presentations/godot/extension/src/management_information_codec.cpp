@@ -14,6 +14,38 @@ constexpr int actionValue(wm::ManagementAction a) {
 using Action = wm::ManagementAction;
 }  // namespace
 
+void writeSelection(Dictionary& result,const wm::SelectionState& s) {
+  Dictionary value;value["open"]=s.open;value["receipt"]=int64_t(s.receipt);
+  value["kind"]=int(s.kind);value["id"]=s.id;value["tile"]=Vector3i(s.x,s.y,s.z);value["complete"]=s.complete;
+  const auto rows=[](const auto& source) {
+    Array values;for(const auto& target:source){Dictionary row;row["kind"]=int(target.kind);row["id"]=target.id;row["name"]=String::utf8(target.name.c_str());values.push_back(row);}return values;
+  };
+  value["alternatives"]=rows(s.alternatives);value["members"]=rows(s.members);result["selection"]=value;
+}
+bool validateSelectionShape(const Dictionary& data,String& error) {
+  if(!managementDictionaryTypes(data,{"operation","receipt","index"},error))return false;
+  for(const Variant& key:data.keys()) {
+    if(key.get_type()!=Variant::STRING && key.get_type()!=Variant::STRING_NAME) {error="Unexpected selection field";return false;}
+    const String name=key;
+    if(name!="action" && name!="operation" && name!="receipt" && name!="index" && name!="origin") {
+      error="Unexpected selection field";return false;
+    }
+  }
+  return true;
+}
+bool readSelection(const Dictionary& data,wm::ManagementRequest& r,String& error) {
+  const int64_t operation=data.get("operation",0),receipt=data.get("receipt",0),index=data.get("index",-1);
+  const Vector3i tile=data.get("origin",Vector3i(-1,-1,-1));
+  const bool open=operation==0,choose=operation==2 || operation==6;
+  if(int64_t(data["action"])!=int(Action::Selection) || operation<0 || operation>6 || operation==3 || operation==4 ||
+     receipt<0 || (open?receipt!=0:receipt==0) || index < -1 || index>4095 ||
+     (choose?index<0:index!=-1) || (open?(!data.has("origin") || tile.x<0 || tile.y<0 || tile.z<0 || tile.x>32767 || tile.y>32767 || tile.z>32767):data.has("origin"))) {
+    error="Invalid selection request";return false;
+  }
+  r.action=Action::Selection;r.selection.operation=wm::SelectionOperation(operation);r.selection.receipt=uint64_t(receipt);
+  r.selection.index=int32_t(index);r.selection.x=tile.x;r.selection.y=tile.y;r.selection.z=tile.z;return true;
+}
+
 void writeReport(Dictionary& result, const wm::ReportState& s) {
   Dictionary report;
   Array reportRows;

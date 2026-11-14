@@ -1568,7 +1568,7 @@ TEST_CASE("selection rejects missing receipts, invalid tiles and unbounded index
     const mm::TilePos tile(invalid==2?-1:88,71,143);
     auto selection=mm::CreateSelectionRequest(b,
       invalid==2?mm::SelectionOperation::OpenTile:mm::SelectionOperation::SelectAlternative,
-      &tile,invalid==0?0:77,invalid==1?256:invalid==3?-1:0);
+      &tile,invalid==0?0:77,invalid==1?4096:invalid==3?-1:0);
     mm::ConstructionRequestBuilder command(b);command.add_schema_version(mm::kManagementVersion);
     command.add_client_id(1);command.add_seq(1);command.add_world_epoch(7);
     command.add_action(mm::ManagementAction::Selection);command.add_selection(selection);b.Finish(command.Finish());
@@ -1590,10 +1590,15 @@ TEST_CASE("native selection groups retain tile identity without weakening object
       const auto alternatives=b.CreateVector(std::vector{identity});
       const auto items=b.CreateVector(std::vector<flatbuffers::Offset<mm::SelectionItem>>{});
       const auto overview=b.CreateVector(std::vector<flatbuffers::Offset<mm::SelectionText>>{});
+      std::vector<flatbuffers::Offset<mm::SelectionIdentity>> members;
+      for(int i=0;i<(kind==mm::SelectionKind::UnitList?6:kind==mm::SelectionKind::ItemList?2:0);++i)
+        members.push_back(mm::CreateSelectionIdentity(b,kind==mm::SelectionKind::UnitList?mm::SelectionKind::Unit:mm::SelectionKind::Item,100+i,empty));
+      const auto memberRows=b.CreateVector(members);
       mm::SelectionStateBuilder page(b);page.add_open(true);page.add_receipt(77);
       page.add_kind(kind);page.add_id(id);if(tilePresent)page.add_tile(&tile);
       page.add_title(empty);page.add_subtitle(empty);page.add_job(empty);page.add_description(empty);
       page.add_alternatives(alternatives);page.add_items(items);page.add_overview(overview);
+      page.add_members(memberRows);
       if(container)page.add_container(identity);
       const auto selection=page.Finish();
       mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(1);
@@ -1603,6 +1608,28 @@ TEST_CASE("native selection groups retain tile identity without weakening object
       CAPTURE(int(kind));CAPTURE(id);CAPTURE(tilePresent);CAPTURE(container);
       CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value()==!valid);
     }
+  }
+}
+
+TEST_CASE("selection unit groups carry typed ordered members") {
+  for(int fault=-1;fault<4;++fault) {
+    flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");const mm::TilePos tile(1,2,3);
+    std::vector<flatbuffers::Offset<mm::SelectionIdentity>> members;
+    for(int i=0;i<(fault==2?5:6);++i)members.push_back(mm::CreateSelectionIdentity(b,
+      fault==0?mm::SelectionKind::Item:mm::SelectionKind::Unit,fault==1?42:42+i,empty));
+    const auto rows=b.CreateVector(members);
+    const auto alternatives=b.CreateVector(std::vector<flatbuffers::Offset<mm::SelectionIdentity>>{});
+    const auto items=b.CreateVector(std::vector<flatbuffers::Offset<mm::SelectionItem>>{});
+    const auto overview=b.CreateVector(std::vector<flatbuffers::Offset<mm::SelectionText>>{});
+    mm::SelectionStateBuilder page(b);page.add_open(true);page.add_receipt(1);page.add_kind(mm::SelectionKind::UnitList);page.add_id(-1);page.add_tile(&tile);
+    page.add_title(empty);page.add_subtitle(empty);page.add_job(empty);page.add_description(empty);
+    page.add_alternatives(alternatives);page.add_items(items);page.add_overview(overview);if(fault!=3)page.add_members(rows);
+    const auto selected=page.Finish();
+    mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(1);
+    state.add_world_epoch(7);state.add_action(mm::ManagementAction::Selection);state.add_status(mm::ManagementStatus::Ok);state.add_selection(selected);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer());
+    CHECK(mm::validateManagementState(*value).has_value()==(fault>=0));
+    if(fault<0){const auto decoded=wm::detail::management::decodeSelection(value->selection());REQUIRE(decoded.members.size()==6);CHECK(decoded.members.back().id==47);}
   }
 }
 

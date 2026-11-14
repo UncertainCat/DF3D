@@ -438,7 +438,8 @@ static_assert(static_cast<int>(wm::SelectionOperation::SelectAlternative) == sta
 static_assert(static_cast<int>(wm::SelectionOperation::InspectItem) == static_cast<int>(df3d::mirror::SelectionOperation::InspectItem));
 static_assert(static_cast<int>(wm::SelectionOperation::ViewContainer) == static_cast<int>(df3d::mirror::SelectionOperation::ViewContainer));
 static_assert(static_cast<int>(wm::SelectionOperation::Back) == static_cast<int>(df3d::mirror::SelectionOperation::Back));
-static_assert(sizeof(df3d::mirror::EnumValuesSelectionOperation()) / sizeof(df3d::mirror::SelectionOperation) == 6);
+static_assert(static_cast<int>(wm::SelectionOperation::SelectMember) == static_cast<int>(df3d::mirror::SelectionOperation::SelectMember));
+static_assert(sizeof(df3d::mirror::EnumValuesSelectionOperation()) / sizeof(df3d::mirror::SelectionOperation) == 7);
 static_assert(static_cast<int>(wm::SelectionKind::None) == static_cast<int>(df3d::mirror::SelectionKind::None));
 static_assert(static_cast<int>(wm::SelectionKind::Unit) == static_cast<int>(df3d::mirror::SelectionKind::Unit));
 static_assert(static_cast<int>(wm::SelectionKind::Item) == static_cast<int>(df3d::mirror::SelectionKind::Item));

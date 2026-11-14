@@ -166,6 +166,13 @@ local ok,err=xpcall(function()
    assert(json.encode(observe())==json.encode(before),'Selection provider changed native sheet')
    assert(json.encode(actual)==json.encode(before),'Selection provider differs from native')
   end
+  if os.getenv('DF3D_TILE_SELECTION_RUNTIME')=='1'then
+   local before=observe()
+   capture('workshop-wire')
+   local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
+   assert(receipt.success,'Selection wire failed')
+   assert(json.encode(observe())==json.encode(before),'Selection wire changed native sheet')
+  end
   return
  end
  if os.getenv('DF3D_WORKSHOP_CONNECTIONS')=='1'then

@@ -10,6 +10,7 @@ ENUMS = ("JusticeGraphKind", "JusticeCandidateColumn", "JusticeCaseResolution", 
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
+    "selection": ("Selection", "Selection"),
     "justice": ("JusticeRead", "JusticeIntelligenceGraphRead"),
     "objects": ("ObjectsRead", "ObjectsLocate"),
     "nobles": ("NoblesRead", "NoblesSymbolsRetire"),
@@ -53,7 +54,6 @@ RETIRED = {
     "appointments": ("AppointmentsOpen", "AppointmentsBack"),
     "kitchen": ("KitchenOpen", "KitchenClose"),
     "alert": ("Alert", "Alert"),
-    "selection": ("Selection", "Selection"),
 }
 UNROUTED = {"CreatureInspect"}
 

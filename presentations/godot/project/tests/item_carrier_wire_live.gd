@@ -11,7 +11,7 @@ func check(ok: bool,message: String) -> bool:
 func request(domain: String,data: Dictionary) -> Dictionary:
 	world.poll()
 	var sequence: int=world.management_request(domain,data)
-	if not check(sequence>0,"Carrier command not sent"):return {}
+	if not check(sequence>0,"Carrier command not sent: "+world.last_error()):return {}
 	var deadline:=Time.get_ticks_msec()+5000
 	while Time.get_ticks_msec()<deadline:
 		world.poll();var result: Dictionary=world.poll_management()

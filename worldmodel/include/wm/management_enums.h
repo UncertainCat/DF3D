@@ -489,6 +489,7 @@ enum class SelectionOperation : uint8_t {
   InspectItem = 3,
   ViewContainer = 4,
   Back = 5,
+  SelectMember = 6,
 };
 enum class SelectionKind : uint8_t {
   None = 0,
@@ -630,6 +631,7 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::TradeUpdate: return true;
   case ManagementAction::TradeGoods: return true;
   case ManagementAction::TradeBring: return true;
+  case ManagementAction::Selection: return true;
   case ManagementAction::CreatureInspect: return true;
   case ManagementAction::ConstructionMaterials: return true;
   case ManagementAction::WorkDetailCreate: return true;
@@ -704,6 +706,7 @@ constexpr bool isRuntimeAction(ManagementAction action) {
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::Selection: return "selection";
   case ManagementAction::JusticeRead: return "justice";
   case ManagementAction::JusticeCaseRead: return "justice";
   case ManagementAction::JusticeCandidatesRead: return "justice";

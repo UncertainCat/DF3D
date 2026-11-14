@@ -184,8 +184,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 209;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v209";
+inline constexpr uint32_t kManagementVersion = 210;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v210";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -485,7 +485,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
   return action >= ManagementAction::Catalog && action <= ManagementAction::JusticeIntelligenceGraphRead &&
-      action != ManagementAction::Alert && action != ManagementAction::Selection &&
+      action != ManagementAction::Alert &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
       !(action >= ManagementAction::AppointmentsOpen && action <= ManagementAction::AppointmentsBack) &&
@@ -930,10 +930,10 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   } else if(r.creature_knowledge())return "unexpected creature knowledge request";
   if(r.action()==ManagementAction::Selection) {
     const auto* a=r.selection();
-    if(!a || a->operation()>SelectionOperation::Back || a->index() < -1 || a->index()>255) return "invalid selection request";
+    if(!a || a->operation()>SelectionOperation::SelectMember || a->index() < -1 || a->index()>4095) return "invalid selection request";
     if(a->operation()==SelectionOperation::OpenTile) {if(!a->tile() || a->tile()->x()<0 || a->tile()->y()<0 || a->tile()->z()<0) return "invalid selection tile";}
     else if(!a->receipt()) return "selection receipt required";
-    if((a->operation()==SelectionOperation::SelectAlternative || a->operation()==SelectionOperation::InspectItem) && a->index()<0) return "selection index required";
+    if((a->operation()==SelectionOperation::SelectAlternative || a->operation()==SelectionOperation::InspectItem || a->operation()==SelectionOperation::SelectMember) && a->index()<0) return "selection index required";
   } else if(r.selection()) return "unexpected selection payload";
   if(r.action()==ManagementAction::Alert) {
     const auto* a=r.alert();
@@ -2974,11 +2974,25 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     };
     if(a->kind()>SelectionKind::Vermin || a->id() < -1 || (a->open() && (!a->receipt() || !targetId(a->kind(),a->id()))) ||
        !text(a->title(),512) || !text(a->subtitle(),512) || !text(a->job(),512) || !text(a->description(),16384) ||
-       !a->alternatives() || a->alternatives()->size()>256 || !a->items() || a->items()->size()>256 || !a->overview() || a->overview()->size()>32 || a->weight() < -1 || a->value() < -1) return "invalid selection state";
+       !a->alternatives() || a->alternatives()->size()>4096 || !a->items() || a->items()->size()>256 || !a->overview() || a->overview()->size()>32 || a->weight() < -1 || a->value() < -1) return "invalid selection state";
     if(a->tile() && (a->tile()->x()<0 || a->tile()->y()<0 || a->tile()->z()<0)) return "invalid selected tile";
     if(a->open() && a->id()==-1 && !a->tile())return "missing selected tile";
     auto identity=[&](const SelectionIdentity* e){return e && targetId(e->kind(),e->id()) && (e->id()!=-1 || a->tile()) && text(e->name(),512);};
     for(const auto* e:*a->alternatives()) if(!identity(e)) return "invalid selection identity";
+    if((a->kind()==SelectionKind::UnitList || a->kind()==SelectionKind::ItemList) &&
+       (!a->members() || a->members()->size()<(a->kind()==SelectionKind::UnitList?6u:2u)))return "missing selection group members";
+    if(a->members()) {
+      if(a->members()->size()>4096)return "too many selection members";
+      const auto kind=a->kind()==SelectionKind::UnitList?SelectionKind::Unit:
+                      a->kind()==SelectionKind::ItemList?SelectionKind::Item:SelectionKind::None;
+      std::unordered_set<int32_t> members;
+      size_t bytes=0;
+      for(const auto* e:*a->members()) {
+        if(!e || e->kind()!=kind || !identity(e) || e->id()<0 || !members.insert(e->id()).second)return "invalid selection member";
+        bytes+=e->name()->size();
+      }
+      if(bytes>131072)return "selection members too large";
+    }
     if(a->container() && (!identity(a->container()) || a->container()->id()<0)) return "invalid selected container";
     for(const auto* e:*a->items()) if(!e || e->id()<0 || !text(e->name(),512)) return "invalid selected item";
     size_t bytes=0;for(const auto* e:*a->overview()) {if(!e || e->section()>SelectionSection::UnmetNeeds || !text(e->text(),16384)) return "invalid unit overview";bytes+=e->text()->size();}if(bytes>65536)return "unit overview too large";

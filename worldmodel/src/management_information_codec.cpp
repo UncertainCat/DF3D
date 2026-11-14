@@ -31,6 +31,7 @@ SelectionState decodeSelection(const m::SelectionState* a) {
   };
   for (const auto* e : *a->alternatives())
     n.alternatives.push_back(identity(e));
+  if(a->members())for(const auto* e:*a->members())n.members.push_back(identity(e));
   if (a->container())
     n.container = identity(a->container());
   for (const auto* e : *a->items())

@@ -9166,7 +9166,8 @@ protected diagnostics by `df3d tile-selection-read x y z`. It returns native
 unit/item/caste IDs, building identity, grouped tab identities and the default
 target; it never opens or reads the native sheet. Hidden/unavailable tiles and
 oversized collections fail closed. Full collector bytes and the reused leaf
-functions are pinned. There is no public viewer route or new protocol yet.
+functions are pinned. The protocol210 transport below exposes identities; public
+viewer routing remains unfinished.
 
 Protected152748 on2026-11-14 compares four actual native map selections with
 the provider: a Carpenter, a farm, a building with eight loose ground items
@@ -9182,16 +9183,32 @@ full UI-state guard remain outside this live qualification. The static item
 threshold was corrected during implementation: six or more units collapse
 first, restoring the six-slot item allowance before the building deduction.
 
-The reserved Selection transport now validates native tile-based identities:
+Management protocol210 enables the owned Selection transport and appends typed,
+ordered `members` to SelectionState plus SelectMember to SelectionOperation.
 UnitList, ItemList, Engraving and PlannedEngraving require ID-1 and a tile;
-Unit, Item, Building and Vermin require nonnegative object/caste IDs. Containers
-cannot use the tile sentinel. The model round-trip preserves an ItemList
-alternative alongside object alternatives. The identity fault matrix checks
-all eight target kinds, missing tiles and invalid container/sentinel combinations;
-rebuilt worldmodel_tests and core19 pass. This changes validation only, without
-a wire-layout/version change. The producer, group-member payload and Godot
-adapter remain unfinished; the existing diagnostic is still the only exposed
-provider route.
+ordinary targets require nonnegative IDs. Group members have unique object IDs
+and matching unit/item kinds, bounded4096. Legacy descriptions/captions remain
+blank; this transport supplies identity, not detail-sheet content.
+
+OpenTile establishes a client/world-bound receipt. Inspect, SelectAlternative
+and SelectMember re-collect candidates and reject changed membership/order;
+successful navigation advances the receipt. Back retires ownership without
+opening native UI. World changes/bridge stop clear ownership. Unsupported old
+InspectItem/ViewContainer operations remain rejected. The Godot adapter accepts
+String and StringName dictionary keys and rejects malformed fields.
+
+Rebuild bridge and client together: both schema defaults and the mailbox use210
+(`Local\\df3d_management_v210`). Earlier recordings imply no group-member data.
+Core19, extension build, management contract and UI composition checks pass.
+Protected160051 on2026-11-14 verifies four native default/alternative cases,
+eight ordered ItemList members, selecting the last member, stale/closed receipt
+rejection and current-receipt retention after rejection. Observed native sheet
+state stays unchanged. Owned DF13564 exits unsaved with source/preferences
+preserved. Both clients run at30FPS; sampled GPU50C/11%. Only the three documented
+Godot diagnostics remain. `selection_reference.transport_reference` retains
+results/hashes. Earlier155755/155926 failed adapter key validation and are not
+acceptance. Unit-group/footprint/hidden/engraving/vermin coverage, full UI-state
+guards, rendered tabs/group panels and normal map routing remain unfinished.
 
 Protected contents oracle220127 on2026-10-28 observes40 PERM seed entries in
 farm968. The six visible View controls open the first six `contained_items`

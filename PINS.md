@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management210 connects the owned tile-selection provider. SelectionState.members
+contains typed unit/item group members, and SelectMember chooses a row using a
+client/world-bound receipt. Native group and engraving IDs use-1 with tile
+identity. Rebuild both peers: `Local\df3d_management_v210` isolates209. Earlier
+recordings have no group-member projection; do not invent it from item contents.
+
 Management209 adds retained byte continuations for Production Inspect, Queue and
 JobEdit replies larger than the512KiB mailbox. Continuations use Inspect with
 only `production_reply`, never the original action payload. The client assembles

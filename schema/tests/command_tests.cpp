@@ -317,8 +317,8 @@ TEST_CASE("management runtime rejects retired adapters but retains semantic acti
   for (const auto action : {ManagementAction::Catalog,ManagementAction::Preview,
        ManagementAction::Place,ManagementAction::Inspect,ManagementAction::Remove,
        ManagementAction::ReportInspect,ManagementAction::TradeList,ManagementAction::TradeBring,
-       ManagementAction::CreatureInspect}) CHECK(runtimeManagementAction(action));
-  for (int value=int(ManagementAction::TradeExchangeOpen);value<=int(ManagementAction::Selection);++value)
+       ManagementAction::CreatureInspect,ManagementAction::Selection}) CHECK(runtimeManagementAction(action));
+  for (int value=int(ManagementAction::TradeExchangeOpen);value<int(ManagementAction::Selection);++value)
     CHECK_FALSE(runtimeManagementAction(static_cast<ManagementAction>(value)));
   CHECK_FALSE(runtimeManagementAction(static_cast<ManagementAction>(255)));
 }

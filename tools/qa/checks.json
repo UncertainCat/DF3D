@@ -4105,6 +4105,11 @@
       "reason": "Protected workshop CONNECTIONS, CONNECTIONS_EFFECTS and CONNECTIONS_SCENE fixture; actual owner and visible Connections controls. Never standalone."
     },
     {
+      "path": "presentations/godot/project/tests/tile_selection_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected TILE_SELECTION and TILE_SELECTION_RUNTIME native fixture; typed choices, grouped members and receipt navigation. Never standalone."
+    },
+    {
       "path": "presentations/godot/project/tests/workshop_connections_wire_live.gd",
       "status": "manual",
       "reason": "Protected workshop CONNECTIONS, CONNECTIONS_EFFECTS and CONNECTIONS_RUNTIME native fixture; typed semantic link read, pick and reciprocal edits. Never standalone."

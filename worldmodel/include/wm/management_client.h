@@ -29,6 +29,7 @@ struct SelectionState {
   int32_t id=-1,x=-1,y=-1,z=-1;
   std::string title,subtitle,job,description;
   std::vector<SelectionIdentity> alternatives;
+  std::vector<SelectionIdentity> members;
   std::vector<SelectionItem> items;
   std::vector<SelectionText> overview;
   SelectionIdentity container;

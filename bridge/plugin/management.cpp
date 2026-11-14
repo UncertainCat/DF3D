@@ -88,6 +88,7 @@
 #include "job_settings_native.h"
 #include "job_art_native.h"
 #include "creature_follow_native.h"
+#include "tile_selection_native.h"
 #include "creature_expel_preview_native.h"
 #include "creature_expel_action_native.h"
 #include "creature_health_native.h"
@@ -624,7 +625,16 @@ StocksResult readStocks(int16_t category,const std::string& query,
 
 
 m::TilePos worldHoverTile;
+struct TileSelectionSession {
+  uint64_t client=0,epoch=0,receipt=0;
+  m::TilePos tile;
+  df3d_selection::Selection source;
+  df3d_selection::Target active;
+};
+std::optional<TileSelectionSession> tileSelectionOwner,tileSelectionReply;
+uint64_t nextTileSelectionReceipt=0;
 void clearResult() {
+  tileSelectionReply.reset();
   creatureHeader.reset();
   creaturePosition.reset();
   creatureExpel.reset();
@@ -1300,6 +1310,26 @@ void publish() {
     for(const auto& e:*worldHover) entries.push_back(m::CreateWorldHoverEntry(b,b.CreateString(e.text),uint8_t(e.foreground),uint8_t(e.background),e.bright,e.kind,e.id));
     terrainResult=m::CreateWorldHover(b,&worldHoverTile,b.CreateVector(entries));
   }
+  flatbuffers::Offset<m::SelectionState> selectionResult;
+  if(tileSelectionReply) {
+    const auto& value=*tileSelectionReply;
+    const auto kind=[](df::view_sheet_type type){return m::SelectionKind(int(type)+1);};
+    const auto empty=b.CreateString("");
+    std::vector<flatbuffers::Offset<m::SelectionIdentity>> tabs,members;
+    for(const auto& target:value.source.tabs)tabs.push_back(m::CreateSelectionIdentity(b,kind(target.kind),target.id,empty));
+    const auto memberKind=value.active.kind==df::view_sheet_type::UNIT_LIST?m::SelectionKind::Unit:m::SelectionKind::Item;
+    if(value.active.kind==df::view_sheet_type::UNIT_LIST || value.active.kind==df::view_sheet_type::ITEM_LIST)
+      for(auto id:value.active.kind==df::view_sheet_type::UNIT_LIST?value.source.units:value.source.items)
+        members.push_back(m::CreateSelectionIdentity(b,memberKind,id,empty));
+    const auto alternatives=b.CreateVector(tabs),memberRows=b.CreateVector(members);
+    const auto items=b.CreateVector(std::vector<flatbuffers::Offset<m::SelectionItem>>{});
+    const auto overview=b.CreateVector(std::vector<flatbuffers::Offset<m::SelectionText>>{});
+    m::SelectionStateBuilder page(b);page.add_open(value.receipt!=0);page.add_receipt(value.receipt);
+    page.add_kind(kind(value.active.kind));page.add_id(value.active.id);page.add_tile(&value.tile);
+    page.add_title(empty);page.add_subtitle(empty);page.add_job(empty);page.add_description(empty);
+    page.add_alternatives(alternatives);page.add_items(items);page.add_overview(overview);page.add_members(memberRows);
+    selectionResult=page.Finish();
+  }
   flatbuffers::Offset<m::WorkDetailSettingsState> workDetailSettingsResult;
   if(workDetailSettings) {
     const auto& value=*workDetailSettings;std::vector<flatbuffers::Offset<m::WorkDetailSetting>> catalog;
@@ -1467,7 +1497,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
@@ -5219,6 +5249,42 @@ void run(color_ostream& out) {
     if(creatureHeader->outcome==df3d_creature::HeaderEditOutcome::Completed)status=m::ManagementStatus::Ok;
     publish();return;
   }
+  if(r->action()==m::ManagementAction::Selection) {
+    const auto& q=*r->selection();message.clear();status=m::ManagementStatus::Rejected;
+    const auto finish=[&]{publish();};
+    if(q.operation()==m::SelectionOperation::OpenTile) {
+      tileSelectionOwner.reset();
+      auto source=df3d_selection::collect(q.tile()->x(),q.tile()->y(),q.tile()->z());
+      if(!source || source->tabs.size()>4096){finish();return;}
+      TileSelectionSession value;value.client=client;value.epoch=epoch;value.tile=*q.tile();
+      if(source->active.kind!=df::view_sheet_type::NONE) {
+        value.source=std::move(*source);value.active=value.source.active;
+        value.receipt=++nextTileSelectionReceipt;tileSelectionOwner=value;
+      }
+      tileSelectionReply=std::move(value);status=m::ManagementStatus::Ok;finish();return;
+    }
+    if(!tileSelectionOwner || tileSelectionOwner->client!=client || tileSelectionOwner->epoch!=epoch ||
+       tileSelectionOwner->receipt!=q.receipt()){finish();return;}
+    if(q.operation()==m::SelectionOperation::Back) {
+      TileSelectionSession closed;closed.tile=tileSelectionOwner->tile;
+      tileSelectionOwner.reset();tileSelectionReply=std::move(closed);status=m::ManagementStatus::Ok;finish();return;
+    }
+    auto& owner=*tileSelectionOwner;
+    auto current=df3d_selection::collect(owner.tile.x(),owner.tile.y(),owner.tile.z());
+    if(!current || *current!=owner.source){tileSelectionOwner.reset();finish();return;}
+    if(q.operation()==m::SelectionOperation::SelectAlternative) {
+      if(size_t(q.index())>=owner.source.tabs.size()){finish();return;}
+      owner.active=owner.source.tabs[q.index()];owner.receipt=++nextTileSelectionReceipt;
+    } else if(q.operation()==m::SelectionOperation::SelectMember) {
+      const bool units=owner.active.kind==df::view_sheet_type::UNIT_LIST;
+      if(!units && owner.active.kind!=df::view_sheet_type::ITEM_LIST){finish();return;}
+      const auto& members=units?owner.source.units:owner.source.items;
+      if(size_t(q.index())>=members.size()){finish();return;}
+      owner.active={units?df::view_sheet_type::UNIT:df::view_sheet_type::ITEM,members[q.index()]};
+      owner.receipt=++nextTileSelectionReceipt;
+    } else if(q.operation()!=m::SelectionOperation::Inspect){finish();return;}
+    tileSelectionReply=owner;status=m::ManagementStatus::Ok;finish();return;
+  }
   if(r->action()==m::ManagementAction::WorldHover) {
     worldHoverTile=*r->origin();
     worldHover=df3d_hover::collect(r->origin()->x(),r->origin()->y(),r->origin()->z());
@@ -6832,6 +6898,7 @@ bool printTrackMaterialCandidates(color_ostream& out,const std::array<int32_t,6>
   lua_settop(L,top);return ok;
 }
 void stop() {
+  tileSelectionOwner.reset();tileSelectionReply.reset();
   noblesSymbolOwner.reset();
   roomUndo.clear();
   helpers.reset();builderActive=0;builderStart=0;builderSteps=builderLastUs=0;
@@ -6911,6 +6978,7 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
     startBackoff.reset();
   }
   if (epoch != worldEpoch) {
+    tileSelectionOwner.reset();tileSelectionReply.reset();
     noblesSymbolOwner.reset();
     roomUndo.clear();
     citizenRecalcPending=false;citizenRecalcDone=citizenRecalcTotal=0;

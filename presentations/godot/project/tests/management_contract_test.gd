@@ -42,6 +42,10 @@ func run() -> void:
 		return
 	world = ClassDB.instantiate("Df3dWorld")
 	var state: Dictionary = world.poll_management()
+	var selection_request={"action":A.Selection,"operation":Contract.SelectionOperation.SelectAlternative,"receipt":1}
+	selection_request.index=4096
+	assert(world.management_request("selection",selection_request)==0)
+	assert(world.last_error()=="Invalid selection request")
 	assert(int(state.world_epoch)==9007199254740993)
 	assert(state.status is int and state.action is int)
 	assert(Contract.is_mutation(A.Place) and Contract.is_mutation(A.AreaUpdate))

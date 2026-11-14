@@ -2053,7 +2053,7 @@ table CitizenState {
   // Only rejected citizen mutations may carry uncertainty; no authoritative rows.
   outcome_unknown:bool;
 }
-enum SelectionOperation : uint8 { OpenTile, Inspect, SelectAlternative, InspectItem, ViewContainer, Back }
+enum SelectionOperation : uint8 { OpenTile, Inspect, SelectAlternative, InspectItem, ViewContainer, Back, SelectMember }
 enum SelectionKind : uint8 { None, Unit, Item, Building, Engraving, PlannedEngraving, UnitList, ItemList, Vermin }
 enum SelectionSection : uint8 { AgeSex, Traits, Health, Citizenship, Military, CurrentThought, RecentThoughts, Relationships, Hauling, LaborSkills, UnmetNeeds }
 table SelectionRequest { operation:SelectionOperation; tile:TilePos; receipt:uint64; index:int32 = -1; }
@@ -2068,6 +2068,8 @@ table SelectionState {
  alternatives:[SelectionIdentity] (required); items:[SelectionItem] (required); overview:[SelectionText] (required);
  container:SelectionIdentity; weight:int32 = -1; value:int32 = -1; passable:bool; is_door:bool;
  portrait:SelectionAppearance; complete:bool = true;
+ // Members of the active UnitList or ItemList, in native selection order.
+ members:[SelectionIdentity];
 }
 enum AlertOperation : uint8 { OpenCategory, Inspect, OpenUnit, Recenter, Back, Dismiss, OpenHistory, SelectTab, Scroll }
 enum AlertView : uint8 { Closed, Category, Unit, History }
@@ -2520,7 +2522,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 209;
+  schema_version:uint32 = 210;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2592,7 +2594,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 209;
+  schema_version:uint32 = 210;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

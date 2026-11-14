@@ -494,6 +494,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
     management::writeAgreement(result, s.agreement);
     management::writeTrade(result, s.trade);
     management::writeReport(result, s.report);
+    management::writeSelection(result,s.selection);
     if(s.worldHover) {
         const auto& t=*s.worldHover;Dictionary description;
         description["tile"]=Vector3i(t.x,t.y,t.z);
@@ -1218,6 +1219,7 @@ const ManagementCodec managementCodecs[] = {
     {"agreements", management::validateAgreementShape, management::readAgreement},
     {"trade", management::validateTradeShape, management::readTrade},
     {"hover", validateHover, readHover},
+    {"selection",management::validateSelectionShape,management::readSelection},
     {"creature_header",validateCreatureHeader,readCreatureHeader},
     {"creature_follow",validateCreatureFollow,readCreatureFollow},
     {"creature_sheet_location",validateCreatureFollow,readCreatureSheetLocation},

@@ -229,11 +229,17 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
         if(texture)return texture->texture;
         return {};
     }
-    // DF's BOX item selector c7f595 uses the same base/ID overlay as
-    // placed chest artwork (cefaa0). Use owned item facts, not terrain presence.
-    if(sheet && itemType+1==int(wm::ItemKind::Box)) {
+    // Native BOX uses its ID-selected overlay. Chair ced0d0 and Table cfe230
+    // consume only material/color from the packed selector and draw the first
+    // leg overlay, despite quality/ID/wear being present in the cache key.
+    // Reuse the verified furniture composition with owned item facts; never
+    // consult or populate native graphics caches.
+    if(sheet && (itemType+1==int(wm::ItemKind::Box) ||
+                 itemType+1==int(wm::ItemKind::Chair) || itemType+1==int(wm::ItemKind::Table))) {
         if(itemId<0)return {};
-        df3d::assets::BuildingQuery box;box.kind=wm::BuildingKind::Box;
+        df3d::assets::BuildingQuery box;
+        box.kind=itemType+1==int(wm::ItemKind::Chair)?wm::BuildingKind::Chair:
+            itemType+1==int(wm::ItemKind::Table)?wm::BuildingKind::Table:wm::BuildingKind::Box;
         box.material=materialToken;box.constructionItemMaterial=materialToken;
         box.constructionItemSolidColor=colorToken;box.constructionItemId=int32_t(itemId);
         const auto resolved=df3d::assets::resolveBuildingTiles(assets_->index,box);

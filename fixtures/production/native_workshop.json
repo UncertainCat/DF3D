@@ -39004,10 +39004,354 @@
       "Building contents now supplies existing appearance facts for TABLE and CHAIR, which were blank."
     ],
     "limits": [
-      "Tall-window table/chair icons still lack ID-selected leg overlays; quality/wear rendering needs native-backed item appearance, not placed-building substitution.",
+      "Historical301-pixel leg mismatch is resolved by furniture_item_composition_reference; the actual native compositors ignore the packed quality/variant/wear bits.",
       "Minimum Tasks first resize PNG has native clipping/missing icon; excluded. The same run minimum return matches exactly;120447 minimum Tasks also matches.",
       "No populated work-order rows or assigned Workers resize qualification.",
       "Whole workshop remains staged."
+    ]
+  },
+  "furniture_item_composition_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261114-132118",
+    "viewer": [
+      {
+        "jobs": 2,
+        "panel_position": [
+          176.0,
+          48.0
+        ],
+        "panel_size": [
+          488.0,
+          516.0
+        ],
+        "size": "small"
+      },
+      {
+        "jobs": 2,
+        "panel_position": [
+          816.0,
+          48.0
+        ],
+        "panel_size": [
+          488.0,
+          816.0
+        ],
+        "size": "wide"
+      },
+      {
+        "jobs": 2,
+        "panel_position": [
+          128.0,
+          48.0
+        ],
+        "panel_size": [
+          488.0,
+          468.0
+        ],
+        "size": "minimum"
+      },
+      {
+        "jobs": 2,
+        "panel_position": [
+          416.0,
+          52.0
+        ],
+        "panel_size": [
+          488.0,
+          708.0
+        ],
+        "size": "default"
+      }
+    ],
+    "comparisons": [
+      {
+        "size": "small",
+        "tab": "Tasks",
+        "crop": [
+          176,
+          48,
+          664,
+          564
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "small",
+        "tab": "Workers",
+        "crop": [
+          176,
+          48,
+          664,
+          564
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "small",
+        "tab": "Work-orders",
+        "crop": [
+          176,
+          48,
+          664,
+          564
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "small",
+        "tab": "picker",
+        "crop": [
+          176,
+          48,
+          664,
+          564
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "small",
+        "tab": "return",
+        "crop": [
+          176,
+          48,
+          664,
+          564
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "wide",
+        "tab": "Tasks",
+        "crop": [
+          816,
+          48,
+          1304,
+          864
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "wide",
+        "tab": "Workers",
+        "crop": [
+          816,
+          48,
+          1304,
+          864
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "wide",
+        "tab": "Work-orders",
+        "crop": [
+          816,
+          48,
+          1304,
+          864
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "wide",
+        "tab": "picker",
+        "crop": [
+          816,
+          48,
+          1304,
+          864
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "wide",
+        "tab": "return",
+        "crop": [
+          816,
+          48,
+          1304,
+          864
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "minimum",
+        "tab": "Tasks",
+        "crop": [
+          128,
+          48,
+          616,
+          516
+        ],
+        "different_pixels": 16030,
+        "bounds": [
+          10,
+          0,
+          488,
+          468
+        ],
+        "status": "excluded_incomplete_native_resize_frame"
+      },
+      {
+        "size": "minimum",
+        "tab": "Workers",
+        "crop": [
+          128,
+          48,
+          616,
+          516
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "minimum",
+        "tab": "Work-orders",
+        "crop": [
+          128,
+          48,
+          616,
+          516
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "minimum",
+        "tab": "picker",
+        "crop": [
+          128,
+          48,
+          616,
+          516
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "minimum",
+        "tab": "return",
+        "crop": [
+          128,
+          48,
+          616,
+          516
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "default",
+        "tab": "Tasks",
+        "crop": [
+          416,
+          52,
+          904,
+          760
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "default",
+        "tab": "Workers",
+        "crop": [
+          416,
+          52,
+          904,
+          760
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "default",
+        "tab": "Work-orders",
+        "crop": [
+          416,
+          52,
+          904,
+          760
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "default",
+        "tab": "picker",
+        "crop": [
+          416,
+          52,
+          904,
+          760
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      },
+      {
+        "size": "default",
+        "tab": "return",
+        "crop": [
+          416,
+          52,
+          904,
+          760
+        ],
+        "different_pixels": 0,
+        "bounds": null,
+        "status": "match"
+      }
+    ],
+    "native_audit": {
+      "chair_compositor": "ced0d0..ced78c",
+      "table_compositor": "cfe230..cfe8ec",
+      "consumed_key_bits": "material class low2; solid-color bits18..25; fixed first leg overlay; other selector-key bits do not affect these layers",
+      "ownership": "Neither native cache compositor is called; use existing owned original-page furniture composition."
+    },
+    "sha256": {
+      "workshop-native.json": "8cbb4eb9d8e1722f9f953b113e46d9e1707bce33c44272d4baeb80e9b8634051",
+      "workshop-wire-result.json": "75c6f7c9899fb3cd8f4c477acaeca614620a6e652c383c2ba493d06f60aba981",
+      "result.json": "0f61331994352f19f0692d2c6f8b46f9f4e598df4acd0dcfde7df182e85afaef",
+      "workshop-sheet-wide-Tasks.png": "eb20bac00cd56b94834487dbf63ea22c93b77c61282fddf98ef5408ae568cde8",
+      "workshop-sheet-wide-Tasks-live.png": "25150b477ffec15ad4a485ea6198ff8aa82e3c9ec14cafef4cd7e874816d6d8d"
+    },
+    "result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "godot-separate-thread-notice",
+      "godot-device-finalize",
+      "godot-shutdown-objects"
+    ],
+    "limits": [
+      "One incomplete native minimum resize frame excluded; subsequent return matches.",
+      "Live furniture subjects are citron wood table and paradise nut wood chair.",
+      "Populated work-order rows, assigned Workers resize and whole workshop exposure remain separate requirements."
     ]
   }
 }

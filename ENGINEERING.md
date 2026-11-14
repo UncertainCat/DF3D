@@ -17906,12 +17906,32 @@ Workshop sheet layout uses a360-pixel Work orders body at all supported tested
 sizes. Its header/footer captions use native baselines; Workers uses the normal
 BUTTON_RECTANGLE row background and the native first-row baseline. Building
 contents includes TABLE/CHAIR appearance through the existing item facts path.
-Their tall-window icons are no longer blank, but missing legs remain unqualified.
-Do not substitute placed-building artwork: item selectorc7fe08(Chair)/c7fa6d
-(Table) encodes quality, ID-derived variant and wear; c7ff90..c7ffb7 and
-c7fbf5..c7fc1c derive the two-bit variant via2471c0. The current five-field item
-appearance does not carry all these facts. A native-backed item appearance
-extension is still required before claiming complete furniture parity.
+The item-sheet path composes their original material base and first leg overlay
+using the existing owned furniture compositor. This does not change loose-map
+or construction-picker artwork.
+
+The packed item selector alone is misleading: c7fe08(Chair)/c7fa6d(Table)
+encodes quality, ID-derived variant, wear, improvements and contaminants into
+a cache key. The actual compositors ced0d0..ced78c and cfe230..cfe8ec select
+only material class (low two bits) and solid color (bits18..25). Chair reads
+base2684d10/2c/48/64 and fixed leg2684d80; Table reads base2684de8/4e04/4e20/
+4e3c and fixed leg2684e58. They do not consume the other key bits to select
+layers. This corrects the earlier inference that additional variant facts or a
+protocol extension were necessary. Never call these compositors at runtime:
+they consult/populate graphics caches and allocate texture surfaces. Existing
+owned composition reproduces their original base/leg layers and integer tint.
+
+Protected132118 on2026-11-14 reruns the four-size workflow with the repaired
+item-sheet composition. All four wide body crops now match native, resolving
+the previous301-pixel leg difference. Nineteen of20 full-panel crops match;
+the first minimum Tasks native resize frame is incomplete and excluded after
+inspection. Subsequent minimum return matches exactly. Actual tab/picker/Cancel
+and plus/minus controls pass with queues and original general-order limit
+restored. Owned DF17984 exits unsaved, source saves/preferences preserved.
+Only the three documented Godot diagnostics occur;30FPS GPU sample61C is not
+a peak. Core19 and build/qa/workshop-furniture-icons composition/build checks
+pass. furniture_item_composition_reference retains hashes and scope. No new
+bridge, schema or compatibility change is required.
 
 Protected120803 on2026-11-13 exercises native/viewer two-job Tasks, unrestricted
 Workers, manager-absent Work orders, task picker and Cancel/return at960x600,
@@ -17929,8 +17949,9 @@ DF34916 exits unsaved with original queue, source saves and preferences intact.
 Only three documented Godot diagnostics occur. Serial30FPS GPU samples60C are
 not peaks. Core19 and build/qa/workshop-sheet-layout state/composition checks
 pass. sheet_layout_reference retains comparisons and limits. Populated Work
-orders, assigned Workers at these sizes, furniture artwork and whole workshop
-public exposure remain separate acceptance requirements.
+orders, assigned Workers at these sizes and whole workshop public exposure
+remain separate acceptance requirements. Furniture icons are qualified by the
+subsequent132118 reference above.
 
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.

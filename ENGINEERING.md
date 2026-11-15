@@ -9562,9 +9562,23 @@ sent outcome rather than a false rejection. The service classifies only Apply as
 a mutation, with no automatic replay.
 
 The transport supports root, figure, site, group and existing-image pages,
-filtering, paging, previews and direct selections/artist reset. Draft requests
-remain rejected until the shared new-image workflow is integrated. This is an
+filtering, paging, previews and direct selections/artist reset. Draft operations
+reuse the owned native artwork builder with engraving context3. Name generation,
+random name edits and image registration use Apply because they consume native
+RNG or change simulation data; other draft operations use Read. This is an
 internal staged path; the public planned-engraving UI remains unfinished.
+
+Protected192228 on2026-11-14 verifies draft name generation through the typed
+client, native creature count/first choice and exact draft description, then
+registration of exactly one image (type3/id4/subid125). Repeated commit and
+retired selection requests reject; native picker/selection state is unchanged.
+Owned DF13960 exits unsaved with source preservation. GPU sampled50C/5%; the
+lane passed_with_known_issues for the documented rendering-thread/finalize and
+ObjectDB exit diagnostics. Evidence is
+selection_reference.engraving_art_draft_transport_reference. The controller
+headless check passes name-generation mutation routing, unknown-outcome handling,
+and late/session reply retirement. This does not qualify rendered new-image
+interaction, other draft families, relationships, naming edits or cancellation.
 
 Protected185705 on2026-11-14 verifies the typed Godot client root and first128
 site IDs against native, a128-row continuation, and a site assignment confirmed
@@ -9577,6 +9591,24 @@ selection_reference.engraving_art_transport_reference. This is typed transport
 and effect acceptance, not a rendered picker or complete lifecycle qualification.
 Bridge, extension and root builds pass, as do all19 core checks including
 request exclusivity, stale-list requirements and malformed artwork reply tests.
+
+The planned-engraving title calls the existing native terrain formatter e7d330
+with plant detail false, matching renderer158ef5/158f19, and prefixes the native
+literal at15fe1f8. Hover retains its true flag. Protected192732 on2026-11-14
+compares the title against native rendered text and repeats the draft transport
+effects successfully. Owned DF36540 exits unsaved; sampled GPU50C/5%, with only
+the documented Godot exit diagnostics. Root build and all19 CTest checks pass.
+The staged selection panel now routes PlannedEngraving and connects its Specify
+image control to the receipt-owned picker. The full488x708 staged panel matches
+native192732 pixel-for-pixel after using HORIZONTAL_OPTION_ACTIVE, independently
+matched from the installed atlas against the native top-left cell. The actual
+button center click submits SelectionArtRead with the selected tile receipt;
+the picker cancel signal retires its local draft while preserving the parent
+receipt. The completed-engraving panel still matches native182618 exactly.
+Both captures pass_with_known_issues (the documented Godot diagnostics), at30FPS;
+GPU sampled52C/5%. Evidence: selection_reference.planned_engraving_presentation_reference.
+Main-scene planned workflow, full button boundaries, native cancellation input
+and ordinary map exposure remain unqualified.
 
 selection_art_state.gd reuses local artwork navigation state with a selected-tile
 receipt, never a proxy job. work_order_details_view.gd has an engraving context

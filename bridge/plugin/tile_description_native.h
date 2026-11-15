@@ -13,7 +13,7 @@ struct Description {
 };
 enum class ObjectKind { Item, Unit, Building };
 // Caller holds the DF safe point. No native cursor, hover list or viewscreen inputs.
-std::optional<std::string> terrain(int32_t x, int32_t y, int32_t z);
+std::optional<std::string> terrain(int32_t x, int32_t y, int32_t z, bool plantDetail = true);
 // Owned native fortress hover entries; unavailable/hidden targets have no result.
 std::optional<std::vector<Description>> collect(int32_t x, int32_t y, int32_t z);
 // Formats an independently identified object. Does not establish hover eligibility.

@@ -12809,6 +12809,60 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "planned_engraving_presentation_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-192732",
+      "scope": "Native planned heading via terrain formatter false; complete 488x708 staged panel pixel comparison; actual Specify image center click submits selected receipt; picker cancel signal retains parent receipt. Completed engraving panel regression passes. Main-scene planned workflow and button boundary/cancellation input remain unqualified.",
+      "status": "passed_with_known_issues",
+      "native_owned_df_pid": 36540,
+      "art_token": "HORIZONTAL_OPTION_ACTIVE",
+      "renderer_button_array_rva": "2654b58",
+      "panel_rect": [
+        416,
+        52,
+        488,
+        708
+      ],
+      "hashes": {
+        "build/stockpile-storage-native-farm-discovery-20261114-192732/workshop-native.json": "2dc0aa6299f3b487bbcc15be084e8cb6190d7eac6b14b81a568f932035ede864",
+        "build/stockpile-storage-native-farm-discovery-20261114-192732/selection-planned-engraving-viewer.png": "94b0bb7962d4c0ae85a8219bb986e5613b332d21fadb72d1d0c1eefa7c769c54",
+        "build/notes/pm/planned-engraving-capture.stdout.log": "8a7897625d74582a202a6847a084e1fb1e24edab945399c223c86d05c9c3a301",
+        "build/notes/pm/planned-engraving-capture.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+      }
+    },
+    "engraving_art_draft_transport_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-192228",
+      "scope": "Typed draft name generation, native creature choices and description, one image registration, stale commit and retired selection rejection. Not graphical picker or full lifecycle acceptance.",
+      "status": "passed_with_known_issues",
+      "owned_df_pid": 13960,
+      "effect": {
+        "back_out_warn": false,
+        "flags": 0,
+        "id": 4,
+        "image_back_out_warn": false,
+        "open": false,
+        "option": 6,
+        "pos": [
+          134,
+          78,
+          165
+        ],
+        "subid": 125,
+        "type": 3
+      },
+      "draft_committed": true,
+      "gpu_temperature_c": 50,
+      "gpu_utilization_percent": 5,
+      "diagnostics": [
+        "experimental separate rendering thread",
+        "render-thread finalize at exit",
+        "2 ObjectDB instances leaked at exit"
+      ],
+      "hashes": {
+        "workshop-native.json": "2dc0aa6299f3b487bbcc15be084e8cb6190d7eac6b14b81a568f932035ede864",
+        "workshop-wire-result.json": "771bbf389d341ab1a57513a1ff69a3dc12a06a3af86d9a9dc9e8dd0dc4065275",
+        "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+      }
+    },
     "engraving_art_draft_reference": {
       "committed": {
         "applied": true,

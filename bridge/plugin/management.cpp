@@ -650,6 +650,16 @@ ItemInspectionAppearance copyInspectionAppearance(const df3d_production::ItemIns
 bool prepareTileSelectionReply(TileSelectionSession& value) {
   value.memberNames.clear();value.memberTypes.clear();value.memberAppearances.clear();value.memberUnitAppearances.clear();
   value.title.clear();value.description.clear();
+  if(value.active.kind==df::view_sheet_type::ENGRAVING_PLANNED) {
+    const auto terrain=df3d_hover::terrain(value.tile.x(),value.tile.y(),value.tile.z(),false);
+    if(!terrain)return false;
+    // Native renderer158eae prefixes the same semantic terrain formatter.
+    const auto* base=reinterpret_cast<const char*>(GetModuleHandleW(nullptr));
+    constexpr size_t prefixRva=0x15fe1f8;
+    if(std::memcmp(base+prefixRva,"Engraving ",11)!=0)return false;
+    value.title=std::string(base+prefixRva)+*terrain;
+    return value.title.size()<=512 && value.title.find('\0')==std::string::npos;
+  }
   if(value.active.kind==df::view_sheet_type::ENGRAVING) {
     std::string failure;bool initialized=false;
     const auto text=df3d_selection::engravingDescription(value.tile.x(),value.tile.y(),value.tile.z(),failure,&initialized);
@@ -774,6 +784,47 @@ std::vector<flatbuffers::Offset<m::WorkOrderArtRow>> rows;
           b.CreateVector(reinterpret_cast<const uint8_t*>(n.query.data()),n.query.size()),n.cursor,n.total,n.nextCursor,b.CreateVector(choices));
       }
       return m::CreateWorkOrderArtState(b,a.page,b.CreateString(text(a.caption)),b.CreateVector(rows),a.listRevision,a.total,a.nextCursor,a.hovered,preview,draft,description,namePage);
+}
+
+void processSelectionDraft(int x,int y,int z,const m::SelectionArtRequest& request,bool writing) {
+  bool uncertain=false;
+  try {
+    const auto source=df3d_selection::engravingArtSource(x,y,z);
+    if(!source || source->revision!=request.expected_revision())return;
+    const auto& art=*request.art();const auto* draft=art.draft();if(!draft)return;
+    df3d_production::WorkOrderArtDraftValue value;
+    const auto element=[](const m::WorkOrderArtDraftElement& e){return df3d_production::WorkOrderArtDraftElementValue{e.kind(),e.id(),e.secondary(),e.quantity()};};
+    const auto relationship=[](const m::WorkOrderArtDraftRelationship& r){return df3d_production::WorkOrderArtDraftRelationshipValue{r.verb(),r.transitive(),r.actor(),r.target()};};
+    for(const auto* e:*draft->value()->elements())value.elements.push_back(element(*e));
+    for(const auto* r:*draft->value()->relationships())value.relationships.push_back(relationship(*r));
+    if(const auto* n=draft->value()->name()) {
+      value.name.emplace();auto& name=*value.name;
+      name.first_name.assign(reinterpret_cast<const char*>(n->first_name_bytes()->data()),n->first_name_bytes()->size());
+      name.nickname.assign(reinterpret_cast<const char*>(n->nickname_bytes()->data()),n->nickname_bytes()->size());
+      for(size_t i=0;i<7;++i){name.words[i]=n->words()->Get(i);name.parts_of_speech[i]=df::part_of_speech(n->parts()->Get(i));}
+      name.language=n->language();name.type=df::language_name_type(n->type());name.has_name=n->has_name();
+    }
+    if(draft->action()==m::WorkOrderArtDraftAction::Commit) {
+      uncertain=true;uint64_t revision=0;
+      const auto outcome=df3d_selection::commitEngravingArtDraft(x,y,z,request.expected_revision(),value,&revision);
+      using O=df3d_selection::EngravingArtDraftOutcome;
+      if(outcome==O::Unknown){mutated=true;status=m::ManagementStatus::Pending;return;}
+      if(outcome==O::Applied){mutated=true;selectionArtReply=SelectionArtReply{request.receipt(),revision,true,std::nullopt};status=m::ManagementStatus::Ok;}
+      return;
+    }
+    std::optional<df3d_production::WorkOrderArtDraftElementValue> added;
+    std::optional<df3d_production::WorkOrderArtDraftRelationshipValue> relation;
+    if(draft->element())added=element(*draft->element());if(draft->relationship())relation=relationship(*draft->relationship());
+    std::optional<df3d_production::WorkOrderArtNameQuery> nameQuery;
+    std::optional<df3d_production::WorkOrderArtNameEdit> nameEdit;
+    if(const auto* n=draft->name_query())nameQuery=df3d_production::WorkOrderArtNameQuery{n->component(),std::string(reinterpret_cast<const char*>(n->query_bytes()->data()),n->query_bytes()->size()),n->cursor()};
+    if(const auto* n=draft->name_edit())nameEdit=df3d_production::WorkOrderArtNameEdit{uint8_t(n->mode()),n->target(),n->displayed(),n->word(),n->part(),std::string(reinterpret_cast<const char*>(n->query_bytes()->data()),n->query_bytes()->size())};
+    uncertain=writing;
+    auto page=df3d_selection::engravingArtDraftPage(x,y,z,art.page(),std::move(value),uint8_t(draft->action()),added,relation,draft->delete_index(),UTF2DF(art.query()->str()),art.cursor(),art.expected_list_revision(),draft->columns(),nameQuery?&*nameQuery:nullptr,nameEdit?&*nameEdit:nullptr);
+    if(!page){if(uncertain){mutated=true;status=m::ManagementStatus::Pending;}return;}
+    if(writing)mutated=true;
+    selectionArtReply=SelectionArtReply{request.receipt(),page->revision,writing,std::move(page->page)};status=m::ManagementStatus::Ok;
+  } catch(...) {selectionArtReply.reset();if(uncertain){mutated=true;status=m::ManagementStatus::Pending;}}
 }
 
 void processJobDraft(df::job& source,int32_t unitId,int32_t buildingId,int16_t option,uint64_t revision,const m::WorkOrderArtRequest& art,bool writing) {
@@ -5350,6 +5401,7 @@ void run(color_ostream& out) {
     if(!current || *current!=owner.source){tileSelectionOwner.reset();publish();return;}
     const auto query=UTF2DF(a.query()->str());
     if(DF2UTF(query)!=a.query()->str()){publish();return;}
+    if(a.draft()){processSelectionDraft(x,y,z,q,r->action()==m::ManagementAction::SelectionArtApply);publish();return;}
     if(r->action()==m::ManagementAction::SelectionArtRead) {
       auto page=df3d_selection::engravingArtPage(x,y,z,a.page(),query,a.cursor(),a.expected_list_revision(),a.hovered(),a.preview_columns());
       if(page && (!q.expected_revision() || q.expected_revision()==page->revision)) {

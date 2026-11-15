@@ -56,7 +56,7 @@ struct RandomRestore {
     }
 };
 }
-std::optional<std::string> terrain(int32_t x,int32_t y,int32_t z) {
+std::optional<std::string> terrain(int32_t x,int32_t y,int32_t z,bool plantDetail) {
     if(x<0 || y<0 || z<0 || x>32767 || y>32767 || z>32767 || !DFHack::Maps::IsValid())return {};
     auto* block=DFHack::Maps::getTileBlock(x,y,z);
     const auto* designation=DFHack::Maps::getTileDesignation(x,y,z);
@@ -75,8 +75,8 @@ std::optional<std::string> terrain(int32_t x,int32_t y,int32_t z) {
     RandomRestore restore(b);
     std::string result;
     using Describe=void (*)(df::world*,std::string*,int16_t,int16_t,int16_t,bool);
-    // lookinfost's Floor formatter passes true for native plant detail.
-    reinterpret_cast<Describe>(b+0xe7d330)(df::global::world,&result,int16_t(x),int16_t(y),int16_t(z),true);
+    // Hover passes true; the planned-engraving heading passes false (158ef5).
+    reinterpret_cast<Describe>(b+0xe7d330)(df::global::world,&result,int16_t(x),int16_t(y),int16_t(z),plantDetail);
     if(result.size()>4096)return {};
     return DF2UTF(result);
 }

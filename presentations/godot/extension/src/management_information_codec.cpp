@@ -36,6 +36,7 @@ bool validateSelectionArtShape(const Dictionary& data,String& error) {
     if(key.get_type()!=Variant::STRING && key.get_type()!=Variant::STRING_NAME){error="Unexpected artwork key";return false;}
     const String name=key;
     if(name=="query"){if(art[key].get_type()!=Variant::STRING){error="Artwork query must be a String";return false;}}
+    else if(name=="draft"){if(art[key].get_type()!=Variant::DICTIONARY){error="Artwork draft must be a Dictionary";return false;}}
     else if(name=="page" || name=="subject" || name=="expected_list_revision" || name=="cursor" || name=="hovered" || name=="preview_columns") {
       if(art[key].get_type()!=Variant::INT){error="Artwork numeric fields must be integers";return false;}
     } else {error="Unexpected selection artwork field";return false;}

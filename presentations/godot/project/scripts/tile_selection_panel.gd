@@ -11,6 +11,8 @@ var canvas: CanvasLayer
 var panel: Panel
 var body
 var engraving
+var artwork_state=preload("res://scripts/selection_art_state.gd").new()
+var artwork
 var tabs
 var play_enabled:=true
 var modal_input:=false
@@ -20,6 +22,7 @@ var right_travel:=0.0
 func configure(source,service,host,route: Callable) -> void:
 	world=source;ui_host=host;destination=route
 	navigation.configure(service,host,_route)
+	artwork_state.configure(service)
 	canvas=CanvasLayer.new();canvas.layer=6;add_child(canvas)
 	panel=Panel.new();canvas.add_child(panel);panel.mouse_filter=Control.MOUSE_FILTER_STOP
 	var art=preload("res://scripts/original_ui.gd").new();art.configure(world)
@@ -30,6 +33,11 @@ func configure(source,service,host,route: Callable) -> void:
 	body.input_allowed=func():return ui_host.allows_panel_input(self)
 	engraving=preload("res://scripts/engraving_sheet_view.gd").new();panel.add_child(engraving);engraving.configure(world,navigation.state)
 	engraving.input_allowed=func():return ui_host.allows_panel_input(self)
+	engraving.specify_image.connect(_open_artwork)
+	artwork=preload("res://scripts/work_order_details_view.gd").new();canvas.add_child(artwork)
+	artwork.engraving_context=true;artwork.job_context=true;artwork.configure_details(world,artwork_state)
+	artwork.input_allowed=func():return ui_host.allows_panel_input(self)
+	artwork.cancelled.connect(_close_artwork);artwork_state.applied.connect(_close_artwork);artwork.hide()
 	tabs=preload("res://scripts/tile_selection_tabs.gd").new();canvas.add_child(tabs);tabs.configure(world)
 	tabs.input_allowed=_allows_tabs;tabs.alternative_requested.connect(navigation.state.choose_alternative)
 	navigation.state.changed.connect(_refresh)
@@ -38,7 +46,7 @@ func configure(source,service,host,route: Callable) -> void:
 func open_tile(tile: Vector3i) -> void:navigation.open(tile)
 
 func _route(kind: int,id: int,tile: Vector3i):
-	if kind in [C.SelectionKind.ItemList,C.SelectionKind.UnitList,C.SelectionKind.Engraving]:
+	if kind in [C.SelectionKind.ItemList,C.SelectionKind.UnitList,C.SelectionKind.Engraving,C.SelectionKind.PlannedEngraving]:
 		if not ui_host.activate(self):return null
 		panel.show();return self
 	return destination.call(kind,id,tile) if destination.is_valid() else null
@@ -48,6 +56,7 @@ func _allows_tabs() -> bool:
 
 func _refresh() -> void:
 	var state=navigation.state
+	if artwork_state.selection_receipt!=0 and artwork_state.selection_receipt!=state.snapshot.get("receipt",0):_close_artwork()
 	body.visible=state.snapshot.get("kind",0) in [C.SelectionKind.ItemList,C.SelectionKind.UnitList]
 	var images: Array=[]
 	for target in state.snapshot.get("alternatives",[]):
@@ -68,9 +77,16 @@ func _alternative_icon(target: Dictionary):
 		if building.get("building_kind",0)==10:return world.ui_texture("BUILDING_ICON_FLOODGATE")
 	return world.selection_icon(target.kind,target.id) if target.kind in [C.SelectionKind.Unit,C.SelectionKind.Item,C.SelectionKind.Building] else null
 
+func _open_artwork() -> void:
+	if not ui_host.allows_panel_input(self) or navigation.state.phase!=navigation.state.Phase.Ready:return
+	artwork_state.open_selection(navigation.state.snapshot.get("receipt",0));artwork.show();tabs.hide();modal_input=true
+func _close_artwork() -> void:
+	artwork_state.close();artwork.hide();tabs.show();modal_input=false;cancel_gesture()
 func close_panel() -> void:
+	_close_artwork()
 	panel.hide();ui_host.release(self);cancel_gesture()
-func handle_escape() -> void:close_panel()
+func handle_escape() -> void:
+	if not artwork.visible:close_panel()
 func cancel_gesture() -> void:right_down=false;right_travel=0
 func set_play_enabled(value: bool) -> void:
 	play_enabled=value
@@ -83,10 +99,10 @@ func _process(_delta: float) -> void:
 	var view:=viewport/factor
 	panel.position=Vector2((floori(view.x/8)-98)*8,48+fposmod(view.y,12)*0.5)
 	panel.size=Vector2(488,floori(view.y/12)*12-84)
-	body.layout(panel.size.y);engraving.layout(panel.size.y);tabs.layout(panel.position)
+	body.layout(panel.size.y);engraving.layout(panel.size.y);tabs.layout(panel.position);artwork.layout(view)
 
 func _input(event: InputEvent) -> void:
-	if not ui_host.allows_panel_input(self):return
+	if not ui_host.allows_panel_input(self) or artwork.visible:return
 	if event is InputEventMouseMotion and right_down:right_travel+=event.relative.length()
 	elif event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_RIGHT:
 		if event.pressed:right_down=true;right_travel=0
@@ -94,4 +110,5 @@ func _input(event: InputEvent) -> void:
 			var click:=right_down and right_travel<4;right_down=false
 			if click:close_panel();get_viewport().set_input_as_handled()
 
-func _exit_tree() -> void:navigation.dispose()
+func _exit_tree() -> void:
+	artwork_state.dispose();navigation.dispose()

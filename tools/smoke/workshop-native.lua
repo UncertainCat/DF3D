@@ -415,10 +415,16 @@ local ok,err=xpcall(function()
     if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_ART_RUNTIME')=='1' then
      local file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
      local menu=json.encode(observe());local count=#df.global.plotinfo.waypoints.location_detail
+     local images=df.global.plotinfo.main.fortress_entity.resources;local image_count=#images.art_image_ids
      capture('workshop-wire')
      file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
      assert(receipt.success,'Engraving artwork wire failed')
-     assert(detail.art_specifier==1 and detail.art_spec_id1==receipt.selected_site and detail.art_spec_id2==-1,'Wire edit did not produce native site effect')
+     if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_DRAFT_WIRE')=='1' then
+      assert(receipt.draft_committed and detail.art_specifier==3 and #images.art_image_ids==image_count+1 and
+       detail.art_spec_id1==images.art_image_ids[image_count] and detail.art_spec_id2==images.art_image_subids[image_count],'Wire draft did not install exactly one image')
+     else
+      assert(detail.art_specifier==1 and detail.art_spec_id1==receipt.selected_site and detail.art_spec_id2==-1,'Wire edit did not produce native site effect')
+     end
      assert(not art.open and menu==json.encode(observe()) and count==#df.global.plotinfo.waypoints.location_detail,'Artwork wire changed native picker or selection')
      reference.management=receipt;reference.management_effect=effect()
      file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()

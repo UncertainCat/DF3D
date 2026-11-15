@@ -1987,6 +1987,14 @@ TEST_CASE("selection artwork separates reads from guarded mutations") {
   q.art.page=0;q.art.subject=-1;REQUIRE_FALSE(encoded.invalid(r));
   q.art.query="unexpected";CHECK(encoded.invalid(r));q.art.query.clear();
   q.art.draft.emplace();CHECK(encoded.invalid(r));
+  q.art.page=6;q.art.draft->columns=98;
+  q.art.draft->action=wm::WorkOrderArtDraftAction::GenerateName;
+  REQUIRE_FALSE(encoded.invalid(r));
+  r.action=wm::ManagementAction::SelectionArtRead;CHECK(encoded.invalid(r));
+  q.art.draft->action=wm::WorkOrderArtDraftAction::Inspect;REQUIRE_FALSE(encoded.invalid(r));
+  q.expectedRevision=0;CHECK(encoded.invalid(r));q.expectedRevision=19;
+  q.art.cursor=128;CHECK(encoded.invalid(r));q.art.expectedListRevision=42;
+  REQUIRE_FALSE(encoded.invalid(r));
 }
 TEST_CASE("selection artwork replies preserve receipts and reject malformed pages") {
   for(int fault=0;fault<6;++fault) {

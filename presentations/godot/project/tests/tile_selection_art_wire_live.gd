@@ -18,6 +18,10 @@ func run() -> void:
 	var p: Array=sample.tile
 	var response:=await request("selection",{"action":C.ManagementAction.Selection,"operation":OP.OpenTile,"origin":Vector3i(p[0],p[1],p[2])})
 	if not check(response.get("status")==C.ManagementStatus.Ok and response.get("selection",{}).get("kind")==KIND.PlannedEngraving,"Planned engraving missing"):quit(1);return
+	var native_heading: String=""
+	for line in sample.lines:
+		if str(line.text).strip_edges().begins_with("Engraving "):native_heading=str(line.text).strip_edges();break
+	check(not native_heading.is_empty() and response.selection.get("title","")==native_heading,"Planned engraving heading differs from native")
 	var receipt_value: int=response.selection.receipt
 	response=await art_read(receipt_value)
 	if not check(response.get("status")==C.ManagementStatus.Ok,"Artwork root rejected"):quit(1);return
@@ -41,11 +45,34 @@ func run() -> void:
 	check(response.get("status")==C.ManagementStatus.Rejected,"Stale artwork read accepted")
 	response=await art_read(receipt_value)
 	check(response.get("status")==C.ManagementStatus.Ok,"Fresh artwork read rejected")
+	var draft_committed:=false
+	if OS.get_environment("DF3D_TILE_SELECTION_ENGRAVING_DRAFT_WIRE")=="1":
+		var revision: int=response.selection_art.revision
+		var draft: Dictionary={"elements":[],"relationships":[]}
+		var draft_request: Dictionary={"action":C.ManagementAction.SelectionArtApply,"receipt":receipt_value,"expected_revision":revision,"art":{"page":6,"draft":{"action":4,"value":draft,"columns":98}}}
+		response=await request("selection_art",draft_request)
+		if not check(response.get("status")==C.ManagementStatus.Ok and response.get("selection_art",{}).get("applied",false),"Draft name generation failed"):quit(1);return
+		draft=response.selection_art.art.draft
+		draft_request.action=C.ManagementAction.SelectionArtRead;draft_request.art.page=7;draft_request.art.draft={"action":0,"value":draft,"columns":98}
+		response=await request("selection_art",draft_request)
+		if not check(response.get("status")==C.ManagementStatus.Ok,"Draft creatures rejected"):quit(1);return
+		var creatures: Dictionary=response.selection_art.art;var native: Dictionary=sample.image.draft.owned
+		check(creatures.total==native.total and creatures.rows[0].id==native.race and creatures.rows[0].secondary==native.caste,"Draft choices differ from native")
+		draft_request.art.draft={"action":1,"value":draft,"columns":98,"element":{"kind":7,"id":creatures.rows[0].id,"secondary":creatures.rows[0].secondary,"quantity":1}}
+		response=await request("selection_art",draft_request)
+		if not check(response.get("status")==C.ManagementStatus.Ok,"Draft element rejected"):quit(1);return
+		check(response.selection_art.art.draft_description==sample.image.draft.description,"Draft text differs from native")
+		draft=response.selection_art.art.draft
+		draft_request.action=C.ManagementAction.SelectionArtApply;draft_request.art.page=6;draft_request.art.draft={"action":5,"value":draft,"columns":98}
+		response=await request("selection_art",draft_request)
+		draft_committed=response.get("status")==C.ManagementStatus.Ok and response.get("selection_art",{}).get("applied",false)
+		check(draft_committed,"Draft commit failed")
+		response=await request("selection_art",draft_request);check(response.get("status")==C.ManagementStatus.Rejected,"Stale draft commit accepted")
 	await selection(OP.Back,receipt_value)
 	response=await art_read(receipt_value)
 	check(response.get("status")==C.ManagementStatus.Rejected,"Retired selection read accepted")
 	response=await request("selection_art",intent)
 	check(response.get("status")==C.ManagementStatus.Rejected,"Retired selection edit accepted")
 	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"selected_site":selected_site,"root":initial,"site_page":sites,"stale_and_retired_rejected":true}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"selected_site":selected_site,"draft_committed":draft_committed,"root":initial,"site_page":sites,"stale_and_retired_rejected":true}));file.close()
 	world.detach_live();world.queue_free();await process_frame;quit(1 if failed else 0)

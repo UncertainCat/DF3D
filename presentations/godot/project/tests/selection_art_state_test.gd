@@ -21,6 +21,15 @@ func run() -> void:
 	state.open_selection(41);var first: int=state.ticket
 	check(service.requests[first].domain=="selection_art" and service.requests[first].intent.receipt==41,"Wrong artwork owner")
 	service.reply(first,page(41,-1,[{"id":2,"caption":"Site"}]))
+	var generated: int=state.ticket
+	check(service.requests[generated].intent.action==C.ManagementAction.SelectionArtApply and service.requests[generated].intent.art.draft.action==4,"Initial name generation was not a mutation")
+	var name: Dictionary={"first_name_bytes":PackedByteArray(),"nickname_bytes":PackedByteArray(),"words":[-1,-1,-1,-1,-1,-1,-1],"parts":[0,0,0,0,0,0,0],"language":-1,"type":-1,"has_name":false}
+	var draft: Dictionary={"elements":[],"relationships":[],"name":name}
+	var response:=page(41,6,[]);response.action=C.ManagementAction.SelectionArtApply;response.selection_art.applied=true
+	response.selection_art.art.draft=draft;response.selection_art.art.draft_description=[]
+	service.reply(generated,response)
+	response=page(41,-1,[{"id":2,"caption":"Site"}]);response.selection_art.art.draft=draft;response.selection_art.art.draft_description=[]
+	service.reply(state.ticket,response)
 	check(state.phase==state.Phase.Ready,"Root not ready")
 	state.choose(2);var read: int=state.ticket
 	check(service.requests[read].intent.expected_revision==91 and service.requests[read].intent.art.page==2,"Site read lost revision")

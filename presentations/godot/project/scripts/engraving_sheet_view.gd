@@ -1,5 +1,6 @@
 extends Control
 # Native engraving renderer1589ff: blue title and plain wrapped artwork prose.
+signal specify_image
 const C=preload("res://scripts/management_contract.gd")
 const Native=preload("res://scripts/native_creature_text.gd")
 var art=preload("res://scripts/original_ui.gd").new()
@@ -9,6 +10,7 @@ var input_allowed: Callable
 var title:=""
 var lines: Array[String]=[]
 var receipt:=0
+var planned:=false
 var first:=0
 var capacity:=0
 func configure(world,model) -> void:
@@ -25,7 +27,8 @@ func layout(height: float) -> void:
 	scrollbar.position=Vector2(456,60);scrollbar.size=Vector2(16,capacity*12);scrollbar.page=capacity
 	scrollbar.set_rows(lines.size(),first);scrollbar.visible=capacity>0 and lines.size()>capacity;queue_redraw()
 func refresh() -> void:
-	visible=state.snapshot.get("kind",0)==C.SelectionKind.Engraving
+	planned=state.snapshot.get("kind",0)==C.SelectionKind.PlannedEngraving
+	visible=planned or state.snapshot.get("kind",0)==C.SelectionKind.Engraving
 	var next: int=state.snapshot.get("receipt",0)
 	if next!=receipt:first=0;receipt=next
 	title=state.snapshot.get("title","");lines.clear()
@@ -40,12 +43,23 @@ func refresh() -> void:
 	layout(size.y)
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
+	if planned and event.button_index==MOUSE_BUTTON_LEFT and Rect2(16,56,136,24).has_point(event.position):
+		specify_image.emit();accept_event();return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		first=clampi(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1),0,maxi(0,lines.size()-capacity))
 		scrollbar.set_rows(lines.size(),first);queue_redraw();accept_event()
 func _draw() -> void:
 	if theme.default_font==null:return
 	theme.default_font.draw_string(get_canvas_item(),Vector2(16,36),title,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Native.colors[9])
+	if planned:
+		# Native renderer15916a, protected planned-engraving capture192228.
+		var button: Texture2D=art.texture("HORIZONTAL_OPTION_ACTIVE")
+		if button!=null:
+			for y in 3:
+				for x in 17:
+					draw_texture_rect_region(button,Rect2(16+x*8,48+y*12,8,12),Rect2(0 if x==0 else 16 if x==16 else 8,y*12,8,12))
+		theme.default_font.draw_string(get_canvas_item(),Vector2(32,72),"Specify image",HORIZONTAL_ALIGNMENT_LEFT,-1,12,Native.colors[15])
+		return
 	var start:=clampi(first,0,maxi(0,lines.size()-capacity))
 	for i in mini(capacity,lines.size()-start):
 		theme.default_font.draw_string(get_canvas_item(),Vector2(16,72+i*12),lines[start+i],HORIZONTAL_ALIGNMENT_LEFT,-1,12,Native.colors[15])

@@ -931,12 +931,15 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   if(r.action()==ManagementAction::SelectionArtRead || r.action()==ManagementAction::SelectionArtApply) {
     const auto* q=r.selection_art();const auto* a=q?q->art():nullptr;
     const bool writing=r.action()==ManagementAction::SelectionArtApply;
-    if(!q || !q->receipt() || q->receipt()>INT64_MAX || q->expected_revision()>INT64_MAX || !a || a->draft() ||
+    if(!q || !q->receipt() || q->receipt()>INT64_MAX || q->expected_revision()>INT64_MAX || !a ||
        !a->query() || a->query()->size()>128 || a->query()->str().find('\0')!=std::string::npos ||
        a->expected_list_revision()>INT64_MAX || a->cursor()>262144 || a->hovered() < -1 || a->preview_columns()>256)
       return "invalid selection artwork request";
     const auto page=a->page();
-    if(writing) {
+    if(a->draft()) {
+      if(!q->expected_revision() || page>18 || (a->cursor() && !a->expected_list_revision()))return "invalid selection artwork draft receipt";
+      if(auto error=validateArtDraftRequest(*a,writing))return error;
+    } else if(writing) {
       if(!q->expected_revision() || a->cursor() || a->hovered()!=-1 || a->preview_columns() ||
          (page==0 ? (a->subject()!=-1 || a->expected_list_revision() || a->query()->size()) :
           ((page<1 || page>3) && page!=5) || a->subject()<0 || !a->expected_list_revision()))return "invalid selection artwork edit";
@@ -2985,16 +2988,16 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if((!writing && s.action()!=ManagementAction::SelectionArtRead) || s.status()!=ManagementStatus::Ok ||
        !value->receipt() || value->receipt()>INT64_MAX || !value->revision() || value->revision()>INT64_MAX || value->applied()!=writing)
       return "invalid selection artwork result";
-    if(writing ? value->art()!=nullptr : value->art()==nullptr)return "invalid selection artwork result payload";
+    if(!writing && value->art()==nullptr)return "invalid selection artwork result payload";
     if(const auto* a=value->art()) {
-      if((a->page()!=-1 && a->page()!=1 && a->page()!=2 && a->page()!=3 && a->page()!=5) ||
+      if((a->page()!=-1 && a->page()!=1 && a->page()!=2 && a->page()!=3 && (a->page()<5 || a->page()>18)) ||
          !a->caption() || a->caption()->size()>512 || !a->rows() || a->rows()->size()>128 || a->total()>262144 ||
          a->rows()->size()>a->total() || a->next_cursor()>a->total() || a->list_revision()>INT64_MAX ||
          (a->page()==-1 ? (a->list_revision()!=0 || a->next_cursor()!=0 || a->total()!=6) : !a->list_revision()) ||
          a->hovered() < -1 || validateArtDraftState(*a))return "invalid selection artwork page";
       bool hovered=a->hovered()==-1;
       for(const auto* row:*a->rows()) {
-        if(!row || row->id()<0 || !row->caption() || row->caption()->size()>1024 || row->secondary()!=-1 ||
+        if(!row || row->id()<0 || !row->caption() || row->caption()->size()>1024 || (a->page()<6 ? row->secondary()!=-1 : row->secondary() < -1) ||
            (row->badge() && row->badge()->size()>128))return "invalid selection artwork row";
         hovered|=row->id()==a->hovered();
       }

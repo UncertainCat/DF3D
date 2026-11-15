@@ -16,9 +16,26 @@ func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("furniture")
 	for entry in expected.buildings:
 		if not await open_furniture(entry):return
+		if entry.has("reference"):
+			var body: Dictionary=owner.state.snapshot.get("funerary",{})
+			for field in ["unit_id","historical_figure_id","room_id","room_type","introduction","name","room_introduction","room_name","deceased","notices"]:
+				check(body.get(field)==entry.body.get(field),"Funerary variant fact differs: "+field)
+			await panel_capture(entry.reference,entry.reference)
+			key(KEY_ESCAPE);await drain()
+			check(scene._ui.host.active==null and not owner.panel.visible,"Funerary variant retained input")
+			continue
 		var prefix: String="workshop-furniture-"+str(int(entry.type))+"-"
 		check(owner.state.snapshot.type==int(entry.type) and owner.state.snapshot.has("appearance"),"Furniture header lacks native type/artwork")
 		await panel_capture(str(int(entry.id))+"-initial",prefix+"initial")
+		if int(entry.type)==3 and OS.get_environment("DF3D_FUNERARY_HOVER")=="1":
+			var content_view=owner.panel.contents
+			var motion:=InputEventMouseMotion.new()
+			motion.position=content_view.get_global_transform_with_canvas()*content_view.control_rect(1,0).get_center()
+			root.push_input(motion,true)
+			await create_timer(0.6).timeout
+			var help=content_view.hover_help
+			check(help.displayed=="contents_resting" and help.visible,"Coffin burial tooltip did not appear on its visible indicator")
+			check(help.CONTENTS_HELP.resting==entry.funeral.burial_hover.lines.slice(0,2),"Coffin tooltip differs from native text")
 		if not await rename_to("Furniture reference"):return
 		await panel_capture(str(int(entry.id))+"-renamed",prefix+"renamed")
 		if not await rename_to(String(entry.actions[0].name)):return

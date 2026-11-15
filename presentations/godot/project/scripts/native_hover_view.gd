@@ -116,6 +116,11 @@ const STOCKS_HELP={
 	"view":["Leave menu and open the","item's sheet."]}
 # Native contents235536 text cells, instructions286/317/323..328.
 const CONTENTS_HELP={
+  # Native instruction322, protected funerary044059.
+  "resting": [
+    "This item is resting",
+    "within the building."
+  ],
   "permanent": [
     "This item is a",
     "permanent part of the",

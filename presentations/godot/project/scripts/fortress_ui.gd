@@ -123,6 +123,9 @@ func open_building_holder(kind: int,id: int) -> void:
 	elif kind==8:controller("door").open_target(id)
 	elif kind==10:controller("chest").open_target(id)
 	elif kind in [0,1,2,11,12,14,15,51,52,54]:controller("furniture").open_target(id)
+	elif kind in [3,46] and OS.get_environment("DF3D_FURNITURE_RUNTIME")=="1":
+		# Protected staged workflow only; public entry waits for full qualification.
+		controller("furniture").open_target(id)
 	elif kind in [5,13]:
 		# The item receipt supplies native type/ID; resident semantics supply the
 		# subtype artwork. The opened header still obtains fresh action authority.

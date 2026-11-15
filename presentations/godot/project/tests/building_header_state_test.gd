@@ -37,6 +37,30 @@ func ready() -> void:
 	setup();model.open(278);service.poll();reply(snapshot())
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
+	var memorial:=snapshot();memorial.type=46
+	check(not Model.valid_snapshot(memorial,278),"specialized header requires body")
+	memorial.funerary={"unit_id":-1,"historical_figure_id":12,"room_id":-1,"room_type":-1,"introduction":"native introduction","name":"native name","room_introduction":"","room_name":"","deceased":"","notices":[]}
+	check(Model.valid_snapshot(memorial,278),"memorial body accepted")
+	for fault in 8:
+		var bad_body: Dictionary=memorial.duplicate(true)
+		match fault:
+			0:bad_body.type=10
+			1:bad_body.funerary.historical_figure_id=-1
+			2:bad_body.funerary.name=""
+			3:bad_body.funerary.unit_id=1
+			4:bad_body.funerary.room_id=1
+			5:bad_body.funerary.notices=[""]
+			6:bad_body.funerary.deceased="unexpected"
+			7:bad_body.funerary.owner_appearance={}
+		check(not Model.valid_snapshot(bad_body,278),"malformed memorial body rejected "+str(fault))
+	var coffin: Dictionary=memorial.duplicate(true);coffin.type=3
+	coffin.funerary.historical_figure_id=-1;coffin.funerary.introduction="";coffin.funerary.name=""
+	coffin.funerary.notices=["native roomless notice"]
+	check(Model.valid_snapshot(coffin,278),"roomless coffin accepted")
+	coffin.funerary.room_id=2;coffin.funerary.room_type=97;coffin.funerary.room_name="native tomb";coffin.funerary.room_introduction="native membership"
+	check(not Model.valid_snapshot(coffin,278),"roomless notice cannot accompany membership")
+	coffin.funerary.notices=[]
+	check(Model.valid_snapshot(coffin,278),"unassigned tomb membership accepted")
 	for kind in [0,1,2,5,8,10,11,12,13,14,15,51,52,54]:
 		var supported:=snapshot();supported.type=kind
 		check(Model.valid_snapshot(supported,278),"native header type "+str(kind))

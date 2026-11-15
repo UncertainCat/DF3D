@@ -161,6 +161,21 @@ local ok,err=xpcall(function()
     assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==target.id,'Funerary capture selected another entity')
     local row=result.completed_buildings[#result.completed_buildings]
     row.funeral={zones={},items={},links={}}
+    if kind==3 and os.getenv('DF3D_FUNERARY_HOVER')=='1'then
+     local main=df.global.game.main_interface
+     df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+     g.precise_mouse_x=748;g.precise_mouse_y=562;g.mouse_x=93;g.mouse_y=46
+     gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+     assert(main.current_hover==322 and main.hover_instructions_on,'Native burial indicator tooltip missing')
+     local text={}
+     for y=0,17 do local line={};for x=g.dimx-24,g.dimx-1 do
+      local pen=dfhack.screen.readTile(x,y);line[#line+1]=pen.ch>=32 and pen.ch<=255 and string.char(pen.ch)or' '
+     end;text[#text+1]=dfhack.df2utf(table.concat(line)):gsub('%s+$','')end
+     row.funeral.burial_hover={instruction=main.current_hover,lines=text,mouse={748,562}}
+     shot('funerary-burial-hover')
+     g.precise_mouse_x=300;g.precise_mouse_y=400;g.mouse_x=37;g.mouse_y=33
+     gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+    end
     if os.getenv('DF3D_FUNERARY_PROVIDER')=='1'then
      local text,code=dfhack.run_command_silent('df3d','funerary-body-probe',tostring(target.id))
      assert(code==0,text)
@@ -200,6 +215,20 @@ local ok,err=xpcall(function()
         assert(label=='unassigned' or #value.notices>0,'Missing coffin notice')
         row.funeral.variants[#row.funeral.variants+1]={label=label,provider=value,lines=text_lines}
         shot('funerary-'..label)
+        if os.getenv('DF3D_FUNERARY_VARIANT_RUNTIME')=='1'then
+         local file=assert(io.open(out..'/furniture-expected.json','w'))
+         file:write(json.encode({buildings={{id=target.id,type=kind,reference='workshop-funerary-'..label,body=value}}}));file:close()
+         os.remove(out..'/ack-workshop-wire');os.remove(out..'/workshop-wire-result.json')
+         capture('workshop-wire')
+         file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
+         assert(receipt.success,'Funerary variant viewer failed: '..label)
+         row.funeral.variants[#row.funeral.variants].viewer=receipt
+         for _,suffix in ipairs{'stdout.log','stderr.log','result.json'}do
+          local input=assert(io.open(out..'/workshop-wire'..(suffix=='result.json' and '-' or '.')..suffix,'r'))
+          local output=assert(io.open(out..'/funerary-'..label..'.'..suffix,'w'));output:write(input:read('*a'));output:close();input:close()
+         end
+         file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
+        end
        end
       end,debug.traceback)
       restore_relations();tomb.assigned_unit_id=owner;tomb.owner_unit_cached_index=cached;view:render(dfhack.getTickCount())
@@ -281,6 +310,7 @@ local ok,err=xpcall(function()
   if os.getenv('DF3D_FURNITURE_RUNTIME')=='1'then
    local file=assert(io.open(out..'/furniture-expected.json','w'));file:write(json.encode({buildings=result.completed_buildings}));file:close()
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   os.remove(out..'/ack-workshop-wire');os.remove(out..'/workshop-wire-result.json')
    capture('workshop-wire')
    file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
    assert(receipt.success,'Furniture viewer workflow failed');result.furniture_viewer=receipt

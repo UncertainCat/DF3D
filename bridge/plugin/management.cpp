@@ -79,6 +79,7 @@
 #include "door_native.h"
 #include "pending_building_native.h"
 #include "building_item_native.h"
+#include "funerary_native.h"
 #include "creature_overview_native.h"
 #include "creature_office_native.h"
 #include "creature_labor_native.h"
@@ -3443,7 +3444,7 @@ df::building_actual* contentsBuilding(int32_t id,bool editing=false) {
   auto* building=virtual_cast<df::building_actual>(df::building::find(id));
   if(!building)return nullptr;
   const auto type=building->getType();
-  if(!df3d_production::plainFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
+  if(!df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
      (editing || (type!=df::building_type::Workshop && type!=df::building_type::Furnace)) &&
      !df3d_production::observePendingBuilding(building))return nullptr;
   auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
@@ -4198,16 +4199,24 @@ void run(color_ostream& out) {
         auto* building=df::building::find(q->building_id());
         if(!building)return nullptr;
         const auto type=building->getType();
-        if(!df3d_production::plainFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return nullptr;
+        if(!df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return nullptr;
         auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
         return tile && !tile->bits.hidden?building:nullptr;
       };
       const auto observe=[&]{return df3d_production::observeBuildingHeader(target());};
-      const auto convert=[](const df3d_production::BuildingHeaderObservation& f) {
-        return BuildingHeaderSnapshot{f.id,f.type,f.stage,f.maxStage,f.revision,DF2UTF(f.customName),DF2UTF(f.nativeName),DF2UTF(f.headerName),f.removing,f.suspended,f.hasWorker,int8_t(f.forbidden),df3d_tasks::destinationArtwork(df::building::find(f.id))};
+      const auto convert=[](const df3d_production::BuildingHeaderObservation& f)->std::optional<BuildingHeaderSnapshot> {
+        BuildingHeaderSnapshot result{f.id,f.type,f.stage,f.maxStage,f.revision,DF2UTF(f.customName),DF2UTF(f.nativeName),DF2UTF(f.headerName),f.removing,f.suspended,f.hasWorker,int8_t(f.forbidden),df3d_tasks::destinationArtwork(df::building::find(f.id))};
+        if(f.type==3 || f.type==46) {
+          const auto body=df3d_production::funeraryBody(df::building::find(f.id));if(!body)return std::nullopt;
+          auto& v=result.funerary.emplace();v.unitId=body->unitId;v.historicalFigureId=body->historicalFigureId;
+          v.roomId=body->roomId;v.roomType=body->roomType;v.introduction=DF2UTF(body->introduction);v.name=DF2UTF(body->name);
+          v.roomIntroduction=DF2UTF(body->roomIntroduction);v.roomName=DF2UTF(body->roomName);v.deceased=DF2UTF(body->deceased);
+          for(const auto& text:body->notices)v.notices.push_back(DF2UTF(text));v.ownerAppearance=body->ownerAppearance;
+        }
+        return result;
       };
       const auto before=observe();
-      if(before && !editing){response.snapshot=convert(*before);status=m::ManagementStatus::Ok;}
+      if(before && !editing){response.snapshot=convert(*before);if(response.snapshot)status=m::ManagementStatus::Ok;}
       else if(before) {
         using A=df3d_production::BuildingHeaderOperation;using O=df3d_production::BuildingHeaderOutcome;
         const bool rename=q->farm_operation()==m::FarmOperation::Rename;
@@ -4223,7 +4232,7 @@ void run(color_ostream& out) {
           mutated=result.mutated;
           if(result.outcome==O::Completed) {
             response.outcome=m::FarmEditOutcome::Unknown;response.snapshot=convert(*result.receipt);
-            response.operation=q->farm_operation();response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;
+            if(response.snapshot){response.operation=q->farm_operation();response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;}
           } else if(result.outcome==O::Stale)response.outcome=m::FarmEditOutcome::Stale;
           else if(result.outcome==O::Unknown)response.outcome=m::FarmEditOutcome::Unknown;
         }

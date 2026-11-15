@@ -19,6 +19,7 @@ var page:=6
 var cell_first:=0
 var input_allowed: Callable
 var inspect_removing:=false
+var building_type: int=-1
 
 func configure(source,model,help=null) -> void:
 	hover_help=help
@@ -90,7 +91,7 @@ func help_at(point: Vector2) -> String:
 		if not control_rect(index,control).has_point(point) or not eligible(row,control):continue
 		if control==0:
 			if row.in_job:return "task"
-			if row.in_building:return "permanent" if row.role==2 else "other"
+			if row.in_building:return "permanent" if row.role==2 else "resting" if building_type==3 else "other"
 			return ""
 		return ["view","forbid","dump","melt","visibility"][control-1]
 	return ""
@@ -135,7 +136,9 @@ func _draw() -> void:
 		var name: String=row.name
 		if name.length()>=34+controls_offset()/8-reserved:name=name.left(30+controls_offset()/8-reserved)+"..."
 		if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),top+Vector2(56,24),name,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
-		var role: String="BUILDING_ITEM_TASK" if row.in_job else ("BUILDING_ITEM_INCORPORATED" if row.role==2 else "BUILDING_ITEM_OTHER") if row.in_building else ""
+		# Native19db25..19dcb6 selects the temporary-content indicator by
+		# building type after task/PERM precedence; Coffin3 uses DEAD.
+		var role: String="BUILDING_ITEM_TASK" if row.in_job else ("BUILDING_ITEM_INCORPORATED" if row.role==2 else "BUILDING_ITEM_DEAD" if building_type==3 else "BUILDING_ITEM_OTHER") if row.in_building else ""
 		for control in 6:
 			if not eligible(row,control):continue
 			var token: String=role if control==0 else "STOCKS_VIEW_ITEM" if control==1 else ART[control-2]+("_ACTIVE" if row[FLAGS[control-2]] else "")

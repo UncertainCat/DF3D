@@ -26,7 +26,7 @@ func chest_ready() -> bool:
 			return check(scene._ui.host.active==owner and owner.panel.visible,"Chest does not own active panel")
 		if owner.state.phase in [owner.state.Phase.Rejected,owner.state.Phase.Stale,owner.state.Phase.Unknown,owner.state.Phase.Unavailable] or owner.contents.phase in [owner.contents.Phase.Rejected,owner.contents.Phase.Stale,owner.contents.Phase.Unknown,owner.contents.Phase.Unavailable]:break
 		await create_timer(0.01).timeout
-	return check(false,"Chest header and contents did not both reach Ready")
+	return check(false,"Chest header and contents did not both reach Ready: header="+str(owner.state.phase)+" contents="+str(owner.contents.phase)+" transport="+world.last_error()+" receipt="+JSON.stringify(world.poll_management().get("production",{})))
 func drain() -> void:
 	var deadline:=Time.get_ticks_msec()+10000
 	while Time.get_ticks_msec()<deadline:

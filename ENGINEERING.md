@@ -9816,7 +9816,7 @@ multiple-room case temporarily adds an existing barracks to the coffin's relatio
 list for paused renderer observation, not gameplay membership validation.
 040317 stopped before variants because the fortress has only one Tomb and is
 not acceptance. The occupied sample yields13 portrait layers; their rendered
-parity remains pending with wire/UI work. Owner death text follows native1952fd's
+parity is qualified by the runtime reference below. Owner death text follows native1952fd's
 flags1 mask; name clipping belongs to presentation. Source saves are unchanged,
 DF41876 exits unsaved, capped30FPS with sampled GPU49C. Bridge build and core19
 pass. funerary_reference.card_reference retains outputs and screenshot hashes.
@@ -9829,7 +9829,7 @@ identities, missing strings/notices, oversized text and owner/artwork mismatches
 Rebuild bridge/client together: Local\\df3d_management_v224 isolates223.
 Old recordings have no funerary body; do not synthesize one during migration.
 This contract change alone does not expose either specialized panel. Runtime
-provider publication and rendered/lifecycle acceptance remain pending.
+publication and the qualified workflows are described below; public access remains gated.
 
 Protocol224 core/client, extension and MSVC bridge builds pass; all19 CTests
 pass including funerary round-trip/malformed-body checks. Protected041921
@@ -9840,6 +9840,37 @@ are unchanged and owned DF14040 exits unsaved; graphical processes are capped
 30FPS, sampled GPU49C. Only documented Godot startup/shutdown diagnostics occur
 (passed_with_known_issues). funerary_reference.protocol224_reference records
 the evidence. This is existing-panel regression, not funerary-body acceptance.
+
+Protected044927 on2026-11-15 qualifies the staged coffin/slab controllers on
+protocol224. Fifteen full panels match native exactly: six action states each
+for Coffin220 and Slab280, plus unassigned, roomless and multiple-room coffin
+bodies. The bridge publishes the owned native provider through the header;
+malformed or missing specialized bodies are rejected. Rename/restore,
+Forbid/restore, Remove/Cancel, component View/holder return and Escape pass.
+Native final name/jobs/component flags are restored. The three diagnostic
+variants restore owner/cache/relation inputs; they do not establish arbitrary
+room membership gameplay. Owner artwork matches with its native pixel offset.
+Coffin introduction text inherits the last header warning color when forbidden;
+slab text resets to white. Contents indicator dispatch19db25..19dcb6 uses
+building type after task/PERM precedence, so temporary coffin contents use
+BUILDING_ITEM_DEAD. Hover instruction322 is “This item is resting” / “within the
+building.” Actual visible-icon hover verifies the shared tooltip owner and copy.
+
+All owned graphical processes exit, source saves remain unchanged, and both
+DF and Godot are capped30FPS (sampled GPU54C). Only the documented separate-thread,
+finalize and two-ObjectDB diagnostics occur: passed_with_known_issues. Core19
+passes. funerary_reference.runtime_reference preserves captures, receipts,
+per-variant logs and hashes. Prior044059/044315 fail only the forbidden-caption
+comparison.044500/044636 reused capture acknowledgements and stale receipts;
+they do not qualify the combined workflow. The corrected harness removes old
+acknowledgements and receipts before each viewer launch, retains separate logs,
+and requires all fifteen physical captures to match.
+
+Public map access remains gated. Remaining funerary work includes responsive
+layout/long captions, empty and unnamed slab bodies, removal-time item editing,
+worker-owned demolition, full lifecycle checks and normal map entry. Existing
+native portrait/Tomb-icon click probes retain the coffin selection; no new
+navigation is inferred.
 
 
 Protected native023324 and023607 on2026-11-15 qualify ordinary furniture

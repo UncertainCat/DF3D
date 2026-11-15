@@ -47,7 +47,7 @@ func _read() -> void:
 	_send({"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":building_id})
 
 func begin_name_entry() -> bool:
-	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("type",-1) not in [0,1,2,5,8,10,11,12,13,14,15,51,52,54] or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
+	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("type",-1) not in [0,1,2,3,5,8,10,11,12,13,14,15,46,51,52,54] or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
 	var owner:=generation
 	var owned=load("res://scripts/farm_rename_session.gd").new()
 	service.add_child(owned);owned.configure(service,snapshot,true)
@@ -81,7 +81,7 @@ func request_removal() -> void:_edit(C.FarmOperation.Remove,{})
 func cancel_removal() -> void:_edit(C.FarmOperation.CancelRemoval,{})
 
 func _edit(operation: int,fields: Dictionary) -> void:
-	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in [0,1,2,5,8,10,11,12,13,14,15,51,52,54] or snapshot.stage!=snapshot.max_stage:return
+	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in [0,1,2,3,5,8,10,11,12,13,14,15,46,51,52,54] or snapshot.stage!=snapshot.max_stage:return
 	if snapshot.removing!=(operation==C.FarmOperation.CancelRemoval):return
 	var intent={"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":building_id,
 		"expected_revision":snapshot.revision,"farm_operation":operation}
@@ -100,7 +100,7 @@ func _fail(next: Phase) -> void:
 static func valid_snapshot(value: Dictionary,id: int) -> bool:
 	for field in ["id","type","revision","stage","max_stage"]:
 		if typeof(value.get(field))!=TYPE_INT:return false
-	if value.id!=id or id<0 or id>2147483647 or value.type not in [0,1,2,5,8,10,11,12,13,14,15,51,52,54] or value.revision<=0 or value.stage<0 or value.max_stage<value.stage or value.max_stage>2147483647:return false
+	if value.id!=id or id<0 or id>2147483647 or value.type not in [0,1,2,3,5,8,10,11,12,13,14,15,46,51,52,54] or value.revision<=0 or value.stage<0 or value.max_stage<value.stage or value.max_stage>2147483647:return false
 	for field in ["custom_name","native_name","header_name"]:
 		if typeof(value.get(field))!=TYPE_STRING:return false
 		var bytes: PackedByteArray=value[field].to_utf8_buffer()
@@ -108,7 +108,35 @@ static func valid_snapshot(value: Dictionary,id: int) -> bool:
 	for field in ["removing","suspended","has_worker","forbidden"]:
 		if typeof(value.get(field))!=TYPE_BOOL:return false
 	if value.has("appearance") and not preload("res://scripts/item_sheet_state.gd")._valid_recipe(value.appearance):return false
+	if not valid_funerary(value):return false
 	return value.removing or (not value.suspended and not value.has_worker)
+
+static func valid_funerary(value: Dictionary) -> bool:
+	if value.type not in [3,46]:return not value.has("funerary")
+	if typeof(value.get("funerary"))!=TYPE_DICTIONARY:return false
+	var body: Dictionary=value.funerary
+	for field in ["unit_id","historical_figure_id","room_id","room_type"]:
+		if typeof(body.get(field))!=TYPE_INT or body[field]<-1 or body[field]>2147483647:return false
+	for field in ["introduction","name","room_introduction","room_name","deceased"]:
+		if typeof(body.get(field))!=TYPE_STRING:return false
+		var bytes: PackedByteArray=body[field].to_utf8_buffer()
+		if bytes.size()>1536 or bytes.has(0):return false
+	if typeof(body.get("notices"))!=TYPE_ARRAY or body.notices.size()>3:return false
+	for notice in body.notices:
+		if typeof(notice)!=TYPE_STRING or notice.is_empty():return false
+		var bytes: PackedByteArray=notice.to_utf8_buffer()
+		if bytes.size()>1536 or bytes.has(0):return false
+	var named: bool=not body.name.is_empty()
+	var owner: bool=body.unit_id>=0
+	var room: bool=body.room_id>=0
+	if named!=not body.introduction.is_empty():return false
+	if room!=(body.room_type==97) or (not room and body.room_type!=-1):return false
+	if room!=not body.room_name.is_empty() or room!=not body.room_introduction.is_empty():return false
+	if owner!=body.has("owner_appearance") or (not owner and not body.deceased.is_empty()):return false
+	if owner and not preload("res://scripts/item_sheet_state.gd")._valid_recipe(body.owner_appearance):return false
+	if value.type==3:
+		return body.historical_figure_id==-1 and named==owner and (not owner or room) and (body.notices.is_empty() or (not named and not room))
+	return not owner and not room and body.notices.is_empty() and named==(body.historical_figure_id>=0)
 
 func _receive(result: Dictionary,sent: Dictionary) -> void:
 	ticket=0

@@ -133,6 +133,55 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ if os.getenv('DF3D_BASIC_BUILDING_HEADER')=='1' then
+  local targets={}
+  for _,b in ipairs(df.global.world.buildings.all)do
+   local d=dfhack.maps.getTileFlags{x=b.centerx,y=b.centery,z=b.z}
+   if d and not d.hidden then
+    if not targets.door and df.building_doorst:is_instance(b) and b:getBuildStage()==b:getMaxBuildStage()then targets.door=b end
+    if not targets.pending and b:getBuildStage()<b:getMaxBuildStage()then targets.pending=b end
+   end
+  end
+  assert(targets.door,'Basic building reference needs a completed door')
+  result.basic_building_reference={}
+  for _,name in ipairs{'door','pending'}do local b=targets[name];if b then
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+   select_map(b)
+   if sheet.active_sheet~=df.view_sheet_type.BUILDING or sheet.active_id~=b.id then
+    local index;for i,kind in ipairs(sheet.tab)do if kind==df.view_sheet_type.BUILDING and sheet.tab_id[i]==b.id then index=i;break end end
+    assert(index,'Building tab missing')
+    g.precise_mouse_x=920;g.precise_mouse_y=70+index*36;g.mouse_x=115;g.mouse_y=(g.precise_mouse_y-4)//12
+    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   end
+   assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==b.id,'Building reference selection differs')
+   local jobs={};for _,job in ipairs(b.jobs)do jobs[#jobs+1]={id=job.id,type=df.job_type[job.job_type],flags=job.flags.whole}end
+   result.basic_building_reference[name]={id=b.id,type=df.building_type[b:getType()],tile={b.centerx,b.centery,b.z},stage=b:getBuildStage(),max_stage=b:getMaxBuildStage(),jobs=jobs,lines=lines()}
+   if df.building_doorst:is_instance(b)then result.basic_building_reference[name].door_flags=b.door_flags.whole end
+   shot('basic-building-'..name)
+   if name=='door' then
+    local before=b.door_flags.whole;local effects={}
+    for _,step in ipairs{{'lock',852,154},{'lock-again',852,154},{'passable',876,154}}do
+     g.precise_mouse_x=step[2];g.precise_mouse_y=step[3];g.mouse_x=step[2]//8;g.mouse_y=(step[3]-4)//12
+     df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+     gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+     effects[#effects+1]={action=step[1],flags=b.door_flags.whole,lines=lines()};shot('basic-building-door-'..step[1])
+    end
+    result.basic_building_reference.door.effects=effects
+    assert(b.door_flags.whole==before,'Door fixture did not restore original flags')
+   end
+   if name=='pending' then
+    local before=b.jobs[0].flags.whole;local effects={}
+    for _,label in ipairs{'Resume construction','Suspend construction'}do
+     assert(click_label(label),'Pending construction control missing: '..label)
+     effects[#effects+1]={action=label,flags=b.jobs[0].flags.whole,lines=lines()};shot('basic-building-pending-'..#effects)
+    end
+    result.basic_building_reference.pending.effects=effects
+    assert(b.jobs[0].flags.whole==before,'Pending fixture did not restore suspension')
+   end
+  end end
+  shot('basic-building-final')
+  return
+ end
  if os.getenv('DF3D_TILE_SELECTION')=='1'then
   local function ids(vector)local values={};for _,id in ipairs(vector)do values[#values+1]=id end;return values end
   local function observe()

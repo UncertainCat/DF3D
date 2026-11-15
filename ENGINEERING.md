@@ -9714,6 +9714,28 @@ buildings are rejected by the staged destination. These paths do not establish
 native building-sheet coverage. The next routing work must supply the missing
 building controls and pending-construction destination before promotion.
 
+Basic building discovery: protected203229 and203340 on2026-11-14 capture
+completed Door16 and unfinished Statue965. The door has native Passable text,
+Forbid/Passable controls, rename/removal, and the existing component-item area.
+The statue shows Construction nearly done., Construction suspended., Resume
+construction and Cancel construction, with its component item below. Screenshots
+were inspected. Native lock, repeated lock and passable clicks yield door flags
+17/17/16 from16; resume/suspend yields job flags0/2 from2. Both initial flag
+values are restored. DF39032 exits unsaved with source preservation, graphics
+capped30FPS. Evidence: selection_reference.basic_building_reference.
+
+The audited building-type dispatch maps Door8 to inline1af741..1af807.
+It rejects flags0x2c (invader/intruder/mechanism control), allows forbidding only
+when closed(bit0x10), and treats repeated desired state as a no-op. Actual changes
+call virtual getImpassableOccupancy/getPassableOccupancy, then native143c9a0 with
+the building coordinates, and request pathfinding reindex. A direct flag-only
+bridge edit would omit these effects. These additional branches and occupancy
+effects have static evidence only so far. Existing building-header transactions
+are restricted to completed FarmPlot/Box/Workshop/Furnace; they do not authorize
+Door actions or unfinished construction. Construction cancellation and active
+worker behavior remain unqualified. No new product route is exposed by this
+native reference.
+
 Vermin selection discovery: protected200627 on2026-11-14 selects an existing
 revealed tile with two lizard castes938/939. Native and provider agree on both
 identities, tab order and default938. The native screenshot was inspected:

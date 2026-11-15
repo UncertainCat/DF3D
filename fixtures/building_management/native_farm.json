@@ -12809,6 +12809,214 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "basic_building_reference": {
+      "door": {
+        "door_flags": 16,
+        "effects": [
+          {
+            "action": "lock",
+            "flags": 17,
+            "lines": [
+              {
+                "text": "                                                            Dolomite Door",
+                "y": 6
+              },
+              {
+                "text": "                                                      Forbidden",
+                "y": 11
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              }
+            ]
+          },
+          {
+            "action": "lock-again",
+            "flags": 17,
+            "lines": [
+              {
+                "text": "                                                            Dolomite Door",
+                "y": 6
+              },
+              {
+                "text": "                                                      Forbidden",
+                "y": 11
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              }
+            ]
+          },
+          {
+            "action": "passable",
+            "flags": 16,
+            "lines": [
+              {
+                "text": "                                                            Dolomite Door",
+                "y": 6
+              },
+              {
+                "text": "                                                      Passable",
+                "y": 11
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              }
+            ]
+          }
+        ],
+        "id": 16,
+        "jobs": [],
+        "lines": [
+          {
+            "text": "                                                            Dolomite Door",
+            "y": 6
+          },
+          {
+            "text": "                                                      Passable",
+            "y": 11
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "                                                            *dolomite door*",
+            "y": 43
+          }
+        ],
+        "max_stage": 1,
+        "stage": 1,
+        "tile": [
+          121,
+          99,
+          165
+        ],
+        "type": "Door"
+      },
+      "pending": {
+        "effects": [
+          {
+            "action": "Resume construction",
+            "flags": 0,
+            "lines": [
+              {
+                "text": "                                                            Platinum Statue",
+                "y": 6
+              },
+              {
+                "text": "                                                      Construction nearly done.",
+                "y": 11
+              },
+              {
+                "text": "                                                      Construction inactive.",
+                "y": 13
+              },
+              {
+                "text": "                                                        Suspend construction                                                        Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "                                                        Cancel construction",
+                "y": 19
+              }
+            ]
+          },
+          {
+            "action": "Suspend construction",
+            "flags": 2,
+            "lines": [
+              {
+                "text": "                                                            Platinum Statue",
+                "y": 6
+              },
+              {
+                "text": "                                                      Construction nearly done.",
+                "y": 11
+              },
+              {
+                "text": "                                                      Construction suspended.",
+                "y": 13
+              },
+              {
+                "text": "                                                        Resume construction                                                         Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "                                                        Cancel construction",
+                "y": 19
+              }
+            ]
+          }
+        ],
+        "id": 965,
+        "jobs": [
+          {
+            "flags": 2,
+            "id": 68196,
+            "type": "ConstructBuilding"
+          }
+        ],
+        "lines": [
+          {
+            "text": "                                                            Platinum Statue",
+            "y": 6
+          },
+          {
+            "text": "                                                      Construction nearly done.",
+            "y": 11
+          },
+          {
+            "text": "                                                      Construction suspended.",
+            "y": 13
+          },
+          {
+            "text": "                                                        Resume construction                                                         Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "                                                        Cancel construction",
+            "y": 19
+          },
+          {
+            "text": "                                                            -platinum statue of Stettad-",
+            "y": 43
+          }
+        ],
+        "max_stage": 1,
+        "stage": 0,
+        "tile": [
+          130,
+          96,
+          165
+        ],
+        "type": "Statue"
+      },
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-203340",
+      "status": "passed",
+      "scope": "Native pointer-click reference only. Closed Door16 forbid/passable controls and suspended construction Statue965 resume/suspend. No runtime edit/provider acceptance.",
+      "owned_df_pid": 39032,
+      "source_save_preserved": true,
+      "door_inline": "1af741..1af807",
+      "door_occupancy_leaf": "143c9a0",
+      "omissions": [
+        "Open or mechanism/invader-controlled door behavior is static-audit only.",
+        "Construction cancellation and worker-owned construction are unqualified."
+      ],
+      "screenshots": {
+        "workshop-basic-building-door-lock-again.png": "ba060b636344e52c2f53ee3064c637e49feb127eccddb7484b39b0a4787056d0",
+        "workshop-basic-building-door-lock.png": "ba060b636344e52c2f53ee3064c637e49feb127eccddb7484b39b0a4787056d0",
+        "workshop-basic-building-door-passable.png": "5c17621f87daf500c66647eb3bf9416193542ee537887b91ad280b5d56b4ea76",
+        "workshop-basic-building-door.png": "3de2a552ae6ece8fcbf28833e8c06ebecbf70224f393b3ab3b8c332bf9825383",
+        "workshop-basic-building-final.png": "534d73a81c98a01e25693cb6e9a5efc3bb369a3838f0474594ceafe05945e9e6",
+        "workshop-basic-building-pending-1.png": "a2ed95a12c839f7792e0b299ad10c350737437a5fc601556dd1a468f81788bbe",
+        "workshop-basic-building-pending-2.png": "534d73a81c98a01e25693cb6e9a5efc3bb369a3838f0474594ceafe05945e9e6",
+        "workshop-basic-building-pending.png": "584b5e8e3086ac4cb5c76305330167a91449e1fdf6e7ddf9a76a8b82af4a52d5"
+      }
+    },
     "vermin_selection_reference": {
       "fallback_native_reference": {
         "lane": "build/stockpile-storage-native-farm-discovery-20261114-202039",

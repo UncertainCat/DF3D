@@ -106,6 +106,26 @@ fields. Viewer transport and local per-item expansion retained across category/
 search changes remain unfinished, as do nested/empty-container, rendered and
 main-scene acceptance.
 
+The owned goods reader accepts an optional container parent/offset/limit bound
+to a nonzero expected source revision and a selected category. It rejects stale
+or missing source identity, parents outside the native selected membership,
+partial page parameters and invalid ranges. Selected groups also retain a
+parallel native direct-child count for each member, so future viewer expansion
+can calculate list height without fetching every child's description. Source
+revisions include direct child identity/order, semantic flags and nested counts;
+weight-cache validity remains excluded for both parent and child items. This
+detects equal-value child replacement/reordering that parent valuation alone
+cannot identify. These fields are internal until the protocol migration.
+
+Protected164114 validates that source binding through the owned reader. Swapping
+two direct containment references changes the revision, rejects the saved page
+receipt and produces the new child order; restoring the references restores the
+original revision. Missing/stale revisions reject, and group counts agree with
+the requested page total. Existing caption, pagination, bounds and goods/selection
+checks also pass. Owned DF47616 closes unsaved with source preservation, native
+30FPS and sampled GPU49C. Bridge build and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_goods_container_source_reference`.
+
 Protected163641 verifies ten visible child captions against native screen text,
 plus IDs/types/counts, four paginated reads, an empty end page and rejection of
 zero/oversized pages, an out-of-range offset and a child outside the depot master

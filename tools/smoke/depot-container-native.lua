@@ -77,6 +77,7 @@ if os.getenv('DF3D_DEPOT_CONTAINER_PROVIDER')=='1' then
   assert(code~=0,'Malformed/foreign contents request accepted')
  end
  local all=probe(id,0,64,true)
+ assert(all.stale_rejected and type(all.revision)=='string')
  assert(all.total==#initial_children and #all.items==#initial_children and all.appraisal==0)
  view:render(dfhack.getTickCount())
  for i,row in ipairs(all.items)do
@@ -98,7 +99,21 @@ if os.getenv('DF3D_DEPOT_CONTAINER_PROVIDER')=='1' then
  assert(#probe(id,all.total,3,true).items==0)
  probe(id,all.total+1,3,false);probe(id,0,0,false);probe(id,0,65,false)
  probe(initial_children[1].id,0,3,false)
- result.provider={matched=all.total,pages=math.ceil(all.total/3),bounds_rejected=true,child_as_parent_rejected=true,items=all.items}
+ local refs=df.item.find(id).general_refs;local indices={}
+ for i,ref in ipairs(refs)do if ref:getType()==df.general_ref_type.CONTAINS_ITEM and ref:getItem()then indices[#indices+1]=i end end
+ assert(#indices>=2)
+ local first,second=indices[1],indices[2];local a,c=refs[first],refs[second]
+ local checked,err=xpcall(function()
+  refs[first]=c;refs[second]=a
+  local swapped=probe(id,0,64,true)
+  assert(swapped.revision~=all.revision and swapped.items[1].id==all.items[2].id and swapped.items[2].id==all.items[1].id)
+  local text,code=dfhack.run_command_silent('df3d','depot-container-probe',tostring(b.id),tostring(id),'0','64',all.revision)
+  assert(code~=0,'Old child ordering receipt accepted: '..text)
+ end,debug.traceback)
+ refs[first]=a;refs[second]=c
+ assert(checked,err)
+ assert(probe(id,0,64,true).revision==all.revision,'Restored contents changed revision')
+ result.provider={matched=all.total,pages=math.ceil(all.total/3),bounds_rejected=true,child_as_parent_rejected=true,revision_reorder_rejected=true,revision_restored=true,items=all.items}
 end
 click(500,4+(cell-menu.scroll_position_item+3)*12+12)
 sample('child-click')

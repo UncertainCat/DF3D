@@ -9,6 +9,8 @@ struct DepotGoodsRead {
     std::vector<DepotGoodsCategory> categories;
     std::vector<DepotSelectedGroup> groups;
     std::vector<DepotGoodsDetail> items;
+    int32_t containerId=-1,containerOffset=0;
+    std::optional<DepotContainerPage> container;
 };
 inline std::optional<uint64_t> depotGoodsRevision(int32_t depotId,const DepotGoods& goods) {
     uint64_t hash=UINT64_C(14695981039346656037);
@@ -18,7 +20,16 @@ inline std::optional<uint64_t> depotGoodsRevision(int32_t depotId,const DepotGoo
         // Independent inspection computes weight lazily. Cache validity is not
         // hauling authority; hashing it would invalidate a picker by drawing it.
         auto flags=item->flags;flags.bits.weight_computed=false;
-        add(uint32_t(row.id));add(uint32_t(row.distance));add(uint32_t(row.value));add(uint8_t(row.tag));add(row.prohibited);add(flags.whole);}
+        add(uint32_t(row.id));add(uint32_t(row.distance));add(uint32_t(row.value));add(uint8_t(row.tag));add(row.prohibited);add(flags.whole);
+        // Equal-value replacements/reordering can leave parent value unchanged.
+        // Bind pages to direct child identity/order and visible nested counts.
+        const auto contents=depotContainerIds(item);if(!contents)return {};add(contents->size());
+        for(auto id:*contents){auto* child=df::item::find(id);if(!child)return {};
+            auto childFlags=child->flags;childFlags.bits.weight_computed=false;
+            add(uint32_t(id));add(childFlags.whole);
+            const auto nested=depotContainerIds(child);if(!nested)return {};add(nested->size());
+        }
+    }
     add(goods.groups.size());
     for(const auto& group:goods.groups){add(uint16_t(group.type));add(uint16_t(group.subtype));add(uint16_t(group.subcat1));add(uint16_t(group.subcat2));add(uint32_t(group.amount));add(group.expanded);}
     hash&=uint64_t(INT64_MAX);return hash?hash:1;
@@ -28,8 +39,11 @@ inline std::optional<uint64_t> depotGoodsRevision(int32_t depotId,const DepotGoo
 // mutation authorization. A future commit must validate its own complete intent.
 inline std::optional<DepotGoodsRead> readDepotGoods(df::building* building,int16_t category,
     const std::string& query,bool distance,bool pending,bool exclude,const std::vector<int32_t>& ids,
-    uint64_t expectedRevision=0,const std::vector<DepotGoodsChange>& draft={},const std::vector<DepotGoodsChange>& sortDraft={}) {
+    uint64_t expectedRevision=0,const std::vector<DepotGoodsChange>& draft={},const std::vector<DepotGoodsChange>& sortDraft={},
+    int32_t containerId=-1,int32_t containerOffset=0,int32_t containerLimit=0) {
     if(!building || category<-1 || category>=93 || query.size()>512 || ids.size()>64 || (category==-1 && !ids.empty()))return {};
+    if(containerId<-1 || containerOffset<0 || containerLimit<0 || containerLimit>64 ||
+        (containerId==-1 ? (containerOffset!=0 || containerLimit!=0) : (!expectedRevision || category==-1 || containerLimit==0)))return {};
     auto* tile=DFHack::Maps::getTileDesignation(building->centerx,building->centery,building->z);
     if(!tile || tile->bits.hidden)return {};
     const auto available=depotFacts(building);if(!available || !available->goods)return {};
@@ -43,6 +57,12 @@ inline std::optional<DepotGoodsRead> readDepotGoods(df::building* building,int16
     for(auto type:*categories){auto caption=depotGroupCaption(type);if(!caption)return {};result.categories.push_back({type,std::move(*caption)});}
     if(category==-1)return result;
     auto selection=depotSelection(*goods,category,query,distance,pending,exclude,draft,sortDraft);if(!selection)return {};
+    if(containerId>=0){
+        if(std::find(selection->ids.begin(),selection->ids.end(),containerId)==selection->ids.end())return {};
+        result.container=depotContainerPage(df::item::find(containerId),containerOffset,containerLimit,*appraisal);
+        if(!result.container)return {};
+        result.containerId=containerId;result.containerOffset=containerOffset;
+    }
     std::vector<int32_t> seen;
     for(auto id:ids){
         if(id<0 || std::find(seen.begin(),seen.end(),id)!=seen.end())return {};seen.push_back(id);

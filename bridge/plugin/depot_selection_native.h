@@ -96,7 +96,7 @@ inline std::optional<std::vector<int16_t>> depotCategories(const DepotGoods& goo
     result.erase(std::remove_if(result.begin(),result.end(),[&](int16_t type){return !(query.empty()?eligible[type]:matched[type]);}),result.end());
     return result;
 }
-struct DepotSelectedGroup {DepotGoodsGroup group;bool matches=false;uint32_t flags=0;std::string caption;std::vector<int32_t> ids;};
+struct DepotSelectedGroup {DepotGoodsGroup group;bool matches=false;uint32_t flags=0;std::string caption;std::vector<int32_t> ids,containerCounts;};
 struct DepotGoodsChange {int32_t id=-1;bool desired=false;};
 struct DepotSelection {std::vector<int32_t> ids;std::vector<int8_t> tags;std::vector<DepotSelectedGroup> groups;std::vector<std::string> itemCaptions;int32_t rowCells=0;};
 // Local checkbox intent only. Eligibility/membership stay native; this changes
@@ -258,7 +258,10 @@ inline std::optional<DepotSelection> depotSelection(const DepotGoods& goods,int1
         auto& group=result.groups.back();
         for(auto* row:owned.current_type_tgi)if(row->it->getSubtype()==owned.current_type_a_subtype[i] &&
             row->it->getMaterial()==owned.current_type_a_subcat1[i] &&
-            row->it->getMaterialIndex()==owned.current_type_a_subcat2[i])group.ids.push_back(row->it->id);
+            row->it->getMaterialIndex()==owned.current_type_a_subcat2[i]){
+                const auto contents=depotContainerIds(row->it);if(!contents)return {};
+                group.ids.push_back(row->it->id);group.containerCounts.push_back(int32_t(contents->size()));
+            }
     }
     return result;
 }

@@ -4944,15 +4944,26 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="depot-container-probe") {
-        if(parameters.size()!=5)return CR_WRONG_USAGE;
+        if(parameters.size()!=5 && parameters.size()!=6)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
         int32_t values[4]={-1,-1,-1,-1};
         for(size_t i=1;i<5;++i){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<0)return CR_WRONG_USAGE;}
         const auto goods=df3d_production::depotGoods(df::building::find(values[0]));if(!goods)return CR_FAILURE;
         if(std::none_of(goods->rows.begin(),goods->rows.end(),[&](const auto& row){return row.id==values[1];}))return CR_FAILURE;
-        const auto appraisal=df3d_production::depotAppraisal();if(!appraisal)return CR_FAILURE;
-        const auto page=df3d_production::depotContainerPage(df::item::find(values[1]),values[2],values[3],*appraisal);if(!page)return CR_FAILURE;
-        Json::Value output;output["total"]=page->total;output["appraisal"]=*appraisal;output["items"]=Json::arrayValue;
+        const auto revision=df3d_production::depotGoodsRevision(values[0],*goods);if(!revision)return CR_FAILURE;
+        uint64_t expected=*revision;
+        if(parameters.size()==6){const auto& raw=parameters[5];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),expected);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || !expected || expected>INT64_MAX)return CR_WRONG_USAGE;}
+        auto* parent=df::item::find(values[1]);if(!parent)return CR_FAILURE;
+        const auto read=df3d_production::readDepotGoods(df::building::find(values[0]),int16_t(parent->getType()),"",true,true,false,{},expected,{},{},values[1],values[2],values[3]);
+        if(!read || !read->container || read->containerId!=values[1] || read->containerOffset!=values[2])return CR_FAILURE;
+        if(df3d_production::readDepotGoods(df::building::find(values[0]),int16_t(parent->getType()),"",true,true,false,{},*revision==1?2:*revision-1,{},{},values[1],values[2],values[3]))return CR_FAILURE;
+        if(df3d_production::readDepotGoods(df::building::find(values[0]),int16_t(parent->getType()),"",true,true,false,{},0,{},{},values[1],values[2],values[3]))return CR_FAILURE;
+        const auto& page=read->container;
+        bool countMatched=false;
+        for(const auto& group:read->groups){if(group.ids.size()!=group.containerCounts.size())return CR_FAILURE;
+          for(size_t i=0;i<group.ids.size();++i)if(group.ids[i]==values[1])countMatched=group.containerCounts[i]==page->total;}
+        if(!countMatched)return CR_FAILURE;
+        Json::Value output;output["total"]=page->total;output["appraisal"]=read->appraisal;output["revision"]=std::to_string(*revision);output["stale_rejected"]=true;output["items"]=Json::arrayValue;
         for(const auto& row:page->items){Json::Value item;item["id"]=row.id;item["type"]=row.type;item["contained_count"]=row.containedCount;item["value"]=row.value;item["prohibited"]=row.prohibited;item["caption"]=DF2UTF(row.caption);item["value_caption"]=DF2UTF(row.valueCaption);output["items"].append(item);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }

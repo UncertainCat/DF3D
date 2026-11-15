@@ -9707,7 +9707,7 @@ the client, clearing on closure, wrong target kinds, invalid page references
 and simultaneous portrait/fallback rejection.
 
 Ordinary map selection remains gated for a broader reason than Vermin artwork:
-fortress_ui._selection_destination routes only completed farms, containers,
+fortress_ui._selection_destination routes completed farms, containers, doors,
 workshops and furnaces to their dedicated building controllers. Other building
 kinds still enter context_inspector's legacy title/removal branch; incomplete
 buildings are rejected by the staged destination. These paths do not establish
@@ -9740,7 +9740,7 @@ headless regression passes. Earlier205105/205217 failed because the extension
 required a farm season for door edits; neither is acceptance. The required-field
 dispatch now distinguishes door intents and bounds the desired state before
 narrowing it. Evidence: selection_reference.door_controls_transport_reference.
-Rendered controls and complete door-sheet integration remain pending.
+Rendered controls and complete door-sheet integration are qualified below.
 
 Native presentation210405 on2026-11-14 temporarily varies door flags in the
 paused, unsaved diagnostic clone. Open/closed doors retain Passable/Forbidden
@@ -9791,7 +9791,19 @@ authored unlock step. Source saves are preserved; DF29252 exits unsaved.
 `selection_reference.door_header_reference` retains the current composed evidence.
 Door is now an accepted target of existing header/contents requests; no wire
 layout changes are involved. The internal door controller is registered for
-holder/staged native-selection routing. Ordinary map routing remains unchanged.
+holder/native-selection routing. Completed doors now enter this route through
+ordinary map picking. Protected213543 on2026-11-14 projects Door16 into the
+actual main-scene viewport, verifies the building ray hit, and sends a pointer
+click through normal input. Escape before the selection reply retires that
+request; draining its late reply leaves the host empty. A second map click
+opens the sheet and repeats all eight native pixel comparisons and the
+lock/rename/removal/cancellation workflow. Owned DF1604 exits unsaved with
+source saves and preferences preserved. All19 core checks pass; the live run
+retains only the documented Godot rendering-thread/finalize/two-ObjectDB
+diagnostics. Serial30FPS GPU samples are60C,6–49% load. The earlier213356
+map-entry run also passed, before adding pending-read cancellation coverage.
+Other building kinds retain their existing map route; unfinished construction
+still needs its dedicated native controls.
 
 The native discovery captures
 completed Door16 and unfinished Statue965. The door has native Passable text,

@@ -297,10 +297,15 @@ func open_destination(destination: String) -> void:
 	panel.open_panel()
 
 func open_target(tile: Vector3i, kind: int, id: int) -> void:
-	if host.play_enabled: controller("inspector").open_target(tile,kind,id)
+	if not host.play_enabled:return
+	if kind==3:
+		var target: Dictionary=world.inspect_entity(kind,id)
+		if target.get("building_kind",0)==9 and target.get("complete",false):
+			open_tile_selection(tile);return
+	controller("inspector").open_target(tile,kind,id)
 
-# Staged native selection entry; normal map routing remains gated until the
-# remaining target kinds and composed live workflow are accepted.
+# Native selection entry. Completed doors use it from ordinary map picking;
+# remaining map targets retain their separate acceptance gate.
 func open_tile_selection(tile: Vector3i) -> void:
 	if tile_selection==null:
 		tile_selection=preload("res://scripts/tile_selection_panel.gd").new()
@@ -342,9 +347,16 @@ func inspect_report_speaker(unit_id:int) -> void:
 	open_target(target.tile,1,unit_id)
 
 func close_panel() -> void:
+	if tile_selection!=null:
+		var navigation=tile_selection.navigation
+		var selected=navigation.owner.get_ref() if navigation.owner!=null else null
+		navigation.close()
+		if is_instance_valid(selected) and host.active==selected:selected.close_panel()
 	if controllers.has("inspector"): controllers.inspector.close_panel()
 
 func is_open() -> bool:
+	if tile_selection!=null and tile_selection.navigation.owner!=null:
+		if tile_selection.navigation.owner.get_ref()==host.active and host.active!=null:return true
 	return controllers.has("inspector") and controllers.inspector.is_open()
 
 func focus_tile(tile: Vector3i) -> void:

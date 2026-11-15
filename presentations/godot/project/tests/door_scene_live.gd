@@ -15,7 +15,22 @@ func exercise(expected: Dictionary) -> void:
 	var id:=int(sample.id)
 	scene._ui.focus_tile(Vector3i(sample.tile[0],sample.tile[1],sample.tile[2]))
 	owner=scene._ui.controller("door")
-	if OS.get_environment("DF3D_DOOR_SELECTION_RUNTIME")=="1":
+	if OS.get_environment("DF3D_DOOR_MAP_RUNTIME")=="1":
+		var camera=scene.camera_rig.get_node("Camera3D")
+		var deadline:=Time.get_ticks_msec()+10000
+		var point:=Vector2.ZERO
+		var hit: Dictionary={}
+		while Time.get_ticks_msec()<deadline:
+			world.poll();await process_frame
+			point=camera.unproject_position(Vector3(sample.tile[0]+0.5,sample.tile[2]+0.5,sample.tile[1]+0.5))
+			hit=world.pick_building(camera.project_ray_origin(point),camera.project_ray_normal(point),world.get_top_z())
+			if hit.get("id",-1)==id:break
+		if not check(hit.get("id",-1)==id,"Door map ray did not hit the expected building"):return
+		await pointer(point)
+		key(KEY_ESCAPE);await drain()
+		if not check(scene._ui.host.active==null and scene._ui.tile_selection.navigation.state.ticket==0,"Escape retained a pending map selection"):return
+		await pointer(point)
+	elif OS.get_environment("DF3D_DOOR_SELECTION_RUNTIME")=="1":
 		var deadline:=Time.get_ticks_msec()+10000
 		while world.inspect_entity(3,id).is_empty() and Time.get_ticks_msec()<deadline:
 			world.poll();await create_timer(0.01).timeout

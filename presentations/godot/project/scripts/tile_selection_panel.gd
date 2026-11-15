@@ -105,13 +105,21 @@ func _process(_delta: float) -> void:
 	body.layout(panel.size.y);engraving.layout(panel.size.y);vermin.layout(panel.size.y);tabs.layout(panel.position);artwork.layout(view)
 
 func _input(event: InputEvent) -> void:
-	if not ui_host.allows_panel_input(self) or artwork.visible:return
+	# An initial map read has no detail owner yet. It must still retire on
+	# Back, so its late receipt cannot reopen a dismissed selection.
+	var pending: bool=play_enabled and not ui_host.overlay_blocked and ui_host.active==null and navigation.state.ticket!=0
+	if pending and event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
+		navigation.close();cancel_gesture();get_viewport().set_input_as_handled();return
+	if (not pending and not ui_host.allows_panel_input(self)) or artwork.visible:return
 	if event is InputEventMouseMotion and right_down:right_travel+=event.relative.length()
 	elif event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_RIGHT:
 		if event.pressed:right_down=true;right_travel=0
 		else:
 			var click:=right_down and right_travel<4;right_down=false
-			if click:close_panel();get_viewport().set_input_as_handled()
+			if click:
+				if pending:navigation.close()
+				else:close_panel()
+				get_viewport().set_input_as_handled()
 
 func _exit_tree() -> void:
 	artwork_state.dispose();navigation.dispose()

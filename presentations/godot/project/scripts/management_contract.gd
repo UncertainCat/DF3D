@@ -237,6 +237,7 @@ enum FarmOperation {
 	WorkerRemove = 11,
 	WorkerSpecialize = 12,
 	PumpManual = 13,
+	DepotMode = 14,
 }
 enum ManagementAction {
 	Catalog = 0,

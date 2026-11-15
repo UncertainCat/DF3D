@@ -1,10 +1,45 @@
+## Depot transport migration
+
+Management protocol231 adds an optional `DepotBodySnapshot` to completed building
+headers and the `DepotMode` intent. TradeDepot6 requires the body; other types
+must not carry it. It carries request flags, native goods/trade availability,
+awaiting item count, physically present worker ID, broker ID/name/activity/colors,
+accessibility and optional broker artwork. Absent broker facts must be empty with
+neutral colors and no artwork. Trade availability implies goods availability.
+Older recordings lack these facts and must not synthesize them.
+
+DepotMode is a building-header FarmEdit with a current nonzero revision and
+explicit item_value0 Broker,1 Anyone or2 no trader. Mixed item/worker intents and
+out-of-range modes reject. Only a completed TradeDepot header may be returned for
+an applied mode edit. This transport admission alone does not expose the depot
+panel or qualify production effects. Native provider references are below.
+Both peers and mailbox use231; rebuild bridge and viewer together. DF53.16 pins
+are unchanged.
+
+Protected130341 on2026-11-15 verifies protocol231 through five existing barrier
+header/contents reads, hatch access edits, stale/duplicate guards and removal/
+cancellation. All three DepotMode values reject on the queued hatch removal and
+leave its entire header unchanged. Runtime dispatch explicitly rejects unsupported
+operations before the existing CancelRemoval fallback. DepotMode remains unavailable
+until its dedicated guarded handler is connected. The Godot request decoder admits
+operation14 and limits item_value to2 only for DepotMode; other item settings retain
+their boolean limit. Headless depot_contract_test passes with the known rendering-
+thread notice. Owned DF45912 closes unsaved with source preservation, native30FPS,
+sampled GPU60C. The live headless client has only that same known notice.
+Evidence: `completed_sheet_discovery_reference.depot_contract_reference`.
+Initial125958/130153 runs exposed the old operation/value decoder bounds and are
+not acceptance. No depot body production or public depot controls are qualified
+by this contract-only compatibility check.
+Bridge, viewer extension and final root builds pass, as do all19 core CTest
+checks, including depot body decode/malformed-state and explicit-mode validation.
+
 ## Well status transport migration
 
 Management protocol230 adds `WellBodySnapshot` to completed building headers.
 Its `WellStatus` is Operational, NoBucket, BucketFull or Dry. Well18 requires
 this body; other building types must not carry it. Unknown enum values reject
 the snapshot. Older recordings have no well status and must not synthesize one.
-Both management defaults and the mailbox are230; rebuild bridge and viewer
+Well status was introduced in230; the current protocol is listed above. Rebuild bridge and viewer
 together. The DF53.16 compatibility pin is unchanged. Native provider evidence
 is recorded under Remaining completed-building native providers below.
 

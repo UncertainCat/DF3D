@@ -1284,12 +1284,15 @@ void publish() {
           b.CreateString(v.introduction),b.CreateString(v.name),b.CreateString(v.roomIntroduction),b.CreateString(v.roomName),
           b.CreateString(v.deceased),b.CreateVector(notices),encodeItemRecipe(v.ownerAppearance));
       }
+      flatbuffers::Offset<m::DepotBodySnapshot> depot;
+      if(f.depot){const auto& v=*f.depot;depot=m::CreateDepotBodySnapshot(b,v.requested,v.anyone,v.goodsAvailable,v.tradeAvailable,
+        v.awaitingItems,v.workerId,v.brokerId,b.CreateString(v.brokerName),b.CreateString(v.activity),v.foreground,v.background,v.bright,v.accessible,encodeItemRecipe(v.brokerAppearance));}
       flatbuffers::Offset<m::WellBodySnapshot> well;
       if(f.well)well=m::CreateWellBodySnapshot(b,f.well->status);
       flatbuffers::Offset<m::MachineryBodySnapshot> machinery;
       if(f.machinery){const auto& v=*f.machinery;machinery=m::CreateMachineryBodySnapshot(b,v.machineId,v.produced,v.required,v.status,v.stableFoundation,v.disengaged,v.pumpManual,v.pumpDirection);}
       snapshot=m::CreateBuildingHeaderSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,
-        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance),funerary,machinery,well);
+        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance),funerary,machinery,well,depot);
     }
     buildingHeader=m::CreateBuildingHeaderState(b,snapshot,state.outcome,state.operation,state.missingBuildingId);
   }
@@ -4291,6 +4294,11 @@ void run(color_ostream& out) {
     const auto* q=r->production();message.clear();status=m::ManagementStatus::Rejected;production={};
     auto& response=production.buildingHeader.emplace();const bool editing=r->action()==m::ManagementAction::FarmEdit;
     response.outcome=editing?m::FarmEditOutcome::Rejected:m::FarmEditOutcome::None;bool entered=false;
+    // Newly admitted wire operations must not fall through to CancelRemoval.
+    // DepotMode remains unavailable until its guarded runtime handler is installed.
+    if(editing && q->farm_operation()!=m::FarmOperation::Rename &&
+       q->farm_operation()!=m::FarmOperation::Remove && q->farm_operation()!=m::FarmOperation::CancelRemoval &&
+       q->farm_operation()!=m::FarmOperation::PumpManual){publish();return;}
     try {
       const auto target=[&]()->df::building* {
         auto* building=df::building::find(q->building_id());

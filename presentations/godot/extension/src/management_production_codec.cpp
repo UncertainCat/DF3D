@@ -286,6 +286,14 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
         body["pump_manual"]=v.pumpManual;body["pump_direction"]=v.pumpDirection;value["machinery"]=body;
       }
       if(f.well){Dictionary body;body["status"]=int(f.well->status);value["well"]=body;}
+      if(f.depot){const auto& v=*f.depot;Dictionary body;
+        body["requested"]=v.requested;body["anyone"]=v.anyone;body["goods_available"]=v.goodsAvailable;body["trade_available"]=v.tradeAvailable;
+        body["awaiting_items"]=int64_t(v.awaitingItems);body["worker_id"]=v.workerId;body["broker_id"]=v.brokerId;
+        body["broker_name"]=String::utf8(v.brokerName.c_str());body["activity"]=String::utf8(v.activity.c_str());body["foreground"]=v.foreground;body["background"]=v.background;
+        body["bright"]=v.bright;body["accessible"]=v.accessible;
+        if(v.brokerAppearance)body["broker_appearance"]=itemRecipeDictionary(*v.brokerAppearance);
+        value["depot"]=body;
+      }
       headerState["snapshot"]=value;
     }
     prod["building_header"]=headerState;
@@ -751,8 +759,9 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.generalOrderValue=int16_t(n("general_order_value",-1,-1,99));
   value.workshopWorkers=data.get("workshop_workers",false);
   value.workerId=int32_t(n("worker_id",-1,-1,INT32_MAX));value.workerListRevision=uint64_t(n("worker_list_revision",0,0,INT64_MAX));value.workerValue=int8_t(n("worker_value",-1,-1,1));
-  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,13));
-  value.itemId=int32_t(n("item_id",-1,-1,INT32_MAX));value.itemValue=int8_t(n("item_value",-1,-1,1));
+  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,int(wm::FarmOperation::DepotMode)));
+  value.itemId=int32_t(n("item_id",-1,-1,INT32_MAX));
+  value.itemValue=int8_t(n("item_value",-1,-1,value.farmOperation==wm::FarmOperation::DepotMode?2:1));
   String farmName=data.get("farm_name",String());
   const auto nameBytes=farmName.utf8();value.farmName.assign(nameBytes.get_data(),nameBytes.length());
   if(value.farmName.size()>90)valid=false;

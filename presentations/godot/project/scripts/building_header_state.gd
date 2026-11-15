@@ -69,7 +69,7 @@ func _read() -> void:
 	_send({"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":building_id})
 
 func begin_name_entry() -> bool:
-	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("type",-1) not in [0,1,2,3,5,8,9,10,11,12,13,14,15,18,19,23,32,33,35,36,37,38,39,40,41,42,43,44,45,46,50,51,52,54] or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
+	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("type",-1) not in [0,1,2,3,5,6,8,9,10,11,12,13,14,15,18,19,23,32,33,35,36,37,38,39,40,41,42,43,44,45,46,50,51,52,54] or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
 	_retire_refresh()
 	var owner:=generation
 	var owned=load("res://scripts/farm_rename_session.gd").new()
@@ -107,7 +107,7 @@ func set_pump_manual(desired: bool) -> void:
 	_edit(C.FarmOperation.PumpManual,{"item_value":int(desired)})
 
 func _edit(operation: int,fields: Dictionary) -> void:
-	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in [0,1,2,3,5,8,9,10,11,12,13,14,15,18,19,23,32,33,35,36,37,38,39,40,41,42,43,44,45,46,50,51,52,54] or snapshot.stage!=snapshot.max_stage:return
+	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in [0,1,2,3,5,6,8,9,10,11,12,13,14,15,18,19,23,32,33,35,36,37,38,39,40,41,42,43,44,45,46,50,51,52,54] or snapshot.stage!=snapshot.max_stage:return
 	if snapshot.removing!=(operation==C.FarmOperation.CancelRemoval):return
 	_retire_refresh()
 	var intent={"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":building_id,
@@ -127,7 +127,7 @@ func _fail(next: Phase) -> void:
 static func valid_snapshot(value: Dictionary,id: int) -> bool:
 	for field in ["id","type","revision","stage","max_stage"]:
 		if typeof(value.get(field))!=TYPE_INT:return false
-	if value.id!=id or id<0 or id>2147483647 or value.type not in [0,1,2,3,5,8,9,10,11,12,13,14,15,18,19,23,32,33,35,36,37,38,39,40,41,42,43,44,45,46,50,51,52,54] or value.revision<=0 or value.stage<0 or value.max_stage<value.stage or value.max_stage>2147483647:return false
+	if value.id!=id or id<0 or id>2147483647 or value.type not in [0,1,2,3,5,6,8,9,10,11,12,13,14,15,18,19,23,32,33,35,36,37,38,39,40,41,42,43,44,45,46,50,51,52,54] or value.revision<=0 or value.stage<0 or value.max_stage<value.stage or value.max_stage>2147483647:return false
 	for field in ["custom_name","native_name","header_name"]:
 		if typeof(value.get(field))!=TYPE_STRING:return false
 		var bytes: PackedByteArray=value[field].to_utf8_buffer()
@@ -135,8 +135,22 @@ static func valid_snapshot(value: Dictionary,id: int) -> bool:
 	for field in ["removing","suspended","has_worker","forbidden"]:
 		if typeof(value.get(field))!=TYPE_BOOL:return false
 	if value.has("appearance") and not preload("res://scripts/item_sheet_state.gd")._valid_recipe(value.appearance):return false
-	if not valid_funerary(value) or not valid_machinery(value) or not valid_well(value):return false
+	if not valid_funerary(value) or not valid_machinery(value) or not valid_well(value) or not valid_depot(value):return false
 	return value.removing or (not value.suspended and not value.has_worker)
+
+static func valid_depot(value: Dictionary) -> bool:
+	if value.type!=6:return not value.has("depot")
+	if typeof(value.get("depot"))!=TYPE_DICTIONARY:return false
+	var body: Dictionary=value.depot
+	for field in ["requested","anyone","goods_available","trade_available","bright","accessible"]:
+		if typeof(body.get(field))!=TYPE_BOOL:return false
+	for field in ["awaiting_items","worker_id","broker_id","foreground","background"]:
+		if typeof(body.get(field))!=TYPE_INT:return false
+	for field in ["broker_name","activity"]:
+		if typeof(body.get(field))!=TYPE_STRING or body[field].to_utf8_buffer().size()>512 or body[field].to_utf8_buffer().has(0):return false
+	if body.size()!=(14 if body.has("broker_appearance") else 13) or body.awaiting_items<0 or body.awaiting_items>1048576 or body.worker_id< -1 or body.worker_id>2147483647 or body.broker_id< -1 or body.broker_id>2147483647 or body.foreground<0 or body.foreground>7 or body.background<0 or body.background>7 or (body.trade_available and not body.goods_available):return false
+	if body.has("broker_appearance") and not preload("res://scripts/item_sheet_state.gd")._valid_recipe(body.broker_appearance):return false
+	return not body.broker_name.is_empty() if body.broker_id>=0 else (body.broker_name.is_empty() and body.activity.is_empty() and body.foreground==7 and body.background==0 and not body.bright and not body.accessible and not body.has("broker_appearance"))
 
 static func valid_well(value: Dictionary) -> bool:
 	if value.type!=18:return not value.has("well")

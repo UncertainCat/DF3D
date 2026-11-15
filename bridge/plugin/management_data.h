@@ -189,6 +189,13 @@ struct MachineryBodySnapshot {
   int8_t pumpManual=-1,pumpDirection=-1;
 };
 struct WellBodySnapshot { df3d::mirror::WellStatus status=df3d::mirror::WellStatus::Operational; };
+struct DepotBodySnapshot {
+  bool requested=false,anyone=false,goodsAvailable=false,tradeAvailable=false;
+  uint32_t awaitingItems=0;int32_t workerId=-1,brokerId=-1;
+  std::string brokerName,activity;int16_t foreground=7,background=0;
+  bool bright=false,accessible=false;
+  std::optional<df3d_production::ItemAppearanceRecipe> brokerAppearance;
+};
 struct BuildingHeaderSnapshot {
   int32_t id=-1,type=-1,stage=-1,maxStage=-1;uint64_t revision=0;
   std::string customName,nativeName,headerName;
@@ -198,6 +205,7 @@ struct BuildingHeaderSnapshot {
   std::optional<FuneraryBodySnapshot> funerary;
   std::optional<MachineryBodySnapshot> machinery;
   std::optional<WellBodySnapshot> well;
+  std::optional<DepotBodySnapshot> depot;
 };
 struct BuildingHeaderState {
   std::optional<BuildingHeaderSnapshot> snapshot;

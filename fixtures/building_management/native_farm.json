@@ -31753,6 +31753,33 @@
           "build/stockpile-storage-native-farm-discovery-20261115-124903/depot-broker-missing-figure.png": "63f54d60768f83f5d115fd4c3389dc15aec61dfc1dd5fdf0905bd7ce64758c65",
           "build/stockpile-storage-native-farm-discovery-20261115-124903/depot-broker-restored.png": "63f54d60768f83f5d115fd4c3389dc15aec61dfc1dd5fdf0905bd7ce64758c65"
         }
+      },
+      "depot_contract_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-130341",
+        "protocol": 231,
+        "scope": "Five barrier header/contents reads, guarded hatch edits/removal/cancel, and all three DepotMode requests rejected without altering a queued hatch removal. No depot runtime/UI acceptance.",
+        "owned_df_pid": 45912,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "bridge_sha256": "dfaae02b595c3f695f1f95468d0ab498868044b4d1746f7e8e51be1b550992fa",
+        "diagnostics": "passed_with_known_issues: rendering-thread notice",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-130341/barrier-wire-result.json": "c955e57777ec0d73639dca6748560d00aa5eb8e12f13ebb2ed9656add3908f97",
+          "build/stockpile-storage-native-farm-discovery-20261115-130341/barrier-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-130341/barrier-sheets-native.json": "093ef8cfc220784c6aa5383df2726547f426ec6c402ed712b78aab5bcf122cf5",
+          "build/stockpile-storage-native-farm-discovery-20261115-130341/result.json": "858f01ffadde5c599c0694d8e465c0dbc2b0737852733a374ac2014ead9f5bf6",
+          "build/stockpile-storage-native-farm-discovery-20261115-130341/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        },
+        "initial_failures": [
+          {
+            "lane": "125958",
+            "reason": "Godot decoder still bounded operation at13; no DepotMode requests sent."
+          },
+          {
+            "lane": "130153",
+            "reason": "Mode2 was blocked by boolean item_value bound; modes0/1 safely rejected."
+          }
+        ]
       }
     },
     "pending_construction_reference": {

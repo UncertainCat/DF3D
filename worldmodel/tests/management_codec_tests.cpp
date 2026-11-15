@@ -9,6 +9,37 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("depot body authority survives decode and rejects contradictions") {
+  for(int fault=0;fault<9;++fault) {
+    flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");
+    const auto body=wire::CreateDepotBodySnapshot(b,true,false,fault!=4,true,fault==5?1048577:2,
+      fault==6?-2:17,fault==7?-1:988,b.CreateString("Broker"),fault==8?flatbuffers::Offset<flatbuffers::String>{}:b.CreateString("Drink"),fault==3?8:3,0,true,true);
+    const auto snapshot=wire::CreateBuildingHeaderSnapshot(b,54,fault==2?15:6,9007199254740993ULL,1,1,
+      empty,b.CreateString("native"),b.CreateString("Native"),false,false,false,0,0,0,0,0,fault==1?0:body);
+    const auto header=wire::CreateBuildingHeaderState(b,snapshot);
+    wire::ProductionStateBuilder p(b);p.add_building_header(header);const auto payload=p.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_action(wire::ManagementAction::ProductionInspect);
+    root.add_status(wire::ManagementStatus::Ok);root.add_production(payload);b.Finish(root.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CAPTURE(fault);CHECK(bool(wire::validateManagementState(*value))==!(fault==0));
+    if(fault==0){auto decoded=codec::decodeProduction(value->production());b.Clear();
+      REQUIRE(decoded.buildingHeader->snapshot->depot);const auto& depot=*decoded.buildingHeader->snapshot->depot;
+      CHECK(depot.brokerId==988);CHECK(depot.activity=="Drink");CHECK(depot.awaitingItems==2);CHECK(depot.foreground==3);}
+  }
+}
+TEST_CASE("depot settings require a bound explicit mode") {
+  for(int mode=0;mode<3;++mode)for(int fault=0;fault<8;++fault) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::FarmEdit;
+    auto& p=r.production;p.buildingId=54;p.buildingHeader=true;p.expectedRevision=9007199254740993ULL;
+    p.farmOperation=wm::FarmOperation::DepotMode;p.itemValue=mode;
+    if(fault==1)p.buildingHeader=false;if(fault==2)p.itemValue=-1;if(fault==3)p.expectedRevision=0;
+    if(fault==4)p.itemId=123;if(fault==5)p.workerId=123;if(fault==6)r.action=wm::ManagementAction::ProductionInspect;if(fault==7)p.itemValue=3;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(mode);CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+  }
+}
+
 TEST_CASE("well bodies preserve native state and reject missing or foreign facts") {
   for(int type:{18,15})for(int status:{-1,0,1,2,3,4,255}) {
     flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");

@@ -40,6 +40,11 @@ func run() -> void:
 		var removal:=await request("production",{"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":id,"expected_revision":value.revision,"farm_operation":C.FarmOperation.Remove})
 		var removed: Dictionary=removal.get("production",{}).get("building_header",{}).get("snapshot",{})
 		if not check(removed.get("removing",false),"Hatch removal failed"):break
+		for mode in 3:
+			var unsupported:=await request("production",{"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":id,"expected_revision":removed.revision,"farm_operation":C.FarmOperation.DepotMode,"item_value":mode})
+			check(unsupported.get("status")==C.ManagementStatus.Rejected,"Non-depot accepted trader mode")
+			var unchanged:=await header(id)
+			check(unchanged==removed,"Trader mode changed a non-depot removal")
 		result=await access(id,before.revision,not before.forbidden)
 		check(result.get("status")==C.ManagementStatus.Rejected,"Removing hatch accepted old access receipt")
 		var cancelled:=await request("production",{"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":id,"expected_revision":removed.revision,"farm_operation":C.FarmOperation.CancelRemoval})

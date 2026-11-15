@@ -688,10 +688,9 @@ click, and leave occupancy134217729 unchanged. The diagnostic restores the
 original flags and reindex state and keeps the simulation paused. It captures
 both resulting panels. Owned DF30412 closes unsaved with source preservation;
 native graphics capped30FPS, sampled GPU60C; core19 passes. Evidence:
-`completed_sheet_discovery_reference.barrier_sheets_reference`. These are native
-references, not bridge/viewer acceptance. Public entry remains gated while the
-shared header/contents admission and distinct hatch action are implemented and
-verified. Linked variants and other hatch control states are not yet qualified.
+`completed_sheet_discovery_reference.barrier_sheets_reference`. These initial
+native references are superseded for runtime acceptance by the workflow and
+state-variant evidence below.
 
 The shared header/contents producer and validators now admit35..39. Hatch access
 uses the existing door-control transport with a separate native mutation branch:
@@ -722,12 +721,37 @@ Protected115127 on2026-11-15 confirms the floor-grate artwork correction: its fu
 488x708 panel and both bar panels match native exactly. Wire checks pass. The
 overall graphical run remains failed because hatch/wall-grate selection tabs
 still differ at panel-local482,0..488,36, including both hatch access states.
-This is partial evidence, not complete barrier acceptance. Wall/open/loose grate
-variants and integrated selection remain unqualified; public routes stay gated.
+This is partial evidence, not complete barrier acceptance. Subsequent workflow
+and installed-item variant acceptance is recorded below; loose-item appearances
+are outside those building-panel checks.
 All three builds and core19 pass. Owned DF10940 closes unsaved with source
 preservation; serial30FPS, sampled GPU59C. Known rendering-thread/finalize/two-
 ObjectDB diagnostics accompany the four real crop failures. Evidence:
 `completed_sheet_discovery_reference.grate_artwork_reference`.
+
+Completed hatch/grate/bar panels now use the shared native tile-selection route
+for map clicks and the furniture route for item-holder navigation. Protected115702
+on2026-11-15 verifies all five map/holder routes, rename/restore, removal/cancel,
+Escape and both hatch access gestures. All27 complete488x708 panel crops match
+native, including alternative tabs. Wire guard/effect checks also pass. Initial
+115445 captured an unfinished first native frame with no panel; its other26 crops
+and gestures passed, but the run is not acceptance. The capture helper allows
+250ms for barrier frames to present before reading the window.
+
+Protected115844 verifies ten additional full-panel comparisons: closed/open
+installed wall and floor grates, both bar types and a mechanism-operated hatch
+with closed/open state and timer. The owned iron wall-grate item is removed after
+the check; all flags/timers are restored. The viewer checks both grate semantic
+facts as well as artwork. These paused fixtures establish display behavior, not
+natural mechanism activation, pathfinding or loose-item appearance coverage.
+The shared linked-building tab retains its existing provider and interaction
+contract; these particular captures use unlinked buildings.
+
+Both owned sessions close unsaved with source preservation (DF31588 and18124).
+Graphics run serially at30FPS; sampled GPU58–61C. Both runs pass with the known
+rendering-thread/finalize/two-ObjectDB diagnostics. Core19 and the headless holder
+routing check pass. Evidence: `completed_sheet_discovery_reference.barrier_workflow_reference`
+and `barrier_variants_reference`.
 
 MSVC bridge, extension and root rebuilds pass; rebuilt core19 and the headless
 header-state test pass. Protocol228 shape is unchanged. Owned DF32688 closes

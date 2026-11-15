@@ -5,6 +5,12 @@ local sheet=df.global.game.main_interface.view_sheets
 local result={buildings={},frame=df.global.world.frame_counter}
 local fixtures={}
 local function close()if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end end
+local function click(x,y)
+ g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=y//12
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+ gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+end
 local ok,err=xpcall(function()
  for _,name in ipairs{'Hatch','GrateWall','GrateFloor','BarsVertical','BarsFloor'}do
   local kind=assert(df.building_type[name]);local b
@@ -30,7 +36,7 @@ local ok,err=xpcall(function()
   end
   close();view:render(dfhack.getTickCount());select_map(b)
   assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==b.id)
-  local row={id=b.id,type=kind,name=name,tile={b.centerx,b.centery,b.z},fixture=fixture,lines={},items={}}
+  local row={id=b.id,type=kind,name=name,custom_name=b.name,tile={b.centerx,b.centery,b.z},fixture=fixture,lines={},items={}}
   for _,held in ipairs(b.contained_items)do row.items[#row.items+1]={id=held.item.id,type=held.item:getType(),use_mode=held.use_mode}end
   for y=4,g.dimy-1 do
    local chars={};for x=52,112 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
@@ -64,6 +70,14 @@ local ok,err=xpcall(function()
    assert(success,why);assert(occupancy.whole==occupancy_before)
    row.controls_restored=true
   end
+  if os.getenv('DF3D_BARRIER_SCENE')=='1' then
+   local original=b.name;assert(#b.jobs==0)
+   local function shot(label)view:render(dfhack.getTickCount());capture('barrier-sheet-'..kind..'-'..label)end
+   click(800,82);gui.simulateInput(view,'STRING_A120');gui.simulateInput(view,'SELECT');assert(b.name==original..'x');shot('renamed')
+   click(800,82);gui.simulateInput(view,'STRING_A000');gui.simulateInput(view,'SELECT');assert(b.name==original);shot('restored')
+   click(832,82);assert(#b.jobs==1 and b.jobs[0].job_type==df.job_type.DestroyBuilding);shot('removing')
+   click(520,202);assert(#b.jobs==0);shot('removal-cancelled')
+  end
  end
  if os.getenv('DF3D_BARRIER_WIRE')=='1' or os.getenv('DF3D_BARRIER_SCENE')=='1'then
   local f=assert(io.open(out..'/barrier-wire-expected.json','w'));f:write(json.encode(result));f:close()
@@ -77,7 +91,7 @@ local ok,err=xpcall(function()
   f=assert(io.open(out..'/'..label..'-result.json'));result[label]=json.decode(f:read('*a'));f:close()
   assert(result[label].success and sheet.active_id==active_id)
   for _,row in ipairs(result.buildings)do
-   local b=assert(df.building.find(row.id));assert(#b.jobs==0)
+   local b=assert(df.building.find(row.id));assert(#b.jobs==0 and b.name==row.custom_name)
    assert((row.type==35 and b.door_flags or b.gate_flags).whole==row.flags)
    if row.type==35 then
     local _,occupancy=dfhack.maps.getTileFlags(b.centerx,b.centery,b.z)
@@ -86,6 +100,10 @@ local ok,err=xpcall(function()
   end
   df.global.world.reindex_pathfinding=reindex
   end
+ end
+ if os.getenv('DF3D_BARRIER_VARIANTS')=='1' then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('barrier%-sheets%-native.lua$','barrier-variants-native.lua')
+  result.variants=assert(loadfile(source))(out,view,select_map,capture,result.buildings)
  end
 end,debug.traceback)
 close()

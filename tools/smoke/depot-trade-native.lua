@@ -13,11 +13,17 @@ local job=df.job:new();job.job_type=df.job_type.TradeAtDepot
 local ref=df.general_ref_unit_workerst:new();ref.unit_id=unit.id;job.general_refs:insert('#',ref)
 local restore_speaker
 local restore_item
+local restore_sources
+local source_probe=os.getenv('DF3D_DEPOT_TRADE_SOURCES')=='1'
+assert(not source_probe or os.getenv('DF3D_DEPOT_TRADE_LISTS')~='1','Source isolation must not qualify appraisal')
 local added_job=false;local added={};local result={depot=b.id,trader=unit.id,synthetic_prerequisites=true,cases={}}
 local function click(x,y)
  gps.precise_mouse_x=x;gps.precise_mouse_y=y;gps.mouse_x=x//8;gps.mouse_y=(y-4)//12
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
- gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ gui.simulateInput(view,'_MOUSE_L')
+ -- Diagnostic isolation only: list enumeration must not train the fixture trader.
+ if source_probe and trade.open then trade.handle_appraisal=0 end
+ view:render(dfhack.getTickCount())
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
 end
 local function caravan()
@@ -42,6 +48,16 @@ local function record(label)
   end
  end
  result.cases[#result.cases+1]=row
+ if source_probe and trade.open and not trade.choosing_merchant then
+  local function ids()local sides={{},{}};for side=0,1 do for _,item in ipairs(trade.good[side])do table.insert(sides[side+1],item.id)end end;return sides end
+  local expected=ids();local before=json.encode(expected);local appraisal=trade.handle_appraisal;local lists=trade.buildlists
+  for iteration=1,2 do
+   local output,code=dfhack.run_command_silent('df3d','trade-goods-source-probe',tostring(b.id),'0');assert(code==0,output)
+   local facts=json.decode(output);assert(facts.available and json.encode(facts.sides)==before,'Owned goods source differs: '..output..' expected '..before)
+   assert(json.encode(ids())==before and trade.handle_appraisal==appraisal and trade.buildlists==lists and #added[1].goods==0)
+   row.source_provider=facts
+  end
+ end
  assert(df.global.world.frame_counter==frame and unit.flags1.whole==unit_flags and unit.job.current_job==old_job and b.trade_flags.whole==flags)
  return row
 end
@@ -69,6 +85,33 @@ local ok,err=xpcall(function()
   local invalid,code=dfhack.run_command_silent('df3d','trade-entry-probe',tostring(b.id),'100');assert(code==0 and not json.decode(invalid).available,'Foreign caravan must reject')
  end
  gate_scene('present',unit.id)
+ if source_probe then
+  local snapshots={};local contained=#b.contained_items;local types={};local candidates={}
+  for _,item in ipairs(df.global.world.items.all)do
+   if item.flags.on_ground and not item.flags.in_inventory and not item.flags.in_building and not item.flags.trader and #item.general_refs==0 then
+    local kind=item:getType();types[kind]=(types[kind]or 0)+1
+    if types[kind]<=2 then candidates[#candidates+1]=item end
+    if #candidates>=12 then break end
+   end
+  end
+  assert(#candidates==12,'Need twelve safe source items')
+  restore_sources=function()
+   for i=#snapshots,1,-1 do local s=snapshots[i]
+    if s.ref then assert(s.item.general_refs[#s.item.general_refs-1]==s.ref);s.item.general_refs:erase(#s.item.general_refs-1);s.ref:delete()end
+    s.item.flags.in_building=false;assert(dfhack.items.moveToGround(s.item,s.pos));s.item.flags.whole=s.flags
+   end
+   assert(#b.contained_items==contained);restore_sources=nil
+  end
+  result.source_items={};result.appraisal_suppressed=true
+  for i,item in ipairs(candidates)do
+   local s={item=item,pos={x=item.pos.x,y=item.pos.y,z=item.pos.z},flags=item.flags.whole};snapshots[#snapshots+1]=s
+   assert(dfhack.items.moveToBuilding(item,b,0,true))
+   if i<=6 then s.ref=df.general_ref_entity_itemownerst:new();s.ref.entity_id=i==6 and -1 or added[1].entity;item.general_refs:insert('#',s.ref);item.flags.trader=true end
+   if i==11 then b.contained_items[#b.contained_items-1].use_mode=2 end
+   if i==12 then item.flags.in_building=false end
+   result.source_items[#result.source_items+1]={id=item.id,type=item:getType(),side=i<=5 and 0 or (i>=7 and i<=10 and 1 or -1)}
+  end
+ end
  if os.getenv('DF3D_DEPOT_TRADE_LISTS')=='1' then
   local item=df.item.find(296);assert(item and item.flags.on_ground and not item.flags.in_inventory and not item.flags.trader)
   local pos={x=item.pos.x,y=item.pos.y,z=item.pos.z};local flags=item.flags.whole;local contained=#b.contained_items
@@ -88,6 +131,7 @@ local ok,err=xpcall(function()
   view:render(dfhack.getTickCount());view:render(dfhack.getTickCount());assert(#added[1].goods==1)
  end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)
+ if restore_sources then restore_sources()end
  if restore_item then
   unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z;select_map(b)
   unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z;click(480,190)
@@ -135,6 +179,7 @@ local ok,err=xpcall(function()
 end,debug.traceback)
 if trade.open then gui.simulateInput(view,'LEAVESCREEN')end
 if restore_item then restore_item()end
+if restore_sources then restore_sources()end
 if restore_speaker then restore_speaker()end
 if added_job then b.jobs:erase(#b.jobs-1)end
 unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z

@@ -61772,6 +61772,98 @@
           "build/stockpile-storage-native-farm-discovery-20261115-175040/depot-trade-speaker-unloading.png": "42f8ee2584060ea42cb576989005c52edc0cf73ddd79e8810229b02c5b1e027f",
           "build/stockpile-storage-native-farm-discovery-20261115-175040/depot-trade-speaker.png": "0ef8eaa16f2d33843ea3acb539afbf1fb8e448d10b0cfb8e7d422d5b0d233e3e"
         }
+      },
+      "depot_trade_goods_source_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-175727",
+        "owned_df_pid": 46920,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Paused controlled 12-item source fixture; exact native membership and order for both owned vectors, including equal comparator keys and three exclusions. Two calls preserve observed native lists, pending flags and appraisal history. Diagnostic suppresses native appraisal before render; no appraisal effects, prices, grouping, populated exchange visuals or public transport acceptance. Restores item positions/flags/containment/refs, worker, job and caravans.",
+        "source_items": [
+          {
+            "id": 296,
+            "side": 0,
+            "type": 45
+          },
+          {
+            "id": 407,
+            "side": 0,
+            "type": 57
+          },
+          {
+            "id": 408,
+            "side": 0,
+            "type": 57
+          },
+          {
+            "id": 991,
+            "side": 0,
+            "type": 4
+          },
+          {
+            "id": 992,
+            "side": 0,
+            "type": 4
+          },
+          {
+            "id": 1179,
+            "side": -1,
+            "type": 2
+          },
+          {
+            "id": 1180,
+            "side": 1,
+            "type": 2
+          },
+          {
+            "id": 1494,
+            "side": 1,
+            "type": 23
+          },
+          {
+            "id": 1735,
+            "side": 1,
+            "type": 46
+          },
+          {
+            "id": 1736,
+            "side": 1,
+            "type": 46
+          },
+          {
+            "id": 1744,
+            "side": -1,
+            "type": 23
+          },
+          {
+            "id": 3157,
+            "side": -1,
+            "type": 60
+          }
+        ],
+        "sides": [
+          [
+            992,
+            991,
+            296,
+            408,
+            407
+          ],
+          [
+            1180,
+            1494,
+            1736,
+            1735
+          ]
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-175727/depot-trade-native.json": "50f7f6b30f1dbfb31ecbb16ee06679862f7a4dabbf543987ee16ee1d57a1197b",
+          "build/stockpile-storage-native-farm-discovery-20261115-175727/result.json": "044996210093777ed34e9c12c0e8badecc90bb1c810b058caff6395272f85d6a",
+          "build/stockpile-storage-native-farm-discovery-20261115-175727/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-175727/capture-inputs.json": "41cc2181ff02a755ad54c62b5cfad8bb7f25af1fab9a8b7976d51ba001bc51c0",
+          "tools/smoke/depot-trade-native.lua": "cd27f732923b6ce49e13473a288dc1206fb4a62d36facef07d52c45c16c29aa1",
+          "bridge/plugin/trade_goods_native.h": "22fe43517e797c9ce39534b564c3fcfc38c92532bf9e432da4a4658026f50dfa"
+        }
       }
     },
     "pending_construction_reference": {

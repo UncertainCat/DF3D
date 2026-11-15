@@ -245,6 +245,30 @@ api-ms-win-crt-utility-l1-1-0.dll with native comparator384790. A provider can
 preserve that comparison and equal-key ordering mechanism over independently
 owned item vectors; replacing it with another sort/tie-breaker is unqualified.
 
+`trade_goods_native.h` implements the bounded simulation-data walk and invokes
+DF's owner lookup and imported qsort/comparator over owned vectors. The inline
+enumeration, owner lookup and comparator bytes are pinned. It returns only item
+IDs and uses the owned entry provider's depot/trader/caravan validation. Its
+`trade-goods-source-probe` is diagnostic only; no public protocol changed.
+
+Protected175727 on2026-11-15 compares both lists exactly against native with
+twelve temporarily delivered items: five merchant goods, four fortress goods,
+and three exclusions (unresolved merchant owner, construction role2, missing
+in_building). Multiple types and equal comparator keys exercise native ordering.
+Two provider calls preserve native list IDs, pending flags and caravan history.
+The diagnostic explicitly clears handle_appraisal before native rendering to
+isolate enumeration from trader skill effects; runtime never accesses that menu
+field. This run does not qualify appraisal, prices or populated exchange visuals.
+Item positions/flags/containment and temporary ownership refs restore, as do
+worker position, job and caravans; simulation frame remains unchanged. Owned
+DF46920 closes unsaved/source-preserved at30FPS, sampled GPU50C. Bridge build and
+all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_goods_source_reference`.
+The earlier175634 attempt failed on a diagnostic integer-field assignment and
+is excluded from acceptance; its owned session also closed source-preserved.
+Group/filter projection, selection quantities, appraisal effects, prices,
+negotiation and public exchange integration remain unfinished.
+
 ## Depot goods value transport migration
 
 Management protocol235 adds required appraisal knowledge to depot goods replies

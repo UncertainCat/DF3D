@@ -1970,6 +1970,39 @@ TEST_CASE("selection transport request payloads preserve ownership") {
   request.selection.receipt=77;REQUIRE_FALSE(encoded.invalid(request));
   CHECK(encoded.get()->selection()->receipt()==77); // replacement click carries ownership
 }
+TEST_CASE("selection artwork separates reads from guarded mutations") {
+  EncodedRequest encoded;wm::ManagementRequest r;r.action=wm::ManagementAction::SelectionArtRead;
+  auto& q=r.selectionArt;q.receipt=91;
+  REQUIRE_FALSE(encoded.invalid(r));REQUIRE(encoded.get()->selection_art());
+  CHECK(encoded.get()->selection_art()->receipt()==91);
+  q.receipt=0;CHECK(encoded.invalid(r));q.receipt=91;
+  q.art.page=1;q.art.cursor=128;CHECK(encoded.invalid(r));
+  q.art.expectedListRevision=42;q.expectedRevision=19;REQUIRE_FALSE(encoded.invalid(r));
+  q.art.hovered=300;q.art.previewColumns=80;REQUIRE_FALSE(encoded.invalid(r));
+  r.action=wm::ManagementAction::SelectionArtApply;CHECK(encoded.invalid(r));
+  q.art.cursor=0;q.art.hovered=-1;q.art.previewColumns=0;q.art.subject=300;
+  REQUIRE_FALSE(encoded.invalid(r));CHECK(encoded.get()->selection_art()->art()->subject()==300);
+  q.expectedRevision=0;CHECK(encoded.invalid(r));q.expectedRevision=19;
+  q.art.expectedListRevision=0;CHECK(encoded.invalid(r));
+  q.art.page=0;q.art.subject=-1;REQUIRE_FALSE(encoded.invalid(r));
+  q.art.query="unexpected";CHECK(encoded.invalid(r));q.art.query.clear();
+  q.art.draft.emplace();CHECK(encoded.invalid(r));
+}
+TEST_CASE("selection artwork replies preserve receipts and reject malformed pages") {
+  for(int fault=0;fault<6;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto row=wire::CreateWorkOrderArtRow(b,320,b.CreateString("Site"));
+    const auto rows=b.CreateVector(std::vector<flatbuffers::Offset<wire::WorkOrderArtRow>>{row});
+    const auto art=wire::CreateWorkOrderArtState(b,2,b.CreateString("Image information for engraving"),rows,fault==2?0:92,1);
+    const auto result=wire::CreateSelectionArtState(b,fault==1?0:91,INT64_C(9007199254740993),fault==3?0:art,fault==4);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(fault==5?wire::ManagementAction::SelectionArtApply:wire::ManagementAction::SelectionArtRead);
+    state.add_status(wire::ManagementStatus::Ok);state.add_selection_art(result);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){const auto decoded=codec::decodeState(value);REQUIRE(decoded.selectionArt);CHECK(decoded.selectionArt->receipt==91);
+      CHECK(decoded.selectionArt->revision==UINT64_C(9007199254740993));REQUIRE(decoded.selectionArt->art);CHECK(decoded.selectionArt->art->rows[0].id==320);}
+  }
+}
 
 TEST_CASE("empty work-order traits do not turn moves or details into another edit") {
   EncodedRequest encoded;

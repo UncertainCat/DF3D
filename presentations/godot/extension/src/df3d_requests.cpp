@@ -495,6 +495,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
     management::writeTrade(result, s.trade);
     management::writeReport(result, s.report);
     management::writeSelection(result,s.selection);
+    if(s.selectionArt){const auto& a=*s.selectionArt;Dictionary value;value["receipt"]=int64_t(a.receipt);value["revision"]=int64_t(a.revision);value["applied"]=a.applied;if(a.art)value["art"]=management::writeArtState(*a.art);result["selection_art"]=value;}
     if(s.worldHover) {
         const auto& t=*s.worldHover;Dictionary description;
         description["tile"]=Vector3i(t.x,t.y,t.z);
@@ -1220,6 +1221,7 @@ const ManagementCodec managementCodecs[] = {
     {"trade", management::validateTradeShape, management::readTrade},
     {"hover", validateHover, readHover},
     {"selection",management::validateSelectionShape,management::readSelection},
+    {"selection_art",management::validateSelectionArtShape,management::readSelectionArt},
     {"creature_header",validateCreatureHeader,readCreatureHeader},
     {"creature_follow",validateCreatureFollow,readCreatureFollow},
     {"creature_sheet_location",validateCreatureFollow,readCreatureSheetLocation},
@@ -1257,7 +1259,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::JusticeIntelligenceGraphRead)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::SelectionArtApply)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

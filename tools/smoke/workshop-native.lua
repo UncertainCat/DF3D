@@ -382,6 +382,17 @@ local ok,err=xpcall(function()
     end
     reopen();gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
     reference.right_cancel=effect();reference.right_cancel_lines=lines();shot('selection-engraving-image-right-cancel')
+    if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_ART_RUNTIME')=='1' then
+     local file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
+     local menu=json.encode(observe());local count=#df.global.plotinfo.waypoints.location_detail
+     capture('workshop-wire')
+     file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
+     assert(receipt.success,'Engraving artwork wire failed')
+     assert(detail.art_specifier==1 and detail.art_spec_id1==receipt.selected_site and detail.art_spec_id2==-1,'Wire edit did not produce native site effect')
+     assert(not art.open and menu==json.encode(observe()) and count==#df.global.plotinfo.waypoints.location_detail,'Artwork wire changed native picker or selection')
+     reference.management=receipt;reference.management_effect=effect()
+     file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
+    end
    end
    return
   end

@@ -12809,6 +12809,84 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "engraving_art_transport_reference": {
+      "protocol": 213,
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-185705",
+      "status": "passed_with_known_issues",
+      "owned_df_pid": 37440,
+      "owned_exit_unsaved": true,
+      "source_manifest_unchanged": true,
+      "selected_site": 320,
+      "native_effect_assertion": {
+        "type": 1,
+        "id": 320,
+        "subid": -1
+      },
+      "root": {
+        "applied": false,
+        "art": {
+          "caption": "Image information for engraving",
+          "hovered": -1,
+          "list_revision": 0,
+          "next_cursor": 0,
+          "page": -1,
+          "rows": [
+            {
+              "caption": "Related to historical figure",
+              "id": 1,
+              "secondary": -1
+            },
+            {
+              "caption": "Related to site",
+              "id": 2,
+              "secondary": -1
+            },
+            {
+              "caption": "Related to civilization or other group",
+              "id": 3,
+              "secondary": -1
+            },
+            {
+              "caption": "Existing image",
+              "id": 5,
+              "secondary": -1
+            },
+            {
+              "caption": "Specify a new image",
+              "id": 6,
+              "secondary": -1
+            },
+            {
+              "caption": "Allow artist to choose",
+              "id": 0,
+              "secondary": -1
+            }
+          ],
+          "total": 6
+        },
+        "receipt": 1,
+        "revision": 1476029692461042653
+      },
+      "site_page": {
+        "total": 680,
+        "returned": 128,
+        "first": {
+          "caption": "Abanubbul, \"Constructvault\"",
+          "id": 320,
+          "secondary": -1
+        }
+      },
+      "stale_and_retired_rejected": true,
+      "sha256": {
+        "workshop-native.json": "47975b4245b46bb0b5c439fcba02c341a1b14b0cd7ef58ac47e7c665e2cf1d66",
+        "workshop-wire-result.json": "bd6aa64828036c1961fcdd98c0d3fb37079191a9257f4e2c7a522070b659f216",
+        "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+        "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+        "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+      },
+      "coverage": "Typed Godot client root and first128 site IDs match native; continuation returns128 rows. Site apply confirmed by the post-wire Lua assertion in the passing lane. Stale read/edit and closed selection read/edit rejected. Native picker/selection guards unchanged.",
+      "limitations": "No graphical picker or new-image drafts. Filters/previews, full paging sequence, disconnect, epoch replacement and late-reply presentation remain unqualified. Native post-wire effect was asserted but not serialized in this run; oracle now writes it for later runs. Known renderer-thread/finalize/ObjectDB shutdown diagnostics only."
+    },
     "engraving_image_effects_reference": {
       "run": "build/stockpile-storage-native-farm-discovery-20261114-184508",
       "status": "passed",

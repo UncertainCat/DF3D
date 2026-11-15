@@ -320,6 +320,7 @@ ManagementState decodeState(const m::ManagementState* s) {
   next.trade = decodeTrade(s->trade());
   next.agreement = decodeAgreement(s->agreement());
   next.selection = decodeSelection(s->selection());
+  if(const auto* a=s->selection_art()){SelectionArtState value;value.receipt=a->receipt();value.revision=a->revision();value.applied=a->applied();if(a->art())value.art=decodeArtState(*a->art());next.selectionArt=std::move(value);}
   next.alert = decodeAlert(s->alert());
   next.report = decodeReport(s->report());
   if (const auto* t=s->world_hover()) {
@@ -539,7 +540,9 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       (r.action==ManagementAction::StandingOrdersRead || r.action==ManagementAction::StandingOrdersSet)?
           m::CreateStandingOrdersRequest(b,r.standingOrders.category,r.standingOrders.settingId,r.standingOrders.expectedValue,r.standingOrders.value):
           flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse,stocksMenu,tasks,places,nobles,objects,justice,
-      r.productionReplyRequest?m::CreateProductionReplyRequest(b,r.productionReplyRequest,r.productionReplyOffset):flatbuffers::Offset<m::ProductionReplyRequest>{});
+      r.productionReplyRequest?m::CreateProductionReplyRequest(b,r.productionReplyRequest,r.productionReplyOffset):flatbuffers::Offset<m::ProductionReplyRequest>{},
+      (r.action==ManagementAction::SelectionArtRead || r.action==ManagementAction::SelectionArtApply)?
+        m::CreateSelectionArtRequest(b,r.selectionArt.receipt,r.selectionArt.expectedRevision,encodeArtRequest(b,r.selectionArt.art)):flatbuffers::Offset<m::SelectionArtRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

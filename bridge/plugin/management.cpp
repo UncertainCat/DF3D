@@ -90,6 +90,7 @@
 #include "creature_follow_native.h"
 #include "tile_selection_native.h"
 #include "engraving_description_native.h"
+#include "engraving_art_native.h"
 #include "creature_expel_preview_native.h"
 #include "creature_expel_action_native.h"
 #include "creature_health_native.h"
@@ -638,6 +639,12 @@ struct TileSelectionSession {
   std::vector<std::optional<df3d_production::ItemAppearanceRecipe>> memberUnitAppearances;
 };
 std::optional<TileSelectionSession> tileSelectionOwner,tileSelectionReply;
+struct SelectionArtReply {
+  uint64_t receipt=0,revision=0;
+  bool applied=false;
+  std::optional<df3d_production::WorkOrderArtPage> page;
+};
+std::optional<SelectionArtReply> selectionArtReply;
 uint64_t nextTileSelectionReceipt=0;
 ItemInspectionAppearance copyInspectionAppearance(const df3d_production::ItemInspectionAppearance& a);
 bool prepareTileSelectionReply(TileSelectionSession& value) {
@@ -706,6 +713,7 @@ bool prepareTileSelectionReply(TileSelectionSession& value) {
 }
 void clearResult() {
   tileSelectionReply.reset();
+  selectionArtReply.reset();
   creatureHeader.reset();
   creaturePosition.reset();
   creatureExpel.reset();
@@ -1571,10 +1579,14 @@ void publish() {
     for(const auto& [row,caption]:hunter->materials)materials.push_back(m::CreateHunterAmmunitionMaterial(b,row.category,row.type,row.index,b.CreateString(caption)));
     hunterResult=m::CreateHunterAmmunitionState(b,hunter->outcome,hunter->type,hunter->subtype,b.CreateVector(specs),b.CreateVector(rules),b.CreateVector(types),b.CreateVector(materials));
   }
+  flatbuffers::Offset<m::SelectionArtState> selectionArtResult;
+  if(selectionArtReply){const auto& a=*selectionArtReply;
+    auto art=a.page?encodeNativeArt(b,*a.page):flatbuffers::Offset<m::WorkOrderArtState>{};
+    selectionArtResult=m::CreateSelectionArtState(b,a.receipt,a.revision,art,a.applied);}
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
@@ -1592,6 +1604,9 @@ void publish() {
       Core::getInstance().getConsole().printerr("df3d: management fallback response invalid: {}\n", *e);
       return;
     }
+    // No rejection may follow a completed artwork store. If its minimal reply
+    // is invalid, retain Pending so the sent mutation times out as unknown.
+    if(action==m::ManagementAction::SelectionArtApply && mutated)return;
     publishingFallback = true;
     const auto placed=construction.placed,skipped=construction.skipped;
     const auto first=construction.first_building;
@@ -5324,6 +5339,30 @@ void run(color_ostream& out) {
       }
     }
     if(creatureHeader->outcome==df3d_creature::HeaderEditOutcome::Completed)status=m::ManagementStatus::Ok;
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::SelectionArtRead || r->action()==m::ManagementAction::SelectionArtApply) {
+    const auto& q=*r->selection_art();const auto& a=*q.art();message.clear();status=m::ManagementStatus::Rejected;
+    if(!tileSelectionOwner || tileSelectionOwner->client!=client || tileSelectionOwner->epoch!=epoch ||
+       tileSelectionOwner->receipt!=q.receipt() || tileSelectionOwner->active.kind!=df::view_sheet_type::ENGRAVING_PLANNED){publish();return;}
+    const auto& owner=*tileSelectionOwner;const auto x=owner.tile.x(),y=owner.tile.y(),z=owner.tile.z();
+    auto current=df3d_selection::collect(x,y,z);
+    if(!current || *current!=owner.source){tileSelectionOwner.reset();publish();return;}
+    const auto query=UTF2DF(a.query()->str());
+    if(DF2UTF(query)!=a.query()->str()){publish();return;}
+    if(r->action()==m::ManagementAction::SelectionArtRead) {
+      auto page=df3d_selection::engravingArtPage(x,y,z,a.page(),query,a.cursor(),a.expected_list_revision(),a.hovered(),a.preview_columns());
+      if(page && (!q.expected_revision() || q.expected_revision()==page->revision)) {
+        selectionArtReply=SelectionArtReply{q.receipt(),page->revision,false,std::move(page->page)};status=m::ManagementStatus::Ok;
+      }
+    } else {
+      uint64_t resultingRevision=0;
+      const auto outcome=df3d_selection::applyEngravingArtSubject(x,y,z,q.expected_revision(),a.page(),a.subject(),a.expected_list_revision(),query,&resultingRevision);
+      if(outcome==df3d_selection::EngravingArtOutcome::Applied) {
+        mutated=true;
+        selectionArtReply=SelectionArtReply{q.receipt(),resultingRevision,true,std::nullopt};status=m::ManagementStatus::Ok;
+      }
+    }
     publish();return;
   }
   if(r->action()==m::ManagementAction::Selection) {

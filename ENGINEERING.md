@@ -9550,6 +9550,34 @@ new-image drafts, absent-record writes, filtering/paging/previews, preservation
 of an inherited nonnegative sub-ID and session/disconnect coverage remain
 unqualified. Recorded page captions alone are not graphical acceptance.
 
+Management protocol213 adds SelectionArtRead/SelectionArtApply and the shared
+WorkOrderArtRequest/WorkOrderArtState payload under selection_art. The mailbox is
+Local\\df3d_management_v213; rebuild bridge and client together. Earlier recordings
+have no selection-art observations. Reads and edits require the current selected
+planned-engraving receipt, client and epoch. Source changes retire the selection;
+specification and full native list revisions guard edits and continued pages.
+Successful writes acknowledge the resulting revision without a second native
+lookup. A malformed reply after a store leaves Pending, producing an unknown
+sent outcome rather than a false rejection. The service classifies only Apply as
+a mutation, with no automatic replay.
+
+The transport supports root, figure, site, group and existing-image pages,
+filtering, paging, previews and direct selections/artist reset. Draft requests
+remain rejected until the shared new-image workflow is integrated. This is an
+internal staged path; the public planned-engraving UI remains unfinished.
+
+Protected185705 on2026-11-14 verifies the typed Godot client root and first128
+site IDs against native, a128-row continuation, and a site assignment confirmed
+directly as type1/id320/subid-1 in DF. Old specification revisions and closed
+selection receipts reject reads/edits; native picker/selection guards stay
+unchanged. Owned DF37440 exits unsaved with source preservation. Serial30FPS GPU
+samples49-50C/4-5%; live status is passed_with_known_issues for the documented
+render-thread/finalize/ObjectDB exit diagnostics only. Evidence is
+selection_reference.engraving_art_transport_reference. This is typed transport
+and effect acceptance, not a rendered picker or complete lifecycle qualification.
+Bridge, extension and root builds pass, as do all19 core checks including
+request exclusivity, stale-list requirements and malformed artwork reply tests.
+
 Native-only174721 and174833 pass their assertions; owned DF37032/1300
 exit unsaved with source/preferences preserved. Core19 passes. Graphics are
 serial30FPS, sampled GPU53C/13-14%; these are not continuous peaks. Native strings,

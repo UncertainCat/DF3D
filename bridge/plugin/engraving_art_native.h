@@ -9,6 +9,13 @@ struct EngravingArtSource {
     bool exists=false;
     uint64_t revision=0;
 };
+inline uint64_t engravingArtRevision(const EngravingArtSource& source) {
+    const auto& detail=source.detail;
+    uint64_t revision=UINT64_C(14695981039346656037);
+    for(auto value:{int(detail.pos.x),int(detail.pos.y),int(detail.pos.z),int(source.exists),int(detail.art_specifier),detail.art_spec_id1,detail.art_spec_id2})
+        for(unsigned shift=0;shift<32;shift+=8){revision^=(uint32_t(value)>>shift)&255;revision*=UINT64_C(1099511628211);}
+    revision&=INT64_MAX;return revision?revision:1;
+}
 // Planned engraving inputs come from the semantic per-tile specification.
 // The actual native opener also allocates an empty specification when absent;
 // collecting candidates needs only an owned default in that case.
@@ -23,10 +30,7 @@ inline std::optional<EngravingArtSource> engravingArtSource(int x,int y,int z) {
     detail.pos=df::coord(uint16_t(x),uint16_t(y),uint16_t(z));
     for(const auto* value:df::global::plotinfo->waypoints.location_detail)
         if(value && value->pos==detail.pos){detail=*value;source.exists=true;break;}
-    uint64_t revision=UINT64_C(14695981039346656037);
-    for(auto value:{x,y,z,int(source.exists),int(detail.art_specifier),detail.art_spec_id1,detail.art_spec_id2})
-        for(unsigned shift=0;shift<32;shift+=8){revision^=(uint32_t(value)>>shift)&255;revision*=UINT64_C(1099511628211);}
-    source.revision=revision&INT64_MAX;if(!source.revision)source.revision=1;
+    source.revision=engravingArtRevision(source);
     return source;
 }
 inline std::optional<df3d_production::WorkOrderArtSubjects> engravingArtSubjects(const EngravingArtSource& source,int kind,const std::string& query={}) {
@@ -76,7 +80,7 @@ enum class EngravingArtOutcome {Rejected,Stale,Applied};
 // Mixed native input handlers have no standalone assignment leaf. Project only
 // their pinned semantic stores after validating current native choices. Figure,
 // site and group assignment deliberately preserve the old image sub-ID.
-inline EngravingArtOutcome applyEngravingArtSubject(int x,int y,int z,uint64_t revision,int kind,int32_t id,uint64_t listRevision,const std::string& query={}) {
+inline EngravingArtOutcome applyEngravingArtSubject(int x,int y,int z,uint64_t revision,int kind,int32_t id,uint64_t listRevision,const std::string& query={},uint64_t* resultingRevision=nullptr) {
     if(!engravingArtReady() || !revision || revision>INT64_MAX || listRevision>INT64_MAX || query.size()>128 || kind<0 || (kind>3 && kind!=5))return EngravingArtOutcome::Rejected;
     auto source=engravingArtSource(x,y,z);
     if(!source || source->revision!=revision)return EngravingArtOutcome::Stale;
@@ -97,12 +101,14 @@ inline EngravingArtOutcome applyEngravingArtSubject(int x,int y,int z,uint64_t r
         if(std::find(subjects->ids.begin(),subjects->ids.end(),id)==subjects->ids.end())return EngravingArtOutcome::Rejected;
     }
     detail.art_specifier=df::job_art_specifier_type(type);detail.art_spec_id1=id;detail.art_spec_id2=subid;
+    source->detail=detail;source->exists=true;const auto nextRevision=engravingArtRevision(*source);
     auto& specifications=df::global::plotinfo->waypoints.location_detail;
-    for(auto* value:specifications)if(value && value->pos==detail.pos){*value=detail;return EngravingArtOutcome::Applied;}
+    for(auto* value:specifications)if(value && value->pos==detail.pos){*value=detail;if(resultingRevision)*resultingRevision=nextRevision;return EngravingArtOutcome::Applied;}
     // Allocation and vector growth precede publication. A read never inserts a
     // semantic record; a validated edit installs the native default plus stores.
     auto value=std::make_unique<df::location_detailst>(detail);
     specifications.push_back(value.get());value.release();
+    if(resultingRevision)*resultingRevision=nextRevision;
     return EngravingArtOutcome::Applied;
 }
 }

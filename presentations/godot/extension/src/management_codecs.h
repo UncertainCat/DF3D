@@ -21,6 +21,8 @@ void writeAgreement(godot::Dictionary& result, const wm::AgreementState& s);
 void writeTrade(godot::Dictionary& result, const wm::TradeState& s);
 void writeReport(godot::Dictionary& result, const wm::ReportState& s);
 void writeSelection(godot::Dictionary& result,const wm::SelectionState& s);
+bool validateSelectionArtShape(const godot::Dictionary& data,godot::String& error);
+bool readSelectionArt(const godot::Dictionary& data,wm::ManagementRequest& r,godot::String& error);
 bool validateSelectionShape(const godot::Dictionary& data,godot::String& error);
 bool readSelection(const godot::Dictionary& data,wm::ManagementRequest& r,godot::String& error);
 // Preserve the public adapter error precedence: shape validation, connection

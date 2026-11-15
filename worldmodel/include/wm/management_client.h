@@ -811,6 +811,8 @@ struct WorkOrderArtState {
   std::optional<std::vector<std::string>> draftDescription;
   std::optional<WorkOrderArtName> name;
 };
+struct SelectionArtRequest {uint64_t receipt=0,expectedRevision=0;WorkOrderArtRequest art;};
+struct SelectionArtState {uint64_t receipt=0,revision=0;std::optional<WorkOrderArtState> art;bool applied=false;};
 struct WorkOrderDetailsState {
   int32_t id=-1;uint64_t revision=0;std::string caption;
   std::vector<WorkOrderDetailsOption> options;
@@ -1011,6 +1013,7 @@ struct ManagementRequest {
   KitchenRequest kitchen;
   AlertRequest alert;
   SelectionRequest selection;
+  SelectionArtRequest selectionArt;
   int32_t creatureUnitId=-1;
   CreatureHeaderRequest creatureHeader;
   CreatureExpelRequest creatureExpel;
@@ -1082,6 +1085,7 @@ struct ManagementState {
   KitchenState kitchen;
   AlertState alert;
   SelectionState selection;
+  std::optional<SelectionArtState> selectionArt;
   CreatureInfo creature;
   std::optional<CreatureHeaderState> creatureHeader;
   std::optional<CreaturePosition> creaturePosition;

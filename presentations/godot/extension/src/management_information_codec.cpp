@@ -23,6 +23,32 @@ void writeSelection(Dictionary& result,const wm::SelectionState& s) {
   };
   value["alternatives"]=rows(s.alternatives);value["members"]=rows(s.members);result["selection"]=value;
 }
+bool validateSelectionArtShape(const Dictionary& data,String& error) {
+  if(!managementDictionaryTypes(data,{"receipt","expected_revision"},error))return false;
+  for(const Variant& key:data.keys()) {
+    if(key.get_type()!=Variant::STRING && key.get_type()!=Variant::STRING_NAME){error="Unexpected selection artwork key";return false;}
+    const String name=key;
+    if(name!="action" && name!="receipt" && name!="expected_revision" && name!="art"){error="Unexpected selection artwork field";return false;}
+  }
+  if(!data.has("art") || data["art"].get_type()!=Variant::DICTIONARY){error="Artwork must be a Dictionary";return false;}
+  const Dictionary art=data["art"];
+  for(const Variant& key:art.keys()) {
+    if(key.get_type()!=Variant::STRING && key.get_type()!=Variant::STRING_NAME){error="Unexpected artwork key";return false;}
+    const String name=key;
+    if(name=="query"){if(art[key].get_type()!=Variant::STRING){error="Artwork query must be a String";return false;}}
+    else if(name=="page" || name=="subject" || name=="expected_list_revision" || name=="cursor" || name=="hovered" || name=="preview_columns") {
+      if(art[key].get_type()!=Variant::INT){error="Artwork numeric fields must be integers";return false;}
+    } else {error="Unexpected selection artwork field";return false;}
+  }
+  return true;
+}
+bool readSelectionArt(const Dictionary& data,wm::ManagementRequest& r,String& error) {
+  const int64_t receipt=data.get("receipt",0),revision=data.get("expected_revision",0);
+  const auto action=Action(int64_t(data["action"]));
+  if((action!=Action::SelectionArtRead && action!=Action::SelectionArtApply) || receipt<=0 || revision<0 ||
+     !readArtRequest(data["art"],r.selectionArt.art)){error="Invalid selection artwork request";return false;}
+  r.action=action;r.selectionArt.receipt=uint64_t(receipt);r.selectionArt.expectedRevision=uint64_t(revision);return true;
+}
 bool validateSelectionShape(const Dictionary& data,String& error) {
   if(!managementDictionaryTypes(data,{"operation","receipt","index"},error))return false;
   for(const Variant& key:data.keys()) {

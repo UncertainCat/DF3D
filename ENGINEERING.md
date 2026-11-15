@@ -921,15 +921,41 @@ Pinned native goods opener36bc30 performs global menu teardown before enumeratin
 items, so it is not an admissible runtime API. Its candidate path calls c93160
 and30cc60(item,false), builds tradegoodslistst records, groups through ac9c30,
 then filters through37ba00 and selects/sorts the category through37a0a0. These
-are discovery addresses, not yet qualified runtime calls. The distance flood
+include both qualified leaves and unresolved grouping/filtering calls, as scoped
+below. The distance flood
 5ae710 writes shared block path-cost storage and a global generation counter;
-the enumeration reads those generated distances. Owned scratch and complete
-helper-call auditing remain required before exposing this behavior. PE unwind
+the enumeration reads those generated distances. The staged provider below
+preserves that storage; remaining grouping/filter helpers still need ownership
+auditing before exposure. PE unwind
 entries can describe only fragments (notably5ae710 andc93160); do not treat the
 first unwind range as the complete routine for safety or pinning. The legacy
 trade.lua eligibility scan and DFHack markForTrade job assembly are reconstructed
 logic, not native parity evidence. This reference qualifies native layout and
 initial facts only, not DF3D goods rendering, hauling effects or trade exchange.
+
+`depot_goods_native.h` supplies the staged unassigned-goods provider. It calls
+native c93160 and30cc60(item,false) for eligibility, resolves effective positions
+through c8baa0, calls the complete depot flood5ae710..5af02a, and inserts owned
+tradegoodslistst records through ac9a10/ac9230 for native type/material ordering.
+It never opens or reads the native picker. The flood receives the semantic depot;
+all block path costs, both120000-entry frontiers and pathstart/pathclear are
+saved and restored at the DF safe point, using the construction-material pattern.
+Touched final frontier slots reject the result. Capacity is bounded at1048576
+input items and250000 map blocks. This is not the complete picker provider:
+delivered goods, pending hauling jobs, category grouping, search, prohibitions,
+valuation and mutations remain to be integrated and qualified.
+
+Protected133430 on2026-11-15 compares all2009 native unassigned goods in exact
+order and their distances while the native picker is open. The diagnostic also
+resolves distances for all13079 IN_PLAY items, hashes all preserved search
+storage before/after each provider call, and verifies unchanged picker identity,
+selected category and list count. Escape, frame0/jobs0 restoration and source
+preservation pass; owned DF45032 closes unsaved. Native graphics stay capped30FPS,
+sampled GPU60C. MSVC bridge and core19 pass. Evidence:
+`completed_sheet_discovery_reference.depot_goods_provider_reference`.
+Earlier133013 established distance parity alone;133212 matched count but failed
+ordering because it retained IN_PLAY order. Native insertion fixes that discrepancy;
+the failed ordering run is not acceptance. Public depot routes remain hidden.
 
 ## Completed bridge, wagon and traction-bench sheets
 

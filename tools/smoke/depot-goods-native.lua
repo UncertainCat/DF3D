@@ -24,6 +24,16 @@ local ok,err=xpcall(function()
  result.sort_by_distance=menu.sort_by_distance;result.pending_on_top=menu.pending_on_top;result.exclude_prohib=menu.exclude_prohib
  result.items={}
  for _,row in ipairs(menu.master_i_list.tgi)do result.items[#result.items+1]={id=row.it.id,distance=row.dist,tag=row.tag,prohibited=row.prohibited,value=row.value,sort_value=row.sort_value}end
+ if os.getenv('DF3D_DEPOT_DISTANCE_NATIVE')=='1' then
+  local output,code=dfhack.run_command_silent('df3d','depot-distance-probe',tostring(b.id));assert(code==0,output)
+  local facts=json.decode(output);assert(facts.restored)
+  local by_id={};for _,row in ipairs(facts.rows)do by_id[row.id]=row.distance end
+  for _,row in ipairs(result.items)do assert(by_id[row.id]==row.distance,'Native distance differs for item '..row.id..': '..tostring(by_id[row.id])..' vs '..row.distance)end
+  assert(#facts.available==#result.items,'Native unassigned count differs')
+  for i,row in ipairs(result.items)do assert(row.tag==0 and facts.available[i]==row.id,'Native unassigned order differs at '..i)end
+  assert(menu.open and menu.trade_depot_bld.id==b.id and #menu.master_i_list.tgi==#result.items and menu.current_type==result.current_type)
+  result.distance_provider={matched=#result.items,observed=#facts.rows,unassigned_matched=#facts.available,search_storage_restored=facts.restored}
+ end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  assert(not menu.open,'Goods Escape failed')
 end,debug.traceback)

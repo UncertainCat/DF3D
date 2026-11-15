@@ -48403,6 +48403,28 @@
           "build/stockpile-storage-native-farm-discovery-20261115-132602/result.json": "df9103d2ab179a6fff3b777331d3d651c94902fc7fd0afe33e482ebac2034f01",
           "build/stockpile-storage-native-farm-discovery-20261115-132602/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "depot_goods_provider_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-133430",
+        "owned_df_pid": 45032,
+        "scope": "Native unassigned goods IDs/order and distances through semantic helpers, no native picker inputs. Search costs/frontiers/generation restored. No delivered/pending goods, grouping, UI or mutation acceptance.",
+        "provider": {
+          "matched": 2009,
+          "observed": 13079,
+          "search_storage_restored": true,
+          "unassigned_matched": 2009
+        },
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-133430/depot-goods-native.json": "d71e09a56e30e6cc33fc7b3a9ab9a511d4a9383ba914a68f82f094b7759a8984",
+          "build/stockpile-storage-native-farm-discovery-20261115-133430/result.json": "83784d320927e238251b4cb5ef48b05dafe3e4ca9cdc43d1a8f040bff66658c2",
+          "build/stockpile-storage-native-farm-discovery-20261115-133430/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        },
+        "initial_failure": {
+          "lane": "133212",
+          "reason": "Native master list uses ac9a10/ac9230 insertion order, not IN_PLAY order; corrected by calling native insertion with owned records."
+        }
       }
     },
     "pending_construction_reference": {

@@ -92,6 +92,7 @@
 #include "machinery_native.h"
 #include "well_native.h"
 #include "depot_native.h"
+#include "depot_goods_native.h"
 #include "building_links_native.h"
 #include "lever_native.h"
 #include "creature_office_native.h"
@@ -4938,6 +4939,23 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         output["slave_strength"]=facts->slaveStrength;output["prisoner_strength"]=facts->prisonerStrength;output["imprisoner_strength"]=facts->imprisonerStrength;
         output["deity_histfig_id"]=facts->deityHistfigId;output["deity"]=facts->deity;
         output["ordinary_color"]=Json::Value(Json::arrayValue);for(auto color:facts->ordinaryColor)output["ordinary_color"].append(int(color));
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
+      if(parameters[0]=="depot-distance-probe") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        int32_t id=-1;const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+        const auto before=df3d_production::depot_goods_detail::storageHash();
+        const auto rows=df3d_production::depotItemDistances(df::building::find(id),df::global::world->items.other[df::items_other_id::IN_PLAY]);
+        const auto after=df3d_production::depot_goods_detail::storageHash();
+        if(!rows || before!=after)return CR_FAILURE;
+        const auto available=df3d_production::depotUnassignedGoods(df::building::find(id));
+        if(!available || before!=df3d_production::depot_goods_detail::storageHash())return CR_FAILURE;
+        Json::Value output;output["restored"]=true;output["rows"]=Json::arrayValue;
+        output["available"]=Json::arrayValue;
+        for(const auto& row:*available)output["available"].append(row.id);
+        for(const auto& row:*rows){Json::Value value;value["id"]=row.id;value["distance"]=row.distance;output["rows"].append(value);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="depot-settings-probe") {

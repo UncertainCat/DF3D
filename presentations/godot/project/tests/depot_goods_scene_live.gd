@@ -18,7 +18,7 @@ func close_goods() -> bool:
 	while owner.goods_mode and Time.get_ticks_msec()<deadline:
 		world.poll();actions.poll(0.01);await create_timer(0.01).timeout
 	if not check(not owner.goods_mode and owner.goods.phase==owner.goods.Phase.Closed,"Escape did not finish and return from goods"):return false
-	return await chest_ready()
+	return check(scene._ui.host.active==null and owner.state.building_id<0 and not owner.panel.visible,"Goods close retained parent selection")
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("furniture");owner.open_target(int(expected.id))
 	if not await chest_ready() or not await open_goods():return
@@ -34,7 +34,9 @@ func exercise(expected: Dictionary) -> void:
 		if not await goods_ready():return
 		check(owner.goods.groups[0].flags==(1 if desired else 2),"Group checkbox did not stage native choices")
 		if not await close_goods():return
-		check(owner.state.snapshot.depot.awaiting_items==(2 if desired else 0),"Returned depot awaiting count differs")
+		owner.open_target(int(expected.id))
+		if not await chest_ready():return
+		check(owner.state.snapshot.depot.awaiting_items==(2 if desired else 0),"Reopened depot awaiting count differs")
 		if desired and not await open_goods():return
 	# Host teardown retires a pending read without committing or replaying it.
 	await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(100,114))

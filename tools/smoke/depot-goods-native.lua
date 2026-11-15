@@ -203,6 +203,7 @@ local ok,err=xpcall(function()
  end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  assert(not menu.open,'Goods Escape failed')
+ assert(df.global.game.main_interface.view_sheets.active_id==-1,'Goods Escape retained native parent selection')
  if os.getenv('DF3D_DEPOT_GOODS_SCENE')=='1' then
   local file=assert(io.open(out..'/depot-goods-scene-expected.json','w'));file:write(json.encode{id=b.id});file:close()
   local selected=df.global.game.main_interface.view_sheets.active_id

@@ -51,9 +51,8 @@ func _open_goods() -> void:
 	goods_view._closing=false;goods_view.show();goods.open(state.building_id)
 func _back_goods() -> void:
 	if not goods_mode:return
-	goods_mode=false;goods_view.hide()
-	# A confirmed close refreshes awaiting counts from DF, never local guesses.
-	if state.building_id>=0:state.refresh();contents.refresh();panel.show()
+	# Native Escape commits the picker and also clears its parent selection.
+	close_panel()
 func _retire_goods() -> void:
 	goods_mode=false
 	if goods_view!=null:goods_view._closing=false;goods_view.hide()

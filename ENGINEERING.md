@@ -75,28 +75,47 @@ native text/hitboxes plus the existing shared renderer, not depot pixel parity.
 The diagnostic helper therefore records text/cells without requesting misleading
 screenshots. Search-widget help and main-scene integration remain unfinished.
 
-The staged furniture owner now connects the depot goods button to its picker,
+The staged furniture owner connects the depot goods button to its picker,
 with shared hover ownership and host input gating. Escape finishes the owned
-draft before returning to the depot; the parent refreshes awaiting counts from
-DF. Target replacement, session retirement and teardown detach goods work
-without replay. Parent polling is suspended while the picker owns the view.
-The depot uses native INTERFACE_BITS scrollbar artwork and the native fixed
-RGB160 empty-search hint; other search controls retain their existing colors.
+draft and closes both picker and parent selection, matching native behavior.
+Reopening the depot reads awaiting counts from DF. Target replacement, session
+retirement and teardown detach goods work without replay. Parent polling is
+suspended while the picker owns the view. The depot uses INTERFACE_BITS
+scrollbar artwork and the native fixed RGB160 empty-search hint; other search
+controls retain their existing colors.
 
-Protected172638 on2026-11-15 verifies the actual main-scene button roundtrip.
+Protected172856 on2026-11-15 verifies the actual main-scene button workflow.
 The full944x708 initial goods panel, including both anvil icons, matches native
-pixels. Pointer group selection followed by Escape creates two hauling jobs;
-the returned sheet reads awaiting2. Reopening and deselecting cancels both,
-returning awaiting0. Closing the owner during a pending read retires the picker.
-The native oracle verifies jobs0, unchanged paused frame and unchanged native
-menu/selection afterward. Owned DF47224 closes unsaved/source-preserved. Both
-native and Godot are capped30FPS, sampled GPU52C, with clean scene diagnostics.
-All19 core checks pass. Controller lifecycle checks pass with the already
-tracked experimental rendering-thread warning (not a diagnostic-free result).
+pixels. Pointer group selection followed by Escape creates two hauling jobs and
+releases both picker and parent ownership. Reopening reads awaiting2. Reopening
+goods and deselecting cancels both; another depot inspection reads awaiting0.
+Closing the owner during a pending read retires the picker. The native oracle
+explicitly asserts active_id=-1 after native Escape, then verifies jobs0,
+unchanged paused frame and unchanged native menu/selection after the client.
+Owned DF35784 closes unsaved/source-preserved; graphics capped30FPS, sampled
+GPU52C, with clean scene diagnostics. All19 core checks pass. Controller
+lifecycle checks pass with the tracked experimental rendering-thread warning.
 Evidence: `completed_sheet_discovery_reference.depot_goods_scene_reference`.
+Prior172638 proved pixels and job effects but its return-to-parent expectation
+was incorrect; it is superseded by172856 for navigation acceptance.
 Public depot routes remain hidden. Ordinary hauler completion, container and
 all-category scene workflows, search-widget help, tooltip pixel comparison,
 large-list behavior and full merchant exchange remain unfinished.
+
+### Merchant exchange native ownership investigation
+
+On the pinned53.16 binary, depot input1af943..1af961 checks native5ab090 for a
+trader before calling36b970 with the trade interface and semantic depot.
+The complete opener36b970..36bc2d spans split unwind entries; the first ends
+at36b9a9 and is not the whole function. It enumerates eligible caravan records
+into the supplied interface, but also tears down global menus and calls the
+native goods commit36b0c0 on global assign_trade storage at36bb23. Therefore it
+is not an admissible runtime API. With one merchant it calls36b590 on the
+supplied interface and caravan; multiple merchants set choosing_merchant.
+That initializer and its leaves still require ownership/effect auditing and
+protected native observations. These addresses are static investigation,
+not qualified APIs or trade UI acceptance. The legacy trade.lua implements
+preparation only and does not supply negotiation semantics.
 
 ## Depot goods value transport migration
 

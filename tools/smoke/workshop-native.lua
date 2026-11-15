@@ -151,7 +151,16 @@ local ok,err=xpcall(function()
    candidate:setBuildStage(candidate:getMaxBuildStage()-1)
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(candidate)
    assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==candidate.id,'Header artwork target selection missed')
-   rows[#rows+1]={id=candidate.id,type=kind,stage=candidate:getBuildStage(),tile={candidate.centerx,candidate.centery,candidate.z}}
+   local trigger_kind=0;local trigger_links=0
+   if df.building_trapst:is_instance(candidate) then
+    local subtype=tonumber(candidate.trap_type);if subtype==0 or subtype==1 then trigger_kind=subtype+1 end
+   end
+   for _,held in ipairs(candidate.contained_items)do for _,ref in ipairs(held.item.general_refs)do
+    if ref:getType()==df.general_ref_type.BUILDING_TRIGGER or ref:getType()==df.general_ref_type.BUILDING_TRIGGERTARGET then
+     if ref:getBuilding()then trigger_links=trigger_links+1 end
+    end
+   end end
+   rows[#rows+1]={id=candidate.id,type=kind,stage=candidate:getBuildStage(),trigger_kind=trigger_kind,trigger_links=trigger_links,tile={candidate.centerx,candidate.centery,candidate.z}}
    if duration_probe then
     local stages={};rows[#rows].duration=stages
     for stage=0,candidate:getMaxBuildStage()-1 do

@@ -16840,6 +16840,100 @@
           "result.json": "6e126311c5d6c53ec95e33b6561723c822eb14cd37aeb07552cd1c2b346bef4e",
           "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "trigger_layout_reference": {
+        "protocol": 221,
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-012654",
+        "owned_df_pid": 37592,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "status": "passed_with_known_issues",
+        "scope": "Five controlled unfinished buildings at default1200x800: native trigger kind and resolved reference count independently read by Lua and matched to actual main-scene receipts. Every full488x708 panel, including Lever55 contents placement, matches native. Stages restored and owner retired. No responsive, pressure-plate or connected nontrigger building coverage is claimed by this lane.",
+        "native_predicate_rva": "180749..180a82",
+        "comparisons": [
+          {
+            "id": 56,
+            "stage": 2,
+            "tile": [
+              116,
+              101,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 5,
+            "full_panel_equal": true,
+            "viewer_sha256": "af29473dd907de3ed29644d200099e89cf2e1dc7996053e4ab2a8e4f08cc6eed",
+            "native_sha256": "8064825d546c5878c52619dc33e7a317a6172702e424c1bfe35c9238dc6592e7"
+          },
+          {
+            "id": 3,
+            "stage": 2,
+            "tile": [
+              106,
+              95,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 13,
+            "full_panel_equal": true,
+            "viewer_sha256": "1ee3f86751c01b487e2216eacb9ced7c31f4213e537c07a7d0016f1c9886b312",
+            "native_sha256": "74d9267a087aff4a5be85f84197c125a781d52fa0950cea206f2951fdfb9ab4b"
+          },
+          {
+            "id": 16,
+            "stage": 0,
+            "tile": [
+              121,
+              99,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 8,
+            "full_panel_equal": true,
+            "viewer_sha256": "7e58e86d9c6de603bd8bc3e5338d65072c5d9ea070ab2f16b9c91bc91bf67517",
+            "native_sha256": "db82efd202d37ab315f939ba39b7aef6cbb86484f20b9329fe63b5cac6a0537c"
+          },
+          {
+            "id": 493,
+            "stage": 0,
+            "tile": [
+              126,
+              46,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 15,
+            "full_panel_equal": true,
+            "viewer_sha256": "956be4d76af87d300ee05b8e16cbb397d1dae321a27fc30f240d259599943350",
+            "native_sha256": "f844e9ee79f1afa58e3fda505301845120eb77204e83236b3720f7b4098006a9"
+          },
+          {
+            "id": 55,
+            "stage": 0,
+            "tile": [
+              97,
+              103,
+              165
+            ],
+            "trigger_kind": 1,
+            "trigger_links": 2,
+            "type": 23,
+            "full_panel_equal": true,
+            "viewer_sha256": "df16f5ea2489588bf86057c30bfdd3916cff0f8bda92bea92df8037ec49130f8",
+            "native_sha256": "cfb5c3017c42704b1fcccd1d3a32e0357d440eb995990ab7b1761e5d77e96a0c"
+          }
+        ],
+        "hashes": {
+          "workshop-native.json": "29189bb5d8e836b582020070ee58b2d05c0c8db9f509c1c3328b10b2251926f4",
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "result.json": "26e462fd933fdf13740174b8cd2fd8752e94275383f685d5bda91c8a7c8aa4ac",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

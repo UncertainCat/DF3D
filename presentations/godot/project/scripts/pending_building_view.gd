@@ -6,8 +6,11 @@ var header_texture: Texture2D
 func configure(source,model,help=null,contents_model=null) -> void:
 	artwork_source=source
 	super.configure(source,model,help,contents_model)
+func contents_extra_height() -> int:
+	return 36 if state.snapshot.get("trigger_kind",0)>0 or state.snapshot.get("trigger_links",0)>0 else 0
 func refresh() -> void:
 	super.refresh()
+	_layout_contents()
 	var recipe: Dictionary=state.snapshot.get("appearance",{})
 	if recipe!=header_recipe:
 		header_recipe=recipe.duplicate(true)

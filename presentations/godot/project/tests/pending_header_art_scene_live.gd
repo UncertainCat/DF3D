@@ -8,17 +8,11 @@ func capture_header(kind: int) -> void:
 	if not check(native!=null,"Native header reference missing"):return
 	native.convert(Image.FORMAT_RGB8)
 	# Qualify each header and the completed body comparisons below.
-	# Retain full lever captures to track its separate layout gap.
+	# Include the native trigger-section space in the full lever comparison.
 	var region:=Rect2i(416,52,488,72)
 	check(image.get_region(region).get_data()==native.get_region(region).get_data(),"Native header artwork differs: "+str(kind))
-	# The lever still has a separately tracked leading-row layout gap. Compare
-	# its three mechanism icons at their respective native/viewer positions.
-	if kind==23:
-		for row in 3:
-			check(image.get_region(Rect2i(426,510+36*row,32,32)).get_data()==native.get_region(Rect2i(426,546+36*row,32,32)).get_data(),"Native mechanism artwork differs: "+str(row))
-	else:
-		region=Rect2i(416,52,488,708)
-		check(image.get_region(region).get_data()==native.get_region(region).get_data(),"Native pending panel differs: "+str(kind))
+	region=Rect2i(416,52,488,708)
+	check(image.get_region(region).get_data()==native.get_region(region).get_data(),"Native pending panel differs: "+str(kind))
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("pending_building")
 	for sample in expected.pending_header_art:
@@ -27,6 +21,7 @@ func exercise(expected: Dictionary) -> void:
 		if not await pending_ready():return
 		check(not owner.state.snapshot.get("appearance",{}).is_empty(),"Native header recipe missing")
 		check(owner.panel.header_texture!=null,"Native header recipe did not resolve installed artwork")
+		check(owner.state.snapshot.trigger_kind==int(sample.trigger_kind) and owner.state.snapshot.trigger_links==int(sample.trigger_links),"Trigger facts differ from independent native readback")
 		await capture_header(int(sample.type))
 		await key(KEY_ESCAPE);await process_frame
 		check(scene._ui.host.active==null and owner.contents.building_id==-1,"Header closure retained authority")

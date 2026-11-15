@@ -53,10 +53,16 @@ func contents_allowed() -> bool:return allowed() and state.phase==state.Phase.Re
 func layout(view: Vector2) -> void:
 	position=Vector2((floori(view.x/8)-98)*8,48+fposmod(view.y,12)*0.5)
 	size=Vector2(488,floori(view.y/12)*12-84)
-	if contents!=null:
-		contents.set_capacity(maxi(0,floori((size.y-480)/36)) if int(size.y/12)>=45 else 0)
-		contents.visible=contents.page>0
+	_layout_contents()
 	queue_redraw()
+
+func contents_extra_height() -> int:return 0
+func _layout_contents() -> void:
+	if contents!=null:
+		var extra:=contents_extra_height()
+		contents.position=Vector2(8,456+extra)
+		contents.set_capacity(maxi(0,floori((size.y-480-extra)/36)) if int(size.y/12)>=45 else 0)
+		contents.visible=contents.page>0
 
 func refresh() -> void:
 	if target!=state.building_id:

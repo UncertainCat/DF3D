@@ -57,6 +57,7 @@ func sync_scroll() -> void:
 	if state==null or scrollbar==null:return
 	var footer:=96 if state.has_art() and (state.art_page()>=6 or state.art_page() in [1,2,3]) else 60 if state.has_art() and state.art_page()==5 else 24
 	if engraving_context and state.has_art() and state.art_page() in [1,2,3]:footer=72
+	if engraving_context and state.has_art() and state.art_page()==14:footer=24
 	if workshop_job_context and not state.has_art():footer=12
 	# Native2040c5/204bab and the other element branches reserve three fewer
 	# cells for unique figures/artifacts, which have no quantity controls.
@@ -227,6 +228,7 @@ const DRAFT_CATEGORIES=[
 func draft_button(label: String,cell: Vector2i,enabled:=true,red:=false,selected:=false) -> Rect2:
 	var token:="BUTTON_CATEGORY_RECTANGLE" if not enabled else "BUTTON_CATEGORY_RECTANGLE_OFF" if red else "BUTTON_CATEGORY_RECTANGLE_ON"
 	if selected and enabled:token+="_SELECTED"
+	if engraving_context:draw_rect(Rect2(cell.x*8,cell.y*12,8,36),Color.BLACK)
 	patch(token,cell,label.length()+2,3)
 	text(label,Vector2(cell.x*8+8,cell.y*12+20))
 	return Rect2(cell.x*8,cell.y*12,(label.length()+2)*8,36)
@@ -267,10 +269,10 @@ func draw_draft() -> void:
 	elif page in [15,16]:text(("Choose X: " if page==15 else "Choose Y: ")+state.draft_relation_caption,Vector2(232,116))
 	if page!=6:
 		var offset: int=state.first-state.row_base()
-		var width:=int((size.x-248)/8)-(4 if page==17 else 2 if scrollbar.visible else 0)
+		var width:=int((size.x-248)/8)-(4 if page==17 and not engraving_context else 2 if scrollbar.visible else 0)
 		for i in mini(page_rows,state.rows.size()-offset):
 			var row: Dictionary=state.rows[offset+i]
-			patch("BUTTON_RECTANGLE_DARK",Vector2i(29,int(list_top()/12)+i*3),width,3)
+			patch("BUTTON_RECTANGLE" if engraving_context else "BUTTON_RECTANGLE_DARK",Vector2i(29,int(list_top()/12)+i*3),width,3)
 			var label: String=row.caption
 			# Native element/relationship branches use the inclusive row span:
 			# e.g.20800a..208083 shortens to width-4, including the ellipsis.

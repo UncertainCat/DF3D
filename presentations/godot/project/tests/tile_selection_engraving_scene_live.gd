@@ -73,6 +73,26 @@ func planned_exercise(expected: Dictionary) -> void:
 		await pointer(Vector2(840,82))
 		if not await settle(selection.artwork_state):return
 		check(not naming.active and selection.artwork_state.art_page()==6,"Name Done did not restore draft")
+	if OS.get_environment("DF3D_TILE_SELECTION_ENGRAVING_CATEGORIES")=="1":
+		var points: Array[Vector2]=[Vector2(110,166),Vector2(150,202),Vector2(110,238),Vector2(170,238),Vector2(110,274),Vector2(170,274),Vector2(110,310)]
+		for index in points.size():
+			await pointer(points[index])
+			if not await settle(selection.artwork_state):return
+			var expected_page: Dictionary=sample.image.draft.categories[index]
+			var current=selection.artwork_state
+			if not check(current.art_page()==int(expected_page.page),"Wrong image category"):return
+			var equal: bool=current.snapshot.art.total==expected_page.total and current.rows.size()==expected_page.rows.size()
+			for row in mini(current.rows.size(),expected_page.rows.size()):
+				equal=equal and current.rows[row].id==expected_page.rows[row].id and current.rows[row].secondary==expected_page.rows[row].secondary
+			check(equal,"Image category choices differ: "+str(expected_page.page))
+			await process_frame;await RenderingServer.frame_post_draw
+			image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+			native=Image.load_from_file(directory+"/workshop-selection-engraving-category-"+str(int(expected_page.page))+".png");native.convert(Image.FORMAT_RGB8)
+			image.get_region(region).save_png(directory+"/planned-category-"+str(int(expected_page.page))+"-live.png")
+			check(image.get_region(region).get_data()==native.get_region(region).get_data(),"Image category pixels differ: "+str(expected_page.page))
+			await pointer(Vector2(110,430))
+			if not await settle(current):return
+			check(current.art_page()==6,"Category Cancel did not restore draft")
 	await pointer(Vector2(110,166))
 	if not await settle(selection.artwork_state):return
 	check(selection.artwork_state.art_page()==7,"Creature category did not open")
@@ -98,6 +118,35 @@ func planned_exercise(expected: Dictionary) -> void:
 	if not await settle(selection.artwork_state):return
 	await pointer(Vector2(320,202))
 	if not await settle(selection.artwork_state):return
+	if OS.get_environment("DF3D_TILE_SELECTION_ENGRAVING_RELATIONS")=="1":
+		var current=selection.artwork_state
+		await pointer(Vector2(110,274))
+		if not await settle(current):return
+		await pointer(Vector2(320,202))
+		if not await settle(current):return
+		check(current.draft_value.elements.size()==2,"Shape did not enter draft")
+		await pointer(Vector2(150,346))
+		if not await settle(current):return
+		check(current.art_page()==14 and current.snapshot.art.total==sample.image.draft.relationship.total and current.rows[0].id==sample.image.draft.relationship.verb,"Relationship choices differ")
+		await editor_capture("relations")
+		await pointer(Vector2(320,202))
+		if not await settle(current):return
+		check(current.art_page()==15,"Relationship actor did not open")
+		await pointer(Vector2(320,202))
+		if not await settle(current):return
+		if sample.image.draft.relationship.transitive:
+			check(current.art_page()==16,"Relationship target did not open")
+			await pointer(Vector2(320,202))
+			if not await settle(current):return
+		check(current.art_page()==6 and current.draft_value.relationships.size()==1 and current.snapshot.art.draft_description==sample.image.draft.relationship.description,"Relationship description differs")
+		await pointer(Vector2(150,382))
+		if not await settle(current):return
+		await editor_capture("delete")
+		await pointer(Vector2(872,166))
+		if not await settle(current):return
+		check(current.draft_value.elements.size()==1 and current.draft_value.relationships.is_empty() and current.snapshot.art.draft_description==sample.image.draft.relationship.deleted_description,"Deleting actor retained relationship or wrong text")
+		await pointer(Vector2(110,430))
+		if not await settle(current):return
 	await pointer(Vector2(168,430));await drain()
 	check(not selection.artwork.visible and ui.host.active==selection,"Draft Done did not return to sheet")
 	key(KEY_ESCAPE);await process_frame
@@ -113,3 +162,11 @@ func name_capture(label: String) -> void:
 	var region:=Rect2i(72,52,832,672)
 	image.get_region(region).save_png(directory+"/planned-name-"+label+"-live.png")
 	check(image.get_region(region).get_data()==native.get_region(region).get_data(),"Engraving name pixels differ: "+label)
+
+func editor_capture(label: String) -> void:
+	await process_frame;await RenderingServer.frame_post_draw
+	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	var native:=Image.load_from_file(directory+"/workshop-selection-engraving-"+label+".png");native.convert(Image.FORMAT_RGB8)
+	var region:=Rect2i(72,52,832,672)
+	image.get_region(region).save_png(directory+"/planned-"+label+"-live.png")
+	check(image.get_region(region).get_data()==native.get_region(region).get_data(),"Engraving editor pixels differ: "+label)

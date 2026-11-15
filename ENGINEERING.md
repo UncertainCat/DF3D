@@ -9642,6 +9642,22 @@ source preservation holds. Evidence: selection_reference.engraving_name_referenc
 No product naming implementation change was needed. Random naming and remaining
 component word lists are not yet engraving-context acceptance.
 
+Protected195511 on2026-11-14 verifies all seven element category pages in the
+actual main scene: native totals and first up to128 ordered compound IDs, exact
+editor crops, and Cancel back to the draft. Engraving uses normal list-row art,
+black backing beneath transparent category edges,14 relationship rows at1200x800,
+and delete-row backgrounds extending beneath removal buttons. These changes are
+scoped to engraving; other shared editor contexts retain their existing behavior.
+195126 qualifies the category corrections separately;194909 and195324 are failed
+visual baselines superseded by195511. Creature plus Shape and transitive relation17
+produce native prose; selecting actor/target and deleting the actor removes its
+dependent relationship and preserves the remaining shape. Done registers exactly
+one image. Owned DF33520 exits unsaved with source preservation; GPU58C/7% at30FPS.
+The final lane passes_with_known_issues for documented Godot exit diagnostics.
+Evidence: selection_reference.engraving_categories_relationship_reference.
+Other element-family commits, intransitive relations, full list pagination/filtering,
+random name controls and responsive engraving layouts remain unqualified.
+
 selection_art_state.gd reuses local artwork navigation state with a selected-tile
 receipt, never a proxy job. work_order_details_view.gd has an engraving context
 for the native frame, cell-aligned heading, root-button backing, normal subject

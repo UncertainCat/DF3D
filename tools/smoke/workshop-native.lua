@@ -414,6 +414,26 @@ local ok,err=xpcall(function()
       shot('selection-engraving-name-selected')
       assert(click_label('Done') and not naming.open and art.open,'Name Done did not return to draft')
      end
+     if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_CATEGORIES')=='1' then
+      draft.categories={}
+      local categories={{7,110,166,'new_image_race','new_image_caste'},{8,150,202,'new_image_hf'},
+       {9,110,238,'new_image_plant'},{10,170,238,'new_image_tree'},{11,110,274,'new_image_shape','new_image_shape_adj'},
+       {12,170,274,'new_image_item','new_image_item_subtype'},{13,110,310,'new_image_artifact'}}
+      local function category_click(x,y)
+       g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+       df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
+      end
+      for _,c in ipairs(categories)do
+       category_click(c[2],c[3]);assert(art.current_option==c[1],'Wrong engraving category')
+       local values=art[c[4]];local row={page=c[1],total=#values,rows={}}
+       for i=0,math.min(127,#values-1)do
+        local id=values[i];if c[1]==8 or c[1]==13 then id=id.id end
+        row.rows[#row.rows+1]={id=id,secondary=c[5] and art[c[5]][i] or -1}
+       end
+       draft.categories[#draft.categories+1]=row;shot('selection-engraving-category-'..c[1])
+       category_click(110,430);assert(art.current_option==6,'Category Cancel failed')
+      end
+     end
      assert(click_label('Creature') and art.current_option==7,'Engraving creature picker missing')
      assert(owned.total==#art.new_image_race and owned.race==art.new_image_race[0] and owned.caste==art.new_image_caste[0],'Owned draft creature choices differ')
      shot('selection-engraving-draft-creature')
@@ -437,6 +457,29 @@ local ok,err=xpcall(function()
      g.precise_mouse_x=320;g.precise_mouse_y=202;g.mouse_x=40;g.mouse_y=16
      df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
      assert(art.current_option==6 and #art.new_image.elements==1,'Reopened draft creature missing')
+     if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_RELATIONS')=='1' then
+      local function edit_click(x,y)
+       g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+       df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
+      end
+      edit_click(110,274);assert(art.current_option==11,'Shape category missing')
+      edit_click(320,202);assert(art.current_option==6 and #art.new_image.elements==2,'Second element missing')
+      edit_click(150,346);assert(art.current_option==14 and #art.new_image_property>0,'Relationship choices missing')
+      draft.relationship={total=#art.new_image_property,verb=art.new_image_property[0],transitive=art.new_image_property_transitive[0]}
+      shot('selection-engraving-relations')
+      edit_click(320,202);assert(art.current_option==15,'Relationship actor missing')
+      edit_click(320,202)
+      if draft.relationship.transitive then assert(art.current_option==16,'Relationship target missing');edit_click(320,202)end
+      assert(art.current_option==6 and #art.new_image.properties==1,'Relationship not installed in draft')
+      draft.relationship.description={};for _,line in ipairs(art.art_box.text)do draft.relationship.description[#draft.relationship.description+1]=dfhack.df2utf(line.value)end
+      edit_click(150,382);assert(art.current_option==17,'Delete element list missing')
+      shot('selection-engraving-delete')
+      edit_click(872,166)
+      assert(#art.new_image.elements==1 and #art.new_image.properties==0,'Deleting actor did not remove dependent relationship')
+      draft.relationship.deleted_description={};for _,line in ipairs(art.art_box.text)do draft.relationship.deleted_description[#draft.relationship.deleted_description+1]=dfhack.df2utf(line.value)end
+      if art.current_option==17 then assert(click_label('Stop deleting'),'Stop deleting missing')end
+      assert(art.current_option==6,'Delete did not return to draft')
+     end
      assert(click_label('Done'),'Engraving draft Done missing')
      assert(not art.open and detail.art_specifier==3 and #resources.art_image_ids==count+1,'Native engraving draft did not register one image')
      assert(resources.art_image_ids[#resources.art_image_ids-1]==detail.art_spec_id1 and resources.art_image_subids[#resources.art_image_subids-1]==detail.art_spec_id2,'Native engraving image registration differs')

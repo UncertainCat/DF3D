@@ -12809,6 +12809,68 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "engraving_categories_relationship_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-195511",
+      "status": "passed_with_known_issues",
+      "scope": "Actual main-scene seven element category pages: native totals, first up to128 ordered compound IDs, exact editor pixels and Cancel. Add Creature and Shape, choose transitive admiration relation17, actor/target, exact description, delete actor and dependent relation, then one image registration. Other category commits, intransitive relations, full pagination/filtering and responsive layouts remain unqualified.",
+      "categories": [
+        {
+          "page": 7,
+          "total": 2394,
+          "compared_rows": 128
+        },
+        {
+          "page": 8,
+          "total": 10563,
+          "compared_rows": 128
+        },
+        {
+          "page": 9,
+          "total": 153,
+          "compared_rows": 128
+        },
+        {
+          "page": 10,
+          "total": 72,
+          "compared_rows": 72
+        },
+        {
+          "page": 11,
+          "total": 53,
+          "compared_rows": 53
+        },
+        {
+          "page": 12,
+          "total": 731,
+          "compared_rows": 128
+        },
+        {
+          "page": 13,
+          "total": 261,
+          "compared_rows": 128
+        }
+      ],
+      "relationship": {
+        "deleted_description": [
+          "It is an image of a baguette cut gem.  "
+        ],
+        "description": [
+          "It is an image of a aardvark and a baguette cut gem.  The aardvark is admiring the baguette cut ",
+          "gem.  "
+        ],
+        "total": 55,
+        "transitive": true,
+        "verb": 17
+      },
+      "owned_df_pid": 33520,
+      "hashes": {
+        "workshop-native.json": "e8a7de0055ab4cb94d8879ca5b3280f1567b5cf2a1e47a50d0d2f03f0c943c4a",
+        "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+        "planned-relations-live.png": "0578978bb5392b2eeceaeef308a6d8a3495fea7c68ddc7f21db140b368ba8111",
+        "planned-delete-live.png": "9a58cd7d988748960ce7fdf4ebfb5911ecdee6d2b9ae04d37ffc831f903c6643",
+        "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+      }
+    },
     "engraving_name_reference": {
       "lane": "build/stockpile-storage-native-farm-discovery-20261114-194627",
       "status": "passed_with_known_issues",

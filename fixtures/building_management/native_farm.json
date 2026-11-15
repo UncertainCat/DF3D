@@ -24453,6 +24453,117 @@
           "build/stockpile-storage-native-farm-discovery-20261115-091805/result.json": "94956329372dcb5086c2e990d4087775db967f04fae8e95fe9d9fa3d32679e70",
           "build/stockpile-storage-native-farm-discovery-20261115-091805/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "lever_resize_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-092059",
+        "scope": "Composed live empty Tasks panel and owned Link prompt at native minimum, wide and default window sizes. Six complete surface crops match native; active controls remain visible. Link Escape and subsequent Pull/Link wire effects pass. This does not qualify all tab overflow or every resized input target.",
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "owned_df_pid": 29092,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "surfaces": [
+          {
+            "name": "resize-minimum",
+            "window": [
+              912,
+              552
+            ],
+            "crop": [
+              128,
+              48,
+              488,
+              468
+            ]
+          },
+          {
+            "name": "resize-wide",
+            "window": [
+              1600,
+              900
+            ],
+            "crop": [
+              816,
+              48,
+              488,
+              816
+            ]
+          },
+          {
+            "name": "resize-default",
+            "window": [
+              1200,
+              800
+            ],
+            "crop": [
+              416,
+              52,
+              488,
+              708
+            ]
+          },
+          {
+            "name": "prompt-resize-minimum",
+            "window": [
+              912,
+              552
+            ],
+            "crop": [
+              32,
+              48,
+              456,
+              156
+            ]
+          },
+          {
+            "name": "prompt-resize-wide",
+            "window": [
+              1600,
+              900
+            ],
+            "crop": [
+              32,
+              48,
+              456,
+              156
+            ]
+          },
+          {
+            "name": "prompt-resize-default",
+            "window": [
+              1200,
+              800
+            ],
+            "crop": [
+              32,
+              52,
+              456,
+              156
+            ]
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/lever-resize-minimum.png": "5ce0e61891d45b3a7ad03b68ccdc4076b7cc300f7767c90c1245963a02226a51",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/lever-resize-minimum-viewer.png": "3c19cd0639f2c0d49fa767f744cd76ca61019edaf176e3090e219719b08f11bc",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/lever-resize-wide.png": "d7eec5ec268e5274f3cbc9b85ddb724ac29f95191c0e20589fb1c172f7fdd5a0",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/lever-resize-wide-viewer.png": "3575fe4c0926a7468cada0c6a395039ab1fc64d6c4be9625dfce07c6787d6e5b",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/lever-resize-default.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/lever-resize-default-viewer.png": "eac86d5738f6feff14d0f985d1a953a13d374583ae726b98979ee3b08c481119",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/lever-prompt-resize-minimum.png": "f74a6b5a7bcca12b6a8311a33ab6c9cec858ef2ef4724ef17419e162d7c1ed7e",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/lever-prompt-resize-minimum-viewer.png": "68ea30231d50c2812173431967f401a8390b6760acb727059ba298193a94629d",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/lever-prompt-resize-wide.png": "e9d1b62434ac8e2ab07d981976daccd0ed96e7f60153c03e1469df0fcd1bdb54",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/lever-prompt-resize-wide-viewer.png": "68ea30231d50c2812173431967f401a8390b6760acb727059ba298193a94629d",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/lever-prompt-resize-default.png": "9270f6b6b4f0df76abd706c0bad2d37e49a09334ab64b6020adff3a225ac3e76",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/lever-prompt-resize-default-viewer.png": "68ea30231d50c2812173431967f401a8390b6760acb727059ba298193a94629d",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/lever-native.json": "89c7d36ae95a4c36bf400972f48a2efb33b683ce39549eb4f013ae9e43ae2551",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/workshop-wire-result.json": "688e2c4f30a2c16e1504d4fd8cacb37fc1874460d309d637d871ae71ef881c02",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/result.json": "c631ca12ccef96214b5104c125876162bab4563c5550f03199e485676398f583",
+          "build/stockpile-storage-native-farm-discovery-20261115-092059/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

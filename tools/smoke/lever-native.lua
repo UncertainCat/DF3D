@@ -1,5 +1,5 @@
 -- Native action discovery in a paused, owned disposable clone only.
-local out,view,select_map,capture,click_label,read_worker_reference=...
+local out,view,select_map,capture,click_label,read_worker_reference,resize_worker=...
 local gui=require('gui');local json=require('json')
 local lever=assert(df.building.find(55));assert(df.building_trapst:is_instance(lever) and lever.trap_type==0)
 assert(#lever.jobs==0 and df.global.pause_state)
@@ -38,6 +38,9 @@ end
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(lever)
  assert(sheet.open and sheet.active_id==lever.id);sample('initial')
+ if os.getenv('DF3D_LEVER_RESIZE')=='1'then
+  for _,size in ipairs{'minimum','wide','default'}do resize_worker(size);sample('resize-'..size)end
+ end
  if os.getenv('DF3D_LEVER_NAVIGATION')=='1'then
   click(540,520);sample('linked-buildings')
   click(868,562);assert(not sheet.open);sample('linked-recenter')
@@ -233,6 +236,9 @@ local ok,err=xpcall(function()
    item.flags.forbid=false;result.supplies[#result.supplies+1]=item.id
   end
   select_map(lever);assert(click_label('Link lever'));sample('link-with-supplies')
+  if os.getenv('DF3D_LEVER_RESIZE')=='1'then
+   for _,size in ipairs{'minimum','wide','default'}do resize_worker(size);sample('prompt-resize-'..size)end
+  end
   assert(sheet.linking_lever,'Native Link did not accept accessible fixture mechanisms')
   if os.getenv('DF3D_LEVER_LINK_DETAIL')=='1'then
    local function reopen_link()

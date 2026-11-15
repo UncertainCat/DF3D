@@ -260,6 +260,16 @@ sampled GPU58C. Core19 passes; the graphical client retains only the established
 render-thread/finalize/two ObjectDB diagnostics. Evidence:
 `completed_sheet_discovery_reference.lever_warning_scene_reference`.
 
+Protected092059 on2026-11-15 qualifies the composed empty lever Tasks panel
+and Link prompt at912x552,1600x900 and1200x800. Six complete surface crops match
+native. The panel heights are468/816/708; the prompt remains456x156. Active
+controls remain visible, and default-size Link cancellation and the subsequent
+Pull/Link wire effects pass. No layout change was required. This does not claim
+every resized input target or all tab overflow cases. Owned DF29092 closes
+unsaved with source preservation, graphics capped30FPS, sampled GPU59C. Core19
+passes; only the established render-thread/finalize/two ObjectDB diagnostics
+remain. Evidence: `completed_sheet_discovery_reference.lever_resize_reference`.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

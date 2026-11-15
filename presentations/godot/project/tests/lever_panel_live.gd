@@ -29,6 +29,17 @@ func model_ready(model) -> bool:
 		world.poll();await process_frame
 		if model.phase==model.Phase.Ready:return true
 	check(false,"Lever subpanel did not become ready: "+str(model.phase));return false
+func resize_gestures(owner,prompt: bool) -> void:
+	for label in ["minimum","wide","default"]:
+		var reference: String=("prompt-resize-" if prompt else "resize-")+label
+		var native:=Image.load_from_file(directory+"/lever-"+reference+".png");native.convert(Image.FORMAT_RGB8)
+		root.size=native.get_size()
+		await process_frame;await process_frame;await RenderingServer.frame_post_draw
+		var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+		var rect:=Rect2i(Vector2i(owner.lever.view.position),Vector2i(owner.lever.view.size)) if prompt else Rect2i(Vector2i(owner.panel.position),Vector2i(owner.panel.size))
+		var crop:=image.get_region(rect);crop.save_png(directory+"/lever-"+reference+"-viewer.png")
+		check(crop.get_data()==native.get_region(rect).get_data(),"Lever resize differs: "+reference)
+		check(owner.lever.view.visible if prompt else owner.panel.tasks.visible,"Resize hid active lever controls")
 func item_gestures(owner) -> void:
 	var native: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/lever-native.json"))
 	var id: int=int(native.item_controls.item_id)
@@ -140,10 +151,12 @@ func inspect_prompt(_snapshot: Dictionary,_expected: Dictionary) -> void:
 		if OS.get_environment("DF3D_LEVER_ITEMS")=="1":await item_gestures(owner)
 		if OS.get_environment("DF3D_LEVER_ORDER_VIEWER")=="1":await order_picker_gestures(owner)
 		if OS.get_environment("DF3D_LEVER_TASK_CONTROLS")=="1":await gestures(owner)
+		if OS.get_environment("DF3D_LEVER_RESIZE")=="1":await resize_gestures(owner,false)
 		click(Vector2(744,154))
 		deadline=Time.get_ticks_msec()+10000
 		while Time.get_ticks_msec()<deadline and not owner.lever.view.visible:world.poll();await process_frame
 		check(owner.lever.view.visible and not owner.panel.visible and owner.modal_input,"Lever Link did not transfer panel/map ownership")
+		if OS.get_environment("DF3D_LEVER_RESIZE")=="1":await resize_gestures(owner,true)
 		owner.handle_escape();await process_frame
 		check(owner.panel.visible and not owner.lever.view.visible and not owner.modal_input,"Lever Link cancellation did not restore panel")
 	owner.close_panel();owner.queue_free();await process_frame

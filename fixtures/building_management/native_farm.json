@@ -25298,6 +25298,643 @@
           "build/stockpile-storage-native-farm-discovery-20261115-093622/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
           "build/stockpile-storage-native-farm-discovery-20261115-093622/lever-map-linked.png": "72b3710c99881a91f186111b6deaf195b770c7eff96440469eb626e3371e460a"
         }
+      },
+      "pressure_plate_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-094029",
+        "scope": "Paused controlled existing trap61 changed to PressurePlate subtype, restored afterward. Native Tasks/Workers/Work orders, missing-mechanism Link, supplied Link to door16 and native job cancellation. Standalone task view exact456x114 crops for initial/shortage/queued job. Not public map/panel integration or native construction-default evidence.",
+        "native": {
+          "building_id": 61,
+          "candidates": [],
+          "fixture": "Paused existing trap61 with subtype temporarily changed to PressurePlate; no simulation ticks. Not a native construction-default reference.",
+          "selected_mechanisms": [
+            24480,
+            48520
+          ],
+          "states": [
+            {
+              "active_id": 61,
+              "flags": 16,
+              "job_details": [],
+              "jobs": 0,
+              "label": "initial",
+              "lines": [
+                {
+                  "text": "                       Food  Drink           20th Malachite",
+                  "y": 0
+                },
+                {
+                  "text": "              Stocks                         Mid-Summer",
+                  "y": 1
+                },
+                {
+                  "text": "5 13  8  7            ~2000   ~400           Year 106",
+                  "y": 2
+                },
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 8
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 9
+                },
+                {
+                  "text": "                                    Link plate",
+                  "y": 12
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "linking": false,
+              "magma_max": 7,
+              "magma_min": 1,
+              "open": true,
+              "tab": 0,
+              "track_max": 2000,
+              "track_min": 1,
+              "unit_max": 200000,
+              "unit_min": 5000,
+              "warning": false,
+              "water_max": 7,
+              "water_min": 1
+            },
+            {
+              "active_id": 61,
+              "flags": 16,
+              "job_details": [],
+              "jobs": 0,
+              "label": "workers",
+              "lines": [
+                {
+                  "text": "                       Food  Drink           20th Malachite",
+                  "y": 0
+                },
+                {
+                  "text": "              Stocks                         Mid-Summer",
+                  "y": 1
+                },
+                {
+                  "text": "5 13  8  7            ~2000   ~400           Year 106",
+                  "y": 2
+                },
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 8
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 9
+                },
+                {
+                  "text": "         This workshop is free for anybody to use.",
+                  "y": 12
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "linking": false,
+              "magma_max": 7,
+              "magma_min": 1,
+              "open": true,
+              "tab": 1,
+              "track_max": 2000,
+              "track_min": 1,
+              "unit_max": 200000,
+              "unit_min": 5000,
+              "warning": false,
+              "water_max": 7,
+              "water_min": 1
+            },
+            {
+              "active_id": 61,
+              "flags": 16,
+              "job_details": [],
+              "jobs": 0,
+              "label": "work-orders",
+              "lines": [
+                {
+                  "text": "                       Food  Drink           20th Malachite",
+                  "y": 0
+                },
+                {
+                  "text": "              Stocks                         Mid-Summer",
+                  "y": 1
+                },
+                {
+                  "text": "5 13  8  7            ~2000   ~400           Year 106",
+                  "y": 2
+                },
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 8
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 9
+                },
+                {
+                  "text": "  A manager is required to add work orders to the shop.",
+                  "y": 12
+                },
+                {
+                  "text": "  General work orders allowed: 5",
+                  "y": 39
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "linking": false,
+              "magma_max": 7,
+              "magma_min": 1,
+              "open": true,
+              "tab": 2,
+              "track_max": 2000,
+              "track_min": 1,
+              "unit_max": 200000,
+              "unit_min": 5000,
+              "warning": false,
+              "water_max": 7,
+              "water_min": 1
+            },
+            {
+              "active_id": 61,
+              "flags": 16,
+              "job_details": [],
+              "jobs": 0,
+              "label": "tasks",
+              "lines": [
+                {
+                  "text": "                       Food  Drink           20th Malachite",
+                  "y": 0
+                },
+                {
+                  "text": "              Stocks                         Mid-Summer",
+                  "y": 1
+                },
+                {
+                  "text": "5 13  8  7            ~2000   ~400           Year 106",
+                  "y": 2
+                },
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 8
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 9
+                },
+                {
+                  "text": "                                    Link plate",
+                  "y": 12
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "linking": false,
+              "magma_max": 7,
+              "magma_min": 1,
+              "open": true,
+              "tab": 0,
+              "track_max": 2000,
+              "track_min": 1,
+              "unit_max": 200000,
+              "unit_min": 5000,
+              "warning": false,
+              "water_max": 7,
+              "water_min": 1
+            },
+            {
+              "active_id": 61,
+              "flags": 16,
+              "job_details": [],
+              "jobs": 0,
+              "label": "link",
+              "lines": [
+                {
+                  "text": "                       Food  Drink           20th Malachite",
+                  "y": 0
+                },
+                {
+                  "text": "              Stocks                         Mid-Summer",
+                  "y": 1
+                },
+                {
+                  "text": "5 13  8  7            ~2000   ~400           Year 106",
+                  "y": 2
+                },
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 8
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 9
+                },
+                {
+                  "text": "                                    Link plate",
+                  "y": 12
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "linking": false,
+              "magma_max": 7,
+              "magma_min": 1,
+              "open": true,
+              "tab": 0,
+              "track_max": 2000,
+              "track_min": 1,
+              "unit_max": 200000,
+              "unit_min": 5000,
+              "warning": false,
+              "water_max": 7,
+              "water_min": 1
+            },
+            {
+              "active_id": 61,
+              "flags": 16,
+              "job_details": [],
+              "jobs": 0,
+              "label": "link-cancel",
+              "lines": [
+                {
+                  "text": "                       Food  Drink           20th Malachite",
+                  "y": 0
+                },
+                {
+                  "text": "              Stocks                         Mid-Summer",
+                  "y": 1
+                },
+                {
+                  "text": "5 13  8  7            ~2000   ~400           Year 106",
+                  "y": 2
+                }
+              ],
+              "linking": false,
+              "magma_max": 7,
+              "magma_min": 1,
+              "open": false,
+              "tab": 0,
+              "track_max": 2000,
+              "track_min": 1,
+              "unit_max": 200000,
+              "unit_min": 5000,
+              "warning": false,
+              "water_max": 7,
+              "water_min": 1
+            },
+            {
+              "active_id": 61,
+              "flags": 16,
+              "job_details": [],
+              "jobs": 0,
+              "label": "supplied-link",
+              "lines": [
+                {
+                  "text": "                       Food  Drink           20th Malachite",
+                  "y": 0
+                },
+                {
+                  "text": "              Stocks                         Mid-Summer",
+                  "y": 1
+                },
+                {
+                  "text": "5 13  8  7            ~2000   ~400           Year 106",
+                  "y": 2
+                }
+              ],
+              "linking": true,
+              "magma_max": 7,
+              "magma_min": 1,
+              "open": true,
+              "tab": 0,
+              "track_max": 2000,
+              "track_min": 1,
+              "unit_max": 200000,
+              "unit_min": 5000,
+              "warning": false,
+              "water_max": 7,
+              "water_min": 1
+            },
+            {
+              "active_id": 61,
+              "flags": 16,
+              "job_details": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "item_roles": [
+                    {
+                      "flags": 0,
+                      "id": 24480,
+                      "index": -1,
+                      "role": 3
+                    },
+                    {
+                      "flags": 0,
+                      "id": 48520,
+                      "index": -1,
+                      "role": 4
+                    }
+                  ],
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 16,
+                      "type": 33
+                    },
+                    {
+                      "building_id": 61,
+                      "type": 36
+                    }
+                  ],
+                  "requirements": 0,
+                  "type": 146,
+                  "world_registered": true
+                }
+              ],
+              "jobs": 1,
+              "label": "linked-job",
+              "lines": [
+                {
+                  "text": "                       Food  Drink           20th Malachite",
+                  "y": 0
+                },
+                {
+                  "text": "              Stocks                         Mid-Summer",
+                  "y": 1
+                },
+                {
+                  "text": "5 13  8  7            ~2000   ~400           Year 106",
+                  "y": 2
+                },
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 8
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 9
+                },
+                {
+                  "text": "  Link a building to trigger",
+                  "y": 12
+                },
+                {
+                  "text": "                                    Link plate",
+                  "y": 15
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "linking": false,
+              "magma_max": 7,
+              "magma_min": 1,
+              "open": true,
+              "tab": 0,
+              "track_max": 2000,
+              "track_min": 1,
+              "unit_max": 200000,
+              "unit_min": 5000,
+              "warning": false,
+              "water_max": 7,
+              "water_min": 1
+            },
+            {
+              "active_id": 61,
+              "flags": 16,
+              "job_details": [],
+              "jobs": 0,
+              "label": "job-cancelled",
+              "lines": [
+                {
+                  "text": "                       Food  Drink           20th Malachite",
+                  "y": 0
+                },
+                {
+                  "text": "              Stocks                         Mid-Summer",
+                  "y": 1
+                },
+                {
+                  "text": "5 13  8  7            ~2000   ~400           Year 106",
+                  "y": 2
+                },
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 8
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 9
+                },
+                {
+                  "text": "                                    Link plate",
+                  "y": 12
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "linking": false,
+              "magma_max": 7,
+              "magma_min": 1,
+              "open": true,
+              "tab": 0,
+              "track_max": 2000,
+              "track_min": 1,
+              "unit_max": 200000,
+              "unit_min": 5000,
+              "warning": false,
+              "water_max": 7,
+              "water_min": 1
+            }
+          ],
+          "success": true,
+          "supplies": [
+            48520,
+            48521
+          ]
+        },
+        "owned_df_pid": 45932,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/pressure-plate-native.json": "ed376e0e09e6e7fe6243d04af95a2dfefc1a051051d2e879f70b6804867abd9a",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/result.json": "f79ef20c26e958abf4ac21ec45fddded2143601c1197326e22fd1829722a9d14",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/pressure-plate-initial.png": "f0eaf01c49bf507136063085c68ec1d325494863eaadd013d24663ab2f2dfd36",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/pressure-plate-job-cancelled.png": "4d8083b7bee2d1f8dcff5ba49c752c8318af62612130977c2d386d45a048c1ec",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/pressure-plate-link-cancel.png": "e6efc7e34c16de8ac37b2fd88dee9c1474f814a5ec537db798f2eab20644a051",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/pressure-plate-link.png": "f0eaf01c49bf507136063085c68ec1d325494863eaadd013d24663ab2f2dfd36",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/pressure-plate-linked-job.png": "b119ffa7462d9f81ea7c2006ea2e6b7b4ab1bf2c5905b943db65993a8b74bd76",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/pressure-plate-supplied-link.png": "0375582fcbfb60265d5c663d901ccefd9bab55954122757a5692eb486f64ebed",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/pressure-plate-tasks-initial-viewer.png": "605e3bba32d57f63aacc95574d4a62b963759db09972a0e08115da9f05bffcf2",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/pressure-plate-tasks-link-viewer.png": "605e3bba32d57f63aacc95574d4a62b963759db09972a0e08115da9f05bffcf2",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/pressure-plate-tasks-linked-job-viewer.png": "fb7e9ef28472c93d521e9184c7a84511a77fe5133854bbde47a78693c6d90f1a",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/pressure-plate-tasks.png": "f0eaf01c49bf507136063085c68ec1d325494863eaadd013d24663ab2f2dfd36",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/pressure-plate-work-orders.png": "d76b4af1d0ec134ae5b2f60f4af1c3dc92596454d301fb78a4497387ed358078",
+          "build/stockpile-storage-native-farm-discovery-20261115-094029/pressure-plate-workers.png": "f2591b9658293cc05f716255cd2e5b2c7a31ff4341eb4690a61e594efeb922a7",
+          "build/notes/pm/pressure-plate-tasks.stdout.log": "95594387ba5b88f101811bb279e00cd54445fa76b7da4618849efb2eac652786",
+          "build/notes/pm/pressure-plate-tasks.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+        }
       }
     },
     "pending_construction_reference": {

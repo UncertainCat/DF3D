@@ -323,6 +323,32 @@ Earlier staged-entry limitations above describe their individual captures;
 ordinary map entry is now qualified. Assigned-worker removal, absent mechanical
 target families and simulation completion remain outside these captures.
 
+## Completed pressure plate discovery
+
+Completed pressure plates use native Tasks/Workers/Work orders and lower
+linked-building/items tabs. Tasks offers only `Link plate`; there is no Pull
+control or trigger-profile editor on this sheet. Native input1ad4ff dispatches
+Trap subtype1 to the mechanism search at1ad55d..1ad801. It uses the same native
+availability/position/walkability/stock-exclusion calls as the lever search,
+but an insufficient mechanism count returns without the lever warning.
+Runtime plate bridge admission remains unimplemented; do not assume the lever's
+warning or Pull behavior applies to plates.
+
+Protected094029 on2026-11-15 captures these panels, a supplied Link to door16,
+and cancellation releasing both selected mechanisms. No installed pressure
+plate exists in this save, so the paused fixture temporarily changes existing
+trap61's subtype to1 and restores it afterward; this is not a construction-
+default or simulation-completion reference. Native creates LinkBuildingToTrigger
+with its target/source references and two mechanism roles. Owned DF45932
+closes unsaved with source preservation. The staged
+`pressure_plate_tasks_view.gd` reuses queue rows and exposes only Link plate;
+three standalone456x114 crops (empty, unavailable mechanisms, queued Link)
+match native exactly, and pointer checks confirm Link without Pull. Full panel,
+semantic bridge and map integration remain outstanding. Graphics capped30FPS,
+sampled GPU60C, core19 passes; standalone graphics report only the documented
+render-thread/finalize/two ObjectDB diagnostics. Evidence:
+`completed_sheet_discovery_reference.pressure_plate_reference`.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

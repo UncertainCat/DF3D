@@ -1039,9 +1039,23 @@ lowercase input. Those diagnostic failures are not acceptance. Owned DF45092
 closes unsaved with source preservation, native30FPS and sampled GPU59C. MSVC
 bridge and core19 pass. Evidence:
 `completed_sheet_discovery_reference.depot_selection_reference`.
+The owned category projection uses native descriptors a82c10/c65450,
+normalization52cee0 and matching e1990. It preserves initializer36c9b8's
+numeric type deduplication and alphabetical insertion, including equal-name
+ordering. Filter37ba00 searches individual goods, direct contained-item names
+and abstract group names; a matching contained item retains its container's
+category. Prohibited rows are excluded before determining eligible categories.
+No native picker or window geometry is read by this provider.
+
+Protected140453 on2026-11-15 compares filtered category IDs/order in all seven
+selection cases above. Unfiltered lists contain33 categories; IRON retains6,
+including the matching container categories. Existing item/group comparisons
+also pass. Owned DF37828 closes unsaved with source preservation; graphics
+are capped30FPS and sampled GPU60C. Bridge build and all19 core checks pass.
+Evidence: `completed_sheet_discovery_reference.depot_category_reference`.
 Nondefault sort/exclusion controls, positive prohibition cases, other search
-text and local expansion editing remain unqualified. Filtered category-list
-navigation and public revision transport remain unfinished; depot stays hidden.
+text and local expansion editing remain unqualified. Category caption rendering,
+viewer navigation and public revision transport remain unfinished; depot stays hidden.
 
 ## Completed bridge, wagon and traction-bench sheets
 

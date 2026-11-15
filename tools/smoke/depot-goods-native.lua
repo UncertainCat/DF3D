@@ -16,12 +16,14 @@ local function compare_selection(label)
  if os.getenv('DF3D_DEPOT_SELECTION_PROVIDER')~='1' then return end
  local output,code=dfhack.run_command_silent('df3d','depot-selection-probe',tostring(b.id),tostring(menu.current_type),menu.sort_by_distance and '1' or '0',menu.pending_on_top and '1' or '0',menu.exclude_prohib and '1' or '0',menu.item_filter)
  assert(code==0,output);local facts=json.decode(output)
+ assert(#facts.categories==#menu.filtered_type_list,'Category count differs: '..label)
+ for i,kind in ipairs(menu.filtered_type_list)do assert(facts.categories[i+1]==kind,'Category order differs: '..label..' '..i)end
  assert(#facts.ids==#menu.current_type_tgi and #facts.groups==#menu.current_type_a_subtype,'Selection size differs: '..label)
  for i,row in ipairs(menu.current_type_tgi)do assert(facts.ids[i+1]==row.it.id,'Selection order differs: '..label..' '..i)end
  for i,subtype in ipairs(menu.current_type_a_subtype)do local row=facts.groups[i+1]
   assert(row.subtype==subtype and row.subcat1==menu.current_type_a_subcat1[i] and row.subcat2==menu.current_type_a_subcat2[i] and row.amount==menu.current_type_a_amount[i] and row.expanded==menu.current_type_a_expanded[i] and row.matches==menu.current_type_a_on[i] and row.flags==menu.current_type_a_flag[i].whole,'Selected group differs: '..label..' '..i)
  end
- result.selections=result.selections or {};result.selections[#result.selections+1]={label=label,type=menu.current_type,query=menu.item_filter,ids=facts.ids,groups=facts.groups,success=true}
+ result.selections=result.selections or {};result.selections[#result.selections+1]={label=label,type=menu.current_type,query=menu.item_filter,categories=facts.categories,ids=facts.ids,groups=facts.groups,success=true}
 end
 local function compare_goods(label)
  if os.getenv('DF3D_DEPOT_GOODS_PROVIDER')~='1' then return end

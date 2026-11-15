@@ -4950,7 +4950,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if(values[1]>=93 || values[2]>1 || values[3]>1 || values[4]>1)return CR_WRONG_USAGE;
         const auto facts=df3d_production::depotGoods(df::building::find(values[0]));if(!facts)return CR_FAILURE;
         const auto selected=df3d_production::depotSelection(*facts,int16_t(values[1]),parameters[6],values[2]!=0,values[3]!=0,values[4]!=0);if(!selected)return CR_FAILURE;
+        const auto categories=df3d_production::depotCategories(*facts,parameters[6],values[4]!=0);if(!categories)return CR_FAILURE;
         Json::Value output;output["ids"]=Json::arrayValue;output["groups"]=Json::arrayValue;
+        output["categories"]=Json::arrayValue;for(auto type:*categories)output["categories"].append(type);
         for(auto id:selected->ids)output["ids"].append(id);
         for(const auto& row:selected->groups){Json::Value g;g["subtype"]=row.group.subtype;g["subcat1"]=row.group.subcat1;g["subcat2"]=row.group.subcat2;g["amount"]=row.group.amount;g["expanded"]=row.group.expanded;g["matches"]=row.matches;g["flags"]=row.flags;output["groups"].append(g);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;

@@ -9578,6 +9578,20 @@ and effect acceptance, not a rendered picker or complete lifecycle qualification
 Bridge, extension and root builds pass, as do all19 core checks including
 request exclusivity, stale-list requirements and malformed artwork reply tests.
 
+selection_art_state.gd reuses local artwork navigation state with a selected-tile
+receipt, never a proxy job. work_order_details_view.gd has an engraving context
+for the native frame, cell-aligned heading, root-button backing, normal subject
+buttons and13 visible site rows at1200x800. Standalone selection_art_capture uses
+the213 wire reference185705: root and site panel crops(72,52,832,672) are pixel
+identical, and actual pointer clicks dispatch the correct read/apply target.
+The owner test verifies revision propagation, unknown-edit non-retry, closure
+and late/session reply retirement. Core19 passes; graphical runs are serial30FPS,
+sampled50C/4%, with only known renderer/exit diagnostics. Evidence is
+selection_reference.engraving_art_presentation_reference. This is not a
+main-scene picker or real-service controller acceptance. Draft requests still
+reject; the planned-engraving sheet, new-image workflow, filter/hover/scroll and
+resize qualification remain unfinished. Ordinary map routing is unchanged.
+
 Native-only174721 and174833 pass their assertions; owned DF37032/1300
 exit unsaved with source/preferences preserved. Core19 passes. Graphics are
 serial30FPS, sampled GPU53C/13-14%; these are not continuous peaks. Native strings,

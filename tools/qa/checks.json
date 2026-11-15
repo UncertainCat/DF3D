@@ -221,6 +221,15 @@
       "prerequisites": ["extension_build", "df_assets", "real_renderer"]
     },
     {
+      "id": "selection_art_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/selection_art_state_test.gd",
+      "completion": "^SELECTION_ART_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "job_settings_state_test",
       "lane": "core",
       "kind": "godot",
@@ -4123,6 +4132,16 @@
       "path": "presentations/godot/project/tests/tile_selection_unit_scene_live.gd",
       "status": "manual",
       "reason": "Protected TILE_SELECTION_UNITS plus TILE_SELECTION_SCENE: main-scene group/creature navigation, native panel comparisons and retirement. Never standalone."
+    },
+    {
+      "path": "presentations/godot/project/tests/tile_selection_art_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected ENGRAVING_ART_RUNTIME lane: selected-tile artwork reads and guarded effects. Never standalone."
+    },
+    {
+      "path": "presentations/godot/project/tests/selection_art_capture.gd",
+      "status": "manual",
+      "reason": "Rendered engraving root/site pages from protected protocol213 artwork wire. Set DF3D_SELECTION_REFERENCE and DF3D_DF_PATH, cap at30FPS. Never launches DF; no complete picker claim."
     },
     {
       "path": "presentations/godot/project/tests/tile_selection_unit_capture.gd",

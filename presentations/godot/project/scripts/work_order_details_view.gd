@@ -7,6 +7,7 @@ var job_context:=false
 var workshop_job_context:=false
 # Tasks context2 root rows: protected native125823. Other contexts retain their art.
 var tasks_context:=false
+var engraving_context:=false
 var input_allowed: Callable
 var colors: Array[Color]=[]
 var search_focused:=false
@@ -36,7 +37,7 @@ func configure_details(source,model) -> void:
 func open(building: int,order: int) -> void:
 	state.open(building,order);show();queue_redraw()
 func layout(view: Vector2) -> void:
-	var global: bool=(job_context and not workshop_job_context) or (state!=null and (state.building_id==-2 or state.has_art()))
+	var global: bool=not engraving_context and ((job_context and not workshop_job_context) or (state!=null and (state.building_id==-2 or state.has_art())))
 	var rows_count:=maxi(13,floori(view.y/12)-(5 if global else 10))
 	var origin:=Vector2(16 if global else 72,(36 if global else 48)+fposmod(view.y,12)*0.5)
 	# Native image renderer200070/geometry2142a0 follows the available map width.
@@ -55,6 +56,7 @@ func list_top() -> int:
 func sync_scroll() -> void:
 	if state==null or scrollbar==null:return
 	var footer:=96 if state.has_art() and (state.art_page()>=6 or state.art_page() in [1,2,3]) else 60 if state.has_art() and state.art_page()==5 else 24
+	if engraving_context and state.has_art() and state.art_page() in [1,2,3]:footer=72
 	if workshop_job_context and not state.has_art():footer=12
 	# Native2040c5/204bab and the other element branches reserve three fewer
 	# cells for unique figures/artifacts, which have no quantity controls.
@@ -192,10 +194,12 @@ func _draw() -> void:
 			else:text(row.count_caption,Vector2(size.x-(32 if scrollbar.visible else 16)-(8 if job_context else 0)-str(row.count_caption).length()*8,list_top()+20+index*36),13 if row.get("estimated",false) else 14)
 func draw_art() -> void:
 	var caption: String=state.snapshot.art.caption
-	text(caption,Vector2(maxf(16,(size.x-caption.length()*8)*0.5),20))
+	var heading_x:=floorf((size.x/8-caption.length())*0.5)*8 if engraving_context else (size.x-caption.length()*8)*0.5
+	text(caption,Vector2(maxf(16,heading_x),20))
 	if state.art_page()>=6:draw_draft();return
 	if state.art_page()<0:
 		for index in state.rows.size():
+			if engraving_context:draw_rect(Rect2(16,96+index*36,8,36),Color.BLACK)
 			patch("BUTTON_CATEGORY_RECTANGLE_ON",Vector2i(2,8+index*3),43,3)
 			text(state.rows[index].caption,Vector2(24,116+index*36))
 		return
@@ -206,7 +210,7 @@ func draw_art() -> void:
 	for index in mini(page_rows,state.rows.size()-offset):
 		var row: Dictionary=state.rows[offset+index]
 		var width:=columns-(2 if scrollbar.visible else 0)
-		patch("BUTTON_RECTANGLE" if tasks_context else "BUTTON_RECTANGLE_DARK",Vector2i(2,11+index*3),width,3)
+		patch("BUTTON_RECTANGLE" if tasks_context or engraving_context else "BUTTON_RECTANGLE_DARK",Vector2i(2,11+index*3),width,3)
 		var label: String=row.caption
 		if label.length()>width-2:label=label.left(maxi(0,width-5))+"..."
 		text(label,Vector2(16,152+index*36),11)

@@ -12809,6 +12809,39 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "engraving_art_presentation_reference": {
+      "reference": "build/stockpile-storage-native-farm-discovery-20261114-185705",
+      "status": "passed_with_known_issues",
+      "viewport": [
+        1200,
+        800
+      ],
+      "region": [
+        72,
+        52,
+        832,
+        672
+      ],
+      "pixel_identical": [
+        "root",
+        "site_page"
+      ],
+      "input": "Actual root Site button and first site row clicks dispatch selection_art read/apply with the selected tile receipt.",
+      "state_checks": "Headless source controller: root/site replies, list revision on apply, unknown non-retry, late read after close and session retirement.",
+      "limitations": "Standalone shared view and recorded replies only; no actual main-scene picker or real-service controller acceptance. New-image drafts intentionally reject and ordinary map routing remains unchanged. Filters, hover preview, scrolling and resize remain unqualified.",
+      "sha256": {
+        "workshop-selection-engraving-image-picker.png": "b7c4fdf51f9efffd88eb1834baadba35d87b6c4800706b12447e8a4aed00f096",
+        "workshop-selection-engraving-image-option-2.png": "14e2bcf7d75e85253ba1577cbde432250e2c13690b404d4d4b2a1e32a415fef3",
+        "selection-art-root-viewer.png": "baf8bd046bb7811a63f5ca19e1dd7e4a228f3f42e915d66dfba9a2ec9aaf3469",
+        "selection-art-site_page-viewer.png": "dedc5955e7c15561bedf572fd12fb23fdcd27252f34803d63848f6197dfc51f2"
+      },
+      "checks_sha256": {
+        "build\\notes\\pm\\selection-art-capture.stdout.log": "26fbb2d150cc0b6a86cbe017b36f5bf4161be2a95f57f2932e8960360c9459e5",
+        "build\\notes\\pm\\selection-art-capture.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+        "build\\notes\\pm\\selection-art-state.stdout.log": "ebe6ab854359672ea158022ddb52e06d58e623338413ad8163b1a458b3c81e16",
+        "build\\notes\\pm\\selection-art-state.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
+      }
+    },
     "engraving_art_transport_reference": {
       "protocol": 213,
       "run": "build/stockpile-storage-native-farm-discovery-20261114-185705",

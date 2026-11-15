@@ -71,4 +71,10 @@ if provider then
  assert(not result.unlinked.tabs and #result.unlinked.rows==0,'Unlinked chair acquired link tabs')
  persist()
 end
+if os.getenv('DF3D_BUILDING_LINKS_WIRE')=='1'then
+ assert(provider,'Wire qualification requires the independent provider oracle')
+ capture('workshop-wire')
+ local file=assert(io.open(out..'/workshop-wire-result.json','r'));local wire=json.decode(file:read('*a'));file:close()
+ assert(wire.success,'Building links wire failed');result.wire=wire;persist()
+end
 records[#records+1]={name='building-links-native',result=result}

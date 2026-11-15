@@ -78,6 +78,7 @@
 #include "farm_native.h"
 #include "door_native.h"
 #include "pending_building_native.h"
+#include "building_links_native.h"
 #include "building_item_native.h"
 #include "funerary_native.h"
 #include "creature_overview_native.h"
@@ -4133,6 +4134,25 @@ void run(color_ostream& out) {
       response={};response.buildingId=q->building_id();
       response.outcome=editing?(mutated?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected):m::FarmEditOutcome::None;
       status=m::ManagementStatus::Rejected;workers.invalidate();
+    }
+    publish();return;
+  }
+  if(r->production() && r->production()->building_links()) {
+    message.clear();status=m::ManagementStatus::Rejected;production={};
+    const auto* q=r->production();
+    const auto snapshot=df3d_production::buildingLinks(df::building::find(q->building_id()));
+    if(snapshot && (!q->expected_revision() || q->expected_revision()==snapshot->revision) &&
+       q->cursor()<=snapshot->rows.size() && (!q->cursor() || q->cursor()<snapshot->rows.size())) {
+      BuildingLinksPage page;page.buildingId=snapshot->buildingId;page.revision=snapshot->revision;page.tabs=snapshot->tabs;
+      page.cursor=q->cursor();page.total=uint32_t(snapshot->rows.size());
+      const auto end=std::min<uint32_t>(page.total,page.cursor+64);page.nextCursor=end<page.total?end:0;
+      for(uint32_t i=page.cursor;i<end;++i) {
+        const auto& row=snapshot->rows[i];BuildingLinkRow value;
+        value.itemId=row.itemId;value.referenceType=row.referenceType;value.id=row.id;value.type=row.type;
+        value.name=DF2UTF(row.name);value.x=row.x;value.y=row.y;value.z=row.z;
+        page.rows.push_back(std::move(value));
+      }
+      production.buildingLinks=std::move(page);status=m::ManagementStatus::Ok;
     }
     publish();return;
   }

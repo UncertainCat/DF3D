@@ -9769,6 +9769,20 @@ read path only; artwork, paging, changing-link refresh and viewer integration
 remain unfinished. The fixture's `linked_buildings_reference.provider_reference`
 retains the deployed DLL hash and observations.
 
+Protected062005 verifies the protocol226 producer through the actual headless
+Godot extension. Floodgate39 and lever55 match the independent native provider
+in target order, item/ref identities, names, positions and exact64-bit revisions.
+A cursor1 continuation preserves the remaining lever row, mismatched revisions
+are rejected without a page, and Chair65 returns an empty list without tabs.
+The producer bounds pages to64 rows and rejects out-of-range cursors before
+publishing authority. Owned DF21032 closes unsaved with source preservation.
+Native graphics remain capped30FPS, with sampled GPU59–61C; the only client
+diagnostic is the known separate-render-thread notice, so this is
+`passed_with_known_issues`. `linked_buildings_reference.wire_reference` retains
+receipts and binary/log hashes. This is transport acceptance, not rendered
+linked-row artwork or panel-control acceptance.
+Fresh root/client, Godot extension and MSVC builds pass, as do all19 root CTests.
+
 Protected native022800 on2026-11-15 attempts selection of29 naturally completed,
 revealed building types in the paused fortress. `completed_sheet_discovery_reference` in
 native_farm.json records identities, panel text and screenshot hashes. Chair65,

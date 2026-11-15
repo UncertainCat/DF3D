@@ -433,6 +433,7 @@ try {
      if($env:DF3D_DOOR_HEADER_RUNTIME -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/door_scene_live.gd')}
      if($env:DF3D_FURNITURE_RUNTIME -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/furniture_scene_live.gd')}
      if($env:DF3D_FURNITURE_MAP -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/furniture_map_scene_live.gd')}
+     if($env:DF3D_BUILDING_LINKS_WIRE -eq '1'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/building_links_wire_live.gd')}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
      $null=$client.Handle
      $workshopClientTimeout=if($env:DF3D_FURNITURE_GENERIC_DISCOVERY -eq '1'){90000}else{45000}

@@ -21581,6 +21581,88 @@
             "build/stockpile-storage-native-farm-discovery-20261115-060630/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
             "build/stockpile-storage-native-farm-discovery-20261115-060630/building-links-native.json": "d1d272c56cfda297ba7a971e860e4525011f54a62d2fcd6ce823bc617d8569d2"
           }
+        },
+        "wire_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-062005",
+          "protocol": 226,
+          "status": "passed_with_known_issues: separate-render-thread notice only",
+          "scope": "Typed bridge/model/Godot reads: native rows and exact revisions, cursor1 continuation, stale rejection, empty/no-tabs. No rendered link-panel acceptance.",
+          "receipts": {
+            "empty": {
+              "building_id": 65,
+              "cursor": 0,
+              "next_cursor": 0,
+              "revision": 6725588633147200868,
+              "rows": [],
+              "tabs": false,
+              "total": 0
+            },
+            "pages": [
+              {
+                "building_id": 39,
+                "cursor": 0,
+                "next_cursor": 0,
+                "revision": 1369251273925892210,
+                "rows": [
+                  {
+                    "id": 55,
+                    "item_id": 1617,
+                    "name": "Main Water Control",
+                    "reference_type": 32,
+                    "type": 23,
+                    "x": 97,
+                    "y": 103,
+                    "z": 165
+                  }
+                ],
+                "tabs": true,
+                "total": 1
+              },
+              {
+                "building_id": 55,
+                "cursor": 0,
+                "next_cursor": 0,
+                "revision": 1864019604045275833,
+                "rows": [
+                  {
+                    "id": 40,
+                    "item_id": 1588,
+                    "name": "dolomite Floodgate",
+                    "reference_type": 33,
+                    "type": 9,
+                    "x": 97,
+                    "y": 105,
+                    "z": 164
+                  },
+                  {
+                    "id": 39,
+                    "item_id": 1607,
+                    "name": "dolomite Floodgate",
+                    "reference_type": 33,
+                    "type": 9,
+                    "x": 97,
+                    "y": 106,
+                    "z": 164
+                  }
+                ],
+                "tabs": true,
+                "total": 2
+              }
+            ],
+            "success": true
+          },
+          "owned_df_pid": 21032,
+          "closed_unsaved": true,
+          "source_preserved": true,
+          "bridge_sha256": "1EB4B2245E968C62A0D5128BE60536FEAC51AE0C9E4A522B2FA1997F5DF2D3F7",
+          "sha256": {
+            "build/stockpile-storage-native-farm-discovery-20261115-062005/result.json": "0ac6084ce51dfe44c2d82531cf122ca5e02883cfa3e4e2f70690006da2aa3fe1",
+            "build/stockpile-storage-native-farm-discovery-20261115-062005/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "build/stockpile-storage-native-farm-discovery-20261115-062005/building-links-native.json": "249e86c1f6eb274bbaf6bc3f2330e3a862bb925f5c1f77722a6df288bd825568",
+            "build/stockpile-storage-native-farm-discovery-20261115-062005/workshop-wire-result.json": "0943ddd7290eabb24700719c00c40c5e318272359f95260e753269f2d68f3d68",
+            "build/stockpile-storage-native-farm-discovery-20261115-062005/workshop-wire.stdout.log": "0fb41bb7cc71b68a335c01d8f84a806304e1cc6bb173f34ca02cb913d0f62013",
+            "build/stockpile-storage-native-farm-discovery-20261115-062005/workshop-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
+          }
         }
       }
     },

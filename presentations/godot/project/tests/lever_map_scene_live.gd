@@ -25,6 +25,9 @@ func exercise(expected: Dictionary) -> void:
 	owner.lever.applied.connect(func(operation,id):applied_jobs[operation]=id)
 	owner.open_target(55)
 	if not await ready_jobs(0):return
+	if OS.get_environment("DF3D_LEVER_ITEM_NAV")=="1":
+		await item_navigation()
+		if failed:return
 	if OS.get_environment("DF3D_LEVER_NAVIGATION")=="1":
 		await navigation_gestures()
 		if failed:return
@@ -58,6 +61,18 @@ func exercise(expected: Dictionary) -> void:
 	owner.close_panel();await process_frame
 	check(scene._ui.host.active==null,"Lever close retained main-scene owner")
 	exercised=true
+func item_navigation() -> void:
+	var item_id: int=owner.contents.rows()[0].id
+	await pointer(owner.panel.contents.get_global_transform_with_canvas()*owner.panel.contents.control_rect(0,1).get_center())
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline and owner.item_owner.state.phase!=owner.item_owner.state.Phase.Ready:await process_frame
+	if not check(owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready and scene._ui.host.active==owner.item_owner,"Lever item did not open"):return
+	check(owner.item_owner.state.item_id==item_id and owner.item_owner.state.snapshot.get("holder",{}).get("id",-1)==55,"Lever item holder differs")
+	await lever_capture("item-view")
+	await pointer(owner.item_owner.panel.get_global_transform_with_canvas()*owner.item_owner.panel.holder_rect().get_center())
+	if not await ready_jobs(0):return
+	check(scene._ui.host.active==owner and not owner.item_owner.panel.visible and owner.state.building_id==55,"Item holder did not return to lever")
+	await lever_capture("item-returned")
 func header_ready() -> bool:
 	var deadline:=Time.get_ticks_msec()+10000
 	while Time.get_ticks_msec()<deadline:

@@ -270,6 +270,16 @@ unsaved with source preservation, graphics capped30FPS, sampled GPU59C. Core19
 passes; only the established render-thread/finalize/two ObjectDB diagnostics
 remain. Evidence: `completed_sheet_discovery_reference.lever_resize_reference`.
 
+The staged lever's contained-item holder action returns to the lever owner after
+fresh resident type/subtype/completion checks. This return is confined to that
+owner's item sheet; it does not expose a general public lever entry point.
+Protected092327 on2026-11-15 verifies actual main-scene mechanism View and
+holder View, exact item and returned-panel pixels, restored input ownership,
+and subsequent Pull/projected Link effects. Owned DF24152 closes unsaved with
+source preservation; graphics capped30FPS, sampled GPU59C. Core19 passes;
+only the established render-thread/finalize/two ObjectDB diagnostics remain.
+Evidence: `completed_sheet_discovery_reference.lever_item_navigation_reference`.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

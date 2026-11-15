@@ -38,6 +38,11 @@ end
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(lever)
  assert(sheet.open and sheet.active_id==lever.id);sample('initial')
+ if os.getenv('DF3D_LEVER_ITEM_NAV')=='1'then
+  local item=assert(lever.contained_items[0].item)
+  click(772,562);assert(sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==item.id);sample('item-view')
+  click(816,250);assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==lever.id);sample('item-returned')
+ end
  if os.getenv('DF3D_LEVER_RESIZE')=='1'then
   for _,size in ipairs{'minimum','wide','default'}do resize_worker(size);sample('resize-'..size)end
  end

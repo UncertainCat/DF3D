@@ -124,6 +124,12 @@ func open_building_holder(kind: int,id: int) -> void:
 	elif kind==8:controller("door").open_target(id)
 	elif kind==10:controller("chest").open_target(id)
 	elif kind in [0,1,2,3,9,11,12,14,15,46,51,52,54]:controller("furniture").open_target(id)
+	elif kind==23 and controllers.has("lever") and host.active==controllers.lever.item_owner:
+		# Return from the staged lever's own item sheet without exposing a new
+		# public entry point. Fresh resident facts distinguish other trap types.
+		var target: Dictionary=world.inspect_entity(3,id)
+		if target.get("building_kind",-1)==24 and target.get("subtype",-1)==0 and target.get("complete",false):
+			controller("lever").open_target(id)
 	elif kind in [5,13]:
 		# The item receipt supplies native type/ID; resident semantics supply the
 		# subtype artwork. The opened header still obtains fresh action authority.

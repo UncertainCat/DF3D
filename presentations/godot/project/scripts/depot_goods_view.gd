@@ -1,5 +1,5 @@
 extends "res://scripts/location_staff_candidates_frame.gd"
-# Staged projection of native38a5b0. Public routing, contained rows and full
+# Staged projection of native38a5b0. Public routing and full
 # artwork/input acceptance remain unfinished.
 signal cancelled
 var state
@@ -14,6 +14,12 @@ var requested:=false
 var _closing:=false
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var icons: Dictionary={}
+func entry_item(entry: Dictionary) -> Dictionary:
+	return state.contained_item(entry.parent_id,entry.child_index) if entry.has("parent_id") else state.items.get(entry.get("id",-1),{})
+func entry_missing(entry: Dictionary) -> bool:
+	if entry.has("group"):return false
+	var row:=entry_item(entry)
+	return row.is_empty() or not state.appearances.has(row.id)
 func configure_goods(source,model) -> void:
 	configure(source);state=model;colors=art.installed_palette(source.assets_root())
 	picture.configure(source)
@@ -57,18 +63,21 @@ func refresh() -> void:
 	search.size.x=maxf(0,size.x-category_width()-232-header_shift())
 	item_canvas.size.x=maxf(0,size.x-category_width()-88)+(0 if item_scrollbar.visible else 16)
 	page=state.page(int(item_scrollbar.first/3),ceili(item_canvas.size.y/36.0)+1)
+	if ready():state.retain_contents(page)
 	var retained: Dictionary={}
 	for entry in page:
-		if not entry.has("id"):continue
-		var appearance: Dictionary=state.appearances.get(entry.id,{})
+		var row:=entry_item(entry)
+		if row.is_empty():continue
+		var appearance: Dictionary=state.appearances.get(row.id,{})
 		if appearance.is_empty():continue
-		var cached: Dictionary=icons.get(entry.id,{})
+		var cached: Dictionary=icons.get(row.id,{})
 		if cached.get("appearance")!=appearance:
-			cached={"appearance":appearance.duplicate(true),"texture":world.ammunition_icon(appearance,entry.id) if state.category==39 else world.item_sheet_icon(state.category,appearance,entry.id)}
-		retained[entry.id]=cached
+			var kind: int=row.type if entry.has("parent_id") else state.category
+			cached={"appearance":appearance.duplicate(true),"texture":world.ammunition_icon(appearance,row.id) if kind==39 else world.item_sheet_icon(kind,appearance,row.id)}
+		retained[row.id]=cached
 	icons=retained
 	category_canvas.queue_redraw();item_canvas.queue_redraw();queue_redraw()
-	if ready() and not requested and page.any(func(row):return row.has("id") and (not state.items.has(row.id) or not state.appearances.has(row.id))):
+	if ready() and not requested and page.any(entry_missing):
 		requested=true;_fetch.call_deferred()
 func _fetch() -> void:
 	requested=false
@@ -77,8 +86,18 @@ func _fetch() -> void:
 	for row in page:
 		if row.has("id"):ids.append(row.id)
 	ids=ids.slice(0,64)
-	if ids.any(func(id):return not state.items.has(id)):state.request_items(ids)
-	else:state.request_appearances(ids)
+	if ids.any(func(id):return not state.items.has(id)):state.request_items(ids);return
+	for entry in page:
+		if entry.has("parent_id") and entry_item(entry).is_empty():
+			var last: int=entry.child_index
+			for other in page:
+				if other.get("parent_id",-1)==entry.parent_id:last=maxi(last,other.child_index)
+			state.request_contents(entry.parent_id,entry.child_index,mini(64,last-entry.child_index+1));return
+	for entry in page:
+		if entry.has("parent_id"):
+			var row:=entry_item(entry)
+			if not row.is_empty() and not ids.has(row.id):ids.append(row.id)
+	state.request_appearances(ids.slice(0,64))
 func _patch(canvas: Control,token: String,origin: Vector2,columns: int) -> void:
 	var texture: Texture2D=art.texture(token)
 	if texture==null:return
@@ -101,26 +120,30 @@ func _draw_categories() -> void:
 func _draw_items() -> void:
 	for index in page.size():
 		var entry: Dictionary=page[index];var y: int=index*36-(item_scrollbar.first%3)*12
-		_patch(item_canvas,"BUTTON_CATEGORY_RECTANGLE" if entry.has("group") else "BUTTON_RECTANGLE",Vector2(0,y),int(item_canvas.size.x/8))
+		var indent: int=16 if entry.has("parent_id") else 0
+		_patch(item_canvas,"BUTTON_CATEGORY_RECTANGLE" if entry.has("group") else "BUTTON_RECTANGLE",Vector2(indent,y),int((item_canvas.size.x-indent)/8))
 		if entry.has("group"):
 			_text(item_canvas,entry.group.caption,Vector2(16,y+24))
 			# Native38b49e gives the selected bit priority for mixed groups.
 			var flags: int=entry.group.flags
 			if flags&3:_icon(item_canvas,"ASSIGN_TRADE_SELECTED" if flags&1 else "ASSIGN_TRADE_NOT_SELECTED",Rect2(item_canvas.size.x-40,y,24,36))
 		else:
-			var row: Dictionary=state.items.get(entry.id,{})
+			var row:=entry_item(entry)
 			if row.is_empty():continue
 			var frame: Texture2D=picture.texture(false)
 			if frame!=null:
 				for fy in 3:
-					for fx in 5:item_canvas.draw_texture_rect_region(frame,Rect2(fx*8,y+fy*12,8,12),Rect2(0 if fx==0 else 16 if fx==4 else 8,fy*12,8,12))
-			var icon: Texture2D=icons.get(entry.id,{}).get("texture")
-			if icon!=null and y>=0 and y+36<=item_canvas.size.y:item_canvas.draw_texture_rect(icon,Rect2(2,y+2,32,32),false)
-			_text(item_canvas,row.caption,Vector2(56,y+24))
-			_text(item_canvas,"Distance: "+str(row.distance),Vector2(item_canvas.size.x-208,y+24),10)
+					for fx in 5:item_canvas.draw_texture_rect_region(frame,Rect2(indent+fx*8,y+fy*12,8,12),Rect2(0 if fx==0 else 16 if fx==4 else 8,fy*12,8,12))
+			var icon: Texture2D=icons.get(row.id,{}).get("texture")
+			if icon!=null and y>=0 and y+36<=item_canvas.size.y:item_canvas.draw_texture_rect(icon,Rect2(indent+2,y+2,32,32),false)
+			_text(item_canvas,row.caption,Vector2(indent+56,y+24))
+			if not entry.has("parent_id"):_text(item_canvas,"Distance: "+str(row.distance),Vector2(item_canvas.size.x-208,y+24),10)
+			var count: int=row.contained_count if entry.has("parent_id") else state.container_count(row.id)
+			if count>0:_text(item_canvas,"Contains %d item%s"%[count,"" if count==1 else "s"],Vector2(indent+56,y+36),14)
 			if state.appraisal>0:_text(item_canvas,"Value: "+row.value_caption,Vector2(item_canvas.size.x-208,y+36),14)
 			# Native38bdc8..38bde0 includes staged1 in the hauling indicator.
 			if row.prohibited:_icon(item_canvas,"ASSIGN_TRADE_PROHIBITED",Rect2(item_canvas.size.x-88,y,24,36))
+			if entry.has("parent_id"):continue
 			if row.tag in [1,2,3]:_icon(item_canvas,"ASSIGN_TRADE_IN_DEPOT" if row.tag==3 else "ASSIGN_TRADE_BEING_BROUGHT",Rect2(item_canvas.size.x-64,y,24,36))
 			_icon(item_canvas,"ASSIGN_TRADE_SELECTED" if row.tag>0 else "ASSIGN_TRADE_NOT_SELECTED",Rect2(item_canvas.size.x-40,y,24,36))
 func _draw() -> void:
@@ -162,11 +185,12 @@ func _gui_input(event: InputEvent) -> void:
 		if index<page.size():
 			var entry: Dictionary=page[index]
 			if entry.has("group"):state.toggle_group(state.groups.find(entry.group))
-			else:state.toggle_item(entry.id)
+			elif entry.has("id"):state.toggle_item(entry.id)
 		return
 	if Rect2(Vector2.ZERO,item_canvas.size).has_point(local):
 		var index: int=int((local.y+(item_scrollbar.first%3)*12)/36)
 		if index<page.size() and page[index].has("group"):state.toggle_expansion(state.groups.find(page[index].group))
+		elif index<page.size() and page[index].has("id") and local.x<item_canvas.size.x-96:state.toggle_container(page[index].id)
 		return
 	if Rect2(category_canvas.position,category_canvas.size).has_point(event.position):
 		var index: int=int((event.position.y-category_canvas.position.y)/36)+scrollbar.first

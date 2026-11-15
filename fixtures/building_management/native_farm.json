@@ -61107,6 +61107,43 @@
           "tools/smoke/depot-goods-native.lua": "9a2e9678e530f0e34cd36ba37fb1c2250e42daed933c78af59fa7ef69f271472",
           "build/notes/pm/depot-container-contract.stdout.log": "872e0fb2c59f79ecef5afae67248e90c0c9007b90ad8f58774cb67cee824de53"
         }
+      },
+      "depot_goods_container_view_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-165921",
+        "owned_df_pid": 46168,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Eight live goods cases including actual controller expansion/child detail/appearance reads and search/category retention. Standalone recorded renderer dispatches parent and child clicks; parent count and all ten child icons/captions/backgrounds match native. Final viewport cache retirement is headless/rendered coverage, not a repeat live run. Existing checkbox/close and value/sort rendering checks pass against protocol236 lane165048. No main-scene, nested/empty container or partial-scroll/resize acceptance.",
+        "pixel_regions": [
+          [
+            416,
+            172,
+            224,
+            12
+          ],
+          [
+            376,
+            184,
+            568,
+            360
+          ]
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-165921/depot-goods-native.json": "aaf7e036b2aaa0c9e835f841cb5c415a4d1552c7f7dd7876c69173cdf039b472",
+          "build/stockpile-storage-native-farm-discovery-20261115-165921/result.json": "8315bbf1e7a5eeade40323eda1c8599e879dc3574ee6a4abfae826da18d3c366",
+          "build/stockpile-storage-native-farm-discovery-20261115-165921/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-165921/depot-goods-wire-container-page-result.json": "274d8326732579032add9ef5db6960ac15f957e5ce13cba766cd4821aa876458",
+          "build/stockpile-storage-native-farm-discovery-20261115-165921/depot-container-view-expanded.png": "ead037c078e20270870e32bb2c5ccfb8a87202bd8ee0387580b07dd97536d8cc",
+          "presentations/godot/project/scripts/depot_goods_state.gd": "f3821f750611cb32e220bd33cb9a53212655131f5cea0922adc7fb60d295ff1d",
+          "presentations/godot/project/scripts/depot_goods_view.gd": "7082bb2c100b385a5d1d6d964d7542e9938a88e7cec80bbfa8a10aa3fb1d5eba",
+          "presentations/godot/project/tests/depot_goods_container_view.gd": "6f4aa6869600b849c0a24b9803e45fe799e21dd736f1242744d126cc0392f1db",
+          "presentations/godot/project/tests/depot_goods_state_test.gd": "3f9137755f5ebd77cc4bb096bf81db91ddeec61303897a11e8ac824b82109e23",
+          "presentations/godot/project/tests/depot_goods_wire_live.gd": "780dac48fa1ecf4dc2395e5f8f9980a3690686df6302d9fd5ff6b2e57ed69d12",
+          "build/notes/pm/depot-container-state.stdout.log": "d87b9c9cc6a6acff7b2a7332fe249ccdcede1142650045bf5cf9ee525e9fe0a7",
+          "build/notes/pm/depot-container-view.stdout.log": "bac659d99849c59f4f997c2af7a1b512167e1ba685982be5095be3d1ef1f0e64",
+          "build/notes/pm/depot-container-depot_goods_view_interaction.stdout.log": "33171e052d427f92ffc36568cc28c8881ce75603c101588c24762b5bac9b60bd",
+          "build/notes/pm/depot-container-depot_goods_value_view.stdout.log": "64bed9717a2f71529cea9e63f6be3004f1d88bc8874870bb04da935f97cc6be4"
+        }
       }
     },
     "pending_construction_reference": {

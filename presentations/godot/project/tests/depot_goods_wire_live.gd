@@ -114,6 +114,41 @@ func verify_controller(intent: Dictionary,snapshot: Dictionary) -> Dictionary:
 	check(model.phase==GoodsModel.Phase.Closed and model.groups.is_empty(),"Late depot reply revived closed picker")
 	model.dispose();service.queue_free();await process_frame
 	return appearances
+func verify_container_controller(intent: Dictionary,snapshot: Dictionary) -> Dictionary:
+	var service=preload("res://scripts/semantic_action_service.gd").new()
+	root.add_child(service);service.configure(world,true);service.set_process(false)
+	var model=GoodsModel.new();model.configure(service);model.open(intent.depot_id)
+	var appearances: Dictionary={}
+	if await settle_goods(model,service):
+		model.select_category(intent.category)
+		if await settle_goods(model,service):
+			model.request_items(intent.item_ids)
+			if await settle_goods(model,service):
+				var parent: int=intent.container_id;var count: int=model.row_count()
+				model.toggle_container(parent)
+				check(model.row_count()==count+snapshot.container.total,"Controller did not expose child slots")
+				model.request_contents(parent,intent.container_offset,intent.container_limit)
+				if await settle_goods(model,service):
+					for i in snapshot.container.items.size():check(model.contained_item(parent,i)==snapshot.container.items[i],"Controller child differs from native")
+					var ids: Array=intent.item_ids.slice(0,4)
+					for row in snapshot.container.items:ids.append(row.id)
+					model.request_appearances(ids)
+					var deadline:=Time.get_ticks_msec()+10000
+					while model.appearance_pending() and Time.get_ticks_msec()<deadline:
+						world.poll();service.poll(0.01);await create_timer(0.01).timeout
+					check(not model.appearance_pending(),"Child artwork read timed out")
+					for id in ids:check(not model.appearances.get(id,{}).is_empty(),"Child/parent artwork unavailable: "+str(id))
+					appearances=model.appearances.duplicate(true)
+					var source: int=model.revision;model.set_query("BIN")
+					if await settle_goods(model,service):check(model._container_expanded.get(parent,false) and model.revision==source,"Search discarded expansion/source")
+					model.set_query("")
+					if await settle_goods(model,service):
+						model.select_category(45)
+						if await settle_goods(model,service):
+							model.select_category(intent.category)
+							if await settle_goods(model,service):check(model.row_count()==count+snapshot.container.total,"Category return discarded container expansion")
+	model.dispose();service.queue_free();await process_frame
+	return appearances
 func integers(value):
 	if value is float:return int(value)
 	if value is Array:
@@ -157,6 +192,7 @@ func run() -> void:
 		check(value.get("categories")==snapshot.categories and value.get("revision")==snapshot.revision and value.get("groups")==[] and value.get("items")==[],"Depot category-only read differs")
 		if not intent.has("expected_revision"):appearances=await verify_controller(intent,snapshot)
 		if expected.has("container"):
+			appearances=await verify_container_controller(intent,snapshot)
 			for patch in [{"expected_revision":2 if snapshot.revision==1 else snapshot.revision-1},{"container_offset":expected.container.total+1},{"container_id":expected.container.items[0].id}]:
 				var invalid: Dictionary=intent.duplicate(true);invalid.merge(patch,true)
 				var rejection:=await request("depot_goods",invalid)

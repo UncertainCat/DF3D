@@ -33,6 +33,42 @@ var _sort_draft: Dictionary={}
 var _draft_revision: int=0
 var _finish_pending:=false
 var _expanded: Dictionary={}
+var _container_expanded: Dictionary={}
+var _contents: Dictionary={}
+var _contents_revision: int=0
+var _contents_appraisal: int=-1
+func container_count(id: int) -> int:
+	for group in groups:
+		var index: int=group.item_ids.find(id)
+		if index>=0:return group.container_counts[index]
+	return 0
+func toggle_container(id: int) -> void:
+	if phase!=Phase.Ready or container_count(id)==0:return
+	_container_expanded[id]=not _container_expanded.get(id,false);changed.emit()
+func contained_item(parent: int,index: int) -> Dictionary:
+	return _contents.get(parent,{}).get(index,{})
+func retain_contents(entries: Array) -> void:
+	var retained: Dictionary={}
+	for entry in entries:
+		if not entry.has("parent_id"):continue
+		var row:=contained_item(entry.parent_id,entry.child_index)
+		if row.is_empty():continue
+		if not retained.has(entry.parent_id):retained[entry.parent_id]={}
+		retained[entry.parent_id][entry.child_index]=row
+	_contents=retained
+	for id in appearances.keys():
+		if item_type(id)<0:appearances.erase(id)
+func item_type(id: int) -> int:
+	if items.has(id):return category
+	for rows in _contents.values():
+		for row in rows.values():
+			if row.id==id:return row.type
+	return -1
+func request_contents(parent: int,offset: int,limit: int) -> void:
+	if phase!=Phase.Ready or revision<=0 or offset<0 or limit<1 or limit>64 or offset>=container_count(parent):return
+	var count: int=mini(limit,container_count(parent)-offset)
+	if range(offset,offset+count).all(func(index):return not contained_item(parent,index).is_empty()):return
+	_read(items.keys(),parent,offset,count)
 func _group_key(row: Dictionary) -> String:return "%d:%d:%d"%[row.subtype,row.subcat1,row.subcat2]
 func toggle_expansion(index: int) -> void:
 	if phase!=Phase.Ready or index<0 or index>=groups.size() or not groups[index].matches:return
@@ -79,35 +115,41 @@ func dispose() -> void:
 	if _inspection!=null:_inspection.dispose();_inspection=null
 	if service!=null and service.session_changed.is_connected(_session_changed):service.session_changed.disconnect(_session_changed)
 	service=null
-func _clear() -> void:
+func _clear(keep_contents: bool=false) -> void:
 	revision=0;appraisal=-1;categories=[];groups=[];items={};appearances={};_appearance_queue=[];_appearance_id=-1
+	if not keep_contents:_contents={};_contents_revision=0;_contents_appraisal=-1
 	if _inspection!=null:_inspection.close()
 func request_appearances(ids: Array) -> void:
 	if phase!=Phase.Ready or _inspection==null or ids.size()>64:return
 	for id in ids:
-		if typeof(id)!=TYPE_INT or not items.has(id):return
+		if typeof(id)!=TYPE_INT or item_type(id)<0:return
 	for id in ids:
 		if not appearances.has(id) and id!=_appearance_id and not _appearance_queue.has(id):_appearance_queue.append(id)
 	_next_appearance()
 func _next_appearance() -> void:
 	if phase!=Phase.Ready or _appearance_id>=0 or _appearance_queue.is_empty():return
+	while not _appearance_queue.is_empty() and item_type(_appearance_queue[0])<0:_appearance_queue.pop_front()
+	if _appearance_queue.is_empty():return
 	_appearance_id=_appearance_queue.pop_front();_inspection.open(_appearance_id)
 func appearance_pending() -> bool:return _appearance_id>=0 or not _appearance_queue.is_empty()
 func _inspection_changed() -> void:
 	if _appearance_id<0 or phase!=Phase.Ready or _inspection.phase in [_inspection.Phase.Closed,_inspection.Phase.Reading]:return
 	var id:=_appearance_id;_appearance_id=-1
+	# A scrolled-out child no longer belongs to the retained viewport page.
+	# Do not cache its retired response as missing artwork when it returns.
+	if item_type(id)<0:changed.emit();_next_appearance();return
 	# This is the existing owned inspection API, whose selector is also called
 	# by native depot38b783. A rejected read leaves absent artwork, never a retry.
 	appearances[id]={}
 	if _inspection.phase==_inspection.Phase.Ready:
 		var value: Dictionary=_inspection.snapshot
-		if value.id==id and value.item_type==category and value.has("appearance"):appearances[id]=value.appearance.duplicate(true)
+		if value.id==id and value.item_type==item_type(id) and value.has("appearance"):appearances[id]=value.appearance.duplicate(true)
 	changed.emit();_next_appearance()
 func close() -> void:
 	generation+=1;var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
 	_clear();depot_id=-1;category=-1;query="";_active_query="";_queries=[]
-	_draft={};_sort_draft={};_draft_revision=0;_finish_pending=false;_expanded={}
+	_draft={};_sort_draft={};_draft_revision=0;_finish_pending=false;_expanded={};_container_expanded={}
 	sort_by_distance=true;pending_on_top=true;exclude_prohibited=false
 	first_category=0;first_item=0;last_result={};phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:close();phase=Phase.Unavailable;changed.emit()
@@ -176,7 +218,12 @@ func row_count() -> int:
 	if not groups.any(func(row):return not row.item_ids.is_empty()):return 0
 	var count:=0
 	for row in groups:
-		if row.matches:count+=1+(row.item_ids.size() if row.expanded else 0)
+		if not row.matches:continue
+		count+=1
+		if row.expanded:
+			count+=row.item_ids.size()
+			for index in row.item_ids.size():
+				if _container_expanded.get(row.item_ids[index],false):count+=row.container_counts[index]
 	return count
 func page(first: int,limit: int) -> Array:
 	var result: Array=[]
@@ -187,9 +234,16 @@ func page(first: int,limit: int) -> Array:
 		if offset>=first and result.size()<limit:result.append({"group":row})
 		offset+=1
 		if row.expanded:
-			for index in range(maxi(0,first-offset),mini(row.item_ids.size(),first+limit-offset)):
-				if result.size()<limit:result.append({"id":row.item_ids[index]})
-			offset+=row.item_ids.size()
+			for index in row.item_ids.size():
+				var id: int=row.item_ids[index]
+				if offset>=first and result.size()<limit:result.append({"id":id})
+				offset+=1
+				if _container_expanded.get(id,false):
+					var count: int=row.container_counts[index]
+					for child in range(maxi(0,first-offset),mini(count,first+limit-offset)):
+						if result.size()<limit:result.append({"parent_id":id,"child_index":child})
+					offset+=count
+				if result.size()==limit:break
 		if result.size()==limit:break
 	return result
 func _integer(value: Variant,low: int,high: int) -> bool:return typeof(value)==TYPE_INT and value>=low and value<=high
@@ -212,10 +266,12 @@ func _valid(value: Dictionary,intent: Dictionary) -> bool:
 		var key: String="%d:%d:%d"%[row.subtype,row.subcat1,row.subcat2]
 		if keys.has(key) or not _integer(row.get("amount"),0,2147483647) or not _integer(row.get("flags"),0,3) or not _text(row.get("caption")):return false
 		keys[key]=true
-		if typeof(row.get("matches"))!=TYPE_BOOL or typeof(row.get("expanded"))!=TYPE_BOOL or typeof(row.get("item_ids"))!=TYPE_ARRAY:return false
-		for id in row.item_ids:
+		if typeof(row.get("matches"))!=TYPE_BOOL or typeof(row.get("expanded"))!=TYPE_BOOL or typeof(row.get("item_ids"))!=TYPE_ARRAY or typeof(row.get("container_counts"))!=TYPE_ARRAY or row.container_counts.size()!=row.item_ids.size():return false
+		for index in row.item_ids.size():
+			var id: Variant=row.item_ids[index]
 			if not _integer(id,0,2147483647) or members.has(id):return false
-			members[id]=true
+			if not _integer(row.container_counts[index],0,1048576):return false
+			members[id]=row.container_counts[index]
 		if members.size()>1048576:return false
 	for row in value.items:
 		if typeof(row)!=TYPE_DICTIONARY or not _integer(row.get("id"),0,2147483647) or ids.has(row.id) or not members.has(row.id) or not _text(row.get("caption")):return false
@@ -224,13 +280,27 @@ func _valid(value: Dictionary,intent: Dictionary) -> bool:
 		if intent.expected_revision==0 and row.tag not in [0,2,3]:return false
 		if typeof(row.get("value_caption"))!=TYPE_STRING or row.value_caption.to_utf8_buffer().size()>256 or (row.value_caption.is_empty()!=(value.appraisal==0)):return false
 	if intent.category==-1 and (not value.groups.is_empty() or not value.items.is_empty()):return false
+	if value.has("container")!=intent.has("container_id"):return false
+	if intent.has("container_id"):
+		var content: Variant=value.container
+		if typeof(content)!=TYPE_DICTIONARY or not members.has(intent.container_id) or content.get("parent_id")!=intent.container_id or content.get("offset")!=intent.container_offset or content.get("total")!=members[intent.container_id] or typeof(content.get("items"))!=TYPE_ARRAY:return false
+		if intent.container_offset>content.total or content.items.size()!=mini(intent.container_limit,content.total-intent.container_offset):return false
+		var children: Dictionary={}
+		for row in content.items:
+			if typeof(row)!=TYPE_DICTIONARY or not _integer(row.get("id"),0,2147483647) or row.id==intent.container_id or children.has(row.id) or not _integer(row.get("type"),0,92) or not _integer(row.get("contained_count"),0,1048576) or not _integer(row.get("value"),-2147483648,2147483647) or typeof(row.get("prohibited"))!=TYPE_BOOL or not _text(row.get("caption")):return false
+			if typeof(row.get("value_caption"))!=TYPE_STRING or row.value_caption.to_utf8_buffer().size()>256 or (row.value_caption.is_empty()!=(value.appraisal==0)):return false
+			children[row.id]=true
 	return ids.size()==intent.item_ids.size() and intent.item_ids.all(func(id):return ids.has(id))
-func _read(ids: Array=[]) -> void:
-	_clear();phase=Phase.Reading
+func _read(ids: Array=[],container_id: int=-1,container_offset: int=0,container_limit: int=0) -> void:
+	var previous_revision: int=revision
+	var previous_appearances: Dictionary=appearances.duplicate(true)
+	_clear(true);phase=Phase.Reading
 	if service==null:phase=Phase.Unavailable;changed.emit();return
 	var owner:=generation
 	var intent: Dictionary={"action":C.ManagementAction.DepotGoodsRead,"depot_id":depot_id,"category":category,"query":_active_query,"sort_by_distance":sort_by_distance,"pending_on_top":pending_on_top,"exclude_prohibited":exclude_prohibited,"item_ids":ids.duplicate()}
 	intent.expected_revision=_draft_revision;intent.draft=_choices(_draft);intent.sort_draft=_choices(_sort_draft)
+	if container_id>=0:
+		intent.expected_revision=previous_revision;intent.container_id=container_id;intent.container_offset=container_offset;intent.container_limit=container_limit
 	ticket=service.submit("depot_goods",intent,func(received,result,_sent):
 		if owner!=generation or received!=ticket:return
 		ticket=0
@@ -238,6 +308,13 @@ func _read(ids: Array=[]) -> void:
 		if typeof(value)!=TYPE_DICTIONARY or result.get("outcome")=="unknown" or result.get("status")!=C.ManagementStatus.Ok or result.get("action")!=intent.action or not _valid(value,intent):
 			_clear();last_result=result.duplicate(true);phase=Phase.Unknown if result.get("outcome")=="unknown" else Phase.Rejected;changed.emit();return
 		revision=value.revision;appraisal=value.appraisal;categories=value.categories.duplicate(true);groups=value.groups.duplicate(true);items={}
+		if container_id<0 or _contents_revision!=revision or _contents_appraisal!=appraisal:_contents={}
+		_contents_revision=revision;_contents_appraisal=appraisal
+		if previous_revision==revision:appearances=previous_appearances
+		if value.has("container"):
+			var content: Dictionary=value.container;var rows: Dictionary=_contents.get(content.parent_id,{}).duplicate()
+			for index in content.items.size():rows[content.offset+index]=content.items[index].duplicate(true)
+			_contents[content.parent_id]=rows
 		# Native group-label clicks change only current_type_a_expanded.
 		# Search/detail/draft projections retain it; category/options rebuild it.
 		for row in groups:

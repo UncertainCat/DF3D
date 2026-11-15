@@ -16,7 +16,7 @@ var failures:=0
 func check(ok: bool,message: String) -> void:
 	if not ok:failures+=1;push_error(message)
 func snapshot(category: int=-1) -> Dictionary:
-	return {"depot_id":7,"revision":9007199254740993,"appraisal":0,"category":category,"categories":[{"type":45,"caption":"Synthetic anvils"}],"groups":[] if category==-1 else [{"subtype":-1,"subcat1":0,"subcat2":1,"amount":2,"caption":"Synthetic group","matches":true,"expanded":true,"flags":0,"item_ids":[11,12]}],"items":[]}
+	return {"depot_id":7,"revision":9007199254740993,"appraisal":0,"category":category,"categories":[{"type":45,"caption":"Synthetic anvils"}],"groups":[] if category==-1 else [{"subtype":-1,"subcat1":0,"subcat2":1,"amount":2,"caption":"Synthetic group","matches":true,"expanded":true,"flags":0,"item_ids":[11,12],"container_counts":[0,0]}],"items":[]}
 func ready(service,state) -> void:
 	service.reply(state.ticket,snapshot())
 	service.reply(state.ticket,snapshot(45))
@@ -101,6 +101,42 @@ func expansion(service,state) -> void:
 	state.select_category(45);service.reply(state.ticket,value)
 	check(state.groups[0].expanded and state.row_count()==3,"Category return restores native expansion default")
 func _initialize() -> void:call_deferred("run")
+func containers(service,state) -> void:
+	state.open(7);ready(service,state);state.set_query("containers")
+	var value:=snapshot(45);value.groups[0].container_counts=[3,0]
+	value.categories.append({"type":17,"caption":"Synthetic bags"})
+	service.reply(state.ticket,value)
+	var calls: int=service.next
+	state.toggle_container(11)
+	check(state.row_count()==6 and state.page(2,2)==[{"parent_id":11,"child_index":0},{"parent_id":11,"child_index":1}] and service.next==calls,"Container expansion is local and adds direct-child slots")
+	state.toggle_item(21);check(service.next==calls,"Contained item cannot become a hauling draft")
+	state.request_contents(11,1,2)
+	var intent: Dictionary=service.calls[state.ticket].intent
+	check(intent.expected_revision==value.revision and intent.container_id==11 and intent.container_offset==1 and intent.container_limit==2,"Child page is bound to exact source")
+	var content: Dictionary=value.duplicate(true)
+	content.container={"parent_id":11,"offset":1,"total":3,"items":[{"id":21,"type":2,"contained_count":0,"value":42,"prohibited":false,"caption":"Synthetic child","value_caption":""},{"id":22,"type":0,"contained_count":0,"value":11,"prohibited":false,"caption":"Synthetic bar","value_caption":""}]}
+	service.reply(state.ticket,content)
+	check(state.phase==State.Phase.Ready and state.contained_item(11,1).id==21 and state.contained_item(11,0).is_empty() and state.item_type(21)==2,"Child page retains offset and semantic artwork type")
+	calls=service.next;state.request_contents(11,1,2);check(service.next==calls,"Cached child page is not fetched again")
+	state.appearances[21]={"synthetic":true};state.retain_contents([])
+	check(state.contained_item(11,1).is_empty() and not state.appearances.has(21),"Offscreen child data and artwork are released")
+	state.request_appearances([21]);check(service.next==calls,"Retired child cannot request artwork without a current page")
+	state.set_query("");service.reply(state.ticket,value)
+	check(state.row_count()==6 and state.contained_item(11,1).is_empty(),"Search retains expansion while refreshing child details")
+	state.select_category(17);var other:=snapshot(17);other.groups=[];other.categories=value.categories;service.reply(state.ticket,other)
+	state.select_category(45);service.reply(state.ticket,value)
+	check(state.row_count()==6,"Category navigation retains container expansion")
+	state.request_contents(11,1,2);var pending: int=state.ticket;state.close();service.reply(pending,content)
+	check(state.phase==State.Phase.Closed and state._container_expanded.is_empty() and state._contents.is_empty(),"Close retires pending child pages")
+	for fault in ["parent","offset","count","source"]:
+		state.open(7);ready(service,state);state.set_query("containers");service.reply(state.ticket,value);state.request_contents(11,1,2)
+		var invalid: Dictionary=content.duplicate(true)
+		if fault=="parent":invalid.container.parent_id=12
+		if fault=="offset":invalid.container.offset=0
+		if fault=="count":invalid.container.items.pop_back()
+		if fault=="source":invalid.revision+=1
+		service.reply(state.ticket,invalid)
+		check(state.phase==State.Phase.Rejected and state._contents.is_empty(),"Mismatched child page must retire source: "+fault)
 func run() -> void:
 	var service:=Service.new();root.add_child(service)
 	var state:=State.new();state.configure(service);state.open(7)
@@ -126,7 +162,7 @@ func run() -> void:
 		check(service.calls[state.ticket].intent.query==query,"Queued query preserves input order")
 		service.reply(state.ticket,snapshot(45))
 	check(state.phase==State.Phase.Ready and state.query=="IRON","Search settles after final native response")
-	state.set_options(true,true,true);value=snapshot(45);value.categories=[];value.groups[0].item_ids=[]
+	state.set_options(true,true,true);value=snapshot(45);value.categories=[];value.groups[0].item_ids=[];value.groups[0].container_counts=[]
 	service.reply(state.ticket,value)
 	check(state.category==45 and state.row_count()==0 and state.page(0,10).is_empty(),"Exclusion retains selected category but native empty-item gate hides groups")
 	state.set_query("");var old: int=state.ticket;state.close();service.reply(old,snapshot(45))
@@ -147,6 +183,7 @@ func run() -> void:
 	commits(service,state)
 	drafts(service,state)
 	expansion(service,state)
+	containers(service,state)
 	state.dispose();service.queue_free()
 	if failures==0:print("PASS depot goods state")
 	quit(1 if failures else 0)

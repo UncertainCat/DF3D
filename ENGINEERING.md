@@ -8,8 +8,8 @@ parent, offset and total, and retain native child IDs/types, nested counts,
 descriptions, values, appraisal text and prohibition facts. A page total must
 agree with its parent's group count. Child IDs do not authorize hauling actions.
 Both peers/mailbox use236 and must be rebuilt together; DF53.16 pins are unchanged.
-Older recordings cannot invent container counts or pages. Viewer expansion and
-rendering remain a separate unfinished integration.
+Older recordings cannot invent container counts or pages. Staged viewer
+integration and its remaining acceptance limits are documented below.
 
 Protected165048 on2026-11-15 passes35 native-to-Godot cases, including a ten-child
 page, nine appraisal/sorting states, sixteen drafts and existing resting cases.
@@ -24,6 +24,36 @@ client retains its documented separate-rendering-thread warning. Evidence:
 `completed_sheet_discovery_reference.depot_goods_container_transport_reference`.
 This verifies transport, not controller expansion, child artwork or main-scene
 render/input acceptance. Public depot routes remain hidden.
+
+The staged picker now expands parent rows locally, keeps expansion across search
+and category navigation, and requests bounded visible child pages using the
+current source revision. Native group counts determine list height; child rows
+cannot become hauling intents or recursively expand. The view draws native
+indentation, count labels, child descriptions/artwork and appraisal captions.
+Viewport retirement releases child details/artwork, and late artwork replies
+for retired children are discarded rather than cached as absent. Ordinary reads
+refresh child details while retaining expansion; close/session replacement
+retires both. Missing counts and mismatched parent/offset/count/source replies
+reject rather than creating guessed rows.
+
+Protected165921 on2026-11-15 passes eight live goods cases, including the actual
+controller's child-page read, mixed child artwork types, search/category return,
+and existing create/cancel effects. Owned DF46168 closes unsaved/source-preserved
+at30FPS; sampled GPU48C. The standalone rendered check uses those snapshots and
+artwork with actual pointer dispatch: a parent click fetches children, both child
+body/checkbox-area clicks remain inert, and a parent click collapses locally.
+The parent count label and full568x360 region containing all ten child icons,
+captions and row backgrounds match native pixels. Headless controller checks
+cover invalid page identity/count/source, late replies and viewport cache
+retirement. The final cache cleanup is covered by those headless/rendered checks;
+the live controller check supplies native data/appearance evidence. Existing
+checkbox/close and value/sorting render checks also pass. Graphical checks ran
+serially at30FPS, sampled51–53C, and exited; all new logs are diagnostic-free.
+All19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_goods_container_view_reference`.
+Nested/empty-container and partial-scroll/resize rendering, option tooltips,
+large-list transport, main-scene integration, ordinary hauling and full trade
+remain unfinished. Public depot routes stay hidden.
 
 ## Depot goods value transport migration
 
@@ -93,7 +123,7 @@ found missing staged-tag1 hauling artwork: native38bdc8..38bde0 draws the haulin
 indicator for tags1/2, and DF3D now does too. The final pixel comparisons pass.
 Evidence: `completed_sheet_discovery_reference.depot_goods_draft_view_reference`.
 This combines live controller/effect evidence with recorded-snapshot render/input
-evidence; it is not live main-scene acceptance. Container expansion, option
+evidence; it is not live main-scene acceptance. Complete container acceptance, option
 tooltips, large-list transport, ordinary hauling and full trade
 remain unfinished. Public depot routes stay hidden.
 
@@ -129,9 +159,8 @@ must validate the parent against the current depot goods source; children are
 not separate hauling intents. Each page includes the current total and child
 type, nested count, description, numeric value, appraisal caption and prohibition
 fact. No pointers escape the safe point. Protocol236 carries these
-fields. Local per-item expansion retained across category/
-search changes remain unfinished, as do nested/empty-container, rendered and
-main-scene acceptance.
+fields. The staged view retains per-item expansion across category/search
+changes; nested/empty-container and full main-scene acceptance remain unfinished.
 
 The owned goods reader accepts an optional container parent/offset/limit bound
 to a nonzero expected source revision and a selected category. It rejects stale
@@ -214,8 +243,8 @@ checkbox/close interaction checks also pass. Both graphical checks ran serially
 at30FPS without diagnostics and exited afterward. Evidence:
 `completed_sheet_discovery_reference.depot_goods_value_view_reference`.
 These recorded-snapshot rendering/input checks complement the live controller
-and effect checks; they do not establish live main-scene acceptance. Contained
-rows, option tooltips, large-list transport, complete artwork/resize acceptance,
+and effect checks; they do not establish live main-scene acceptance. Complete
+container coverage, option tooltips, large-list transport, complete artwork/resize acceptance,
 ordinary hauling and full trade remain unfinished. Public depot routes stay hidden.
 
 ## Depot goods commit transport migration
@@ -375,7 +404,7 @@ This establishes controller/transport behavior, not rendered picker acceptance.
 
 `depot_goods_view.gd` stages the two-column frame, category navigation, search,
 scrolling and native group/item captions with distance values. It has no public
-owner or route. Full item-artwork coverage, contained rows,
+owner or route. Full item-artwork and container coverage,
 tooltips and interactive resize acceptance remain unfinished.
 `depot_goods_view_capture.gd` loads the recorded Anvils reply from protected144747
 and the installed assets. At1200x800 its headless geometry check passes; the

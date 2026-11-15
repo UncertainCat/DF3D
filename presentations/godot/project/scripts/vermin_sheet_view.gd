@@ -7,10 +7,12 @@ var world
 var title:=""
 var lines: Array[String]=[]
 var portrait: Texture2D
+var fallback: Texture2D
+var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var receipt:=0
 
 func configure(source,model) -> void:
-	world=source;state=model;art.configure(source);theme=art.theme
+	world=source;state=model;art.configure(source);picture.configure(source);theme=art.theme
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP;clip_contents=true
 	state.changed.connect(refresh);layout(708);refresh()
 
@@ -21,8 +23,9 @@ func refresh() -> void:
 	visible=state.snapshot.get("open",false) and state.snapshot.get("kind",0)==C.SelectionKind.Vermin
 	var next: int=state.snapshot.get("receipt",0)
 	if next!=receipt:
-		receipt=next;portrait=null
+		receipt=next;portrait=null;fallback=null
 		if visible and state.snapshot.has("portrait"):portrait=world.item_portrait_icon(state.snapshot.portrait)
+		if visible and state.snapshot.has("fallback"):fallback=world.candidate_icon(state.snapshot.fallback)
 	title=state.snapshot.get("title","");lines.clear()
 	var remaining: String=state.snapshot.get("description","") if visible else ""
 	while not remaining.is_empty():
@@ -36,6 +39,13 @@ func refresh() -> void:
 
 func _draw() -> void:
 	if portrait!=null:draw_texture_rect(portrait,Rect2(8,12,96,96),false)
+	else:
+		var frame: Texture2D=picture.texture(false)
+		if frame!=null:
+			for y in 6:
+				for x in 12:draw_texture_rect_region(frame,Rect2(8+x*8,12+y*12,8,12),Rect2(0 if x==0 else 16 if x==11 else 8,0 if y==0 else 24 if y==5 else 12,8,12))
+		# Native15384b positions the cell, then adad70 applies its2px inset.
+		if fallback!=null:draw_texture_rect(fallback,Rect2(42,50,32,32),false)
 	if theme.default_font==null:return
 	var caption:=title
 	if caption.length()>=38:caption=caption.left(34)+"..."

@@ -7,8 +7,10 @@ func exercise(expected: Dictionary) -> void:
 	if not await selection_ready(model):return
 	check(ui.host.active==selection and model.snapshot.kind==8,"Vermin destination did not own panel")
 	check(model.snapshot.title==sample.descriptions[0].semantic.title and model.snapshot.description==sample.descriptions[0].semantic.description,"Vermin transported text differs")
-	check(model.snapshot.has("portrait") and selection.vermin.portrait!=null,"Vermin portrait missing")
+	if sample.get("fallback",false):check(model.snapshot.has("fallback") and selection.vermin.fallback!=null and not model.snapshot.has("portrait"),"Vermin fallback missing")
+	else:check(model.snapshot.has("portrait") and selection.vermin.portrait!=null,"Vermin portrait missing")
 	await panel_capture("vermin","workshop-selection-vermin")
+	await capture_tabs("vermin")
 	await pointer(Vector2(920,104))
 	if not await selection_ready(model):return
 	check(model.snapshot.id==int(sample.native.vermin[1]),"Second vermin tab selected wrong caste")

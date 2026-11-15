@@ -12810,6 +12810,33 @@
   },
   "selection_reference": {
     "vermin_selection_reference": {
+      "fallback_native_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-202039",
+        "status": "passed",
+        "scope": "Controlled native reference: temporarily clear portrait flags on this race's creature/caste graphics sets, select the existing lizard tile, capture native fallback, then restore flags. No viewer fallback acceptance yet.",
+        "owned_df_pid": 11736,
+        "native_frame": [424, 64, 96, 72],
+        "description_unchanged": true,
+        "source_save_preserved": true
+      },
+      "fallback_scene_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-202616",
+        "protocol": 214,
+        "status": "passed_with_known_issues",
+        "scope": "Actual main-scene no-portrait path; panel416,52,488,708 and tabs896,52,40,72 match native pixels. Both caste tab clicks, Escape and late-reply retirement pass. Raw portrait flags restored and source save preserved.",
+        "owned_df_pid": 34868,
+        "limitations": "Missing small-tile/default-creature artwork remains unqualified, as do long descriptions, additional portrait sets and resizing.",
+        "diagnostics": "Known separate-render-thread warning, finalize render-thread error and two ObjectDB leaks only."
+      },
+      "portrait_protocol214_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-202737",
+        "status": "passed_with_known_issues",
+        "scope": "Actual main-scene portrait path under214: full panel and both side-tab icons match native pixels, both caste clicks and selection retirement pass.",
+        "owned_df_pid": 39104,
+        "source_save_preserved": true,
+        "gpu_sample": "59C/47%, graphical processes capped30FPS",
+        "diagnostics": "Known separate-render-thread warning, finalize render-thread error and two ObjectDB leaks only."
+      },
       "scene_reference": {
         "lane": "build/stockpile-storage-native-farm-discovery-20261114-201603",
         "status": "passed_with_known_issues",

@@ -9670,6 +9670,50 @@ passes_with_known_issues for the documented Godot exit diagnostics. Evidence:
 selection_reference.engraving_resize_reference. This verifies the root frame and
 restored workflow, not every nested page at every size.
 
+Management protocol214 appends SelectionIdentity.selector for loose-vermin
+tab artwork and SelectionState.fallback for the small image shown without a
+portrait. Both use the existing bounded original-asset recipe. Validators
+reject other target kinds and simultaneous portrait/fallback data. Owned model
+and Godot dictionaries retain both fields. Defaults and the mailbox are214
+(`Local\\df3d_management_v214`); bridge and client must be rebuilt together.
+Older recordings imply neither field. Native and live qualification follows.
+Protected202039 on2026-11-14 captures the native fallback after temporarily
+clearing portrait flags on the selected lizard race's creature/caste graphics
+sets. The flags are restored before the owned process exits unsaved. Native
+uses a96x72 dark picture frame at(424,64), retaining the same title and
+description. The screenshot was inspected; DF11736 exits with source preservation.
+`vermin_selection_reference.fallback_native_reference` records this controlled
+native reference, not viewer qualification.
+
+Protected202616 verifies the protocol214 fallback in the actual main scene.
+The96x72 dark frame, small tile with native2px inset, title and description
+match native over the full panel crop(416,52,488,708); both side-tab icons
+also match over(896,52,40,72). Both caste clicks, Escape and late-response
+retirement pass. Owned DF34868 exits unsaved with raw portrait flags restored
+and source preservation. The crop was inspected. This establishes absence of
+portrait sets, not absence of the small-creature tile; the latter native
+MISSING_CREATURE/default-art path remains unqualified. Known Godot renderer,
+finalize and two-ObjectDB diagnostics retain passed_with_known_issues.
+Evidence: vermin_selection_reference.fallback_scene_reference.
+Protected202737 repeats the actual main-scene workflow with normal portrait
+sets under214. The full panel and both side-tab icons again match native;
+both caste clicks and selection retirement pass. DF39104 exits unsaved with
+source preservation. GPU59C/47% is a sample; both graphical processes remain
+capped30FPS. The same documented Godot diagnostics qualify the pass.
+Evidence: vermin_selection_reference.portrait_protocol214_reference.
+Fresh core/client and MSVC builds pass, with all19 root CTests passing after
+the protocol214 rebuild. Contract tests cover both artwork fields through
+the client, clearing on closure, wrong target kinds, invalid page references
+and simultaneous portrait/fallback rejection.
+
+Ordinary map selection remains gated for a broader reason than Vermin artwork:
+fortress_ui._selection_destination routes only completed farms, containers,
+workshops and furnaces to their dedicated building controllers. Other building
+kinds still enter context_inspector's legacy title/removal branch; incomplete
+buildings are rejected by the staged destination. These paths do not establish
+native building-sheet coverage. The next routing work must supply the missing
+building controls and pending-construction destination before promotion.
+
 Vermin selection discovery: protected200627 on2026-11-14 selects an existing
 revealed tile with two lizard castes938/939. Native and provider agree on both
 identities, tab order and default938. The native screenshot was inspected:
@@ -9714,8 +9758,9 @@ Owned DF34332 exits unsaved with source preservation. Both graphical processes
 are capped30FPS; GPU samples60C/28% and60C/17%. MSVC, extension and core19 pass.
 The live result is passed_with_known_issues for the established rendering-thread,
 finalize and two-ObjectDB shutdown diagnostics. Evidence:
-vermin_selection_reference.scene_reference. Side-tab artwork, absent-portrait
-fallback, longer descriptions, alternate portrait sets and resizing remain
+vermin_selection_reference.scene_reference. Protocol214 qualification above
+adds side-tab artwork and absent-portrait fallback. Missing small-tile/default
+artwork, longer descriptions, alternate portrait sets and resizing remain
 unqualified. Ordinary map routing remains staged.
 
 selection_art_state.gd reuses local artwork navigation state with a selected-tile

@@ -72,6 +72,7 @@ func _refresh() -> void:
 		if ui_host.active==self:ui_host.release(self)
 
 func _alternative_icon(target: Dictionary):
+	if target.has("selector"):return world.candidate_icon(target.selector)
 	if target.kind==C.SelectionKind.Building:
 		var building: Dictionary=world.inspect_entity(3,target.id)
 		# Native floodgate tabs use the fixed UI icon, not the material-colored

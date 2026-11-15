@@ -128,6 +128,7 @@ local selection_moves={}
 local selection_units={}
 local selection_designations={}
 local selection_engravings={}
+local selection_graphics={}
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
@@ -147,6 +148,15 @@ local ok,err=xpcall(function()
     if v.visible and (v.flags.whole&1)==0 and v.race>=0 and v.caste>=0 and d and not d.hidden then target=v;break end
    end
    assert(target,'Vermin reference needs a visible revealed native record')
+   if os.getenv('DF3D_TILE_SELECTION_VERMIN_FALLBACK')=='1' then
+    local raw=df.global.world.raws.creatures.all[target.race]
+    local function clear_portraits(graphics)
+     if graphics then for _,set in ipairs(graphics.graphics_layer_set)do
+      selection_graphics[#selection_graphics+1]={set,set.flags.whole};set.flags.whole=set.flags.whole&~1
+     end end
+    end
+    clear_portraits(raw.graphics);for _,caste in ipairs(raw.caste)do clear_portraits(caste.caste_graphics)end
+   end
    local p=target.pos
    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
    select_map{centerx=p.x,centery=p.y,z=p.z}
@@ -181,6 +191,7 @@ local ok,err=xpcall(function()
     descriptions[#descriptions+1]={id=combined,semantic=semantic}
    end
    result.tile_selection_reference.vermin.descriptions=descriptions
+   result.tile_selection_reference.vermin.fallback=os.getenv('DF3D_TILE_SELECTION_VERMIN_FALLBACK')=='1'
    shot('selection-vermin')
    if os.getenv('DF3D_TILE_SELECTION_SCENE')=='1' then
     capture('workshop-wire')
@@ -2777,6 +2788,7 @@ local ok,err=xpcall(function()
  for _,a in ipairs(prior_index)do indexed:insert('#',a)end
  assert(catalog_ok,catalog_err)
 end,debug.traceback)
+for _,entry in ipairs(selection_graphics)do entry[1].flags.whole=entry[2]end
 for _,prior in ipairs(selection_moves)do assert(dfhack.items.moveToGround(prior.item,prior.pos),'Selection fixture restoration failed');prior.item.flags.whole=prior.flags end
 for _,prior in ipairs(selection_units)do prior.unit.pos:assign(prior.pos)end
 for _,prior in ipairs(selection_designations)do prior.designation.whole=prior.whole end

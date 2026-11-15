@@ -634,6 +634,8 @@ struct TileSelectionSession {
   df3d_selection::Target active;
   std::string title,description;
   std::optional<df3d_production::ItemAppearanceRecipe> portrait;
+  std::optional<df3d_production::ItemAppearanceRecipe> fallback;
+  std::vector<std::optional<df3d_production::ItemAppearanceRecipe>> alternativeSelectors;
   std::vector<std::string> memberNames;
   std::vector<int16_t> memberTypes;
   std::vector<std::optional<ItemInspectionAppearance>> memberAppearances;
@@ -652,14 +654,28 @@ bool prepareTileSelectionReply(TileSelectionSession& value) {
   value.memberNames.clear();value.memberTypes.clear();value.memberAppearances.clear();value.memberUnitAppearances.clear();
   value.title.clear();value.description.clear();
   value.portrait.reset();
+  value.fallback.reset();value.alternativeSelectors.clear();
+  size_t selectorBytes=0;
+  for(const auto& target:value.source.tabs) {
+    std::optional<df3d_production::ItemAppearanceRecipe> selector;
+    if(target.kind==df::view_sheet_type::VERMIN) {
+      const auto text=df3d_selection::verminDescription(target.id);if(!text)return false;
+      df3d_appearance::Result recipe;
+      if(df3d_appearance::resolveVerminSelector(text->race,text->caste,recipe))selector=df3d_production::ownedItemRecipe(recipe);
+      if(selector && (!df3d_production::validItemRecipe(*selector,selectorBytes) || selectorBytes>256*1024))return false;
+    }
+    value.alternativeSelectors.push_back(std::move(selector));
+  }
   if(value.active.kind==df::view_sheet_type::VERMIN) {
     const auto text=df3d_selection::verminDescription(value.active.id);
     if(!text)return false;
     value.title=text->title;value.description=text->description;
     df3d_appearance::Result recipe;
     if(df3d_appearance::resolveVerminPortrait(text->race,text->caste,recipe))value.portrait=df3d_production::ownedItemRecipe(recipe);
+    else if(df3d_appearance::resolveVerminSelector(text->race,text->caste,recipe))value.fallback=df3d_production::ownedItemRecipe(recipe);
     size_t appearanceBytes=0;
     if(value.portrait && !df3d_production::validItemRecipe(*value.portrait,appearanceBytes))return false;
+    if(value.fallback && !df3d_production::validItemRecipe(*value.fallback,appearanceBytes))return false;
     return true;
   }
   if(value.active.kind==df::view_sheet_type::ENGRAVING_PLANNED) {
@@ -1458,7 +1474,11 @@ void publish() {
     const auto kind=[](df::view_sheet_type type){return m::SelectionKind(int(type)+1);};
     const auto empty=b.CreateString("");
     std::vector<flatbuffers::Offset<m::SelectionIdentity>> tabs,members;
-    for(const auto& target:value.source.tabs)tabs.push_back(m::CreateSelectionIdentity(b,kind(target.kind),target.id,empty));
+    for(size_t i=0;i<value.source.tabs.size();++i) {
+      const auto& target=value.source.tabs[i];
+      const auto selector=i<value.alternativeSelectors.size()?encodeItemRecipe(value.alternativeSelectors[i]):flatbuffers::Offset<m::SelectionAppearance>{};
+      tabs.push_back(m::CreateSelectionIdentity(b,kind(target.kind),target.id,empty,-1,0,0,selector));
+    }
     const auto memberKind=value.active.kind==df::view_sheet_type::UNIT_LIST?m::SelectionKind::Unit:m::SelectionKind::Item;
     if(value.active.kind==df::view_sheet_type::UNIT_LIST || value.active.kind==df::view_sheet_type::ITEM_LIST)
       for(auto id:value.active.kind==df::view_sheet_type::UNIT_LIST?value.source.units:value.source.items) {
@@ -1473,10 +1493,12 @@ void publish() {
     const auto overview=b.CreateVector(std::vector<flatbuffers::Offset<m::SelectionText>>{});
     const auto title=b.CreateString(value.title),description=b.CreateString(value.description);
     const auto portrait=encodeItemRecipe(value.portrait);
+    const auto fallback=encodeItemRecipe(value.fallback);
     m::SelectionStateBuilder page(b);page.add_open(value.receipt!=0);page.add_receipt(value.receipt);
     page.add_kind(kind(value.active.kind));page.add_id(value.active.id);page.add_tile(&value.tile);
     page.add_title(title);page.add_subtitle(empty);page.add_job(empty);page.add_description(description);
     page.add_portrait(portrait);
+    page.add_fallback(fallback);
     page.add_alternatives(alternatives);page.add_items(items);page.add_overview(overview);page.add_members(memberRows);
     selectionResult=page.Finish();
   }

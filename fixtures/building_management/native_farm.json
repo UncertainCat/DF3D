@@ -24397,6 +24397,39 @@
           "build/stockpile-storage-native-farm-discovery-20261115-091009/result.json": "e1f40819f40e7a747b52340e042eb70268a15deaf03744a86ec0a49b93a188d7",
           "build/stockpile-storage-native-farm-discovery-20261115-091009/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "lever_navigation_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-091526",
+        "scope": "Actual main-scene lever rename/restore, idle Remove/Cancel removal, contained-item Forbid on/off during removal, linked tab, first-link recenter identity/level and owner release, reopening defaults to items. Seven panel crops match native. Subsequent Pull/projected Link pass. Assigned/queued demolition, removal from linked tab and item-holder return not claimed.",
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "owned_df_pid": 42164,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-header-renamed.png": "6060b43bc7a86e66f6e286a4fb48583772c519cf4b1637a5e8bbfaea22994d82",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-navigation-header-renamed-viewer.png": "545ade61f7df3e33e488359c1a07bb5ba17aba3ab10fdcc7b3fdb59007f8131a",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-header-restored.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-navigation-header-restored-viewer.png": "eac86d5738f6feff14d0f985d1a953a13d374583ae726b98979ee3b08c481119",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-header-removing.png": "5e3d55ef2cecb19c76d7822294abdb1b921d51e0662810beae2ab34f11fd1b12",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-navigation-header-removing-viewer.png": "459012ca8a75435e274dc76c18d88771cde47f2f55c7a9d0a2ca58aebe131890",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-header-removing-forbid.png": "404037bdaeb8aaaa5a424cd8edb65ebf8372fae048312be4f7883378a2776bd3",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-navigation-header-removing-forbid-viewer.png": "5eda5382b33cdb39f4e0dc695abf04921b9b395372276be72de8e29d7b52ece0",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-header-cancelled.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-navigation-header-cancelled-viewer.png": "eac86d5738f6feff14d0f985d1a953a13d374583ae726b98979ee3b08c481119",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-linked-buildings.png": "286ff5bf722e6769c9c4615d1d725d7eb73c546b20ffcf97d108f2491ef65313",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-navigation-linked-buildings-viewer.png": "2c32eb11906678f3902273640a213bea6dd0839c96307d39d4bcd75bcd3f4bad",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-linked-reopened.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-navigation-linked-reopened-viewer.png": "eac86d5738f6feff14d0f985d1a953a13d374583ae726b98979ee3b08c481119",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/lever-native.json": "556384c7e6bc3acb495f4675368102606fb6dfe7a98f43eede08dae6a94df73e",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/workshop-wire-result.json": "e6158b72bd185fe026b21e88e933474a644075f799c0d1258872eb600743e65f",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/result.json": "d8ab7a9d24f01e9b0f1ae5e30c648ef273678a2efea70f0d2b292a50e49c5ec2",
+          "build/stockpile-storage-native-farm-discovery-20261115-091526/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

@@ -8,6 +8,7 @@ func _create_view():return preload("res://scripts/lever_sheet_view.gd").new()
 func configure(world,service,host,help=null) -> void:
 	links.configure(service)
 	super.configure(world,service,host,help)
+	contents.edit_removing=true
 	order_picker.lever_style=true
 	panel.configure_links(world,links,help)
 	panel.links_view.recenter_requested.connect(func(tile):
@@ -30,10 +31,12 @@ func _open_state(id: int,season: int) -> void:
 func _state_changed() -> void:
 	super._state_changed()
 	if lever==null:return
-	if state.building_id<0 or state.snapshot.get("removing",false):
+	if state.building_id<0:
 		lever.close();links.close();return
 	if state.phase!=state.Phase.Ready or state.snapshot.get("type",-1)!=23:return
 	if links.building_id!=state.building_id:links.open(state.building_id)
+	if state.snapshot.get("removing",false):
+		lever.close();return
 	# A confirmed task/header edit changes the source authority. Refresh only
 	# an idle successful observation; never clear an unknown mutation outcome.
 	if lever.state.building_id!=state.building_id or (lever.state.phase==lever.state.Phase.Ready and lever.state.snapshot.get("revision",0)!=state.snapshot.revision):

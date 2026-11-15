@@ -38,6 +38,11 @@ end
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(lever)
  assert(sheet.open and sheet.active_id==lever.id);sample('initial')
+ if os.getenv('DF3D_LEVER_NAVIGATION')=='1'then
+  click(540,520);sample('linked-buildings')
+  click(868,562);assert(not sheet.open);sample('linked-recenter')
+  select_map(lever);assert(not sheet.show_linked_buildings);sample('linked-reopened')
+ end
  if os.getenv('DF3D_LEVER_ITEMS')=='1'then
   local item=assert(lever.contained_items[0].item)
   result.item_controls={item_id=item.id,states={}}
@@ -88,6 +93,11 @@ local ok,err=xpcall(function()
   click(800,82);key('STRING_A120');key('SELECT');assert(lever.name==original..'x');sample('header-renamed')
   click(800,82);key('STRING_A000');key('SELECT');assert(lever.name==original);sample('header-restored')
   click(832,82);assert(#lever.jobs==1 and lever.jobs[0].job_type==df.job_type.DestroyBuilding);sample('header-removing')
+  if os.getenv('DF3D_LEVER_NAVIGATION')=='1'then
+   local item=lever.contained_items[0].item;local original_forbid=item.flags.forbid
+   click(796,562);assert(item.flags.forbid~=original_forbid);sample('header-removing-forbid')
+   click(796,562);assert(item.flags.forbid==original_forbid)
+  end
   assert(click_label('Cancel removal'));assert(#lever.jobs==0 and lever:getBuildStage()==lever:getMaxBuildStage());sample('header-cancelled')
  end
  for index=1,2 do

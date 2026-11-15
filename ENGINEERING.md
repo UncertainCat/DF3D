@@ -233,6 +233,21 @@ Evidence: `completed_sheet_discovery_reference.lever_order_picker_reference`.
 This qualifies native empty-picker behavior in this fortress. No order creation
 or modded lever reaction catalog is claimed.
 
+Lever removal retains its linked-building observation so the hidden tab strip's
+space remains reserved above the items, matching native. Contained-item edits
+remain available during removal through the shared validated native flag path.
+Protected091526 on2026-11-15 verifies actual main-scene rename/restore,
+idle Remove/Cancel removal, item Forbid on/off during removal, the linked tab,
+first-link recenter identity/level and owner release, and reopening to Show items.
+Seven complete panel crops match native; subsequent Pull/projected Link also
+passes. Initial091218 exposed the missing spacing and disabled item controls
+and is not acceptance. Owned DF42164 closes unsaved with source preservation;
+graphics capped30FPS, sampled GPU61C. MSVC and core19 pass; only the established
+render-thread/finalize/two ObjectDB diagnostics remain. Evidence:
+`completed_sheet_discovery_reference.lever_navigation_reference`. Assigned or
+queued demolition, removal entered from the linked tab, and item-holder return
+remain unqualified.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

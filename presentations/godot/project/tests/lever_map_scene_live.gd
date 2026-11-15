@@ -25,6 +25,9 @@ func exercise(expected: Dictionary) -> void:
 	owner.lever.applied.connect(func(operation,id):applied_jobs[operation]=id)
 	owner.open_target(55)
 	if not await ready_jobs(0):return
+	if OS.get_environment("DF3D_LEVER_NAVIGATION")=="1":
+		await navigation_gestures()
+		if failed:return
 	if OS.get_environment("DF3D_LEVER_CONNECTION_VIEWER")=="1":
 		await connection_gestures()
 		if failed:return
@@ -55,6 +58,59 @@ func exercise(expected: Dictionary) -> void:
 	owner.close_panel();await process_frame
 	check(scene._ui.host.active==null,"Lever close retained main-scene owner")
 	exercised=true
+func header_ready() -> bool:
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		await process_frame
+		if owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready:return true
+	return check(false,"Lever header gesture did not settle")
+func lever_capture(label: String) -> void:
+	var motion:=InputEventMouseMotion.new();motion.position=Vector2(300,400);root.push_input(motion,true)
+	await process_frame;await RenderingServer.frame_post_draw
+	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	var native:=Image.load_from_file(directory+"/lever-"+label+".png");native.convert(Image.FORMAT_RGB8)
+	var crop:=image.get_region(Rect2i(416,52,488,708));crop.save_png(directory+"/lever-navigation-"+label+"-viewer.png")
+	check(crop.get_data()==native.get_region(Rect2i(416,52,488,708)).get_data(),"Lever navigation pixels differ: "+label)
+func navigation_gestures() -> void:
+	var original: String=owner.state.snapshot.custom_name
+	await pointer(Vector2(800,82));key(0,120);key(KEY_ENTER)
+	if not await header_ready():return
+	check(owner.state.snapshot.custom_name==original+"x","Lever rename failed")
+	await lever_capture("header-renamed")
+	await pointer(Vector2(800,82));key(KEY_BACKSPACE);key(KEY_ENTER)
+	if not await header_ready():return
+	check(owner.state.snapshot.custom_name==original,"Lever name not restored")
+	await lever_capture("header-restored")
+	await pointer(Vector2(832,82))
+	if not await header_ready():return
+	check(owner.state.snapshot.removing and not owner.panel.tasks.visible,"Lever removal retained tasks")
+	await lever_capture("header-removing")
+	await pointer(Vector2(796,562))
+	if not await header_ready():return
+	check(owner.contents.rows()[0].forbid,"Removal item Forbid did not apply")
+	await lever_capture("header-removing-forbid")
+	await pointer(Vector2(796,562))
+	if not await header_ready():return
+	check(not owner.contents.rows()[0].forbid,"Removal item Forbid did not restore")
+	await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.cancel_rect().get_center())
+	if not await ready_jobs(0):return
+	await lever_capture("header-cancelled")
+	var deadline:=Time.get_ticks_msec()+10000
+	while owner.links.phase!=owner.links.Phase.Ready and Time.get_ticks_msec()<deadline:await process_frame
+	if not check(owner.links.phase==owner.links.Phase.Ready,"Lever linked rows unavailable"):return
+	await pointer(Vector2(540,520));await lever_capture("linked-buildings")
+	check(owner.panel.showing_links,"Lever linked tab did not open")
+	var row: Dictionary=owner.links.rows()[0]
+	var target:=Vector3i(row.x,row.y,row.z)
+	var focused: Dictionary={}
+	owner.focus_requested.connect(func(tile):focused.tile=tile,CONNECT_ONE_SHOT)
+	await pointer(Vector2(868,562));await process_frame
+	check(scene._ui.host.active==null and not owner.panel.visible,"Lever recenter retained owner")
+	check(focused.get("tile",Vector3i(-1,-1,-1))==target and world.get_top_z()==target.z,"Lever recenter selected wrong target")
+	owner.open_target(55)
+	if not await ready_jobs(0):return
+	check(not owner.panel.showing_links,"Lever reopen retained linked tab")
+	await lever_capture("linked-reopened")
 func connections_ready() -> bool:
 	var deadline:=Time.get_ticks_msec()+10000
 	while Time.get_ticks_msec()<deadline:

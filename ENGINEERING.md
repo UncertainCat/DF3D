@@ -9439,9 +9439,9 @@ The diagnostic `engraving-description-probe` is gated by
 `DF3D_TILE_SELECTION_ENGRAVING=1`; it is not a management-protocol provider or
 viewer destination. It stages owned artwork/name/element/property copies for
 a94030/a946e0 and1451b10, with random and material-cache restoration.
-Protected181333 on2026-11-14 verifies exact native title/prose for the loaded
-reference, both with its native sheet open and after closing it. The named
-artwork fields and sheet selection/text remain unchanged. Owned DF19168 exits
+Protected181630 on2026-11-14 verifies exact native title/prose on first access,
+with its native sheet open and after closing it. The named artwork fields and
+sheet selection/text remain unchanged. Owned DF29544 exits
 unsaved; source manifests/preferences are preserved. Bridge Release and core19
 pass; serial graphics are30FPS with sampled GPU51C/4-14%. Evidence lives in
 selection_reference.engraving_formatter_reference. This is not viewer acceptance.
@@ -9454,15 +9454,18 @@ dispatch. Concrete-address ownership passes181212 and the trace-free181333.
 Temporary exception tracing is removed. These failed owned runs preserved saves;
 this was an adapter defect, not a newly discovered native DF bug.
 
-The reference starts with art_id3 but no loaded artwork chunk. Native opening
-loads it through1458b0; the staged probe currently refuses unloaded chunks.
-That semantic loader reads the saved artwork and allocates/registers a chunk
-through144cb0, independently of sheet state. Loading existing artwork and
-generating missing artwork througha48120 are separate outstanding operations.
+The reference starts with art_id3 but no loaded artwork chunk. The adapter calls
+native1458b0, which scans the semantic cache and loads the saved artwork when
+absent, allocating/registering the world-owned chunk through144cb0. The chunk
+remains available for subsequent native and viewer reads. Protected181630 checks
+exactly one added chunk on first access, unchanged prior chunk identities/order,
+unchanged engraving art_id/art_subid/flags and no further chunks on warm reads.
+This is independent of sheet state and does not populate native menu scratch.
+Generating missing artwork througha48120 remains a separate outstanding operation.
 Native element naming permits negative amounts (unspecified groups), uses
 singular only for1, and prints numeric amounts from2; rejecting negative amounts
 incorrectly rejects this reference. Native1451c08 also accepts a null image ref.
-Other artwork/reference families, loader integration and rendered acceptance
+Other artwork/reference families, missing-artwork generation and rendered acceptance
 remain required.
 
 Native-only174721 and174833 pass their assertions; owned DF37032/1300

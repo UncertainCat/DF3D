@@ -24,6 +24,10 @@ inline bool engravingDescriptionReady() {
     static const bool ready=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
         for(const auto& p:std::initializer_list<Pin>{
+            {0x1458b0,0xe03,UINT64_C(0xe863f0cb03756390)}, // existing artwork chunk loader
+            {0x144cb0,0xa5,UINT64_C(0x5b86c4fc644fe651)}, // chunk allocation/registration
+            {0x1443f0,0x7f,UINT64_C(0x93648c11fc43c8ee)}, // image construction
+            {0x144890,0x41a,UINT64_C(0x5832ca5a0d1254d4)}, // image deserialization
             {0xa94030,0x6a1,UINT64_C(0xd81db68b3c9b33d2)},
             {0xa946e0,0x7c2,UINT64_C(0xdbc3db5f052419ee)},
             {0x1451b10,0x161c,UINT64_C(0x5afdbfca1604e13b)}})
@@ -118,11 +122,16 @@ inline std::optional<EngravingDescription> engravingDescriptionProbe(int x,int y
     for(auto* candidate:df::global::world->event.engravings)
         if(candidate && candidate->pos.x==x && candidate->pos.y==y && candidate->pos.z==z){engraving=candidate;break;}
     if(!engraving || engraving->art_id<0 || engraving->art_subid<0 || engraving->art_subid>=500)return std::nullopt;
-    failure="unloaded-artwork";
-    auto* chunk=df::art_image_chunk::find(engraving->art_id);
+    failure="artwork-load";
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    // Native lookup scans the semantic chunk cache before loading saved art.
+    // Keep its registered world-owned chunk alive, just as a native read does.
+    // This neither populates a sheet nor generates an engraving's missing art.
+    using LoadChunk=df::art_image_chunk*(*)(df::art_image_chunk_handlerst*,int32_t);
+    auto* chunk=reinterpret_cast<LoadChunk>(base+0x1458b0)(&df::global::world->art_image_chunks,engraving->art_id);
     if(!chunk || !chunk->images[engraving->art_subid].art_image)return std::nullopt;
     EngravingImageContext owned;if(!owned.prepare(*chunk->images[engraving->art_subid].art_image,failure))return std::nullopt;
-    auto* image=owned.get();auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    auto* image=owned.get();
     df3d_creature::InventoryRandomRestore random(base);
     df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
     EngravingDescription result;

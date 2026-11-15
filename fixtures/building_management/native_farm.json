@@ -12810,9 +12810,9 @@
   },
   "selection_reference": {
     "engraving_formatter_reference": {
-      "run": "build/stockpile-storage-native-farm-discovery-20261114-181333",
-      "status": "loaded_artwork_formatter_only",
-      "owned_df_pid": 19168,
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-181630",
+      "status": "existing_artwork_first_access_formatter",
+      "owned_df_pid": 29544,
       "owned_exit_unsaved": true,
       "source_manifest_unchanged": true,
       "tile": [
@@ -12829,24 +12829,25 @@
           "valid": true
         },
         "before": {
-          "failure": "unloaded-artwork",
-          "valid": false
+          "description": "Engraved on the floor is an exceptionally designed image of dwarves by Oddom Tekkudzaneg.  The dwarves are traveling.  The artwork relates to the foundation of Baldmirror by The Rough Crystal of The Matched Clasps in the early spring of 100.  ",
+          "title": "Anurresílizeg, \"The Wondrous Comedic Apes\"",
+          "valid": true
         },
         "closed": {
           "description": "Engraved on the floor is an exceptionally designed image of dwarves by Oddom Tekkudzaneg.  The dwarves are traveling.  The artwork relates to the foundation of Baldmirror by The Rough Crystal of The Matched Clasps in the early spring of 100.  ",
           "title": "Anurresílizeg, \"The Wondrous Comedic Apes\"",
           "valid": true
         },
+        "loaded_without_sheet": true,
         "sheet_unchanged": true,
         "source_fields_unchanged": true
       },
       "limits": [
-        "Unloaded artwork is rejected; native chunk loader integration is pending.",
         "Missing-artwork generation, viewer rendering and image-picker effects are unqualified.",
         "Source comparison covers the named fields in workshop-native.lua, not every world object."
       ],
       "sha256": {
-        "workshop-native.json": "4a6e88c4c7d09b15b8e09371455975522ec7417926ee2f75c758cbe38bd32be5",
+        "workshop-native.json": "05843b62fb4d6add6bcf0a1d711bb49755d775c50e2202180c14b9844ca77c52",
         "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
         "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
       }

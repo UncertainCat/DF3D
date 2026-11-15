@@ -176,13 +176,26 @@ local ok,err=xpcall(function()
    end
    local function probe()
     local before=artwork_state();local menu=json.encode(observe())
+    local chunks={};for _,chunk in ipairs(df.global.world.art_image_chunks.all)do chunks[#chunks+1]={id=chunk.id,pointer=tostring(chunk)}end
     local title,description=sheet.engraving_title,sheet.raw_description
     local output,code=dfhack.run_command_silent('df3d','engraving-description-probe',tostring(p.x),tostring(p.y),tostring(p.z))
     assert(code==0,output);local value=json.decode(output)
-    assert(before==artwork_state(),'Owned formatter changed source artwork')
+    if before=='unloaded' then
+     assert(value.valid and artwork_state()~='unloaded','Native artwork loader did not populate the missing chunk')
+     assert(#df.global.world.art_image_chunks.all==#chunks+1,'Native artwork loader added unexpected chunks')
+    else
+     assert(before==artwork_state(),'Owned formatter changed source artwork')
+     assert(#df.global.world.art_image_chunks.all==#chunks,'Warm artwork read changed chunk count')
+    end
+    for i,prior_chunk in ipairs(chunks)do local chunk=df.global.world.art_image_chunks.all[i-1]
+     assert(chunk.id==prior_chunk.id and tostring(chunk)==prior_chunk.pointer,'Artwork loader replaced a prior chunk')
+    end
+    assert(target.art_id==prior.art_id and target.art_subid==prior.art_subid and target.flags.whole==prior.flags,'Artwork loader changed engraving identity')
     assert(menu==json.encode(observe()) and title==sheet.engraving_title and description==sheet.raw_description,'Owned formatter changed native sheet')
     return value
    end
+   local initially_unloaded=artwork_state()=='unloaded'
+   assert(initially_unloaded,'Cold artwork reference was already loaded')
    local owned_before=probe()
    select_map{centerx=p.x,centery=p.y,z=p.z}
    if sheet.active_sheet~=df.view_sheet_type.ENGRAVING then
@@ -199,9 +212,10 @@ local ok,err=xpcall(function()
     after={art_id=target.art_id,art_subid=target.art_subid,flags=target.flags.whole},
     native=observe(),title=dfhack.df2utf(sheet.engraving_title),description=dfhack.df2utf(sheet.raw_description),lines=lines()}
    local owned_after=probe();local reference=result.tile_selection_reference.engraving
-   assert(not owned_before.valid or (owned_before.title==reference.title and owned_before.description==reference.description),'Owned engraving text differs before native opening')
+   assert(owned_before.valid and owned_before.title==reference.title and owned_before.description==reference.description,'Owned engraving text differs before native opening')
    assert(owned_after.title==reference.title and owned_after.description==reference.description,'Owned engraving text differs after native opening: '..json.encode(owned_after))
    reference.owned={before=owned_before,after=owned_after,source_fields_unchanged=true,sheet_unchanged=true}
+   reference.owned.loaded_without_sheet=initially_unloaded
    shot('selection-engraving')
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
    local owned_closed=probe()

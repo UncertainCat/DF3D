@@ -16,7 +16,31 @@ local function shot(label,status,text)
   if table.concat(chars):find(text,1,true)then found=true end
  end
  assert(found,'Native message missing: '..text)
- result.cases[#result.cases+1]={label=label,status=status,text=text}
+ local row={label=label,status=status,text=text}
+ if os.getenv('DF3D_WELL_SCENE')=='1' and (os.getenv('DF3D_WELL_WORKFLOW')~='1' or label=='restored') then
+  local workflow=label=='restored' and os.getenv('DF3D_WELL_WORKFLOW')=='1'
+  local original=b.name
+  if workflow then
+   assert(#b.jobs==0)
+   local gui=require('gui');local g=df.global.gps
+   local function click(x,y)
+    g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+    df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+   end
+   click(800,82);gui.simulateInput(view,'STRING_A120');gui.simulateInput(view,'SELECT');assert(b.name==original..'x');capture('well-workflow-renamed')
+   click(800,82);gui.simulateInput(view,'STRING_A000');gui.simulateInput(view,'SELECT');assert(b.name==original);capture('well-workflow-restored')
+   click(832,82);assert(#b.jobs==1 and b.jobs[0].job_type==df.job_type.DestroyBuilding);capture('well-workflow-removing')
+   click(520,202);assert(#b.jobs==0);capture('well-workflow-cancelled')
+  end
+  local reference='well-status-'..label
+  local f=assert(io.open(out..'/well-scene-expected.json','w'))
+  f:write(json.encode{id=b.id,type=18,tile={b.centerx,b.centery,b.z},reference=reference,workflow=workflow,custom_name=dfhack.df2utf(original),status=status==-1 and 0 or status-83});f:close()
+  local shot_label='well-wire-'..label;capture(shot_label)
+  f=assert(io.open(out..'/'..shot_label..'-result.json'));row.viewer=json.decode(f:read('*a'));f:close();assert(row.viewer.success and b.name==original and #b.jobs==0)
+ end
+ result.cases[#result.cases+1]=row
 end
 local ok,err=xpcall(function()
  shot('operational',-1,'The well is operational.')

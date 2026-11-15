@@ -3469,7 +3469,7 @@ df::building_actual* contentsBuilding(int32_t id,bool editing=false) {
   if(!building)return nullptr;
   const auto type=building->getType();
   const bool lever=type==df::building_type::Trap && (building->getSubtype()==0 || building->getSubtype()==1);
-  if(!df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
+  if(type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
      !lever && (editing || !df3d_production::productionProfileBuilding(building)) &&
      !df3d_production::observePendingBuilding(building))return nullptr;
   auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
@@ -4296,13 +4296,14 @@ void run(color_ostream& out) {
         auto* building=df::building::find(q->building_id());
         if(!building)return nullptr;
         const auto type=building->getType();
-        if(!df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && !df3d_production::productionProfileBuilding(building))return nullptr;
+        if(type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && !df3d_production::productionProfileBuilding(building))return nullptr;
         auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
         return tile && !tile->bits.hidden?building:nullptr;
       };
       const auto observe=[&]{return df3d_production::observeBuildingHeader(target(),true);};
       const auto convert=[](const df3d_production::BuildingHeaderObservation& f)->std::optional<BuildingHeaderSnapshot> {
         BuildingHeaderSnapshot result{f.id,f.type,f.stage,f.maxStage,f.revision,DF2UTF(f.customName),DF2UTF(f.nativeName),DF2UTF(f.headerName),f.removing,f.suspended,f.hasWorker,int8_t(f.forbidden),df3d_tasks::destinationArtwork(df::building::find(f.id))};
+        if(f.wellStatus)result.well=WellBodySnapshot{static_cast<m::WellStatus>(*f.wellStatus)};
         if(f.machinery){const auto& v=*f.machinery;result.machinery=MachineryBodySnapshot{v.machineId,v.produced,v.required,static_cast<m::MachineryStatus>(v.status),v.stableFoundation,v.disengaged,v.pumpManual,v.pumpDirection};}
         if(f.type==3 || f.type==46) {
           const auto body=df3d_production::funeraryBody(df::building::find(f.id));if(!body)return std::nullopt;
@@ -4404,7 +4405,7 @@ void run(color_ostream& out) {
         const auto contentsType=contentsBuilding(q->building_id())->getType();
         const bool editRemoving=df3d_production::ordinaryTrapBuilding(contentsBuilding(q->building_id())) || unfinished || contentsType==df::building_type::Box ||
           (contentsType==df::building_type::Trap && (contentsBuilding(q->building_id())->getSubtype()==0 || contentsBuilding(q->building_id())->getSubtype()==1)) ||
-          df3d_production::machineryBuildingType(contentsType) || df3d_production::plainFurnitureType(contentsType) || df3d_production::funeraryFurnitureType(contentsType) || df3d_production::linkedFurnitureType(contentsType);
+          contentsType==df::building_type::Well || df3d_production::machineryBuildingType(contentsType) || df3d_production::plainFurnitureType(contentsType) || df3d_production::funeraryFurnitureType(contentsType) || df3d_production::linkedFurnitureType(contentsType);
         auto edit=df3d_production::finishBuildingItemEdit(*before,q->expected_revision(),q->item_id(),action,q->item_value()!=0,[&] {
           auto* building=contentsBuilding(q->building_id(),true);
           if(!building)return false;

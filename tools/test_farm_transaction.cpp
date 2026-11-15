@@ -726,3 +726,15 @@ TEST_CASE("item recipes own references and invalidate observations") {
     item.appearance->corpseSelector->layers[0][5]=0;
     CHECK_FALSE(validInspectionInstrument(*item.appearance,23));
 }
+TEST_CASE("well status changes retire header edit authority") {
+    using namespace df3d_production;
+    BuildingHeaderObservation before;before.id=161;before.type=18;before.stage=before.maxStage=1;
+    before.nativeName=before.headerName="Well";before.wellStatus=0;before.revision=buildingHeaderRevision(before);
+    auto changed=before;changed.wellStatus=3;changed.revision=buildingHeaderRevision(changed);int calls=0;
+    auto apply=[&]{++calls;return true;};auto observe=[&]{++calls;return std::optional<BuildingHeaderObservation>{changed};};
+    auto stale=finishBuildingHeaderEdit(changed,before.revision,BuildingHeaderOperation::Rename,"Renamed",apply,observe);
+    CHECK(stale.outcome==BuildingHeaderOutcome::Stale);CHECK(calls==0);CHECK_FALSE(stale.mutated);
+    changed.customName=changed.nativeName=changed.headerName="Renamed";changed.revision=buildingHeaderRevision(changed);
+    auto uncertain=finishBuildingHeaderEdit(before,before.revision,BuildingHeaderOperation::Rename,"Renamed",apply,observe);
+    CHECK(uncertain.outcome==BuildingHeaderOutcome::Unknown);CHECK(uncertain.mutated);CHECK_FALSE(uncertain.receipt);
+}

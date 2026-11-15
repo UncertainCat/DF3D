@@ -703,10 +703,11 @@ It reads installed contents, native remaining capacity (c8a580) and the water
 column; it does not consume selected-sheet or menu scratch. `well_native.h`
 calls this routine at a safe point and pins its complete0x3ad-byte span with
 FNV1a64 `1e6023461b843633`. Unknown results fail closed. `well-status-probe`
-is a diagnostic entry; this provider has not yet been added to the management
-wire or a public well panel. Native copy comes from renderer189f21..18a081:
+retains a diagnostic entry; protocol230 transports the semantic state in the
+shared building header. Native copy comes from renderer189f21..18a081:
 “There is no bucket.”, “The bucket is full.”, “The well is operational.” and
-“The well is dry.” The operational message uses color7; the others use color6.
+“The well is dry.” The renderer sets bright color7 for operational and bright
+color6 for the other messages (palette15/14).
 
 Protected121118 verifies every result against the native displayed message on
 well161: operational, temporarily detached bucket, bucket_z0 (dry), a created
@@ -717,6 +718,27 @@ and are not complete acceptance. Every owned run closes unsaved with source
 preservation. The successful run owns DF10080, keeps simulation paused and native
 graphics capped30FPS, sampled GPU58–60C. MSVC bridge and core19 pass. Evidence:
 `completed_sheet_discovery_reference.remaining_buildings_well_reference`.
+
+The public well panel uses the existing header/contents composition and native
+rename/remove/cancel operations. Its revision includes well status, so a status
+change retires an old edit receipt; an unexpected post-action status change
+cannot become a successful receipt or a retryable rejection. The transaction
+regression checks both boundaries. Map selection and item-holder navigation
+route native Well18 through mirror kind19 to this panel.
+
+Protected122248 on2026-11-15 verifies the actual main-scene panel for all four
+states plus the restored operational baseline. All five full488x708 crops match
+native, including installed bucket/rope artwork. Initial122103 differed only in
+497 operational glyph pixels because it used base gray instead of bright white;
+it is not rendered acceptance. Protected122558 adds actual projected map and
+holder entry, rename/restore, removal/cancel and Escape, with five further exact
+full-panel crops. Native names/jobs and the controlled water/bucket state are
+restored. These paused checks do not claim natural water-hauling simulation.
+
+Both owned games close unsaved with source preservation (DF31320 and45708).
+Graphics are serial30FPS, sampled GPU59–62C. Runs pass with the known rendering-
+thread/finalize/two-ObjectDB diagnostics. Core19, well-contract and holder-routing
+checks pass. Evidence: `completed_sheet_discovery_reference.well_workflow_reference`.
 
 ## Completed hatch, grate and bar references
 

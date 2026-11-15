@@ -16,6 +16,7 @@ struct BuildingHeaderObservation {
     std::vector<Job> jobs;
     uint64_t revision=0;
     std::optional<MachineryBody> machinery;
+    std::optional<uint8_t> wellStatus;
 };
 inline uint64_t buildingHeaderRevision(const BuildingHeaderObservation& value) {
     uint64_t hash=UINT64_C(14695981039346656037);
@@ -31,6 +32,7 @@ inline uint64_t buildingHeaderRevision(const BuildingHeaderObservation& value) {
     if(value.machinery){const auto& v=*value.machinery;
         number(v.machineId);number(v.produced);number(v.required);byte(uint8_t(v.status));
         byte(v.stableFoundation);byte(v.disengaged);byte(v.pumpManual);byte(v.pumpDirection);}
+    if(value.wellStatus)byte(*value.wellStatus);
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;
 }
 inline bool validBuildingHeader(const BuildingHeaderObservation& value) {
@@ -38,6 +40,7 @@ inline bool validBuildingHeader(const BuildingHeaderObservation& value) {
         value.customName.size()<=512 && !value.nativeName.empty() && value.nativeName.size()<=512 &&
         !value.headerName.empty() && value.headerName.size()<=512 &&
         (value.removing || (!value.suspended && !value.hasWorker)) &&
+        (value.type==18)==value.wellStatus.has_value() && (!value.wellStatus || *value.wellStatus<=3) &&
         machineryType(value.type)==bool(value.machinery) &&
         (!value.machinery || validMachineryBody(*value.machinery,value.type)) && value.revision==buildingHeaderRevision(value);
 }

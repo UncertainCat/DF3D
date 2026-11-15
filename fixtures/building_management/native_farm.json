@@ -30966,6 +30966,155 @@
           "build/stockpile-storage-native-farm-discovery-20261115-121941/result.json": "1a07b0857d55bbefe2c053b186aeb09188f671db632f96fa1f029f72ba658fcc",
           "build/stockpile-storage-native-farm-discovery-20261115-121941/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "well_workflow_reference": {
+        "protocol": 230,
+        "scope": "Native well status transported through revisioned header; staged four-state rendering and actual map/holder rename/remove workflow. No natural water hauling simulation claimed.",
+        "bridge_sha256": "9A3531F758B91FB7E6BA093BEEB8144E75B43DB79FD04BBD02B6FF44A10A8987",
+        "runs": [
+          {
+            "lane": "build/stockpile-storage-native-farm-discovery-20261115-122248",
+            "owned_df_pid": 31320,
+            "scope": "five state crops including restored baseline",
+            "native": {
+              "bucket_capacity": 600,
+              "building_id": 161,
+              "cases": [
+                {
+                  "label": "operational",
+                  "status": -1,
+                  "text": "The well is operational.",
+                  "viewer": {
+                    "roundtrip": true,
+                    "success": true,
+                    "surface": "actual main scene"
+                  }
+                },
+                {
+                  "label": "no-bucket",
+                  "status": 84,
+                  "text": "There is no bucket.",
+                  "viewer": {
+                    "roundtrip": true,
+                    "success": true,
+                    "surface": "actual main scene"
+                  }
+                },
+                {
+                  "label": "dry",
+                  "status": 86,
+                  "text": "The well is dry.",
+                  "viewer": {
+                    "roundtrip": true,
+                    "success": true,
+                    "surface": "actual main scene"
+                  }
+                },
+                {
+                  "label": "full",
+                  "status": 85,
+                  "text": "The bucket is full.",
+                  "viewer": {
+                    "roundtrip": true,
+                    "success": true,
+                    "surface": "actual main scene"
+                  }
+                },
+                {
+                  "label": "restored",
+                  "status": -1,
+                  "text": "The well is operational.",
+                  "viewer": {
+                    "roundtrip": true,
+                    "success": true,
+                    "surface": "actual main scene"
+                  }
+                }
+              ],
+              "restored": true,
+              "water_stack": 10,
+              "water_volume": 600
+            },
+            "source_preserved": true,
+            "closed_unsaved": true,
+            "diagnostics": "passed_with_known_issues: rendering-thread/finalize/two ObjectDB",
+            "sha256": {
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/remaining-buildings-native.json": "20cfa8d3515bbca6ba888519981e1be49ea5dea9616c850ca14a92afb3a776ab",
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/result.json": "e37b2666f66a96834acec81dd296c375989d75c517c121c3c4cb8332d4f94403",
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/well-wire-dry-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/well-wire-full-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/well-wire-no-bucket-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/well-wire-operational-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/well-wire-restored-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/well-wire-dry.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/well-wire-full.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/well-wire-no-bucket.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/well-wire-operational.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/well-wire-restored.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+              "build/stockpile-storage-native-farm-discovery-20261115-122248/well-scene-expected.json": "94f1919ade228ea24e40910d0825e2a6a688d411612e125ba4d6aae035f7fdaa"
+            }
+          },
+          {
+            "lane": "build/stockpile-storage-native-farm-discovery-20261115-122558",
+            "owned_df_pid": 45708,
+            "scope": "actual map/holder and five baseline/rename/restore/remove/cancel crops",
+            "native": {
+              "bucket_capacity": 600,
+              "building_id": 161,
+              "cases": [
+                {
+                  "label": "operational",
+                  "status": -1,
+                  "text": "The well is operational."
+                },
+                {
+                  "label": "no-bucket",
+                  "status": 84,
+                  "text": "There is no bucket."
+                },
+                {
+                  "label": "dry",
+                  "status": 86,
+                  "text": "The well is dry."
+                },
+                {
+                  "label": "full",
+                  "status": 85,
+                  "text": "The bucket is full."
+                },
+                {
+                  "label": "restored",
+                  "status": -1,
+                  "text": "The well is operational.",
+                  "viewer": {
+                    "roundtrip": true,
+                    "success": true,
+                    "surface": "actual main scene"
+                  }
+                }
+              ],
+              "restored": true,
+              "water_stack": 10,
+              "water_volume": 600
+            },
+            "source_preserved": true,
+            "closed_unsaved": true,
+            "diagnostics": "passed_with_known_issues: rendering-thread/finalize/two ObjectDB",
+            "sha256": {
+              "build/stockpile-storage-native-farm-discovery-20261115-122558/remaining-buildings-native.json": "05817522f6a85b098e26a8ae07ac0542026035f02d8903e3bfbaacbf6d4c21eb",
+              "build/stockpile-storage-native-farm-discovery-20261115-122558/result.json": "24d4ed4e3dbd3b9ad53b9bd32af21012153b101c987b442da02ff6b56ebc5262",
+              "build/stockpile-storage-native-farm-discovery-20261115-122558/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+              "build/stockpile-storage-native-farm-discovery-20261115-122558/well-wire-restored-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+              "build/stockpile-storage-native-farm-discovery-20261115-122558/well-wire-restored.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+              "build/stockpile-storage-native-farm-discovery-20261115-122558/well-scene-expected.json": "168b96d1fe02683f277c13b7b69640ca97da30ff174ad6f234a60b25bbb9a80c"
+            }
+          }
+        ],
+        "initial_failure": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-122103",
+          "reason": "Operational text used base7 instead of bright15. Only497 glyph pixels differed; subsequent runs use native bright15/14."
+        }
       }
     },
     "pending_construction_reference": {

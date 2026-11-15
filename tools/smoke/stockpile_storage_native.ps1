@@ -413,7 +413,7 @@ try {
      if(-not $client.WaitForExit(60000)){$client.Kill();$client.WaitForExit();throw 'Work order client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/$name-result.json")){throw 'Work order client failed'}
     }
-    if($FarmItemCarriers -and ($name -in @('workshop-wire','workshop-order-wire','lever-warning-wire','machinery-wire','machinery-scene','barrier-wire','barrier-scene') -or $name -like 'door-mode-wire-*' -or $name -like 'barrier-variant-wire-*' -or $name -like 'machinery-variant-wire-*' -or $name -like 'trap-sheet-wire-*' -or $name -eq 'machinery-contract-wire')) {
+    if($FarmItemCarriers -and ($name -in @('workshop-wire','workshop-order-wire','lever-warning-wire','machinery-wire','machinery-scene','barrier-wire','barrier-scene') -or $name -like 'door-mode-wire-*' -or $name -like 'well-wire-*' -or $name -like 'barrier-variant-wire-*' -or $name -like 'machinery-variant-wire-*' -or $name -like 'trap-sheet-wire-*' -or $name -eq 'machinery-contract-wire')) {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $env:DF3D_DOOR_CAPTURE=$name
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
@@ -451,6 +451,7 @@ try {
      if($name -like 'machinery-variant-wire-*'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/machinery_variants_scene_live.gd')}
      if($name -eq 'machinery-scene'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/machinery_scene_live.gd')}
      if($name -like 'barrier-variant-wire-*'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/barrier_variants_scene_live.gd')}
+     if($name -like 'well-wire-*'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/well_scene_live.gd')}
      if($name -eq 'barrier-scene'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/barrier_scene_live.gd')}
      if($name -eq 'barrier-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/barrier_wire_live.gd')}
      if($name -eq 'machinery-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/machinery_wire_live.gd')}

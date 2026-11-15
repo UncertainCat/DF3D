@@ -20,6 +20,7 @@ func run() -> void:
 	if not check(initial.get("status")==C.ManagementStatus.Ok and not state.is_empty(),"Plate read rejected"):quit(1);return
 	check(state.source_mechanism==int(expected.source_mechanism) and state.target_mechanism==int(expected.target_mechanism),"Plate initial mechanism order differs")
 	check(not state.source_name.is_empty() and not state.target_name.is_empty(),"Plate mechanism captions missing")
+	await inspect_prompt(state,expected)
 	var selection: Dictionary={"lever_x":int(expected.x),"lever_y":int(expected.y),"lever_z":int(expected.z),
 		"lever_source_mechanism":state.source_mechanism,"lever_target_mechanism":state.target_mechanism}
 	var preview:=await lever(1,state.revision,selection)

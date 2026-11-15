@@ -7,7 +7,10 @@ local function kind(b)
  if df.building_workshopst:is_instance(b) then return df.workshop_type[b.type] end
  if df.building_furnacest:is_instance(b) then return df.furnace_type[b.type] end
  if df.building_farmplotst:is_instance(b) then return 'FarmPlot' end
- if df.building_trapst:is_instance(b) and b.trap_type==0 then return 'Lever' end
+ if df.building_trapst:is_instance(b) then
+  if b.trap_type==0 then return 'Lever' end
+  if b.trap_type==1 then return 'PressurePlate' end
+ end
 end
 local function visible(b)
  local d=dfhack.maps.getTileFlags{x=b.centerx,y=b.centery,z=b.z}
@@ -58,11 +61,12 @@ end
 local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_templates,native_categories,category,native_forge,native_fabrics,native_smelter,native_memorial,native_dye)
  local out,keys={},{}
  local k=kind(b)
- if k=='Lever' then
+ if k=='Lever' or k=='PressurePlate' then
   -- Link/Pull creation belongs to the dedicated native action wrapper. Only
   -- the existing queue uses this shared observation/edit path.
   if category~='' then return nil,'Invalid lever task category' end
-  out.editable_templates={{job_type=df.job_type.PullLever},{job_type=df.job_type.LinkBuildingToTrigger}}
+  out.editable_templates={{job_type=df.job_type.LinkBuildingToTrigger}}
+  if k=='Lever' then table.insert(out.editable_templates,1,{job_type=df.job_type.PullLever}) end
   return out
  end
  local dyer=k=='Dyers'
@@ -368,7 +372,7 @@ return function(request)
   local i=lo
   while i<#all and i<lo+512 do
    local b=all[i]
-   if kind(b) and kind(b)~='Lever' and visible(b) and string.find(string.lower(utf(B.getName(b))..' '..kind(b)..' #'..b.id),string.lower(p.query),1,true) then
+   if kind(b) and kind(b)~='Lever' and kind(b)~='PressurePlate' and visible(b) and string.find(string.lower(utf(B.getName(b))..' '..kind(b)..' #'..b.id),string.lower(p.query),1,true) then
     result.buildings[#result.buildings+1]=info(b)
    end
    i=i+1
@@ -379,7 +383,7 @@ return function(request)
  end
  local b=df.building.find(p.building_id)
  if not b or not kind(b) or not visible(b) then return fail('Production building no longer available') end
- if kind(b)=='Lever' then
+ if kind(b)=='Lever' or kind(b)=='PressurePlate' then
   if b:getBuildStage()~=b:getMaxBuildStage() then return fail('') end
   for _,job in ipairs(b.jobs)do if job.job_type==df.job_type.DestroyBuilding then return fail('') end end
  end

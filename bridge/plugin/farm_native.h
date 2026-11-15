@@ -113,7 +113,7 @@ inline bool productionProfileBuilding(df::building* building) {
     if(!building)return false;
     const auto type=building->getType();
     return type==df::building_type::Workshop || type==df::building_type::Furnace ||
-        (type==df::building_type::Trap && building->getSubtype()==0);
+        (type==df::building_type::Trap && (building->getSubtype()==0 || building->getSubtype()==1));
 }
 // Native sheet1b00a3 cancels building jobs and restores completed occupancy.
 // It takes only a building, not selected-sheet or input scratch. The caller

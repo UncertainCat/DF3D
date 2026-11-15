@@ -436,6 +436,7 @@ try {
      if($env:DF3D_BUILDING_LINKS_WIRE -eq '1'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/building_links_wire_live.gd')}
      if($env:DF3D_LEVER_WIRE -eq '1'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/lever_wire_live.gd')}
      if($env:DF3D_PRESSURE_PLATE_WIRE -eq '1'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/pressure_plate_wire_live.gd')}
+     if($env:DF3D_PRESSURE_PLATE_PANEL -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/pressure_plate_panel_live.gd')}
      if($env:DF3D_LEVER_PROMPT_ART -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/lever_prompt_art_live.gd')}
      if($env:DF3D_LEVER_PANEL -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/lever_panel_live.gd')}
      if($env:DF3D_LEVER_MAP -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/lever_map_scene_live.gd')}

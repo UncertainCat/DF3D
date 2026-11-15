@@ -359,10 +359,25 @@ ID; its schema and operation meanings are unchanged, and operation2 remains
 lever-only. Initial lookup additionally pins the plate search bytes at
 1ad55d..1ad826 (FNV64 8b1ac073c20f85cb). Shared internal header observation admits
 subtype1 for source revision authority; ordinary plate header/queue/profile
-panels remain gated. Owned DF40392 closes unsaved with source preservation;
+panels were not qualified by that run. Owned DF40392 closes unsaved with source preservation;
 native graphics capped30FPS, sampled GPU60C. MSVC and core19 pass; the headless
 client has only the known separate-render-thread notice. Evidence:
 `completed_sheet_discovery_reference.pressure_plate_provider_reference`.
+
+The staged `pressure_plate_panel.gd` composes the shared trigger owner with
+the plate-only task controls. Shared header, contained items and worker/order
+profile providers admit completed subtype1; the production adapter permits
+editing existing Link jobs but offers no ordinary recipes or Pull template.
+Plates remain excluded from general production-list discovery and public map
+entry. Protected094848 on2026-11-15 matches all three complete488x708 panel
+crops (Tasks, Workers, Work orders) and the456x156 Link prompt. Pointer Link
+transfers input ownership, Escape restores the panel, and close releases it.
+The subsequent typed Link and native job comparison pass. Header/item/worker/
+order mutations, Connections, and ordinary map selection remain unqualified for
+plates. Owned DF45936 closes unsaved with source preservation; graphics capped
+30FPS, sampled GPU59–60C. MSVC, production adapter and core19 pass. Graphics
+report only the documented render-thread/finalize/two ObjectDB diagnostics.
+Evidence: `completed_sheet_discovery_reference.pressure_plate_panel_reference`.
 
 ## Native bug register
 

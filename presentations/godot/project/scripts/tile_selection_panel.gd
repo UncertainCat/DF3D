@@ -10,6 +10,7 @@ var destination: Callable
 var canvas: CanvasLayer
 var panel: Panel
 var body
+var engraving
 var tabs
 var play_enabled:=true
 var modal_input:=false
@@ -27,6 +28,8 @@ func configure(source,service,host,route: Callable) -> void:
 	panel.add_theme_stylebox_override("panel",border);panel.texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
 	body=preload("res://scripts/tile_selection_group_view.gd").new();panel.add_child(body);body.configure(world,navigation.state)
 	body.input_allowed=func():return ui_host.allows_panel_input(self)
+	engraving=preload("res://scripts/engraving_sheet_view.gd").new();panel.add_child(engraving);engraving.configure(world,navigation.state)
+	engraving.input_allowed=func():return ui_host.allows_panel_input(self)
 	tabs=preload("res://scripts/tile_selection_tabs.gd").new();canvas.add_child(tabs);tabs.configure(world)
 	tabs.input_allowed=_allows_tabs;tabs.alternative_requested.connect(navigation.state.choose_alternative)
 	navigation.state.changed.connect(_refresh)
@@ -35,7 +38,7 @@ func configure(source,service,host,route: Callable) -> void:
 func open_tile(tile: Vector3i) -> void:navigation.open(tile)
 
 func _route(kind: int,id: int,tile: Vector3i):
-	if kind in [C.SelectionKind.ItemList,C.SelectionKind.UnitList]:
+	if kind in [C.SelectionKind.ItemList,C.SelectionKind.UnitList,C.SelectionKind.Engraving]:
 		if not ui_host.activate(self):return null
 		panel.show();return self
 	return destination.call(kind,id,tile) if destination.is_valid() else null
@@ -45,6 +48,7 @@ func _allows_tabs() -> bool:
 
 func _refresh() -> void:
 	var state=navigation.state
+	body.visible=state.snapshot.get("kind",0) in [C.SelectionKind.ItemList,C.SelectionKind.UnitList]
 	var images: Array=[]
 	for target in state.snapshot.get("alternatives",[]):
 		# Reuse semantic selection artwork; groups deliberately have no object
@@ -79,7 +83,7 @@ func _process(_delta: float) -> void:
 	var view:=viewport/factor
 	panel.position=Vector2((floori(view.x/8)-98)*8,48+fposmod(view.y,12)*0.5)
 	panel.size=Vector2(488,floori(view.y/12)*12-84)
-	body.layout(panel.size.y);tabs.layout(panel.position)
+	body.layout(panel.size.y);engraving.layout(panel.size.y);tabs.layout(panel.position)
 
 func _input(event: InputEvent) -> void:
 	if not ui_host.allows_panel_input(self):return

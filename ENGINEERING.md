@@ -9436,8 +9436,8 @@ Diagnostic output now names that observation after_escape. Option effects,
 actual cancellation, long prose, scrolling and resizing remain unqualified.
 
 The diagnostic `engraving-description-probe` is gated by
-`DF3D_TILE_SELECTION_ENGRAVING=1`; it is not a management-protocol provider or
-viewer destination. It stages owned artwork/name/element/property copies for
+`DF3D_TILE_SELECTION_ENGRAVING=1`. The same adapter supplies the staged engraving
+destination through ManagementAction::Selection. It uses owned artwork/name/element/property copies for
 a94030/a946e0 and1451b10, with random and material-cache restoration.
 Protected181630 on2026-11-14 verifies exact native title/prose on first access,
 with its native sheet open and after closing it. The named artwork fields and
@@ -9485,8 +9485,27 @@ mapping reuse and naturally unresolved-world coverage remain unqualified.
 Native element naming permits negative amounts (unspecified groups), uses
 singular only for1, and prints numeric amounts from2; rejecting negative amounts
 incorrectly rejects this reference. Native1451c08 also accepts a null image ref.
-Other artwork/reference families, regional mapping reuse and rendered acceptance
+Other artwork/reference families, regional mapping reuse and broader rendered acceptance
 remain required.
+
+The staged selection panel renders completed engravings through
+engraving_sheet_view.gd: native blue title, white plain-text wrapping and a local
+scroll offset. SelectionState already carries title/description, so protocol212
+does not change; the Godot adapter now publishes both fields. The existing wire
+limits remain512/16384 bytes, with larger text rejected rather than truncated.
+Lazy initialization reports a mutation and terrain hint for its changed symbol.
+This uses the selection receipt/client/world lifecycle, without native sheet input.
+
+Protected wire182618 and actual main-scene182912 on2026-11-14 verify exact native
+text, Inspect/Back, retired-receipt rejection, Escape and late-reply retirement.
+The actual488x708 panel crop at416,52 matches native pixel-for-pixel, as does the
+standalone capture using the wire reply. Both runs are passed_with_known_issues:
+only the documented rendering-thread/exit diagnostics. Bridge/extension builds
+and core19 pass; owned DF6668/35684 close unsaved with source/preferences preserved.
+Graphics are serial30FPS, sampled51-52C/3-18%. Evidence and hashes are in
+selection_reference.engraving_panel_reference. Ordinary public map routing stays
+unchanged. Long prose, scrolling, resize and planned-engraving/image-picker
+workflows remain unqualified; this short reference does not complete the feature.
 
 Native-only174721 and174833 pass their assertions; owned DF37032/1300
 exit unsaved with source/preferences preserved. Core19 passes. Graphics are
@@ -9495,7 +9514,7 @@ state and evidence hashes live in selection_reference.engraving_discovery_refere
 
 Standalone selection-panel-capture also matches the complete group shell and
 checks pointer dispatch/closure through the real host with injected replies.
-Public map routing, other side-tab icons, engraving/vermin destinations,
+Public map routing, other side-tab icons, planned-engraving/vermin destinations,
 long captions and hover remain unfinished; overflow/resize coverage is scoped
 to the preceding24-block reference. This fixture
 qualifies neither all specialized item artwork nor the individual detail

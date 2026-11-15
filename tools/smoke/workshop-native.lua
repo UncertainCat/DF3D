@@ -266,6 +266,15 @@ local ok,err=xpcall(function()
    local owned_closed=probe()
    assert(owned_closed.title==reference.title and owned_closed.description==reference.description,'Owned engraving text differs with native sheet closed')
    reference.owned.closed=owned_closed
+   if os.getenv('DF3D_TILE_SELECTION_RUNTIME')=='1' then
+    local file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
+    local menu=json.encode(observe());local title,description=sheet.engraving_title,sheet.raw_description
+    capture('workshop-wire')
+    file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
+    assert(receipt.success,'Engraving management wire failed')
+    assert(menu==json.encode(observe()) and title==sheet.engraving_title and description==sheet.raw_description,'Engraving management read changed native sheet')
+    reference.management=receipt
+   end
    local planned
    for dx=1,20 do
     local q={x=p.x+dx,y=p.y,z=p.z};local d=dfhack.maps.getTileFlags(q)

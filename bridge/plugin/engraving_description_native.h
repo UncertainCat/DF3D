@@ -118,7 +118,7 @@ public:
     }
     df::art_image* get(){return &image;}
 };
-inline std::optional<EngravingDescription> engravingDescriptionProbe(int x,int y,int z,std::string& failure) {
+inline std::optional<EngravingDescription> engravingDescription(int x,int y,int z,std::string& failure,bool* initialized=nullptr) {
     failure="selection";
     const auto selected=collect(x,y,z);
     if(!selected)return std::nullopt;
@@ -137,6 +137,7 @@ inline std::optional<EngravingDescription> engravingDescriptionProbe(int x,int y
         auto draft=*engraving;
         reinterpret_cast<void(*)(df::engraving*)>(base+0xa48120)(&draft);
         engraving->art_id=draft.art_id;engraving->art_subid=draft.art_subid;engraving->tile=draft.tile;
+        if(initialized)*initialized=true;
     }
     if(engraving->art_id<0 || engraving->art_subid<0 || engraving->art_subid>=500)return std::nullopt;
     failure="artwork-load";

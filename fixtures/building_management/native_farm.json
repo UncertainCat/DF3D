@@ -12809,6 +12809,78 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "engraving_panel_reference": {
+      "protocol": 212,
+      "runs": {
+        "wire": {
+          "run": "build/stockpile-storage-native-farm-discovery-20261114-182618",
+          "status": "passed_with_known_issues",
+          "owned_df_pid": 6668,
+          "owned_exit_unsaved": true,
+          "source_manifest_unchanged": true,
+          "receipt": {
+            "engraving": {
+              "alternatives": [],
+              "complete": true,
+              "description": "Engraved on the floor is an exceptionally designed image of dwarves by Oddom Tekkudzaneg.  The dwarves are traveling.  The artwork relates to the foundation of Baldmirror by The Rough Crystal of The Matched Clasps in the early spring of 100.  ",
+              "id": -1,
+              "kind": 4,
+              "members": [],
+              "open": true,
+              "receipt": 1,
+              "tile": "(129, 78, 165)",
+              "title": "Anurresílizeg, \"The Wondrous Comedic Apes\""
+            },
+            "retired_receipt_rejected": true,
+            "success": true
+          },
+          "sha256": {
+            "workshop-wire-result.json": "4d8526d26aad1900e89db60c6f1b033b9583f61d545c4c675b4797a2dce3a95e",
+            "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+            "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+          }
+        },
+        "main_scene": {
+          "run": "build/stockpile-storage-native-farm-discovery-20261114-182912",
+          "status": "passed_with_known_issues",
+          "owned_df_pid": 35684,
+          "owned_exit_unsaved": true,
+          "source_manifest_unchanged": true,
+          "receipt": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          },
+          "sha256": {
+            "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+            "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+            "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+            "chest-scene-engraving.png": "a71dfbd9167d72aea628506961532dbf94212d9eec6c4a7fad275c5e7fe32de7",
+            "workshop-selection-engraving.png": "56b41c6700b5dd884047f6ccd2ab6b539f76b449f2fcd5103058b11eda1c8cf9"
+          }
+        }
+      },
+      "rendered_region": [
+        416,
+        52,
+        488,
+        708
+      ],
+      "checks": [
+        "Native title/prose through management reply and Godot dictionary.",
+        "Inspect and Back; retired receipt rejection.",
+        "Actual main-scene panel matches the native crop exactly.",
+        "Escape closure and reset while a reply is pending."
+      ],
+      "limits": [
+        "Ordinary public map routing remains unchanged.",
+        "Long prose, scrolling, resize and other artwork families are not covered by this short reference.",
+        "Planned engraving and shared image-picker workflows remain unfinished.",
+        "The existing selection limits are 512 title bytes and 16384 description bytes; larger results fail closed without truncation."
+      ]
+    },
     "engraving_initialization_reference": {
       "status": "controlled_native_initialization_verified",
       "runs": {

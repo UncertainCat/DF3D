@@ -3942,7 +3942,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           std::string failure;
-          const auto description=df3d_selection::engravingDescriptionProbe(p[0],p[1],p[2],failure);
+          const auto description=df3d_selection::engravingDescription(p[0],p[1],p[2],failure);
           Json::Value value(Json::objectValue);value["valid"]=description.has_value();
           if(description){value["title"]=description->title;value["description"]=description->description;}
           else value["failure"]=failure;

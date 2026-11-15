@@ -89,6 +89,7 @@
 #include "job_art_native.h"
 #include "creature_follow_native.h"
 #include "tile_selection_native.h"
+#include "engraving_description_native.h"
 #include "creature_expel_preview_native.h"
 #include "creature_expel_action_native.h"
 #include "creature_health_native.h"
@@ -630,6 +631,7 @@ struct TileSelectionSession {
   m::TilePos tile;
   df3d_selection::Selection source;
   df3d_selection::Target active;
+  std::string title,description;
   std::vector<std::string> memberNames;
   std::vector<int16_t> memberTypes;
   std::vector<std::optional<ItemInspectionAppearance>> memberAppearances;
@@ -640,6 +642,15 @@ uint64_t nextTileSelectionReceipt=0;
 ItemInspectionAppearance copyInspectionAppearance(const df3d_production::ItemInspectionAppearance& a);
 bool prepareTileSelectionReply(TileSelectionSession& value) {
   value.memberNames.clear();value.memberTypes.clear();value.memberAppearances.clear();value.memberUnitAppearances.clear();
+  value.title.clear();value.description.clear();
+  if(value.active.kind==df::view_sheet_type::ENGRAVING) {
+    std::string failure;bool initialized=false;
+    const auto text=df3d_selection::engravingDescription(value.tile.x(),value.tile.y(),value.tile.z(),failure,&initialized);
+    if(initialized){mutated=true;terrainHint=true;hintX=value.tile.x();hintY=value.tile.y();hintZ=value.tile.z();}
+    if(!text || text->title.size()>512 || text->description.size()>16384 ||
+       text->title.find('\0')!=std::string::npos || text->description.find('\0')!=std::string::npos)return false;
+    value.title=text->title;value.description=text->description;return true;
+  }
   if(value.active.kind==df::view_sheet_type::UNIT_LIST) {
     if(!df3d_creature::inventoryDescriptionReady())return false;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
@@ -1389,9 +1400,10 @@ void publish() {
     const auto alternatives=b.CreateVector(tabs),memberRows=b.CreateVector(members);
     const auto items=b.CreateVector(std::vector<flatbuffers::Offset<m::SelectionItem>>{});
     const auto overview=b.CreateVector(std::vector<flatbuffers::Offset<m::SelectionText>>{});
+    const auto title=b.CreateString(value.title),description=b.CreateString(value.description);
     m::SelectionStateBuilder page(b);page.add_open(value.receipt!=0);page.add_receipt(value.receipt);
     page.add_kind(kind(value.active.kind));page.add_id(value.active.id);page.add_tile(&value.tile);
-    page.add_title(empty);page.add_subtitle(empty);page.add_job(empty);page.add_description(empty);
+    page.add_title(title);page.add_subtitle(empty);page.add_job(empty);page.add_description(description);
     page.add_alternatives(alternatives);page.add_items(items);page.add_overview(overview);page.add_members(memberRows);
     selectionResult=page.Finish();
   }

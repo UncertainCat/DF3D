@@ -78,6 +78,27 @@ category/options rebuilding restores defaults. Scroll position is clamped to
 the resulting displayed list. Container-row expansion is a separate unfinished
 surface; it is not implied by group expansion.
 
+Container rows follow a separate native lifecycle. Protected163134 on2026-11-15
+captures bin11204 with ten direct children: clicking its row expands the list
+from690 to720 cells, and both search and category navigation retain expansion.
+A child-row click changes neither expansion nor hauling selection. Clicking the
+parent again restores690 cells. All seven states preserve item tags, child
+flags/order, jobs and the paused simulation frame. Owned DF49056 closes unsaved
+with source preservation; native runs at30FPS with sampled GPU49C. All19 core
+checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_goods_container_native_reference`.
+
+Native31e4a1..31e531 toggles tradegoodslistst.expanded_container and calls37aeb0;
+the height leaf adds3*container_amount for expanded rows. Renderer38be7b..38bebc
+enumerates resolved CONTAINS_ITEM references in their existing order, one level
+deep. Child descriptions use c65450; child values use c66020 and77f920. Nested
+content counts use resolved direct references gated by the child's container
+flag. These are semantic item inputs, not native menu state. DF3D still needs
+pointer-free counts/child details and local per-item expansion retained across
+category/search changes. This capture establishes native behavior only; nested
+and empty containers, DF3D rendering, transport and main-scene acceptance remain
+unfinished.
+
 Protected160300 on2026-11-15 captures six native states: initial9 cells,
 collapsed3, searched3, cleared-search3, category-return9 and restored9. Master
 expansion stays true and item tags/jobs remain unchanged. Owned DF34172 closes

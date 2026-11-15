@@ -165,6 +165,10 @@ local ok,err=xpcall(function()
   local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-goods%-native.lua$','depot-valuation-native.lua')
   result.valuation=assert(loadfile(source))(out,view,b,capture,click,compare_selection)
  end
+ if os.getenv('DF3D_DEPOT_CONTAINER_NATIVE')=='1' then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-goods%-native.lua$','depot-container-native.lua')
+  result.container_expansion=assert(loadfile(source))(view,b,capture,click)
+ end
  if os.getenv('DF3D_DEPOT_SELECTION_PROVIDER')=='1' then
   click(150,130);compare_selection('bags');capture('depot-selection-bags')
   click(150,202);compare_selection('bars');capture('depot-selection-bars')

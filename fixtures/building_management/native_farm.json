@@ -60660,6 +60660,146 @@
           "build/stockpile-storage-native-farm-discovery-20261115-162250/depot-value-view-valuation-value-15.png": "68a9ff99a71de3c92a0cc23f1dc2d8f363aaaf77bc13cba6b3747295d4ef1edc",
           "build/stockpile-storage-native-farm-discovery-20261115-162250/depot-value-view-valuation-value-5.png": "ac6f00bf55a6f6a0a0dae2f2e7482a0ad8f24ecc82a3d64784d53511bebda782"
         }
+      },
+      "depot_goods_container_native_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-163134",
+        "owned_df_pid": 49056,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Native-only populated bin expansion: seven captured states, real parent expand/collapse and child click; unchanged tags/jobs/paused frame and child flags/order. Search and category navigation retain expansion. No DF3D container rendering/transport or nested/empty container acceptance.",
+        "item_id": 11204,
+        "children": [
+          {
+            "flags": 16392,
+            "id": 7565,
+            "type": 2
+          },
+          {
+            "flags": 8,
+            "id": 1929,
+            "type": 2
+          },
+          {
+            "flags": 8,
+            "id": 1962,
+            "type": 2
+          },
+          {
+            "flags": 8,
+            "id": 21748,
+            "type": 0
+          },
+          {
+            "flags": 8,
+            "id": 1207,
+            "type": 2
+          },
+          {
+            "flags": 8,
+            "id": 39329,
+            "type": 2
+          },
+          {
+            "flags": 8,
+            "id": 39505,
+            "type": 2
+          },
+          {
+            "flags": 8,
+            "id": 39485,
+            "type": 2
+          },
+          {
+            "flags": 8,
+            "id": 39648,
+            "type": 2
+          },
+          {
+            "flags": 8,
+            "id": 39483,
+            "type": 2
+          }
+        ],
+        "cases": [
+          {
+            "category": 32,
+            "expanded": false,
+            "height": 690,
+            "label": "initial",
+            "query": "",
+            "scroll": 0
+          },
+          {
+            "category": 32,
+            "expanded": true,
+            "height": 720,
+            "label": "expanded",
+            "query": "",
+            "scroll": 0
+          },
+          {
+            "category": 32,
+            "expanded": true,
+            "height": 720,
+            "label": "child-click",
+            "query": "",
+            "scroll": 0
+          },
+          {
+            "category": 32,
+            "expanded": true,
+            "height": 720,
+            "label": "searched",
+            "query": "BIN",
+            "scroll": 0
+          },
+          {
+            "category": 32,
+            "expanded": true,
+            "height": 720,
+            "label": "cleared-search",
+            "query": "",
+            "scroll": 0
+          },
+          {
+            "category": 32,
+            "expanded": true,
+            "height": 720,
+            "label": "returned-category",
+            "query": "",
+            "scroll": 0
+          },
+          {
+            "category": 32,
+            "expanded": false,
+            "height": 690,
+            "label": "restored",
+            "query": "",
+            "scroll": 0
+          }
+        ],
+        "native_routines": {
+          "click": "31e4a1..31e531 flips owned-record byte14 then calls37aeb0",
+          "height": "37afde..37afef adds3*container_amount when expanded",
+          "rows": "38be7b..38bebc enumerates resolved CONTAINS_ITEM refs in reference order; no recursive expansion",
+          "child_description": "38c15e calls c65450(item,out,false,-1)",
+          "child_value": "38c4fb calls c66020(item,nullptr,nullptr,false,false), then77f920",
+          "child_count": "38c24b..38c29c counts resolved direct refs only when container flag set"
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-163134/depot-goods-native.json": "d28bc7eebcbcfebf4537f7c0f7b7f7c4a8793c48c1bf55005252c217cd1de520",
+          "build/stockpile-storage-native-farm-discovery-20261115-163134/result.json": "1cc6c251124ff32a28801cd5370808387ee7ac5da58fa1c5a72eb9f0aa63208b",
+          "build/stockpile-storage-native-farm-discovery-20261115-163134/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "tools/smoke/depot-container-native.lua": "1ae76ca97ce08a2ee53785098e19162453b7887f429a57738490489f45502055",
+          "tools/smoke/depot-goods-native.lua": "cafa953a6b3732cce81adb9a690e8a6c493995c78beb7530772d12fa1182d28a",
+          "build/stockpile-storage-native-farm-discovery-20261115-163134/depot-container-child-click.png": "b5f45bd3a45ded6728b7990dcf3b775a16837abbf9aaac2af5bc0b4c7f09a354",
+          "build/stockpile-storage-native-farm-discovery-20261115-163134/depot-container-cleared-search.png": "2a3813922666026bda99d5b8c6e76dc48c464c0e5f223e6a424651e60772c705",
+          "build/stockpile-storage-native-farm-discovery-20261115-163134/depot-container-expanded.png": "b5f45bd3a45ded6728b7990dcf3b775a16837abbf9aaac2af5bc0b4c7f09a354",
+          "build/stockpile-storage-native-farm-discovery-20261115-163134/depot-container-initial.png": "4d386d88a2e235814ffadd76a32b9da18eafc19c07b1b836ae3bea0ce04a8cb0",
+          "build/stockpile-storage-native-farm-discovery-20261115-163134/depot-container-restored.png": "38bded051fe12d02be6055b69e7dc2cc1d4655e92860f6476cb877fd4aab4c3b",
+          "build/stockpile-storage-native-farm-discovery-20261115-163134/depot-container-returned-category.png": "06b0ebcabe505e13f35976ebf5431b2243487ad92b5b3d0d340d41d9ac672f5a",
+          "build/stockpile-storage-native-farm-discovery-20261115-163134/depot-container-searched.png": "fafe9ca6ac18bc3fee179682eff722f0960c772037b0ca7cdf1101be7ac84c38"
+        }
       }
     },
     "pending_construction_reference": {

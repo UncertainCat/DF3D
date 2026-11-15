@@ -4941,6 +4941,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         output["ordinary_color"]=Json::Value(Json::arrayValue);for(auto color:facts->ordinaryColor)output["ordinary_color"].append(int(color));
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="depot-goods-probe") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        int32_t id=-1;const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+        const auto before=df3d_production::depot_goods_detail::storageHash();
+        const auto facts=df3d_production::depotGoods(df::building::find(id));
+        if(!facts || before!=df3d_production::depot_goods_detail::storageHash())return CR_FAILURE;
+        Json::Value output;output["rows"]=Json::arrayValue;output["groups"]=Json::arrayValue;
+        for(const auto& row:facts->rows){Json::Value r;r["id"]=row.id;r["distance"]=row.distance;r["tag"]=row.tag;r["value"]=row.value;r["prohibited"]=row.prohibited;output["rows"].append(r);}
+        for(const auto& group:facts->groups){Json::Value g;g["type"]=group.type;g["subtype"]=group.subtype;g["subcat1"]=group.subcat1;g["subcat2"]=group.subcat2;g["amount"]=group.amount;g["expanded"]=group.expanded;output["groups"].append(g);}
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="depot-haul-probe") {
         if(parameters.size()!=4)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;

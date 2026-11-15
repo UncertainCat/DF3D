@@ -48529,6 +48529,45 @@
           "build/stockpile-storage-native-farm-discovery-20261115-134150/depot-goods-hauling.png": "47a5e49f3918014fd600d44e95f988ffca1465de223d08e2b481dd6b873d19f4",
           "build/stockpile-storage-native-farm-discovery-20261115-134150/depot-goods-pending.png": "f858b0fa8d7fa58d716bea681d8b89fa33a8404311c53d856699a42d2cb07a19"
         }
+      },
+      "depot_goods_master_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-134939",
+        "owned_df_pid": 36036,
+        "scope": "Exact master row IDs/order/distance/tag/value/prohibition and abstract material groups in unassigned, pending and controlled TEMP delivered states. Native close release vs owned-context tag-2, no-op keep/duplicate release, item restoration. Not natural hauling, positive prohibitions, inaccessible pending items or public UI.",
+        "cases": [
+          {
+            "groups": 208,
+            "label": "unassigned",
+            "rows": 2009,
+            "success": true
+          },
+          {
+            "groups": 208,
+            "label": "pending",
+            "rows": 2009,
+            "success": true
+          },
+          {
+            "groups": 208,
+            "label": "delivered",
+            "rows": 2009,
+            "success": true
+          }
+        ],
+        "release": {
+          "after": 16384,
+          "before": 16416,
+          "id": 296,
+          "provider_success": true
+        },
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-134939/depot-goods-native.json": "a4ccb9144c9f30517ac58b893749169105da546cb37e8c5e5d6a904800265f0e",
+          "build/stockpile-storage-native-farm-discovery-20261115-134939/result.json": "7928a2ae80efa72c1164198b7d4057b99f8dedaba08c8541b424701c8f61dc69",
+          "build/stockpile-storage-native-farm-discovery-20261115-134939/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-134939/depot-goods-delivered.png": "9bddbacddb003431c753f4a6ab3c0e56dd64b41c4d1d82b77ce3cba10d8e040e"
+        }
       }
     },
     "pending_construction_reference": {

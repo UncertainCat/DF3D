@@ -941,9 +941,9 @@ It never opens or reads the native picker. The flood receives the semantic depot
 all block path costs, both120000-entry frontiers and pathstart/pathclear are
 saved and restored at the DF safe point, using the construction-material pattern.
 Touched final frontier slots reject the result. Capacity is bounded at1048576
-input items and250000 map blocks. This is not the complete picker provider:
-delivered goods, pending hauling jobs, category grouping, search, prohibitions,
-valuation and mutations remain to be integrated and qualified.
+input items and250000 map blocks. The complete master-list provider and commit
+leaves build on this primitive as described below; category selection, filtering,
+public transport and the goods UI remain unfinished.
 
 Protected133430 on2026-11-15 compares all2009 native unassigned goods in exact
 order and their distances while the native picker is open. The diagnostic also
@@ -974,8 +974,9 @@ picker, selected building, camera or native staged edits are runtime inputs.
 Tag1 queues hauling; tag-1 cancels its pending job. Current item flags, native
 candidate eligibility, completed/revealed depot and no removal job guard entry;
 duplicate desired state is a no-op. This single-item leaf is not the public
-transaction adapter: complete goods revision authority, multi-item close commits,
-delivered-item release and uncertain-outcome UI remain unfinished.
+transaction adapter: complete goods revision authority, multi-item close commits
+and uncertain-outcome UI remain unfinished. Delivered-item release is qualified
+separately below.
 
 Protected134150 on2026-11-15 compares native pointer-close creation/cancellation
 with the owned-context provider for anvil296. The provider creates a fresh job
@@ -987,7 +988,35 @@ preservation, native30FPS and sampled GPU59C. MSVC bridge and core19 pass.
 Initial134044 failed only its diagnostic use of nonexistent Lua df.job.find;
 the verified test reads the actual native job list instead. Evidence:
 `completed_sheet_discovery_reference.depot_haul_provider_reference`. Natural
-hauling completion, other item families and delivered goods remain unqualified.
+hauling completion and other item families remain unqualified by that run.
+
+`depotGoods` assembles delivered TEMP items with native flag mask88020==20,
+pending BringItemToDepot items in reverse job order, and the native unassigned
+list. Pending distances preserve the native raw cost difference/unknown-position
+sentinel; delivered distance is0. Native e5d5b0 evaluates export prohibitions,
+c66020 evaluates goods including contents, ac9a10 sorts owned records and ac9c30
+builds owned abstract material groups. Invalid pending jobs reject the read
+instead of calling the menu opener's job cleanup. No picker data is borrowed.
+
+Protected134939 on2026-11-15 compares every master row's ID/order, distance, tag,
+value and prohibition flag and every abstract group's type/subtype/material,
+amount and expansion state. All2009 rows and208 groups match in unassigned,
+pending and controlled-delivered states. The delivered fixture temporarily moves
+anvil296 into depot54 as TEMP; it is not natural hauling-completion evidence.
+Native checkbox release stages until close and changes flags16416 to16384 by
+clearing in_building, leaving no hauling job. The owned commit uses tag-2 and
+matches that change, including keep-selected and duplicate-release no-ops.
+Item position/flags and contained-item count are restored. Owned DF36036 closes
+unsaved with source preservation, native30FPS and sampled GPU61C. MSVC bridge
+and core19 pass. Initial134627 failed fixture cleanup because DFHack refuses
+to detach an in_building item; restoration now temporarily clears that flag,
+as in existing controlled TEMP-item fixtures.134741 verified all read cases;
+134939 additionally verifies release. Evidence:
+`completed_sheet_discovery_reference.depot_goods_master_reference`.
+Positive prohibition cases, inaccessible pending items, natural hauling and
+other delivered-item families remain unqualified. The category filter37ba00
+reads native window height in its tail and is not a runtime API; use audited
+semantic leaves with owned selection data, as the Stocks provider does.
 
 ## Completed bridge, wagon and traction-bench sheets
 

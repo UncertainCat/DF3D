@@ -7,6 +7,8 @@
 #include "df/assign_trade_itemlistst.h"
 #include "df/assign_trade_interfacest.h"
 #include "df/job_item_ref.h"
+#include "df/buildingitemst.h"
+#include "df/mandate.h"
 #include <algorithm>
 #include <memory>
 #include <cstring>
@@ -45,7 +47,7 @@ inline uint64_t storageHash() {
     return h;
 }
 }
-struct DepotItemDistance {int32_t id=-1,distance=-1;};
+struct DepotItemDistance {int32_t id=-1,distance=-1,rawDistance=-30000;};
 inline std::optional<std::vector<DepotItemDistance>> depotItemDistances(df::building* building,const std::vector<df::item*>& items) {
     auto* depot=virtual_cast<df::building_tradedepotst>(building);auto* world=df::global::world;
     if(!depotNativeReady() || !world || !DFHack::Maps::IsValid() || !depot ||
@@ -78,7 +80,8 @@ inline std::optional<std::vector<DepotItemDistance>> depotItemDistances(df::buil
         for(size_t i=0;i<items.size();++i) {
             const auto p=positions[i];auto* block=DFHack::Maps::getTileBlock(p);
             const int64_t cost=block?block->path_cost[p.x&15][p.y&15]:-1;
-            result.push_back({items[i]->id,cost>=generation && cost<generation+1250000?int32_t(cost-generation):-1});
+            result.push_back({items[i]->id,cost>=generation && cost<generation+1250000?int32_t(cost-generation):-1,
+                p.x==-30000?-30000:int32_t((block?cost:0)-generation)});
         }
         return result;
     }catch(const std::exception&){return {};}
@@ -118,6 +121,56 @@ inline std::optional<std::vector<DepotItemDistance>> depotUnassignedGoods(df::bu
     for(auto* row:ordered.tgi)distances->push_back({row->it->id,row->dist});
     return distances;
 }
+struct DepotGoodsRow {int32_t id=-1,distance=0,value=0;int8_t tag=0;bool prohibited=false;};
+struct DepotGoodsGroup {int16_t type=-1,subtype=-1,subcat1=-1,subcat2=-1;int32_t amount=0;bool expanded=false;};
+struct DepotGoods {std::vector<DepotGoodsRow> rows;std::vector<DepotGoodsGroup> groups;};
+inline std::optional<DepotGoods> depotGoods(df::building* building) {
+    auto unassigned=depotUnassignedGoods(building);if(!unassigned)return {};
+    auto* depot=virtual_cast<df::building_tradedepotst>(building);auto* world=df::global::world;
+    if(!depot || !world || depot->contained_items.size()>1048576 || depot->jobs.size()>1048576 || world->mandates.all.size()>1048576)return {};
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool ready=[&] {
+        auto hash=[&](size_t rva,size_t length){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<length;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;};
+        return hash(0xe5d5b0,0xcf)==UINT64_C(0xa6feeb7ed97addaa) &&
+            hash(0xc66020,0x12e)==UINT64_C(0xfe0378c306832ca2) &&
+            hash(0xac9c30,0x50a)==UINT64_C(0x7fbce42d6c033414);
+    }();
+    if(!ready)return {};
+    std::vector<df::item*> pending;
+    for(auto it=depot->jobs.rbegin();it!=depot->jobs.rend();++it) {
+        auto* job=*it;if(!job)return {};
+        if(job->job_type!=df::job_type::BringItemToDepot)continue;
+        if(job->items.empty() || !job->items.front() || !job->items.front()->item)return {};
+        pending.push_back(job->items.front()->item);
+    }
+    auto distances=depotItemDistances(building,pending);if(!distances)return {};
+    std::vector<df::tradegoodslistst> records;records.reserve(depot->contained_items.size()+pending.size()+unassigned->size());
+    auto add=[&](df::item* item,int8_t tag,int32_t distance) {
+        df::tradegoodslistst record;record.it=item;record.tag=tag;record.dist=distance;
+        record.value=reinterpret_cast<int32_t (*)(df::item*,void*,void*,bool,bool)>(base+0xc66020)(item,nullptr,nullptr,false,false);
+        for(auto* mandate:world->mandates.all)if(mandate && int(mandate->mode)==0 &&
+            reinterpret_cast<bool (*)(df::mandate*,df::item*)>(base+0xe5d5b0)(mandate,item)){record.prohibited=true;break;}
+        records.push_back(record);
+    };
+    for(auto* entry:depot->contained_items) {
+        if(!entry || !entry->item)return {};
+        if(int(entry->use_mode)==0 && (entry->item->flags.whole&0x88020)==0x20)add(entry->item,3,0);
+    }
+    for(size_t i=0;i<pending.size();++i)add(pending[i],2,(*distances)[i].rawDistance);
+    for(const auto& row:*unassigned){auto* item=df::item::find(row.id);if(!item)return {};add(item,0,row.distance);}
+    df::assign_trade_itemlistst ordered;ordered.tgi.reserve(records.size());
+    df::abstractitemlistst groups;
+    for(auto& record:records) {
+        reinterpret_cast<void (*)(df::assign_trade_itemlistst*,df::tradegoodslistst*)>(base+0xac9a10)(&ordered,&record);
+        reinterpret_cast<void (*)(df::abstractitemlistst*,df::item*)>(base+0xac9c30)(&groups,record.it);
+    }
+    DepotGoods result;result.rows.reserve(records.size());
+    for(auto* record:ordered.tgi)result.rows.push_back({record->it->id,record->dist,record->value,record->tag,record->prohibited});
+    const auto count=groups.type.size();
+    if(groups.subtype.size()!=count || groups.subcat1.size()!=count || groups.subcat2.size()!=count || groups.amount.size()!=count || groups.expanded.size()!=count)return {};
+    for(size_t i=0;i<count;++i)result.groups.push_back({groups.type[i],groups.subtype[i],groups.subcat1[i],groups.subcat2[i],groups.amount[i],groups.expanded[i]});
+    return result;
+}
 // Semantic commit leaf36b0c0. The record and context are built from an explicit
 // intent; no native menu/staged edit is read. Public revision transport is pending.
 inline DepotSettingOutcome depotSetHaul(df::building* building,df::item* item,uint64_t expectedFlags,bool desired) {
@@ -131,9 +184,14 @@ inline DepotSettingOutcome depotSetHaul(df::building* building,df::item* item,ui
         if(!job || job->job_type==df::job_type::DestroyBuilding)return DepotSettingOutcome::Rejected;
         if(job->job_type==df::job_type::BringItemToDepot && !job->items.empty() && job->items.front() && job->items.front()->item==item)++matches;
     }
+    size_t delivered=0;
+    if(depot->contained_items.size()>1048576)return DepotSettingOutcome::Rejected;
+    for(auto* entry:depot->contained_items)if(entry && entry->item==item && int(entry->use_mode)==0 &&
+        (item->flags.whole&0x88020)==0x20)++delivered;
+    if(delivered>1 || (delivered && matches))return DepotSettingOutcome::Rejected;
     if(matches>1)return DepotSettingOutcome::Rejected;
-    if(desired && matches==1)return DepotSettingOutcome::Applied;
-    if(!desired && matches==0)return DepotSettingOutcome::Applied;
+    if(desired && (matches==1 || delivered==1))return DepotSettingOutcome::Applied;
+    if(!desired && matches==0 && delivered==0)return DepotSettingOutcome::Applied;
     if(desired) {
         const auto candidates=depotUnassignedGoods(building);
         if(!candidates || std::none_of(candidates->begin(),candidates->end(),[&](const auto& row){return row.id==item->id;}))return DepotSettingOutcome::Rejected;
@@ -150,7 +208,7 @@ inline DepotSettingOutcome depotSetHaul(df::building* building,df::item* item,ui
     df::assign_trade_interfacest context;
     context.trade_depot_bld=depot;
     std::unique_ptr<df::tradegoodslistst> record(df::allocate<df::tradegoodslistst>());
-    record->it=item;record->tag=desired?1:-1;
+    record->it=item;record->tag=desired?1:(delivered?-2:-1);
     context.master_i_list.tgi.push_back(record.get());
     // Native commit retires the supplied records via30ce00. The context's
     // remaining vectors/string are independently owned and destruct normally.
@@ -160,6 +218,6 @@ inline DepotSettingOutcome depotSetHaul(df::building* building,df::item* item,ui
     matches=0;
     for(auto* job:depot->jobs)if(job && job->job_type==df::job_type::BringItemToDepot &&
        !job->items.empty() && job->items.front() && job->items.front()->item==item)++matches;
-    return matches==size_t(desired)?DepotSettingOutcome::Applied:DepotSettingOutcome::Unknown;
+    return matches==size_t(desired) && (!delivered || !item->flags.bits.in_building)?DepotSettingOutcome::Applied:DepotSettingOutcome::Unknown;
 }
 }

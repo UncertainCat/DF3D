@@ -11,6 +11,23 @@ local index=#caravans;caravans:insert('#',caravan)
 local menu=df.global.game.main_interface.assign_trade
 assert(not menu.open and #b.jobs==0)
 local result={id=b.id,synthetic_caravan=true,frame=frame}
+local restore_delivered
+local function compare_goods(label)
+ if os.getenv('DF3D_DEPOT_GOODS_PROVIDER')~='1' then return end
+ local output,code=dfhack.run_command_silent('df3d','depot-goods-probe',tostring(b.id));assert(code==0,output)
+ local facts=json.decode(output);assert(#facts.rows==#menu.master_i_list.tgi,'Master count differs: '..label)
+ for i,row in ipairs(menu.master_i_list.tgi)do
+  local actual=facts.rows[i+1]
+  assert(actual.id==row.it.id and actual.distance==row.dist and actual.tag==row.tag and actual.value==row.value and actual.prohibited==row.prohibited,'Master row differs: '..label..' '..i)
+ end
+ local groups=menu.master_a_list;assert(#facts.groups==#groups.type,'Group count differs')
+ for i,kind in ipairs(groups.type)do
+  local actual=facts.groups[i+1]
+  assert(actual.type==kind and actual.subtype==groups.subtype[i] and actual.subcat1==groups.subcat1[i] and actual.subcat2==groups.subcat2[i] and actual.amount==groups.amount[i] and actual.expanded==groups.expanded[i],'Group differs: '..label..' '..i)
+ end
+ result.goods_provider=result.goods_provider or {}
+ result.goods_provider[#result.goods_provider+1]={label=label,rows=#facts.rows,groups=#facts.groups,success=true}
+end
 local function click(x,y)
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
@@ -40,6 +57,7 @@ local ok,err=xpcall(function()
  result.sort_by_distance=menu.sort_by_distance;result.pending_on_top=menu.pending_on_top;result.exclude_prohib=menu.exclude_prohib
  result.items={}
  for _,row in ipairs(menu.master_i_list.tgi)do result.items[#result.items+1]={id=row.it.id,distance=row.dist,tag=row.tag,prohibited=row.prohibited,value=row.value,sort_value=row.sort_value}end
+ compare_goods('unassigned')
  if os.getenv('DF3D_DEPOT_DISTANCE_NATIVE')=='1' then
   local output,code=dfhack.run_command_silent('df3d','depot-distance-probe',tostring(b.id));assert(code==0,output)
   local facts=json.decode(output);assert(facts.restored)
@@ -63,6 +81,7 @@ local ok,err=xpcall(function()
   result.hauling.pending={}
   for _,row in ipairs(menu.current_type_tgi)do result.hauling.pending[#result.hauling.pending+1]={id=row.it.id,tag=row.tag,distance=row.dist}end
   capture('depot-goods-pending')
+  compare_goods('pending')
   click(932,166);result.hauling.deselected=job_facts()
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   result.hauling.cancelled=job_facts();assert(#b.jobs==0,'Native deselection did not cancel haul')
@@ -86,9 +105,39 @@ local ok,err=xpcall(function()
    assert(#apply(0)==0 and #apply(0)==0 and item.flags.whole==flags,'Provider cancellation failed to restore item')
    result.hauling.provider_success=true
   end
+  if os.getenv('DF3D_DEPOT_GOODS_PROVIDER')=='1' then
+   local item=df.item.find(result.hauling.closed[1].items[1].id)
+   assert(item and item.flags.on_ground and not item.flags.in_inventory)
+   local pos={x=item.pos.x,y=item.pos.y,z=item.pos.z};local flags=item.flags.whole;local count=#b.contained_items
+   restore_delivered=function()
+    -- DFHack detach rejects even TEMP items while in_building is set.
+    -- This flag adjustment belongs only to disposable fixture restoration.
+    local marked=item.flags.in_building;item.flags.in_building=false
+    local moved=dfhack.items.moveToGround(item,pos)
+    if not moved then item.flags.in_building=marked end
+    assert(moved,'Could not restore delivered fixture');item.flags.whole=flags
+    assert(#b.contained_items==count);restore_delivered=nil
+   end
+   assert(dfhack.items.moveToBuilding(item,b,0,true))
+   select_map(b);click(520,166);assert(menu.open)
+   capture('depot-goods-delivered');compare_goods('delivered')
+   local delivered_flags=item.flags.whole
+   click(932,166);assert(item.flags.whole==delivered_flags,'Delivered release applied before close')
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   local released_flags=item.flags.whole;assert(not item.flags.in_building and #b.jobs==0)
+   item.flags.whole=delivered_flags -- restore only the controlled fixture flag
+   for _,wanted in ipairs{1,0,0}do
+    local output,code=dfhack.run_command_silent('df3d','depot-haul-probe',tostring(b.id),tostring(item.id),tostring(wanted))
+    assert(code==0,output);assert(json.decode(output).outcome==1,output)
+    assert(item.flags.whole==(wanted==1 and delivered_flags or released_flags) and #b.jobs==0,'Delivered provider differs')
+   end
+   result.delivered_release={id=item.id,before=delivered_flags,after=released_flags,provider_success=true}
+   restore_delivered()
+  end
  end
 end,debug.traceback)
 if menu.open then gui.simulateInput(view,'LEAVESCREEN')end
+if restore_delivered then restore_delivered()end
 if not ok then local jobs={};for _,j in ipairs(b.jobs)do jobs[#jobs+1]=j end;for _,j in ipairs(jobs)do dfhack.job.removeJob(j)end end
 caravans:erase(index);caravan:delete()
 assert(df.global.world.frame_counter==frame and #b.jobs==0)

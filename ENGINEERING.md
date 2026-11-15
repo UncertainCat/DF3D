@@ -35,6 +35,15 @@ acceptance. MSVC, extension and core19 pass. Evidence is
 job completion, changed-mechanism workflows and other target families remain
 unqualified.
 
+The staged `lever_state.gd` owns selection refresh at Link click, target previews,
+explicit Link/Pull submission and cancellation. Each pointer change retires the
+previous preview; applying requires the current target receipt. Unknown mutations
+disable resubmission, and close/session changes retire callbacks. The headless
+`lever_state_test.gd` verifies cancelled initial lookups, out-of-order previews,
+duplicate clicks, unknown outcomes and late replies after reopening or reconnecting.
+It passes with the known rendering-thread notice. The controller is not yet wired
+to a visible panel; these checks do not establish rendered or live UI acceptance.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

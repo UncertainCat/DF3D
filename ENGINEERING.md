@@ -9821,6 +9821,27 @@ flags1 mask; name clipping belongs to presentation. Source saves are unchanged,
 DF41876 exits unsaved, capped30FPS with sampled GPU49C. Bridge build and core19
 pass. funerary_reference.card_reference retains outputs and screenshot hashes.
 
+Management224 appends optional FuneraryBodySnapshot to the shared building
+header. It carries native resting-place/memorial captions, Tomb identity/name,
+native notices, deceased text and owned owner appearance. Coffin3 and Slab46
+require the body; other building families reject it. Validators reject mixed
+identities, missing strings/notices, oversized text and owner/artwork mismatches.
+Rebuild bridge/client together: Local\\df3d_management_v224 isolates223.
+Old recordings have no funerary body; do not synthesize one during migration.
+This contract change alone does not expose either specialized panel. Runtime
+provider publication and rendered/lifecycle acceptance remain pending.
+
+Protocol224 core/client, extension and MSVC bridge builds pass; all19 CTests
+pass including funerary round-trip/malformed-body checks. Protected041921
+revalidates existing Chair/Bed/Table/Statue workflows on matching224 binaries:
+24 full panels match, Rename/Forbid/Remove/Cancel and item View/holder return
+pass, and native final names/jobs/component flags are restored. Source saves
+are unchanged and owned DF14040 exits unsaved; graphical processes are capped
+30FPS, sampled GPU49C. Only documented Godot startup/shutdown diagnostics occur
+(passed_with_known_issues). funerary_reference.protocol224_reference records
+the evidence. This is existing-panel regression, not funerary-body acceptance.
+
+
 Protected native023324 and023607 on2026-11-15 qualify ordinary furniture
 with nonempty zone relations: Chair65, Bed9, Table62 and Statue493 still show no
 membership rows (the statue also belongs to location1). The membership-caption

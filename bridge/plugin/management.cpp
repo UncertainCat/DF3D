@@ -1258,8 +1258,16 @@ void publish() {
   if(production.buildingHeader) {
     const auto& state=*production.buildingHeader;flatbuffers::Offset<m::BuildingHeaderSnapshot> snapshot;
     if(state.snapshot) {
-      const auto& f=*state.snapshot;snapshot=m::CreateBuildingHeaderSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,
-        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance));
+      const auto& f=*state.snapshot;flatbuffers::Offset<m::FuneraryBodySnapshot> funerary;
+      if(f.funerary) {
+        const auto& v=*f.funerary;std::vector<flatbuffers::Offset<flatbuffers::String>> notices;
+        for(const auto& text:v.notices)notices.push_back(b.CreateString(text));
+        funerary=m::CreateFuneraryBodySnapshot(b,v.unitId,v.historicalFigureId,v.roomId,v.roomType,
+          b.CreateString(v.introduction),b.CreateString(v.name),b.CreateString(v.roomIntroduction),b.CreateString(v.roomName),
+          b.CreateString(v.deceased),b.CreateVector(notices),encodeItemRecipe(v.ownerAppearance));
+      }
+      snapshot=m::CreateBuildingHeaderSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,
+        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance),funerary);
     }
     buildingHeader=m::CreateBuildingHeaderState(b,snapshot,state.outcome,state.operation);
   }

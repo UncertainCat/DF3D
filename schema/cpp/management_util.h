@@ -188,8 +188,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 223;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v223";
+inline constexpr uint32_t kManagementVersion = 224;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v224";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -2842,15 +2842,34 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(static_cast<uint8_t>(outcome)>4)return "invalid building header outcome";
       if(f) {
         const auto text=[](const flatbuffers::String* t,bool empty){return t && t->size()<=1536 && (empty || t->size()>0) && t->str().find('\0')==std::string::npos;};
-        if(f->id()<0 || (f->type()!=0 && f->type()!=1 && f->type()!=2 && f->type()!=11 && f->type()!=12 && f->type()!=14 && f->type()!=15 && f->type()!=51 && f->type()!=52 && f->type()!=54 && f->type()!=8 && f->type()!=10 && f->type()!=5 && f->type()!=13) || !f->revision() || f->revision()>INT64_MAX || f->stage()<0 || f->max_stage()<f->stage() ||
+        if(f->id()<0 || (f->type()!=0 && f->type()!=1 && f->type()!=2 && f->type()!=3 && f->type()!=46 && f->type()!=11 && f->type()!=12 && f->type()!=14 && f->type()!=15 && f->type()!=51 && f->type()!=52 && f->type()!=54 && f->type()!=8 && f->type()!=10 && f->type()!=5 && f->type()!=13) || !f->revision() || f->revision()>INT64_MAX || f->stage()<0 || f->max_stage()<f->stage() ||
            !text(f->custom_name(),true) || !text(f->native_name(),false) || !text(f->header_name(),false) ||
            (f->forbidden()<0 || f->forbidden()>1) || (!f->removing() && (f->suspended() || f->has_worker())))return "invalid building header snapshot";
         if(f->appearance()){size_t bytes=0;if(auto error=validateOwnerAppearance(*f->appearance(),bytes))return error;if(!f->appearance()->layers()->size() || bytes>131072)return "invalid building header artwork";}
+        if((f->type()==3 || f->type()==46)!=(f->funerary()!=nullptr))return "missing or unexpected funerary body";
+        if(const auto* v=f->funerary()) {
+          if(v->unit_id()<-1 || v->historical_figure_id()<-1 || v->room_id()<-1 ||
+             !text(v->introduction(),true) || !text(v->name(),true) || !text(v->room_introduction(),true) ||
+             !text(v->room_name(),true) || !text(v->deceased(),true) || !v->notices() || v->notices()->size()>3)return "invalid funerary body";
+          for(const auto* notice:*v->notices())if(!text(notice,false))return "invalid funerary notice";
+          const bool named=v->name()->size()!=0,room=v->room_id()>=0,owner=v->unit_id()>=0;
+          if(named!=(v->introduction()->size()!=0) || room!=(v->room_name()->size()!=0) || room!=(v->room_introduction()->size()!=0) ||
+             v->room_type()!=(room?97:-1) || owner!=(v->owner_appearance()!=nullptr) ||
+             (v->deceased()->size() && !owner))return "inconsistent funerary body";
+          if(f->type()==3) {
+            if(v->historical_figure_id()!=-1 || named!=owner || (owner && !room) ||
+               (v->notices()->size() && (named || room)))return "invalid coffin body";
+          }else if(owner || room || v->notices()->size() || named!=(v->historical_figure_id()>=0))return "invalid slab body";
+          if(v->owner_appearance()) {
+            size_t bytes=0;if(auto error=validateOwnerAppearance(*v->owner_appearance(),bytes))return error;
+            if(!v->owner_appearance()->layers()->size() || bytes>131072)return "invalid funerary owner artwork";
+          }
+        }
       }
       if(s.action()==ManagementAction::ProductionInspect) {
         if(outcome!=FarmEditOutcome::None || op!=FarmOperation::Crop || ((s.status()==ManagementStatus::Ok)!=(f!=nullptr)))return "invalid building header read";
       } else if(s.action()==ManagementAction::FarmEdit) {
-        if(f && f->type()!=0 && f->type()!=1 && f->type()!=2 && f->type()!=11 && f->type()!=12 && f->type()!=14 && f->type()!=15 && f->type()!=51 && f->type()!=52 && f->type()!=54 && f->type()!=8 && f->type()!=10 && f->type()!=13 && f->type()!=5)return "unsupported building header edit target";
+        if(f && f->type()!=0 && f->type()!=1 && f->type()!=2 && f->type()!=3 && f->type()!=46 && f->type()!=11 && f->type()!=12 && f->type()!=14 && f->type()!=15 && f->type()!=51 && f->type()!=52 && f->type()!=54 && f->type()!=8 && f->type()!=10 && f->type()!=13 && f->type()!=5)return "unsupported building header edit target";
         if(outcome==FarmEditOutcome::None)return "missing building header outcome";
         if(outcome==FarmEditOutcome::Completed) {
           if(s.status()!=ManagementStatus::Ok || !f || f->stage()!=f->max_stage() || op<FarmOperation::Rename || op>FarmOperation::CancelRemoval ||

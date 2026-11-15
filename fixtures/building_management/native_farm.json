@@ -18996,6 +18996,78 @@
             "workshop-funerary-tomb.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
             "workshop-funerary-unassigned.png": "099f6678e6a5a710e8daa96f48fa73e9635fc1d81e7d77bcf91606f4d6e279fe"
           }
+        },
+        "protocol224_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-041921",
+          "scope": "Protocol224 regression of existing Chair/Bed/Table/Statue panels, Rename/Forbid/Remove/Cancel/component View/holder return/Escape;24 full panels match, native final name/jobs/flags restored. This does not qualify runtime funerary-body publication or rendering.",
+          "post": [
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 65
+            },
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 9
+            },
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 62
+            },
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 493
+            }
+          ],
+          "diagnostics": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              },
+              {
+                "id": "godot-device-finalize",
+                "count": 1,
+                "reference": "https://github.com/godotengine/godot/issues/119000"
+              },
+              {
+                "id": "godot-shutdown-objects",
+                "count": 1,
+                "reference": "ENGINEERING.md#tests-and-known-problems"
+              }
+            ],
+            "unclassified": []
+          },
+          "sha256": {
+            "chest-scene-65-initial.png": "19ab9a3490cb590d2ef97d658f563c8a299f40e804c01b4b83d28a84569f25fd",
+            "chest-scene-65-renamed.png": "7eb967bcf386e1c39a54e8ddd5a2dac512cd82b6c9221586e26e72b47c23f1d4",
+            "chest-scene-65-forbidden.png": "e5147d225a082341931bcdc406f1fbbbd945648814ca4387b70ca1336cabfeac",
+            "chest-scene-65-removing.png": "88dc845a5867c389c7a80e6c646c1bc822a58a907a105571805bef99d7d36dc8",
+            "chest-scene-65-restored.png": "19ab9a3490cb590d2ef97d658f563c8a299f40e804c01b4b83d28a84569f25fd",
+            "chest-scene-65-holder-return.png": "19ab9a3490cb590d2ef97d658f563c8a299f40e804c01b4b83d28a84569f25fd",
+            "chest-scene-9-initial.png": "4588b41d5121714fe0b723436bc2d62b4cdad2ac19566f40cb491203e4e0e3c0",
+            "chest-scene-9-renamed.png": "7b3181b55ba7269940434ca3779f968e51b28b94474052c82dcccea10e225246",
+            "chest-scene-9-forbidden.png": "a4d54586a6b16903c293f02cf742184a4d030d7e8d758ededeaf56e1a34dc805",
+            "chest-scene-9-removing.png": "62b8b6c4e03b05d02ec637d811ba0ce17f0e14fff6dbc8d405d96c0a408235d4",
+            "chest-scene-9-restored.png": "4588b41d5121714fe0b723436bc2d62b4cdad2ac19566f40cb491203e4e0e3c0",
+            "chest-scene-9-holder-return.png": "4588b41d5121714fe0b723436bc2d62b4cdad2ac19566f40cb491203e4e0e3c0",
+            "chest-scene-62-initial.png": "5f5fca3d6cdac76b73456794e0231e43c4b7dd220d4060d1b88948c9b2322c3e",
+            "chest-scene-62-renamed.png": "a6597ad1d54effe9784b076e28a7eb1475b4bf20822e100a655f2a1e575f7a0e",
+            "chest-scene-62-forbidden.png": "8df45bb7439bf5a8ff6e2d48eb7c6f8ac9d041fd74764bda09f5025b1ce8bf12",
+            "chest-scene-62-removing.png": "fadb33a5fa4e0e371875d38175e96f0ba969cbd88a343177dc71a234406ab102",
+            "chest-scene-62-restored.png": "5f5fca3d6cdac76b73456794e0231e43c4b7dd220d4060d1b88948c9b2322c3e",
+            "chest-scene-62-holder-return.png": "5f5fca3d6cdac76b73456794e0231e43c4b7dd220d4060d1b88948c9b2322c3e",
+            "chest-scene-493-initial.png": "d4ab40efeb41ac8bc3446333a34e9c26b1ebb43d2160667e3b60fe63f3996239",
+            "chest-scene-493-renamed.png": "f61b14c05fcccf535475b07511e86db2ee0091690475ca09cd311fb7a90e5ba1",
+            "chest-scene-493-forbidden.png": "0ab4c95ed5c576ecc3a0cf37499062b68c4fe0ea91458fc668580a99979792a6",
+            "chest-scene-493-removing.png": "e9838a7e7587d71cce4a6fc65ee85e2c926f499ff6fa296110778a6ac2390a3e",
+            "chest-scene-493-restored.png": "d4ab40efeb41ac8bc3446333a34e9c26b1ebb43d2160667e3b60fe63f3996239",
+            "chest-scene-493-holder-return.png": "d4ab40efeb41ac8bc3446333a34e9c26b1ebb43d2160667e3b60fe63f3996239"
+          }
         }
       }
     },

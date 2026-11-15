@@ -167,12 +167,19 @@ struct DoorControlsState {
   std::optional<DoorControlsSnapshot> snapshot;
   df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
 };
+struct FuneraryBodySnapshot {
+  int32_t unitId=-1,historicalFigureId=-1,roomId=-1,roomType=-1;
+  std::string introduction,name,roomIntroduction,roomName,deceased;
+  std::vector<std::string> notices;
+  std::optional<df3d_production::ItemAppearanceRecipe> ownerAppearance;
+};
 struct BuildingHeaderSnapshot {
   int32_t id=-1,type=-1,stage=-1,maxStage=-1;uint64_t revision=0;
   std::string customName,nativeName,headerName;
   bool removing=false,suspended=false,hasWorker=false;
   int8_t forbidden=-1;
   std::optional<df3d_production::ItemAppearanceRecipe> appearance;
+  std::optional<FuneraryBodySnapshot> funerary;
 };
 struct BuildingHeaderState {
   std::optional<BuildingHeaderSnapshot> snapshot;

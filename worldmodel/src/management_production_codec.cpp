@@ -90,6 +90,14 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     state.operation=static_cast<FarmOperation>(source->operation());
     if(const auto* f=source->snapshot())state.snapshot=BuildingHeaderSnapshot{f->id(),f->type(),f->stage(),f->max_stage(),f->revision(),
       str(f->custom_name()),str(f->native_name()),str(f->header_name()),f->removing(),f->suspended(),f->has_worker(),f->forbidden(),f->appearance()?std::optional<SelectionAppearance>(decodeItemRecipe(f->appearance())):std::nullopt};
+    if(source->snapshot() && source->snapshot()->funerary()) {
+      const auto* f=source->snapshot()->funerary();auto& v=state.snapshot->funerary.emplace();
+      v.unitId=f->unit_id();v.historicalFigureId=f->historical_figure_id();v.roomId=f->room_id();v.roomType=f->room_type();
+      v.introduction=str(f->introduction());v.name=str(f->name());v.roomIntroduction=str(f->room_introduction());
+      v.roomName=str(f->room_name());v.deceased=str(f->deceased());
+      if(f->notices())for(const auto* text:*f->notices())v.notices.push_back(str(text));
+      if(f->owner_appearance())v.ownerAppearance=decodeItemRecipe(f->owner_appearance());
+    }
   }
   if(const auto* source=p->independent_item()) {
     auto& state=n.independentItem.emplace();state.outcome=static_cast<FarmEditOutcome>(source->outcome());

@@ -4456,6 +4456,40 @@ TEST_CASE("building header receipts preserve authority and reject malformed stat
   }
 }
 
+TEST_CASE("funerary bodies retain native facts and reject mixed identities") {
+  for(int type:{3,46})for(int fault=0;fault<10;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto empty=b.CreateString("");const bool coffin=type==3;
+    std::vector<flatbuffers::Offset<flatbuffers::String>> notices;
+    if(fault==6)for(int i=0;i<4;++i)notices.push_back(b.CreateString("notice"));
+    const auto body=wire::CreateFuneraryBodySnapshot(b,fault==3?-2:fault==8?5577:-1,
+      fault==4?17:coffin?-1:9636,coffin?228:-1,coffin?97:-1,
+      coffin?empty:b.CreateString("This is a memorial to"),coffin?empty:b.CreateString("Ber"),
+      coffin?b.CreateString("This furniture is a part of"):empty,
+      fault==5?b.CreateString(std::string(1537,'x')):coffin?b.CreateString("Unnamed tomb"):empty,
+      fault==9?b.CreateString("Deceased"):empty,fault==7?0:b.CreateVector(notices));
+    const auto snapshot=wire::CreateBuildingHeaderSnapshot(b,220,fault==1?15:type,1,1,1,
+      empty,b.CreateString("native"),b.CreateString("Native"),false,false,false,0,0,fault==2?0:body);
+    auto header=wire::CreateBuildingHeaderState(b,snapshot);
+    wire::ProductionStateBuilder prod(b);prod.add_building_header(header);auto payload=prod.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(wire::ManagementAction::ProductionInspect);
+    state.add_status(wire::ManagementStatus::Ok);state.add_production(payload);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    // A different valid memorial subject is permitted; coffin cannot carry it.
+    const bool valid=fault==0 || (fault==4 && !coffin);
+    CHECK(bool(wire::validateManagementState(*value))==!valid);
+    if(valid) {
+      const auto decoded=codec::decodeProduction(value->production());
+      REQUIRE(decoded.buildingHeader);REQUIRE(decoded.buildingHeader->snapshot);
+      REQUIRE(decoded.buildingHeader->snapshot->funerary);
+      const auto& v=*decoded.buildingHeader->snapshot->funerary;
+      CHECK(v.roomId==(coffin?228:-1));CHECK(v.name==(coffin?"":"Ber"));
+      CHECK(v.historicalFigureId==(coffin?-1:fault==4?17:9636));CHECK(v.notices.empty());
+      CHECK_FALSE(v.ownerAppearance);
+    }
+  }
+}
+
 TEST_CASE("creature header command retains exact revision and strict read/edit separation") {
   for(bool edit:{false,true})for(int fault=0;fault<5;++fault) {
     wm::ManagementRequest r;r.action=edit?wm::ManagementAction::CreatureHeaderEdit:wm::ManagementAction::CreatureHeaderRead;

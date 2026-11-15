@@ -256,7 +256,15 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
       const auto& f=*state.snapshot;Dictionary value;
       value["id"]=f.id;value["type"]=f.type;value["revision"]=int64_t(f.revision);value["stage"]=f.stage;value["max_stage"]=f.maxStage;
       value["custom_name"]=String::utf8(f.customName.c_str());value["native_name"]=String::utf8(f.nativeName.c_str());value["header_name"]=String::utf8(f.headerName.c_str());
-      value["removing"]=f.removing;value["suspended"]=f.suspended;value["has_worker"]=f.hasWorker;if(f.forbidden>=0)value["forbidden"]=f.forbidden!=0;if(f.appearance)value["appearance"]=itemRecipeDictionary(*f.appearance);headerState["snapshot"]=value;
+      value["removing"]=f.removing;value["suspended"]=f.suspended;value["has_worker"]=f.hasWorker;if(f.forbidden>=0)value["forbidden"]=f.forbidden!=0;if(f.appearance)value["appearance"]=itemRecipeDictionary(*f.appearance);if(f.funerary) {
+        const auto& v=*f.funerary;Dictionary body;
+        body["unit_id"]=v.unitId;body["historical_figure_id"]=v.historicalFigureId;body["room_id"]=v.roomId;body["room_type"]=v.roomType;
+        body["introduction"]=String::utf8(v.introduction.c_str());body["name"]=String::utf8(v.name.c_str());
+        body["room_introduction"]=String::utf8(v.roomIntroduction.c_str());body["room_name"]=String::utf8(v.roomName.c_str());
+        body["deceased"]=String::utf8(v.deceased.c_str());Array notices;for(const auto& text:v.notices)notices.push_back(String::utf8(text.c_str()));
+        body["notices"]=notices;if(v.ownerAppearance)body["owner_appearance"]=itemRecipeDictionary(*v.ownerAppearance);value["funerary"]=body;
+      }
+      headerState["snapshot"]=value;
     }
     prod["building_header"]=headerState;
   }

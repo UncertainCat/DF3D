@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management224 adds optional native funerary body facts to building headers:
+coffin owner/Tomb captions, notices, memorial subject and owner artwork. Rebuild
+bridge and client together; `Local\df3d_management_v224` isolates223. Earlier
+recordings contain no funerary body and must not synthesize one. Specialized
+panel exposure still requires separate runtime and rendered acceptance.
+
 Management212 adds owned unit-selector appearance to selection identities.
 Unit captions use the existing native name field. Only Unit identities may
 carry unit appearance. Rebuild bridge and client together; the defaults/mailbox

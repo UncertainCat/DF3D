@@ -12809,6 +12809,1173 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "completed_sheet_discovery_reference": {
+      "protocol": 222,
+      "lane": "build/stockpile-storage-native-farm-discovery-20261115-022800",
+      "owned_df_pid": 27908,
+      "closed_unsaved": true,
+      "source_save_preserved": true,
+      "scope": "Native-only paused discovery of 29 naturally completed, revealed building types present in this fortress. Selection only; no edits and no viewer parity acceptance. Empty furniture samples do not establish assigned-zone variants. Floodgate shows linked-building tabs; occupied Coffin, memorial Slab, machinery and other specialized bodies need their own semantic contracts.",
+      "rows": [
+        {
+          "id": 65,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            123,
+            90,
+            165
+          ],
+          "type": 0,
+          "type_name": "Chair",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Dolomite Throne"
+            },
+            {
+              "y": 43,
+              "text": "       +dolomite throne+"
+            }
+          ],
+          "image_sha256": "1c00bacc4be54858d56788104527500080fc74a9a57397e091d6d1e975da4d7d"
+        },
+        {
+          "id": 9,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            123,
+            94,
+            165
+          ],
+          "type": 1,
+          "type_name": "Bed",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Bed"
+            },
+            {
+              "y": 43,
+              "text": "       +olive wood bed+"
+            }
+          ],
+          "image_sha256": "f0dc952b66ec24a2d2b1b0b58ef31be228bcf4b5c4d29ab98040eb2abd2393a0"
+        },
+        {
+          "id": 62,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            123,
+            89,
+            165
+          ],
+          "type": 2,
+          "type_name": "Table",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Dolomite Table"
+            },
+            {
+              "y": 43,
+              "text": "       -dolomite table-"
+            }
+          ],
+          "image_sha256": "a78d81fb4a5903146f87d584cb18b1aad1cd176617364abad9dbeb169b318728"
+        },
+        {
+          "id": 220,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            93,
+            124,
+            165
+          ],
+          "type": 3,
+          "type_name": "Coffin",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Dolomite Coffin"
+            },
+            {
+              "y": 11,
+              "text": " This is the resting place of"
+            },
+            {
+              "y": 12,
+              "text": " Kol Asobstettad, Stoneworker."
+            },
+            {
+              "y": 16,
+              "text": "       Kol Asobstettad, Stoneworker"
+            },
+            {
+              "y": 17,
+              "text": "       Deceased"
+            },
+            {
+              "y": 20,
+              "text": " This furniture is a part of"
+            },
+            {
+              "y": 23,
+              "text": "       Unnamed tomb"
+            },
+            {
+              "y": 43,
+              "text": "       dolomite coffin"
+            },
+            {
+              "y": 46,
+              "text": "       Kol Asobstettad's skeleton"
+            }
+          ],
+          "image_sha256": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c"
+        },
+        {
+          "id": 227,
+          "jobs": [],
+          "max_stage": 3,
+          "stage": 3,
+          "tile": [
+            137,
+            111,
+            165
+          ],
+          "type": 4,
+          "type_name": "FarmPlot",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Farm Plot"
+            },
+            {
+              "y": 9,
+              "text": "  Spring         Summer(now)    Autumn         Winter"
+            },
+            {
+              "y": 10,
+              "text": "  Spring         Summer(now)    Autumn         Winter"
+            },
+            {
+              "y": 17,
+              "text": "        Leave fallow"
+            },
+            {
+              "y": 20,
+              "text": "        Cave wheat"
+            },
+            {
+              "y": 21,
+              "text": "        No seeds"
+            },
+            {
+              "y": 23,
+              "text": "        Dimple cups"
+            },
+            {
+              "y": 26,
+              "text": "        Pig tails"
+            },
+            {
+              "y": 29,
+              "text": "        Plump helmets"
+            },
+            {
+              "y": 32,
+              "text": "        Quarry bushes"
+            },
+            {
+              "y": 35,
+              "text": "        Sweet pods"
+            },
+            {
+              "y": 36,
+              "text": "        No seeds"
+            },
+            {
+              "y": 39,
+              "text": "      Not set to fertilize      Fertilize"
+            },
+            {
+              "y": 40,
+              "text": "      Current amount: 0/29      every season"
+            }
+          ],
+          "image_sha256": "667a6d0387aa93f8a406efa736655b5edf392c89e924922f00da1b7b9fc494e1"
+        },
+        {
+          "id": 56,
+          "jobs": [],
+          "max_stage": 3,
+          "stage": 3,
+          "tile": [
+            116,
+            101,
+            165
+          ],
+          "type": 5,
+          "type_name": "Furnace",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Wood Furnace"
+            },
+            {
+              "y": 8,
+              "text": "  Tasks    Workers    Work orders"
+            },
+            {
+              "y": 9,
+              "text": "  Tasks    Workers    Work orders"
+            },
+            {
+              "y": 12,
+              "text": "                                   Add new task"
+            },
+            {
+              "y": 43,
+              "text": "       dolomite blocks"
+            }
+          ],
+          "image_sha256": "93cc056b3354621a2f026129d4a7d0b6db0f77b6750cb27fa12e4ef474610686"
+        },
+        {
+          "id": 54,
+          "jobs": [],
+          "max_stage": 3,
+          "stage": 3,
+          "tile": [
+            111,
+            94,
+            165
+          ],
+          "type": 6,
+          "type_name": "TradeDepot",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Trade Depot"
+            },
+            {
+              "y": 12,
+              "text": " There are no merchants trading right now."
+            },
+            {
+              "y": 18,
+              "text": "   Broker requested at depot"
+            },
+            {
+              "y": 21,
+              "text": "   Anyone requested at depot"
+            },
+            {
+              "y": 24,
+              "text": "   No trader needed at depot"
+            },
+            {
+              "y": 30,
+              "text": " You do not have a broker."
+            },
+            {
+              "y": 43,
+              "text": "       dolomite blocks"
+            },
+            {
+              "y": 46,
+              "text": "       dolomite blocks"
+            },
+            {
+              "y": 49,
+              "text": "       dolomite blocks"
+            },
+            {
+              "y": 52,
+              "text": "       iron pipe section"
+            },
+            {
+              "y": 55,
+              "text": "       iron pipe section"
+            },
+            {
+              "y": 58,
+              "text": "       iron pipe section"
+            }
+          ],
+          "image_sha256": "63f54d60768f83f5d115fd4c3389dc15aec61dfc1dd5fdf0905bd7ce64758c65"
+        },
+        {
+          "id": 16,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            121,
+            99,
+            165
+          ],
+          "type": 8,
+          "type_name": "Door",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Dolomite Door"
+            },
+            {
+              "y": 11,
+              "text": " Passable"
+            },
+            {
+              "y": 43,
+              "text": "       *dolomite door*"
+            }
+          ],
+          "image_sha256": "50868acafaeb1ee3fada17e4ecb946c139ab4d67b0bfcd4d685ddc61f649a3f1"
+        },
+        {
+          "id": 39,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            97,
+            106,
+            164
+          ],
+          "type": 9,
+          "type_name": "Floodgate",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Dolomite Floodgate"
+            },
+            {
+              "y": 42,
+              "text": "  Show linked buildings         Show items"
+            },
+            {
+              "y": 43,
+              "text": "  Show linked buildings         Show items"
+            },
+            {
+              "y": 46,
+              "text": "       dolomite floodgate"
+            },
+            {
+              "y": 49,
+              "text": "       -dolomite mechanisms-"
+            }
+          ],
+          "image_sha256": "f9216db770b20f47d252bb637a6001dd6be9bfb116030960c9ffaa87b8c8f992"
+        },
+        {
+          "id": 278,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            137,
+            102,
+            165
+          ],
+          "type": 10,
+          "type_name": "Box",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Kumquat wood Chest"
+            },
+            {
+              "y": 43,
+              "text": "       (+Â«-kumquat wood chest-Â»+)"
+            },
+            {
+              "y": 46,
+              "text": "       (giant rat bone libash)"
+            },
+            {
+              "y": 49,
+              "text": "       (green glass ennol)"
+            },
+            {
+              "y": 52,
+              "text": "       (-wolverine bone adesh-)"
+            },
+            {
+              "y": 55,
+              "text": "       onyx migrur"
+            }
+          ],
+          "image_sha256": "f632f6b40ae6a751e1426c6c2076d11d52281dfc4f33301929a62d2dac0549c5"
+        },
+        {
+          "id": 917,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            174,
+            69,
+            165
+          ],
+          "type": 11,
+          "type_name": "Weaponrack",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Platinum Weapon Rack"
+            },
+            {
+              "y": 43,
+              "text": "       platinum weapon rack"
+            }
+          ],
+          "image_sha256": "96aa097853c671282b3cf7133ec48d1f60d4d27c21837f3d424179fee095d3be"
+        },
+        {
+          "id": 918,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            174,
+            68,
+            165
+          ],
+          "type": 12,
+          "type_name": "Armorstand",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Platinum Armor Stand"
+            },
+            {
+              "y": 43,
+              "text": "       platinum armor stand"
+            }
+          ],
+          "image_sha256": "9f196d45afdc4bab2aa9ec1557ccd62cdd2a4619e4e818e4fc8ea82308aa3b37"
+        },
+        {
+          "id": 3,
+          "jobs": [],
+          "max_stage": 3,
+          "stage": 3,
+          "tile": [
+            106,
+            95,
+            165
+          ],
+          "type": 13,
+          "type_name": "Workshop",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Stoneworker's Workshop"
+            },
+            {
+              "y": 8,
+              "text": "  Tasks    Workers    Work orders"
+            },
+            {
+              "y": 9,
+              "text": "  Tasks    Workers    Work orders"
+            },
+            {
+              "y": 12,
+              "text": "                                   Add new task"
+            },
+            {
+              "y": 43,
+              "text": "       pomegranate wood"
+            },
+            {
+              "y": 46,
+              "text": "       -dolomite floodgate-"
+            },
+            {
+              "y": 49,
+              "text": "       +dolomite floodgate+"
+            },
+            {
+              "y": 52,
+              "text": "       -dolomite millstone-"
+            },
+            {
+              "y": 55,
+              "text": "       +dolomite millstone+"
+            },
+            {
+              "y": 58,
+              "text": "       *dolomite millstone*"
+            }
+          ],
+          "image_sha256": "d66593a802a791d575e01ffb2514e779823d6678ac928908e6e177b1ac997007"
+        },
+        {
+          "id": 279,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            137,
+            98,
+            165
+          ],
+          "type": 14,
+          "type_name": "Cabinet",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "             Unib Rakustazin, king"
+            },
+            {
+              "y": 7,
+              "text": "             \"Unib Tombswatched\""
+            },
+            {
+              "y": 8,
+              "text": "             Creator of Kulin Odur"
+            },
+            {
+              "y": 9,
+              "text": "             Meditate on Wealth"
+            },
+            {
+              "y": 13,
+              "text": "  Relations   Groups   Military   Thoughts   Personality"
+            },
+            {
+              "y": 14,
+              "text": "  Relations   Groups   Military   Thoughts   Personality"
+            },
+            {
+              "y": 15,
+              "text": "  Overview   Items   Health   Skills   Rooms   Labor"
+            },
+            {
+              "y": 16,
+              "text": "  Overview   Items   Health   Skills   Rooms   Labor"
+            },
+            {
+              "y": 17,
+              "text": "56 Years Old,                 Values harmony"
+            },
+            {
+              "y": 18,
+              "text": "                              Anger-prone"
+            },
+            {
+              "y": 19,
+              "text": "                              Values tranquility"
+            },
+            {
+              "y": 20,
+              "text": "                              Good with language"
+            },
+            {
+              "y": 21,
+              "text": "                              Good spatial sense"
+            },
+            {
+              "y": 22,
+              "text": "                              Developed empathy"
+            },
+            {
+              "y": 24,
+              "text": "Stressed                      King"
+            },
+            {
+              "y": 25,
+              "text": "                              Needs Royal Throne Room"
+            },
+            {
+              "y": 31,
+              "text": "                              Squad: None"
+            },
+            {
+              "y": 32,
+              "text": "                              Dabbling Observer"
+            },
+            {
+              "y": 38,
+              "text": "Legendary Weaponsmith         Unmet need: Be with friends"
+            },
+            {
+              "y": 39,
+              "text": "Accomplished Organizer        Unmet need: Martial training"
+            },
+            {
+              "y": 40,
+              "text": "Expert Planter                Unmet need: Excitement"
+            },
+            {
+              "y": 41,
+              "text": "Expert Appraiser              Unmet need: Acquire object"
+            },
+            {
+              "y": 42,
+              "text": "Competent Furnace Operator    Unmet need: Fight"
+            },
+            {
+              "y": 43,
+              "text": "Adequate Gem Setter (Rusty)   Unmet need: Pray to Stettad"
+            },
+            {
+              "y": 45,
+              "text": "\"Society flourishes when law breakers are punished.\""
+            },
+            {
+              "y": 47,
+              "text": "He felt pleasure near a fine Water Wheel."
+            },
+            {
+              "y": 48,
+              "text": "He felt satisfied at work."
+            },
+            {
+              "y": 49,
+              "text": "He felt satisfied discussing his problems with an"
+            },
+            {
+              "y": 50,
+              "text": "acquaintance."
+            },
+            {
+              "y": 51,
+              "text": "He was frustrated after being unable to practice a"
+            },
+            {
+              "y": 52,
+              "text": "martial art for too long."
+            },
+            {
+              "y": 53,
+              "text": "He felt lonely after being away from friends for too"
+            },
+            {
+              "y": 54,
+              "text": "long."
+            },
+            {
+              "y": 55,
+              "text": "He didn't feel anything after watching a performance."
+            },
+            {
+              "y": 56,
+              "text": "He felt wonder remembering performing the rites of"
+            },
+            {
+              "y": 57,
+              "text": "The Bejeweled Creed in a dedicated temple."
+            },
+            {
+              "y": 58,
+              "text": "He was disgusted after retching on a miasma."
+            },
+            {
+              "y": 59,
+              "text": "He didn't feel anything after watching a performance."
+            },
+            {
+              "y": 60,
+              "text": "He didn't feel anything after seeing the cavy sow"
+            },
+            {
+              "y": 61,
+              "text": "VabÃ´k Copperlauded's dead body."
+            }
+          ],
+          "image_sha256": "e33ff050cf675289b9f1a2bc140d9272faf14be17f411f200435911974027e7b"
+        },
+        {
+          "id": 493,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            126,
+            46,
+            165
+          ],
+          "type": 15,
+          "type_name": "Statue",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Steel Statue"
+            },
+            {
+              "y": 43,
+              "text": "       steel statue of a oyster"
+            }
+          ],
+          "image_sha256": "4fcfaa27b3392310b996e39f1b919e8f422fef762e2e8491726579746b703502"
+        },
+        {
+          "id": 161,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            111,
+            105,
+            165
+          ],
+          "type": 18,
+          "type_name": "Well",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Well"
+            },
+            {
+              "y": 11,
+              "text": " The well is operational."
+            },
+            {
+              "y": 43,
+              "text": "       dolomite mechanisms"
+            },
+            {
+              "y": 46,
+              "text": "       (pig tail rope)"
+            },
+            {
+              "y": 49,
+              "text": "       (maple bucket)"
+            },
+            {
+              "y": 52,
+              "text": "       dolomite blocks"
+            }
+          ],
+          "image_sha256": "2031bf0771066beddfa4b7743782d2d25e97c2afdf461286325202e8918541a0"
+        },
+        {
+          "id": 1378,
+          "jobs": [],
+          "max_stage": 3,
+          "stage": 3,
+          "tile": [
+            105,
+            78,
+            165
+          ],
+          "type": 19,
+          "type_name": "Bridge",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Microcline Bridge"
+            },
+            {
+              "y": 43,
+              "text": "       microcline blocks"
+            },
+            {
+              "y": 46,
+              "text": "       microcline blocks"
+            },
+            {
+              "y": 49,
+              "text": "       microcline blocks"
+            },
+            {
+              "y": 52,
+              "text": "       microcline blocks"
+            },
+            {
+              "y": 55,
+              "text": "       microcline blocks"
+            },
+            {
+              "y": 58,
+              "text": "       microcline blocks"
+            }
+          ],
+          "image_sha256": "9ea8aeed860dc0ab0cb072fab0f4f9b6510d5ae4a5e95ca6b5659153a6852f9c"
+        },
+        {
+          "id": 55,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            97,
+            103,
+            165
+          ],
+          "type": 23,
+          "type_name": "Trap",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Main Water Control"
+            },
+            {
+              "y": 8,
+              "text": "  Tasks    Workers    Work orders"
+            },
+            {
+              "y": 9,
+              "text": "  Tasks    Workers    Work orders"
+            },
+            {
+              "y": 12,
+              "text": "                                   Link lever  Pull lever"
+            },
+            {
+              "y": 42,
+              "text": "  Show linked buildings         Show items"
+            },
+            {
+              "y": 43,
+              "text": "  Show linked buildings         Show items"
+            },
+            {
+              "y": 46,
+              "text": "       -petrified wood mechanisms-"
+            },
+            {
+              "y": 49,
+              "text": "       dolomite mechanisms"
+            },
+            {
+              "y": 52,
+              "text": "       -dolomite mechanisms-"
+            }
+          ],
+          "image_sha256": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1"
+        },
+        {
+          "id": 261,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            136,
+            98,
+            165
+          ],
+          "type": 28,
+          "type_name": "Cage",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Masked Lovebird ( ) Cage (lead)"
+            },
+            {
+              "y": 35,
+              "text": " This furniture is a part of"
+            },
+            {
+              "y": 38,
+              "text": "       Unnamed memorial hall"
+            },
+            {
+              "y": 43,
+              "text": "       (masked lovebird ( ) cage (le..."
+            }
+          ],
+          "image_sha256": "3fd15ba29b5b57fcf03cf83a610962c73f4a1402820dc63782af62b8346aac51"
+        },
+        {
+          "id": 0,
+          "jobs": [],
+          "max_stage": 3,
+          "stage": 3,
+          "tile": [
+            97,
+            96,
+            170
+          ],
+          "type": 32,
+          "type_name": "Wagon",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Wagon"
+            },
+            {
+              "y": 43,
+              "text": "       (cherry wood)"
+            },
+            {
+              "y": 46,
+              "text": "       (cherry wood)"
+            },
+            {
+              "y": 49,
+              "text": "       (cherry wood)"
+            }
+          ],
+          "image_sha256": "6d0869834391cf25979d014892ae90132b2cd3fbf3525a143dcd8f160ba6afee"
+        },
+        {
+          "id": 134,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            101,
+            70,
+            165
+          ],
+          "type": 37,
+          "type_name": "GrateFloor",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Dolomite Floor Grate"
+            },
+            {
+              "y": 43,
+              "text": "       -dolomite grate-"
+            }
+          ],
+          "image_sha256": "42885cded8ac021ea6395f3b0f9a8fe472861a9cb8eb356d60f16c10d80e6b49"
+        },
+        {
+          "id": 155,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            102,
+            95,
+            165
+          ],
+          "type": 38,
+          "type_name": "BarsVertical",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Vertical iron Bars"
+            },
+            {
+              "y": 43,
+              "text": "       iron bars"
+            }
+          ],
+          "image_sha256": "37693b79b427312aa06c566c728849eb75ecda44ca81335e24e5aff9c011d8fd"
+        },
+        {
+          "id": 143,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            100,
+            70,
+            165
+          ],
+          "type": 39,
+          "type_name": "BarsFloor",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Iron Floor Bars"
+            },
+            {
+              "y": 43,
+              "text": "       iron bars"
+            }
+          ],
+          "image_sha256": "2becdcce92f9d54cab80ea4a2d7c9a6b89dc275b0fdc22af98b0caeaff9135b3"
+        },
+        {
+          "id": 234,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            121,
+            106,
+            165
+          ],
+          "type": 43,
+          "type_name": "WaterWheel",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Water Wheel"
+            },
+            {
+              "y": 11,
+              "text": " Active"
+            },
+            {
+              "y": 12,
+              "text": " Total Power: 100"
+            },
+            {
+              "y": 13,
+              "text": " Total Power Needed: 20"
+            },
+            {
+              "y": 14,
+              "text": " Hanging"
+            },
+            {
+              "y": 43,
+              "text": "       citron wood"
+            },
+            {
+              "y": 46,
+              "text": "       citron wood"
+            },
+            {
+              "y": 49,
+              "text": "       citron wood"
+            }
+          ],
+          "image_sha256": "e1ca3109b19c9513c026b890264c42e4cdc8106a1ee1dd04ee6ee9dd2b8f7656"
+        },
+        {
+          "id": 1105,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            125,
+            79,
+            165
+          ],
+          "type": 45,
+          "type_name": "TractionBench",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Traction Bench"
+            },
+            {
+              "y": 43,
+              "text": "       Â«â‰¡bitter orange wood traction..."
+            }
+          ],
+          "image_sha256": "76a3972e2067c9c837bdb9897e18f6aeebdc80bd735b890c1e857fd1a53676ff"
+        },
+        {
+          "id": 280,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            138,
+            98,
+            165
+          ],
+          "type": 46,
+          "type_name": "Slab",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Jet Slab"
+            },
+            {
+              "y": 11,
+              "text": " This is a memorial to"
+            },
+            {
+              "y": 12,
+              "text": " Ber Endoksibrek."
+            },
+            {
+              "y": 43,
+              "text": "       jet memorial to Ber Endoksibrek"
+            }
+          ],
+          "image_sha256": "f3a9b369c59d3ddb3351f7caedefccfffa4c4f4835d65f54a3ca0354e86494c7"
+        },
+        {
+          "id": 468,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            129,
+            55,
+            165
+          ],
+          "type": 51,
+          "type_name": "Instrument",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       (copper rÃ­t)"
+            },
+            {
+              "y": 43,
+              "text": "       (copper rÃ­t)"
+            }
+          ],
+          "image_sha256": "64acd7c549194aac735a04ca710f5be491e74888d7b76f0d362206727a9772c6"
+        },
+        {
+          "id": 866,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            161,
+            61,
+            165
+          ],
+          "type": 52,
+          "type_name": "Bookcase",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Bookcase"
+            },
+            {
+              "y": 43,
+              "text": "       -microcline bookcase-"
+            }
+          ],
+          "image_sha256": "6235a111b9e4712c4358cc3294eafc78d222fad2f402b73810e0f2423a4cc343"
+        },
+        {
+          "id": 274,
+          "jobs": [],
+          "max_stage": 1,
+          "stage": 1,
+          "tile": [
+            141,
+            100,
+            165
+          ],
+          "type": 54,
+          "type_name": "OfferingPlace",
+          "panel_text": [
+            {
+              "y": 6,
+              "text": "       Iron Altar"
+            },
+            {
+              "y": 43,
+              "text": "       iron altar"
+            }
+          ],
+          "image_sha256": "41caac67fe04bd3108446e2aa1b144c311715504cc2d8a059a4f8ce5a2bfabcf"
+        }
+      ],
+      "hashes": {
+        "workshop-native.json": "0b614d0f6142473020869ef5bfa631f97b6355f3b081d0640f9669e9cd136c0c",
+        "result.json": "6485e807c2c19539b5c686040279fa76c093a1485da517382fbf48af8e6b7916",
+        "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+      }
+    },
     "pending_construction_reference": {
       "lane": "build/stockpile-storage-native-farm-discovery-20261114-213930",
       "owned_df_pid": 844,

@@ -133,6 +133,24 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ if os.getenv('DF3D_COMPLETED_BUILDING_DISCOVERY')=='1'then
+  result.completed_buildings={}
+  local chosen={}
+  for _,candidate in ipairs(df.global.world.buildings.all)do
+   local kind=candidate:getType()
+   if not chosen[kind] and kind>=0 and kind<=54 and kind~=29 and kind~=30 and candidate:getBuildStage()==candidate:getMaxBuildStage() then
+    local tile=dfhack.maps.getTileFlags(candidate.centerx,candidate.centery,candidate.z)
+    if tile and not tile.hidden then chosen[kind]=candidate end
+   end
+  end
+  for kind=0,54 do local target=chosen[kind];if target then
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(target)
+   local jobs={};for _,job in ipairs(target.jobs)do jobs[#jobs+1]={id=job.id,type=df.job_type[job.job_type],flags=job.flags.whole}end
+   result.completed_buildings[#result.completed_buildings+1]={id=target.id,type=kind,type_name=df.building_type[kind],tile={target.centerx,target.centery,target.z},stage=target:getBuildStage(),max_stage=target:getMaxBuildStage(),jobs=jobs,lines=lines()}
+   shot('completed-building-'..kind)
+  end end
+  return
+ end
  if os.getenv('DF3D_PENDING_HEADER_ART')=='1'then
   local chosen={};local rows={};local originals={}
   local duration_probe=os.getenv('DF3D_PENDING_DURATION')=='1'

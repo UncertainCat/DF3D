@@ -9707,13 +9707,32 @@ the protocol214 rebuild. Contract tests cover both artwork fields through
 the client, clearing on closure, wrong target kinds, invalid page references
 and simultaneous portrait/fallback rejection.
 
-Ordinary map selection remains gated for a broader reason than Vermin artwork:
-fortress_ui._selection_destination routes completed farms, containers, doors,
-workshops and furnaces to their dedicated building controllers. Other building
-kinds still enter context_inspector's legacy title/removal branch; incomplete
-buildings are rejected by the staged destination. These paths do not establish
-native building-sheet coverage. The next routing work must supply the missing
-building controls and pending-construction destination before promotion.
+Completed-building map selection remains gated beyond the qualified Door route.
+The selection destination can route completed farms, containers, workshops and
+furnaces to staged controllers; other completed types still use the legacy
+inspector. Unfinished buildings now have their own native sheet and qualified
+map entry, described below. Those additions do not qualify completed furniture
+or specialized building controls.
+
+Protected native022800 on2026-11-15 captures29 naturally completed, revealed
+building types in the paused fortress. `completed_sheet_discovery_reference` in
+native_farm.json records identities, panel text and screenshot hashes. Chair65,
+Bed9, Table62 and Statue493 show a common header/contents structure in these
+samples. Floodgate39 includes linked-building tabs; occupied Coffin220 includes
+resting-place and Tomb rows; Slab280 has memorial text; WaterWheel234 shows power
+facts. Other specialized sheets remain distinct. This is native-only discovery,
+not action or viewer acceptance. In particular, empty furniture bodies do not
+establish assigned-zone variants. Owned DF27908 closes unsaved, source preserved,
+native30FPS and sampled GPU51C; core19 passes.
+
+The next furniture implementation must expose membership semantics as well as
+the shared native name/artwork/item actions. Native membership captions occur at
+renderer18f1a3,190ebc and19548a. The first branch collects building.relations at
+offseta0 into an owned local vector, filtering zone type through native54bb10
+at18ee64 before choosing zero/one/multiple-room layout. This identifies an audit
+candidate, not a qualified runtime provider; ordering, other branch predicates,
+zone/location captions and navigation still need verification. Do not infer
+membership from geometry or recreate the native room filter in Godot.
 
 Basic building discovery: protected203229 and203340 on2026-11-14 capture
 completed Door16 and unfinished Statue965.

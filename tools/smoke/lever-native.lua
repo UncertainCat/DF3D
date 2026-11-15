@@ -130,6 +130,27 @@ local ok,err=xpcall(function()
   end
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());sample('link-with-supplies-cancel')
  end
+ if os.getenv('DF3D_LEVER_WIRE')=='1'then
+  local target=assert(df.building.find(result.link_target))
+  local expected={target_id=target.id,x=target.centerx,y=target.centery,z=target.z,
+   source_mechanism=sheet.linking_lever_mech_lever_id,target_mechanism=sheet.linking_lever_mech_target_id}
+  local file=assert(io.open(out..'/lever-wire-expected.json','w'));file:write(json.encode(expected));file:close()
+  local menu=json.encode{sheet.open,sheet.active_id,sheet.linking_lever,sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id}
+  capture('workshop-wire')
+  file=assert(io.open(out..'/workshop-wire-result.json'));local wire=json.decode(file:read('*a'));file:close()
+  assert(wire.success and #lever.jobs==2,'Lever wire action count mismatch');result.wire=wire
+  assert(menu==json.encode{sheet.open,sheet.active_id,sheet.linking_lever,sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id},'Wire borrowed native menu state')
+  local observed=sample('wire-jobs')
+  for index,kind in ipairs{'pull-1','link-target-click'}do
+   local reference;for _,state in ipairs(result.states)do if state.label==kind then reference=state.jobs[1]end end
+   assert(reference,'Missing native job reference')
+   local job=observed.jobs[index];assert(job.id==(index==1 and wire.pull_job or wire.link_job),'Wire job identity mismatch')
+   for _,key in ipairs{'type','flags','pos','refs','items','item_roles','requirements','world_registered'}do
+    assert(json.encode(job[key])==json.encode(reference[key]),'Wire/native job differs: '..key)
+   end
+  end
+  while #lever.jobs>0 do assert(dfhack.job.removeJob(lever.jobs[#lever.jobs-1]))end
+ end
  assert(#lever.jobs==0 and df.global.world.frame_counter==result.frame)
 end,debug.traceback)
 while #lever.jobs>0 do assert(dfhack.job.removeJob(lever.jobs[#lever.jobs-1]))end

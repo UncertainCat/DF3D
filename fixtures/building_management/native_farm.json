@@ -22982,6 +22982,163 @@
           "build/stockpile-storage-native-farm-discovery-20261115-072600/lever-provider-link-target.png": "7c09ae15960dedcd26467b4005fee5473c10233f4de1b48bd71a3f0e94829bfc",
           "build/stockpile-storage-native-farm-discovery-20261115-072600/lever-provider-link-cleaned.png": "6d2363fe95c88b87bbd3877c1fe97b3027b4f2ee64b5fdd06c27b920f8658eca"
         }
+      },
+      "lever_wire_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-075033",
+        "scope": "Protocol227 initial mechanism IDs, door target preview, native Pull/Link effects, stale source revisions and duplicate rejection through headless Godot. Actual jobs match native flags, position, refs, item roles, requirements and world registration. Native menu fields unchanged. No public lever UI, completion simulation or broader target-family qualification.",
+        "bridge_sha256": "2BA2E845A33B03E670C520873CFE278756A59198665B890300A9200361FEE0CB",
+        "receipts": [
+          {
+            "status": 2,
+            "lever": {
+              "building_id": 55,
+              "job_id": -1,
+              "operation": 0,
+              "outcome": 0,
+              "revision": 5658273887544433940,
+              "source_mechanism": 24480,
+              "source_name": "-talc mechanisms-",
+              "target_id": -1,
+              "target_mechanism": 48520,
+              "target_name": "dolomite mechanisms"
+            }
+          },
+          {
+            "status": 2,
+            "lever": {
+              "building_id": 55,
+              "job_id": -1,
+              "operation": 1,
+              "outcome": 0,
+              "revision": 5658273887544433940,
+              "source_mechanism": 24480,
+              "source_name": "-talc mechanisms-",
+              "target_id": 16,
+              "target_mechanism": 48520,
+              "target_name": "dolomite mechanisms"
+            }
+          },
+          {
+            "status": 3,
+            "lever": null
+          },
+          {
+            "status": 2,
+            "lever": {
+              "building_id": 55,
+              "job_id": 382800,
+              "operation": 2,
+              "outcome": 1,
+              "revision": 7898824960142185894,
+              "source_mechanism": -1,
+              "source_name": "",
+              "target_id": -1,
+              "target_mechanism": -1,
+              "target_name": ""
+            }
+          },
+          {
+            "status": 3,
+            "lever": null
+          },
+          {
+            "status": 2,
+            "lever": {
+              "building_id": 55,
+              "job_id": 382801,
+              "operation": 3,
+              "outcome": 1,
+              "revision": 306524658609332650,
+              "source_mechanism": 24480,
+              "source_name": "-talc mechanisms-",
+              "target_id": 16,
+              "target_mechanism": 48520,
+              "target_name": "dolomite mechanisms"
+            }
+          },
+          {
+            "status": 2,
+            "lever": {
+              "building_id": 55,
+              "job_id": -1,
+              "operation": 3,
+              "outcome": 2,
+              "revision": 306524658609332650,
+              "source_mechanism": 24480,
+              "source_name": "-talc mechanisms-",
+              "target_id": -1,
+              "target_mechanism": 48520,
+              "target_name": "dolomite mechanisms"
+            }
+          }
+        ],
+        "jobs": [
+          {
+            "flags": 0,
+            "id": 382800,
+            "item_roles": [],
+            "items": 0,
+            "pos": [
+              97,
+              103,
+              165
+            ],
+            "refs": [
+              {
+                "building_id": 55,
+                "type": 36
+              }
+            ],
+            "requirements": 0,
+            "type": 147,
+            "world_registered": true
+          },
+          {
+            "flags": 0,
+            "id": 382801,
+            "item_roles": [
+              {
+                "flags": 0,
+                "id": 24480,
+                "index": -1,
+                "role": 3
+              },
+              {
+                "flags": 0,
+                "id": 48520,
+                "index": -1,
+                "role": 4
+              }
+            ],
+            "items": 2,
+            "pos": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "refs": [
+              {
+                "building_id": 16,
+                "type": 33
+              },
+              {
+                "building_id": 55,
+                "type": 36
+              }
+            ],
+            "requirements": 0,
+            "type": 146,
+            "world_registered": true
+          }
+        ],
+        "source_preserved": true,
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-075033/lever-native.json": "737eca788ac4231502fd975857aa964c47dd785029b4d4b23b1f94694cedb84a",
+          "build/stockpile-storage-native-farm-discovery-20261115-075033/workshop-wire-result.json": "8ebdecb8aef30edeeb8dd1017b346ce516fcae274d2b17f78042461c1b8aa6b4",
+          "build/stockpile-storage-native-farm-discovery-20261115-075033/result.json": "b89a34936b242dbf7178c7749a4dac53c207db3ae1f2fb61af3aa83634e4ea26",
+          "build/stockpile-storage-native-farm-discovery-20261115-075033/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-075033/lever-wire-jobs.png": "291388028483e13f03ae567fd617ab0ef8710bb6de1d806c6957cbabedfe6054"
+        }
       }
     },
     "pending_construction_reference": {

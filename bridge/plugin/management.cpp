@@ -79,6 +79,7 @@
 #include "door_native.h"
 #include "pending_building_native.h"
 #include "building_links_native.h"
+#include "lever_native.h"
 #include "building_item_native.h"
 #include "funerary_native.h"
 #include "creature_overview_native.h"
@@ -1734,6 +1735,9 @@ void publish() {
     // No rejection may follow a completed artwork store. If its minimal reply
     // is invalid, retain Pending so the sent mutation times out as unknown.
     if(action==m::ManagementAction::SelectionArtApply && mutated)return;
+    // A malformed lever receipt after native job creation is uncertain, never
+    // a rejection that could encourage retrying the mutation.
+    if(action==m::ManagementAction::ProductionQueue && production.lever && mutated)return;
     publishingFallback = true;
     const auto placed=construction.placed,skipped=construction.skipped;
     const auto first=construction.first_building;
@@ -4143,9 +4147,56 @@ void run(color_ostream& out) {
     publish();return;
   }
   if(r->production() && r->production()->lever()) {
-    // Protocol admission precedes the semantic provider. Never fall through
-    // to generic workshop queueing while this producer is being qualified.
-    message.clear();status=m::ManagementStatus::Rejected;production={};publish();return;
+    const auto* q=r->production();const auto* intent=q->lever();
+    message.clear();status=m::ManagementStatus::Rejected;production={};
+    bool entered=false;
+    try {
+      auto* source=df::building::find(q->building_id());
+      const auto before=df3d_production::observeLever(source);
+      if(!before || (q->expected_revision() && q->expected_revision()!=before->revision)){publish();return;}
+      auto& result=production.lever.emplace();result.buildingId=source->id;result.revision=before->revision;
+      result.operation=intent->operation();result.outcome=intent->operation()>=2?2:0;
+      status=m::ManagementStatus::Ok;
+      if(intent->operation()==0) {
+        const auto selected=df3d_production::leverInitialMechanisms(source);
+        if(!selected){production={};status=m::ManagementStatus::Rejected;publish();return;}
+        result.sourceMechanism=(*selected)[0];result.targetMechanism=(*selected)[1];
+      } else if(intent->operation()==1 || intent->operation()==3) {
+        result.sourceMechanism=intent->source_mechanism();result.targetMechanism=intent->target_mechanism();
+      }
+      for(auto pair:{std::pair{result.sourceMechanism,&result.sourceName},std::pair{result.targetMechanism,&result.targetName}}) {
+        if(pair.first<0)continue;
+        auto* item=df::item::find(pair.first);
+        const auto caption=item && item->getType()==df::item_type::TRAPPARTS?df3d_production::buildingItemCaption(item):std::nullopt;
+        if(!caption || caption->size()>2048){production={};status=m::ManagementStatus::Rejected;publish();return;}
+        *pair.second=DF2UTF(*caption);
+        if(pair.second->size()>2048){production={};status=m::ManagementStatus::Rejected;publish();return;}
+      }
+      df::coord position;
+      if(intent->position()) {
+        position=df::coord(intent->position()->x(),intent->position()->y(),intent->position()->z());
+        const auto target=df3d_production::leverLinkTargetAt(source,position);
+        if(!target){production={};status=m::ManagementStatus::Rejected;publish();return;}
+        result.targetId=*target;
+      }
+      if(intent->operation()<2){publish();return;}
+      if(intent->operation()==3 && (result.targetId<0 || result.targetId!=intent->target_id())){publish();return;}
+      // Native helpers return null only before job allocation. An exception
+      // after entry cannot establish non-application and must remain unknown.
+      entered=true;mutated=true;status=m::ManagementStatus::Pending;
+      auto* job=intent->operation()==2?df3d_production::pullLeverNative(source):
+        df3d_production::linkLeverNative(source,position,result.sourceMechanism,result.targetMechanism);
+      if(!job){entered=false;mutated=false;status=m::ManagementStatus::Ok;publish();return;}
+      const auto after=df3d_production::observeLever(source);
+      if(!after || std::find(source->jobs.begin(),source->jobs.end(),job)==source->jobs.end()) {
+        production={};publish();return;
+      }
+      result.revision=after->revision;result.jobId=job->id;result.outcome=1;
+      status=m::ManagementStatus::Ok;publish();return;
+    } catch(...) {
+      production={};mutated=entered;status=entered?m::ManagementStatus::Pending:m::ManagementStatus::Rejected;
+      publish();return;
+    }
   }
   if(r->production() && r->production()->building_links()) {
     message.clear();status=m::ManagementStatus::Rejected;production={};

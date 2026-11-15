@@ -8,6 +8,18 @@
 #include "modules/Maps.h"
 
 namespace df3d_production {
+// Source authority is independent of the native selected sheet and of the
+// initial mechanism search. Targeting retains the initially chosen item IDs.
+inline std::optional<BuildingHeaderObservation> observeLever(df::building* source) {
+    auto* lever=virtual_cast<df::building_trapst>(source);
+    if(!lever || int(lever->trap_type)!=0 || lever->isHidden() || lever->jobs.size()>=32767 ||
+       lever->getBuildStage()!=lever->getMaxBuildStage())return std::nullopt;
+    auto* tile=DFHack::Maps::getTileDesignation(lever->centerx,lever->centery,lever->z);
+    if(!tile || tile->bits.hidden)return std::nullopt;
+    const auto value=observeBuildingHeader(lever,true);
+    if(!value || value->removing)return std::nullopt;
+    return value;
+}
 // The initial Link selector is inline in DF's sheet input. Preserve its
 // TRAPPARTS order/flag mask here; call DF for availability, effective position,
 // walkability component and stock exclusion. Output IDs are independently owned.

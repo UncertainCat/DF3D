@@ -12,10 +12,28 @@ Only an applied mutation carries a new job ID. Unknown transport outcomes must
 never replay either action.
 
 Older recordings imply no lever observation. Defaults and the mailbox are227;
-rebuild bridge and client together. The schema/codec step deliberately rejects
-lever requests at the bridge until the native producer is integrated and qualified;
-public lever exposure remains gated. Native diagnostic evidence below establishes
-the semantic routines, not completion of the transport or viewer workflow.
+rebuild bridge and client together. The bridge uses native mechanism selection,
+target validation and job creation with owned inputs. Its source revision comes
+from the shared building-header observation, admitted internally for Lever subtype0
+only. The normal header and public lever routes remain gated. Mechanism captions
+use the same native c65450(item,ownedString,false,-1) call as renderer150bd6.
+The selected item IDs remain fixed during targeting; Link does not repeat the
+initial search. Exceptions after entry remain Pending/unknown, and invalid
+post-mutation receipts cannot become retryable rejections.
+
+Protected075033 on2026-11-15 exercises protocol227 through the actual headless
+Godot extension: initial mechanism IDs, door16 preview, Pull, Link, stale revisions
+and a duplicate Link. Actual native jobs match the pointer-click references in
+type, flags, position, references, mechanism roles, requirements and registration;
+fresh job IDs differ. Native menu fields are unchanged. Owned DF2696 closes unsaved
+with source preservation. The run passes with only the known separate-render-thread
+notice; native graphics are capped30FPS, with a sampled GPU temperature61C.
+Initial074834 failed before sending Pull because the client required a workshop
+recipe; the required-field validation now recognizes lever intents. It is not
+acceptance. MSVC, extension and core19 pass. Evidence is
+`completed_sheet_discovery_reference.lever_wire_reference`. Public lever UI,
+job completion, changed-mechanism workflows and other target families remain
+unqualified.
 
 ## Native bug register
 

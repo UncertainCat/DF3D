@@ -128,11 +128,11 @@ inline bool cancelFarmRemoval(df::building_farmplotst* farm) {
 }
 // Native header1804bb calls virtual getName; removal180c3c..180de1 uses
 // the first job's suspend flag and native worker predicate, not job.working.
-inline std::optional<BuildingHeader> buildingHeader(df::building* farm) {
+inline std::optional<BuildingHeader> buildingHeader(df::building* farm,bool allowLever=false) {
     const auto& native=farmFunctions();
     if(!native || !farm || farm->name.size()>512 || farm->jobs.size()>size_t(INT32_MAX))return {};
     const auto type=farm->getType();
-    if(!plainFurnitureType(type) && !funeraryFurnitureType(type) && !linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return {};
+    if(!(allowLever && type==df::building_type::Trap && farm->getSubtype()==0) && !plainFurnitureType(type) && !funeraryFurnitureType(type) && !linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return {};
     BuildingHeader value;value.customNameCp437=farm->name;farm->getName(&value.nativeNameCp437);
     if(value.nativeNameCp437.size()>512)return {};
     value.headerNameCp437=value.nativeNameCp437;native.formatName(&value.headerNameCp437);
@@ -147,8 +147,8 @@ inline std::optional<BuildingHeader> farmHeader(df::building_farmplotst* farm) {
     return buildingHeader(farm);
 }
 // Shared semantic header observation for independent building action authority.
-inline std::optional<BuildingHeaderObservation> observeBuildingHeader(df::building* building) {
-    const auto header=buildingHeader(building);if(!header)return {};
+inline std::optional<BuildingHeaderObservation> observeBuildingHeader(df::building* building,bool allowLever=false) {
+    const auto header=buildingHeader(building,allowLever);if(!header)return {};
     BuildingHeaderObservation value;value.id=building->id;value.type=int32_t(building->getType());
     value.stage=building->getBuildStage();value.maxStage=building->getMaxBuildStage();
     value.customName=header->customNameCp437;value.nativeName=header->nativeNameCp437;

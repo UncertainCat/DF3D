@@ -9921,11 +9921,22 @@ Native54c130 deletes every building job and restores occupancy only for complete
 buildings; it does not recreate ConstructBuilding. The suspend handler's empty
 job check then makes its button a no-op. This is a controlled-state native
 defect, not evidence of natural construction progression. No correction is
-authorized. The pending observer currently requires a construction job and
-must be extended to represent removal and idle/no-job states before promotion.
+authorized. The pending observer represents construction, removal and idle/no-job
+states; protocol216 still exposes only construction-job snapshots. Transport and
+presentation must support the other states before promotion.
 DF42196 exits unsaved with source preservation. The native-bug register tracks
 this separately; pending_construction_reference.removal_return_reference retains
 the before/after captions, stage, jobs and screenshots.
+
+Owned removal provider221907 calls pinned native54c130 with the selected building,
+then reacquires its ID and verifies unchanged stage and absence of jobs. Its
+before/after stage, jobs, occupancy and panel captions exactly match native221104.
+Stale cancellation rejects without mutation; idle suspension also rejects without
+mutation. Repeating Remove building then Cancel removal restores the identical
+idle revision. This preserves the observed native defect rather than recreating
+a construction job. DF39044 exits unsaved with source preservation; the protected
+lane and19 root checks pass. Graphical run capped at30FPS, GPU sampled57–58C and
+12–25% load. Evidence: pending_construction_reference.removal_provider_reference.
 
 The audited building-type dispatch maps Door8 to inline1af741..1af807.
 It rejects flags0x2c (invader/intruder/mechanism control), allows forbidding only

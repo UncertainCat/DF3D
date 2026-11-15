@@ -3768,7 +3768,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           int32_t id=-1;uint64_t revision=0;
           const auto parse=[](const std::string& raw,auto& value){const auto p=std::from_chars(raw.data(),raw.data()+raw.size(),value);return p.ec==std::errc{} && p.ptr==raw.data()+raw.size();};
           const auto& op=parameters[3];
-          if(!parse(parameters[1],id) || !parse(parameters[2],revision) || (op!="read" && op!="resume" && op!="suspend" && op!="cancel"))return CR_WRONG_USAGE;
+          if(!parse(parameters[1],id) || !parse(parameters[2],revision) || (op!="read" && op!="resume" && op!="suspend" && op!="cancel" && op!="cancel-removal"))return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           df3d_production::PendingBuildingEdit edit;auto* target=df::building::find(id);
           if(op=="read") {
@@ -3777,10 +3777,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(edit.receipt)edit.outcome=df3d_production::BuildingHeaderOutcome::Completed;
           } else {
             using Op=df3d_production::PendingBuildingOperation;
-            edit=df3d_production::editPendingBuilding(target,revision,op=="resume"?Op::Resume:op=="suspend"?Op::Suspend:Op::Cancel);
+            edit=df3d_production::editPendingBuilding(target,revision,op=="resume"?Op::Resume:op=="suspend"?Op::Suspend:op=="cancel-removal"?Op::CancelRemoval:Op::Cancel);
           }
           Json::Value value(Json::objectValue);value["outcome"]=int(edit.outcome);value["mutated"]=edit.mutated;value["removed"]=edit.removed;value["removing"]=edit.removing;
-          if(edit.receipt){const auto& r=*edit.receipt;value["id"]=r.id;value["stage"]=r.stage;value["max_stage"]=r.maxStage;value["job_id"]=r.jobId;value["flags"]=r.jobFlags;value["revision"]=std::to_string(r.revision);value["workers"]=Json::arrayValue;for(auto worker:r.workers)value["workers"].append(worker);}
+          if(edit.receipt){const auto& r=*edit.receipt;value["id"]=r.id;value["stage"]=r.stage;value["max_stage"]=r.maxStage;value["job_id"]=r.jobId;value["flags"]=r.jobFlags;value["is_removing"]=r.removing;value["revision"]=std::to_string(r.revision);value["workers"]=Json::arrayValue;for(auto worker:r.workers)value["workers"].append(worker);}
           out.print("{}",Json::FastWriter().write(value));return CR_OK;
         }
         if(parameters[0]=="door-control") {

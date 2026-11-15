@@ -391,11 +391,25 @@ local ok,err=xpcall(function()
      result.basic_building_reference.pending.cancellation=cancelled;shot('basic-building-pending-cancel')
      if stage>0 and os.getenv('DF3D_PENDING_REMOVAL_REFERENCE')=='1'then
       local removal={before={stage=remaining:getBuildStage(),max_stage=remaining:getMaxBuildStage(),lines=lines()}}
-      assert(click_label('Cancel removal'),'Missing native cancellation of queued removal')
+      if pending_request then
+       local current=request('0','read');assert(current.outcome==1 and current.is_removing,'Provider omitted pending removal state')
+       local stale=request('1','cancel-removal');assert(stale.outcome==2 and not stale.mutated,'Stale Cancel removal changed target')
+       local after=request(current.revision,'cancel-removal');assert(after.outcome==1 and after.job_id==-1 and not after.is_removing and #after.workers==0,'Cancel removal did not return idle state')
+       local rejected=request(after.revision,'suspend');assert(rejected.outcome==0 and not rejected.mutated,'Idle construction accepted suspension')
+       removal.provider={before=current,stale=stale,after=after,idle_suspend=rejected}
+       view:render(dfhack.getTickCount())
+      else assert(click_label('Cancel removal'),'Missing native cancellation of queued removal')end
       local current=assert(df.building.find(id),'Cancelling removal deleted the building')
       local jobs={};for _,job in ipairs(current.jobs)do jobs[#jobs+1]={id=job.id,type=df.job_type[job.job_type],flags=job.flags.whole}end
       removal.after={stage=current:getBuildStage(),max_stage=current:getMaxBuildStage(),jobs=jobs,lines=lines(),occupancy=occupancy()}
       result.basic_building_reference.pending.removal=removal;shot('pending-removal-cancelled')
+      if pending_request then
+       local idle=request('0','read');local queued=request(idle.revision,'cancel')
+       assert(queued.outcome==1 and queued.removing and not queued.removed,'Idle building could not queue demolition')
+       local fresh=request('0','read');local restored=request(fresh.revision,'cancel-removal')
+       assert(restored.outcome==1 and restored.job_id==-1 and restored.revision==idle.revision,'Idle state not restored after repeated removal cycle')
+       removal.provider.requeue=queued;removal.provider.restored=restored;shot('pending-idle-cycle')
+      end
      end
     end
    end

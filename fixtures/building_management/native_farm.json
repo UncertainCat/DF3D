@@ -13792,6 +13792,134 @@
           "workshop-native.json": "4a61e460cb13576b8e4a4d599d0cef0082fd506df5cda69b7d522375bbe15f3e",
           "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "removal_provider_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-221907",
+        "owned_df_pid": 39044,
+        "status": "passed",
+        "source_save_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Owned native54c130 cancellation matches native221104 stage, jobs, occupancy and panel captions. Stale cancellation and idle suspension reject without mutation; a second removal/cancellation cycle restores the identical idle revision. Protocol216 still excludes these states; presentation integration is unfinished.",
+        "observation": {
+          "after": {
+            "jobs": [],
+            "lines": [
+              {
+                "text": "                                                            Farm Plot",
+                "y": 6
+              },
+              {
+                "text": "                                                      Partially constructed.",
+                "y": 11
+              },
+              {
+                "text": "                                                      Construction inactive.",
+                "y": 13
+              },
+              {
+                "text": "                                                        Suspend construction                                                        Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "                                                        Remove building",
+                "y": 19
+              }
+            ],
+            "max_stage": 3,
+            "occupancy": 1,
+            "stage": 1
+          },
+          "before": {
+            "lines": [
+              {
+                "text": "                                                            Farm Plot",
+                "y": 6
+              },
+              {
+                "text": "                                                      Slated for removal",
+                "y": 11
+              },
+              {
+                "text": "                                                      Removal inactive.",
+                "y": 13
+              },
+              {
+                "text": "                                                        Cancel removal                                                              Elevation 36",
+                "y": 16
+              }
+            ],
+            "max_stage": 3,
+            "stage": 1
+          },
+          "provider": {
+            "after": {
+              "flags": 0,
+              "id": 1490,
+              "is_removing": false,
+              "job_id": -1,
+              "max_stage": 3,
+              "mutated": true,
+              "outcome": 1,
+              "removed": false,
+              "removing": false,
+              "revision": "3988084734999959928",
+              "stage": 1,
+              "workers": []
+            },
+            "before": {
+              "flags": 0,
+              "id": 1490,
+              "is_removing": true,
+              "job_id": 382797,
+              "max_stage": 3,
+              "mutated": false,
+              "outcome": 1,
+              "removed": false,
+              "removing": false,
+              "revision": "9145457184638709356",
+              "stage": 1,
+              "workers": []
+            },
+            "idle_suspend": {
+              "mutated": false,
+              "outcome": 0,
+              "removed": false,
+              "removing": false
+            },
+            "requeue": {
+              "mutated": true,
+              "outcome": 1,
+              "removed": false,
+              "removing": true
+            },
+            "restored": {
+              "flags": 0,
+              "id": 1490,
+              "is_removing": false,
+              "job_id": -1,
+              "max_stage": 3,
+              "mutated": true,
+              "outcome": 1,
+              "removed": false,
+              "removing": false,
+              "revision": "3988084734999959928",
+              "stage": 1,
+              "workers": []
+            },
+            "stale": {
+              "mutated": false,
+              "outcome": 2,
+              "removed": false,
+              "removing": false
+            }
+          }
+        },
+        "hashes": {
+          "workshop-native.json": "b57e14a00422da411fe3377dd7032d64393cd56cd6b739ebe38a4cf55c45f0d9",
+          "workshop-pending-removal-cancelled.png": "498e64bccee8c4bc2e652a09b1dcae0d928e459e33806ddce1b06ecf6dcf508e",
+          "workshop-pending-idle-cycle.png": "498e64bccee8c4bc2e652a09b1dcae0d928e459e33806ddce1b06ecf6dcf508e",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

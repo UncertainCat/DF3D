@@ -264,6 +264,44 @@ local ok,err=xpcall(function()
     if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
     view:render(dfhack.getTickCount());select_map(lever);assert(click_label('Link lever'));assert(sheet.linking_lever)
    end
+   if os.getenv('DF3D_LEVER_TARGET_FAMILIES')=='1'then
+    local allowed={[0]=true,[8]=true,[9]=true,[19]=true,[23]=true,[25]=true,[27]=true,[28]=true,[31]=true,[35]=true,[36]=true,[37]=true,[38]=true,[39]=true,[40]=true}
+    local candidates,seen={},{}
+    for _,candidate in ipairs(df.global.world.buildings.all)do
+     local kind=candidate:getType();local key=tostring(kind)..':'..tostring(candidate:getSubtype())
+     local tile=dfhack.maps.getTileFlags(candidate.centerx,candidate.centery,candidate.z)
+     if allowed[kind] and candidate.id~=lever.id and candidate.z==lever.z and candidate:getBuildStage()==candidate:getMaxBuildStage() and tile and not tile.hidden and not seen[key]then
+      candidates[#candidates+1]=candidate;seen[key]=true
+     end
+    end
+    result.target_families={}
+    for _,candidate in ipairs(candidates)do
+     reopen_link()
+     local ids={sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id}
+     local args={tostring(lever.id),tostring(candidate.centerx),tostring(candidate.centery),tostring(candidate.z)}
+     local text,code=dfhack.run_command_silent('df3d','lever-target-probe',table.unpack(args));assert(code==0,text)
+     local prediction=json.decode(text)
+     select_map(candidate)
+     local label='target-family-'..candidate:getType()..'-'..candidate:getSubtype()
+     local observed=sample(label)
+     local entry={id=candidate.id,type=candidate:getType(),subtype=candidate:getSubtype(),prediction=prediction,native_jobs=observed.jobs}
+     result.target_families[#result.target_families+1]=entry
+     assert(#lever.jobs==(prediction.target_id>=0 and 1 or 0),'Target eligibility differs from native')
+     if prediction.target_id>=0 then
+      local target_id=-1;for _,ref in ipairs(observed.jobs[1].refs)do if ref.type==33 then target_id=ref.building_id end end
+      assert(target_id==prediction.target_id,'Native chose a different target')
+      click(868,154);assert(#lever.jobs==0,'Native target-family cancellation failed')
+      for _,id in ipairs(ids)do assert(not df.item.find(id).flags.in_job,'Cancellation retained mechanism')end
+      text,code=dfhack.run_command_silent('df3d','lever-link-probe',table.unpack({args[1],args[2],args[3],args[4],tostring(ids[1]),tostring(ids[2])}));assert(code==0,text)
+      local produced=sample(label..'-provider');entry.provider_jobs=produced.jobs
+      for _,key in ipairs{'type','flags','pos','refs','items','item_roles','requirements','world_registered'}do
+       assert(json.encode(produced.jobs[1][key])==json.encode(observed.jobs[1][key]),'Target-family job differs: '..key)
+      end
+      assert(dfhack.job.removeJob(lever.jobs[0]))
+     end
+    end
+    reopen_link();persist()
+   end
    if os.getenv('DF3D_LEVER_MECHANISMS_PROVIDER')=='1'then
     local first=assert(df.item.find(sheet.linking_lever_mech_lever_id));local forbidden=first.flags.forbid
     first.flags.forbid=true;reopen_link();sample('link-forbid-first')

@@ -24614,6 +24614,670 @@
           "build/stockpile-storage-native-farm-discovery-20261115-092750/result.json": "c4e76b8322a54f03021e7d7e7557da8bdc02b76c65f5733c3c0547b95d3739d7",
           "build/stockpile-storage-native-farm-discovery-20261115-092750/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "lever_target_families_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-093007",
+        "scope": "Native pointer targeting versus owned provider on nine revealed completed same-level buildings. Seven accepted types8/9/19/28/37/38/39 produce matching jobs; chair0 and lever23 subtype0 rejected. Native cancellation releases mechanisms for every accepted case. Inherited typed wire door workflow passes. Absent types and simulation completion not qualified.",
+        "targets": [
+          {
+            "id": 16,
+            "native_jobs": [
+              {
+                "flags": 0,
+                "id": 382798,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 16,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "prediction": {
+              "building_id": 55,
+              "target_id": 16
+            },
+            "provider_jobs": [
+              {
+                "flags": 0,
+                "id": 382799,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 16,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "subtype": -1,
+            "type": 8
+          },
+          {
+            "id": 61,
+            "native_jobs": [],
+            "prediction": {
+              "building_id": 55,
+              "target_id": -1
+            },
+            "subtype": 0,
+            "type": 23
+          },
+          {
+            "id": 65,
+            "native_jobs": [],
+            "prediction": {
+              "building_id": 55,
+              "target_id": -1
+            },
+            "subtype": -1,
+            "type": 0
+          },
+          {
+            "id": 74,
+            "native_jobs": [
+              {
+                "flags": 0,
+                "id": 382800,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 74,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "prediction": {
+              "building_id": 55,
+              "target_id": 74
+            },
+            "provider_jobs": [
+              {
+                "flags": 0,
+                "id": 382801,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 74,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "subtype": -1,
+            "type": 9
+          },
+          {
+            "id": 134,
+            "native_jobs": [
+              {
+                "flags": 0,
+                "id": 382802,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 134,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "prediction": {
+              "building_id": 55,
+              "target_id": 134
+            },
+            "provider_jobs": [
+              {
+                "flags": 0,
+                "id": 382803,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 134,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "subtype": -1,
+            "type": 37
+          },
+          {
+            "id": 143,
+            "native_jobs": [
+              {
+                "flags": 0,
+                "id": 382804,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 143,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "prediction": {
+              "building_id": 55,
+              "target_id": 143
+            },
+            "provider_jobs": [
+              {
+                "flags": 0,
+                "id": 382805,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 143,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "subtype": -1,
+            "type": 39
+          },
+          {
+            "id": 155,
+            "native_jobs": [
+              {
+                "flags": 0,
+                "id": 382806,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 155,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "prediction": {
+              "building_id": 55,
+              "target_id": 155
+            },
+            "provider_jobs": [
+              {
+                "flags": 0,
+                "id": 382807,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 155,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "subtype": -1,
+            "type": 38
+          },
+          {
+            "id": 261,
+            "native_jobs": [
+              {
+                "flags": 0,
+                "id": 382808,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 261,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "prediction": {
+              "building_id": 55,
+              "target_id": 261
+            },
+            "provider_jobs": [
+              {
+                "flags": 0,
+                "id": 382809,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 261,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "subtype": -1,
+            "type": 28
+          },
+          {
+            "id": 1378,
+            "native_jobs": [
+              {
+                "flags": 0,
+                "id": 382810,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 1378,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "prediction": {
+              "building_id": 55,
+              "target_id": 1378
+            },
+            "provider_jobs": [
+              {
+                "flags": 0,
+                "id": 382811,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "items": 2,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 1378,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ],
+            "subtype": -1,
+            "type": 19
+          }
+        ],
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "owned_df_pid": 40492,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-8--1.png": "18f4a163c9aaa4d0353473bdaf083f9b769b17e09853ccbcc3f6b16b8d90bc9c",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-8--1-provider.png": "e885d806559e77febde65582cdce5dccacf295dda951c8298f2bcad6e1c7682d",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-23-0.png": "7f223751cf220b3fccedbb9a9ca62c608e20a2f0af27b6b6c0818092238a12c7",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-0--1.png": "d7f6fbb2fb55f70fd3b215cbd4f129824f7dc7cb4b5049437656cd8015c656fc",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-9--1.png": "9b13d73eef7b65be383c133fdbf78653d0cb8e49ab47337d0320ab86bfab9fe0",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-9--1-provider.png": "9b13d73eef7b65be383c133fdbf78653d0cb8e49ab47337d0320ab86bfab9fe0",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-37--1.png": "53a7e8b6b918b0f0ca2b3eb820bf4cc803732422f455f61d14ca2bbf7d0d122d",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-37--1-provider.png": "53a7e8b6b918b0f0ca2b3eb820bf4cc803732422f455f61d14ca2bbf7d0d122d",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-39--1.png": "8f0ea5493dbbdcf775d214bacbd2774a0b83d6f1c49a1b1bdacac86ecd128aa2",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-39--1-provider.png": "8f0ea5493dbbdcf775d214bacbd2774a0b83d6f1c49a1b1bdacac86ecd128aa2",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-38--1.png": "e3116ac2c52c22dbcf1887ac05430471f0a7d292e4510cb18e97a6daf5895038",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-38--1-provider.png": "e3116ac2c52c22dbcf1887ac05430471f0a7d292e4510cb18e97a6daf5895038",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-28--1.png": "73db7412141b9d038cbb5e69f29726117e961e7a9381df0d1aba058b95febb4e",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-28--1-provider.png": "73db7412141b9d038cbb5e69f29726117e961e7a9381df0d1aba058b95febb4e",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-19--1.png": "28493e8f6cc8830a91484e13b5a6562ea315b9e665804bd6da65b178f21fae18",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-target-family-19--1-provider.png": "28493e8f6cc8830a91484e13b5a6562ea315b9e665804bd6da65b178f21fae18",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/lever-native.json": "e68450ad1649a2ab0fa28b7cb03285f78e902d24e1e8d6898cb86d0e78d6248c",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/workshop-wire-result.json": "f187084526239f3f0a99cd0793d916b1760a09feaa8df456b1552c9514b40f09",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/result.json": "1454b767f0320825b9d118f33d6bef8e0ae5d451b1cc239cfb8c9ec3e029f7d2",
+          "build/stockpile-storage-native-farm-discovery-20261115-093007/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

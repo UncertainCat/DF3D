@@ -294,6 +294,18 @@ ObjectDB diagnostics remain. Evidence:
 `completed_sheet_discovery_reference.lever_queued_removal_reference`. Assigned
 worker cleanup and simulation completion are not qualified by this run.
 
+Protected093007 on2026-11-15 compares native pointer targeting with the owned
+lever provider across nine revealed completed same-level buildings. Native
+types8/9/19/28/37/38/39 are accepted; Chair0 and Lever23 subtype0 are rejected.
+Each accepted case matches job type, flags, position, references, mechanism
+roles, requirements and world registration. Native cancellation releases both
+mechanisms before the provider creates its comparison job. The subsequent
+typed-wire door workflow also passes. Owned DF40492 closes unsaved with source
+preservation; native graphics capped30FPS, sampled GPU60C. Core19 passes; the
+headless client reports only the known separate-render-thread notice. Evidence:
+`completed_sheet_discovery_reference.lever_target_families_reference`. Types
+absent from the sampled level and simulation completion remain unqualified.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

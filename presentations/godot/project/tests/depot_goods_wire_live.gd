@@ -6,7 +6,11 @@ func controller_commit(intent: Dictionary) -> Dictionary:
 	var model=GoodsModel.new();model.configure(service);model.open(intent.depot_id)
 	var result: Dictionary={}
 	if await settle_goods(model,service):
-		if check(model.commit_and_close(intent.expected_revision,intent.changes),"Controller refused qualified commit"):
+		check(model.revision==intent.expected_revision,"Controller draft source changed")
+		model.toggle_group(0)
+		if await settle_goods(model,service):
+			check(model._draft.size()==intent.changes.size() and intent.changes.all(func(row):return model._draft.get(row.id)==row.desired),"Group draft differs from expected commit")
+			model.finish()
 			var ticket: int=model.ticket
 			var deadline:=Time.get_ticks_msec()+5000
 			while model.phase==GoodsModel.Phase.Applying and Time.get_ticks_msec()<deadline:
@@ -15,6 +19,35 @@ func controller_commit(intent: Dictionary) -> Dictionary:
 			check(model.phase==GoodsModel.Phase.Closed and model.depot_id==-1,"Applied controller commit did not close picker")
 	model.dispose();service.queue_free();await process_frame
 	return result
+func verify_draft_controls(model,service) -> void:
+	var ids: Array=model.groups[0].item_ids.duplicate();var other: int=model.categories[1].type
+	var source: int=model.revision
+	model.toggle_item(ids[1])
+	if not await settle_goods(model,service):return
+	check(model.items[ids[1]].tag==1 and model.groups[0].item_ids==ids and model.groups[0].flags==2,"Individual draft moved rows or lost mixed group state")
+	model.select_category(other)
+	if not await settle_goods(model,service):return
+	model.select_category(45)
+	if not await settle_goods(model,service):return
+	check(model.groups[0].item_ids==[ids[1],ids[0]],"Category navigation failed to sort selected item first")
+	model.set_query("IRON")
+	if not await settle_goods(model,service):return
+	check(model.groups[0].item_ids==[ids[1],ids[0]] and model.groups[0].flags==2,"Search lost draft/order")
+	model.set_query("")
+	if not await settle_goods(model,service):return
+	model.toggle_group(0)
+	if not await settle_goods(model,service):return
+	check(model.groups[0].flags==1,"Mixed group did not select all native members")
+	model.toggle_all()
+	if not await settle_goods(model,service):return
+	check(model.groups[0].flags==2 and model.groups[0].item_ids==[ids[1],ids[0]],"Select All changed sorting basis")
+	model.select_category(other)
+	if not await settle_goods(model,service):return
+	model.select_category(45)
+	if not await settle_goods(model,service):return
+	model.request_items(ids)
+	if not await settle_goods(model,service):return
+	check(model.revision==source and model.groups[0].item_ids==ids and model.items.values().all(func(row):return row.tag==0),"Draft roundtrip did not restore native projection")
 func verify_commit(read_intent: Dictionary,initial: Dictionary) -> Array:
 	var receipts: Array=[];var changes: Array=[]
 	for row in initial.items:changes.append({"id":row.id,"desired":true})
@@ -65,6 +98,7 @@ func verify_controller(intent: Dictionary,snapshot: Dictionary) -> Dictionary:
 						check(model.items.size()==snapshot.items.size(),"Controller detail count differs")
 						for row in snapshot.items:check(model.items.get(row.id)==row,"Controller detail differs")
 						if intent.exclude_prohibited and snapshot.groups.all(func(row):return row.item_ids.is_empty()):check(model.row_count()==0,"Controller exposed native empty-list groups")
+	if intent.category==45 and intent.query.is_empty() and not intent.exclude_prohibited and snapshot.items.size()==2 and snapshot.items.all(func(row):return row.tag==0):await verify_draft_controls(model,service)
 	model.request_appearances(intent.item_ids.slice(0,2))
 	var artwork_deadline:=Time.get_ticks_msec()+5000
 	while model.appearance_pending() and Time.get_ticks_msec()<artwork_deadline:
@@ -105,6 +139,7 @@ func run() -> void:
 	if not check(catalog.get("status")==C.ManagementStatus.Ok,"Depot goods catalog failed"):quit(1);return
 	var expected: Dictionary=integers(JSON.parse_string(FileAccess.get_file_as_string(directory+"/depot-goods-wire-expected.json")))
 	var intent: Dictionary=expected.request;intent.action=C.ManagementAction.DepotGoodsRead
+	if intent.has("expected_revision"):intent.expected_revision=int(intent.expected_revision)
 	var response:=await request("depot_goods",intent)
 	var snapshot: Dictionary=response.get("depot_goods",{})
 	var appearances: Dictionary={}
@@ -118,7 +153,7 @@ func run() -> void:
 		var overview:=await request("depot_goods",categories)
 		var value: Dictionary=overview.get("depot_goods",{})
 		check(value.get("categories")==snapshot.categories and value.get("revision")==snapshot.revision and value.get("groups")==[] and value.get("items")==[],"Depot category-only read differs")
-		appearances=await verify_controller(intent,snapshot)
+		if not intent.has("expected_revision"):appearances=await verify_controller(intent,snapshot)
 	for patch in [{"depot_id":2147483647},{"item_ids":[2147483647]}]:
 		var invalid: Dictionary=intent.duplicate(true);invalid.merge(patch,true)
 		var rejection:=await request("depot_goods",invalid)

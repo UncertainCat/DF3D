@@ -13,10 +13,13 @@ assert(not menu.open and #b.jobs==0)
 local result={id=b.id,synthetic_caravan=true,frame=frame}
 local restore_delivered
 local prohibition,prohibition_index
-local function compare_selection(label)
+local function compare_selection(label,projection,draft,sort_draft)
  if os.getenv('DF3D_DEPOT_SELECTION_PROVIDER')~='1' then return end
- local output,code=dfhack.run_command_silent('df3d','depot-selection-probe',tostring(b.id),tostring(menu.current_type),menu.sort_by_distance and '1' or '0',menu.pending_on_top and '1' or '0',menu.exclude_prohib and '1' or '0',menu.item_filter)
- assert(code==0,output);local facts=json.decode(output)
+ local facts=projection
+ if not facts then
+  local output,code=dfhack.run_command_silent('df3d','depot-selection-probe',tostring(b.id),tostring(menu.current_type),menu.sort_by_distance and '1' or '0',menu.pending_on_top and '1' or '0',menu.exclude_prohib and '1' or '0',menu.item_filter)
+  assert(code==0,output);facts=json.decode(output)
+ end
  assert(#facts.categories==#menu.filtered_type_list,'Category count differs: '..label)
  for i,kind in ipairs(menu.filtered_type_list)do assert(facts.categories[i+1]==kind,'Category order differs: '..label..' '..i)end
  local function text_at(x,y,n)
@@ -54,6 +57,11 @@ local function compare_selection(label)
  assert(projected_cells==menu.i_height,'Group projection differs from native height: '..label)
  if os.getenv('DF3D_DEPOT_GOODS_WIRE')=='1' then
   local expected={label=label,request={depot_id=b.id,category=menu.current_type,query=menu.item_filter,sort_by_distance=menu.sort_by_distance,pending_on_top=menu.pending_on_top,exclude_prohibited=menu.exclude_prohib,item_ids={}},categories={},groups={},items={}}
+  if draft then
+   local function choices(text)local rows={};for id,wanted in text:gmatch('(%d+):([01])')do rows[#rows+1]={id=tonumber(id),desired=wanted=='1'}end;return rows end
+   expected.request.expected_revision=facts.revision -- decimal string preserves all64 bits through JSON
+   expected.request.draft=choices(draft);expected.request.sort_draft=choices(sort_draft)
+  end
   for i,kind in ipairs(facts.categories)do expected.categories[#expected.categories+1]={type=kind,caption=facts.category_captions[i]}end
   for _,group in ipairs(facts.groups)do local row={};for k,v in pairs(group)do row[k=='ids' and 'item_ids' or k]=v end;expected.groups[#expected.groups+1]=row end
   for i,entry in ipairs(menu.current_type_tgi)do if i>=64 then break end
@@ -132,6 +140,7 @@ local function compare_draft(label,sort_draft)
  assert(menu.open and df.global.world.frame_counter==frame and json.encode(job_facts())==before,'Draft provider changed simulation/jobs')
  result.draft_provider=result.draft_provider or {}
  result.draft_provider[#result.draft_provider+1]={label=label,draft=intent,sort_draft=sort_draft or '-',ids=facts.ids,tags=facts.tags,groups=facts.groups,revision=facts.revision,stale_rejected=facts.stale_rejected}
+ if os.getenv('DF3D_DEPOT_DRAFT_WIRE')=='1' then compare_selection('draft-'..label,facts,intent,sort_draft or '-')end
 end
 local ok,err=xpcall(function()
  view:render(dfhack.getTickCount());capture('depot-goods-available')

@@ -21,6 +21,32 @@ source identity, negative staged tags and malformed-input rejection without
 diagnostics. Evidence:
 `completed_sheet_discovery_reference.depot_goods_draft_transport_reference`.
 
+The staged controller and view now connect individual/group/Select All checkbox
+actions to these native projections. Current choices survive category/search
+and detail reads; category/options navigation captures a new sorting basis,
+whereas checkbox and search updates retain it. The original source revision is
+never silently replaced once a draft exists. Close waits for an outstanding
+preview, then submits one complete draft; confirmation retires the picker.
+Explicit teardown/session replacement still retires ownership without replay.
+Oversized drafts are not split into partial commits; handling above65536 choices
+remains unfinished. No new visible status text is introduced.
+
+Native155628 also exercises the actual Godot controller's individual/group/
+Select All, category and search roundtrip. Group drafts followed by `finish`
+create and cancel two native hauling jobs; old receipts reject after each change.
+The asset-free controller check covers close during preview and stale-source
+refusal. A separate standalone rendered test dispatches real mouse clicks for
+individual, mixed group, group-off and Select All on/off, compares native status/
+checkbox pixels in three bounded regions, and sends Escape to verify waiting
+for commit confirmation. It passes at30FPS without diagnostics. Initial capture
+found missing staged-tag1 hauling artwork: native38bdc8..38bde0 draws the hauling
+indicator for tags1/2, and DF3D now does too. The final pixel comparisons pass.
+Evidence: `completed_sheet_discovery_reference.depot_goods_draft_view_reference`.
+This combines live controller/effect evidence with recorded-snapshot render/input
+evidence; it is not live main-scene acceptance. Container expansion, option
+tooltips/sorting controls, large-list transport, ordinary hauling and full trade
+remain unfinished. Public depot routes stay hidden.
+
 ## Depot goods commit transport migration
 
 Management protocol233 adds `DepotGoodsCommit` in the `depot_goods` domain.
@@ -37,7 +63,7 @@ The bridge uses the already qualified `commitDepotGoods`/`depotSetHaulBatch`
 endpoint, with the ordinary transport epoch/save and sequence guards. Godot
 admits only integer IDs/revisions and Boolean desired values. Both peers/mailbox
 use234 and must be rebuilt together; DF53.16 compatibility pins are unchanged.
-Public depot routes and rendered draft/close integration remain unfinished.
+Public depot routes and full rendered workflow acceptance remain unfinished.
 
 Protected153229 on2026-11-15 verifies actual Godot wire creation and cancellation
 of two hauling jobs, stale receipts after both transitions, foreign-ID rejection,
@@ -59,7 +85,7 @@ on two anvils, two bags and two bars. Source revisions now mask that cache-valid
 bit on a copy of flags, while retaining all other flags and native goods facts.
 No game flag is cleared. This fixes DF3D's overly broad revision guard; it is not
 a native gameplay bug or a change to hauling eligibility. Large-batch transport,
-viewer drafts/commit-on-close and ordinary hauling remain unfinished.
+full viewer workflow acceptance and ordinary hauling remain unfinished.
 
 The staged goods controller now accepts an explicit draft and its retained
 source revision through `commit_and_close`. It submits one immutable batch,
@@ -67,7 +93,7 @@ disables reads/edits while applying and closes only after a matching Applied
 receipt. Rejected, Stale and Unknown retain disabled source rows without retry;
 malformed success receipts become Unknown. Close/session replacement detach
 ownership, and late receipts cannot affect a replacement picker. This is a
-controller boundary, not wiring of the rendered selection or Escape controls.
+controller boundary; protocol234 draft/view integration is documented above.
 
 Protected153846 on2026-11-15 creates and cancels two native hauling jobs through
 this controller and confirms closure after each Applied receipt. Both stale
@@ -93,7 +119,7 @@ edit contract. Item details must belong to a returned group. Revision is a
 nonzero signed-safe token; rejection carries no fabricated snapshot.
 
 The native read producer is connected as described below. Retained paging for
-large replies, artwork/contained rows and commit authority are still unfinished.
+large replies and complete artwork/contained-row coverage remain unfinished.
 Public depot routes remain hidden.
 Both peers/mailbox now use234; rebuild bridge and viewer together. DF53.16 pins are
 unchanged. Older recordings must not synthesize depot goods.
@@ -150,8 +176,8 @@ result and acknowledgement names now prevent that reuse.
 
 Oversized depot replies reject explicitly before mailbox publication until
 retained paging is connected; no partial list is published. Large-list acceptance,
-nondefault sorting, item artwork, container expansion, draft/commit authority
-and the rendered interactive viewer remain unfinished.
+nondefault sorting, complete item artwork, container expansion and full
+rendered workflow acceptance remain unfinished.
 
 The staged `depot_goods_state.gd` controller owns category navigation, queued
 search input, options, bounded item-detail requests and viewport projection.
@@ -159,7 +185,7 @@ Filtering, captions, order and expansion defaults come from native snapshots.
 Each read retires the prior source; close/session replacement detach tickets
 and reject late callbacks. A filtered-out category remains selected, and an
 empty selected item list suppresses even matching abstract group rows.
-No hauling edit or local expansion action is exposed.
+Draft/commit integration is documented above; local expansion remains unfinished.
 
 Protected144747 on2026-11-15 verifies this controller through the actual semantic
 service against all nine native cases above, including exact source revisions,
@@ -177,8 +203,8 @@ This establishes controller/transport behavior, not rendered picker acceptance.
 
 `depot_goods_view.gd` stages the two-column frame, category navigation, search,
 scrolling and native group/item captions with distance values. It has no public
-owner or route. Native item artwork, contained rows, option/hauling controls,
-commit-on-close and interactive resize acceptance remain unfinished.
+owner or route. Full item-artwork coverage, contained rows, sorting controls,
+tooltips and interactive resize acceptance remain unfinished.
 `depot_goods_view_capture.gd` loads the recorded Anvils reply from protected144747
 and the installed assets. At1200x800 its headless geometry check passes; the
 30FPS Vulkan capture with `--render-thread safe` renders the initial projection
@@ -220,8 +246,8 @@ status checks, without diagnostics; sampled GPU54C. Evidence:
 `completed_sheet_discovery_reference.depot_goods_artwork_reference`.
 The controller test covers rejected artwork without retry and late inspection
 retirement. All19 core checks pass. This does not establish all-family artwork,
-container-expanded rows or live main-scene interaction. Selection drafts,
-hauling commit and full trade remain unfinished; public depot routes stay hidden.
+container-expanded rows or live main-scene interaction. Full trade remains
+unfinished; public depot routes stay hidden.
 Initial145843 reported success but its IRON client logged an unexpected
 rendering-storage `!F` diagnostic, so it is excluded from nine-case acceptance.
 The depot-only headless clients now use `--render-thread safe`; all nine150124
@@ -273,7 +299,7 @@ wire/controller cases pass with empty depot-client diagnostic logs. Owned
 DF37936 closes unsaved with source preservation, native30FPS and sampled GPU48C.
 Bridge build and all19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_goods_draft_provider_reference`.
-This verifies the native boundary, not the still-unwired viewer draft controls.
+This verifies the native boundary; protocol234 viewer evidence is documented above.
 
 `depotSetHaulBatch` now validates an explicit vector of item IDs, expected flags
 and desired hauling states before calling native36b0c0 once with independently
@@ -316,7 +342,7 @@ single-item and delivered-release checks pass. Owned DF44636 closes unsaved with
 source preservation, native30FPS and sampled GPU50C. Bridge build and all19 core
 checks pass; depot wire clients have no diagnostics. Evidence:
 `completed_sheet_discovery_reference.depot_goods_revision_commit_reference`.
-Viewer draft/close integration remains unfinished; commit transport is described above.
+Viewer draft/close integration and commit transport are described above.
 
 ## Depot transport migration
 

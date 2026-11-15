@@ -26,6 +26,36 @@ func commit_reply(service,ticket: int,outcome: int,patch: Dictionary={}) -> void
 	var receipt: Dictionary={"depot_id":intent.depot_id,"expected_revision":intent.expected_revision,"observed_revision":intent.expected_revision-1 if outcome==C.DepotGoodsCommitOutcome.Stale else intent.expected_revision,"outcome":outcome}
 	receipt.merge(patch,true)
 	call.observer.call(ticket,{"status":C.ManagementStatus.Ok,"action":intent.action,"depot_commit":receipt},intent)
+func drafts(service,state) -> void:
+	state.open(7);ready(service,state);state.request_items([11,12])
+	var value:=snapshot(45);value.groups[0].flags=2
+	value.items=[{"id":11,"caption":"Synthetic first","distance":8,"value":20,"tag":0,"prohibited":false},{"id":12,"caption":"Synthetic second","distance":9,"value":20,"tag":0,"prohibited":false}]
+	service.reply(state.ticket,value)
+	state.toggle_item(12)
+	var intent: Dictionary=service.calls[state.ticket].intent
+	check(intent.draft==[{"id":12,"desired":true}] and intent.sort_draft.is_empty() and intent.expected_revision==value.revision,"Individual draft retains initial native sort basis and exact source")
+	value.items[1].tag=1;service.reply(state.ticket,value)
+	state.toggle_group(0);intent=service.calls[state.ticket].intent
+	check(intent.draft.size()==2 and intent.draft.all(func(row):return row.desired) and intent.sort_draft.is_empty(),"Mixed group selects all native members without re-sorting")
+	value.items[0].tag=1;value.groups[0].flags=1;service.reply(state.ticket,value)
+	state.set_query("IRON");intent=service.calls[state.ticket].intent
+	check(intent.draft.size()==2 and intent.sort_draft.is_empty(),"Search retains checkbox choices and last sorting basis")
+	value.items=[];value.categories.append({"type":17,"caption":"Synthetic bags"});service.reply(state.ticket,value)
+	state.select_category(17);intent=service.calls[state.ticket].intent
+	check(intent.draft==intent.sort_draft and intent.draft.size()==2,"Category navigation sorts using retained cross-category choices")
+	var other:=snapshot(17);other.categories=value.categories;other.groups=[];service.reply(state.ticket,other)
+	state.select_category(45);service.reply(state.ticket,value)
+	state.toggle_all();intent=service.calls[state.ticket].intent
+	check(intent.draft.all(func(row):return not row.desired) and intent.sort_draft.all(func(row):return row.desired),"Select All clears selected matching groups while retaining navigation order")
+	state.finish();var count: int=service.next
+	check(state.phase==State.Phase.Reading and service.next==count,"Finish waits for the outstanding projection")
+	value.groups[0].flags=2;service.reply(state.ticket,value)
+	check(state.phase==State.Phase.Applying and service.calls[state.ticket].intent.changes.all(func(row):return not row.desired),"Finish commits one complete draft after projection")
+	commit_reply(service,state.ticket,C.DepotGoodsCommitOutcome.Applied)
+	check(state.phase==State.Phase.Closed,"Draft close waits for confirmed application")
+	state.open(7);ready(service,state);state.toggle_group(0)
+	value=snapshot(45);value.revision+=1;service.reply(state.ticket,value)
+	check(state.phase==State.Phase.Rejected and state.ticket==0,"Changed source cannot silently rebase a retained draft")
 func commits(service,state) -> void:
 	state.open(7);ready(service,state)
 	var changes: Array=[{"id":11,"desired":true},{"id":12,"desired":false}]
@@ -103,6 +133,7 @@ func run() -> void:
 	state.close();service.reply(artwork_ticket,{})
 	check(service.detached.has(artwork_ticket) and state.appearances.is_empty() and not state.appearance_pending(),"Closing retires artwork ownership and late callbacks")
 	commits(service,state)
+	drafts(service,state)
 	state.dispose();service.queue_free()
 	if failures==0:print("PASS depot goods state")
 	quit(1 if failures else 0)

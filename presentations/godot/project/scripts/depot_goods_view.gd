@@ -1,6 +1,6 @@
 extends "res://scripts/location_staff_candidates_frame.gd"
-# Staged read-only projection of native38a5b0. Not a public route: item artwork,
-# contained rows, selection controls and commit-on-close remain unfinished.
+# Staged projection of native38a5b0. Public routing, contained rows and full
+# artwork/input acceptance remain unfinished.
 signal cancelled
 var state
 var input_allowed: Callable
@@ -11,6 +11,7 @@ var item_scrollbar
 var search
 var page: Array=[]
 var requested:=false
+var _closing:=false
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var icons: Dictionary={}
 func configure_goods(source,model) -> void:
@@ -46,6 +47,8 @@ func layout(view: Vector2) -> void:
 	refresh()
 func refresh() -> void:
 	if state==null or item_canvas==null:return
+	if _closing and state.phase==state.Phase.Closed:
+		_closing=false;cancelled.emit();return
 	search.editable=state.phase in [state.Phase.Ready,state.Phase.Reading];search.set_bytes(state.query.to_utf8_buffer())
 	scrollbar.page=maxi(0,int(category_canvas.size.y/36));scrollbar.set_rows(state.categories.size(),state.first_category)
 	category_canvas.size.x=category_width()+(0 if scrollbar.visible else 16)
@@ -110,9 +113,9 @@ func _draw_items() -> void:
 			if icon!=null and y>=0 and y+36<=item_canvas.size.y:item_canvas.draw_texture_rect(icon,Rect2(2,y+2,32,32),false)
 			_text(item_canvas,row.caption,Vector2(56,y+24))
 			_text(item_canvas,"Distance: "+str(row.distance),Vector2(item_canvas.size.x-208,y+24),10)
-			# Native38bd9d..38bdf6: prohibition, resting haul state, selection.
+			# Native38bdc8..38bde0 includes staged1 in the hauling indicator.
 			if row.prohibited:_icon(item_canvas,"ASSIGN_TRADE_PROHIBITED",Rect2(item_canvas.size.x-88,y,24,36))
-			if row.tag in [2,3]:_icon(item_canvas,"ASSIGN_TRADE_IN_DEPOT" if row.tag==3 else "ASSIGN_TRADE_BEING_BROUGHT",Rect2(item_canvas.size.x-64,y,24,36))
+			if row.tag in [1,2,3]:_icon(item_canvas,"ASSIGN_TRADE_IN_DEPOT" if row.tag==3 else "ASSIGN_TRADE_BEING_BROUGHT",Rect2(item_canvas.size.x-64,y,24,36))
 			_icon(item_canvas,"ASSIGN_TRADE_SELECTED" if row.tag>0 else "ASSIGN_TRADE_NOT_SELECTED",Rect2(item_canvas.size.x-40,y,24,36))
 func _draw() -> void:
 	if world==null:return
@@ -124,10 +127,12 @@ func _draw() -> void:
 func _input(event: InputEvent) -> void:
 	if not allowed():return
 	if event is InputEventKey and event.pressed:
-		if event.keycode==KEY_ESCAPE:cancelled.emit();get_viewport().set_input_as_handled()
+		if event.keycode==KEY_ESCAPE:_finish();get_viewport().set_input_as_handled()
 		elif search.has_focus():search.feed_key(event);get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT:
-		cancelled.emit();get_viewport().set_input_as_handled()
+		_finish();get_viewport().set_input_as_handled()
+func _finish() -> void:
+	_closing=true;state.finish()
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()
@@ -138,6 +143,15 @@ func _gui_input(event: InputEvent) -> void:
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	search.release_focus()
 	if exclusion_rect().has_point(event.position):state.set_options(state.sort_by_distance,state.pending_on_top,not state.exclude_prohibited);return
+	if Rect2(size.x-64,24,32,36).has_point(event.position):state.toggle_all();return
+	var local: Vector2=event.position-item_canvas.position
+	if Rect2(Vector2.ZERO,item_canvas.size).has_point(local) and local.x>=item_canvas.size.x-40 and local.x<item_canvas.size.x-16:
+		var index: int=int((local.y+(item_scrollbar.first%3)*12)/36)
+		if index<page.size():
+			var entry: Dictionary=page[index]
+			if entry.has("group"):state.toggle_group(state.groups.find(entry.group))
+			else:state.toggle_item(entry.id)
+		return
 	if Rect2(category_canvas.position,category_canvas.size).has_point(event.position):
 		var index: int=int((event.position.y-category_canvas.position.y)/36)+scrollbar.first
 		if index<state.categories.size():state.select_category(state.categories[index].type)

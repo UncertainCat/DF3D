@@ -1,6 +1,6 @@
 extends RefCounted
 # Native snapshots own filtering, captions, membership and order. This staged
-# controller owns reads and commit retirement. Draft controls remain staged.
+# controller owns local checkbox intent; native projections own group states.
 signal changed
 const C=preload("res://scripts/management_contract.gd")
 enum Phase {Closed,Reading,Ready,Rejected,Unknown,Unavailable,Applying,Stale}
@@ -27,6 +27,40 @@ var appearances: Dictionary={}
 var _inspection
 var _appearance_queue: Array=[]
 var _appearance_id: int=-1
+var _draft: Dictionary={}
+var _sort_draft: Dictionary={}
+var _draft_revision: int=0
+var _finish_pending:=false
+func _choices(source: Dictionary) -> Array:
+	var result: Array=[]
+	for id in source:result.append({"id":id,"desired":source[id]})
+	return result
+func toggle_item(id: int) -> void:
+	if phase==Phase.Ready and items.has(id):_stage([id],items[id].tag<=0)
+func toggle_group(index: int) -> void:
+	if phase!=Phase.Ready or index<0 or index>=groups.size():return
+	var row: Dictionary=groups[index]
+	if row.matches:_stage(row.item_ids,(row.flags&1)==0)
+func toggle_all() -> void:
+	if phase!=Phase.Ready:return
+	var ids: Array=[];var selected:=true
+	for row in groups:
+		if row.matches and not row.item_ids.is_empty():
+			ids.append_array(row.item_ids);selected=selected and (row.flags&1)!=0
+	_stage(ids,not selected)
+func _stage(ids: Array,desired: bool) -> void:
+	if ids.is_empty():return
+	var next: Dictionary=_draft.duplicate()
+	for id in ids:next[id]=desired
+	if next.size()>65536:return # Never split one close into partial commits.
+	if _draft_revision==0:_draft_revision=revision
+	_draft=next;_read(items.keys())
+func finish() -> void:
+	if phase==Phase.Applying:return
+	if phase==Phase.Reading:
+		_finish_pending=true;_queries=[];return
+	if phase==Phase.Ready and not _draft.is_empty():commit_and_close(_draft_revision,_choices(_draft))
+	else:close()
 func configure(source) -> void:
 	dispose();service=source
 	if service!=null:
@@ -66,6 +100,7 @@ func close() -> void:
 	generation+=1;var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
 	_clear();depot_id=-1;category=-1;query="";_active_query="";_queries=[]
+	_draft={};_sort_draft={};_draft_revision=0;_finish_pending=false
 	sort_by_distance=true;pending_on_top=true;exclude_prohibited=false
 	first_category=0;first_item=0;last_result={};phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:close();phase=Phase.Unavailable;changed.emit()
@@ -110,14 +145,14 @@ func _valid_commit(value: Variant,intent: Dictionary) -> bool:
 	return true
 func select_category(value: int) -> void:
 	if phase!=Phase.Ready or category==value or not categories.any(func(row):return row.type==value):return
-	category=value;first_item=0;_read()
+	category=value;first_item=0;_sort_draft=_draft.duplicate();_read()
 func set_query(value: String) -> void:
-	if phase not in [Phase.Ready,Phase.Reading] or value==query or value.to_utf8_buffer().size()>2048:return
+	if _finish_pending or phase not in [Phase.Ready,Phase.Reading] or value==query or value.to_utf8_buffer().size()>2048:return
 	query=value;_queries.append(value)
 	if phase==Phase.Ready:_active_query=_queries.pop_front();first_item=0;_read()
 func set_options(distance: bool,pending: bool,exclude: bool) -> void:
 	if phase!=Phase.Ready or [distance,pending,exclude]==[sort_by_distance,pending_on_top,exclude_prohibited]:return
-	sort_by_distance=distance;pending_on_top=pending;exclude_prohibited=exclude;first_item=0;_read()
+	sort_by_distance=distance;pending_on_top=pending;exclude_prohibited=exclude;first_item=0;_sort_draft=_draft.duplicate();_read()
 func request_items(ids: Array) -> void:
 	if phase!=Phase.Ready or ids.size()>64:return
 	var members: Dictionary={};var seen: Dictionary={}
@@ -154,6 +189,7 @@ func _integer(value: Variant,low: int,high: int) -> bool:return typeof(value)==T
 func _text(value: Variant) -> bool:return typeof(value)==TYPE_STRING and not value.is_empty() and value.to_utf8_buffer().size()<=16384
 func _valid(value: Dictionary,intent: Dictionary) -> bool:
 	if value.get("depot_id")!=intent.depot_id or value.get("category")!=intent.category or not _integer(value.get("revision"),1,9223372036854775807):return false
+	if intent.expected_revision!=0 and value.revision!=intent.expected_revision:return false
 	for field in ["categories","groups","items"]:
 		if typeof(value.get(field))!=TYPE_ARRAY:return false
 	if value.categories.size()>93 or value.groups.size()>65536 or value.items.size()>64:return false
@@ -176,7 +212,8 @@ func _valid(value: Dictionary,intent: Dictionary) -> bool:
 	for row in value.items:
 		if typeof(row)!=TYPE_DICTIONARY or not _integer(row.get("id"),0,2147483647) or ids.has(row.id) or not members.has(row.id) or not _text(row.get("caption")):return false
 		ids[row.id]=true
-		if not _integer(row.get("distance"),-2147483648,2147483647) or not _integer(row.get("value"),-2147483648,2147483647) or not _integer(row.get("tag"),0,3) or row.tag==1 or typeof(row.get("prohibited"))!=TYPE_BOOL:return false
+		if not _integer(row.get("distance"),-2147483648,2147483647) or not _integer(row.get("value"),-2147483648,2147483647) or not _integer(row.get("tag"),-2,3) or typeof(row.get("prohibited"))!=TYPE_BOOL:return false
+		if intent.expected_revision==0 and row.tag not in [0,2,3]:return false
 	if intent.category==-1 and (not value.groups.is_empty() or not value.items.is_empty()):return false
 	return ids.size()==intent.item_ids.size() and intent.item_ids.all(func(id):return ids.has(id))
 func _read(ids: Array=[]) -> void:
@@ -184,6 +221,7 @@ func _read(ids: Array=[]) -> void:
 	if service==null:phase=Phase.Unavailable;changed.emit();return
 	var owner:=generation
 	var intent: Dictionary={"action":C.ManagementAction.DepotGoodsRead,"depot_id":depot_id,"category":category,"query":_active_query,"sort_by_distance":sort_by_distance,"pending_on_top":pending_on_top,"exclude_prohibited":exclude_prohibited,"item_ids":ids.duplicate()}
+	intent.expected_revision=_draft_revision;intent.draft=_choices(_draft);intent.sort_draft=_choices(_sort_draft)
 	ticket=service.submit("depot_goods",intent,func(received,result,_sent):
 		if owner!=generation or received!=ticket:return
 		ticket=0
@@ -193,6 +231,7 @@ func _read(ids: Array=[]) -> void:
 		revision=value.revision;categories=value.categories.duplicate(true);groups=value.groups.duplicate(true);items={}
 		for row in value.items:items[row.id]=row.duplicate(true)
 		if category==-1 and not categories.is_empty():category=categories[0].type;_read();return
+		if _finish_pending:_finish_pending=false;phase=Phase.Ready;finish();return
 		# Native query/exclusion can retain a selected type absent from the
 		# filtered category list. Do not replace it with a guessed fallback.
 		if not _queries.is_empty():_active_query=_queries.pop_front();first_item=0;_read();return

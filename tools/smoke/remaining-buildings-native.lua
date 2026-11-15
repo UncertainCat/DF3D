@@ -26,7 +26,7 @@ for _,kind in ipairs(kinds)do
   capture('remaining-building-'..kind)
   if kind==6 and os.getenv('DF3D_DEPOT_NATIVE')=='1' then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','depot-settings-native.lua')
-   result.depot_settings=assert(loadfile(source))(out,view,b,capture)
+   result.depot_settings=assert(loadfile(source))(out,view,b,capture,select_map)
   end
   for y=4,g.dimy-1 do
    local chars={};for x=52,112 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end

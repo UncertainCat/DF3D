@@ -1,5 +1,5 @@
 -- Paused native depot settings reference; no runtime menu inputs are exposed.
-local out,view,b,capture=...
+local out,view,b,capture,select_map=...
 local gui=require('gui');local json=require('json');local g=df.global.gps
 local original=b.trade_flags.whole;local frame=df.global.world.frame_counter
 assert(not b.trade_flags.trader_requested and #b.jobs==0,'Expected idle depot')
@@ -127,7 +127,7 @@ end
 result.restored=true;result.success=true
 if os.getenv('DF3D_DEPOT_GOODS_NATIVE')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-settings%-native.lua$','depot-goods-native.lua')
- result.goods=assert(loadfile(source))(out,view,b,capture)
+ result.goods=assert(loadfile(source))(out,view,b,capture,select_map)
 end
 local f=assert(io.open(out..'/depot-settings-native.json','w'));f:write(json.encode(result));f:close()
 return result

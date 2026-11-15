@@ -1,5 +1,5 @@
 -- Diagnostic-only native menu oracle in a paused disposable save.
-local out,view,b,capture=...
+local out,view,b,capture,select_map=...
 local gui=require('gui');local json=require('json');local g=df.global.gps
 local caravans=df.global.plotinfo.caravans
 local frame=df.global.world.frame_counter
@@ -11,6 +11,22 @@ local index=#caravans;caravans:insert('#',caravan)
 local menu=df.global.game.main_interface.assign_trade
 assert(not menu.open and #b.jobs==0)
 local result={id=b.id,synthetic_caravan=true,frame=frame}
+local function click(x,y)
+ g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+ gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+end
+local function job_facts()
+ local jobs={}
+ for _,j in ipairs(b.jobs)do
+  local row={id=j.id,type=j.job_type,flags=j.flags.whole,pos={j.pos.x,j.pos.y,j.pos.z},items={},refs={}}
+  for _,it in ipairs(j.items)do row.items[#row.items+1]={id=it.item.id,role=it.role}end
+  for _,ref in ipairs(j.general_refs)do row.refs[#row.refs+1]={type=ref:getType(),building=ref:getBuilding() and ref:getBuilding().id or -1}end
+  jobs[#jobs+1]=row
+ end
+ return jobs
+end
 local ok,err=xpcall(function()
  view:render(dfhack.getTickCount());capture('depot-goods-available')
  g.precise_mouse_x=520;g.precise_mouse_y=166;g.mouse_x=65;g.mouse_y=13
@@ -36,8 +52,44 @@ local ok,err=xpcall(function()
  end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  assert(not menu.open,'Goods Escape failed')
+ if os.getenv('DF3D_DEPOT_HAUL_NATIVE')=='1' then
+  select_map(b);click(520,166);assert(menu.open and menu.current_type==df.item_type.ANVIL,'Reopen initial goods failed')
+  result.hauling={}
+  click(932,166);capture('depot-goods-selected')
+  result.hauling.selected=job_facts()
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  result.hauling.closed=job_facts();capture('depot-goods-hauling')
+  select_map(b);click(520,166);assert(menu.open,'Reopen pending goods failed')
+  result.hauling.pending={}
+  for _,row in ipairs(menu.current_type_tgi)do result.hauling.pending[#result.hauling.pending+1]={id=row.it.id,tag=row.tag,distance=row.dist}end
+  capture('depot-goods-pending')
+  click(932,166);result.hauling.deselected=job_facts()
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  result.hauling.cancelled=job_facts();assert(#b.jobs==0,'Native deselection did not cancel haul')
+  if os.getenv('DF3D_DEPOT_HAUL_PROVIDER')=='1' then
+   assert(#result.hauling.selected==0 and #result.hauling.closed==1)
+   local native=result.hauling.closed[1];local item=df.item.find(native.items[1].id);assert(item)
+   local flags=item.flags.whole;local sheet=df.global.game.main_interface.view_sheets;local selected=sheet.active_id
+   local function apply(wanted)
+    local output,code=dfhack.run_command_silent('df3d','depot-haul-probe',tostring(b.id),tostring(item.id),tostring(wanted))
+    assert(code==0,output);local reply=json.decode(output);assert(reply.outcome==1,output)
+    assert(not menu.open and sheet.active_id==selected and df.global.world.frame_counter==frame)
+    return job_facts()
+   end
+   result.hauling.provider=apply(1);assert(#result.hauling.provider==1)
+   local created=result.hauling.provider[1];local registered=false
+   for _,job in require('utils').listpairs(df.global.world.jobs.list)do if job.id==created.id then registered=true end end
+   assert(registered and created.id~=native.id)
+   local expected=json.decode(json.encode(native));local actual=json.decode(json.encode(created));expected.id=0;actual.id=0
+   assert(json.encode(expected)==json.encode(actual),'Provider hauling effects differ')
+   local duplicate=apply(1);assert(#duplicate==1 and duplicate[1].id==created.id,'Duplicate added hauling job')
+   assert(#apply(0)==0 and #apply(0)==0 and item.flags.whole==flags,'Provider cancellation failed to restore item')
+   result.hauling.provider_success=true
+  end
+ end
 end,debug.traceback)
 if menu.open then gui.simulateInput(view,'LEAVESCREEN')end
+if not ok then local jobs={};for _,j in ipairs(b.jobs)do jobs[#jobs+1]=j end;for _,j in ipairs(jobs)do dfhack.job.removeJob(j)end end
 caravans:erase(index);caravan:delete()
 assert(df.global.world.frame_counter==frame and #b.jobs==0)
 if not ok then error(err)end

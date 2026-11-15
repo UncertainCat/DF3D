@@ -48425,6 +48425,110 @@
           "lane": "133212",
           "reason": "Native master list uses ac9a10/ac9230 insertion order, not IN_PLAY order; corrected by calling native insertion with owned records."
         }
+      },
+      "depot_haul_provider_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-134150",
+        "owned_df_pid": 31096,
+        "scope": "Anvil pointer-close native hauling create/cancel vs owned semantic context, job registration and exact job effects except fresh ID, duplicate desired states, item flag restoration. Not public revision transport, multi-item commits, delivered release or natural hauling completion.",
+        "hauling": {
+          "cancelled": [],
+          "closed": [
+            {
+              "flags": 0,
+              "id": 382798,
+              "items": [
+                {
+                  "id": 296,
+                  "role": 2
+                }
+              ],
+              "pos": [
+                111,
+                94,
+                165
+              ],
+              "refs": [
+                {
+                  "building": 54,
+                  "type": 36
+                }
+              ],
+              "type": 15
+            }
+          ],
+          "deselected": [
+            {
+              "flags": 0,
+              "id": 382798,
+              "items": [
+                {
+                  "id": 296,
+                  "role": 2
+                }
+              ],
+              "pos": [
+                111,
+                94,
+                165
+              ],
+              "refs": [
+                {
+                  "building": 54,
+                  "type": 36
+                }
+              ],
+              "type": 15
+            }
+          ],
+          "pending": [
+            {
+              "distance": 6,
+              "id": 296,
+              "tag": 2
+            },
+            {
+              "distance": 34,
+              "id": 28425,
+              "tag": 0
+            }
+          ],
+          "provider": [
+            {
+              "flags": 0,
+              "id": 382799,
+              "items": [
+                {
+                  "id": 296,
+                  "role": 2
+                }
+              ],
+              "pos": [
+                111,
+                94,
+                165
+              ],
+              "refs": [
+                {
+                  "building": 54,
+                  "type": 36
+                }
+              ],
+              "type": 15
+            }
+          ],
+          "provider_success": true,
+          "selected": []
+        },
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-134150/depot-goods-native.json": "17095e1cec9f8ee01e1612eeec2e94287ec4f24882817004695780ff2c3d8e9f",
+          "build/stockpile-storage-native-farm-discovery-20261115-134150/result.json": "564291d8ea8e508b240f8a0773dfee743d0d4e2dd9fd3324e67cd2632fc3df16",
+          "build/stockpile-storage-native-farm-discovery-20261115-134150/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-134150/depot-goods-selected.png": "f858b0fa8d7fa58d716bea681d8b89fa33a8404311c53d856699a42d2cb07a19",
+          "build/stockpile-storage-native-farm-discovery-20261115-134150/depot-goods-hauling.png": "47a5e49f3918014fd600d44e95f988ffca1465de223d08e2b481dd6b873d19f4",
+          "build/stockpile-storage-native-farm-discovery-20261115-134150/depot-goods-pending.png": "f858b0fa8d7fa58d716bea681d8b89fa33a8404311c53d856699a42d2cb07a19"
+        }
       }
     },
     "pending_construction_reference": {

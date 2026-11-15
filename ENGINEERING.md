@@ -957,6 +957,38 @@ Earlier133013 established distance parity alone;133212 matched count but failed
 ordering because it retained IN_PLAY order. Native insertion fixes that discrepancy;
 the failed ordering run is not acceptance. Public depot routes remain hidden.
 
+Native goods checkboxes stage edits until close. Protected133735 verifies that
+selecting anvil296 creates no job while the picker remains open; Escape creates
+BringItemToDepot15, flags0, item roleHauled2, BUILDING_HOLDER36 for depot54, and
+position111,94,165. Reopening shows tag2/distance6 for that item and tag0/distance34
+for the other anvil. Deselecting leaves the job intact until Escape cancels it.
+Escape also closes the parent building selection, so diagnostic reopen uses an
+actual map selection before clicking Move goods. Initial133639 incorrectly
+assumed that selection survived Escape and is not acceptance.
+
+The staged `depotSetHaul` calls36b0c0 with an independently constructed
+assign_trade_interfacest containing only the semantic depot and one owned record.
+The routine reads the supplied depot/list and simulation data; it creates or
+removes jobs through native leaves and retires the supplied records. No native
+picker, selected building, camera or native staged edits are runtime inputs.
+Tag1 queues hauling; tag-1 cancels its pending job. Current item flags, native
+candidate eligibility, completed/revealed depot and no removal job guard entry;
+duplicate desired state is a no-op. This single-item leaf is not the public
+transaction adapter: complete goods revision authority, multi-item close commits,
+delivered-item release and uncertain-outcome UI remain unfinished.
+
+Protected134150 on2026-11-15 compares native pointer-close creation/cancellation
+with the owned-context provider for anvil296. The provider creates a fresh job
+with identical type/flags/item/role/reference/position and native world-list
+registration. Duplicate creation retains its ID; cancellation and duplicate
+cancellation leave no jobs and restore item flags. Native picker stays closed,
+selection and frame0 stay unchanged. Owned DF31096 closes unsaved with source
+preservation, native30FPS and sampled GPU59C. MSVC bridge and core19 pass.
+Initial134044 failed only its diagnostic use of nonexistent Lua df.job.find;
+the verified test reads the actual native job list instead. Evidence:
+`completed_sheet_discovery_reference.depot_haul_provider_reference`. Natural
+hauling completion, other item families and delivered goods remain unqualified.
+
 ## Completed bridge, wagon and traction-bench sheets
 
 Completed Bridge19, Wagon32 and TractionBench45 use the shared native header,

@@ -4941,6 +4941,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         output["ordinary_color"]=Json::Value(Json::arrayValue);for(auto color:facts->ordinaryColor)output["ordinary_color"].append(int(color));
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="depot-haul-probe") {
+        if(parameters.size()!=4)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        int32_t values[3]={-1,-1,-1};
+        for(size_t i=1;i<parameters.size();++i){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<0)return CR_WRONG_USAGE;}
+        if(values[2]>1)return CR_WRONG_USAGE;
+        auto* item=df::item::find(values[1]);if(!item)return CR_FAILURE;
+        Json::Value output;output["outcome"]=int(df3d_production::depotSetHaul(df::building::find(values[0]),item,item->flags.whole,values[2]!=0));
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="depot-distance-probe") {
         if(parameters.size()!=2)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;

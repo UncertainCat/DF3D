@@ -5,7 +5,10 @@
 #include "df/items_other_id.h"
 #include "df/tradegoodslistst.h"
 #include "df/assign_trade_itemlistst.h"
+#include "df/assign_trade_interfacest.h"
+#include "df/job_item_ref.h"
 #include <algorithm>
+#include <memory>
 #include <cstring>
 #include <limits>
 #include <stdexcept>
@@ -114,5 +117,49 @@ inline std::optional<std::vector<DepotItemDistance>> depotUnassignedGoods(df::bu
     distances->clear();
     for(auto* row:ordered.tgi)distances->push_back({row->it->id,row->dist});
     return distances;
+}
+// Semantic commit leaf36b0c0. The record and context are built from an explicit
+// intent; no native menu/staged edit is read. Public revision transport is pending.
+inline DepotSettingOutcome depotSetHaul(df::building* building,df::item* item,uint64_t expectedFlags,bool desired) {
+    auto* depot=virtual_cast<df::building_tradedepotst>(building);
+    if(!depotNativeReady() || !depot || !item || item->flags.whole!=expectedFlags ||
+       depot->getBuildStage()!=depot->getMaxBuildStage() || depot->jobs.size()>1048576)return DepotSettingOutcome::Rejected;
+    auto* tile=DFHack::Maps::getTileDesignation(depot->centerx,depot->centery,depot->z);
+    if(!tile || tile->bits.hidden)return DepotSettingOutcome::Rejected;
+    size_t matches=0;
+    for(auto* job:depot->jobs) {
+        if(!job || job->job_type==df::job_type::DestroyBuilding)return DepotSettingOutcome::Rejected;
+        if(job->job_type==df::job_type::BringItemToDepot && !job->items.empty() && job->items.front() && job->items.front()->item==item)++matches;
+    }
+    if(matches>1)return DepotSettingOutcome::Rejected;
+    if(desired && matches==1)return DepotSettingOutcome::Applied;
+    if(!desired && matches==0)return DepotSettingOutcome::Applied;
+    if(desired) {
+        const auto candidates=depotUnassignedGoods(building);
+        if(!candidates || std::none_of(candidates->begin(),candidates->end(),[&](const auto& row){return row.id==item->id;}))return DepotSettingOutcome::Rejected;
+    }
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool ready=[&] {
+        uint64_t h=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x4c8;++i){h^=base[0x36b0c0+i];h*=UINT64_C(1099511628211);}
+        return h==UINT64_C(0x05547ce04e52e1ee);
+    }();
+    if(!ready)return DepotSettingOutcome::Rejected;
+    static_assert(offsetof(df::assign_trade_interfacest,master_i_list)==0xa8);
+    static_assert(offsetof(df::assign_trade_interfacest,trade_depot_bld)==8);
+    df::assign_trade_interfacest context;
+    context.trade_depot_bld=depot;
+    std::unique_ptr<df::tradegoodslistst> record(df::allocate<df::tradegoodslistst>());
+    record->it=item;record->tag=desired?1:-1;
+    context.master_i_list.tgi.push_back(record.get());
+    // Native commit retires the supplied records via30ce00. The context's
+    // remaining vectors/string are independently owned and destruct normally.
+    record.release();
+    try {reinterpret_cast<void (*)(df::assign_trade_interfacest*)>(base+0x36b0c0)(&context);}
+    catch(...){return DepotSettingOutcome::Unknown;}
+    matches=0;
+    for(auto* job:depot->jobs)if(job && job->job_type==df::job_type::BringItemToDepot &&
+       !job->items.empty() && job->items.front() && job->items.front()->item==item)++matches;
+    return matches==size_t(desired)?DepotSettingOutcome::Applied:DepotSettingOutcome::Unknown;
 }
 }

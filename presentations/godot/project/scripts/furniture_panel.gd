@@ -14,3 +14,5 @@ func _process(delta: float) -> void:
 	super._process(delta)
 	if panel!=null and panel.visible and play_enabled and contents.ticket==0:
 		state.poll_refresh(delta)
+		if state.phase==state.Phase.Ready and state.ticket==0 and state.name_session==null:
+			contents.poll_refresh(delta)

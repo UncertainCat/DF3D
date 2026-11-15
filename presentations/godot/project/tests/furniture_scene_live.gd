@@ -23,9 +23,23 @@ func external_removal(value: bool) -> bool:
 		var receipt: Dictionary=actions.result(sent)
 		if not receipt.is_empty():
 			if not check(receipt.get("status",-1)==C.ManagementStatus.Ok,"External removal edit rejected"):return false
-			if owner.state.phase==owner.state.Phase.Ready and owner.state.snapshot.removing==value:return true
+			if owner.state.phase==owner.state.Phase.Ready and owner.state.snapshot.removing==value and owner.contents.phase==owner.contents.Phase.Ready and owner.contents.snapshot.removing==value:return true
 		await create_timer(0.01).timeout
 	return check(false,"Open furniture header did not observe external removal change")
+func external_forbid(value: bool) -> bool:
+	var request={"action":C.ManagementAction.FarmEdit,"building_id":owner.contents.building_id,
+		"expected_revision":owner.contents.snapshot.revision,"farm_operation":C.FarmOperation.ItemForbid,
+		"item_id":owner.contents.snapshot.rows[0].id,"item_value":int(value)}
+	var sent: int=actions.submit("production",request,Callable())
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.01)
+		var receipt: Dictionary=actions.result(sent)
+		if not receipt.is_empty():
+			if not check(receipt.get("status",-1)==C.ManagementStatus.Ok,"External item edit rejected"):return false
+			if owner.state.phase==owner.state.Phase.Ready and owner.state.snapshot.forbidden==value and owner.contents.phase==owner.contents.Phase.Ready and owner.contents.snapshot.rows[0].forbid==value:return true
+		await create_timer(0.01).timeout
+	return check(false,"Open furniture contents did not observe external item change")
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("furniture")
 	for entry in expected.buildings:
@@ -52,6 +66,10 @@ func exercise(expected: Dictionary) -> void:
 			await panel_capture(str(int(entry.id))+"-external-removing",prefix+"removing")
 			if not await external_removal(false):return
 			await panel_capture(str(int(entry.id))+"-external-restored",prefix+"restored")
+			if not await external_forbid(true):return
+			await panel_capture(str(int(entry.id))+"-external-forbidden",prefix+"forbidden")
+			if not await external_forbid(false):return
+			await panel_capture(str(int(entry.id))+"-external-unforbidden",prefix+"restored")
 		if int(entry.type)==3 and OS.get_environment("DF3D_FUNERARY_HOVER")=="1":
 			var content_view=owner.panel.contents
 			var motion:=InputEventMouseMotion.new()

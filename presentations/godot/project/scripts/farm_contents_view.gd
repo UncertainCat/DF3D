@@ -36,6 +36,7 @@ func configure(source,model,help=null) -> void:
 func set_capacity(value: int) -> void:
 	if page==maxi(0,value) and size==Vector2(472,maxi(0,value)*36):return
 	page=maxi(0,value);size=Vector2(472,page*36)
+	if state!=null:state.visible_rows=maxi(1,page)
 	scrollbar.position=Vector2(456,0);scrollbar.size=Vector2(16,page*36);scrollbar.page=page*3
 	refresh()
 

@@ -9902,8 +9902,12 @@ Furniture headers refresh with one outstanding background read at most, at a
 half-second interval while ready. Reads preserve visible authority and controls;
 edits retire background observers and use the displayed revision. Rename drafts,
 failed/unknown edits, close and session retirement cannot be overwritten or
-replayed by polling. Unchanged receipts do not rebuild the view. Contents reads
-remain separate and are not yet automatically refreshed.
+replayed by polling. Unchanged receipts do not rebuild the view. Contents use a
+separate background read with the same interval and input-retirement behavior.
+Scrolled pages first obtain a fresh list revision, then request the displayed
+cursor under that revision, retaining the old viewport until replacement is
+complete. Unchanged revisions need no second read. Shrinking lists clamp to a
+surviving viewport; lists that fit return to the top. Reads never replay edits.
 
 Protected051533 on2026-11-15 verifies external Remove/Cancel commands bypassing
 panel callbacks for both funerary families. The open headers update automatically;
@@ -9918,8 +9922,17 @@ fails screenshot acceptance because its native capture geometry differs from
 the expected panel crop; the harness now explicitly establishes default client
 size before furniture references instead of relying on optional earlier probes.
 
-Public map access remains gated. Remaining funerary work includes automatic
-contents refresh, completed demolition, lifecycle checks and normal map entry. Existing
+Protected051859 on2026-11-15 extends this to contents: external Forbid/restore
+updates both the component row and header, and external Remove/Cancel updates
+both removal states. Twenty actual panel captures match native. DF9116 closes
+unsaved with source preservation; capped30FPS, sampled GPU60C, known Godot
+startup/finalize/ObjectDB diagnostics only. contents_refresh_reference records
+the evidence hashes. Headless contents ownership and composition checks plus
+core19 pass. Scrolled/shrinking-list handling is headless-qualified; this live
+run does not change list membership or advance AI demolition.
+
+Public map access remains gated. Remaining funerary work includes completed
+demolition, changing contents membership and normal map entry. Existing
 native portrait/Tomb-icon click probes retain the coffin selection; no new
 navigation is inferred.
 

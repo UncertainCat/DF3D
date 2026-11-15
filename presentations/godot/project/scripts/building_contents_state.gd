@@ -14,6 +14,42 @@ var snapshot: Dictionary={}
 var ticket:=0
 var generation:=0
 var _wanted_cursor:=0
+var refresh_ticket:=0
+var refresh_age:=0.0
+var visible_rows:=1
+
+func _retire_refresh() -> void:
+	var previous:=refresh_ticket;refresh_ticket=0;refresh_age=0.0
+	if service!=null and previous!=0:service.detach(previous)
+
+func poll_refresh(delta: float) -> void:
+	if phase!=Phase.Ready or ticket!=0:return
+	refresh_age+=maxf(0.0,delta)
+	if refresh_ticket!=0 or refresh_age<0.5:return
+	refresh_age=0.0;_refresh_page(0,{})
+
+func _refresh_page(cursor: int,base: Dictionary) -> void:
+	var owner:=generation
+	var intent={"action":C.ManagementAction.ProductionInspect,"building_id":building_id,"contents":true,
+		"cursor":cursor,"expected_revision":base.get("revision",0)}
+	refresh_ticket=service.submit("production",intent,func(received,result,sent):
+		if owner!=generation or received!=refresh_ticket:return
+		refresh_ticket=0;refresh_age=0.0
+		var production: Dictionary=result.get("production",{})
+		var page: Dictionary=production.get("contents",{})
+		if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=sent.action or result.get("outcome","")=="unknown" or production.get("farm_edit_outcome",-1)!=C.FarmEditOutcome.None or production.has("farm") or production.has("contents_edit") or not valid_page(page,building_id) or page.cursor!=sent.cursor:
+			_fail(Phase.Rejected);return
+		if not base.is_empty():
+			if page.revision!=base.revision or page.total!=base.total or page.completed!=base.completed or page.removing!=base.removing:
+				_fail(Phase.Rejected);return
+		else:
+			# A nonzero cursor requires a fresh revision. Keep the old viewport
+			# until its replacement page arrives; never publish the temporary top.
+			if page.revision==snapshot.revision:return
+			var wanted:=mini(int(snapshot.cursor),maxi(0,int(page.total)-maxi(1,visible_rows)))
+			if wanted>0:_refresh_page(wanted,page);return
+		snapshot=page.duplicate(true);changed.emit())
+	if refresh_ticket==0:_fail(Phase.Unavailable)
 
 func configure(source) -> void:
 	dispose();service=source
@@ -25,6 +61,7 @@ func dispose() -> void:
 	service=null
 
 func _retire() -> void:
+	_retire_refresh()
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
@@ -65,11 +102,13 @@ func set_flag(item_id: int, operation: int, desired: bool) -> void:
 	if selected.is_empty():return
 	if operation==C.FarmOperation.ItemDump and not selected.can_dump:return
 	if operation==C.FarmOperation.ItemMelt and not selected.can_melt:return
+	_retire_refresh()
 	_wanted_cursor=snapshot.cursor;phase=Phase.Applying
 	_send({"action":C.ManagementAction.FarmEdit,"building_id":building_id,"farm_operation":operation,
 		"item_id":item_id,"item_value":int(desired),"expected_revision":snapshot.revision})
 
 func _read(cursor: int, revision: int) -> void:
+	_retire_refresh()
 	_wanted_cursor=cursor;phase=Phase.Reading
 	_send({"action":C.ManagementAction.ProductionInspect,"building_id":building_id,"contents":true,
 		"cursor":cursor,"expected_revision":revision})

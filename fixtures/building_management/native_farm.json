@@ -24195,6 +24195,28 @@
           "build/stockpile-storage-native-farm-discovery-20261115-084825/result.json": "eb4b9d55557de3a4481e31df8149b7099b642c327bea802db97f6e9aca41f5f1",
           "build/stockpile-storage-native-farm-discovery-20261115-084825/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "lever_map_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-085330",
+        "scope": "Actual main scene constructs staged lever controller with camera and shared service. Pointer Pull then Link, real projected target door16 ray and pointer click create two native-matching jobs; panel restores and closing releases host. Native diagnostic verifies job type/flags/position/references/mechanism roles/requirements/registration and unchanged menu fields. Public map selection into lever remains gated; other target types and simulation completion not qualified.",
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "owned_df_pid": 40556,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "pull_job": 382800,
+        "link_job": 382801,
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-085330/lever-map-linked.png": "cfb8007fe65c914d7434e2fe8d08b97da8c67ef33680311a2390019b92370c3e",
+          "build/stockpile-storage-native-farm-discovery-20261115-085330/lever-native.json": "2cb61fb4b6a4867480dfed2ce36aa896154d6a43b78a36adf7839cd99e9ea77d",
+          "build/stockpile-storage-native-farm-discovery-20261115-085330/workshop-wire-result.json": "be0eb3563ca7d8117d93739b40577e041411c4c816c094a66548b6eeccef69af",
+          "build/stockpile-storage-native-farm-discovery-20261115-085330/result.json": "4b33e636781d69c1c2edb22bd6e9cae44311c5b84e829515cfbfda5258341a7b",
+          "build/stockpile-storage-native-farm-discovery-20261115-085330/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

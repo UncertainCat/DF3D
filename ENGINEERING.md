@@ -171,6 +171,21 @@ The run is passed_with_known_issues for the established render-thread/finalize/
 two ObjectDB diagnostics. All19 core checks pass. Evidence is
 `completed_sheet_discovery_reference.lever_worker_order_gestures_reference`.
 
+The staged lever controller is registered with the main scene's shared service,
+camera, item navigation and recenter handling. Public map selection into this
+unfinished panel remains gated. Protected085330 on2026-11-15 opens this owner
+in the actual main scene, clicks Pull and Link, projects door16 into the camera,
+verifies the picked tile, and clicks it. DF creates Pull382800 and Link382801;
+the native diagnostic compares type, flags, position, references, mechanism
+roles, requirements and registration against native-click jobs. Native menu
+fields remain unchanged. The panel returns after Link and closing releases
+the host. Owned DF40556 closes unsaved with source preservation. Graphics are
+capped30FPS, sampled GPU59–60C; only the established render-thread/finalize/two
+ObjectDB diagnostics remain. All19 core checks pass. Evidence is
+`completed_sheet_discovery_reference.lever_map_reference`. This qualifies
+projected Link to the tested door, not public lever selection, other target
+families, simulation completion or the remaining panel workflows.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

@@ -4,6 +4,7 @@ local gui=require('gui');local json=require('json');local g=df.global.gps
 local sheet=df.global.game.main_interface.view_sheets
 local kinds={6,7,16,17,18,19,20,21,22,24,25,26,27,28,31,32,45,47,48,49,53}
 if os.getenv("DF3D_SIMPLE_BUILDING_SCENE")=="1" then kinds={19,32,45}end
+if os.getenv("DF3D_DEPOT_NATIVE")=="1" then kinds={6}end
 local wanted={};for _,kind in ipairs(kinds)do wanted[kind]=true end
 local result={frame=df.global.world.frame_counter,inventory={},buildings={},missing={}}
 local selected={}
@@ -23,6 +24,10 @@ for _,kind in ipairs(kinds)do
   view:render(dfhack.getTickCount());select_map(b)
   local row={id=b.id,type=kind,subtype=b:getSubtype(),tile={b.centerx,b.centery,b.z},native_type=df.building_type[kind],custom_name=dfhack.df2utf(b.name),selected_sheet=sheet.active_sheet,selected_id=sheet.active_id,lines={}}
   capture('remaining-building-'..kind)
+  if kind==6 and os.getenv('DF3D_DEPOT_NATIVE')=='1' then
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','depot-settings-native.lua')
+   result.depot_settings=assert(loadfile(source))(out,view,b,capture)
+  end
   for y=4,g.dimy-1 do
    local chars={};for x=52,112 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
    local text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','');if text:find('%S')then row.lines[#row.lines+1]={y=y,text=text}end

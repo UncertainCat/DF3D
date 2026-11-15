@@ -740,6 +740,38 @@ Graphics are serial30FPS, sampled GPU59–62C. Runs pass with the known renderin
 thread/finalize/two-ObjectDB diagnostics. Core19, well-contract and holder-routing
 checks pass. Evidence: `completed_sheet_discovery_reference.well_workflow_reference`.
 
+## Trade depot native provider boundary
+
+TradeDepot6 is not yet a public completed-building route. The old `trade.lua`
+adapter is not native acceptance: requesting a trader sets a flag without
+creating the job that native DF creates immediately. Its goods scan and authored
+status copy also require replacement/verification before public exposure.
+
+Protected124014 on2026-11-15 exercises native pointer clicks on existing depot54
+while paused, without merchants or a broker. Broker sets flags1 and creates one
+TradeAtDepot197 job; Anyone sets flags3 and preserves that job ID. Switching back
+to Broker also preserves it. Dismissal clears bit0 and removes the job; dismissing
+Anyone retains bit1 (flags2). A fresh request allocates a new job. Native-created
+jobs have flags0, unset position(-30000,-30000,-30000), and a BUILDING_HOLDER36
+reference to depot54. Do not fill their position from the building center.
+
+Input1af983..1afac8 implements the three setting transitions. On the unrequested
+to requested transition it calls native job creation fd580, attachment54bcf0 and
+requirements d09b70; dismissal uses building job cancellation54bcd0. These leaves
+are already exposed for other native building actions but depot acceptance is
+still required. The renderer19681c and input1af8b5 call caravan predicates
+e532f0/e53330 with plotinfo (caravans at offsets88/90), rather than viewscreen
+scratch. They exclude caravan flag100 and distinguish trade states1/2 versus2.
+Native5ab090 finds a TradeAtDepot worker physically at the depot; it gates entry
+to trading. The menu-opening calls36bc30/36b970 are not permitted runtime APIs.
+
+Seven native state captures and job records are retained in
+`completed_sheet_discovery_reference.depot_settings_reference`. Names/jobs/settings
+are restored and frames stay paused. Owned DF31524 closes unsaved with source
+preservation, native graphics capped30FPS, sampled GPU61C. This establishes
+native settings effects only, not a replacement bridge/provider, depot UI,
+goods selection, negotiations, caravan arrival or autonomous trader behavior.
+
 ## Completed bridge, wagon and traction-bench sheets
 
 Completed Bridge19, Wagon32 and TractionBench45 use the shared native header,

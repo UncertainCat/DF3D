@@ -9764,9 +9764,32 @@ diagnostics and the expected screenshot-readback synchronization warning;
 pixel assertions pass, but this is not a clean engine-diagnostics pass.
 Fresh root, bridge and extension builds pass; all19 root CTest checks pass.
 The staged door panel owner reuses the shared header/contents lifecycle and
-retires door state on close/removal. Its script check passes, but header-provider
-support for Door, complete-sheet routing, hover and live pointer input remain
-unqualified. These staged owner/view files do not expose the feature publicly.
+retires door state on close/removal. Protected212242 qualifies the actual
+main-scene holder route, lock/unlock, typed rename/clear, unstaffed removal/cancel
+from both lock states and Escape. All eight full-sheet crops match native,
+including the component door image. Native readback verifies restored flags,
+name and an empty job list. Owned DF37572 exits unsaved with source preservation;
+30FPS graphics sample60–61C. Known Godot renderer/finalize/two-ObjectDB diagnostics
+retain passed_with_known_issues. Ordinary map routing, worker-owned removal and
+staged native-selection tab routing are not covered by this run.
+Native hover probes show no Forbid/Passable instruction after900ms; Rename301
+is a successful positive control. Remove did not yield302 in this probe and
+requires follow-up before claiming Door header-hover parity.
+Earlier211611 completed effects but failed all crops solely in the32x32 component
+image; enabling the existing native item-appearance provider for held doors
+corrects that omission.211956 establishes the corrected direct-controller
+workflow;212242 adds holder routing and the hover positive control.
+
+Native header211218 on2026-11-14 verifies rename and unstaffed removal/cancel
+for closed passable and forbidden Door16. Removal queues DestroyBuilding and
+unlocks a forbidden door (flags17/occupancy6 become16/7); cancellation leaves
+it passable. The shared provider uses the same virtual queueDestroy call
+as native1b0237 and the existing semantic cancellation helper, without an
+authored unlock step. Source saves are preserved; DF29252 exits unsaved.
+`selection_reference.door_header_reference` retains the current composed evidence.
+Door is now an accepted target of existing header/contents requests; no wire
+layout changes are involved. The internal door controller is registered for
+holder/staged native-selection routing. Ordinary map routing remains unchanged.
 
 The native discovery captures
 completed Door16 and unfinished Statue965. The door has native Passable text,

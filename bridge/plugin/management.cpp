@@ -3427,7 +3427,7 @@ df::building_actual* contentsBuilding(int32_t id,bool editing=false) {
   auto* building=virtual_cast<df::building_actual>(df::building::find(id));
   if(!building)return nullptr;
   const auto type=building->getType();
-  if(type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
+  if(type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
      (editing || (type!=df::building_type::Workshop && type!=df::building_type::Furnace)))return nullptr;
   auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
   return tile&&!tile->bits.hidden?building:nullptr;
@@ -4144,7 +4144,7 @@ void run(color_ostream& out) {
         auto* building=df::building::find(q->building_id());
         if(!building)return nullptr;
         const auto type=building->getType();
-        if(type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return nullptr;
+        if(type!=df::building_type::Door && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return nullptr;
         auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
         return tile && !tile->bits.hidden?building:nullptr;
       };

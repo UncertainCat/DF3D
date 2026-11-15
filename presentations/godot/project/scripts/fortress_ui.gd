@@ -114,6 +114,7 @@ func ensure_agreement_tracker():
 
 func open_building_holder(kind: int,id: int) -> void:
 	if kind==4:controller("farm").open_target(id)
+	elif kind==8:controller("door").open_target(id)
 	elif kind==10:controller("chest").open_target(id)
 	elif kind in [5,13]:
 		# The item receipt supplies native type/ID; resident semantics supply the
@@ -207,7 +208,7 @@ func controller(id: String):
 		panel.inspect_requested.connect(func(tile,unit_id):
 			if host.allows_panel_input(panel) and controller("inspector").open_target(tile,1,unit_id,true):focus_tile(tile))
 		controllers[id]=panel;return panel
-	if id in ["farm","chest","workshop"]:
+	if id in ["farm","chest","workshop","door"]:
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		ensure_follow()
 		panel.holder_requested.connect(open_building_holder)
@@ -318,13 +319,13 @@ func _selection_destination(kind: int,id: int,tile: Vector3i):
 		var info: Dictionary=world.inspect_entity(3,id)
 		if not info.get("complete",false):return null
 		var building_kind: int=info.get("building_kind",0)
-		if building_kind not in [5,6,11,14]:
+		if building_kind not in [5,6,9,11,14]:
 			# Keep existing building inspection available within staged selection.
 			# This does not qualify those incomplete native building controls.
 			var inspector=controller("inspector")
 			return inspector if inspector.open_target(tile,3,id,true) else null
 		open_building_holder(building_kind-1,id)
-		var target=controllers.get("farm" if building_kind==5 else "chest" if building_kind==11 else "workshop")
+		var target=controllers.get("farm" if building_kind==5 else "door" if building_kind==9 else "chest" if building_kind==11 else "workshop")
 		return target if target!=null and host.active==target and target.state.building_id==id else null
 	return null
 

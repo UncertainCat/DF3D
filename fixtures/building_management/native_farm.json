@@ -12809,6 +12809,185 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "door_header_reference": {
+      "hover": [
+        {
+          "enabled": false,
+          "instruction": -1,
+          "kind": "forbid",
+          "rows": [
+            {
+              "text": "       Elevation 36",
+              "y": 16
+            }
+          ]
+        },
+        {
+          "enabled": false,
+          "instruction": -1,
+          "kind": "passable",
+          "rows": [
+            {
+              "text": "       Elevation 36",
+              "y": 16
+            }
+          ]
+        },
+        {
+          "enabled": true,
+          "instruction": 301,
+          "kind": "rename",
+          "rows": [
+            {
+              "text": " Name this building.",
+              "y": 0
+            }
+          ]
+        },
+        {
+          "enabled": true,
+          "instruction": -1,
+          "kind": "remove",
+          "rows": [
+            {
+              "text": "       Elevation 36",
+              "y": 16
+            }
+          ]
+        }
+      ],
+      "original_name": "",
+      "rename": "Door reference",
+      "scene": {
+        "roundtrip": true,
+        "success": true,
+        "surface": "actual main scene"
+      },
+      "states": [
+        {
+          "before": {
+            "flags": 16,
+            "occupancy": 7
+          },
+          "cancelled": {
+            "flags": 16,
+            "lines": [
+              {
+                "text": "                                                            Dolomite Door",
+                "y": 6
+              },
+              {
+                "text": "                                                      Passable",
+                "y": 11
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              }
+            ],
+            "occupancy": 7
+          },
+          "locked": false,
+          "removal": {
+            "flags": 16,
+            "job_flags": 0,
+            "job_type": "DestroyBuilding",
+            "lines": [
+              {
+                "text": "                                                            Dolomite Door",
+                "y": 6
+              },
+              {
+                "text": "                                                      Slated for removal",
+                "y": 11
+              },
+              {
+                "text": "                                                      Removal inactive.",
+                "y": 13
+              },
+              {
+                "text": "                                                        Cancel removal                                                              Elevation 36",
+                "y": 16
+              }
+            ],
+            "occupancy": 7
+          }
+        },
+        {
+          "before": {
+            "flags": 17,
+            "occupancy": 6
+          },
+          "cancelled": {
+            "flags": 16,
+            "lines": [
+              {
+                "text": "                                                            Dolomite Door",
+                "y": 6
+              },
+              {
+                "text": "                                                      Passable",
+                "y": 11
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              }
+            ],
+            "occupancy": 7
+          },
+          "locked": true,
+          "removal": {
+            "flags": 16,
+            "job_flags": 0,
+            "job_type": "DestroyBuilding",
+            "lines": [
+              {
+                "text": "                                                            Dolomite Door",
+                "y": 6
+              },
+              {
+                "text": "                                                      Slated for removal",
+                "y": 11
+              },
+              {
+                "text": "                                                      Removal inactive.",
+                "y": 13
+              },
+              {
+                "text": "                                                        Cancel removal                                                              Elevation 36",
+                "y": 16
+              }
+            ],
+            "occupancy": 7
+          }
+        }
+      ],
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-212242",
+      "status": "passed_with_known_issues",
+      "owned_df_pid": 37572,
+      "source_save_preserved": true,
+      "scope": "Composed main-scene Door16 header, contents and controls: holder routing, lock/unlock, rename, removal/cancel in both lock states and Escape. Eight full-panel crops match native. Removal unlocks the door; cancellation leaves it passable. Worker-owned removal and ordinary map routing remain unqualified.",
+      "hashes": {
+        "workshop-door-header-cancel-false.png": "ce6b6b6ae2173d451400bcb2f53f9260a43808b9b70095eb3f2d443cf2387bd1",
+        "workshop-door-header-cancel-true.png": "ce6b6b6ae2173d451400bcb2f53f9260a43808b9b70095eb3f2d443cf2387bd1",
+        "workshop-door-header-ready.png": "c7594b6881adfc0ee3eb6da667e24f6c6236263651e459d31537ba1059cd7d24",
+        "workshop-door-header-remove-false.png": "b668970bf01ac8a05e33f4ca5e96bb0bc49bc11aefe762e5c9fc158bcc87f04b",
+        "workshop-door-header-remove-true.png": "0040f75ef0f3d5134a850540e31080445c488ce8719ea12d4f2f00d888d90efa",
+        "workshop-door-header-renamed.png": "fff28b0b6d5a46d4b814e01126bf310b11857e9813eb3490d2dbb0e003a14715",
+        "chest-scene-door-cancel-false.png": "ff0ca920caead2ce53a1b720782adf82fc9da4bea1b2357ca04d3eb9972a1bb9",
+        "chest-scene-door-cancel-true.png": "ff0ca920caead2ce53a1b720782adf82fc9da4bea1b2357ca04d3eb9972a1bb9",
+        "chest-scene-door-idle.png": "ff0ca920caead2ce53a1b720782adf82fc9da4bea1b2357ca04d3eb9972a1bb9",
+        "chest-scene-door-locked.png": "271c99bbe505583ac88694580045981261e056b5c1335a2bf9e97eb631588c06",
+        "chest-scene-door-passable.png": "ff0ca920caead2ce53a1b720782adf82fc9da4bea1b2357ca04d3eb9972a1bb9",
+        "chest-scene-door-remove-false.png": "31b6fbc6b96cff7c4e40166458a68842823e12db8a70a635dd22aa56408d28c7",
+        "chest-scene-door-remove-true.png": "31b6fbc6b96cff7c4e40166458a68842823e12db8a70a635dd22aa56408d28c7",
+        "chest-scene-door-renamed.png": "7cd854503135835028673faea08027c38cbee52a4fc314413e0ee4dd0bd540a2",
+        "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+        "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+        "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+      }
+    },
     "door_presentation_reference": {
       "lane": "build/stockpile-storage-native-farm-discovery-20261114-210405",
       "status": "passed_with_known_issues",

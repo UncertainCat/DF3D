@@ -196,6 +196,58 @@ local ok,err=xpcall(function()
      end
     end
     df.global.world.reindex_pathfinding=reindex
+    if os.getenv('DF3D_DOOR_HEADER_REFERENCE')=='1' then
+     assert(#b.jobs==0,'Door header reference needs an idle door')
+     local original_name=b.name
+     local function click(x,y)
+      g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+      df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+      gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+      df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+     end
+     local function name(value)
+      click(800,82);for i=1,100 do gui.simulateInput(view,'STRING_A000')end
+      for i=1,#value do gui.simulateInput(view,('STRING_A%03d'):format(value:byte(i)))end
+      gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount());assert(b.name==value,'Door name input differs')
+     end
+     name('Door reference');shot('door-header-renamed');name(original_name)
+     local headers={original_name=dfhack.df2utf(original_name),rename='Door reference',states={}}
+     for _,locked in ipairs{false,true}do
+      click(locked and 852 or 876,154)
+      local prior={flags=b.door_flags.whole,occupancy=occupancy()}
+      click(832,82);assert(#b.jobs==1 and b.jobs[0].job_type==df.job_type.DestroyBuilding,'Door remove did not queue destruction')
+      local removal={flags=b.door_flags.whole,occupancy=occupancy(),job_type=df.job_type[b.jobs[0].job_type],job_flags=b.jobs[0].flags.whole,lines=lines()}
+      shot('door-header-remove-'..tostring(locked))
+      assert(click_label('Cancel removal'),'Door Cancel removal absent');assert(#b.jobs==0,'Door cancellation retained jobs')
+      local cancelled={flags=b.door_flags.whole,occupancy=occupancy(),lines=lines()}
+      headers.states[#headers.states+1]={locked=locked,before=prior,removal=removal,cancelled=cancelled}
+      shot('door-header-cancel-'..tostring(locked))
+     end
+     click(876,154);assert(b.door_flags.whole==before and b.name==original_name,'Door header fixture not restored')
+     result.basic_building_reference.door.header=headers
+     if os.getenv('DF3D_DOOR_HOVER_REFERENCE')=='1' then
+      headers.hover={};local script=require('gui.script')
+      for _,probe in ipairs{{'forbid',852,154},{'passable',876,154},{'rename',800,82},{'remove',832,82}}do
+       local deadline=dfhack.getTickCount()+900
+       repeat
+        df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+        g.precise_mouse_x=probe[2];g.precise_mouse_y=probe[3];g.mouse_x=probe[2]//8;g.mouse_y=(probe[3]-4)//12
+        gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+       until dfhack.getTickCount()>=deadline
+       local rows={};for y=0,17 do local chars={};for x=g.dimx-25,g.dimx-1 do
+        local pen=dfhack.screen.readTile(x,y);chars[#chars+1]=pen.ch>=32 and pen.ch<=255 and string.char(pen.ch)or' '
+       end;local text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','');if text:find('%S')then rows[#rows+1]={y=y,text=text}end end
+       headers.hover[#headers.hover+1]={kind=probe[1],instruction=df.global.game.main_interface.current_hover,enabled=df.global.game.main_interface.hover_instructions_on,rows=rows}
+      end
+      g.precise_mouse_x=0;g.precise_mouse_y=4;g.mouse_x=0;g.mouse_y=0;gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+     end
+     if os.getenv('DF3D_DOOR_HEADER_RUNTIME')=='1' then
+      shot('door-header-ready');capture('workshop-wire')
+      local f=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(f:read('*a'));f:close()
+      assert(receipt.success and #b.jobs==0 and b.door_flags.whole==before and b.name==original_name,'Door scene did not restore native state')
+      headers.scene=receipt
+     end
+    end
     if os.getenv('DF3D_DOOR_CONTROL_PRESENTATION')=='1' then
      local states={}
      for _,flags in ipairs{0,1,4,8,32,16,17,20,24,48}do

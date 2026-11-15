@@ -44,6 +44,17 @@ duplicate clicks, unknown outcomes and late replies after reopening or reconnect
 It passes with the known rendering-thread notice. The controller is not yet wired
 to a visible panel; these checks do not establish rendered or live UI acceptance.
 
+The staged `lever_link_view.gd` renders the native Link prompt from its selected
+mechanism names and independently read item appearances. Protected075732 on
+2026-11-15 compares the complete456x156 crop at32,52 against native, with zero
+differing pixels for Main Water Control and its two mechanisms. The inherited
+wire action checks also pass. Both graphical processes are capped30FPS; owned
+DF14152 closes unsaved with source preservation. This is passed_with_known_issues
+for the established render-thread/finalize/two-ObjectDB shutdown diagnostics.
+Evidence is `completed_sheet_discovery_reference.lever_prompt_reference`.
+Other name lengths, responsive geometry, prompt input and complete panel
+integration remain unqualified; the lever is still not publicly exposed.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

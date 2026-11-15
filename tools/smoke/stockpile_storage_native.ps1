@@ -435,6 +435,7 @@ try {
      if($env:DF3D_FURNITURE_MAP -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/furniture_map_scene_live.gd')}
      if($env:DF3D_BUILDING_LINKS_WIRE -eq '1'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/building_links_wire_live.gd')}
      if($env:DF3D_LEVER_WIRE -eq '1'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/lever_wire_live.gd')}
+     if($env:DF3D_LEVER_PROMPT_ART -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/lever_prompt_art_live.gd')}
      if($env:DF3D_FLOODGATE_RUNTIME -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/floodgate_scene_live.gd')}
      if($env:DF3D_FLOODGATE_MAP -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/floodgate_map_scene_live.gd')}
      if($env:DF3D_BUILDING_LINKS_ART -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/building_links_art_live.gd')}

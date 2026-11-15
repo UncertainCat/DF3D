@@ -23139,6 +23139,26 @@
           "build/stockpile-storage-native-farm-discovery-20261115-075033/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
           "build/stockpile-storage-native-farm-discovery-20261115-075033/lever-wire-jobs.png": "291388028483e13f03ae567fd617ab0ef8710bb6de1d806c6957cbabedfe6054"
         }
+      },
+      "lever_prompt_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-075732",
+        "scope": "Exact 456x156 Link prompt crop at32,52 for lever55 Main Water Control with two selected native mechanisms. Native caption formatter and independent item appearance supply names/icons. Actual wire actions also pass. Full panel integration, other names/sizes and prompt input remain unqualified.",
+        "source_preserved": true,
+        "owned_df_pid": 14152,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-075732/lever-link-reopened.png": "9270f6b6b4f0df76abd706c0bad2d37e49a09334ab64b6020adff3a225ac3e76",
+          "build/stockpile-storage-native-farm-discovery-20261115-075732/lever-prompt-viewer.png": "68ea30231d50c2812173431967f401a8390b6760acb727059ba298193a94629d",
+          "build/stockpile-storage-native-farm-discovery-20261115-075732/workshop-wire-result.json": "4b5a3202ae6dd79adddf115afc2ad323a2f09246b7ac0161eb4942a73c183c4f",
+          "build/stockpile-storage-native-farm-discovery-20261115-075732/result.json": "23a3b2a997ae3d739448a05178ba11e922c2950844e1c97300ecc5947b86d190",
+          "build/stockpile-storage-native-farm-discovery-20261115-075732/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

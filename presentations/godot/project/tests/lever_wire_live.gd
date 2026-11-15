@@ -1,6 +1,7 @@
 extends "res://tests/item_carrier_wire_live.gd"
 
 var receipts: Array=[]
+func inspect_prompt(_state: Dictionary,_expected: Dictionary) -> void:pass
 func lever(op: int,revision: int=0,extra: Dictionary={}) -> Dictionary:
 	var intent: Dictionary={"action":C.ManagementAction.ProductionQueue if op>=2 else C.ManagementAction.ProductionInspect,
 		"building_id":55,"lever_operation":op,"expected_revision":revision}
@@ -25,6 +26,7 @@ func run() -> void:
 	if not check(initial.get("status")==C.ManagementStatus.Ok and not state.is_empty(),"Lever read rejected"):quit(1);return
 	check(state.source_mechanism==int(expected.source_mechanism) and state.target_mechanism==int(expected.target_mechanism),"Native initial mechanism order differs")
 	check(not state.source_name.is_empty() and not state.target_name.is_empty(),"Native mechanism captions missing")
+	await inspect_prompt(state,expected)
 	var selection: Dictionary={"lever_x":int(expected.x),"lever_y":int(expected.y),"lever_z":int(expected.z),
 		"lever_source_mechanism":state.source_mechanism,"lever_target_mechanism":state.target_mechanism}
 	var preview:=await lever(1,state.revision,selection)

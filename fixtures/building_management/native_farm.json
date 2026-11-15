@@ -30157,6 +30157,23 @@
           "build/stockpile-storage-native-farm-discovery-20261115-113351/result.json": "2991f5f57cc1384978e5187b37af726ef356e8487493d3e534349b7115ec6f50",
           "build/stockpile-storage-native-farm-discovery-20261115-113351/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "grate_contract_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-114311",
+        "protocol": 229,
+        "scope": "Contract compatibility; five barrier reads, hatch access edits/restoration and guarded removal/cancel. Grate facts remain unknown until native producer integration.",
+        "owned_df_pid": 44016,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "bridge_sha256": "C7F25B3AD1662B4DEDAD26165870B51286C8C5FC13BBE2F5EA0A10680D8B011F",
+        "diagnostics": "passed_with_known_issues: rendering-thread notice",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-114311/barrier-wire-result.json": "c955e57777ec0d73639dca6748560d00aa5eb8e12f13ebb2ed9656add3908f97",
+          "build/stockpile-storage-native-farm-discovery-20261115-114311/barrier-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-114311/barrier-sheets-native.json": "b3b8d9136de1a70c3afff69cd19c2cf8274fb7b25ff03740cf072fe901f05218",
+          "build/stockpile-storage-native-farm-discovery-20261115-114311/result.json": "fe9044e5b0508bab42d8340520adeb603e71b5bd5348375054802b1331757ec9",
+          "build/stockpile-storage-native-farm-discovery-20261115-114311/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

@@ -1,3 +1,22 @@
+## Grate appearance transport migration
+
+Management protocol229 adds paired `grate_wall` and `grate_open` facts to item
+appearance. Both are -1 when unknown; otherwise both must be0/1 and the item
+must be GRATE79. Older recordings retain unknown facts and must not invent
+orientation or gate state. Rebuild bridge and viewer together; the mailbox and
+both schema defaults are229. The DF53.16 compatibility pin is unchanged.
+
+This contract precedes the native producer and artwork resolver. Protected114311
+on2026-11-15 verifies five barrier header/contents reads, hatch access changes,
+stale/duplicate rejection and removal/cancellation over229. Owned DF44016 closes
+unsaved with source preservation. The headless viewer reports only the known
+rendering-thread notice; native graphics remain capped30FPS, sampled GPU60C.
+The grate contract headless check passes with the same known notice. These
+checks establish transport compatibility, not grate artwork acceptance.
+Bridge, extension and root builds pass, as do all19 core CTest checks, including
+paired-fact validation and decode coverage.
+Evidence: `completed_sheet_discovery_reference.grate_contract_reference`.
+
 ## Machinery transport migration
 
 Management protocol228 adds optional `MachineryBodySnapshot` to the shared
@@ -17,7 +36,7 @@ only the requested pump flag changed. Already-set intents return the current
 receipt without mutation. Public machinery routes use the verified shared panel;
 rendered and live acceptance is recorded in Completed machinery sheets below.
 
-Both management defaults and the mailbox are228. Rebuild bridge and viewer
+Machinery transport was introduced in228; the current protocol is listed above. Rebuild bridge and viewer
 together. Older recordings imply no machinery body and must not synthesize network
 or pump facts. The schema change does not alter the DF53.16 compatibility pin.
 

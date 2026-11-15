@@ -197,7 +197,7 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	if editing and owner==generation:applied.emit()
 
 static func _valid_appearance(look: Variant,item_type: int) -> bool:
-	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("door"))+int(look.has("bucket_liquid"))+int(look.has("cage"))+int(look.has("restraint"))+int(look.has("portrait"))+int(look.has("slab_engraving"))+int(look.has("corpse_selector"))+int(look.has("legwear_selector"))+int(look.has("craft_gem_color"))+int(look.has("craft_soft_material"))+int(look.has("artifact_mood"))+int(look.has("coffin_unused"))+int(look.has("bedding")):return false
+	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("grate"))+int(look.has("door"))+int(look.has("bucket_liquid"))+int(look.has("cage"))+int(look.has("restraint"))+int(look.has("portrait"))+int(look.has("slab_engraving"))+int(look.has("corpse_selector"))+int(look.has("legwear_selector"))+int(look.has("craft_gem_color"))+int(look.has("craft_soft_material"))+int(look.has("artifact_mood"))+int(look.has("coffin_unused"))+int(look.has("bedding")):return false
 	if look.has("bedding"):
 		var bed=look.bedding
 		if item_type!=8 or typeof(bed)!=TYPE_DICTIONARY or bed.size()!=4:return false
@@ -236,6 +236,8 @@ static func _valid_appearance(look: Variant,item_type: int) -> bool:
 		if item_type!=6 or typeof(door)!=TYPE_DICTIONARY or door.size()!=3:return false
 		if typeof(door.get("open"))!=TYPE_BOOL or typeof(door.get("forbidden"))!=TYPE_BOOL or typeof(door.get("wear"))!=TYPE_INT:return false
 		if door.wear<0 or door.wear>3:return false
+	if look.has("grate"):
+		if item_type!=79 or typeof(look.grate)!=TYPE_DICTIONARY or look.grate.size()!=2 or typeof(look.grate.get("wall"))!=TYPE_BOOL or typeof(look.grate.get("open"))!=TYPE_BOOL:return false
 	if look.has("floodgate_open") and (item_type!=7 or typeof(look.floodgate_open)!=TYPE_BOOL):return false
 	if look.has("contents") and (item_type not in [17,31,32] or not _valid_contents(look.contents,item_type)):return false
 	if item_type==13:

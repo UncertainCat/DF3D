@@ -17937,6 +17937,1065 @@
           "scope": "Native panel introduction/name matches owned provider, twice per target. Shared actions still pass. Native-only provider; no wire or viewer body. Unnamed figures, empty/unassigned coffins and multiple relevant rooms not yet qualified.",
           "plugin_sha256": "5d29fe8cfa5596361f7dc080511974a1d884ba4378f4ffb080ca855a3ccb1be6",
           "native_json_sha256": "6ef3ce516ce3642d554363668f136bf0d514b51afddf70b04259d8b61d4c0d99"
+        },
+        "card_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-040422",
+          "provider": {
+            "building_id": 220,
+            "deceased": "Deceased",
+            "historical_figure_id": -1,
+            "introduction": "This is the resting place of",
+            "name": "Kol Asobstettad, Stoneworker",
+            "notices": [],
+            "owner_appearance": {
+              "layers": [
+                [
+                  0,
+                  8,
+                  0,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  3,
+                  1,
+                  1,
+                  1,
+                  0,
+                  3,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  2,
+                  1,
+                  1,
+                  1,
+                  0,
+                  3,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0,
+                  3,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  0,
+                  3,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  7,
+                  1,
+                  1,
+                  1,
+                  0,
+                  3,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  8,
+                  1,
+                  1,
+                  1,
+                  0,
+                  3,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  4,
+                  1,
+                  1,
+                  1,
+                  0,
+                  3,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  5,
+                  1,
+                  1,
+                  1,
+                  0,
+                  3,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  6,
+                  0,
+                  1,
+                  1,
+                  0,
+                  3,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  2,
+                  6,
+                  1,
+                  1,
+                  1,
+                  5,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  4,
+                  5,
+                  1,
+                  1,
+                  1,
+                  5,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  6,
+                  1,
+                  1,
+                  1,
+                  0,
+                  3,
+                  0,
+                  0,
+                  0
+                ]
+              ],
+              "pages": [
+                "DWARF_BODY",
+                "DWARF_HAIR"
+              ],
+              "palettes": [
+                "data/vanilla/vanilla_creatures_graphics/graphics/images/dwarf/dwarf_body_palettes.png",
+                "data/vanilla/vanilla_creatures_graphics/graphics/images/dwarf/dwarf_hair_palettes.png"
+              ]
+            },
+            "room_id": 228,
+            "room_introduction": "This furniture is a part of",
+            "room_name": "Unnamed tomb",
+            "room_type": 97,
+            "unit_id": 5577,
+            "zones": [
+              228
+            ]
+          },
+          "variants": [
+            {
+              "label": "unassigned",
+              "lines": [
+                {
+                  "text": "                  RoderÃ²nul           Pop                                  Food  Drink           20th Malachite",
+                  "y": 0
+                },
+                {
+                  "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                  "y": 1
+                },
+                {
+                  "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                  "y": 2
+                },
+                {
+                  "text": "",
+                  "y": 3
+                },
+                {
+                  "text": "",
+                  "y": 4
+                },
+                {
+                  "text": "",
+                  "y": 5
+                },
+                {
+                  "text": "                                                            Dolomite Coffin",
+                  "y": 6
+                },
+                {
+                  "text": "",
+                  "y": 7
+                },
+                {
+                  "text": "",
+                  "y": 8
+                },
+                {
+                  "text": "",
+                  "y": 9
+                },
+                {
+                  "text": "",
+                  "y": 10
+                },
+                {
+                  "text": "                                                      This furniture is a part of",
+                  "y": 11
+                },
+                {
+                  "text": "",
+                  "y": 12
+                },
+                {
+                  "text": "",
+                  "y": 13
+                },
+                {
+                  "text": "                                                            Unnamed tomb",
+                  "y": 14
+                },
+                {
+                  "text": "",
+                  "y": 15
+                },
+                {
+                  "text": "                                                                                                                                    Elevation 36",
+                  "y": 16
+                },
+                {
+                  "text": "",
+                  "y": 17
+                },
+                {
+                  "text": "",
+                  "y": 18
+                },
+                {
+                  "text": "",
+                  "y": 19
+                },
+                {
+                  "text": "",
+                  "y": 20
+                },
+                {
+                  "text": "",
+                  "y": 21
+                },
+                {
+                  "text": "",
+                  "y": 22
+                },
+                {
+                  "text": "",
+                  "y": 23
+                },
+                {
+                  "text": "",
+                  "y": 24
+                },
+                {
+                  "text": "",
+                  "y": 25
+                },
+                {
+                  "text": "",
+                  "y": 26
+                },
+                {
+                  "text": "",
+                  "y": 27
+                },
+                {
+                  "text": "",
+                  "y": 28
+                },
+                {
+                  "text": "",
+                  "y": 29
+                },
+                {
+                  "text": "",
+                  "y": 30
+                },
+                {
+                  "text": "",
+                  "y": 31
+                },
+                {
+                  "text": "",
+                  "y": 32
+                },
+                {
+                  "text": "",
+                  "y": 33
+                },
+                {
+                  "text": "",
+                  "y": 34
+                },
+                {
+                  "text": "",
+                  "y": 35
+                },
+                {
+                  "text": "",
+                  "y": 36
+                },
+                {
+                  "text": "",
+                  "y": 37
+                },
+                {
+                  "text": "",
+                  "y": 38
+                },
+                {
+                  "text": "",
+                  "y": 39
+                },
+                {
+                  "text": "",
+                  "y": 40
+                },
+                {
+                  "text": "",
+                  "y": 41
+                },
+                {
+                  "text": "",
+                  "y": 42
+                },
+                {
+                  "text": "                                                            dolomite coffin",
+                  "y": 43
+                },
+                {
+                  "text": "",
+                  "y": 44
+                },
+                {
+                  "text": "",
+                  "y": 45
+                },
+                {
+                  "text": "                                                            Kol Asobstettad's skeleton",
+                  "y": 46
+                },
+                {
+                  "text": "",
+                  "y": 47
+                },
+                {
+                  "text": "",
+                  "y": 48
+                },
+                {
+                  "text": "",
+                  "y": 49
+                },
+                {
+                  "text": "",
+                  "y": 50
+                },
+                {
+                  "text": "",
+                  "y": 51
+                },
+                {
+                  "text": "",
+                  "y": 52
+                },
+                {
+                  "text": "",
+                  "y": 53
+                },
+                {
+                  "text": "",
+                  "y": 54
+                },
+                {
+                  "text": "",
+                  "y": 55
+                },
+                {
+                  "text": "",
+                  "y": 56
+                },
+                {
+                  "text": "",
+                  "y": 57
+                },
+                {
+                  "text": "",
+                  "y": 58
+                },
+                {
+                  "text": "",
+                  "y": 59
+                },
+                {
+                  "text": "",
+                  "y": 60
+                },
+                {
+                  "text": "",
+                  "y": 61
+                },
+                {
+                  "text": "",
+                  "y": 62
+                },
+                {
+                  "text": "",
+                  "y": 63
+                },
+                {
+                  "text": "",
+                  "y": 64
+                },
+                {
+                  "text": "",
+                  "y": 65
+                }
+              ],
+              "provider": {
+                "building_id": 220,
+                "deceased": "",
+                "historical_figure_id": -1,
+                "introduction": "",
+                "name": "",
+                "notices": [],
+                "room_id": 228,
+                "room_introduction": "This furniture is a part of",
+                "room_name": "Unnamed tomb",
+                "room_type": 97,
+                "unit_id": -1,
+                "zones": [
+                  228
+                ]
+              }
+            },
+            {
+              "label": "roomless",
+              "lines": [
+                {
+                  "text": "                  RoderÃ²nul           Pop                                  Food  Drink           20th Malachite",
+                  "y": 0
+                },
+                {
+                  "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                  "y": 1
+                },
+                {
+                  "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                  "y": 2
+                },
+                {
+                  "text": "",
+                  "y": 3
+                },
+                {
+                  "text": "",
+                  "y": 4
+                },
+                {
+                  "text": "",
+                  "y": 5
+                },
+                {
+                  "text": "                                                            Dolomite Coffin",
+                  "y": 6
+                },
+                {
+                  "text": "",
+                  "y": 7
+                },
+                {
+                  "text": "",
+                  "y": 8
+                },
+                {
+                  "text": "",
+                  "y": 9
+                },
+                {
+                  "text": "",
+                  "y": 10
+                },
+                {
+                  "text": "                                                      You must designate a tomb",
+                  "y": 11
+                },
+                {
+                  "text": "                                                      before this coffin will",
+                  "y": 12
+                },
+                {
+                  "text": "                                                      be used for burial.",
+                  "y": 13
+                },
+                {
+                  "text": "",
+                  "y": 14
+                },
+                {
+                  "text": "",
+                  "y": 15
+                },
+                {
+                  "text": "                                                                                                                                    Elevation 36",
+                  "y": 16
+                },
+                {
+                  "text": "",
+                  "y": 17
+                },
+                {
+                  "text": "",
+                  "y": 18
+                },
+                {
+                  "text": "",
+                  "y": 19
+                },
+                {
+                  "text": "",
+                  "y": 20
+                },
+                {
+                  "text": "",
+                  "y": 21
+                },
+                {
+                  "text": "",
+                  "y": 22
+                },
+                {
+                  "text": "",
+                  "y": 23
+                },
+                {
+                  "text": "",
+                  "y": 24
+                },
+                {
+                  "text": "",
+                  "y": 25
+                },
+                {
+                  "text": "",
+                  "y": 26
+                },
+                {
+                  "text": "",
+                  "y": 27
+                },
+                {
+                  "text": "",
+                  "y": 28
+                },
+                {
+                  "text": "",
+                  "y": 29
+                },
+                {
+                  "text": "",
+                  "y": 30
+                },
+                {
+                  "text": "",
+                  "y": 31
+                },
+                {
+                  "text": "",
+                  "y": 32
+                },
+                {
+                  "text": "",
+                  "y": 33
+                },
+                {
+                  "text": "",
+                  "y": 34
+                },
+                {
+                  "text": "",
+                  "y": 35
+                },
+                {
+                  "text": "",
+                  "y": 36
+                },
+                {
+                  "text": "",
+                  "y": 37
+                },
+                {
+                  "text": "",
+                  "y": 38
+                },
+                {
+                  "text": "",
+                  "y": 39
+                },
+                {
+                  "text": "",
+                  "y": 40
+                },
+                {
+                  "text": "",
+                  "y": 41
+                },
+                {
+                  "text": "",
+                  "y": 42
+                },
+                {
+                  "text": "                                                            dolomite coffin",
+                  "y": 43
+                },
+                {
+                  "text": "",
+                  "y": 44
+                },
+                {
+                  "text": "",
+                  "y": 45
+                },
+                {
+                  "text": "                                                            Kol Asobstettad's skeleton",
+                  "y": 46
+                },
+                {
+                  "text": "",
+                  "y": 47
+                },
+                {
+                  "text": "",
+                  "y": 48
+                },
+                {
+                  "text": "",
+                  "y": 49
+                },
+                {
+                  "text": "",
+                  "y": 50
+                },
+                {
+                  "text": "",
+                  "y": 51
+                },
+                {
+                  "text": "",
+                  "y": 52
+                },
+                {
+                  "text": "",
+                  "y": 53
+                },
+                {
+                  "text": "",
+                  "y": 54
+                },
+                {
+                  "text": "",
+                  "y": 55
+                },
+                {
+                  "text": "",
+                  "y": 56
+                },
+                {
+                  "text": "",
+                  "y": 57
+                },
+                {
+                  "text": "",
+                  "y": 58
+                },
+                {
+                  "text": "",
+                  "y": 59
+                },
+                {
+                  "text": "",
+                  "y": 60
+                },
+                {
+                  "text": "",
+                  "y": 61
+                },
+                {
+                  "text": "",
+                  "y": 62
+                },
+                {
+                  "text": "",
+                  "y": 63
+                },
+                {
+                  "text": "",
+                  "y": 64
+                },
+                {
+                  "text": "",
+                  "y": 65
+                }
+              ],
+              "provider": {
+                "building_id": 220,
+                "deceased": "",
+                "historical_figure_id": -1,
+                "introduction": "",
+                "name": "",
+                "notices": [
+                  "You must designate a tomb",
+                  "before this coffin will",
+                  "be used for burial."
+                ],
+                "room_id": -1,
+                "room_introduction": "",
+                "room_name": "",
+                "room_type": -1,
+                "unit_id": -1,
+                "zones": []
+              }
+            },
+            {
+              "label": "multiple",
+              "lines": [
+                {
+                  "text": "                  RoderÃ²nul           Pop                                  Food  Drink           20th Malachite",
+                  "y": 0
+                },
+                {
+                  "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                  "y": 1
+                },
+                {
+                  "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                  "y": 2
+                },
+                {
+                  "text": "",
+                  "y": 3
+                },
+                {
+                  "text": "",
+                  "y": 4
+                },
+                {
+                  "text": "",
+                  "y": 5
+                },
+                {
+                  "text": "                                                            Dolomite Coffin",
+                  "y": 6
+                },
+                {
+                  "text": "",
+                  "y": 7
+                },
+                {
+                  "text": "",
+                  "y": 8
+                },
+                {
+                  "text": "",
+                  "y": 9
+                },
+                {
+                  "text": "",
+                  "y": 10
+                },
+                {
+                  "text": "                                                      This furniture is a part of multiple rooms.",
+                  "y": 11
+                },
+                {
+                  "text": "",
+                  "y": 12
+                },
+                {
+                  "text": "",
+                  "y": 13
+                },
+                {
+                  "text": "",
+                  "y": 14
+                },
+                {
+                  "text": "",
+                  "y": 15
+                },
+                {
+                  "text": "                                                                                                                                    Elevation 36",
+                  "y": 16
+                },
+                {
+                  "text": "",
+                  "y": 17
+                },
+                {
+                  "text": "",
+                  "y": 18
+                },
+                {
+                  "text": "",
+                  "y": 19
+                },
+                {
+                  "text": "",
+                  "y": 20
+                },
+                {
+                  "text": "",
+                  "y": 21
+                },
+                {
+                  "text": "",
+                  "y": 22
+                },
+                {
+                  "text": "",
+                  "y": 23
+                },
+                {
+                  "text": "",
+                  "y": 24
+                },
+                {
+                  "text": "",
+                  "y": 25
+                },
+                {
+                  "text": "",
+                  "y": 26
+                },
+                {
+                  "text": "",
+                  "y": 27
+                },
+                {
+                  "text": "",
+                  "y": 28
+                },
+                {
+                  "text": "",
+                  "y": 29
+                },
+                {
+                  "text": "",
+                  "y": 30
+                },
+                {
+                  "text": "",
+                  "y": 31
+                },
+                {
+                  "text": "",
+                  "y": 32
+                },
+                {
+                  "text": "",
+                  "y": 33
+                },
+                {
+                  "text": "",
+                  "y": 34
+                },
+                {
+                  "text": "",
+                  "y": 35
+                },
+                {
+                  "text": "",
+                  "y": 36
+                },
+                {
+                  "text": "",
+                  "y": 37
+                },
+                {
+                  "text": "",
+                  "y": 38
+                },
+                {
+                  "text": "",
+                  "y": 39
+                },
+                {
+                  "text": "",
+                  "y": 40
+                },
+                {
+                  "text": "",
+                  "y": 41
+                },
+                {
+                  "text": "",
+                  "y": 42
+                },
+                {
+                  "text": "                                                            dolomite coffin",
+                  "y": 43
+                },
+                {
+                  "text": "",
+                  "y": 44
+                },
+                {
+                  "text": "",
+                  "y": 45
+                },
+                {
+                  "text": "                                                            Kol Asobstettad's skeleton",
+                  "y": 46
+                },
+                {
+                  "text": "",
+                  "y": 47
+                },
+                {
+                  "text": "",
+                  "y": 48
+                },
+                {
+                  "text": "",
+                  "y": 49
+                },
+                {
+                  "text": "",
+                  "y": 50
+                },
+                {
+                  "text": "",
+                  "y": 51
+                },
+                {
+                  "text": "",
+                  "y": 52
+                },
+                {
+                  "text": "",
+                  "y": 53
+                },
+                {
+                  "text": "",
+                  "y": 54
+                },
+                {
+                  "text": "",
+                  "y": 55
+                },
+                {
+                  "text": "",
+                  "y": 56
+                },
+                {
+                  "text": "",
+                  "y": 57
+                },
+                {
+                  "text": "",
+                  "y": 58
+                },
+                {
+                  "text": "",
+                  "y": 59
+                },
+                {
+                  "text": "",
+                  "y": 60
+                },
+                {
+                  "text": "",
+                  "y": 61
+                },
+                {
+                  "text": "",
+                  "y": 62
+                },
+                {
+                  "text": "",
+                  "y": 63
+                },
+                {
+                  "text": "",
+                  "y": 64
+                },
+                {
+                  "text": "",
+                  "y": 65
+                }
+              ],
+              "provider": {
+                "building_id": 220,
+                "deceased": "",
+                "historical_figure_id": -1,
+                "introduction": "",
+                "name": "",
+                "notices": [
+                  "This furniture is a part of multiple rooms."
+                ],
+                "room_id": -1,
+                "room_introduction": "",
+                "room_name": "",
+                "room_type": -1,
+                "unit_id": -1,
+                "zones": [
+                  228,
+                  23
+                ]
+              }
+            }
+          ],
+          "scope": "Native occupied/unassigned/roomless/multiple-room text and row presence. Controlled owner and relations edits restored before shared action workflow. Multiple case adds existing barracks relation to existing Tomb only for paused renderer observation; not gameplay membership validation. Owner artwork recipe obtained but rendered parity not yet checked. Wire/viewer still pending.",
+          "excluded_attempt": "040317 stopped before variants: fortress has only one Tomb; no acceptance.",
+          "plugin_sha256": "cb3c5ec40422bd984de30fa5cd50e45168eb1d083f10d3e11f7bce6fc0261ec4",
+          "sha256": {
+            "workshop-funerary-multiple.png": "9cf9489e8bbb223ba2e04a0405ffd827966c4ad139a867dda3bafa80ac35a897",
+            "workshop-funerary-occupant.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "workshop-funerary-roomless.png": "c48bd6989dce53c99525d59c81d2d38a61e63d1937278767829f7f2d639a83af",
+            "workshop-funerary-tomb.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "workshop-funerary-unassigned.png": "099f6678e6a5a710e8daa96f48fa73e9635fc1d81e7d77bcf91606f4d6e279fe"
+          }
         }
       }
     },

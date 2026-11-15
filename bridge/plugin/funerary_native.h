@@ -1,5 +1,7 @@
 #pragma once
 #include "unit_description_native.h"
+#include "building_item_native.h"
+#include "zone_native.h"
 #include "df/building_actual.h"
 #include "df/building_civzonest.h"
 #include "df/item_slabst.h"
@@ -7,12 +9,14 @@
 #include "df/creature_raw.h"
 
 namespace df3d_production {
-// Semantic body inputs for Coffin/Slab. This is not yet a complete sheet:
-// the coffin's owner card and room-link presentation remain separate work.
+// Semantic body inputs for Coffin/Slab; viewer owns layout and local navigation.
 struct FuneraryBody {
     int32_t buildingId=-1,unitId=-1,historicalFigureId=-1;
+    int32_t roomId=-1,roomType=-1;
     std::vector<int32_t> relevantZones;
-    std::string introduction,name;
+    std::vector<std::string> notices;
+    std::string introduction,name,roomIntroduction,roomName,deceased;
+    std::optional<ItemAppearanceRecipe> ownerAppearance;
 };
 inline bool funeraryReady() {
     if(!df3d_creature::inventoryDescriptionReady())return false;
@@ -32,7 +36,13 @@ inline bool funeraryReady() {
         }
         return std::strcmp(reinterpret_cast<const char*>(base+0x16014d0),"This is a memorial to")==0 &&
                std::strcmp(reinterpret_cast<const char*>(base+0x1601c40),"This is the resting place of")==0 &&
-               std::strcmp(reinterpret_cast<const char*>(base+0x15ed620),"a ")==0;
+               std::strcmp(reinterpret_cast<const char*>(base+0x15ed620),"a ")==0 &&
+               std::strcmp(reinterpret_cast<const char*>(base+0x1601c30),"Deceased")==0 &&
+               std::strcmp(reinterpret_cast<const char*>(base+0x1601800),"This furniture is a part of")==0 &&
+               std::strcmp(reinterpret_cast<const char*>(base+0x1601820),"This furniture is a part of multiple rooms.")==0 &&
+               std::strcmp(reinterpret_cast<const char*>(base+0x1601c90),"You must designate a tomb")==0 &&
+               std::strcmp(reinterpret_cast<const char*>(base+0x1601c78),"before this coffin will")==0 &&
+               std::strcmp(reinterpret_cast<const char*>(base+0x1601c60),"be used for burial.")==0;
     }();
     return ready;
 }
@@ -57,7 +67,13 @@ inline std::optional<FuneraryBody> funeraryBody(df::building* building) {
                 result.relevantZones.push_back(zone->id);tomb=zone;
             }
         }
+        if(result.relevantZones.empty()) {
+            for(const size_t rva:{0x1601c90,0x1601c78,0x1601c60})result.notices.emplace_back(reinterpret_cast<const char*>(base+rva));
+        }else if(result.relevantZones.size()>1)result.notices.emplace_back(reinterpret_cast<const char*>(base+0x1601820));
         if(result.relevantZones.size()==1 && int32_t(tomb->type)==97) {
+            auto zoneName=df3d_area::nativeZoneName(*tomb);if(!zoneName || zoneName->size()>1536)return std::nullopt;
+            result.roomId=tomb->id;result.roomType=int32_t(tomb->type);
+            result.roomName=std::move(*zoneName);result.roomIntroduction=reinterpret_cast<const char*>(base+0x1601800);
             auto* unit=df::unit::find(tomb->assigned_unit_id);
             if(unit) {
                 if(!unit->body.body_plan || unit->inventory.size()>10000)return std::nullopt;
@@ -67,6 +83,12 @@ inline std::optional<FuneraryBody> funeraryBody(df::building* building) {
                 reinterpret_cast<void(*)(df::unit*,std::string*,bool)>(base+0x1330c30)(owned.unit(),&result.name,false);
                 result.unitId=unit->id;
                 result.introduction=reinterpret_cast<const char*>(base+0x1601c40);
+                // Inline card1952fd..19534c tests DEAD, IS_EQUIPMENT and ZOMBIE.
+                static_assert(offsetof(df::unit,flags1)==0x110);
+                if((unit->flags1.whole&0x502)==2)result.deceased=reinterpret_cast<const char*>(base+0x1601c30);
+                df3d_appearance::Result appearance;
+                if(df3d_appearance::resolveUnitSelector(unit,appearance))result.ownerAppearance=ownedItemRecipe(appearance);
+                if(!result.ownerAppearance)return std::nullopt;
             }
         }
     }else {

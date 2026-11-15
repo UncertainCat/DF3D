@@ -3548,6 +3548,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           Json::Value result;result["building_id"]=body->buildingId;result["unit_id"]=body->unitId;
           result["historical_figure_id"]=body->historicalFigureId;
           result["introduction"]=DF2UTF(body->introduction);result["name"]=DF2UTF(body->name);
+          result["room_id"]=body->roomId;result["room_type"]=body->roomType;
+          result["room_introduction"]=DF2UTF(body->roomIntroduction);result["room_name"]=DF2UTF(body->roomName);
+          result["deceased"]=DF2UTF(body->deceased);result["notices"]=Json::Value(Json::arrayValue);
+          for(const auto& notice:body->notices)result["notices"].append(DF2UTF(notice));
+          if(body->ownerAppearance) {
+            const auto& recipe=*body->ownerAppearance;auto& art=result["owner_appearance"];
+            art["pages"]=Json::Value(Json::arrayValue);art["palettes"]=Json::Value(Json::arrayValue);art["layers"]=Json::Value(Json::arrayValue);
+            for(const auto& name:recipe.pages)art["pages"].append(name);
+            for(const auto& name:recipe.palettes)art["palettes"].append(name);
+            for(const auto& layer:recipe.layers){Json::Value values(Json::arrayValue);for(auto value:layer)values.append(value);art["layers"].append(values);}
+          }
           result["zones"]=Json::Value(Json::arrayValue);for(const auto id:body->relevantZones)result["zones"].append(id);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }

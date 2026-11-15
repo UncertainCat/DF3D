@@ -9807,6 +9807,20 @@ exits unsaved, native30FPS and sampled GPU49C. provider_reference retains the
 bridge hash and native observations. This staged provider does not yet publish
 a management snapshot or qualify owner-card rendering and input behavior.
 
+The staged provider also supplies native Tomb name/membership caption, Deceased,
+roomless and multiple-room notices, plus the shared full-body owner appearance
+recipe (the coffin renderer callsf26e0 with flag400). Native040422 matches
+occupied, unassigned, roomless and multiple-room text/row presence. Controlled
+owner and relation edits are restored before exercising shared actions; the
+multiple-room case temporarily adds an existing barracks to the coffin's relation
+list for paused renderer observation, not gameplay membership validation.
+040317 stopped before variants because the fortress has only one Tomb and is
+not acceptance. The occupied sample yields13 portrait layers; their rendered
+parity remains pending with wire/UI work. Owner death text follows native1952fd's
+flags1 mask; name clipping belongs to presentation. Source saves are unchanged,
+DF41876 exits unsaved, capped30FPS with sampled GPU49C. Bridge build and core19
+pass. funerary_reference.card_reference retains outputs and screenshot hashes.
+
 Protected native023324 and023607 on2026-11-15 qualify ordinary furniture
 with nonempty zone relations: Chair65, Bed9, Table62 and Statue493 still show no
 membership rows (the statue also belongs to location1). The membership-caption

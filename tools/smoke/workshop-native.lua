@@ -172,6 +172,39 @@ local ok,err=xpcall(function()
      local again,again_code=dfhack.run_command_silent('df3d','funerary-body-probe',tostring(target.id))
      assert(again_code==0 and text==again,'Repeated funerary read changed its output')
      row.funeral.provider=body
+     for _,key in ipairs{'room_introduction','room_name','deceased'}do
+      assert(body[key]=='' or visible:find(body[key],1,true),'Funerary card text differs: '..key)
+     end
+     if kind==3 and os.getenv('DF3D_FUNERARY_VARIANTS')=='1'then
+      local tomb=assert(df.building.find(body.room_id));local owner=tomb.assigned_unit_id;local cached=tomb.owner_unit_cached_index
+      local original={};for _,zone in ipairs(target.relations)do original[#original+1]=zone end
+      local function restore_relations()
+       target.relations:resize(0);for _,zone in ipairs(original)do target.relations:insert('#',zone)end
+      end
+      row.funeral.variants={}
+      local variant_ok,variant_error=xpcall(function()
+       local other
+       for _,zone in ipairs(df.global.world.buildings.all)do if df.building_civzonest:is_instance(zone) and zone.type==92 and zone.id~=tomb.id then other=zone;break end end
+       assert(other,'Barracks needed for native multiple-room reference')
+       for _,label in ipairs{'unassigned','roomless','multiple'}do
+        restore_relations();tomb.assigned_unit_id=owner;tomb.owner_unit_cached_index=cached
+        if label=='unassigned'then tomb.assigned_unit_id=-1;tomb.owner_unit_cached_index=-1
+        elseif label=='roomless'then target.relations:resize(0)
+        else target.relations:insert('#',other)end
+        view:render(dfhack.getTickCount())
+        local output,status=dfhack.run_command_silent('df3d','funerary-body-probe',tostring(target.id));assert(status==0,output)
+        local value=json.decode(output);local text_lines=lines();local text={};for _,line in ipairs(text_lines)do text[#text+1]=line.text end;text=table.concat(text,'\n')
+        for _,notice in ipairs(value.notices)do assert(text:find(notice,1,true),'Native coffin notice differs')end
+        assert(value.unit_id==-1 and value.introduction=='','Variant retained an assigned owner')
+        assert(label~='unassigned' or (value.room_id==tomb.id and text:find(value.room_name,1,true)),'Unassigned Tomb row differs')
+        assert(label=='unassigned' or #value.notices>0,'Missing coffin notice')
+        row.funeral.variants[#row.funeral.variants+1]={label=label,provider=value,lines=text_lines}
+        shot('funerary-'..label)
+       end
+      end,debug.traceback)
+      restore_relations();tomb.assigned_unit_id=owner;tomb.owner_unit_cached_index=cached;view:render(dfhack.getTickCount())
+      assert(variant_ok,variant_error)
+     end
     end
     for _,zone in ipairs(target.relations)do row.funeral.zones[#row.funeral.zones+1]={id=zone.id,type=zone.type,assigned_unit_id=zone.assigned_unit_id}end
     for _,held in ipairs(target.contained_items)do

@@ -13532,6 +13532,181 @@
           "build/stockpile-storage-native-farm-discovery-20261114-215011/result.json": "50e98625fae6b975762c02e41d65c3cff8f3c0c9e76d34df460bf89bee43d331",
           "build/stockpile-storage-native-farm-discovery-20261114-215011/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "transport_reference": {
+        "protocol": 216,
+        "scope": "Headless Godot exact revision read, resume/repeated resume/suspend, stale cancellation rejection, pending controller late-read retirement and confirmed stage0 deletion/stage1 demolition transition. Independent native effects match. No rendered panel or map-entry acceptance.",
+        "cases": [
+          {
+            "lane": "build/stockpile-storage-native-farm-discovery-20261114-220119",
+            "owned_df_pid": 36424,
+            "status": "passed_with_known_issues: separate-render-thread notice only",
+            "source_save_preserved": true,
+            "closed_unsaved": true,
+            "stage": 0,
+            "max_stage": 1,
+            "wire": {
+              "receipts": [
+                {
+                  "has_worker": false,
+                  "header_name": "Platinum Statue",
+                  "id": 965,
+                  "job_id": 68196,
+                  "max_stage": 1,
+                  "revision": "2282824978931642020",
+                  "stage": 0,
+                  "suspended": false,
+                  "type": 15
+                },
+                {
+                  "has_worker": false,
+                  "header_name": "Platinum Statue",
+                  "id": 965,
+                  "job_id": 68196,
+                  "max_stage": 1,
+                  "revision": "2282824978931642020",
+                  "stage": 0,
+                  "suspended": false,
+                  "type": 15
+                },
+                {
+                  "has_worker": false,
+                  "header_name": "Platinum Statue",
+                  "id": 965,
+                  "job_id": 68196,
+                  "max_stage": 1,
+                  "revision": "4443474798278221606",
+                  "stage": 0,
+                  "suspended": true,
+                  "type": 15
+                },
+                {
+                  "late_read_retired": true,
+                  "retired": [
+                    false
+                  ]
+                }
+              ],
+              "success": true
+            },
+            "cancellation": {
+              "building_exists": false,
+              "frame": 0,
+              "id": 965,
+              "job_ids": [
+                68196
+              ],
+              "jobs_remaining": [],
+              "materials_after": [
+                {
+                  "exists": true,
+                  "flags": 1,
+                  "id": 22339
+                }
+              ],
+              "materials_before": [
+                {
+                  "exists": true,
+                  "flags": 2,
+                  "id": 22339
+                }
+              ],
+              "occupancy_after": 134217728,
+              "occupancy_before": 134217729,
+              "remaining_jobs": []
+            },
+            "hashes": {
+              "workshop-native.json": "ac14d7c696bb882a11ed2877578ccfee89b284c3c86250deb364b7a74514a061",
+              "workshop-wire-result.json": "8552a58c2c93ca2229e1dd256a4a8fa8c5d00bcb0c01b3a567d7ec00f297a95e",
+              "workshop-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+              "pending-expected.json": "e53906e16236b95f788bf102c60a9861dde76654b1a8f5c49aee4fbefadefdc9",
+              "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+            }
+          },
+          {
+            "lane": "build/stockpile-storage-native-farm-discovery-20261114-220256",
+            "owned_df_pid": 21804,
+            "status": "passed_with_known_issues: separate-render-thread notice only",
+            "source_save_preserved": true,
+            "closed_unsaved": true,
+            "stage": 1,
+            "max_stage": 3,
+            "wire": {
+              "receipts": [
+                {
+                  "has_worker": false,
+                  "header_name": "Farm Plot",
+                  "id": 1490,
+                  "job_id": 382796,
+                  "max_stage": 3,
+                  "revision": "8414798608743560935",
+                  "stage": 1,
+                  "suspended": false,
+                  "type": 4
+                },
+                {
+                  "has_worker": false,
+                  "header_name": "Farm Plot",
+                  "id": 1490,
+                  "job_id": 382796,
+                  "max_stage": 3,
+                  "revision": "8414798608743560935",
+                  "stage": 1,
+                  "suspended": false,
+                  "type": 4
+                },
+                {
+                  "has_worker": false,
+                  "header_name": "Farm Plot",
+                  "id": 1490,
+                  "job_id": 382796,
+                  "max_stage": 3,
+                  "revision": "6254148789396981349",
+                  "stage": 1,
+                  "suspended": true,
+                  "type": 4
+                },
+                {
+                  "late_read_retired": true,
+                  "retired": [
+                    [
+                      1490,
+                      true
+                    ]
+                  ]
+                }
+              ],
+              "success": true
+            },
+            "cancellation": {
+              "building_exists": true,
+              "frame": 0,
+              "id": 1490,
+              "job_ids": [
+                382796
+              ],
+              "jobs_remaining": [],
+              "materials_after": [],
+              "materials_before": [],
+              "occupancy_after": 1,
+              "occupancy_before": 1,
+              "remaining_jobs": [
+                {
+                  "flags": 0,
+                  "id": 382797,
+                  "type": "DestroyBuilding"
+                }
+              ]
+            },
+            "hashes": {
+              "workshop-native.json": "53fb369fa2f9629e24aa2145673e14c5d62e04247518f6fa573778cf605687ae",
+              "workshop-wire-result.json": "043e07bc3069e66290ef53ad8313a7a0f74b6de60ae17534990c4bf844171823",
+              "workshop-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+              "pending-expected.json": "cfdb0dca8e9cb0c60210bd1f86e368d8090a4c1dad7a4c2dafb8c7664c4a3e1a",
+              "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+            }
+          }
+        ]
       }
     },
     "door_header_reference": {

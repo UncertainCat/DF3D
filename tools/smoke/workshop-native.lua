@@ -363,7 +363,13 @@ local ok,err=xpcall(function()
      local pos={x=b.centerx,y=b.centery,z=b.z}
      local function occupancy()return dfhack.maps.getTileBlock(pos).occupancy[pos.x%16][pos.y%16].whole end
      local cancelled={id=id,job_ids=job_ids,materials_before=materials(),occupancy_before=occupancy(),frame=df.global.world.frame_counter}
-     if pending_request then
+     if os.getenv('DF3D_PENDING_RUNTIME')=='1'then
+      local f=assert(io.open(out..'/pending-expected.json','w'));f:write(json.encode(request('0','read')));f:close()
+      capture('workshop-wire')
+      f=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(f:read('*a'));f:close()
+      assert(receipt.success,'Pending construction transport failed')
+      result.basic_building_reference.pending.wire=receipt;view:render(dfhack.getTickCount())
+     elseif pending_request then
       local current=pending_request('0','read')
       local receipt=pending_request(current.revision,'cancel')
       assert(receipt.outcome==1 and receipt.removed==(stage==0) and receipt.removing==(stage>0),'Pending provider cancel failed')

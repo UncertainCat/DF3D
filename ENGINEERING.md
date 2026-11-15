@@ -9883,6 +9883,19 @@ uncertain edits grant neither snapshot nor terminal authority. Older recordings
 imply no unfinished-building observation. Both schema defaults and mailbox are216
 (`Local\\df3d_management_v216`); bridge and clients must be rebuilt together.
 The protocol does not by itself expose the unfinished-building panel.
+Protected220119/220256 on2026-11-14 verify the protocol through headless Godot:
+exact64-bit revisions, resume/repeated resume/suspend, stale rejection, late-read
+retirement and cancellation through pending_building_state. Stage0 Statue965
+retires; stage1 FarmPlot1490 queues demolition. Native readbacks match the
+independent references, including materials, job retirement and occupancy.
+The state owner clears authority before emitting retirement with the stable
+building ID and demolition flag. Unknown results clear authority and never
+retry; focused state and semantic-service headless checks pass. Owned DF36424/
+21804 exit unsaved with source preservation. Graphics remain capped30FPS,
+sampled GPU60C/22–33%; clients emit only the known rendering-thread notice.
+Core, bridge and extension builds and all19 root checks pass. Evidence lives
+in pending_construction_reference.transport_reference. Rendered controls,
+component contents, removal-sheet handoff and ordinary map entry remain pending.
 
 The audited building-type dispatch maps Door8 to inline1af741..1af807.
 It rejects flags0x2c (invader/intruder/mechanism control), allows forbidding only

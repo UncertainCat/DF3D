@@ -630,13 +630,14 @@ func test_header_payload_delivery() -> void:
 	service.free()
 
 func test_independent_item_unknown() -> void:
-	for domain_state in ["independent_item","door_controls"]:
+	for domain_state in ["independent_item","door_controls","pending_building"]:
 		test_production_unknown(domain_state)
 
 func test_production_unknown(domain_state: String) -> void:
 	var world:=FakeWorld.new();var service:=Service.new();service.configure(world)
 	var intent={"action":Contract.ManagementAction.FarmEdit,"independent_item":true,"item_id":45,"farm_operation":Contract.FarmOperation.ItemHidden,"item_value":1,"expected_revision":7}
 	if domain_state=="door_controls":intent={"action":Contract.ManagementAction.FarmEdit,"door_controls":true,"building_id":16,"door_forbidden":1,"expected_revision":7}
+	if domain_state=="pending_building":intent={"action":Contract.ManagementAction.FarmEdit,"pending_building":true,"building_id":965,"pending_operation":2,"expected_revision":7}
 	var ticket:=service.submit("production",intent,Callable())
 	service.poll()
 	var production={};production[domain_state]={"outcome":Contract.FarmEditOutcome.Unknown}

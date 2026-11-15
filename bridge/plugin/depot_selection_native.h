@@ -70,8 +70,33 @@ inline std::optional<std::vector<int16_t>> depotCategories(const DepotGoods& goo
     result.erase(std::remove_if(result.begin(),result.end(),[&](int16_t type){return !(query.empty()?eligible[type]:matched[type]);}),result.end());
     return result;
 }
-struct DepotSelectedGroup {DepotGoodsGroup group;bool matches=false;uint32_t flags=0;};
-struct DepotSelection {std::vector<int32_t> ids;std::vector<DepotSelectedGroup> groups;};
+struct DepotSelectedGroup {DepotGoodsGroup group;bool matches=false;uint32_t flags=0;std::string caption;};
+struct DepotSelection {std::vector<int32_t> ids;std::vector<DepotSelectedGroup> groups;std::vector<std::string> itemCaptions;};
+// Native strings are CP437. Preserve their bytes until the transport boundary.
+inline std::optional<std::string> depotGroupCaption(int16_t type,int16_t subtype=-1,
+    int16_t subcat1=-1,int16_t subcat2=-1,int32_t amount=-1) {
+    if(!depotNativeReady() || !df::global::world || type<0 || type>=93)return {};
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool ready=[base] {
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x38a97d,0x50,UINT64_C(0xfb978fc53ec8137c)},
+            {0x38b3c7,0x58,UINT64_C(0x22bfb81c86693c1f)},
+            {0x38b857,0x15,UINT64_C(0x7d149f35ba3fb345)},
+            {0xa82c10,0x56ec,UINT64_C(0x66347214dfd39a0b)},
+            {0x52d650,0x2b4,UINT64_C(0x9e8023d09def7af9)},
+            {0xc65450,0xaba,UINT64_C(0x47fa672b7bbcd332)}};
+        for(const auto& pin:pins){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<pin.length;++i){h^=base[pin.rva+i];h*=UINT64_C(1099511628211);}if(h!=pin.hash)return false;}
+        return true;
+    }();
+    if(!ready)return {};
+    df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    std::string caption;
+    using Describe=void(*)(std::string*,int16_t,int16_t,int16_t,int32_t,int32_t,int32_t,bool,void*,int32_t,int32_t,bool,int32_t,int32_t);
+    reinterpret_cast<Describe>(base+0xa82c10)(&caption,type,subtype,subcat1,subcat2,amount,0,false,nullptr,-1,-1,true,0,0);
+    reinterpret_cast<void(*)(std::string*)>(base+0x52d650)(&caption);
+    return caption;
+}
 // Native37a0a0 selects/sorts a category,37cd50 searches owned group/item names,
 //37d9c0 aggregates selection flags. None reads the global picker or window size.
 // Do not substitute37ba00: its category-list scroll tail reads native geometry.
@@ -113,14 +138,24 @@ inline std::optional<DepotSelection> depotSelection(const DepotGoods& goods,int1
     df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
     reinterpret_cast<void (*)(df::assign_trade_interfacest*)>(base+0x37a0a0)(&owned);
     DepotSelection result;
-    for(auto* row:owned.current_type_tgi)result.ids.push_back(row->it->id);
+    // Validate the renderer's formatting leaves before obtaining item captions.
+    if(!depotGroupCaption(type))return {};
+    for(auto* row:owned.current_type_tgi){result.ids.push_back(row->it->id);
+        std::string caption;
+        reinterpret_cast<void(*)(df::item*,std::string*,bool,int32_t)>(base+0xc65450)(row->it,&caption,false,-1);
+        result.itemCaptions.push_back(std::move(caption));
+    }
     const auto count=owned.current_type_a_subtype.size();
     if(owned.current_type_a_subcat1.size()!=count || owned.current_type_a_subcat2.size()!=count ||
        owned.current_type_a_amount.size()!=count || owned.current_type_a_expanded.size()!=count ||
        owned.current_type_a_on.size()!=count || owned.current_type_a_flag.size()!=count)return {};
-    for(size_t i=0;i<count;++i)result.groups.push_back({{type,int16_t(owned.current_type_a_subtype[i]),
+    for(size_t i=0;i<count;++i){auto caption=depotGroupCaption(type,int16_t(owned.current_type_a_subtype[i]),
+        int16_t(owned.current_type_a_subcat1[i]),int16_t(owned.current_type_a_subcat2[i]),owned.current_type_a_amount[i]);
+        if(!caption)return {};
+        result.groups.push_back({{type,int16_t(owned.current_type_a_subtype[i]),
         int16_t(owned.current_type_a_subcat1[i]),int16_t(owned.current_type_a_subcat2[i]),
-        owned.current_type_a_amount[i],owned.current_type_a_expanded[i]},owned.current_type_a_on[i],owned.current_type_a_flag[i].whole});
+        owned.current_type_a_amount[i],owned.current_type_a_expanded[i]},owned.current_type_a_on[i],owned.current_type_a_flag[i].whole,std::move(*caption)});
+    }
     return result;
 }
 }

@@ -4953,8 +4953,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         const auto categories=df3d_production::depotCategories(*facts,parameters[6],values[4]!=0);if(!categories)return CR_FAILURE;
         Json::Value output;output["ids"]=Json::arrayValue;output["groups"]=Json::arrayValue;
         output["categories"]=Json::arrayValue;for(auto type:*categories)output["categories"].append(type);
+        output["category_captions"]=Json::arrayValue;
+        for(auto type:*categories){const auto caption=df3d_production::depotGroupCaption(type);if(!caption)return CR_FAILURE;output["category_captions"].append(DF2UTF(*caption));}
+        output["item_captions"]=Json::arrayValue;for(const auto& caption:selected->itemCaptions)output["item_captions"].append(DF2UTF(caption));
         for(auto id:selected->ids)output["ids"].append(id);
-        for(const auto& row:selected->groups){Json::Value g;g["subtype"]=row.group.subtype;g["subcat1"]=row.group.subcat1;g["subcat2"]=row.group.subcat2;g["amount"]=row.group.amount;g["expanded"]=row.group.expanded;g["matches"]=row.matches;g["flags"]=row.flags;output["groups"].append(g);}
+        for(const auto& row:selected->groups){Json::Value g;g["subtype"]=row.group.subtype;g["subcat1"]=row.group.subcat1;g["subcat2"]=row.group.subcat2;g["amount"]=row.group.amount;g["expanded"]=row.group.expanded;g["matches"]=row.matches;g["flags"]=row.flags;g["caption"]=DF2UTF(row.caption);output["groups"].append(g);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="depot-goods-probe") {

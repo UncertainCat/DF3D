@@ -1053,9 +1053,24 @@ including the matching container categories. Existing item/group comparisons
 also pass. Owned DF37828 closes unsaved with source preservation; graphics
 are capped30FPS and sampled GPU60C. Bridge build and all19 core checks pass.
 Evidence: `completed_sheet_discovery_reference.depot_category_reference`.
+Native depot renderer38a5b0 supplies category captions through a82c10 with
+all subtype/material/count arguments-1, then52d650 capitalization. Group rows
+use the selected type and native group keys/amount with the same capitalization;
+individual rows call c65450(item,text,false,-1) without capitalization. The
+provider retains CP437 strings until transport conversion, with material-cache
+restoration around description calls. Rendering callsites and leaves are pinned.
+Protected140935 on2026-11-15 compares all visible category captions directly
+against native screen cells in the seven selection cases:18 per unfiltered
+view and6 for IRON. The first matching material-group caption and at least one
+displayed item caption match the native right-hand text in every case. This
+does not qualify every individual item's displayed caption or truncation.
+Item/group/category ordering comparisons continue to pass. Owned DF35732
+closes unsaved with source preservation; native30FPS, sampled GPU60C. Bridge
+build and core19 pass. Evidence:
+`completed_sheet_discovery_reference.depot_caption_reference`.
 Nondefault sort/exclusion controls, positive prohibition cases, other search
-text and local expansion editing remain unqualified. Category caption rendering,
-viewer navigation and public revision transport remain unfinished; depot stays hidden.
+text and local expansion editing remain unqualified. Viewer caption rendering,
+navigation and public revision transport remain unfinished; depot stays hidden.
 
 ## Completed bridge, wagon and traction-bench sheets
 

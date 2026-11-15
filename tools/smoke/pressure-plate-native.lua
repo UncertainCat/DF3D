@@ -1,5 +1,5 @@
 -- Native screen discovery only, in the paused owned disposable clone.
-local out,view,select_map,capture,click_label=...
+local out,view,select_map,capture,click_label,read_worker_reference=...
 local gui=require('gui');local json=require('json');local g=df.global.gps
 local sheet=df.global.game.main_interface.view_sheets
 local result={states={},candidates={}}
@@ -109,6 +109,22 @@ local ok,err=xpcall(function()
  end
  for _,label in ipairs{'Workers','Work orders','Tasks'}do
   if click_label(label)then sample(label:gsub(' ','-'):lower())end
+  if os.getenv('DF3D_PRESSURE_PLATE_PROFILE')=='1'then
+   local profile=assert(plate:getWorkshopProfile())
+   if label=='Workers' then
+    assert(#profile.permitted_workers==0)
+    click(448,154);result.worker_selector=read_worker_reference(plate,false);sample('worker-selector')
+    click(80,106);assert(#profile.permitted_workers==1)
+    local text,code=owned('workshop-workers-probe',tostring(plate.id));assert(code==0,text)
+    result.assigned_worker=json.decode(text);assert(result.assigned_worker.assigned.id==profile.permitted_workers[0]);sample('worker-assigned')
+    click(448,190);click(80,106);assert(#profile.permitted_workers==0)
+    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());sample('workers-restored')
+   elseif label=='Work orders' then
+    result.order_limit=profile.max_general_orders;assert(result.order_limit<99)
+    click(840,478);assert(profile.max_general_orders==result.order_limit+1);sample('order-limit-plus')
+    click(872,478);assert(profile.max_general_orders==result.order_limit);sample('order-limit-restored')
+   end
+  end
  end
  if click_label('Link')then
   sample('link')
@@ -166,6 +182,10 @@ local ok,err=xpcall(function()
   capture('workshop-wire')
   f=assert(io.open(out..'/workshop-wire-result.json'));result.wire=json.decode(f:read('*a'));f:close()
   assert(result.wire.success and #plate.jobs==1 and plate.jobs[0].id==result.wire.link_job,'Plate wire action failed')
+  if result.order_limit then
+   local profile=assert(plate:getWorkshopProfile())
+   assert(#profile.permitted_workers==0 and profile.max_general_orders==result.order_limit,'Viewer did not restore plate profile')
+  end
   if result.connections then
    local links=assert(plate:getStockpileLinks());local pile=assert(df.building.find(result.connections.pile_id))
    assert(#links.give_to_pile==0 and #links.take_from_pile==0,'Viewer retained plate stockpile links')

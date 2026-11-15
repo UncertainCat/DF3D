@@ -418,6 +418,18 @@ Core19 passes; only the documented render-thread/finalize/two ObjectDB graphics
 diagnostics remain. Evidence:
 `completed_sheet_discovery_reference.pressure_plate_item_navigation_reference`.
 
+Protected100116 qualifies the plate's worker assignment and general-order limit
+through native controls and the composed panel. The owned worker provider
+matches native candidate membership and skill weights. Assigning the first
+worker closes the picker; reselecting that worker restores unrestricted use and
+retains the picker until Escape. Increasing and restoring the work-order limit
+also matches native. Four complete488x708 crops are exact; native final readback
+confirms restored permissions/limit, and subsequent Link effects pass. No
+runtime change was needed. Owned DF40444 closes unsaved with source preservation;
+graphics capped30FPS, sampled GPU60C, core19 passes. Only the documented
+render-thread/finalize/two ObjectDB graphics diagnostics remain. Evidence:
+`completed_sheet_discovery_reference.pressure_plate_profile_reference`.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

@@ -26254,6 +26254,31 @@
           "build/stockpile-storage-native-farm-discovery-20261115-095902/pressure-plate-navigation-item-view-viewer.png": "487555ad67d94e4a2543676ccf7ba281a36df9caeaa3ab0ad26af5d16af2a2d6",
           "build/stockpile-storage-native-farm-discovery-20261115-095902/pressure-plate-navigation-item-returned-viewer.png": "5ffa8f3e5afbdaecd876b90524cc65a5e068dcde1c8342730ec3f2f80aec0ad0"
         }
+      },
+      "pressure_plate_profile_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-100116",
+        "scope": "Native plate worker candidate membership/skills matches owned provider. Composed panel assigns first worker, reselection restores unrestricted use while retaining picker until Escape. General order limit increment/restore. Four exact488x708 panel crops, native final profile restoration and following Link effects. No new runtime code required.",
+        "candidate_count": 116,
+        "assigned_worker": 5573,
+        "order_limit": 5,
+        "owned_df_pid": 40444,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-100116/pressure-plate-native.json": "9dd44dc75bd8dba2d956c279329e55368dafbdd86477be2791f71ff19383e584",
+          "build/stockpile-storage-native-farm-discovery-20261115-100116/workshop-wire-result.json": "42d63cd81e87f3a35ddbd3d132ff423a5df30ababe0086218a991ea689774efc",
+          "build/stockpile-storage-native-farm-discovery-20261115-100116/result.json": "e4a7b5b15a5336c02dcbdd6e198dc0b2274ce9d291085e84319b5a5efb72c8bd",
+          "build/stockpile-storage-native-farm-discovery-20261115-100116/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-100116/pressure-plate-worker-assigned.png": "06fea83e19dda27f970d725a6f92c8239da488b111c59df835a377a6e591e841",
+          "build/stockpile-storage-native-farm-discovery-20261115-100116/pressure-plate-workers-restored.png": "f2591b9658293cc05f716255cd2e5b2c7a31ff4341eb4690a61e594efeb922a7",
+          "build/stockpile-storage-native-farm-discovery-20261115-100116/pressure-plate-order-limit-plus.png": "fb27e4ae2a5999d4d3359ac2a6239a757f3c46178255db827ec99a508b13696d",
+          "build/stockpile-storage-native-farm-discovery-20261115-100116/pressure-plate-order-limit-restored.png": "d76b4af1d0ec134ae5b2f60f4af1c3dc92596454d301fb78a4497387ed358078",
+          "build/stockpile-storage-native-farm-discovery-20261115-100116/pressure-plate-panel-worker-assigned-viewer.png": "e06ccb655520c13073f2415ce4384b929d21385adfac65cff56f2a929518a809",
+          "build/stockpile-storage-native-farm-discovery-20261115-100116/pressure-plate-panel-workers-restored-viewer.png": "981c9ea6f6211445c610c1c516265fbef9d8c305025c26cc2f5a3d55abfa9e36",
+          "build/stockpile-storage-native-farm-discovery-20261115-100116/pressure-plate-panel-order-limit-plus-viewer.png": "726d5e6e3b023deef69500a482d84ecd119943ca677cae3a302af348ed1c1a29",
+          "build/stockpile-storage-native-farm-discovery-20261115-100116/pressure-plate-panel-order-limit-restored-viewer.png": "c1927668ed5df2b35b996f202f0538e6750649c9fd3c49c84141bf7403a4282b"
+        }
       }
     },
     "pending_construction_reference": {

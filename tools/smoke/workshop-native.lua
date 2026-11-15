@@ -137,7 +137,7 @@ local ok,err=xpcall(function()
  if os.getenv('DF3D_PRESSURE_PLATE_NATIVE')=='1'then
   resize_worker('default')
   local source=debug.getinfo(1,'S').source:sub(2):gsub('workshop%-native.lua$','pressure-plate-native.lua')
-  assert(loadfile(source))(out,view,select_map,capture,click_label)
+  assert(loadfile(source))(out,view,select_map,capture,click_label,read_worker_reference)
   return
  end
  if os.getenv('DF3D_LEVER_NATIVE')=='1'then

@@ -24367,6 +24367,36 @@
           "build/stockpile-storage-native-farm-discovery-20261115-090224/result.json": "c1826f278683af8476425e8bdf450a7d2466cdc1129ecaf1cb7057a6727cb630",
           "build/stockpile-storage-native-farm-discovery-20261115-090224/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "lever_order_picker_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-091009",
+        "scope": "Controlled occupied office temporarily grants manager responsibility/index in owned unsaved clone. Native forced lever picker has one group and zero recipes from global2658; owned native classifier matches. Composed manager panel and empty picker pixels match; Escape restores lever and manager-order count is unchanged. Responsibility/index restored. No recipe creation or modded lever reactions qualified.",
+        "catalog": {
+          "global_count": 2658,
+          "groups": 1,
+          "orders_before": 51,
+          "owned": [],
+          "rows": []
+        },
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "owned_df_pid": 43656,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-091009/lever-orders-manager.png": "a841d573eb069a74fcdff66c48b4d078cdcb137d33502b91dfc1d965bf7002de",
+          "build/stockpile-storage-native-farm-discovery-20261115-091009/lever-panel-orders-manager-viewer.png": "39f5ba1742754d41faa1c3826a69695fc14346d04c6694af63c510e36c7e0e9d",
+          "build/stockpile-storage-native-farm-discovery-20261115-091009/lever-order-picker.png": "58b7f82373813db886d551f37d57c39160d3707a9805b0ab0ea936a1bc85529a",
+          "build/stockpile-storage-native-farm-discovery-20261115-091009/lever-order-picker-viewer.png": "003d1096ae9f1a44c849d5d14d52146d712d682a72f6a6f6e15f0150b1bebdc5",
+          "build/stockpile-storage-native-farm-discovery-20261115-091009/lever-native.json": "5ed6fb4d7edef07e6301b6b813e2010d892a80b86d08caa2ef393457559f45fb",
+          "build/stockpile-storage-native-farm-discovery-20261115-091009/workshop-wire-result.json": "6165e492d48bbb0b096b247d685d300287e4bc2ee7355d02254ff4d3eef8fa24",
+          "build/stockpile-storage-native-farm-discovery-20261115-091009/result.json": "e1f40819f40e7a747b52340e042eb70268a15deaf03744a86ec0a49b93a188d7",
+          "build/stockpile-storage-native-farm-discovery-20261115-091009/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

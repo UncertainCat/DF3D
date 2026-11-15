@@ -217,6 +217,22 @@ the native building type/subtype methods used by source admission. Evidence:
 and multiple-row lever Connections are not separately qualified; public lever
 selection remains gated pending the remaining workflows.
 
+The forced work-order catalog now admits Lever subtype0 through the existing
+native classifier and reaction-building restrictions. Protected090452 on
+2026-11-15 temporarily grants an occupied office manager responsibility in the
+owned clone: native opens one lever group but offers zero recipes from the2658
+global templates. Protected091009 matches that empty catalog, the complete
+manager-enabled panel and944x708 picker, and Escape back to the lever. The
+manager-order count remains51; the temporary responsibility/index is restored.
+The lever picker uses native category selection art, left divider edge, text
+baseline and grey empty-search placeholder. Earlier090714/090855 failed pixel
+comparison and are not full acceptance. Owned DF43656 closes unsaved with
+source preservation; graphics capped30FPS, sampled GPU60C. MSVC and core19 pass;
+only the established render-thread/finalize/two ObjectDB diagnostics remain.
+Evidence: `completed_sheet_discovery_reference.lever_order_picker_reference`.
+This qualifies native empty-picker behavior in this fortress. No order creation
+or modded lever reaction catalog is claimed.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

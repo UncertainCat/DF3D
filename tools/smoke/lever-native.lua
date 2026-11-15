@@ -6,6 +6,7 @@ assert(#lever.jobs==0 and df.global.pause_state)
 local sheet=df.global.game.main_interface.view_sheets
 local result={building_id=lever.id,frame=df.global.world.frame_counter,states={}}
 local supplies={}
+local restore_manager
 local function click(x,y)
  local g=df.global.gps
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
@@ -147,6 +148,46 @@ local ok,err=xpcall(function()
   end
  end
  assert(click_label('Work orders'));sample('work-orders')
+ if os.getenv('DF3D_LEVER_ORDER_CATALOG')=='1'then
+  local fortress=assert(df.global.plotinfo.main.fortress_entity)
+  local responsibility=df.entity_position_responsibility.MANAGE_PRODUCTION
+  local position,assignment
+  for _,a in ipairs(fortress.positions.assignments)do
+   if a.histfig>=0 then
+    local present=false;for _,u in ipairs(df.global.world.units.active)do if u.hist_figure_id==a.histfig then present=true;break end end
+    if present then for _,p in ipairs(fortress.positions.own)do if p.id==a.position_id then position=p;assignment=a;break end end end
+   end
+   if position then break end
+  end
+  assert(position,'Lever picker requires occupied fortress office')
+  local indexed=fortress.assignments_by_type[responsibility];local prior={}
+  for _,a in ipairs(indexed)do prior[#prior+1]=a end
+  local previous=position.responsibilities[responsibility]
+  restore_manager=function()
+   position.responsibilities[responsibility]=previous;indexed:resize(0)
+   for _,a in ipairs(prior)do indexed:insert('#',a)end
+  end
+  position.responsibilities[responsibility]=true;indexed:insert('#',assignment)
+  view:render(dfhack.getTickCount());sample('orders-manager')
+  local before=#df.global.world.manager_orders.all
+  click(880,154)
+  local picker=df.global.game.main_interface.create_work_order
+  assert(picker.open and picker.forced_bld_id==lever.id,'Forced lever order picker did not open')
+  result.order_catalog={groups=#picker.building,global_count=#picker.jminfo_master,orders_before=before,rows={}}
+  assert(#picker.building==1)
+  for _,r in ipairs(picker.building[0].jminfo)do
+   result.order_catalog.rows[#result.order_catalog.rows+1]={job_type=r.job_type,reaction=r.reaction_name,item_type=r.item_type,item_subtype=r.item_subtype,mat_type=r.mat_type,mat_index=r.mat_index,caption=dfhack.df2utf(r.name),compare=dfhack.df2utf(r.compare_str)}
+  end
+  sample('order-picker')
+  if os.getenv('DF3D_LEVER_ORDER_VIEWER')=='1'then
+   local text,code=dfhack.run_command_silent('df3d','work-orders-catalog-probe',tostring(lever.id));assert(code==0,text)
+   result.order_catalog.owned=json.decode(text).rows
+   assert(json.encode(result.order_catalog.rows)==json.encode(result.order_catalog.owned),'Lever catalog differs from native')
+  end
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not picker.open)
+  assert(#df.global.world.manager_orders.all==before,'Opening lever picker created orders')
+  if os.getenv('DF3D_LEVER_ORDER_VIEWER')~='1'then restore_manager();restore_manager=nil end
+ end
  if os.getenv('DF3D_LEVER_WORKERS_PROVIDER')=='1'then
   local profile=lever:getWorkshopProfile();local before=profile.max_general_orders
   assert(before<99);click(840,478);assert(profile.max_general_orders==before+1);sample('order-limit-plus')
@@ -269,4 +310,8 @@ local ok,err=xpcall(function()
 end,debug.traceback)
 while #lever.jobs>0 do assert(dfhack.job.removeJob(lever.jobs[#lever.jobs-1]))end
 for index=#supplies,1,-1 do assert(dfhack.items.remove(supplies[index]))end
+if restore_manager then
+ restore_manager()
+ assert(#df.global.world.manager_orders.all==result.order_catalog.orders_before,'Lever picker viewer changed orders')
+end
 result.success=ok;result.error=ok and '' or tostring(err);persist();assert(ok,err)

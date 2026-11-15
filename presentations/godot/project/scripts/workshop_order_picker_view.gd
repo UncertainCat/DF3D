@@ -6,6 +6,7 @@ var state
 var input_allowed: Callable
 var building_name:=""
 var building_icon:=""
+var lever_style:=false
 var first:=0
 var query_bytes:=PackedByteArray()
 var search_focused:=false
@@ -87,14 +88,14 @@ func _gui_input(event: InputEvent) -> void:
 		var index:=first+int((event.position.y-60)/36)
 		if index<state.rows.size():state.choose(state.rows[index].key)
 		accept_event()
-func caption(value: String,point: Vector2,width: float) -> void:
-	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,width,12,Color.WHITE)
+func caption(value: String,point: Vector2,width: float,color:=Color.WHITE) -> void:
+	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,width,12,color)
 func _draw() -> void:
 	if world==null:return
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,118,frame_rows)
 	var border: Texture2D=art.texture("HOVER_RECTANGLE")
 	if border!=null:
-		for y in range(1,frame_rows-1):draw_texture_rect_region(border,Rect2(472,y*12,8,12),Rect2(16,12,8,12))
+		for y in range(1,frame_rows-1):draw_texture_rect_region(border,Rect2(472,y*12,8,12),Rect2(0 if lever_style else 16,12,8,12))
 	if state!=null and state.building_id==-2:
 		var icons=preload("res://scripts/location_staff_indicators.gd")
 		for index in range(group_first,mini(group_first+page_rows+1,state.groups.size())):
@@ -109,18 +110,18 @@ func _draw() -> void:
 			if icon!=null:draw_texture_rect(icon,Rect2(16,y+2,32,32),false)
 			caption(group.name,Vector2(72,y+24),368)
 	else:
-		patch("BUTTON_RECTANGLE_SELECTED",Vector2i(2,2),56,3)
+		patch("BUTTON_CATEGORY_RECTANGLE_SELECTED" if lever_style else "BUTTON_RECTANGLE_SELECTED",Vector2i(2,2),56,3)
 		var icon: Texture2D=art.texture(building_icon)
 		if icon!=null:draw_texture_rect(icon,Rect2(24,26,32,32),false)
-		caption(building_name,Vector2(72,46),384)
+		caption(building_name,Vector2(72,48 if lever_style else 46),384)
 	var filter: Texture2D=art.texture("BUTTON_FILTER")
 	if filter!=null:
 		for y in 3:
 			for x in 55:
 				var sx:=0 if x==0 else x-49 if x>=51 else 1
 				draw_texture_rect_region(filter,Rect2(488+x*8,24+y*12,8,12),Rect2(sx*8,y*12,8,12))
-	var global_offset:=2 if state!=null and state.building_id==-2 else 0
-	caption(query_text()+("_" if search_focused and blink else "..." if not search_focused and query_bytes.is_empty() else ""),Vector2(504,46+global_offset),400)
+	var global_offset:=2 if lever_style or (state!=null and state.building_id==-2) else 0
+	caption(query_text()+("_" if search_focused and blink else "..." if not search_focused and query_bytes.is_empty() else ""),Vector2(504,46+global_offset),400,Color8(160,160,160) if lever_style and not search_focused and query_bytes.is_empty() else Color.WHITE)
 	if state==null:return
 	for index in range(first,mini(first+page_rows,state.rows.size())):
 		var y:=60+(index-first)*36

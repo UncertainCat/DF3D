@@ -115,8 +115,8 @@ inline std::optional<std::vector<df::manager_order_template>> nativeWorkOrderCat
 }
 
 inline std::optional<std::vector<df::manager_order_template>> nativeWorkshopOrderCatalog(df::building* building) {
-    if(!building || (building->getType()!=df::building_type::Workshop && building->getType()!=df::building_type::Furnace))return std::nullopt;
-    const auto header=observeBuildingHeader(building);
+    if(!productionProfileBuilding(building))return std::nullopt;
+    const auto header=observeBuildingHeader(building,true);
     if(!header || header->removing || header->stage!=header->maxStage)return std::nullopt;
     auto catalog=nativeWorkOrderCatalog();if(!catalog)return std::nullopt;
     const int32_t type=int32_t(building->getType()),subtype=building->getSubtype(),custom=building->getCustomType();

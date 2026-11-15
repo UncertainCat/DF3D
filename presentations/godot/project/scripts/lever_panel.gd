@@ -8,6 +8,7 @@ func _create_view():return preload("res://scripts/lever_sheet_view.gd").new()
 func configure(world,service,host,help=null) -> void:
 	links.configure(service)
 	super.configure(world,service,host,help)
+	order_picker.lever_style=true
 	panel.configure_links(world,links,help)
 	panel.links_view.recenter_requested.connect(func(tile):
 		if panel.contents_allowed() and links.phase==links.Phase.Ready:

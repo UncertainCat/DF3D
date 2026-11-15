@@ -39,6 +39,25 @@ func item_gestures(owner) -> void:
 			check(owner.contents.rows()[0].id==id and owner.contents.rows()[0][control[0]]==enabled,"Lever item flag differs from native: "+str(control))
 			if not await settle(owner,0):return
 			await compare("item-"+control[0]+("" if enabled else "-restored"))
+func order_picker_gestures(owner) -> void:
+	click(owner.panel.global_position+owner.panel.tab_rect(2).get_center())
+	if not await model_ready(owner.orders):return
+	check(owner.orders.snapshot.manager_available,"Controlled manager missing from lever profile")
+	await compare("orders-manager")
+	click(Vector2(880,154))
+	if not await model_ready(owner.order_choices):return
+	check(owner.order_picker.visible and owner.order_choices.rows.is_empty(),"Native empty lever picker differs")
+	await process_frame;await RenderingServer.frame_post_draw
+	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	var native:=Image.load_from_file(directory+"/lever-order-picker.png");native.convert(Image.FORMAT_RGB8)
+	var rect:=Rect2i(32,52,944,708);var crop:=image.get_region(rect)
+	crop.save_png(directory+"/lever-order-picker-viewer.png")
+	check(crop.get_data()==native.get_region(rect).get_data(),"Lever order picker pixels differ")
+	for pressed in [true,false]:
+		var event:=InputEventKey.new();event.keycode=KEY_ESCAPE;event.pressed=pressed;root.push_input(event,true)
+	await process_frame
+	check(not owner.order_picker.visible and owner.panel.visible,"Order picker Escape did not restore lever")
+	click(owner.panel.global_position+owner.panel.tab_rect(0).get_center());await process_frame
 func worker_gestures(owner) -> void:
 	var native: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/lever-native.json"))
 	var expected: int=int(native.assigned_worker.assigned.id)
@@ -119,6 +138,7 @@ func inspect_prompt(_snapshot: Dictionary,_expected: Dictionary) -> void:
 		image.get_region(rect).save_png(directory+"/lever-panel-viewer.png")
 		check(image.get_region(rect).get_data()==native.get_region(rect).get_data(),"Composed lever initial pixels differ")
 		if OS.get_environment("DF3D_LEVER_ITEMS")=="1":await item_gestures(owner)
+		if OS.get_environment("DF3D_LEVER_ORDER_VIEWER")=="1":await order_picker_gestures(owner)
 		if OS.get_environment("DF3D_LEVER_TASK_CONTROLS")=="1":await gestures(owner)
 		click(Vector2(744,154))
 		deadline=Time.get_ticks_msec()+10000

@@ -12,6 +12,7 @@ local menu=df.global.game.main_interface.assign_trade
 assert(not menu.open and #b.jobs==0)
 local result={id=b.id,synthetic_caravan=true,frame=frame}
 local restore_delivered
+local prohibition,prohibition_index
 local function compare_selection(label)
  if os.getenv('DF3D_DEPOT_SELECTION_PROVIDER')~='1' then return end
  local output,code=dfhack.run_command_silent('df3d','depot-selection-probe',tostring(b.id),tostring(menu.current_type),menu.sort_by_distance and '1' or '0',menu.pending_on_top and '1' or '0',menu.exclude_prohib and '1' or '0',menu.item_filter)
@@ -32,10 +33,10 @@ local function compare_selection(label)
  local screen={};for y=10,g.dimy-5 do screen[#screen+1]=text_at(47,y,65)end
  local text=table.concat(screen,'\n');local first_group
  for _,group in ipairs(facts.groups)do if group.matches then first_group=group.caption;break end end
- assert(first_group and text:find(first_group,1,true),'First displayed group caption differs: '..label..' '..tostring(first_group))
+ assert((#facts.ids>0 and first_group and text:find(first_group,1,true)) or (#facts.ids==0 and menu.i_height==0),'First displayed group caption differs: '..label..' '..tostring(first_group))
  local item_match=false
  for _,caption in ipairs(facts.item_captions)do if text:find(caption,1,true)then item_match=true;break end end
- assert(item_match,'No displayed item caption matches: '..label)
+ assert(item_match or #facts.ids==0,'No displayed item caption matches: '..label)
  assert(#facts.ids==#menu.current_type_tgi and #facts.groups==#menu.current_type_a_subtype,'Selection size differs: '..label)
  assert(facts.row_cells==menu.i_height,'Native row height differs: '..label)
  for i,row in ipairs(menu.current_type_tgi)do assert(facts.ids[i+1]==row.it.id,'Selection order differs: '..label..' '..i)end
@@ -49,8 +50,22 @@ local function compare_selection(label)
   for j,id in ipairs(ids)do assert(row.ids[j]==id,'Group member order differs: '..label)end
  end
  local projected_cells=0
- for _,group in ipairs(facts.groups)do if group.matches then projected_cells=projected_cells+3+(group.expanded and #group.ids*3 or 0)end end
+ if #facts.ids>0 then for _,group in ipairs(facts.groups)do if group.matches then projected_cells=projected_cells+3+(group.expanded and #group.ids*3 or 0)end end end
  assert(projected_cells==menu.i_height,'Group projection differs from native height: '..label)
+ if os.getenv('DF3D_DEPOT_GOODS_WIRE')=='1' then
+  local expected={label=label,request={depot_id=b.id,category=menu.current_type,query=menu.item_filter,sort_by_distance=menu.sort_by_distance,pending_on_top=menu.pending_on_top,exclude_prohibited=menu.exclude_prohib,item_ids={}},categories={},groups={},items={}}
+  for i,kind in ipairs(facts.categories)do expected.categories[#expected.categories+1]={type=kind,caption=facts.category_captions[i]}end
+  for _,group in ipairs(facts.groups)do local row={};for k,v in pairs(group)do row[k=='ids' and 'item_ids' or k]=v end;expected.groups[#expected.groups+1]=row end
+  for i,entry in ipairs(menu.current_type_tgi)do if i>=64 then break end
+   expected.request.item_ids[#expected.request.item_ids+1]=entry.it.id
+   expected.items[#expected.items+1]={id=entry.it.id,caption=facts.item_captions[i+1],distance=entry.dist,value=entry.value,tag=entry.tag,prohibited=entry.prohibited}
+  end
+  local file=assert(io.open(out..'/depot-goods-wire-expected.json','w'));file:write(json.encode(expected));file:close()
+  capture('depot-goods-wire-'..label)
+  file=assert(io.open(out..'/depot-goods-wire-'..label..'-result.json'));local wire=json.decode(file:read('*a'));file:close();assert(wire.success and wire.label==label,'Goods wire failed: '..label)
+  assert(menu.open and menu.trade_depot_bld.id==b.id and df.global.world.frame_counter==frame,'Goods read changed native picker/frame')
+  result.wire=result.wire or {};result.wire[#result.wire+1]=wire
+ end
  result.selections=result.selections or {};result.selections[#result.selections+1]={label=label,type=menu.current_type,query=menu.item_filter,categories=facts.categories,category_captions=facts.category_captions,visible_category_captions=visible,item_captions=facts.item_captions,screen_text=text,ids=facts.ids,groups=facts.groups,row_cells=facts.row_cells,success=true}
 end
 local function compare_goods(label)
@@ -192,8 +207,21 @@ local ok,err=xpcall(function()
    restore_delivered()
   end
  end
+ if os.getenv('DF3D_DEPOT_GOODS_WIRE')=='1' then
+  assert(not menu.open and #b.jobs==0)
+  prohibition=df.mandate:new();prohibition.mode=0;prohibition.item_type=45;prohibition.item_subtype=-1;prohibition.mat_type=-1;prohibition.mat_index=-1;prohibition.timeout_limit=1200
+  prohibition_index=#df.global.world.mandates.all;df.global.world.mandates.all:insert('#',prohibition)
+  select_map(b);click(520,166);assert(menu.open and menu.current_type==45)
+  local count=0;for _,entry in ipairs(menu.current_type_tgi)do assert(entry.prohibited);count=count+1 end;assert(count==2)
+  capture('depot-goods-prohibited');compare_selection('prohibited')
+  click(824,94);assert(menu.exclude_prohib,'Exclude prohibited toggle missed')
+  assert(menu.current_type==45 and #menu.current_type_tgi==0 and #menu.current_type_a_subtype==1,'Expected retained empty anvil group')
+  capture('depot-goods-excluded');compare_selection('excluded')
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ end
 end,debug.traceback)
 if menu.open then gui.simulateInput(view,'LEAVESCREEN')end
+if prohibition then assert(df.global.world.mandates.all[prohibition_index]==prohibition);df.global.world.mandates.all:erase(prohibition_index);prohibition:delete()end
 if restore_delivered then restore_delivered()end
 if not ok then local jobs={};for _,j in ipairs(b.jobs)do jobs[#jobs+1]=j end;for _,j in ipairs(jobs)do dfhack.job.removeJob(j)end end
 caravans:erase(index);caravan:delete()

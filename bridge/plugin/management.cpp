@@ -125,6 +125,7 @@
 #include "kitchen_native.h"
 #include "stone_use_native.h"
 #include "stocks_native.h"
+#include "depot_goods_read.h"
 #include "tasks_action_native.h"
 #include "places_action_native.h"
 #include "objects_native.h"
@@ -596,6 +597,7 @@ struct StocksResult {
   std::vector<StocksItemResult> items;
 };
 std::optional<StocksResult> stocks;
+std::optional<df3d_production::DepotGoodsRead> depotGoodsReply;
 df3d::stocks_pages::Store pagedReplies;
 
 // Category -1 requests only the catalog. Selection and expansion belong to
@@ -769,7 +771,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();tasks.reset();objects.reset();justice.reset();places.reset();nobles.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();depotGoodsReply.reset();tasks.reset();objects.reset();justice.reset();places.reset();nobles.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1648,6 +1650,16 @@ void publish() {
     }
     tasksResult=m::CreateTasksState(b,tasks->outcome,tasks->listRevision,tasks->total,tasks->offset,b.CreateVector(rows),tasks->jobId);
   }
+  flatbuffers::Offset<m::DepotGoodsState> depotGoodsResult;
+  if(depotGoodsReply){const auto& v=*depotGoodsReply;
+    std::vector<flatbuffers::Offset<m::DepotGoodsCategory>> categories;
+    std::vector<flatbuffers::Offset<m::DepotGoodsGroup>> groups;
+    std::vector<flatbuffers::Offset<m::DepotGoodsItem>> items;
+    for(const auto& row:v.categories)categories.push_back(m::CreateDepotGoodsCategory(b,row.type,b.CreateString(DF2UTF(row.caption))));
+    for(const auto& row:v.groups)groups.push_back(m::CreateDepotGoodsGroup(b,row.group.subtype,row.group.subcat1,row.group.subcat2,row.group.amount,b.CreateString(DF2UTF(row.caption)),row.matches,row.group.expanded,uint8_t(row.flags),b.CreateVector(row.ids)));
+    for(const auto& row:v.items){const auto& f=row.facts;items.push_back(m::CreateDepotGoodsItem(b,f.id,b.CreateString(DF2UTF(row.caption)),f.distance,f.value,f.tag,f.prohibited));}
+    depotGoodsResult=m::CreateDepotGoodsState(b,v.depotId,v.revision,v.category,b.CreateVector(categories),b.CreateVector(groups),b.CreateVector(items));
+  }
   flatbuffers::Offset<m::StocksMenuState> stocksResult;
   if(stocks){
     std::vector<flatbuffers::Offset<m::StocksCategoryRow>> categories;
@@ -1721,10 +1733,14 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult,depotGoodsResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
+  // Retained depot reply paging is not wired yet. Reject an oversized read
+  // explicitly instead of letting a failed mailbox write look like a timeout.
+  if(depotGoodsReply && !validationError && b.GetSize()>m::kManagementCapacity)
+    validationError="depot goods response exceeds mailbox capacity";
   const bool productionReply=action==m::ManagementAction::ProductionInspect ||
       action==m::ManagementAction::ProductionQueue || action==m::ManagementAction::ProductionJobEdit;
   if((stocks || productionReply) && !validationError && b.GetSize()>m::kManagementCapacity) {
@@ -5243,9 +5259,14 @@ void run(color_ostream& out) {
     }catch(...){status=m::ManagementStatus::Rejected;tasks.emplace();tasks->jobId=edit?q.job_id():-1;}
     publish();return;
   }
-  // Transport admission precedes the depot provider integration. Never send
-  // the new semantic request through legacy trade/menu dispatch.
-  if(r->action()==m::ManagementAction::DepotGoodsRead){status=m::ManagementStatus::Rejected;message.clear();publish();return;}
+  if(r->action()==m::ManagementAction::DepotGoodsRead){
+    status=m::ManagementStatus::Rejected;message.clear();
+    try {const auto& q=*r->depot_goods();const std::vector<int32_t> ids(q.item_ids()->begin(),q.item_ids()->end());
+      depotGoodsReply=df3d_production::readDepotGoods(df::building::find(q.depot_id()),q.category(),UTF2DF(q.query()->str()),q.sort_by_distance(),q.pending_on_top(),q.exclude_prohibited(),ids);
+      if(depotGoodsReply)status=m::ManagementStatus::Ok;
+    }catch(...){depotGoodsReply.reset();}
+    publish();return;
+  }
   if(r->action()==m::ManagementAction::StocksMenuRead || r->action()==m::ManagementAction::StocksGroupApply || r->action()==m::ManagementAction::StocksItemApply) {
     namespace h=df3d_stocks;
     status=m::ManagementStatus::Rejected;message.clear();stocks.emplace();bool writeStarted=false;

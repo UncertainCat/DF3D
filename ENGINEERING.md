@@ -10,16 +10,15 @@ admit only native resting tags0,2,3; staged selection tags belong to a future
 edit contract. Item details must belong to a returned group. Revision is a
 nonzero signed-safe token; rejection carries no fabricated snapshot.
 
-This is transport admission only. Runtime dispatch currently rejects explicitly;
-native snapshot production, retained paging for large replies, artwork/contained
-rows and commit authority are still unfinished. Public depot routes remain hidden.
+The native read producer is connected as described below. Retained paging for
+large replies, artwork/contained rows and commit authority are still unfinished.
+Public depot routes remain hidden.
 Both peers/mailbox use232; rebuild bridge and viewer together. DF53.16 pins are
 unchanged. Older recordings must not synthesize depot goods.
 
-Before enabling native production, revise the initial nonempty-group validation
-for exclusion filtering:37a0a0 copies group keys before excluding prohibited
-individuals, so a retained group can have no eligible member IDs. Qualify this
-with a positive prohibition case. The present staged read rejects at dispatch.
+Group membership may be empty after exclusion filtering:37a0a0 copies group
+keys before excluding prohibited individuals. An unselected category still
+requires an entirely empty group list, not merely no member IDs.
 
 Protected142412 on2026-11-15 verifies protocol232 through existing depot header
 reads and eight mode edits with stale/duplicate guards, plus explicit rejection
@@ -34,6 +33,43 @@ run with that assertion failure is not acceptance. Evidence:
 Bridge, viewer extension and root builds pass. All19 core checks pass, including
 depot request bounds, duplicate membership, wrong item identity, staged tag,
 missing revision and wrong-action rejection, plus successful state decoding.
+
+`depot_goods_read.h` now connects the owned native providers to DepotGoodsRead.
+It requires a completed revealed depot with native goods availability, and
+rejects removal through the existing master provider. It returns filtered
+category captions, selected material groups/member order and requested item
+details. Category-1 reads only the catalog. Revisions hash depot identity,
+complete ordered master rows, item flags and group facts; they identify the
+read source, not a future mutation authorization. All native strings remain
+CP437 until transport encoding. No native menu context is an input.
+
+Protected143812 on2026-11-15 verifies nine separately handshaken native-to-Godot
+cases: Anvils, Bags, Bars, IRON, restored Anvils, pending, delivered, prohibited
+and excluded. Every category/group and up to64 requested item details match;
+duplicate reads preserve the source revision, category-only reads retain the
+same revision, and nonexistent depot/foreign-item requests reject without
+retaining a prior snapshot. The existing no-caravan settings fixture rejects
+goods reads while preserving header/mode behavior. Native picker ownership and
+the paused simulation frame remain unchanged. A controlled temporary export
+ban prohibits both anvils; excluding them retains one matching group with no
+member IDs. Native37aeb0 and the renderer short-circuit on an empty item list,
+so no rows are displayed despite the retained group's match flag. The ban and
+all hauling/delivered fixtures are restored; this does not test natural mandate
+creation or natural hauling.
+
+Owned DF43672 closes unsaved with source preservation, native30FPS and sampled
+GPU52C. Bridge, extension and root builds pass; all19 core checks pass, including
+empty-membership decode. Each headless client reports only the known rendering-
+thread notice. Evidence: `completed_sheet_discovery_reference.depot_goods_runtime_reference`.
+Initial143532 exposed the diagnostic's assumption that a matching empty group
+must render;143651 reused a capture acknowledgement and qualified only its
+first wire case. Neither is nine-case wire acceptance. Case-specific capture,
+result and acknowledgement names now prevent that reuse.
+
+Oversized depot replies reject explicitly before mailbox publication until
+retained paging is connected; no partial list is published. Large-list acceptance,
+nondefault sorting, item artwork, container expansion, draft/commit authority
+and the rendered interactive viewer remain unfinished.
 
 ## Depot transport migration
 

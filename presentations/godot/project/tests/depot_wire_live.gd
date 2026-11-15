@@ -14,9 +14,9 @@ func run() -> void:
 	var catalog:=await request("construction",{"action":C.ManagementAction.Catalog})
 	if not check(catalog.get("status")==C.ManagementStatus.Ok,"Depot catalog failed"):quit(1);return
 	var expected: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/depot-wire-expected.json"))
-	# Contract migration only: the semantic provider is not dispatched yet.
+	# No caravan is present in this settings fixture, so goods are unavailable.
 	var goods:=await request("depot_goods",{"action":C.ManagementAction.DepotGoodsRead,"depot_id":int(expected.id),"category":-1,"query":"","sort_by_distance":true,"pending_on_top":true,"exclude_prohibited":false,"item_ids":[]})
-	check(goods.get("status")==C.ManagementStatus.Rejected and not goods.has("depot_goods"),"Unimplemented depot read did not reject explicitly")
+	check(goods.get("status")==C.ManagementStatus.Rejected and not goods.has("depot_goods"),"Unavailable depot goods read did not reject")
 	var before:=await header(int(expected.id))
 	if not before.is_empty():
 		check(before.type==6 and not before.depot.requested and not before.depot.anyone,"Unexpected depot baseline")

@@ -5447,15 +5447,16 @@ TEST_CASE("Depot goods reads preserve explicit filters and bounded unique item r
   }
 }
 TEST_CASE("Depot goods decoding preserves group membership and rejects malformed results") {
-  for(int fault=0;fault<9;++fault){
+  for(int fault=0;fault<10;++fault){
     flatbuffers::FlatBufferBuilder b;
     const auto cat=wire::CreateDepotGoodsCategory(b,45,b.CreateString("Anvils"));
     std::vector<flatbuffers::Offset<wire::DepotGoodsCategory>> categories{cat};if(fault==1)categories.push_back(cat);
-    const auto group=wire::CreateDepotGoodsGroup(b,-1,0,0,2,b.CreateString("Iron anvils [2]"),true,true,fault==2?4:2,b.CreateVector(std::vector<int32_t>{296,fault==3?296:28425}));
+    const auto group=wire::CreateDepotGoodsGroup(b,-1,0,0,2,b.CreateString("Iron anvils [2]"),fault!=9,true,fault==2?4:2,b.CreateVector(fault==9?std::vector<int32_t>{}:std::vector<int32_t>{296,fault==3?296:28425}));
     const auto item=wire::CreateDepotGoodsItem(b,fault==4?99:296,b.CreateString("iron anvil"),6,100,fault==5?1:2,false);
-    const auto data=wire::CreateDepotGoodsState(b,54,fault==6?0:77,fault==7?-1:45,b.CreateVector(categories),b.CreateVector(std::vector<flatbuffers::Offset<wire::DepotGoodsGroup>>{group}),b.CreateVector(std::vector<flatbuffers::Offset<wire::DepotGoodsItem>>{item}));
+    const auto data=wire::CreateDepotGoodsState(b,54,fault==6?0:77,fault==7?-1:45,b.CreateVector(categories),b.CreateVector(std::vector<flatbuffers::Offset<wire::DepotGoodsGroup>>{group}),b.CreateVector(fault==9?std::vector<flatbuffers::Offset<wire::DepotGoodsItem>>{}:std::vector<flatbuffers::Offset<wire::DepotGoodsItem>>{item}));
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(fault==8?wire::ManagementAction::Catalog:wire::ManagementAction::DepotGoodsRead);state.add_status(wire::ManagementStatus::Ok);state.add_depot_goods(data);b.Finish(state.Finish());
-    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0 && fault!=9));
+    if(fault==9){auto result=codec::decodeState(value);REQUIRE(result.depotGoods);CHECK(result.depotGoods->groups[0].itemIds.empty());CHECK(result.depotGoods->items.empty());}
     if(!fault){auto result=codec::decodeState(value);REQUIRE(result.depotGoods);CHECK(result.depotGoods->depotId==54);CHECK(result.depotGoods->revision==77);CHECK(result.depotGoods->groups[0].itemIds==std::vector<int32_t>{296,28425});CHECK(result.depotGoods->items[0].tag==2);CHECK(result.depotGoods->items[0].distance==6);}
   }
 }

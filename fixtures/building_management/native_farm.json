@@ -55532,6 +55532,3321 @@
           "build/notes/pm/depot-goods-adapter.stdout.log": "872e0fb2c59f79ecef5afae67248e90c0c9007b90ad8f58774cb67cee824de53",
           "build/notes/pm/depot-goods-adapter.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
         }
+      },
+      "depot_goods_runtime_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-143812",
+        "owned_df_pid": 43672,
+        "protocol": 232,
+        "scope": "Nine separately handshaken native-to-Godot read cases. Exact categories/groups/requested item facts, repeated source revision, catalog-only reads and invalid depot/item rejection. Includes controlled export-ban exclusion with a retained empty group. No rendered viewer, edits, paging, artwork, container expansion or nondefault sort acceptance.",
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "cases": [
+          {
+            "label": "anvils",
+            "snapshot": {
+              "categories": [
+                {
+                  "caption": "Anvils",
+                  "type": 45
+                },
+                {
+                  "caption": "Bags",
+                  "type": 31
+                },
+                {
+                  "caption": "Barrels",
+                  "type": 17
+                },
+                {
+                  "caption": "Bars",
+                  "type": 0
+                },
+                {
+                  "caption": "Bins",
+                  "type": 32
+                },
+                {
+                  "caption": "Blocks",
+                  "type": 2
+                },
+                {
+                  "caption": "Boulders",
+                  "type": 4
+                },
+                {
+                  "caption": "Boxes",
+                  "type": 30
+                },
+                {
+                  "caption": "Bracelets",
+                  "type": 43
+                },
+                {
+                  "caption": "Buckets",
+                  "type": 18
+                },
+                {
+                  "caption": "Cages",
+                  "type": 16
+                },
+                {
+                  "caption": "Cloth",
+                  "type": 58
+                },
+                {
+                  "caption": "Codices",
+                  "type": 89
+                },
+                {
+                  "caption": "Crutches",
+                  "type": 83
+                },
+                {
+                  "caption": "Doors",
+                  "type": 6
+                },
+                {
+                  "caption": "Earrings",
+                  "type": 42
+                },
+                {
+                  "caption": "Floodgates",
+                  "type": 7
+                },
+                {
+                  "caption": "Goblets",
+                  "type": 12
+                },
+                {
+                  "caption": "Logs",
+                  "type": 5
+                },
+                {
+                  "caption": "Mechanisms",
+                  "type": 67
+                },
+                {
+                  "caption": "Millstones",
+                  "type": 81
+                },
+                {
+                  "caption": "Musical instruments",
+                  "type": 13
+                },
+                {
+                  "caption": "Pipe section",
+                  "type": 77
+                },
+                {
+                  "caption": "Plants",
+                  "type": 54
+                },
+                {
+                  "caption": "Raw fish",
+                  "type": 50
+                },
+                {
+                  "caption": "Rings",
+                  "type": 41
+                },
+                {
+                  "caption": "Slabs",
+                  "type": 87
+                },
+                {
+                  "caption": "Splints",
+                  "type": 82
+                },
+                {
+                  "caption": "Statues",
+                  "type": 22
+                },
+                {
+                  "caption": "Tables",
+                  "type": 20
+                },
+                {
+                  "caption": "Thread",
+                  "type": 57
+                },
+                {
+                  "caption": "Thrones",
+                  "type": 9
+                },
+                {
+                  "caption": "Tools",
+                  "type": 86
+                }
+              ],
+              "category": 45,
+              "depot_id": 54,
+              "groups": [
+                {
+                  "amount": 2,
+                  "caption": "Iron anvils [2]",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    296,
+                    28425
+                  ],
+                  "matches": true,
+                  "subcat1": 0,
+                  "subcat2": 0,
+                  "subtype": -1
+                }
+              ],
+              "items": [
+                {
+                  "caption": "(iron anvil)",
+                  "distance": 6,
+                  "id": 296,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 100
+                },
+                {
+                  "caption": "(iron anvil)",
+                  "distance": 34,
+                  "id": 28425,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 100
+                }
+              ],
+              "revision": 8510057947744130935
+            },
+            "success": true
+          },
+          {
+            "label": "bags",
+            "snapshot": {
+              "categories": [
+                {
+                  "caption": "Anvils",
+                  "type": 45
+                },
+                {
+                  "caption": "Bags",
+                  "type": 31
+                },
+                {
+                  "caption": "Barrels",
+                  "type": 17
+                },
+                {
+                  "caption": "Bars",
+                  "type": 0
+                },
+                {
+                  "caption": "Bins",
+                  "type": 32
+                },
+                {
+                  "caption": "Blocks",
+                  "type": 2
+                },
+                {
+                  "caption": "Boulders",
+                  "type": 4
+                },
+                {
+                  "caption": "Boxes",
+                  "type": 30
+                },
+                {
+                  "caption": "Bracelets",
+                  "type": 43
+                },
+                {
+                  "caption": "Buckets",
+                  "type": 18
+                },
+                {
+                  "caption": "Cages",
+                  "type": 16
+                },
+                {
+                  "caption": "Cloth",
+                  "type": 58
+                },
+                {
+                  "caption": "Codices",
+                  "type": 89
+                },
+                {
+                  "caption": "Crutches",
+                  "type": 83
+                },
+                {
+                  "caption": "Doors",
+                  "type": 6
+                },
+                {
+                  "caption": "Earrings",
+                  "type": 42
+                },
+                {
+                  "caption": "Floodgates",
+                  "type": 7
+                },
+                {
+                  "caption": "Goblets",
+                  "type": 12
+                },
+                {
+                  "caption": "Logs",
+                  "type": 5
+                },
+                {
+                  "caption": "Mechanisms",
+                  "type": 67
+                },
+                {
+                  "caption": "Millstones",
+                  "type": 81
+                },
+                {
+                  "caption": "Musical instruments",
+                  "type": 13
+                },
+                {
+                  "caption": "Pipe section",
+                  "type": 77
+                },
+                {
+                  "caption": "Plants",
+                  "type": 54
+                },
+                {
+                  "caption": "Raw fish",
+                  "type": 50
+                },
+                {
+                  "caption": "Rings",
+                  "type": 41
+                },
+                {
+                  "caption": "Slabs",
+                  "type": 87
+                },
+                {
+                  "caption": "Splints",
+                  "type": 82
+                },
+                {
+                  "caption": "Statues",
+                  "type": 22
+                },
+                {
+                  "caption": "Tables",
+                  "type": 20
+                },
+                {
+                  "caption": "Thread",
+                  "type": 57
+                },
+                {
+                  "caption": "Thrones",
+                  "type": 9
+                },
+                {
+                  "caption": "Tools",
+                  "type": 86
+                }
+              ],
+              "category": 31,
+              "depot_id": 54,
+              "groups": [
+                {
+                  "amount": 2,
+                  "caption": "Giant cave spider silk bags [2]",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    7450,
+                    28451
+                  ],
+                  "matches": true,
+                  "subcat1": 19,
+                  "subcat2": 615,
+                  "subtype": -1
+                },
+                {
+                  "amount": 3,
+                  "caption": "Sheep wool bags [3]",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    12862,
+                    12892,
+                    5951
+                  ],
+                  "matches": true,
+                  "subcat1": 24,
+                  "subcat2": 176,
+                  "subtype": -1
+                },
+                {
+                  "amount": 1,
+                  "caption": "Rope reed bag",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    5864
+                  ],
+                  "matches": true,
+                  "subcat1": 421,
+                  "subcat2": 187,
+                  "subtype": -1
+                },
+                {
+                  "amount": 4,
+                  "caption": "Pig tail bags [4]",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    19773,
+                    19838,
+                    7480,
+                    7506
+                  ],
+                  "matches": true,
+                  "subcat1": 422,
+                  "subcat2": 174,
+                  "subtype": -1
+                }
+              ],
+              "items": [
+                {
+                  "caption": "(white sand Bag (sheep wool))",
+                  "distance": 0,
+                  "id": 12862,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 31
+                },
+                {
+                  "caption": "(quicklime Bag (sheep wool))",
+                  "distance": 0,
+                  "id": 12892,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 130
+                },
+                {
+                  "caption": "(white sand Bag (pig tail))",
+                  "distance": 0,
+                  "id": 19773,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 61
+                },
+                {
+                  "caption": "(white sand Bag (pig tail))",
+                  "distance": 0,
+                  "id": 19838,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 61
+                },
+                {
+                  "caption": "(yellow sand Bag (sheep wool))",
+                  "distance": 9,
+                  "id": 5951,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 31
+                },
+                {
+                  "caption": "(yellow sand Bag (rope reed))",
+                  "distance": 21,
+                  "id": 5864,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 61
+                },
+                {
+                  "caption": "(red sand Bag (giant cave spider silk))",
+                  "distance": 22,
+                  "id": 7450,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 121
+                },
+                {
+                  "caption": "(white sand Bag (pig tail))",
+                  "distance": 33,
+                  "id": 7480,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 61
+                },
+                {
+                  "caption": "(quicklime Bag (pig tail))",
+                  "distance": 33,
+                  "id": 7506,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 160
+                },
+                {
+                  "caption": "(white sand Bag (giant cave spider silk))",
+                  "distance": 75,
+                  "id": 28451,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 121
+                }
+              ],
+              "revision": 8510057947744130935
+            },
+            "success": true
+          },
+          {
+            "label": "bars",
+            "snapshot": {
+              "categories": [
+                {
+                  "caption": "Anvils",
+                  "type": 45
+                },
+                {
+                  "caption": "Bags",
+                  "type": 31
+                },
+                {
+                  "caption": "Barrels",
+                  "type": 17
+                },
+                {
+                  "caption": "Bars",
+                  "type": 0
+                },
+                {
+                  "caption": "Bins",
+                  "type": 32
+                },
+                {
+                  "caption": "Blocks",
+                  "type": 2
+                },
+                {
+                  "caption": "Boulders",
+                  "type": 4
+                },
+                {
+                  "caption": "Boxes",
+                  "type": 30
+                },
+                {
+                  "caption": "Bracelets",
+                  "type": 43
+                },
+                {
+                  "caption": "Buckets",
+                  "type": 18
+                },
+                {
+                  "caption": "Cages",
+                  "type": 16
+                },
+                {
+                  "caption": "Cloth",
+                  "type": 58
+                },
+                {
+                  "caption": "Codices",
+                  "type": 89
+                },
+                {
+                  "caption": "Crutches",
+                  "type": 83
+                },
+                {
+                  "caption": "Doors",
+                  "type": 6
+                },
+                {
+                  "caption": "Earrings",
+                  "type": 42
+                },
+                {
+                  "caption": "Floodgates",
+                  "type": 7
+                },
+                {
+                  "caption": "Goblets",
+                  "type": 12
+                },
+                {
+                  "caption": "Logs",
+                  "type": 5
+                },
+                {
+                  "caption": "Mechanisms",
+                  "type": 67
+                },
+                {
+                  "caption": "Millstones",
+                  "type": 81
+                },
+                {
+                  "caption": "Musical instruments",
+                  "type": 13
+                },
+                {
+                  "caption": "Pipe section",
+                  "type": 77
+                },
+                {
+                  "caption": "Plants",
+                  "type": 54
+                },
+                {
+                  "caption": "Raw fish",
+                  "type": 50
+                },
+                {
+                  "caption": "Rings",
+                  "type": 41
+                },
+                {
+                  "caption": "Slabs",
+                  "type": 87
+                },
+                {
+                  "caption": "Splints",
+                  "type": 82
+                },
+                {
+                  "caption": "Statues",
+                  "type": 22
+                },
+                {
+                  "caption": "Tables",
+                  "type": 20
+                },
+                {
+                  "caption": "Thread",
+                  "type": 57
+                },
+                {
+                  "caption": "Thrones",
+                  "type": 9
+                },
+                {
+                  "caption": "Tools",
+                  "type": 86
+                }
+              ],
+              "category": 0,
+              "depot_id": 54,
+              "groups": [
+                {
+                  "amount": 88,
+                  "caption": "Iron bars [88]",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    31751,
+                    32254,
+                    32255,
+                    32256,
+                    32257,
+                    32682,
+                    32683,
+                    32684,
+                    32685,
+                    34024,
+                    34025,
+                    34026,
+                    34027,
+                    34428,
+                    32309,
+                    32310,
+                    32311,
+                    32312,
+                    32692,
+                    32693,
+                    32694,
+                    32695,
+                    33003,
+                    33004,
+                    33005,
+                    33006,
+                    33295,
+                    33296,
+                    33297,
+                    33298,
+                    33408,
+                    33409,
+                    33410,
+                    33411,
+                    33480,
+                    33481,
+                    33482,
+                    33483,
+                    33681,
+                    33682,
+                    33683,
+                    33684,
+                    33778,
+                    33779,
+                    33780,
+                    33781,
+                    34273,
+                    34274,
+                    34275,
+                    34276,
+                    34458,
+                    34459,
+                    34460,
+                    34461,
+                    40381,
+                    40382,
+                    40383,
+                    40384,
+                    40520,
+                    32135,
+                    32210,
+                    32211,
+                    32212,
+                    32213,
+                    32314,
+                    32315,
+                    32316,
+                    32317,
+                    33215,
+                    33216,
+                    33217,
+                    33218,
+                    33397,
+                    33398,
+                    33399,
+                    33400,
+                    33455,
+                    33456,
+                    33457,
+                    33458,
+                    34240,
+                    34241,
+                    34242,
+                    34243,
+                    34416,
+                    34417,
+                    34418,
+                    22696
+                  ],
+                  "matches": true,
+                  "subcat1": 0,
+                  "subcat2": 0,
+                  "subtype": -1
+                },
+                {
+                  "amount": 12,
+                  "caption": "Silver bars [12]",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    46145,
+                    46326,
+                    47450,
+                    47452,
+                    44359,
+                    46255,
+                    47462,
+                    47465,
+                    46337,
+                    47458,
+                    44335,
+                    47425
+                  ],
+                  "matches": true,
+                  "subcat1": 0,
+                  "subcat2": 2,
+                  "subtype": -1
+                },
+                {
+                  "amount": 90,
+                  "caption": "Copper bars [90]",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    46551,
+                    46552,
+                    46553,
+                    46554,
+                    46144,
+                    46146,
+                    46147,
+                    46148,
+                    46323,
+                    46324,
+                    46325,
+                    46327,
+                    46677,
+                    46678,
+                    46679,
+                    46680,
+                    47390,
+                    47391,
+                    47392,
+                    47393,
+                    47448,
+                    47449,
+                    47451,
+                    47453,
+                    47552,
+                    47553,
+                    47554,
+                    47555,
+                    44358,
+                    44360,
+                    44362,
+                    46252,
+                    46253,
+                    46254,
+                    46256,
+                    46381,
+                    46382,
+                    46383,
+                    46384,
+                    47460,
+                    47461,
+                    47463,
+                    47464,
+                    47646,
+                    47647,
+                    47648,
+                    47649,
+                    46333,
+                    46334,
+                    46335,
+                    46336,
+                    46571,
+                    46572,
+                    46573,
+                    46574,
+                    47356,
+                    47357,
+                    47358,
+                    47359,
+                    47454,
+                    47455,
+                    47456,
+                    47457,
+                    47560,
+                    47561,
+                    47562,
+                    47563,
+                    44331,
+                    44332,
+                    44333,
+                    44334,
+                    44611,
+                    44613,
+                    44614,
+                    46284,
+                    46285,
+                    46286,
+                    46287,
+                    46506,
+                    46507,
+                    46508,
+                    46509,
+                    47422,
+                    47423,
+                    47424,
+                    47426,
+                    47547,
+                    47548,
+                    47549,
+                    47550
+                  ],
+                  "matches": true,
+                  "subcat1": 0,
+                  "subcat2": 3,
+                  "subtype": -1
+                },
+                {
+                  "amount": 136,
+                  "caption": "Steel bars [136]",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    42665,
+                    42666,
+                    43339,
+                    43340,
+                    44214,
+                    44215,
+                    44602,
+                    44603,
+                    45702,
+                    45703,
+                    46822,
+                    46823,
+                    47440,
+                    47441,
+                    47887,
+                    47888,
+                    42456,
+                    42457,
+                    42868,
+                    42869,
+                    43040,
+                    43041,
+                    43122,
+                    43123,
+                    43217,
+                    43218,
+                    43558,
+                    43559,
+                    43778,
+                    43779,
+                    44277,
+                    44278,
+                    44461,
+                    44462,
+                    44657,
+                    44658,
+                    45714,
+                    45715,
+                    46615,
+                    46616,
+                    46834,
+                    46835,
+                    46964,
+                    46965,
+                    47225,
+                    47226,
+                    47311,
+                    47312,
+                    47636,
+                    47637,
+                    42189,
+                    42190,
+                    42452,
+                    42453,
+                    42627,
+                    42628,
+                    42972,
+                    42973,
+                    43165,
+                    43166,
+                    43290,
+                    43291,
+                    43850,
+                    43851,
+                    44260,
+                    44261,
+                    44542,
+                    44543,
+                    44692,
+                    44693,
+                    45790,
+                    45791,
+                    46648,
+                    46649,
+                    46847,
+                    46848,
+                    47018,
+                    47019,
+                    47325,
+                    47326,
+                    47584,
+                    47585,
+                    42071,
+                    42072,
+                    42572,
+                    42573,
+                    43093,
+                    43094,
+                    43343,
+                    43344,
+                    43854,
+                    43855,
+                    44038,
+                    44039,
+                    44391,
+                    44392,
+                    44625,
+                    44626,
+                    46641,
+                    46642,
+                    46752,
+                    46753,
+                    46866,
+                    46867,
+                    47246,
+                    47247,
+                    47650,
+                    47651,
+                    42044,
+                    42045,
+                    42454,
+                    42455,
+                    42943,
+                    42944,
+                    43044,
+                    43045,
+                    43270,
+                    43271,
+                    43745,
+                    43746,
+                    44232,
+                    44233,
+                    44551,
+                    44552,
+                    46581,
+                    46582,
+                    46691,
+                    46692,
+                    46819,
+                    46820,
+                    46961,
+                    46962,
+                    47308,
+                    47309,
+                    47614,
+                    47615
+                  ],
+                  "matches": true,
+                  "subcat1": 0,
+                  "subcat2": 8,
+                  "subtype": -1
+                }
+              ],
+              "items": [
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 31751,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32254,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32255,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32256,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32257,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32682,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32683,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32684,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32685,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 34024,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 34025,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 34026,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 34027,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 34428,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 42665,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 42666,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 43339,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 43340,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 44214,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 44215,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 44602,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 44603,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 45702,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 45703,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "copper bars",
+                  "distance": 6,
+                  "id": 46551,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 10
+                },
+                {
+                  "caption": "copper bars",
+                  "distance": 6,
+                  "id": 46552,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 10
+                },
+                {
+                  "caption": "copper bars",
+                  "distance": 6,
+                  "id": 46553,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 10
+                },
+                {
+                  "caption": "copper bars",
+                  "distance": 6,
+                  "id": 46554,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 10
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 46822,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 46823,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 47440,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 47441,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 47887,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 47888,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32309,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32310,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32311,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32312,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32692,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32693,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32694,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32695,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33003,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33004,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33005,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33006,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33295,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33296,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33297,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33298,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33408,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33409,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33410,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33411,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33480,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33481,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33482,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33483,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33681,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33682,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33683,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33684,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33778,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33779,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                }
+              ],
+              "revision": 8510057947744130935
+            },
+            "success": true
+          },
+          {
+            "label": "iron",
+            "snapshot": {
+              "categories": [
+                {
+                  "caption": "Anvils",
+                  "type": 45
+                },
+                {
+                  "caption": "Barrels",
+                  "type": 17
+                },
+                {
+                  "caption": "Bars",
+                  "type": 0
+                },
+                {
+                  "caption": "Bins",
+                  "type": 32
+                },
+                {
+                  "caption": "Pipe section",
+                  "type": 77
+                },
+                {
+                  "caption": "Tools",
+                  "type": 86
+                }
+              ],
+              "category": 0,
+              "depot_id": 54,
+              "groups": [
+                {
+                  "amount": 88,
+                  "caption": "Iron bars [88]",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    31751,
+                    32254,
+                    32255,
+                    32256,
+                    32257,
+                    32682,
+                    32683,
+                    32684,
+                    32685,
+                    34024,
+                    34025,
+                    34026,
+                    34027,
+                    34428,
+                    32309,
+                    32310,
+                    32311,
+                    32312,
+                    32692,
+                    32693,
+                    32694,
+                    32695,
+                    33003,
+                    33004,
+                    33005,
+                    33006,
+                    33295,
+                    33296,
+                    33297,
+                    33298,
+                    33408,
+                    33409,
+                    33410,
+                    33411,
+                    33480,
+                    33481,
+                    33482,
+                    33483,
+                    33681,
+                    33682,
+                    33683,
+                    33684,
+                    33778,
+                    33779,
+                    33780,
+                    33781,
+                    34273,
+                    34274,
+                    34275,
+                    34276,
+                    34458,
+                    34459,
+                    34460,
+                    34461,
+                    40381,
+                    40382,
+                    40383,
+                    40384,
+                    40520,
+                    32135,
+                    32210,
+                    32211,
+                    32212,
+                    32213,
+                    32314,
+                    32315,
+                    32316,
+                    32317,
+                    33215,
+                    33216,
+                    33217,
+                    33218,
+                    33397,
+                    33398,
+                    33399,
+                    33400,
+                    33455,
+                    33456,
+                    33457,
+                    33458,
+                    34240,
+                    34241,
+                    34242,
+                    34243,
+                    34416,
+                    34417,
+                    34418,
+                    22696
+                  ],
+                  "matches": true,
+                  "subcat1": 0,
+                  "subcat2": 0,
+                  "subtype": -1
+                },
+                {
+                  "amount": 12,
+                  "caption": "Silver bars [12]",
+                  "expanded": true,
+                  "flags": 0,
+                  "item_ids": [
+                    46145,
+                    46326,
+                    47450,
+                    47452,
+                    44359,
+                    46255,
+                    47462,
+                    47465,
+                    46337,
+                    47458,
+                    44335,
+                    47425
+                  ],
+                  "matches": false,
+                  "subcat1": 0,
+                  "subcat2": 2,
+                  "subtype": -1
+                },
+                {
+                  "amount": 90,
+                  "caption": "Copper bars [90]",
+                  "expanded": true,
+                  "flags": 0,
+                  "item_ids": [
+                    46551,
+                    46552,
+                    46553,
+                    46554,
+                    46144,
+                    46146,
+                    46147,
+                    46148,
+                    46323,
+                    46324,
+                    46325,
+                    46327,
+                    46677,
+                    46678,
+                    46679,
+                    46680,
+                    47390,
+                    47391,
+                    47392,
+                    47393,
+                    47448,
+                    47449,
+                    47451,
+                    47453,
+                    47552,
+                    47553,
+                    47554,
+                    47555,
+                    44358,
+                    44360,
+                    44362,
+                    46252,
+                    46253,
+                    46254,
+                    46256,
+                    46381,
+                    46382,
+                    46383,
+                    46384,
+                    47460,
+                    47461,
+                    47463,
+                    47464,
+                    47646,
+                    47647,
+                    47648,
+                    47649,
+                    46333,
+                    46334,
+                    46335,
+                    46336,
+                    46571,
+                    46572,
+                    46573,
+                    46574,
+                    47356,
+                    47357,
+                    47358,
+                    47359,
+                    47454,
+                    47455,
+                    47456,
+                    47457,
+                    47560,
+                    47561,
+                    47562,
+                    47563,
+                    44331,
+                    44332,
+                    44333,
+                    44334,
+                    44611,
+                    44613,
+                    44614,
+                    46284,
+                    46285,
+                    46286,
+                    46287,
+                    46506,
+                    46507,
+                    46508,
+                    46509,
+                    47422,
+                    47423,
+                    47424,
+                    47426,
+                    47547,
+                    47548,
+                    47549,
+                    47550
+                  ],
+                  "matches": false,
+                  "subcat1": 0,
+                  "subcat2": 3,
+                  "subtype": -1
+                },
+                {
+                  "amount": 136,
+                  "caption": "Steel bars [136]",
+                  "expanded": true,
+                  "flags": 0,
+                  "item_ids": [
+                    42665,
+                    42666,
+                    43339,
+                    43340,
+                    44214,
+                    44215,
+                    44602,
+                    44603,
+                    45702,
+                    45703,
+                    46822,
+                    46823,
+                    47440,
+                    47441,
+                    47887,
+                    47888,
+                    42456,
+                    42457,
+                    42868,
+                    42869,
+                    43040,
+                    43041,
+                    43122,
+                    43123,
+                    43217,
+                    43218,
+                    43558,
+                    43559,
+                    43778,
+                    43779,
+                    44277,
+                    44278,
+                    44461,
+                    44462,
+                    44657,
+                    44658,
+                    45714,
+                    45715,
+                    46615,
+                    46616,
+                    46834,
+                    46835,
+                    46964,
+                    46965,
+                    47225,
+                    47226,
+                    47311,
+                    47312,
+                    47636,
+                    47637,
+                    42189,
+                    42190,
+                    42452,
+                    42453,
+                    42627,
+                    42628,
+                    42972,
+                    42973,
+                    43165,
+                    43166,
+                    43290,
+                    43291,
+                    43850,
+                    43851,
+                    44260,
+                    44261,
+                    44542,
+                    44543,
+                    44692,
+                    44693,
+                    45790,
+                    45791,
+                    46648,
+                    46649,
+                    46847,
+                    46848,
+                    47018,
+                    47019,
+                    47325,
+                    47326,
+                    47584,
+                    47585,
+                    42071,
+                    42072,
+                    42572,
+                    42573,
+                    43093,
+                    43094,
+                    43343,
+                    43344,
+                    43854,
+                    43855,
+                    44038,
+                    44039,
+                    44391,
+                    44392,
+                    44625,
+                    44626,
+                    46641,
+                    46642,
+                    46752,
+                    46753,
+                    46866,
+                    46867,
+                    47246,
+                    47247,
+                    47650,
+                    47651,
+                    42044,
+                    42045,
+                    42454,
+                    42455,
+                    42943,
+                    42944,
+                    43044,
+                    43045,
+                    43270,
+                    43271,
+                    43745,
+                    43746,
+                    44232,
+                    44233,
+                    44551,
+                    44552,
+                    46581,
+                    46582,
+                    46691,
+                    46692,
+                    46819,
+                    46820,
+                    46961,
+                    46962,
+                    47308,
+                    47309,
+                    47614,
+                    47615
+                  ],
+                  "matches": false,
+                  "subcat1": 0,
+                  "subcat2": 8,
+                  "subtype": -1
+                }
+              ],
+              "items": [
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 31751,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32254,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32255,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32256,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32257,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32682,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32683,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32684,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 32685,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 34024,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 34025,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 34026,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 34027,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 6,
+                  "id": 34428,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 42665,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 42666,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 43339,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 43340,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 44214,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 44215,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 44602,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 44603,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 45702,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 45703,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "copper bars",
+                  "distance": 6,
+                  "id": 46551,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 10
+                },
+                {
+                  "caption": "copper bars",
+                  "distance": 6,
+                  "id": 46552,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 10
+                },
+                {
+                  "caption": "copper bars",
+                  "distance": 6,
+                  "id": 46553,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 10
+                },
+                {
+                  "caption": "copper bars",
+                  "distance": 6,
+                  "id": 46554,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 10
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 46822,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 46823,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 47440,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 47441,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 47887,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "steel bars",
+                  "distance": 6,
+                  "id": 47888,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 150
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32309,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32310,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32311,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32312,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32692,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32693,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32694,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 32695,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33003,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33004,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33005,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33006,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33295,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33296,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33297,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33298,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33408,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33409,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33410,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33411,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33480,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33481,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33482,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33483,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33681,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33682,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33683,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33684,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33778,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                },
+                {
+                  "caption": "iron bars",
+                  "distance": 37,
+                  "id": 33779,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 50
+                }
+              ],
+              "revision": 8510057947744130935
+            },
+            "success": true
+          },
+          {
+            "label": "restored-anvils",
+            "snapshot": {
+              "categories": [
+                {
+                  "caption": "Anvils",
+                  "type": 45
+                },
+                {
+                  "caption": "Bags",
+                  "type": 31
+                },
+                {
+                  "caption": "Barrels",
+                  "type": 17
+                },
+                {
+                  "caption": "Bars",
+                  "type": 0
+                },
+                {
+                  "caption": "Bins",
+                  "type": 32
+                },
+                {
+                  "caption": "Blocks",
+                  "type": 2
+                },
+                {
+                  "caption": "Boulders",
+                  "type": 4
+                },
+                {
+                  "caption": "Boxes",
+                  "type": 30
+                },
+                {
+                  "caption": "Bracelets",
+                  "type": 43
+                },
+                {
+                  "caption": "Buckets",
+                  "type": 18
+                },
+                {
+                  "caption": "Cages",
+                  "type": 16
+                },
+                {
+                  "caption": "Cloth",
+                  "type": 58
+                },
+                {
+                  "caption": "Codices",
+                  "type": 89
+                },
+                {
+                  "caption": "Crutches",
+                  "type": 83
+                },
+                {
+                  "caption": "Doors",
+                  "type": 6
+                },
+                {
+                  "caption": "Earrings",
+                  "type": 42
+                },
+                {
+                  "caption": "Floodgates",
+                  "type": 7
+                },
+                {
+                  "caption": "Goblets",
+                  "type": 12
+                },
+                {
+                  "caption": "Logs",
+                  "type": 5
+                },
+                {
+                  "caption": "Mechanisms",
+                  "type": 67
+                },
+                {
+                  "caption": "Millstones",
+                  "type": 81
+                },
+                {
+                  "caption": "Musical instruments",
+                  "type": 13
+                },
+                {
+                  "caption": "Pipe section",
+                  "type": 77
+                },
+                {
+                  "caption": "Plants",
+                  "type": 54
+                },
+                {
+                  "caption": "Raw fish",
+                  "type": 50
+                },
+                {
+                  "caption": "Rings",
+                  "type": 41
+                },
+                {
+                  "caption": "Slabs",
+                  "type": 87
+                },
+                {
+                  "caption": "Splints",
+                  "type": 82
+                },
+                {
+                  "caption": "Statues",
+                  "type": 22
+                },
+                {
+                  "caption": "Tables",
+                  "type": 20
+                },
+                {
+                  "caption": "Thread",
+                  "type": 57
+                },
+                {
+                  "caption": "Thrones",
+                  "type": 9
+                },
+                {
+                  "caption": "Tools",
+                  "type": 86
+                }
+              ],
+              "category": 45,
+              "depot_id": 54,
+              "groups": [
+                {
+                  "amount": 2,
+                  "caption": "Iron anvils [2]",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    296,
+                    28425
+                  ],
+                  "matches": true,
+                  "subcat1": 0,
+                  "subcat2": 0,
+                  "subtype": -1
+                }
+              ],
+              "items": [
+                {
+                  "caption": "(iron anvil)",
+                  "distance": 6,
+                  "id": 296,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 100
+                },
+                {
+                  "caption": "(iron anvil)",
+                  "distance": 34,
+                  "id": 28425,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 100
+                }
+              ],
+              "revision": 8510057947744130935
+            },
+            "success": true
+          },
+          {
+            "label": "pending",
+            "snapshot": {
+              "categories": [
+                {
+                  "caption": "Anvils",
+                  "type": 45
+                },
+                {
+                  "caption": "Bags",
+                  "type": 31
+                },
+                {
+                  "caption": "Barrels",
+                  "type": 17
+                },
+                {
+                  "caption": "Bars",
+                  "type": 0
+                },
+                {
+                  "caption": "Bins",
+                  "type": 32
+                },
+                {
+                  "caption": "Blocks",
+                  "type": 2
+                },
+                {
+                  "caption": "Boulders",
+                  "type": 4
+                },
+                {
+                  "caption": "Boxes",
+                  "type": 30
+                },
+                {
+                  "caption": "Bracelets",
+                  "type": 43
+                },
+                {
+                  "caption": "Buckets",
+                  "type": 18
+                },
+                {
+                  "caption": "Cages",
+                  "type": 16
+                },
+                {
+                  "caption": "Cloth",
+                  "type": 58
+                },
+                {
+                  "caption": "Codices",
+                  "type": 89
+                },
+                {
+                  "caption": "Crutches",
+                  "type": 83
+                },
+                {
+                  "caption": "Doors",
+                  "type": 6
+                },
+                {
+                  "caption": "Earrings",
+                  "type": 42
+                },
+                {
+                  "caption": "Floodgates",
+                  "type": 7
+                },
+                {
+                  "caption": "Goblets",
+                  "type": 12
+                },
+                {
+                  "caption": "Logs",
+                  "type": 5
+                },
+                {
+                  "caption": "Mechanisms",
+                  "type": 67
+                },
+                {
+                  "caption": "Millstones",
+                  "type": 81
+                },
+                {
+                  "caption": "Musical instruments",
+                  "type": 13
+                },
+                {
+                  "caption": "Pipe section",
+                  "type": 77
+                },
+                {
+                  "caption": "Plants",
+                  "type": 54
+                },
+                {
+                  "caption": "Raw fish",
+                  "type": 50
+                },
+                {
+                  "caption": "Rings",
+                  "type": 41
+                },
+                {
+                  "caption": "Slabs",
+                  "type": 87
+                },
+                {
+                  "caption": "Splints",
+                  "type": 82
+                },
+                {
+                  "caption": "Statues",
+                  "type": 22
+                },
+                {
+                  "caption": "Tables",
+                  "type": 20
+                },
+                {
+                  "caption": "Thread",
+                  "type": 57
+                },
+                {
+                  "caption": "Thrones",
+                  "type": 9
+                },
+                {
+                  "caption": "Tools",
+                  "type": 86
+                }
+              ],
+              "category": 45,
+              "depot_id": 54,
+              "groups": [
+                {
+                  "amount": 2,
+                  "caption": "Iron anvils [2]",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    296,
+                    28425
+                  ],
+                  "matches": true,
+                  "subcat1": 0,
+                  "subcat2": 0,
+                  "subtype": -1
+                }
+              ],
+              "items": [
+                {
+                  "caption": "(iron anvil)",
+                  "distance": 6,
+                  "id": 296,
+                  "prohibited": false,
+                  "tag": 2,
+                  "value": 100
+                },
+                {
+                  "caption": "(iron anvil)",
+                  "distance": 34,
+                  "id": 28425,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 100
+                }
+              ],
+              "revision": 3172452482740012791
+            },
+            "success": true
+          },
+          {
+            "label": "delivered",
+            "snapshot": {
+              "categories": [
+                {
+                  "caption": "Anvils",
+                  "type": 45
+                },
+                {
+                  "caption": "Bags",
+                  "type": 31
+                },
+                {
+                  "caption": "Barrels",
+                  "type": 17
+                },
+                {
+                  "caption": "Bars",
+                  "type": 0
+                },
+                {
+                  "caption": "Bins",
+                  "type": 32
+                },
+                {
+                  "caption": "Blocks",
+                  "type": 2
+                },
+                {
+                  "caption": "Boulders",
+                  "type": 4
+                },
+                {
+                  "caption": "Boxes",
+                  "type": 30
+                },
+                {
+                  "caption": "Bracelets",
+                  "type": 43
+                },
+                {
+                  "caption": "Buckets",
+                  "type": 18
+                },
+                {
+                  "caption": "Cages",
+                  "type": 16
+                },
+                {
+                  "caption": "Cloth",
+                  "type": 58
+                },
+                {
+                  "caption": "Codices",
+                  "type": 89
+                },
+                {
+                  "caption": "Crutches",
+                  "type": 83
+                },
+                {
+                  "caption": "Doors",
+                  "type": 6
+                },
+                {
+                  "caption": "Earrings",
+                  "type": 42
+                },
+                {
+                  "caption": "Floodgates",
+                  "type": 7
+                },
+                {
+                  "caption": "Goblets",
+                  "type": 12
+                },
+                {
+                  "caption": "Logs",
+                  "type": 5
+                },
+                {
+                  "caption": "Mechanisms",
+                  "type": 67
+                },
+                {
+                  "caption": "Millstones",
+                  "type": 81
+                },
+                {
+                  "caption": "Musical instruments",
+                  "type": 13
+                },
+                {
+                  "caption": "Pipe section",
+                  "type": 77
+                },
+                {
+                  "caption": "Plants",
+                  "type": 54
+                },
+                {
+                  "caption": "Raw fish",
+                  "type": 50
+                },
+                {
+                  "caption": "Rings",
+                  "type": 41
+                },
+                {
+                  "caption": "Slabs",
+                  "type": 87
+                },
+                {
+                  "caption": "Splints",
+                  "type": 82
+                },
+                {
+                  "caption": "Statues",
+                  "type": 22
+                },
+                {
+                  "caption": "Tables",
+                  "type": 20
+                },
+                {
+                  "caption": "Thread",
+                  "type": 57
+                },
+                {
+                  "caption": "Thrones",
+                  "type": 9
+                },
+                {
+                  "caption": "Tools",
+                  "type": 86
+                }
+              ],
+              "category": 45,
+              "depot_id": 54,
+              "groups": [
+                {
+                  "amount": 2,
+                  "caption": "Iron anvils [2]",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    296,
+                    28425
+                  ],
+                  "matches": true,
+                  "subcat1": 0,
+                  "subcat2": 0,
+                  "subtype": -1
+                }
+              ],
+              "items": [
+                {
+                  "caption": "(iron anvil)",
+                  "distance": 0,
+                  "id": 296,
+                  "prohibited": false,
+                  "tag": 3,
+                  "value": 100
+                },
+                {
+                  "caption": "(iron anvil)",
+                  "distance": 34,
+                  "id": 28425,
+                  "prohibited": false,
+                  "tag": 0,
+                  "value": 100
+                }
+              ],
+              "revision": 4070234311872670435
+            },
+            "success": true
+          },
+          {
+            "label": "prohibited",
+            "snapshot": {
+              "categories": [
+                {
+                  "caption": "Anvils",
+                  "type": 45
+                },
+                {
+                  "caption": "Bags",
+                  "type": 31
+                },
+                {
+                  "caption": "Barrels",
+                  "type": 17
+                },
+                {
+                  "caption": "Bars",
+                  "type": 0
+                },
+                {
+                  "caption": "Bins",
+                  "type": 32
+                },
+                {
+                  "caption": "Blocks",
+                  "type": 2
+                },
+                {
+                  "caption": "Boulders",
+                  "type": 4
+                },
+                {
+                  "caption": "Boxes",
+                  "type": 30
+                },
+                {
+                  "caption": "Bracelets",
+                  "type": 43
+                },
+                {
+                  "caption": "Buckets",
+                  "type": 18
+                },
+                {
+                  "caption": "Cages",
+                  "type": 16
+                },
+                {
+                  "caption": "Cloth",
+                  "type": 58
+                },
+                {
+                  "caption": "Codices",
+                  "type": 89
+                },
+                {
+                  "caption": "Crutches",
+                  "type": 83
+                },
+                {
+                  "caption": "Doors",
+                  "type": 6
+                },
+                {
+                  "caption": "Earrings",
+                  "type": 42
+                },
+                {
+                  "caption": "Floodgates",
+                  "type": 7
+                },
+                {
+                  "caption": "Goblets",
+                  "type": 12
+                },
+                {
+                  "caption": "Logs",
+                  "type": 5
+                },
+                {
+                  "caption": "Mechanisms",
+                  "type": 67
+                },
+                {
+                  "caption": "Millstones",
+                  "type": 81
+                },
+                {
+                  "caption": "Musical instruments",
+                  "type": 13
+                },
+                {
+                  "caption": "Pipe section",
+                  "type": 77
+                },
+                {
+                  "caption": "Plants",
+                  "type": 54
+                },
+                {
+                  "caption": "Raw fish",
+                  "type": 50
+                },
+                {
+                  "caption": "Rings",
+                  "type": 41
+                },
+                {
+                  "caption": "Slabs",
+                  "type": 87
+                },
+                {
+                  "caption": "Splints",
+                  "type": 82
+                },
+                {
+                  "caption": "Statues",
+                  "type": 22
+                },
+                {
+                  "caption": "Tables",
+                  "type": 20
+                },
+                {
+                  "caption": "Thread",
+                  "type": 57
+                },
+                {
+                  "caption": "Thrones",
+                  "type": 9
+                },
+                {
+                  "caption": "Tools",
+                  "type": 86
+                }
+              ],
+              "category": 45,
+              "depot_id": 54,
+              "groups": [
+                {
+                  "amount": 2,
+                  "caption": "Iron anvils [2]",
+                  "expanded": true,
+                  "flags": 2,
+                  "item_ids": [
+                    296,
+                    28425
+                  ],
+                  "matches": true,
+                  "subcat1": 0,
+                  "subcat2": 0,
+                  "subtype": -1
+                }
+              ],
+              "items": [
+                {
+                  "caption": "(iron anvil)",
+                  "distance": 6,
+                  "id": 296,
+                  "prohibited": true,
+                  "tag": 0,
+                  "value": 100
+                },
+                {
+                  "caption": "(iron anvil)",
+                  "distance": 34,
+                  "id": 28425,
+                  "prohibited": true,
+                  "tag": 0,
+                  "value": 100
+                }
+              ],
+              "revision": 8953676012507368599
+            },
+            "success": true
+          },
+          {
+            "label": "excluded",
+            "snapshot": {
+              "categories": [
+                {
+                  "caption": "Bags",
+                  "type": 31
+                },
+                {
+                  "caption": "Barrels",
+                  "type": 17
+                },
+                {
+                  "caption": "Bars",
+                  "type": 0
+                },
+                {
+                  "caption": "Bins",
+                  "type": 32
+                },
+                {
+                  "caption": "Blocks",
+                  "type": 2
+                },
+                {
+                  "caption": "Boulders",
+                  "type": 4
+                },
+                {
+                  "caption": "Boxes",
+                  "type": 30
+                },
+                {
+                  "caption": "Bracelets",
+                  "type": 43
+                },
+                {
+                  "caption": "Buckets",
+                  "type": 18
+                },
+                {
+                  "caption": "Cages",
+                  "type": 16
+                },
+                {
+                  "caption": "Cloth",
+                  "type": 58
+                },
+                {
+                  "caption": "Codices",
+                  "type": 89
+                },
+                {
+                  "caption": "Crutches",
+                  "type": 83
+                },
+                {
+                  "caption": "Doors",
+                  "type": 6
+                },
+                {
+                  "caption": "Earrings",
+                  "type": 42
+                },
+                {
+                  "caption": "Floodgates",
+                  "type": 7
+                },
+                {
+                  "caption": "Goblets",
+                  "type": 12
+                },
+                {
+                  "caption": "Logs",
+                  "type": 5
+                },
+                {
+                  "caption": "Mechanisms",
+                  "type": 67
+                },
+                {
+                  "caption": "Millstones",
+                  "type": 81
+                },
+                {
+                  "caption": "Musical instruments",
+                  "type": 13
+                },
+                {
+                  "caption": "Pipe section",
+                  "type": 77
+                },
+                {
+                  "caption": "Plants",
+                  "type": 54
+                },
+                {
+                  "caption": "Raw fish",
+                  "type": 50
+                },
+                {
+                  "caption": "Rings",
+                  "type": 41
+                },
+                {
+                  "caption": "Slabs",
+                  "type": 87
+                },
+                {
+                  "caption": "Splints",
+                  "type": 82
+                },
+                {
+                  "caption": "Statues",
+                  "type": 22
+                },
+                {
+                  "caption": "Tables",
+                  "type": 20
+                },
+                {
+                  "caption": "Thread",
+                  "type": 57
+                },
+                {
+                  "caption": "Thrones",
+                  "type": 9
+                },
+                {
+                  "caption": "Tools",
+                  "type": 86
+                }
+              ],
+              "category": 45,
+              "depot_id": 54,
+              "groups": [
+                {
+                  "amount": 2,
+                  "caption": "Iron anvils [2]",
+                  "expanded": true,
+                  "flags": 0,
+                  "item_ids": [],
+                  "matches": true,
+                  "subcat1": 0,
+                  "subcat2": 0,
+                  "subtype": -1
+                }
+              ],
+              "items": [],
+              "revision": 8953676012507368599
+            },
+            "success": true
+          }
+        ],
+        "diagnostics": "passed_with_known_issues: rendering-thread notice",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-native.json": "35c4147fd205b6771dd5244f5c1f51add222f4aa1210db178468ec01b6c0511b",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/result.json": "0fa0c104df8c722a7e9673e5254f116da36d8dfca6c85fe12fc3838bc6f0bdb9",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-anvils-result.json": "4edd77ebd38f54f0c66b05131456be9197f49e28c36c424e8ee9fcb4b14e82b9",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-bags-result.json": "764bbfe11c37526e4132c7553b60bbaefc3934221bff32052f6aaa37b7dcb8d2",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-bars-result.json": "3925b76b021f2476d4b0eacd99ff1a60fda4dd0e57947cd8c14c33e7b7fb8178",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-delivered-result.json": "8db670628fcadcd212d550c26b3c74d8c9feae9b72f5b93a4d76517b5935426a",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-excluded-result.json": "c301ded67cbcfd0ea030796beff01508551175ed1be63df47a12281adead51e3",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-iron-result.json": "faf21a3353d475380d8d3e523326a23be5a344b6a358deb886d7bdc89a9ddb9d",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-pending-result.json": "f013e23fcd0bea20815fe0efca244da81463b6e214eb2ec2332477c9d0335939",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-prohibited-result.json": "a501132093c1e7faff3de8130e21818c1185dbe032932e05fdd3d5c44fb2d9a1",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-restored-anvils-result.json": "87b2438bccad85d0337fbd396d6a84c984175516f837ccfb7770e0c4b9e4e623",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-anvils.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-bags.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-bars.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-delivered.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-excluded.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-iron.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-pending.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-prohibited.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-restored-anvils.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
+        }
       }
     },
     "pending_construction_reference": {

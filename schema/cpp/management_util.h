@@ -1879,12 +1879,12 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     for(const auto* row:*r->categories())if(!row || row->type()<0 || row->type()>=93 || !types.insert(row->type()).second || !row->caption() || !row->caption()->size() || row->caption()->size()>16384)return "invalid depot category";
     std::set<std::tuple<int16_t,int16_t,int16_t>> keys;std::unordered_set<int32_t> members;
     for(const auto* row:*r->groups()){
-      if(!row || row->subtype()<-1 || row->subcat1()<-1 || row->subcat2()<-1 || row->amount()<0 || row->flags()>3 || !row->caption() || !row->caption()->size() || row->caption()->size()>16384 || !row->item_ids() || !row->item_ids()->size() || row->item_ids()->size()>1048576 || !keys.emplace(row->subtype(),row->subcat1(),row->subcat2()).second)return "invalid depot group";
+      if(!row || row->subtype()<-1 || row->subcat1()<-1 || row->subcat2()<-1 || row->amount()<0 || row->flags()>3 || !row->caption() || !row->caption()->size() || row->caption()->size()>16384 || !row->item_ids() || row->item_ids()->size()>1048576 || !keys.emplace(row->subtype(),row->subcat1(),row->subcat2()).second)return "invalid depot group";
       for(auto id:*row->item_ids())if(id<0 || !members.insert(id).second || members.size()>1048576)return "invalid depot membership";
     }
     std::unordered_set<int32_t> ids;
     for(const auto* row:*r->items())if(!row || !members.count(row->id()) || !ids.insert(row->id()).second || !row->caption() || !row->caption()->size() || row->caption()->size()>16384 || (row->tag()!=0 && row->tag()!=2 && row->tag()!=3))return "invalid depot item";
-    if(r->category()==-1 && (!members.empty() || r->items()->size()))return "unexpected unselected depot rows";
+    if(r->category()==-1 && (r->groups()->size() || r->items()->size()))return "unexpected unselected depot rows";
   }else if(s.status()==ManagementStatus::Ok && s.action()==ManagementAction::DepotGoodsRead)return "missing depot goods result";
   if(const auto* r=s.stocks_menu()) {
     const bool read=s.action()==ManagementAction::StocksMenuRead,apply=s.action()==ManagementAction::StocksGroupApply || s.action()==ManagementAction::StocksItemApply;

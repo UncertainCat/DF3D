@@ -19823,6 +19823,313 @@
             "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
             "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
           }
+        },
+        "removal_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-050220",
+          "status": "passed_with_known_issues",
+          "scope": "Thirty-two exact panels. Native and viewer installed-component Forbid/Dump/Hide toggles preserve demolition; inactive Melt does not change flags. Controlled paused assigned workers are cancelled by native clicks and actual viewer Cancel removal, with equal worker/job/path/counter/occupancy outcomes. No AI ticks or completed demolition inferred.",
+          "panel_comparisons": 32,
+          "workers": [
+            {
+              "id": 220,
+              "type": 3,
+              "evidence": {
+                "after": {
+                  "current_job": -1,
+                  "destination": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "job_counter": 0,
+                  "jobs": [],
+                  "occupancy": [
+                    2
+                  ],
+                  "path_goal": -1,
+                  "position": {
+                    "x": 191,
+                    "y": 180,
+                    "z": 175
+                  },
+                  "worker_id": 996
+                },
+                "before": {
+                  "current_job": 382798,
+                  "destination": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "job_counter": 0,
+                  "jobs": [
+                    {
+                      "id": 382798,
+                      "type": "DestroyBuilding",
+                      "worker_id": 996,
+                      "working": true
+                    }
+                  ],
+                  "occupancy": [
+                    2
+                  ],
+                  "path_goal": -1,
+                  "position": {
+                    "x": 191,
+                    "y": 180,
+                    "z": 175
+                  },
+                  "worker_id": 996
+                },
+                "native_after": {
+                  "current_job": -1,
+                  "destination": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "job_counter": 0,
+                  "jobs": [],
+                  "occupancy": [
+                    2
+                  ],
+                  "path_goal": -1,
+                  "position": {
+                    "x": 191,
+                    "y": 180,
+                    "z": 175
+                  },
+                  "worker_id": 996
+                },
+                "native_before": {
+                  "current_job": 382797,
+                  "destination": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "job_counter": 0,
+                  "jobs": [
+                    {
+                      "id": 382797,
+                      "type": "DestroyBuilding",
+                      "worker_id": 996,
+                      "working": true
+                    }
+                  ],
+                  "occupancy": [
+                    2
+                  ],
+                  "path_goal": -1,
+                  "position": {
+                    "x": 191,
+                    "y": 180,
+                    "z": 175
+                  },
+                  "worker_id": 996
+                },
+                "viewer": {
+                  "roundtrip": true,
+                  "success": true,
+                  "surface": "actual main scene"
+                }
+              }
+            },
+            {
+              "id": 280,
+              "type": 46,
+              "evidence": {
+                "after": {
+                  "current_job": -1,
+                  "destination": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "job_counter": 0,
+                  "jobs": [],
+                  "occupancy": [
+                    134217730
+                  ],
+                  "path_goal": -1,
+                  "position": {
+                    "x": 191,
+                    "y": 180,
+                    "z": 175
+                  },
+                  "worker_id": 996
+                },
+                "before": {
+                  "current_job": 382801,
+                  "destination": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "job_counter": 0,
+                  "jobs": [
+                    {
+                      "id": 382801,
+                      "type": "DestroyBuilding",
+                      "worker_id": 996,
+                      "working": true
+                    }
+                  ],
+                  "occupancy": [
+                    134217730
+                  ],
+                  "path_goal": -1,
+                  "position": {
+                    "x": 191,
+                    "y": 180,
+                    "z": 175
+                  },
+                  "worker_id": 996
+                },
+                "native_after": {
+                  "current_job": -1,
+                  "destination": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "job_counter": 0,
+                  "jobs": [],
+                  "occupancy": [
+                    134217730
+                  ],
+                  "path_goal": -1,
+                  "position": {
+                    "x": 191,
+                    "y": 180,
+                    "z": 175
+                  },
+                  "worker_id": 996
+                },
+                "native_before": {
+                  "current_job": 382800,
+                  "destination": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "job_counter": 0,
+                  "jobs": [
+                    {
+                      "id": 382800,
+                      "type": "DestroyBuilding",
+                      "worker_id": 996,
+                      "working": true
+                    }
+                  ],
+                  "occupancy": [
+                    134217730
+                  ],
+                  "path_goal": -1,
+                  "position": {
+                    "x": 191,
+                    "y": 180,
+                    "z": 175
+                  },
+                  "worker_id": 996
+                },
+                "viewer": {
+                  "roundtrip": true,
+                  "success": true,
+                  "surface": "actual main scene"
+                }
+              }
+            }
+          ],
+          "post": [
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 220
+            },
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 280
+            }
+          ],
+          "owned_df_pid": 5144,
+          "closed_unsaved": true,
+          "source_preserved": true,
+          "sha256": {
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-forbidden.png": "799339c9bc0988cdd3caf6d31df74a6cd87dcdb53a50d77731665fadabe46e97",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-holder-return.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-initial.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-removing-dump-1.png": "74ede9ed1a5576179fd4394096c601b080e90358b2e74d42b314d8ea4c255e0c",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-removing-dump-2.png": "0235096822ec436997638003c2dbdec947e4a9532842bd41ec6112bef2dada72",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-removing-forbid-1.png": "72f1c784cf60286bcc2a1c29028bf54fb4652ab3bd56e08b4f963a958feb1806",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-removing-forbid-2.png": "0235096822ec436997638003c2dbdec947e4a9532842bd41ec6112bef2dada72",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-removing-hidden-1.png": "5f27b48ed727877b5894abbfafee4623cd7936fdb6109969bba626b9199fbf08",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-removing-hidden-2.png": "0235096822ec436997638003c2dbdec947e4a9532842bd41ec6112bef2dada72",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-removing-melt-1.png": "0235096822ec436997638003c2dbdec947e4a9532842bd41ec6112bef2dada72",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-removing-melt-2.png": "0235096822ec436997638003c2dbdec947e4a9532842bd41ec6112bef2dada72",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-removing.png": "0235096822ec436997638003c2dbdec947e4a9532842bd41ec6112bef2dada72",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-renamed.png": "c5ec55cb1e4dd8dbce44035f06a849e4d1159dda1545dfcb5ba59ecd657d5a1e",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-220-restored.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-forbidden.png": "dcf8477c8979141e2b1893aa9d3b75f8c85c0f3774d7654d1eda988edb188a57",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-holder-return.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-initial.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-removing-dump-1.png": "e825133e68bbc9eddff2bf912bbab0f9dfa8906e256d92839b3787511fbc6da2",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-removing-dump-2.png": "57e99ee71f7ea6a83363d69eef15bbfecfa1531c9a88707ec73b42fd75237514",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-removing-forbid-1.png": "53b486c2c09d493a3475465f845b80095236f14c64f23f5ccfcd74d5997724f0",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-removing-forbid-2.png": "57e99ee71f7ea6a83363d69eef15bbfecfa1531c9a88707ec73b42fd75237514",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-removing-hidden-1.png": "43a6d0b82c06905676043026ac42f87e576f54a3ab5fc136a6ed7788726f98cf",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-removing-hidden-2.png": "57e99ee71f7ea6a83363d69eef15bbfecfa1531c9a88707ec73b42fd75237514",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-removing-melt-1.png": "57e99ee71f7ea6a83363d69eef15bbfecfa1531c9a88707ec73b42fd75237514",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-removing-melt-2.png": "57e99ee71f7ea6a83363d69eef15bbfecfa1531c9a88707ec73b42fd75237514",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-removing.png": "57e99ee71f7ea6a83363d69eef15bbfecfa1531c9a88707ec73b42fd75237514",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-renamed.png": "979cfebb87a1b6614644a87074c6bdc0a7ccf94babbc7e5a8520b3cfe33de9dc",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-280-restored.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-workshop-furniture-3-worker-assigned.png": "6d3328b893fb270b1d99421fcdb9b86c7073da2ed985ce1078d12b6a8cf5a8c4",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-workshop-furniture-3-worker-cancelled.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-workshop-furniture-46-worker-assigned.png": "b3adab749bc32d7fb9d61dd8b491d8d6418c29951b72d9d39a7df45fb8358b6b",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/chest-scene-workshop-furniture-46-worker-cancelled.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/furniture-3-worker-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/furniture-3-worker-stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/furniture-46-worker-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/furniture-46-worker-stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/furniture-post.json": "29445fb43a69e4217a260ded5f2dccac04ea29d2dc8bdddecc0b62b894e37c11",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/result.json": "e890d3045e6c2e5f9900cd733ed2ca26643641be8542937ac0f291c2d6d51c32",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-forbidden.png": "4ade01c2e8985efb027a90bcb215816b36a0ee2245db0dc74c3c42af973bddf9",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-initial.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-removing-dump-1.png": "d78982e0b285f3f79a58534b7186571a8dbeb55c087135f9ea34b9b9ec52622d",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-removing-dump-2.png": "e28e2f39f86304a1094ca13d1cfa72fc812512938b3d6ebe9f468a52f6cf6081",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-removing-forbid-1.png": "50ee8904f6b4ff64e74f0a93cc18b859b06fbd55e2adcc78fe6e688a4c1173d0",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-removing-forbid-2.png": "e28e2f39f86304a1094ca13d1cfa72fc812512938b3d6ebe9f468a52f6cf6081",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-removing-hidden-1.png": "1e8da0e986f18331dde5ae88ccef2adb1bb1cca741edf86619e563228c1e4ca5",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-removing-hidden-2.png": "e28e2f39f86304a1094ca13d1cfa72fc812512938b3d6ebe9f468a52f6cf6081",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-removing-melt-1.png": "e28e2f39f86304a1094ca13d1cfa72fc812512938b3d6ebe9f468a52f6cf6081",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-removing-melt-2.png": "e28e2f39f86304a1094ca13d1cfa72fc812512938b3d6ebe9f468a52f6cf6081",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-removing.png": "e28e2f39f86304a1094ca13d1cfa72fc812512938b3d6ebe9f468a52f6cf6081",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-renamed.png": "b50653aafecc095b784e02cc76fe2fa7d108eaa1af8d4059d3669a3622969348",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-restored.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-worker-assigned.png": "c5e1d5ca7b4070ec6cca0a9273f2dd12f36bdae977361eb8a46588f41f92a4a7",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-3-worker-cancelled.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-forbidden.png": "f006d6dca950986769a9182e4d88f700f2a9f72fae8913a69e4659abdaa6072d",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-initial.png": "d60091502f2ca4cfe116acce23180309612c6e825334bd18d890230eb91d7c26",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-removing-dump-1.png": "4738f8a4b354985bf7bc84f2d425ef68dcb4f2daf53aa3386e4c639114025630",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-removing-dump-2.png": "513f235fcdf05ef58b814973b28b9d613bfaa61bbba55e040300cace8e7d66e5",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-removing-forbid-1.png": "8c02ad7e4b2874b1f72b37a0b64859bb3cc448729ffba7bf2a4b8068170b42e0",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-removing-forbid-2.png": "513f235fcdf05ef58b814973b28b9d613bfaa61bbba55e040300cace8e7d66e5",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-removing-hidden-1.png": "b0ae8d12f6f8594d8568fe4a9d2c86a0957c32f8d58fb9587c3f738edfcbe9c6",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-removing-hidden-2.png": "513f235fcdf05ef58b814973b28b9d613bfaa61bbba55e040300cace8e7d66e5",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-removing-melt-1.png": "513f235fcdf05ef58b814973b28b9d613bfaa61bbba55e040300cace8e7d66e5",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-removing-melt-2.png": "513f235fcdf05ef58b814973b28b9d613bfaa61bbba55e040300cace8e7d66e5",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-removing.png": "513f235fcdf05ef58b814973b28b9d613bfaa61bbba55e040300cace8e7d66e5",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-renamed.png": "297757cde36c2bbeb5edf3ba703ed5e42d07737fae1a3c47ebe53d1c9df51e63",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-restored.png": "d60091502f2ca4cfe116acce23180309612c6e825334bd18d890230eb91d7c26",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-worker-assigned.png": "f4f00b3096785f2643d0f8f041253493e0c0e041c3ef2ab1cf456a9bb71ea7b2",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-furniture-46-worker-cancelled.png": "f3a9b369c59d3ddb3351f7caedefccfffa4c4f4835d65f54a3ca0354e86494c7",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-native.json": "1813333884b0bb6d99d3fa1bf49bcbcc2bdef2978440011e49b4c9853ca483ed",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+            "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+          }
         }
       }
     },

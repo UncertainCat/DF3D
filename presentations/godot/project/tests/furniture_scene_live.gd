@@ -21,6 +21,12 @@ func exercise(expected: Dictionary) -> void:
 			for field in ["unit_id","historical_figure_id","room_id","room_type","introduction","name","room_introduction","room_name","deceased","notices"]:
 				check(body.get(field)==entry.body.get(field),"Funerary variant fact differs: "+field)
 			await panel_capture(entry.reference,entry.reference)
+			if entry.get("cancel_removal",false):
+				check(owner.state.snapshot.removing and owner.state.snapshot.has_worker,"Assigned demolition worker absent from header")
+				await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.cancel_rect().get_center())
+				if not await chest_ready():return
+				check(not owner.state.snapshot.removing,"Worker-owned removal cancellation not confirmed")
+				await panel_capture(entry.cancel_reference,entry.cancel_reference)
 			key(KEY_ESCAPE);await drain()
 			check(scene._ui.host.active==null and not owner.panel.visible,"Funerary variant retained input")
 			continue

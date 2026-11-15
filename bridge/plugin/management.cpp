@@ -4299,7 +4299,7 @@ void run(color_ostream& out) {
       if(before) {
         const bool unfinished=bool(df3d_production::observePendingBuilding(contentsBuilding(q->building_id(),true)));
         const auto contentsType=contentsBuilding(q->building_id())->getType();
-        const bool editRemoving=unfinished || contentsType==df::building_type::Box || df3d_production::plainFurnitureType(contentsType);
+        const bool editRemoving=unfinished || contentsType==df::building_type::Box || df3d_production::plainFurnitureType(contentsType) || df3d_production::funeraryFurnitureType(contentsType);
         auto edit=df3d_production::finishBuildingItemEdit(*before,q->expected_revision(),q->item_id(),action,q->item_value()!=0,[&] {
           auto* building=contentsBuilding(q->building_id(),true);
           if(!building)return false;

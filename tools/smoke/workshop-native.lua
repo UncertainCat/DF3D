@@ -335,6 +335,29 @@ local ok,err=xpcall(function()
       shot('furniture-14-contents-'..direction[1])
      end
     end
+    if funerary and os.getenv('DF3D_FUNERARY_WORKER')=='1'then
+     local source=debug.getinfo(1,'S').source:sub(2):gsub('workshop%-native.lua$','farm-worker-fixture.lua')
+     local fixture=assert(loadfile(source))();local prefix='furniture-'..kind..'-worker-'
+     click(832,82);local native_identity=fixture.attach(target)
+     local native_before=fixture.observe(target,native_identity);view:render(dfhack.getTickCount());shot(prefix..'assigned')
+     click(500,202);local native_after=fixture.observe(target,native_identity)
+     assert(native_after.current_job==-1 and #target.jobs==0,'Native worker cancellation retained a job')
+     shot(prefix..'cancelled')
+     click(832,82);local identity=fixture.attach(target);local before=fixture.observe(target,identity)
+     local text,code=dfhack.run_command_silent('df3d','funerary-body-probe',tostring(target.id));assert(code==0,text)
+     local file=assert(io.open(out..'/furniture-expected.json','w'))
+     file:write(json.encode({buildings={{id=target.id,type=kind,reference='workshop-'..prefix..'assigned',body=json.decode(text),cancel_removal=true,cancel_reference='workshop-'..prefix..'cancelled'}}}));file:close()
+     os.remove(out..'/ack-workshop-wire');os.remove(out..'/workshop-wire-result.json');capture('workshop-wire')
+     file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success,'Worker viewer failed')
+     local after=fixture.observe(target,identity)
+     assert(json.encode(after)==json.encode(native_after),'Viewer worker cleanup differs from native')
+     row.worker_cancellation={native_before=native_before,native_after=native_after,before=before,after=after,viewer=receipt}
+     for _,suffix in ipairs{'stdout.log','stderr.log','result.json'}do
+      local input=assert(io.open(out..'/workshop-wire'..(suffix=='result.json' and '-' or '.')..suffix,'r'))
+      local output=assert(io.open(out..'/'..prefix..suffix,'w'));output:write(input:read('*a'));output:close();input:close()
+     end
+     file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
+    end
     if (kind==1 or funerary) and os.getenv('DF3D_FURNITURE_RESIZE')=='1'then
      for _,size in ipairs{'small','medium','wide','default'}do resize_worker(size);shot('furniture-'..kind..'-resize-'..size)end
     end

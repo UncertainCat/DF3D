@@ -9883,8 +9883,23 @@ slab_resize_reference and long_name_reference retain physical capture hashes,
 variant receipts and logs; these are paused diagnostic field variants, not
 memorial creation or historical-figure naming gameplay.
 
-Public map access remains gated. Remaining funerary work includes removal-time
-item editing, worker-owned demolition, full lifecycle checks and normal map entry. Existing
+Protected050220 on2026-11-15 qualifies installed-component editing while
+coffin/slab removal is queued. Native and actual viewer Forbid/Dump/Hide toggle
+and restore flags while preserving the demolition job; Melt stays inactive.
+The bridge admits these families through the existing removal-time item edit
+contract. Thirty-two full panels match, including paired worker-assigned and
+cancelled states for each family. Controlled paused jobs use the shared worker
+fixture; actual viewer Cancel removal matches native clicks for worker release,
+current job, position/destination/path goal, job counter, building jobs and tile
+occupancy. No AI ticks advance, so this does not qualify completed demolition
+or automatic panel refresh during simulation. Native final names/jobs/component
+flags are restored, DF5144 exits unsaved and source saves are unchanged. Graphical
+runs are serial/capped30FPS (sampled GPU54C); only the documented three Godot
+diagnostics occur. removal_reference retains captures, effect observations,
+per-worker receipts/logs and hashes.
+
+Public map access remains gated. Remaining funerary work includes simulation-driven
+panel refresh/completed demolition, lifecycle checks and normal map entry. Existing
 native portrait/Tomb-icon click probes retain the coffin selection; no new
 navigation is inferred.
 

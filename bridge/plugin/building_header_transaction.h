@@ -1,5 +1,6 @@
 #pragma once
 #include "machinery_body.h"
+#include "depot_body.h"
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -17,6 +18,7 @@ struct BuildingHeaderObservation {
     uint64_t revision=0;
     std::optional<MachineryBody> machinery;
     std::optional<uint8_t> wellStatus;
+    std::optional<DepotBody> depot;
 };
 inline uint64_t buildingHeaderRevision(const BuildingHeaderObservation& value) {
     uint64_t hash=UINT64_C(14695981039346656037);
@@ -33,6 +35,10 @@ inline uint64_t buildingHeaderRevision(const BuildingHeaderObservation& value) {
         number(v.machineId);number(v.produced);number(v.required);byte(uint8_t(v.status));
         byte(v.stableFoundation);byte(v.disengaged);byte(v.pumpManual);byte(v.pumpDirection);}
     if(value.wellStatus)byte(*value.wellStatus);
+    if(value.depot){const auto& v=*value.depot;number(v.flags);number(v.awaitingItems);byte(v.goods);byte(v.trade);
+        number(v.workerId);number(v.brokerId);number(v.brokerJobId);number(v.foreground);number(v.background);byte(v.bright);byte(v.accessible);
+        for(const auto* text:{&v.brokerName,&v.activity}){number(text->size());for(unsigned char c:*text)byte(c);}}
+
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;
 }
 inline bool validBuildingHeader(const BuildingHeaderObservation& value) {
@@ -41,10 +47,11 @@ inline bool validBuildingHeader(const BuildingHeaderObservation& value) {
         !value.headerName.empty() && value.headerName.size()<=512 &&
         (value.removing || (!value.suspended && !value.hasWorker)) &&
         (value.type==18)==value.wellStatus.has_value() && (!value.wellStatus || *value.wellStatus<=3) &&
+        (value.type==6)==value.depot.has_value() && (!value.depot || validDepotBody(*value.depot)) &&
         machineryType(value.type)==bool(value.machinery) &&
         (!value.machinery || validMachineryBody(*value.machinery,value.type)) && value.revision==buildingHeaderRevision(value);
 }
-enum class BuildingHeaderOperation : uint8_t { Rename, Remove, CancelRemoval, PumpManual };
+enum class BuildingHeaderOperation : uint8_t { Rename, Remove, CancelRemoval, PumpManual, DepotMode };
 enum class BuildingHeaderOutcome : uint8_t { Rejected, Completed, Stale, Unknown };
 struct BuildingHeaderEdit {
     BuildingHeaderOutcome outcome=BuildingHeaderOutcome::Rejected;
@@ -61,13 +68,16 @@ BuildingHeaderEdit finishBuildingHeaderEdit(const BuildingHeaderObservation& bef
     BuildingHeaderEdit result;
     if(!expected || !validBuildingHeader(before) || before.stage!=before.maxStage)return result;
     if(operation!=BuildingHeaderOperation::Rename && operation!=BuildingHeaderOperation::Remove &&
-       operation!=BuildingHeaderOperation::CancelRemoval && operation!=BuildingHeaderOperation::PumpManual)return result;
+       operation!=BuildingHeaderOperation::CancelRemoval && operation!=BuildingHeaderOperation::PumpManual && operation!=BuildingHeaderOperation::DepotMode)return result;
     const bool pump=operation==BuildingHeaderOperation::PumpManual;
-    if(pump ? (before.type!=33 || pumpValue<0 || pumpValue>1) : pumpValue!=-1)return result;
+    const bool depot=operation==BuildingHeaderOperation::DepotMode;
+    if(pump ? (before.type!=33 || pumpValue<0 || pumpValue>1) : depot ? (before.type!=6 || pumpValue<0 || pumpValue>2) : pumpValue!=-1)return result;
+    const uint32_t depotFlags=depot?(pumpValue==0?(before.depot->flags|1U)&~2U:pumpValue==1?before.depot->flags|3U:before.depot->flags&~1U):0;
     const bool rename=operation==BuildingHeaderOperation::Rename;
     if((rename && (name.size()>30 || name.find('\0')!=std::string::npos)) || (!rename && !name.empty()))return result;
     if(expected!=before.revision){result.outcome=BuildingHeaderOutcome::Stale;return result;}
-    if((rename || pump) ? before.removing : before.removing==(operation==BuildingHeaderOperation::Remove))return result;
+    if((rename || pump || depot) ? before.removing : before.removing==(operation==BuildingHeaderOperation::Remove))return result;
+    if(depot && before.depot->flags==depotFlags){result.receipt=before;result.outcome=BuildingHeaderOutcome::Completed;return result;}
     if(pump && before.machinery->pumpManual==pumpValue){result.receipt=before;result.outcome=BuildingHeaderOutcome::Completed;return result;}
     if(rename && name==before.customName){result.receipt=before;result.outcome=BuildingHeaderOutcome::Completed;return result;}
     result.mutated=true;result.outcome=BuildingHeaderOutcome::Unknown;
@@ -76,7 +86,43 @@ BuildingHeaderEdit finishBuildingHeaderEdit(const BuildingHeaderObservation& bef
         auto after=observe();
         if(!after || !validBuildingHeader(*after))return result;
         auto unchanged=*after;
-        if(pump) {
+        if(depot) {
+            if(!after->depot || after->depot->flags!=depotFlags)return result;
+            unchanged.depot->flags=before.depot->flags;
+            const bool adding=!(before.depot->flags&1U) && (depotFlags&1U);
+            const bool removing=(before.depot->flags&1U) && !(depotFlags&1U);
+            if(adding) {
+                if(after->jobs.size()!=before.jobs.size()+1)return result;
+                size_t old=0;bool found=false;
+                for(const auto& job:after->jobs) {
+                    if(old<before.jobs.size() && job.id==before.jobs[old].id) {
+                        if(job.type!=before.jobs[old].type || job.flags!=before.jobs[old].flags)return result;++old;
+                    } else {
+                        if(found || job.id<0 || job.type!=197 || job.flags!=0)return result;
+                        for(const auto& prior:before.jobs)if(prior.id==job.id)return result;
+                        found=true;
+                    }
+                }
+                if(old!=before.jobs.size() || !found)return result;
+                unchanged.jobs=before.jobs;
+            } else if(removing) {
+                size_t remaining=0;bool brokerJobRemoved=false;
+                for(const auto& job:before.jobs) {
+                    if(job.type==197){brokerJobRemoved|=job.id==before.depot->brokerJobId;continue;}
+                    if(remaining>=after->jobs.size())return result;
+                    const auto& kept=after->jobs[remaining++];
+                    if(kept.id!=job.id || kept.type!=job.type || kept.flags!=job.flags)return result;
+                }
+                if(remaining!=after->jobs.size() || after->depot->workerId!=-1)return result;
+                unchanged.jobs=before.jobs;unchanged.depot->workerId=before.depot->workerId;
+                if(brokerJobRemoved) {
+                    if(after->depot->brokerJobId!=-1)return result;
+                    unchanged.depot->brokerJobId=before.depot->brokerJobId;
+                    unchanged.depot->activity=before.depot->activity;unchanged.depot->foreground=before.depot->foreground;
+                    unchanged.depot->background=before.depot->background;unchanged.depot->bright=before.depot->bright;
+                }
+            }
+        } else if(pump) {
             if(!after->machinery || after->machinery->pumpManual!=pumpValue)return result;
             unchanged.machinery->pumpManual=before.machinery->pumpManual;
         } else if(rename) {

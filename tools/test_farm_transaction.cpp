@@ -738,3 +738,29 @@ TEST_CASE("well status changes retire header edit authority") {
     auto uncertain=finishBuildingHeaderEdit(before,before.revision,BuildingHeaderOperation::Rename,"Renamed",apply,observe);
     CHECK(uncertain.outcome==BuildingHeaderOutcome::Unknown);CHECK(uncertain.mutated);CHECK_FALSE(uncertain.receipt);
 }
+TEST_CASE("depot mode receipts preserve unrelated jobs and reject uncertain effects") {
+    using namespace df3d_production;
+    BuildingHeaderObservation before;before.id=54;before.type=6;before.stage=before.maxStage=1;
+    before.nativeName=before.headerName="Depot";before.depot.emplace();before.jobs={{12,15,0}};
+    before.revision=buildingHeaderRevision(before);
+    for(int fault=0;fault<5;++fault) {
+        auto after=before;after.depot->flags=1;after.jobs.push_back({13,197,0});
+        if(fault==1)after.jobs.pop_back();
+        if(fault==2)after.jobs[0].flags=1;
+        if(fault==3)after.depot->goods=true;
+        if(fault==4)after.jobs.back().id=12;
+        after.revision=buildingHeaderRevision(after);int calls=0;
+        auto result=finishBuildingHeaderEdit(before,before.revision,BuildingHeaderOperation::DepotMode,"",[&]{++calls;return true;},[&]{return std::optional<BuildingHeaderObservation>{after};},0);
+        CHECK(calls==1);CHECK(result.mutated);CHECK(result.outcome==(fault==0?BuildingHeaderOutcome::Completed:BuildingHeaderOutcome::Unknown));
+        CHECK(result.receipt.has_value()==(fault==0));
+    }
+    auto changed=before;changed.depot->awaitingItems=1;changed.revision=buildingHeaderRevision(changed);int calls=0;
+    auto stale=finishBuildingHeaderEdit(changed,before.revision,BuildingHeaderOperation::DepotMode,"",[&]{++calls;return true;},[&]{return std::optional<BuildingHeaderObservation>{changed};},0);
+    CHECK(stale.outcome==BuildingHeaderOutcome::Stale);CHECK(calls==0);
+    before.depot->flags=3;before.jobs.push_back({13,197,0});before.revision=buildingHeaderRevision(before);
+    auto after=before;after.depot->flags=2;after.jobs.pop_back();after.revision=buildingHeaderRevision(after);
+    auto dismissed=finishBuildingHeaderEdit(before,before.revision,BuildingHeaderOperation::DepotMode,"",[]{return true;},[&]{return std::optional<BuildingHeaderObservation>{after};},2);
+    REQUIRE(dismissed.receipt);CHECK(dismissed.receipt->jobs.size()==1);CHECK(dismissed.receipt->jobs[0].id==12);
+    auto duplicate=finishBuildingHeaderEdit(after,after.revision,BuildingHeaderOperation::DepotMode,"",[&]{++calls;return true;},[&]{return std::optional<BuildingHeaderObservation>{after};},2);
+    CHECK(duplicate.outcome==BuildingHeaderOutcome::Completed);CHECK_FALSE(duplicate.mutated);CHECK(calls==0);
+}

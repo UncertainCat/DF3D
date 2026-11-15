@@ -102,6 +102,10 @@ func rename(value: String) -> void:
 
 func request_removal() -> void:_edit(C.FarmOperation.Remove,{})
 func cancel_removal() -> void:_edit(C.FarmOperation.CancelRemoval,{})
+func set_depot_mode(mode: int) -> void:
+	if phase!=Phase.Ready or snapshot.get("type",-1)!=6 or snapshot.get("removing",false) or mode not in [0,1,2]:return
+	_edit(C.FarmOperation.DepotMode,{"item_value":mode})
+
 func set_pump_manual(desired: bool) -> void:
 	if snapshot.get("type",-1)!=33 or not snapshot.has("machinery"):return
 	_edit(C.FarmOperation.PumpManual,{"item_value":int(desired)})
@@ -220,7 +224,8 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 	if editing:
 		if observed.stage!=observed.max_stage or observed.removing!=(operation==C.FarmOperation.Remove) or \
 			(operation==C.FarmOperation.Rename and observed.custom_name!=sent.farm_name) or \
-			(operation==C.FarmOperation.PumpManual and (observed.type!=33 or observed.machinery.pump_manual!=sent.item_value)):
+			(operation==C.FarmOperation.PumpManual and (observed.type!=33 or observed.machinery.pump_manual!=sent.item_value)) or \
+			(operation==C.FarmOperation.DepotMode and (observed.type!=6 or observed.depot.requested!=(sent.item_value!=2) or (sent.item_value!=2 and observed.depot.anyone!=(sent.item_value==1)))):
 			_fail(Phase.Unknown);return
 	var different: bool=phase!=Phase.Ready or snapshot!=observed
 	snapshot=observed.duplicate(true);phase=Phase.Ready

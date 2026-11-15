@@ -1,5 +1,13 @@
 #pragma once
-#include "farm_native.h"
+#include "depot_body.h"
+#include <windows.h>
+#include <optional>
+#include "modules/Maps.h"
+#include "df/global_objects.h"
+#include "df/plotinfost.h"
+#include "df/world.h"
+#include "df/job.h"
+#include "df/job_type.h"
 #include "df/building_tradedepotst.h"
 #include "df/unit.h"
 #include "df/historical_entity.h"
@@ -11,13 +19,18 @@ namespace df3d_production {
 // no viewscreen, selected depot or native trade-menu scratch is an input.
 inline bool depotNativeReady() {
     static const bool ready=[] {
-        if(!farmFunctions())return false;
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        if(!base)return false;
+        const auto* dos=reinterpret_cast<const IMAGE_DOS_HEADER*>(base);
+        if(dos->e_magic!=IMAGE_DOS_SIGNATURE || dos->e_lfanew<=0 || dos->e_lfanew>0x1000)return false;
+        const auto* pe=reinterpret_cast<const IMAGE_NT_HEADERS64*>(base+dos->e_lfanew);
+        if(pe->Signature!=IMAGE_NT_SIGNATURE || pe->FileHeader.Machine!=IMAGE_FILE_MACHINE_AMD64 ||
+           pe->FileHeader.TimeDateStamp!=0x6a70a6d9 || pe->OptionalHeader.SizeOfImage!=0x2711000)return false;
         const auto hash=[&](size_t rva,size_t length) {
             uint64_t h=UINT64_C(14695981039346656037);
             for(size_t i=0;i<length;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;
         };
-        return hash(0x1af983,0x14a)==UINT64_C(0x970f77daf5b501fb) &&
+        return hash(0x54bcd0,0x15)==UINT64_C(0x23931f03386d1254) && hash(0x1af983,0x14a)==UINT64_C(0x970f77daf5b501fb) &&
             hash(0xfd580,0x23)==UINT64_C(0x1f9646cb809a07ae) &&
             hash(0xd020c0,0x1f9)==UINT64_C(0xe6506fad7c779085) &&
             hash(0x54bcf0,0xce)==UINT64_C(0x7ceaff76902a0dea) &&
@@ -29,7 +42,7 @@ inline bool depotNativeReady() {
 }
 struct DepotFacts {uint32_t flags=0;bool goods=false,trade=false;int32_t worker=-1;};
 struct DepotBrokerFacts {
-    int32_t id=-1;std::string name,activity;
+    int32_t id=-1,jobId=-1;std::string name,activity;
     int16_t foreground=7,background=0;bool bright=false,accessible=false;
 };
 inline std::optional<DepotBrokerFacts> depotBrokerFacts(df::building* building) {
@@ -66,7 +79,7 @@ inline std::optional<DepotBrokerFacts> depotBrokerFacts(df::building* building) 
     auto* unit=figure?df::unit::find(figure->unit_id):nullptr;
     if(!unit)return result;
     const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
-    result.id=unit->id;
+    result.id=unit->id;result.jobId=unit->job.current_job?unit->job.current_job->id:-1;
     reinterpret_cast<void (*)(df::unit*,std::string*,bool)>(base+0x1330c30)(unit,&result.name,false);
     if(unit->job.current_job && !unit->job.current_job->flags.bits.on_break) {
         reinterpret_cast<void (*)(df::job*,std::string*)>(base+0xd03170)(unit->job.current_job,&result.activity);
@@ -93,6 +106,16 @@ inline std::optional<DepotFacts> depotFacts(df::building* building) {
     return DepotFacts{depot->trade_flags.whole,
         reinterpret_cast<Caravan>(base+0xe532f0)(df::global::plotinfo),
         reinterpret_cast<Caravan>(base+0xe53330)(df::global::plotinfo),worker?worker->id:-1};
+}
+inline std::optional<DepotBody> depotBody(df::building* building) {
+    const auto facts=depotFacts(building);const auto broker=depotBrokerFacts(building);
+    if(!facts || !broker)return {};
+    DepotBody v;v.flags=facts->flags;v.goods=facts->goods;v.trade=facts->trade;v.workerId=facts->worker;
+    v.brokerId=broker->id;v.brokerJobId=broker->jobId;v.brokerName=broker->name;v.activity=broker->activity;
+    v.foreground=broker->foreground;v.background=broker->background;v.bright=broker->bright;v.accessible=broker->accessible;
+    // Renderer196b53 counts hauling jobs, not item stack quantities.
+    for(const auto* job:building->jobs){if(!job)return {};if(job->job_type==df::job_type::BringItemToDepot)++v.awaitingItems;}
+    return validDepotBody(v)?std::optional<DepotBody>{std::move(v)}:std::nullopt;
 }
 enum class DepotSettingOutcome {Rejected,Applied,Unknown};
 // mode0 Broker,1 Anyone,2 no trader. Dismissal preserves the previous Anyone bit.

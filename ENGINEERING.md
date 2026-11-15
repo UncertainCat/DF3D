@@ -20,8 +20,8 @@ Protected130341 on2026-11-15 verifies protocol231 through five existing barrier
 header/contents reads, hatch access edits, stale/duplicate guards and removal/
 cancellation. All three DepotMode values reject on the queued hatch removal and
 leave its entire header unchanged. Runtime dispatch explicitly rejects unsupported
-operations before the existing CancelRemoval fallback. DepotMode remains unavailable
-until its dedicated guarded handler is connected. The Godot request decoder admits
+operations before the existing CancelRemoval fallback. The dedicated depot runtime
+handler is described in the native provider section below. The Godot request decoder admits
 operation14 and limits item_value to2 only for DepotMode; other item settings retain
 their boolean limit. Headless depot_contract_test passes with the known rendering-
 thread notice. Owned DF45912 closes unsaved with source preservation, native30FPS,
@@ -845,6 +845,34 @@ navigation remain outstanding. The earlier settings/duplicate/stale checks pass
 in the same run. Owned DF48684 closes unsaved with source preservation, paused
 simulation, graphics30FPS and sampled GPU59C. Bridge build and core19 pass.
 Evidence: `completed_sheet_discovery_reference.depot_broker_reference`.
+
+The production building-header path now admits depot reads, contents and mode
+edits through the shared semantic channel. `DepotBody` participates in header
+revision validation, including native flags, broker activity, current broker job,
+availability and awaiting-item count. The count follows renderer196b53: each
+BringItemToDepot15 job counts once, regardless of item quantity. Broker artwork
+uses the existing owned unit appearance provider; that wire case is not yet
+qualified by the brokerless test below.
+
+DepotMode applies explicit native0/1/2 choices only to completed, non-removing
+depots with the observed revision. A verified new request adds exactly one native
+TradeAtDepot197 job while preserving existing jobs; dismissal removes only those
+jobs. Changing Broker/Anyone retains job identity. Expected cancellation-related
+worker/activity changes are allowed only for the removed trader job. Other fact
+or job changes yield Unknown without a receipt or automatic retry. Already-set
+modes return the existing snapshot without mutation.
+
+Protected131107 on2026-11-15 exercises the actual headless Godot transport: depot
+header decoding, eight mode transitions, stale revisions and exact duplicates.
+The final complete header equals the baseline and native flags/jobs are restored.
+Owned DF43976 closes unsaved with source preservation, paused simulation,
+native30FPS and sampled GPU60C. The only client diagnostic is the established
+rendering-thread notice. Bridge/root builds and core19 pass, including injected
+missing/extra/altered jobs and unrelated facts causing Unknown responses.
+Evidence: `completed_sheet_discovery_reference.depot_wire_reference`.
+This qualifies brokerless mode transport, not the public depot panel, assigned
+broker wire artwork, goods selection or trading. The old Lua adapter remains
+unqualified and is not used by this building-header path.
 
 ## Completed bridge, wagon and traction-bench sheets
 

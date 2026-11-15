@@ -134,6 +134,12 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ if os.getenv('DF3D_MACHINERY_SHEETS_NATIVE')=='1'then
+  resize_worker('default')
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('workshop%-native.lua$','machinery-sheets-native.lua')
+  assert(loadfile(source))(out,view,select_map,capture)
+  return
+ end
  if os.getenv('DF3D_TRAP_SHEETS_NATIVE')=='1'then
   resize_worker('default')
   local source=debug.getinfo(1,'S').source:sub(2):gsub('workshop%-native.lua$','trap-sheets-native.lua')

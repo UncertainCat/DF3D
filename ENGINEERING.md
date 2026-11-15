@@ -503,6 +503,41 @@ graphics are serial at30FPS, sampled GPU60..62C. The accepted run has only the
 known render-thread/finalize/two-ObjectDB diagnostics (passed_with_known_issues).
 Evidence: `completed_sheet_discovery_reference.ordinary_trap_map_states_reference`.
 
+## Completed machinery sheets
+
+Protected103300 on2026-11-15 records seven machinery types and the existing
+millstone workshop. Waterwheel234 belongs to a real active network with100 power
+and20 required. The other six machinery types use DFHack-created buildings with
+diagnostic completion, no installed materials and no network; their unknown-material
+names are fixture artifacts. These captures establish layouts, not construction or
+power transmission. The diagnostic deconstructs its fixtures before returning.
+Initial102834 captured existing wheel/millstone only;103013 failed fixture selection;
+103147 and103300 use clear tiles and capture all eight sheets.
+
+Native body18a096..18a5ec for pumps and19ad00..19b1f9 for other machinery reads
+`getMachineInfo()` and resolves its machine ID. An existing network supplies
+`cur_power`, `min_power` and active/frozen flags. Frozen status distinguishes the
+component's frozen bit from freezing elsewhere. With no network, those three rows
+are absent. Native5acd00(building) determines Stable Foundation versus Hanging
+from the footprint terrain; it reads simulation terrain and uses no UI scratch.
+Pin the code and its tile jump table through5ad122 before calling it. Gear40 adds
+Disengaged when `gear_flags.disengaged` is set. `getPowerInfo()` provides component
+production/consumption but those values are not the displayed network totals.
+
+Pump33 adds its native manual checkbox and direction. Input1add7d..1add8e only
+changes `pump_manually` to its opposite; it does not create or cancel a job in
+that input handler. Protected103300 clicks the visible checkbox twice, verifies
+the flag changes/restores, and confirms no job or frame change while paused.
+This does not qualify subsequent pumping simulation. The captured native labels
+are Start Pump Manually and Stop Pumping Manually. Runtime machinery management
+still needs a typed snapshot, guarded mutation and rendered/main-scene acceptance;
+these types remain on inspector routes.
+
+Evidence: `completed_sheet_discovery_reference.machinery_sheets_reference` contains
+the eight native records, exact source captions, instruction references and pins.
+Owned DF39748 closes unsaved with source preservation; core19 passes, graphical
+runs serial at30FPS, sampled GPU58..60C. No bridge/protocol change in this milestone.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

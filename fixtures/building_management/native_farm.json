@@ -61704,6 +61704,74 @@
           "tools/smoke/depot-trade-native.lua": "05b72f8168066ecf7a72605b5dec6119fa885ffba4d97805c11910819e665e37",
           "build/notes/pm/trade-entry-bridge.log": "3809293229bd43c3e5d87c50bbb4397a8055a2d74e3bc19014ee33e6239bb000"
         }
+      },
+      "depot_trade_speaker_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-175040",
+        "owned_df_pid": 39836,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Native-only speaker fixture with temporary merchant flags/civilization on citizen996. Owned initializer matches native speaker ID, first-name fallback for a long nickname, entry strings/flags and unloading detected from temporary Hauled inventory record. Two provider calls per state retain observed native menu/list/appraisal state. Restores flags, civilization, nickname, inventory entry, worker position, jobs and caravans. This is not natural caravan arrival, multi-speaker precedence, populated goods, skill mutation or exchange acceptance.",
+        "cases": [
+          {
+            "label": "speaker",
+            "provider": {
+              "available": true,
+              "entity": 865,
+              "fortname": "Your fortress of RoderÃ²nul",
+              "fortress_trader": 988,
+              "havetalker": 1,
+              "merchant_trader": 996,
+              "place": "Dumatzas",
+              "stillunloading": 0,
+              "talker": "Kel",
+              "talkline": 0,
+              "title": "Merchants from Dumatzas"
+            }
+          },
+          {
+            "label": "speaker-long-name",
+            "provider": {
+              "available": true,
+              "entity": 865,
+              "fortname": "Your fortress of RoderÃ²nul",
+              "fortress_trader": 988,
+              "havetalker": 1,
+              "merchant_trader": 996,
+              "place": "Dumatzas",
+              "stillunloading": 0,
+              "talker": "Kel",
+              "talkline": 0,
+              "title": "Merchants from Dumatzas"
+            }
+          },
+          {
+            "label": "speaker-unloading",
+            "provider": {
+              "available": true,
+              "entity": 865,
+              "fortname": "Your fortress of RoderÃ²nul",
+              "fortress_trader": 988,
+              "havetalker": 1,
+              "merchant_trader": 996,
+              "place": "Dumatzas",
+              "stillunloading": 1,
+              "talker": "Kel",
+              "talkline": 0,
+              "title": "Merchants from Dumatzas"
+            }
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-175040/depot-trade-native.json": "1788c841b5a1695701e7a66e85e28c75cff36375b63fae5636d2231e6bcb6e55",
+          "build/stockpile-storage-native-farm-discovery-20261115-175040/result.json": "d9acd55f02914dfc2d0d621f5aa665f32d24d09cc373400e78c53bd0cfe834c2",
+          "build/stockpile-storage-native-farm-discovery-20261115-175040/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-175040/capture-inputs.json": "dbe1a4763ddf232efed028579a80ed8704b13e2ecb567516de63e964d138af75",
+          "tools/smoke/depot-trade-native.lua": "a5bc845acf1197c291c86b12a794a9ae110a67b1aaced40dff51b7daba84cacd",
+          "bridge/plugin/trade_entry_native.h": "4e3779a417f9e62835593d534836d0b99cc43ce1e82d24155633524c9e3ed82a",
+          "build/stockpile-storage-native-farm-discovery-20261115-175040/depot-trade-speaker-long-name.png": "e209cadcd94aad9d7e2a864e74ec6ce905c927e22126221f95cc049e8bd2cd95",
+          "build/stockpile-storage-native-farm-discovery-20261115-175040/depot-trade-speaker-unloading.png": "42f8ee2584060ea42cb576989005c52edc0cf73ddd79e8810229b02c5b1e027f",
+          "build/stockpile-storage-native-farm-discovery-20261115-175040/depot-trade-speaker.png": "0ef8eaa16f2d33843ea3acb539afbf1fb8e448d10b0cfb8e7d422d5b0d233e3e"
+        }
       }
     },
     "pending_construction_reference": {

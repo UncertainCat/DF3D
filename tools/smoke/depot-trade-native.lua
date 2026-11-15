@@ -11,6 +11,7 @@ assert(unit)
 local position={x=unit.pos.x,y=unit.pos.y,z=unit.pos.z};local unit_flags=unit.flags1.whole;local old_job=unit.job.current_job
 local job=df.job:new();job.job_type=df.job_type.TradeAtDepot
 local ref=df.general_ref_unit_workerst:new();ref.unit_id=unit.id;job.general_refs:insert('#',ref)
+local restore_speaker
 local restore_item
 local added_job=false;local added={};local result={depot=b.id,trader=unit.id,synthetic_prerequisites=true,cases={}}
 local function click(x,y)
@@ -95,6 +96,36 @@ local ok,err=xpcall(function()
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)
   restore_item()
  end
+ if os.getenv('DF3D_DEPOT_TRADE_SPEAKER')=='1' then
+  local speaker;local civ=df.historical_entity.find(added[1].entity)
+  for _,candidate in ipairs(df.global.world.units.active)do
+   if candidate.id~=unit.id and dfhack.units.isCitizen(candidate) and candidate.race==civ.race and candidate.on_item_id==-1 then
+    local hauling=false;for _,entry in ipairs(candidate.inventory)do if entry.mode==df.inv_item_role_type.Hauled then hauling=true end end
+    if not hauling then speaker=candidate;break end
+   end
+  end
+  assert(speaker,'No controlled merchant speaker candidate')
+  local original_flags=speaker.flags1.whole;local original_civ=speaker.civ_id;local original_nickname=speaker.name.nickname;local inventory_count=#speaker.inventory;local extra
+  restore_speaker=function()
+   if extra then speaker.inventory:erase(#speaker.inventory-1);extra:delete();extra=nil end
+   speaker.flags1.whole=original_flags;speaker.civ_id=original_civ;speaker.name.nickname=original_nickname
+   assert(#speaker.inventory==inventory_count);restore_speaker=nil
+  end
+  speaker.flags1.merchant=true;speaker.flags1.inactive=false;speaker.flags1.incoming=false;speaker.civ_id=added[1].entity
+  local function reopen(label,unloading)
+   unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z;select_map(b);assert(main.view_sheets.active_id==b.id)
+   unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z;click(480,190);assert(trade.open)
+   local row=record(label);assert(row.merchant_trader==speaker.id and row.havetalker==1 and row.stillunloading==unloading)
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)
+  end
+  result.speaker_id=speaker.id
+  reopen('speaker',0)
+  speaker.name.nickname='Controlled long merchant nickname for truncation'
+  reopen('speaker-long-name',0)
+  extra=df.unit_inventory_item:new();extra.item=df.item.find(296);extra.mode=df.inv_item_role_type.Hauled;speaker.inventory:insert('#',extra)
+  reopen('speaker-unloading',1)
+  restore_speaker()
+ end
  caravan();unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z
  select_map(b);assert(main.view_sheets.active_id==b.id)
  unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z
@@ -104,6 +135,7 @@ local ok,err=xpcall(function()
 end,debug.traceback)
 if trade.open then gui.simulateInput(view,'LEAVESCREEN')end
 if restore_item then restore_item()end
+if restore_speaker then restore_speaker()end
 if added_job then b.jobs:erase(#b.jobs-1)end
 unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z
 job.general_refs:erase(0);ref:delete();job:delete()

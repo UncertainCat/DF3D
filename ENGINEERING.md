@@ -221,9 +221,29 @@ foreign caravan index reject. The temporary own-goods fixture, trader and
 caravans restore; owned DF43668 closes unsaved/source-preserved at30FPS, sampled
 GPU51C. The MSVC bridge builds and all19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_trade_entry_provider_reference`.
-This qualifies the current no-merchant-speaker fixture, not speaker selection or
-unloading branches, list projection, appraisal mutation, prices, negotiation,
-public transport or exchange UI. Those remain required before exposing Trade.
+That run qualifies the no-merchant-speaker fixture. Protected175040 below adds
+speaker/unloading coverage. List projection, appraisal mutation, prices,
+negotiation, public transport and exchange UI remain required before exposure.
+
+Protected175040 on2026-11-15 temporarily marks a second citizen996 as the
+caravan's merchant, preserving its prior flags/civilization/nickname/inventory.
+Native entry selects that speaker and displays the full empty exchange UI.
+A controlled long nickname falls back to the native first-name talker “Kel”;
+a temporary Hauled inventory record activates stillunloading. The owned native
+initializer matches all entry text/identity/flag fields in each of these three
+states, twice per state, without altering the observed native menu, goods counts,
+pending flags or appraisal history. The original no-speaker case also passes.
+The fixture restores every changed prerequisite, and owned DF39836 closes
+unsaved/source-preserved with simulation frame unchanged. Native graphics stay
+at30FPS, sampled GPU51C; all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_speaker_reference`.
+This is controlled single-speaker evidence, not natural arrival, multiple-speaker
+precedence, populated inventory, appraisal skill effects or completed exchange.
+
+Native goods sorting uses the game's imported qsort at IAT15e5d60 from
+api-ms-win-crt-utility-l1-1-0.dll with native comparator384790. A provider can
+preserve that comparison and equal-key ordering mechanism over independently
+owned item vectors; replacing it with another sort/tie-breaker is unqualified.
 
 ## Depot goods value transport migration
 

@@ -13,7 +13,7 @@ assert(not menu.open and #b.jobs==0)
 local result={id=b.id,synthetic_caravan=true,frame=frame}
 local restore_delivered
 local prohibition,prohibition_index
-local function compare_selection(label,projection,draft,sort_draft)
+local function compare_selection(label,projection,draft,sort_draft,container)
  if os.getenv('DF3D_DEPOT_SELECTION_PROVIDER')~='1' then return end
  local facts=projection
  if not facts then
@@ -62,6 +62,11 @@ local function compare_selection(label,projection,draft,sort_draft)
    local function choices(text)local rows={};for id,wanted in text:gmatch('(%d+):([01])')do rows[#rows+1]={id=tonumber(id),desired=wanted=='1'}end;return rows end
    expected.request.expected_revision=facts.revision -- decimal string preserves all64 bits through JSON
    expected.request.draft=choices(draft);expected.request.sort_draft=choices(sort_draft)
+  end
+  if container then
+   expected.request.expected_revision=container.revision;expected.request.draft={};expected.request.sort_draft={}
+   expected.request.container_id=container.parent_id;expected.request.container_offset=container.offset;expected.request.container_limit=64
+   expected.container={parent_id=container.parent_id,offset=container.offset,total=container.total,items=container.items}
   end
   for i,kind in ipairs(facts.categories)do expected.categories[#expected.categories+1]={type=kind,caption=facts.category_captions[i]}end
   for _,group in ipairs(facts.groups)do local row={};for k,v in pairs(group)do row[k=='ids' and 'item_ids' or k]=v end;expected.groups[#expected.groups+1]=row end
@@ -167,7 +172,7 @@ local ok,err=xpcall(function()
  end
  if os.getenv('DF3D_DEPOT_CONTAINER_NATIVE')=='1' then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-goods%-native.lua$','depot-container-native.lua')
-  result.container_expansion=assert(loadfile(source))(view,b,capture,click)
+  result.container_expansion=assert(loadfile(source))(view,b,capture,click,compare_selection)
  end
  if os.getenv('DF3D_DEPOT_SELECTION_PROVIDER')=='1' then
   click(150,130);compare_selection('bags');capture('depot-selection-bags')

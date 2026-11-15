@@ -147,13 +147,20 @@ func run() -> void:
 	if check(response.get("status")==C.ManagementStatus.Ok and not snapshot.is_empty(),"Depot goods snapshot unavailable: "+str(response)):
 		check(snapshot.depot_id==intent.depot_id and snapshot.category==intent.category and snapshot.revision>0 and snapshot.appraisal==expected.appraisal,"Depot goods identity/knowledge differs")
 		for key in ["categories","groups","items"]:check(snapshot[key]==expected[key],"Depot goods "+key+" differs: "+str(snapshot[key]))
+		if expected.has("container"):check(snapshot.get("container")==expected.container,"Depot container page differs")
 		var again:=await request("depot_goods",intent)
 		check(again.get("depot_goods",{})==snapshot,"Repeated paused read changed source revision")
 		var categories: Dictionary=intent.duplicate(true);categories.category=-1;categories.item_ids=[]
+		for key in ["container_id","container_offset","container_limit"]:categories.erase(key)
 		var overview:=await request("depot_goods",categories)
 		var value: Dictionary=overview.get("depot_goods",{})
 		check(value.get("categories")==snapshot.categories and value.get("revision")==snapshot.revision and value.get("groups")==[] and value.get("items")==[],"Depot category-only read differs")
 		if not intent.has("expected_revision"):appearances=await verify_controller(intent,snapshot)
+		if expected.has("container"):
+			for patch in [{"expected_revision":2 if snapshot.revision==1 else snapshot.revision-1},{"container_offset":expected.container.total+1},{"container_id":expected.container.items[0].id}]:
+				var invalid: Dictionary=intent.duplicate(true);invalid.merge(patch,true)
+				var rejection:=await request("depot_goods",invalid)
+				check(rejection.get("status")==C.ManagementStatus.Rejected and not rejection.has("depot_goods"),"Invalid container source/page retained a snapshot")
 	for patch in [{"depot_id":2147483647},{"item_ids":[2147483647]}]:
 		var invalid: Dictionary=intent.duplicate(true);invalid.merge(patch,true)
 		var rejection:=await request("depot_goods",invalid)

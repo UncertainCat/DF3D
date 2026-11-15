@@ -353,9 +353,9 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
     if(s.depotCommit){const auto& v=*s.depotCommit;Dictionary value;value["depot_id"]=v.depotId;value["expected_revision"]=int64_t(v.expectedRevision);value["observed_revision"]=int64_t(v.observedRevision);value["outcome"]=int(v.outcome);result["depot_commit"]=value;if(v.outcome==wm::DepotGoodsCommitOutcome::Unknown)result["outcome"]="unknown";}
     if(s.depotGoods){const auto& v=*s.depotGoods;Dictionary value;Array categories,groups,items;
         for(const auto& row:v.categories){Dictionary d;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());categories.append(d);}
-        for(const auto& row:v.groups){Dictionary d;d["subtype"]=row.subtype;d["subcat1"]=row.subcat1;d["subcat2"]=row.subcat2;d["amount"]=row.amount;d["caption"]=String::utf8(row.caption.c_str());d["matches"]=row.matches;d["expanded"]=row.expanded;d["flags"]=row.flags;Array ids;for(auto id:row.itemIds)ids.append(id);d["item_ids"]=ids;groups.append(d);}
+        for(const auto& row:v.groups){Dictionary d;d["subtype"]=row.subtype;d["subcat1"]=row.subcat1;d["subcat2"]=row.subcat2;d["amount"]=row.amount;d["caption"]=String::utf8(row.caption.c_str());d["matches"]=row.matches;d["expanded"]=row.expanded;d["flags"]=row.flags;Array ids;for(auto id:row.itemIds)ids.append(id);d["item_ids"]=ids;Array counts;for(auto count:row.containerCounts)counts.append(count);d["container_counts"]=counts;groups.append(d);}
         for(const auto& row:v.items){Dictionary d;d["id"]=row.id;d["caption"]=String::utf8(row.caption.c_str());d["distance"]=row.distance;d["value"]=row.value;d["tag"]=row.tag;d["prohibited"]=row.prohibited;d["value_caption"]=String::utf8(row.valueCaption.c_str());items.append(d);}
-        value["depot_id"]=v.depotId;value["revision"]=int64_t(v.revision);value["category"]=v.category;value["categories"]=categories;value["groups"]=groups;value["items"]=items;value["appraisal"]=v.appraisal;result["depot_goods"]=value;
+        value["depot_id"]=v.depotId;value["revision"]=int64_t(v.revision);value["category"]=v.category;value["categories"]=categories;value["groups"]=groups;value["items"]=items;value["appraisal"]=v.appraisal;if(v.container){const auto& page=*v.container;Dictionary data;Array rows;for(const auto& row:page.items){Dictionary d;d["id"]=row.id;d["type"]=row.type;d["contained_count"]=row.containedCount;d["value"]=row.value;d["prohibited"]=row.prohibited;d["caption"]=String::utf8(row.caption.c_str());d["value_caption"]=String::utf8(row.valueCaption.c_str());rows.append(d);}data["parent_id"]=page.parentId;data["offset"]=page.offset;data["total"]=page.total;data["items"]=rows;value["container"]=data;}result["depot_goods"]=value;
     }
     if(s.stocksMenu) {
         const auto& v=*s.stocksMenu;Dictionary value;Array categories,groups,items;
@@ -891,9 +891,9 @@ bool validateDepotGoods(const Dictionary& data,String& error) {
         for(int64_t i=0;i<rows.size();++i){if(rows[i].get_type()!=Variant::DICTIONARY)return false;const Dictionary row=rows[i];if(row.size()!=2 || !integer(row,"id",0,INT32_MAX) || !ids.insert(int64_t(row["id"])).second || !row.has("desired") || row["desired"].get_type()!=Variant::BOOL)return false;}
         error=String();return true;
     }
-    if((data.size()!=8 && data.size()!=11) || !integer(data,"depot_id",0,INT32_MAX) || !integer(data,"category",-1,92) || !data.has("query") || data["query"].get_type()!=Variant::STRING || String(data["query"]).utf8().length()>2048 || !data.has("item_ids") || data["item_ids"].get_type()!=Variant::ARRAY)return false;
+    if((data.size()!=8 && data.size()!=11 && data.size()!=14) || !integer(data,"depot_id",0,INT32_MAX) || !integer(data,"category",-1,92) || !data.has("query") || data["query"].get_type()!=Variant::STRING || String(data["query"]).utf8().length()>2048 || !data.has("item_ids") || data["item_ids"].get_type()!=Variant::ARRAY)return false;
     for(const auto* key:{"sort_by_distance","pending_on_top","exclude_prohibited"})if(!data.has(key) || data[key].get_type()!=Variant::BOOL)return false;
-    if(data.size()==11){
+    if(data.size()>=11){
         if(!integer(data,"expected_revision",0,INT64_MAX))return false;
         for(const auto* key:{"draft","sort_draft"}){
             if(!data.has(key) || data[key].get_type()!=Variant::ARRAY)return false;
@@ -902,6 +902,7 @@ bool validateDepotGoods(const Dictionary& data,String& error) {
             for(int64_t i=0;i<rows.size();++i){if(rows[i].get_type()!=Variant::DICTIONARY)return false;const Dictionary row=rows[i];if(row.size()!=2 || !integer(row,"id",0,INT32_MAX) || !seen.insert(int64_t(row["id"])).second || !row.has("desired") || row["desired"].get_type()!=Variant::BOOL)return false;}
         }
     }
+    if(data.size()==14 && (!integer(data,"container_id",0,INT32_MAX) || !integer(data,"container_offset",0,1048576) || !integer(data,"container_limit",1,64) || int64_t(data["expected_revision"])==0 || int64_t(data["category"])<0))return false;
     const Array ids=data["item_ids"];if(ids.size()>64 || (int64_t(data["category"])==-1 && !ids.is_empty()))return false;
     std::unordered_set<int64_t> seen;for(int64_t i=0;i<ids.size();++i)if(ids[i].get_type()!=Variant::INT || int64_t(ids[i])<0 || int64_t(ids[i])>INT32_MAX || !seen.insert(int64_t(ids[i])).second)return false;
     error=String();return true;
@@ -919,6 +920,7 @@ bool readDepotGoods(const Dictionary& data,wm::ManagementRequest& request,String
         const auto read=[](const Array& rows,std::vector<wm::DepotGoodsChange>& out){for(int64_t i=0;i<rows.size();++i){const Dictionary row=rows[i];out.push_back({int32_t(int64_t(row["id"])),bool(row["desired"])});}};
         read(data["draft"],q.draft);read(data["sort_draft"],q.sortDraft);
     }
+    if(data.has("container_id")){q.containerId=int32_t(int64_t(data["container_id"]));q.containerOffset=int32_t(int64_t(data["container_offset"]));q.containerLimit=int32_t(int64_t(data["container_limit"]));}
     const Array ids=data["item_ids"];for(int64_t i=0;i<ids.size();++i)q.itemIds.push_back(int32_t(int64_t(ids[i])));return true;
 }
 bool validateStocksMenu(const Dictionary& data,String& error) {

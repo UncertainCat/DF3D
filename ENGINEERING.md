@@ -1,3 +1,30 @@
+## Depot goods container transport migration
+
+Management protocol236 adds required direct-child counts parallel to each depot
+group's member IDs. Missing counts are invalid, not inferred zero. Optional
+container parent/offset/limit requests require a selected category and nonzero
+expected goods revision; pages carry at most64 children. Replies identify the
+parent, offset and total, and retain native child IDs/types, nested counts,
+descriptions, values, appraisal text and prohibition facts. A page total must
+agree with its parent's group count. Child IDs do not authorize hauling actions.
+Both peers/mailbox use236 and must be rebuilt together; DF53.16 pins are unchanged.
+Older recordings cannot invent container counts or pages. Viewer expansion and
+rendering remain a separate unfinished integration.
+
+Protected165048 on2026-11-15 passes35 native-to-Godot cases, including a ten-child
+page, nine appraisal/sorting states, sixteen drafts and existing resting cases.
+Transported counts/content match native; stale source, out-of-range offset and
+foreign-parent requests reject. Existing controller creation/cancellation effects
+also pass. The synthetic adapter verifies a nonzero child offset, known value
+caption and full-width revision. Core checks reject malformed page/count/source
+combinations. Bridge, root and extension builds pass, as do all19 core checks.
+Owned DF45988 closes unsaved/source-preserved, native30FPS and sampled GPU48–49C.
+Goods-client and synthetic adapter logs are diagnostic-free; the auxiliary depot
+client retains its documented separate-rendering-thread warning. Evidence:
+`completed_sheet_discovery_reference.depot_goods_container_transport_reference`.
+This verifies transport, not controller expansion, child artwork or main-scene
+render/input acceptance. Public depot routes remain hidden.
+
 ## Depot goods value transport migration
 
 Management protocol235 adds required appraisal knowledge to depot goods replies
@@ -6,7 +33,7 @@ positive values are native effective skill+1. Missing knowledge is invalid, not
 an inferred absence of a broker. Captions must be empty exactly when knowledge
 is0; otherwise they carry native approximation/uncertainty and currency text,
 converted from CP437 at the bridge boundary. The viewer does not format values
-from the raw numeric field. Both peers/mailbox use235 and must be rebuilt
+from the raw numeric field. Both peers/mailbox use236 and must be rebuilt
 together. DF53.16 pins are unchanged; older recordings cannot invent knowledge
 or value captions.
 
@@ -30,7 +57,7 @@ Any nonempty vector requires a nonzero signed-safe64-bit source revision.
 Draft-free reads remain available without a revision. Preview replies may now
 contain staged tags1,-1,-2 as well as resting tags0,2,3. Native projection and
 source validation use the owned provider documented below; no preview creates
-jobs or changes items. Both peers/mailbox use235 and must be rebuilt together.
+jobs or changes items. Both peers/mailbox use236 and must be rebuilt together.
 DF53.16 compatibility pins are unchanged. Older recordings must not invent drafts.
 
 Protected155628 on2026-11-15 verifies all sixteen recorded native draft states
@@ -101,8 +128,8 @@ native description/value/mandate leaves with semantic item inputs. Their caller
 must validate the parent against the current depot goods source; children are
 not separate hauling intents. Each page includes the current total and child
 type, nested count, description, numeric value, appraisal caption and prohibition
-fact. No pointers escape the safe point. Protocol235 does not yet carry these
-fields. Viewer transport and local per-item expansion retained across category/
+fact. No pointers escape the safe point. Protocol236 carries these
+fields. Local per-item expansion retained across category/
 search changes remain unfinished, as do nested/empty-container, rendered and
 main-scene acceptance.
 
@@ -115,7 +142,7 @@ can calculate list height without fetching every child's description. Source
 revisions include direct child identity/order, semantic flags and nested counts;
 weight-cache validity remains excluded for both parent and child items. This
 detects equal-value child replacement/reordering that parent valuation alone
-cannot identify. These fields are internal until the protocol migration.
+cannot identify. Protocol236 carries these fields to the viewer adapter.
 
 Protected164114 validates that source binding through the owned reader. Swapping
 two direct containment references changes the revision, rejects the saved page

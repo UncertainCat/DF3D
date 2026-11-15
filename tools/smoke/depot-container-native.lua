@@ -1,5 +1,5 @@
 -- Diagnostic-only native container expansion oracle in a paused disposable save.
-local view,b,capture,click=...
+local view,b,capture,click,compare_selection=...
 local gui=require('gui')
 local json=require('json')
 local menu=df.global.game.main_interface.assign_trade
@@ -113,7 +113,7 @@ if os.getenv('DF3D_DEPOT_CONTAINER_PROVIDER')=='1' then
  refs[first]=a;refs[second]=c
  assert(checked,err)
  assert(probe(id,0,64,true).revision==all.revision,'Restored contents changed revision')
- result.provider={matched=all.total,pages=math.ceil(all.total/3),bounds_rejected=true,child_as_parent_rejected=true,revision_reorder_rejected=true,revision_restored=true,items=all.items}
+ result.provider={matched=all.total,pages=math.ceil(all.total/3),bounds_rejected=true,child_as_parent_rejected=true,revision_reorder_rejected=true,revision_restored=true,items=all.items,revision=all.revision}
 end
 click(500,4+(cell-menu.scroll_position_item+3)*12+12)
 sample('child-click')
@@ -130,6 +130,10 @@ menu.scroll_position_item=math.max(0,cell-12);view:render(dfhack.getTickCount())
 click(500,4+(cell-menu.scroll_position_item)*12+12)
 sample('restored')
 assert(not current().expanded_container and menu.i_height==initial_height)
+if os.getenv('DF3D_DEPOT_GOODS_WIRE')=='1' then
+ assert(result.provider)
+ compare_selection('container-page',nil,nil,nil,{parent_id=id,offset=0,total=result.provider.matched,items=result.provider.items,revision=result.provider.revision})
+end
 select_type(df.item_type.ANVIL)
 -- Native category navigation retains search focus. Restore the initial focus
 -- through its actual toggle before handing back to other picker checks.

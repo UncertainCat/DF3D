@@ -208,8 +208,9 @@ ManagementState decodeState(const m::ManagementState* s) {
   if(const auto* r=s->depot_goods()) {
     next.depotGoods.emplace();auto& out=*next.depotGoods;out.depotId=r->depot_id();out.revision=r->revision();out.category=r->category();out.appraisal=r->appraisal();
     for(const auto* row:*r->categories())out.categories.push_back({row->type(),row->caption()->str()});
-    for(const auto* row:*r->groups()){DepotGoodsGroup group{row->subtype(),row->subcat1(),row->subcat2(),row->amount(),row->caption()->str(),row->matches(),row->expanded(),row->flags()};group.itemIds.assign(row->item_ids()->begin(),row->item_ids()->end());out.groups.push_back(std::move(group));}
+    for(const auto* row:*r->groups()){DepotGoodsGroup group{row->subtype(),row->subcat1(),row->subcat2(),row->amount(),row->caption()->str(),row->matches(),row->expanded(),row->flags()};group.itemIds.assign(row->item_ids()->begin(),row->item_ids()->end());group.containerCounts.assign(row->container_counts()->begin(),row->container_counts()->end());out.groups.push_back(std::move(group));}
     for(const auto* row:*r->items())out.items.push_back({row->id(),row->caption()->str(),row->distance(),row->value(),row->tag(),row->prohibited(),row->value_caption()->str()});
+    if(const auto* page=r->container()){out.container.emplace();auto& target=*out.container;target.parentId=page->parent_id();target.offset=page->offset();target.total=page->total();for(const auto* row:*page->items())target.items.push_back({row->id(),row->type(),row->contained_count(),row->value(),row->prohibited(),row->caption()->str(),row->value_caption()->str()});}
   }
   if(const auto* r=s->stocks_menu()) {
     next.stocksMenu.emplace();auto& out=*next.stocksMenu;out.outcome=StocksMenuOutcome(r->outcome());out.category=r->category();
@@ -552,7 +553,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
         m::CreateSelectionArtRequest(b,r.selectionArt.receipt,r.selectionArt.expectedRevision,encodeArtRequest(b,r.selectionArt.art)):flatbuffers::Offset<m::SelectionArtRequest>{},
       r.action==ManagementAction::DepotGoodsRead?[&](){const auto& q=r.depotGoods;
         const auto changes=[&](const std::vector<DepotGoodsChange>& rows){std::vector<m::DepotGoodsChange> out;for(const auto& row:rows)out.emplace_back(row.id,uint8_t(row.desired));return b.CreateVectorOfStructs(out);};
-        return m::CreateDepotGoodsRequest(b,q.depotId,q.category,b.CreateString(q.query),q.sortByDistance,q.pendingOnTop,q.excludeProhibited,b.CreateVector(q.itemIds),q.expectedRevision,changes(q.draft),changes(q.sortDraft));}():flatbuffers::Offset<m::DepotGoodsRequest>{},
+        return m::CreateDepotGoodsRequest(b,q.depotId,q.category,b.CreateString(q.query),q.sortByDistance,q.pendingOnTop,q.excludeProhibited,b.CreateVector(q.itemIds),q.expectedRevision,changes(q.draft),changes(q.sortDraft),q.containerId,q.containerOffset,q.containerLimit);}():flatbuffers::Offset<m::DepotGoodsRequest>{},
       r.action==ManagementAction::DepotGoodsCommit?[&](){std::vector<m::DepotGoodsChange> changes;for(const auto& row:r.depotCommit.changes)changes.emplace_back(row.id,uint8_t(row.desired));return m::CreateDepotGoodsCommitRequest(b,r.depotCommit.depotId,r.depotCommit.expectedRevision,b.CreateVectorOfStructs(changes));}():flatbuffers::Offset<m::DepotGoodsCommitRequest>{});
   b.Finish(request);
 }

@@ -1660,9 +1660,11 @@ void publish() {
     std::vector<flatbuffers::Offset<m::DepotGoodsGroup>> groups;
     std::vector<flatbuffers::Offset<m::DepotGoodsItem>> items;
     for(const auto& row:v.categories)categories.push_back(m::CreateDepotGoodsCategory(b,row.type,b.CreateString(DF2UTF(row.caption))));
-    for(const auto& row:v.groups)groups.push_back(m::CreateDepotGoodsGroup(b,row.group.subtype,row.group.subcat1,row.group.subcat2,row.group.amount,b.CreateString(DF2UTF(row.caption)),row.matches,row.group.expanded,uint8_t(row.flags),b.CreateVector(row.ids)));
+    for(const auto& row:v.groups)groups.push_back(m::CreateDepotGoodsGroup(b,row.group.subtype,row.group.subcat1,row.group.subcat2,row.group.amount,b.CreateString(DF2UTF(row.caption)),row.matches,row.group.expanded,uint8_t(row.flags),b.CreateVector(row.ids),b.CreateVector(row.containerCounts)));
     for(const auto& row:v.items){const auto& f=row.facts;items.push_back(m::CreateDepotGoodsItem(b,f.id,b.CreateString(DF2UTF(row.caption)),f.distance,f.value,f.tag,f.prohibited,b.CreateString(DF2UTF(row.valueCaption))));}
-    depotGoodsResult=m::CreateDepotGoodsState(b,v.depotId,v.revision,v.category,b.CreateVector(categories),b.CreateVector(groups),b.CreateVector(items),v.appraisal);
+    flatbuffers::Offset<m::DepotContainerPage> container;
+    if(v.container){std::vector<flatbuffers::Offset<m::DepotContainedItem>> rows;for(const auto& row:v.container->items)rows.push_back(m::CreateDepotContainedItem(b,row.id,int16_t(row.type),row.containedCount,row.value,row.prohibited,b.CreateString(DF2UTF(row.caption)),b.CreateString(DF2UTF(row.valueCaption))));container=m::CreateDepotContainerPage(b,v.containerId,v.containerOffset,v.container->total,b.CreateVector(rows));}
+    depotGoodsResult=m::CreateDepotGoodsState(b,v.depotId,v.revision,v.category,b.CreateVector(categories),b.CreateVector(groups),b.CreateVector(items),v.appraisal,container);
   }
   flatbuffers::Offset<m::StocksMenuState> stocksResult;
   if(stocks){
@@ -5285,7 +5287,7 @@ void run(color_ostream& out) {
       std::vector<df3d_production::DepotGoodsChange> draft,sortDraft;
       if(q.draft())for(const auto* row:*q.draft())draft.push_back({row->id(),row->desired()!=0});
       if(q.sort_draft())for(const auto* row:*q.sort_draft())sortDraft.push_back({row->id(),row->desired()!=0});
-      depotGoodsReply=df3d_production::readDepotGoods(df::building::find(q.depot_id()),q.category(),UTF2DF(q.query()->str()),q.sort_by_distance(),q.pending_on_top(),q.exclude_prohibited(),ids,q.expected_revision(),draft,sortDraft);
+      depotGoodsReply=df3d_production::readDepotGoods(df::building::find(q.depot_id()),q.category(),UTF2DF(q.query()->str()),q.sort_by_distance(),q.pending_on_top(),q.exclude_prohibited(),ids,q.expected_revision(),draft,sortDraft,q.container_id(),q.container_offset(),q.container_limit());
       if(depotGoodsReply)status=m::ManagementStatus::Ok;
     }catch(...){depotGoodsReply.reset();}
     publish();return;

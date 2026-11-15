@@ -5485,13 +5485,35 @@ TEST_CASE("Depot goods decoding preserves group membership and rejects malformed
     flatbuffers::FlatBufferBuilder b;
     const auto cat=wire::CreateDepotGoodsCategory(b,45,b.CreateString("Anvils"));
     std::vector<flatbuffers::Offset<wire::DepotGoodsCategory>> categories{cat};if(fault==1)categories.push_back(cat);
-    const auto group=wire::CreateDepotGoodsGroup(b,-1,0,0,2,b.CreateString("Iron anvils [2]"),fault!=9,true,fault==2?4:2,b.CreateVector(fault==9?std::vector<int32_t>{}:std::vector<int32_t>{296,fault==3?296:28425}));
+    const auto group=wire::CreateDepotGoodsGroup(b,-1,0,0,2,b.CreateString("Iron anvils [2]"),fault!=9,true,fault==2?4:2,b.CreateVector(fault==9?std::vector<int32_t>{}:std::vector<int32_t>{296,fault==3?296:28425}),b.CreateVector(fault==9?std::vector<int32_t>{}:std::vector<int32_t>{0,0}));
     const auto item=wire::CreateDepotGoodsItem(b,fault==4?99:296,b.CreateString("iron anvil"),6,100,fault==5?4:2,false,b.CreateString(fault==11?"100":""));
     const auto data=wire::CreateDepotGoodsState(b,54,fault==6?0:77,fault==7?-1:45,b.CreateVector(categories),b.CreateVector(std::vector<flatbuffers::Offset<wire::DepotGoodsGroup>>{group}),b.CreateVector(fault==9?std::vector<flatbuffers::Offset<wire::DepotGoodsItem>>{}:std::vector<flatbuffers::Offset<wire::DepotGoodsItem>>{item}),fault==10?-1:fault==12?1:0);
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(fault==8?wire::ManagementAction::Catalog:wire::ManagementAction::DepotGoodsRead);state.add_status(wire::ManagementStatus::Ok);state.add_depot_goods(data);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0 && fault!=9));
     if(fault==9){auto result=codec::decodeState(value);REQUIRE(result.depotGoods);CHECK(result.depotGoods->groups[0].itemIds.empty());CHECK(result.depotGoods->items.empty());}
     if(!fault){auto result=codec::decodeState(value);REQUIRE(result.depotGoods);CHECK(result.depotGoods->depotId==54);CHECK(result.depotGoods->revision==77);CHECK(result.depotGoods->groups[0].itemIds==std::vector<int32_t>{296,28425});CHECK(result.depotGoods->items[0].tag==2);CHECK(result.depotGoods->items[0].distance==6);}
+  }
+}
+TEST_CASE("Depot container requests require a source and bounded page intent") {
+  for(int fault=0;fault<8;++fault){
+    wm::ManagementRequest request;request.action=wm::ManagementAction::DepotGoodsRead;
+    auto& q=request.depotGoods;q.depotId=54;q.category=32;q.expectedRevision=77;q.containerId=11204;q.containerOffset=3;q.containerLimit=4;
+    if(fault==1)q.expectedRevision=0;if(fault==2)q.category=-1;if(fault==3)q.containerLimit=65;if(fault==4)q.containerLimit=0;if(fault==5)q.containerOffset=-1;if(fault==6)q.containerId=-1;if(fault==7)q.containerId=-2;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){CHECK(value->depot_goods()->container_id()==11204);CHECK(value->depot_goods()->container_offset()==3);CHECK(value->depot_goods()->container_limit()==4);}
+  }
+}
+TEST_CASE("Depot container replies preserve child pages and reject inconsistent membership") {
+  for(int fault=0;fault<10;++fault){
+    flatbuffers::FlatBufferBuilder b;
+    const auto group=wire::CreateDepotGoodsGroup(b,-1,0,0,1,b.CreateString("bins"),true,true,2,b.CreateVector(std::vector<int32_t>{11204}),b.CreateVector(fault==1?std::vector<int32_t>{}:std::vector<int32_t>{fault==2?-1:2}));
+    const auto child=wire::CreateDepotContainedItem(b,fault==3?11204:7565,fault==4?93:2,fault==5?-1:0,42,false,b.CreateString("blocks"),b.CreateString(fault==6?"42":""));
+    const auto page=wire::CreateDepotContainerPage(b,fault==7?99:11204,fault==8?3:1,fault==9?3:2,b.CreateVector(std::vector<flatbuffers::Offset<wire::DepotContainedItem>>{child}));
+    const auto data=wire::CreateDepotGoodsState(b,54,77,32,b.CreateVector(std::vector<flatbuffers::Offset<wire::DepotGoodsCategory>>{}),b.CreateVector(std::vector<flatbuffers::Offset<wire::DepotGoodsGroup>>{group}),b.CreateVector(std::vector<flatbuffers::Offset<wire::DepotGoodsItem>>{}),0,page);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(wire::ManagementAction::DepotGoodsRead);state.add_status(wire::ManagementStatus::Ok);state.add_depot_goods(data);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto result=codec::decodeState(value);REQUIRE(result.depotGoods);REQUIRE(result.depotGoods->container);CHECK(result.depotGoods->groups[0].containerCounts==std::vector<int32_t>{2});CHECK(result.depotGoods->container->offset==1);CHECK(result.depotGoods->container->items[0].id==7565);}
   }
 }
 TEST_CASE("Stocks groups own unique membership and item rows belong to the selection") {

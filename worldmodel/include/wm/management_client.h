@@ -659,11 +659,13 @@ struct TasksState {
 struct DepotGoodsChange {int32_t id=-1;bool desired=false;};
 struct DepotGoodsCommitRequest {int32_t depotId=-1;uint64_t expectedRevision=0;std::vector<DepotGoodsChange> changes;};
 struct DepotGoodsCommitResult {int32_t depotId=-1;uint64_t expectedRevision=0,observedRevision=0;DepotGoodsCommitOutcome outcome=DepotGoodsCommitOutcome::Rejected;};
-struct DepotGoodsRequest {int32_t depotId=-1;int16_t category=-1;std::string query;bool sortByDistance=true,pendingOnTop=true,excludeProhibited=false;std::vector<int32_t> itemIds;uint64_t expectedRevision=0;std::vector<DepotGoodsChange> draft,sortDraft;};
+struct DepotGoodsRequest {int32_t depotId=-1;int16_t category=-1;std::string query;bool sortByDistance=true,pendingOnTop=true,excludeProhibited=false;std::vector<int32_t> itemIds;uint64_t expectedRevision=0;std::vector<DepotGoodsChange> draft,sortDraft;int32_t containerId=-1,containerOffset=0,containerLimit=0;};
 struct DepotGoodsCategory {int16_t type=-1;std::string caption;};
-struct DepotGoodsGroup {int16_t subtype=-1,subcat1=-1,subcat2=-1;int32_t amount=0;std::string caption;bool matches=false,expanded=false;uint8_t flags=0;std::vector<int32_t> itemIds;};
+struct DepotGoodsGroup {int16_t subtype=-1,subcat1=-1,subcat2=-1;int32_t amount=0;std::string caption;bool matches=false,expanded=false;uint8_t flags=0;std::vector<int32_t> itemIds,containerCounts;};
 struct DepotGoodsItem {int32_t id=-1;std::string caption;int32_t distance=-1,value=0;int8_t tag=0;bool prohibited=false;std::string valueCaption;};
-struct DepotGoodsState {int32_t depotId=-1;uint64_t revision=0;int16_t category=-1;std::vector<DepotGoodsCategory> categories;std::vector<DepotGoodsGroup> groups;std::vector<DepotGoodsItem> items;int32_t appraisal=-1;};
+struct DepotContainedItem {int32_t id=-1;int16_t type=-1;int32_t containedCount=-1,value=0;bool prohibited=false;std::string caption,valueCaption;};
+struct DepotContainerPage {int32_t parentId=-1,offset=0,total=0;std::vector<DepotContainedItem> items;};
+struct DepotGoodsState {int32_t depotId=-1;uint64_t revision=0;int16_t category=-1;std::vector<DepotGoodsCategory> categories;std::vector<DepotGoodsGroup> groups;std::vector<DepotGoodsItem> items;int32_t appraisal=-1;std::optional<DepotContainerPage> container;};
 struct StocksMenuRequest {int16_t category=-1;std::string query;std::vector<int32_t> itemIds;std::optional<StocksGroupKey> target;uint64_t expectedRevision=0;StocksFlagAction operation=StocksFlagAction::Forbid;int8_t value=-1;int32_t itemId=-1;uint64_t pageRequest=0;uint32_t pageOffset=0;};
 struct StocksCategoryRow {int16_t type=-1;std::string caption,stored,unavailable;bool matches=false;};
 struct StocksGroupRow {StocksGroupKey key;int32_t amount=0;std::string caption;bool matches=false,expanded=false;uint8_t flags=0;uint64_t revision=0;std::vector<int32_t> itemIds;};

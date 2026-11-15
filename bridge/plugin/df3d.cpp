@@ -5015,7 +5015,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           output["revision"]=std::to_string(*revision);output["stale_rejected"]=true;
         }
         for(auto id:selected->ids)output["ids"].append(id);
-        for(const auto& row:selected->groups){Json::Value g;g["subtype"]=row.group.subtype;g["subcat1"]=row.group.subcat1;g["subcat2"]=row.group.subcat2;g["amount"]=row.group.amount;g["expanded"]=row.group.expanded;g["matches"]=row.matches;g["flags"]=row.flags;g["caption"]=DF2UTF(row.caption);g["ids"]=Json::arrayValue;for(auto id:row.ids)g["ids"].append(id);output["groups"].append(g);}
+        for(const auto& row:selected->groups){Json::Value g;g["subtype"]=row.group.subtype;g["subcat1"]=row.group.subcat1;g["subcat2"]=row.group.subcat2;g["amount"]=row.group.amount;g["expanded"]=row.group.expanded;g["matches"]=row.matches;g["flags"]=row.flags;g["caption"]=DF2UTF(row.caption);g["ids"]=Json::arrayValue;for(auto id:row.ids)g["ids"].append(id);g["container_counts"]=Json::arrayValue;for(auto count:row.containerCounts)g["container_counts"].append(count);output["groups"].append(g);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="depot-goods-probe") {

@@ -148,6 +148,42 @@ local ok,err=xpcall(function()
    assert(target,'Engraving reference needs a revealed engraving')
    local p=target.pos
    local prior={art_id=target.art_id,art_subid=target.art_subid,flags=target.flags.whole}
+   local function artwork_state()
+    local chunk=df.art_image_chunk.find(target.art_id)
+    if not chunk then return 'unloaded' end
+    local image=chunk.images[target.art_subid].art_image
+    if not image then return 'missing-image' end
+    local values={target.art_id,target.art_subid,target.flags.whole,image.event,image.artist,image.site,
+     image.mat_type,image.mat_index,image.quality,image.year,image.season_tick,image.id,image.subid,
+     image.name.first_name,image.name.nickname,image.name.language,image.name.has_name}
+    for _,word in ipairs(image.name.words)do values[#values+1]=word end
+    for _,part in ipairs(image.name.parts_of_speech)do values[#values+1]=part end
+    for _,element in ipairs(image.elements)do
+     local row={tostring(element),element.count}
+     for _,key in ipairs{'race','caste','histfig','item_type','item_subtype','mat_type','mat_index','item_id','plant_id','shape_id','shape_adj'}do
+      local ok,value=pcall(function()return element[key]end);if ok then row[#row+1]={key,value}end
+     end
+     values[#values+1]=row
+    end
+    for _,property in ipairs(image.properties)do
+     local row={tostring(property)}
+     for _,key in ipairs{'subject','object','verb'}do
+      local ok,value=pcall(function()return property[key]end);if ok then row[#row+1]={key,value}end
+     end
+     values[#values+1]=row
+    end
+    return json.encode(values)
+   end
+   local function probe()
+    local before=artwork_state();local menu=json.encode(observe())
+    local title,description=sheet.engraving_title,sheet.raw_description
+    local output,code=dfhack.run_command_silent('df3d','engraving-description-probe',tostring(p.x),tostring(p.y),tostring(p.z))
+    assert(code==0,output);local value=json.decode(output)
+    assert(before==artwork_state(),'Owned formatter changed source artwork')
+    assert(menu==json.encode(observe()) and title==sheet.engraving_title and description==sheet.raw_description,'Owned formatter changed native sheet')
+    return value
+   end
+   local owned_before=probe()
    select_map{centerx=p.x,centery=p.y,z=p.z}
    if sheet.active_sheet~=df.view_sheet_type.ENGRAVING then
     local index
@@ -162,8 +198,15 @@ local ok,err=xpcall(function()
    result.tile_selection_reference.engraving={tile={p.x,p.y,p.z},before=prior,
     after={art_id=target.art_id,art_subid=target.art_subid,flags=target.flags.whole},
     native=observe(),title=dfhack.df2utf(sheet.engraving_title),description=dfhack.df2utf(sheet.raw_description),lines=lines()}
+   local owned_after=probe();local reference=result.tile_selection_reference.engraving
+   assert(not owned_before.valid or (owned_before.title==reference.title and owned_before.description==reference.description),'Owned engraving text differs before native opening')
+   assert(owned_after.title==reference.title and owned_after.description==reference.description,'Owned engraving text differs after native opening: '..json.encode(owned_after))
+   reference.owned={before=owned_before,after=owned_after,source_fields_unchanged=true,sheet_unchanged=true}
    shot('selection-engraving')
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   local owned_closed=probe()
+   assert(owned_closed.title==reference.title and owned_closed.description==reference.description,'Owned engraving text differs with native sheet closed')
+   reference.owned.closed=owned_closed
    local planned
    for dx=1,20 do
     local q={x=p.x+dx,y=p.y,z=p.z};local d=dfhack.maps.getTileFlags(q)

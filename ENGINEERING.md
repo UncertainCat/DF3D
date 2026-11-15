@@ -9435,8 +9435,37 @@ this oracle; the historical image-cancelled PNG is not cancellation acceptance.
 Diagnostic output now names that observation after_escape. Option effects,
 actual cancellation, long prose, scrolling and resizing remain unqualified.
 
-No engraving bridge provider or viewer destination is implemented by this
-reference. Native-only174721 and174833 pass their assertions; owned DF37032/1300
+The diagnostic `engraving-description-probe` is gated by
+`DF3D_TILE_SELECTION_ENGRAVING=1`; it is not a management-protocol provider or
+viewer destination. It stages owned artwork/name/element/property copies for
+a94030/a946e0 and1451b10, with random and material-cache restoration.
+Protected181333 on2026-11-14 verifies exact native title/prose for the loaded
+reference, both with its native sheet open and after closing it. The named
+artwork fields and sheet selection/text remain unchanged. Owned DF19168 exits
+unsaved; source manifests/preferences are preserved. Bridge Release and core19
+pass; serial graphics are30FPS with sampled GPU51C/4-14%. Evidence lives in
+selection_reference.engraving_formatter_reference. This is not viewer acceptance.
+
+The adapter retains each concrete allocation address in its type-erased owner
+for identity destruction. The previous virtual_class pointer owner crashed on
+the first creature-element deletion after successful formatting/conversion:
+diagnostic181029 identifies dfhack.dll+350517, the allocator's virtual destructor
+dispatch. Concrete-address ownership passes181212 and the trace-free181333.
+Temporary exception tracing is removed. These failed owned runs preserved saves;
+this was an adapter defect, not a newly discovered native DF bug.
+
+The reference starts with art_id3 but no loaded artwork chunk. Native opening
+loads it through1458b0; the staged probe currently refuses unloaded chunks.
+That semantic loader reads the saved artwork and allocates/registers a chunk
+through144cb0, independently of sheet state. Loading existing artwork and
+generating missing artwork througha48120 are separate outstanding operations.
+Native element naming permits negative amounts (unspecified groups), uses
+singular only for1, and prints numeric amounts from2; rejecting negative amounts
+incorrectly rejects this reference. Native1451c08 also accepts a null image ref.
+Other artwork/reference families, loader integration and rendered acceptance
+remain required.
+
+Native-only174721 and174833 pass their assertions; owned DF37032/1300
 exit unsaved with source/preferences preserved. Core19 passes. Graphics are
 serial30FPS, sampled GPU53C/13-14%; these are not continuous peaks. Native strings,
 state and evidence hashes live in selection_reference.engraving_discovery_reference.

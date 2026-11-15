@@ -98,6 +98,7 @@
 #include "skills_caption_native.h"
 #include "creature_knowledge_native.h"
 #include "knowledge_detail_native.h"
+#include "engraving_description_native.h"
 #include "workshop_catalog_native.h"
 #include "workshop_workers_native.h"
 #include "workshop_orders_native.h"
@@ -3928,6 +3929,24 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               df3d_management::printStockpileCategory(out,values[0],uint32_t(values[1])):
               df3d_management::printStockpilePreset(out,values[0],values[1]);
           return ok?CR_OK:CR_FAILURE;
+        }
+        if(parameters[0]=="engraving-description-probe") {
+          const char* oracle=std::getenv("DF3D_TILE_SELECTION_ENGRAVING");
+          if(!oracle || std::string_view(oracle)!="1")return CR_FAILURE;
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t p[3]{};
+          for(size_t i=0;i<3;++i) {
+              const auto& v=parameters[i+1];
+              const auto parsed=std::from_chars(v.data(),v.data()+v.size(),p[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          }
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          std::string failure;
+          const auto description=df3d_selection::engravingDescriptionProbe(p[0],p[1],p[2],failure);
+          Json::Value value(Json::objectValue);value["valid"]=description.has_value();
+          if(description){value["title"]=description->title;value["description"]=description->description;}
+          else value["failure"]=failure;
+          out.print("{}",Json::FastWriter().write(value));return CR_OK;
         }
         if(parameters[0]=="tile-selection-read") {
           if(parameters.size()!=4)return CR_WRONG_USAGE;

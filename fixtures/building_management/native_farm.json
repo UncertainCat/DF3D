@@ -59142,6 +59142,129 @@
           "build/stockpile-storage-native-farm-discovery-20261115-150612/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
           "tools/smoke/depot-goods-native.lua": "2dd901ccca13763b5d22156ec9114c486f6d241a221eed2084be8e8c91110791"
         }
+      },
+      "depot_goods_batch_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-151050",
+        "owned_df_pid": 8684,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Owned batch commit creates the same two hauling jobs as native group close (excluding job IDs). Duplicate create/cancel is idempotent. Stale final flags, duplicate targets and missing final target reject before mutation; stale cancellation leaves both jobs intact. Existing single-item/delivered release checks pass. No public transport, ordinary hauling execution or large-batch acceptance.",
+        "batch": {
+          "cancel_restored": true,
+          "duplicate_preserved": true,
+          "ids": [
+            296,
+            28425
+          ],
+          "native": [
+            {
+              "flags": 0,
+              "id": 382801,
+              "items": [
+                {
+                  "id": 296,
+                  "role": 2
+                }
+              ],
+              "pos": [
+                111,
+                94,
+                165
+              ],
+              "refs": [
+                {
+                  "building": 54,
+                  "type": 36
+                }
+              ],
+              "type": 15
+            },
+            {
+              "flags": 0,
+              "id": 382802,
+              "items": [
+                {
+                  "id": 28425,
+                  "role": 2
+                }
+              ],
+              "pos": [
+                111,
+                94,
+                165
+              ],
+              "refs": [
+                {
+                  "building": 54,
+                  "type": 36
+                }
+              ],
+              "type": 15
+            }
+          ],
+          "provider": [
+            {
+              "flags": 0,
+              "id": 382803,
+              "items": [
+                {
+                  "id": 296,
+                  "role": 2
+                }
+              ],
+              "pos": [
+                111,
+                94,
+                165
+              ],
+              "refs": [
+                {
+                  "building": 54,
+                  "type": 36
+                }
+              ],
+              "type": 15
+            },
+            {
+              "flags": 0,
+              "id": 382804,
+              "items": [
+                {
+                  "id": 28425,
+                  "role": 2
+                }
+              ],
+              "pos": [
+                111,
+                94,
+                165
+              ],
+              "refs": [
+                {
+                  "building": 54,
+                  "type": 36
+                }
+              ],
+              "type": 15
+            }
+          ],
+          "rejected_before_mutation": 3,
+          "stale_cancel_preserved": true
+        },
+        "delivered_release": {
+          "after": 536887296,
+          "before": 536887328,
+          "id": 296,
+          "provider_success": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-151050/depot-goods-native.json": "8ac77196dcd5e47deec3ca9b5027f06e60a46f79b9a050b4de0c61c1d508e0f6",
+          "build/stockpile-storage-native-farm-discovery-20261115-151050/result.json": "5044fd7583fdb7bb5ef229b6d2dd0c903f923c1c2b61b654fbf671f7ad22b90d",
+          "build/stockpile-storage-native-farm-discovery-20261115-151050/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/depot_goods_native.h": "d4481c93c60dae389b190d6d2eb6d78aa6a700631b79f238fccbd88a214be756",
+          "bridge/plugin/df3d.cpp": "655bc1d8270de42873654b0a5bf806aa65745cfcf310aa82fd81156d4ae320a4",
+          "tools/smoke/depot-goods-native.lua": "cd20bb9a1361e2fd5aa3ba36fe0bfa8bca762553806f9bb1513c4b7eb6fd6e8c"
+        }
       }
     },
     "pending_construction_reference": {

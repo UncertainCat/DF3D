@@ -168,6 +168,29 @@ This establishes the native reference only. Viewer drafts and guarded batch
 commit remain unfinished; per-item native probe acceptance does not authorize
 a series of independently applied edits as a replacement for commit-on-close.
 
+`depotSetHaulBatch` now validates an explicit vector of item IDs, expected flags
+and desired hauling states before calling native36b0c0 once with independently
+owned records/context. It rejects duplicates, stale/missing items, ambiguous
+pending/delivered state and unavailable native candidates before mutation.
+Candidate enumeration runs once per batch. All record allocations precede the
+ownership transfer; native commit retires the records. Post-call job/delivered
+facts determine Applied versus Unknown. This is not rollback atomicity: an
+exception or inconsistent outcome after native entry is Unknown, never replayed.
+The single-item diagnostic delegates to this same implementation.
+
+Protected151050 on2026-11-15 compares a two-anvil batch to native group selection
+followed by close: resulting job types, flags, positions, item refs and building
+refs match, excluding newly allocated job IDs. Duplicate create preserves both
+jobs. Stale final-item flags, duplicate IDs and a missing final item reject
+before creating either job; stale cancellation preserves both jobs. Successful
+and duplicate cancellation restore flags and remove both jobs. Existing single
+create/cancel and delivered-release probes still pass. Owned DF8684 closes
+unsaved with source preservation, native30FPS and sampled GPU51C. The bridge
+build and all19 core checks pass; depot wire clients have no diagnostics.
+Evidence: `completed_sheet_discovery_reference.depot_goods_batch_reference`.
+Public epoch/revision-bound batch transport, viewer drafts, mixed desired-state
+batch acceptance, large lists and ordinary hauling execution remain unfinished.
+
 ## Depot transport migration
 
 Management protocol231 adds an optional `DepotBodySnapshot` to completed building

@@ -4974,6 +4974,20 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         for(const auto& group:facts->groups){Json::Value g;g["type"]=group.type;g["subtype"]=group.subtype;g["subcat1"]=group.subcat1;g["subcat2"]=group.subcat2;g["amount"]=group.amount;g["expanded"]=group.expanded;output["groups"].append(g);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="depot-haul-batch-probe") {
+        if(parameters.size()<5 || parameters.size()>68)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        std::vector<int32_t> values;
+        for(size_t i=1;i<parameters.size();++i){int32_t value=-1;const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),value);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || value<0)return CR_WRONG_USAGE;values.push_back(value);}
+        if(values[1]>1 || values[2]>3)return CR_WRONG_USAGE;
+        std::vector<df3d_production::DepotHaulIntent> intents;
+        for(size_t i=3;i<values.size();++i){auto* item=df::item::find(values[i]);if(!item)return CR_FAILURE;intents.push_back({item->id,item->flags.whole,values[1]!=0});}
+        if(values[2]==1)intents.back().expectedFlags^=1;
+        if(values[2]==2)intents.push_back(intents.front());
+        if(values[2]==3)intents.back().id=INT32_MAX;
+        Json::Value output;output["outcome"]=int(df3d_production::depotSetHaulBatch(df::building::find(values[0]),intents));
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="depot-haul-probe") {
         if(parameters.size()!=4)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;

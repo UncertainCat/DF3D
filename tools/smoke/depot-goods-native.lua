@@ -164,6 +164,36 @@ local ok,err=xpcall(function()
    click(932,166);click(932,166);draft('individual-roundtrip',0,0,2)
    result.draft_selection=samples
   end
+  if os.getenv('DF3D_DEPOT_BATCH_NATIVE')=='1' then
+   local ids={menu.current_type_tgi[0].it.id,menu.current_type_tgi[1].it.id}
+   local flags={df.item.find(ids[1]).flags.whole,df.item.find(ids[2]).flags.whole}
+   click(932,130);assert(#b.jobs==0)
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   local native=job_facts();assert(#native==2,'Native group close did not create both hauls')
+   select_map(b);click(520,166);click(932,130)
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(#b.jobs==0)
+   local selected=df.global.game.main_interface.view_sheets.active_id
+   local function apply(wanted,fault)
+    local output,code=dfhack.run_command_silent('df3d','depot-haul-batch-probe',tostring(b.id),tostring(wanted),tostring(fault),tostring(ids[1]),tostring(ids[2]))
+    assert(code==0,output);local reply=json.decode(output)
+    assert(not menu.open and df.global.world.frame_counter==frame and df.global.game.main_interface.view_sheets.active_id==selected)
+    return reply.outcome
+   end
+   for fault=1,3 do
+    assert(apply(1,fault)==0,'Invalid batch was not rejected')
+    assert(#b.jobs==0 and df.item.find(ids[1]).flags.whole==flags[1] and df.item.find(ids[2]).flags.whole==flags[2],'Rejected batch partially applied')
+   end
+   assert(apply(1,0)==1);local created=job_facts();assert(#created==2)
+   local expected=json.decode(json.encode(native));local actual=json.decode(json.encode(created))
+   for i=1,2 do expected[i].id=0;actual[i].id=0 end
+   assert(json.encode(expected)==json.encode(actual),'Batch jobs differ from native group commit')
+   assert(apply(1,0)==1 and json.encode(job_facts())==json.encode(created),'Duplicate batch changed jobs')
+   assert(apply(0,1)==0 and json.encode(job_facts())==json.encode(created),'Invalid cancellation partially applied')
+   assert(apply(0,0)==1 and #b.jobs==0 and apply(0,0)==1)
+   assert(df.item.find(ids[1]).flags.whole==flags[1] and df.item.find(ids[2]).flags.whole==flags[2])
+   result.batch_hauling={ids=ids,native=native,provider=created,rejected_before_mutation=3,stale_cancel_preserved=true,duplicate_preserved=true,cancel_restored=true}
+   select_map(b);click(520,166);assert(menu.open and menu.current_type==df.item_type.ANVIL)
+  end
   result.hauling={}
   click(932,166);capture('depot-goods-selected')
   result.hauling.selected=job_facts()

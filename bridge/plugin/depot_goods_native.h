@@ -171,30 +171,44 @@ inline std::optional<DepotGoods> depotGoods(df::building* building) {
     for(size_t i=0;i<count;++i)result.groups.push_back({groups.type[i],groups.subtype[i],groups.subcat1[i],groups.subcat2[i],groups.amount[i],groups.expanded[i]});
     return result;
 }
-// Semantic commit leaf36b0c0. The record and context are built from an explicit
-// intent; no native menu/staged edit is read. Public revision transport is pending.
-inline DepotSettingOutcome depotSetHaul(df::building* building,df::item* item,uint64_t expectedFlags,bool desired) {
+// Semantic commit leaf36b0c0. Validate the entire explicit intent before any
+// simulation mutation. Draft records/context are owned; native menu state is not
+// an input. A public transport receipt must still bind these intents to its epoch.
+struct DepotHaulIntent {int32_t id=-1;uint64_t expectedFlags=0;bool desired=false;};
+inline DepotSettingOutcome depotSetHaulBatch(df::building* building,const std::vector<DepotHaulIntent>& intents) {
     auto* depot=virtual_cast<df::building_tradedepotst>(building);
-    if(!depotNativeReady() || !depot || !item || item->flags.whole!=expectedFlags ||
-       depot->getBuildStage()!=depot->getMaxBuildStage() || depot->jobs.size()>1048576)return DepotSettingOutcome::Rejected;
+    if(!depotNativeReady() || !depot || intents.empty() || intents.size()>1048576 ||
+       depot->getBuildStage()!=depot->getMaxBuildStage() || depot->jobs.size()>1048576 ||
+       depot->contained_items.size()>1048576)return DepotSettingOutcome::Rejected;
     auto* tile=DFHack::Maps::getTileDesignation(depot->centerx,depot->centery,depot->z);
     if(!tile || tile->bits.hidden)return DepotSettingOutcome::Rejected;
-    size_t matches=0;
-    for(auto* job:depot->jobs) {
-        if(!job || job->job_type==df::job_type::DestroyBuilding)return DepotSettingOutcome::Rejected;
-        if(job->job_type==df::job_type::BringItemToDepot && !job->items.empty() && job->items.front() && job->items.front()->item==item)++matches;
+    for(auto* job:depot->jobs)if(!job || job->job_type==df::job_type::DestroyBuilding)return DepotSettingOutcome::Rejected;
+    struct Pending {df::item* item;bool desired,delivered;int8_t tag;};
+    std::vector<Pending> pending;pending.reserve(intents.size());
+    std::vector<int32_t> seen;seen.reserve(intents.size());
+    bool needsCandidates=false;
+    for(const auto& intent:intents) {
+        auto* item=df::item::find(intent.id);
+        if(!item || item->flags.whole!=intent.expectedFlags)return DepotSettingOutcome::Rejected;
+        seen.push_back(intent.id);
+        size_t matches=0,delivered=0;
+        for(auto* job:depot->jobs)if(job->job_type==df::job_type::BringItemToDepot && !job->items.empty() &&
+            job->items.front() && job->items.front()->item==item)++matches;
+        for(auto* entry:depot->contained_items)if(entry && entry->item==item && int(entry->use_mode)==0 &&
+            (item->flags.whole&0x88020)==0x20)++delivered;
+        if(matches>1 || delivered>1 || (matches && delivered))return DepotSettingOutcome::Rejected;
+        const bool changed=intent.desired ? matches==0 && delivered==0 : matches!=0 || delivered!=0;
+        needsCandidates|=changed && intent.desired;
+        pending.push_back({item,intent.desired,delivered!=0,int8_t(changed?(intent.desired?1:(delivered?-2:-1)):0)});
     }
-    size_t delivered=0;
-    if(depot->contained_items.size()>1048576)return DepotSettingOutcome::Rejected;
-    for(auto* entry:depot->contained_items)if(entry && entry->item==item && int(entry->use_mode)==0 &&
-        (item->flags.whole&0x88020)==0x20)++delivered;
-    if(delivered>1 || (delivered && matches))return DepotSettingOutcome::Rejected;
-    if(matches>1)return DepotSettingOutcome::Rejected;
-    if(desired && (matches==1 || delivered==1))return DepotSettingOutcome::Applied;
-    if(!desired && matches==0 && delivered==0)return DepotSettingOutcome::Applied;
-    if(desired) {
-        const auto candidates=depotUnassignedGoods(building);
-        if(!candidates || std::none_of(candidates->begin(),candidates->end(),[&](const auto& row){return row.id==item->id;}))return DepotSettingOutcome::Rejected;
+    std::sort(seen.begin(),seen.end());
+    if(std::adjacent_find(seen.begin(),seen.end())!=seen.end())return DepotSettingOutcome::Rejected;
+    if(needsCandidates) {
+        const auto candidates=depotUnassignedGoods(building);if(!candidates)return DepotSettingOutcome::Rejected;
+        std::vector<int32_t> eligible;eligible.reserve(candidates->size());
+        for(const auto& row:*candidates)eligible.push_back(row.id);
+        std::sort(eligible.begin(),eligible.end());
+        for(const auto& row:pending)if(row.tag==1 && !std::binary_search(eligible.begin(),eligible.end(),row.item->id))return DepotSettingOutcome::Rejected;
     }
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool ready=[&] {
@@ -205,19 +219,30 @@ inline DepotSettingOutcome depotSetHaul(df::building* building,df::item* item,ui
     if(!ready)return DepotSettingOutcome::Rejected;
     static_assert(offsetof(df::assign_trade_interfacest,master_i_list)==0xa8);
     static_assert(offsetof(df::assign_trade_interfacest,trade_depot_bld)==8);
-    df::assign_trade_interfacest context;
-    context.trade_depot_bld=depot;
-    std::unique_ptr<df::tradegoodslistst> record(df::allocate<df::tradegoodslistst>());
-    record->it=item;record->tag=desired?1:(delivered?-2:-1);
-    context.master_i_list.tgi.push_back(record.get());
-    // Native commit retires the supplied records via30ce00. The context's
-    // remaining vectors/string are independently owned and destruct normally.
-    record.release();
+    df::assign_trade_interfacest context;context.trade_depot_bld=depot;
+    std::vector<std::unique_ptr<df::tradegoodslistst>> records;
+    records.reserve(pending.size());context.master_i_list.tgi.reserve(pending.size());
+    for(const auto& row:pending)if(row.tag) {
+        std::unique_ptr<df::tradegoodslistst> record(df::allocate<df::tradegoodslistst>());
+        record->it=row.item;record->tag=row.tag;records.push_back(std::move(record));
+    }
+    if(records.empty())return DepotSettingOutcome::Applied;
+    // All allocations and validation precede ownership transfer. Native commit
+    // retires records via30ce00; after entry, uncertain outcomes never replay.
+    for(auto& record:records)context.master_i_list.tgi.push_back(record.release());
     try {reinterpret_cast<void (*)(df::assign_trade_interfacest*)>(base+0x36b0c0)(&context);}
     catch(...){return DepotSettingOutcome::Unknown;}
-    matches=0;
-    for(auto* job:depot->jobs)if(job && job->job_type==df::job_type::BringItemToDepot &&
-       !job->items.empty() && job->items.front() && job->items.front()->item==item)++matches;
-    return matches==size_t(desired) && (!delivered || !item->flags.bits.in_building)?DepotSettingOutcome::Applied:DepotSettingOutcome::Unknown;
+    for(const auto& row:pending) {
+        size_t matches=0;
+        for(auto* job:depot->jobs)if(job && job->job_type==df::job_type::BringItemToDepot &&
+            !job->items.empty() && job->items.front() && job->items.front()->item==row.item)++matches;
+        if(matches!=size_t(row.desired && !row.delivered) ||
+           (row.delivered && row.item->flags.bits.in_building!=row.desired))return DepotSettingOutcome::Unknown;
+    }
+    return DepotSettingOutcome::Applied;
+}
+inline DepotSettingOutcome depotSetHaul(df::building* building,df::item* item,uint64_t expectedFlags,bool desired) {
+    if(!item)return DepotSettingOutcome::Rejected;
+    return depotSetHaulBatch(building,{{item->id,expectedFlags,desired}});
 }
 }

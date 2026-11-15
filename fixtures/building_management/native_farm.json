@@ -17043,6 +17043,942 @@
           "result.json": "56e90d6eeaa6103d3359250ca90a02a933cac291497ea64ad055c83a306b6a21",
           "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "item_holder_dispatch_reference": {
+        "scope": "Static native DF53.16 item-holder renderer audit, not live appearance acceptance. Fixed branches match the existing Tasks provider; custom workshop/furnace branches use the same getCustomType/raw list_icon_texpos and fallback precedence.",
+        "exe_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+        "dispatch_rva": "155919",
+        "dispatch_length": 2864,
+        "dispatch_fnv1a64": "2accec46dc8a4843",
+        "fixed_matches": {
+          "types": 47,
+          "workshops": 24,
+          "furnaces": 7,
+          "traps": 6,
+          "constructions": 38,
+          "siege": 3
+        },
+        "tables": {
+          "types": [
+            {
+              "value": 0,
+              "branch": "0x155f9d",
+              "slot": "0x264b0b0",
+              "token": "BUILDING_ICON_CHAIR"
+            },
+            {
+              "value": 1,
+              "branch": "0x155faf",
+              "slot": "0x264b0ac",
+              "token": "BUILDING_ICON_BED"
+            },
+            {
+              "value": 2,
+              "branch": "0x155fc1",
+              "slot": "0x264b0b4",
+              "token": "BUILDING_ICON_TABLE"
+            },
+            {
+              "value": 3,
+              "branch": "0x155fd3",
+              "slot": "0x264b0c0",
+              "token": "BUILDING_ICON_COFFIN"
+            },
+            {
+              "value": 4,
+              "branch": "0x155cf4",
+              "slot": "0x264b080",
+              "token": "BUILDING_ICON_FARM_PLOT"
+            },
+            {
+              "value": 5,
+              "branch": "0x155bbc",
+              "special_dispatch": true
+            },
+            {
+              "value": 6,
+              "branch": "0x155d06",
+              "slot": "0x264b02c",
+              "token": "BUILDING_ICON_TRADE_DEPOT"
+            },
+            {
+              "value": 7,
+              "branch": "0x156449",
+              "special_dispatch": true
+            },
+            {
+              "value": 8,
+              "branch": "0x155fe5",
+              "slot": "0x264b0e0",
+              "token": "BUILDING_ICON_DOOR"
+            },
+            {
+              "value": 9,
+              "branch": "0x155ff7",
+              "slot": "0x264b138",
+              "token": "BUILDING_ICON_FLOODGATE"
+            },
+            {
+              "value": 10,
+              "branch": "0x156009",
+              "slot": "0x264b0b8",
+              "token": "BUILDING_ICON_BOX"
+            },
+            {
+              "value": 11,
+              "branch": "0x15601b",
+              "slot": "0x264b180",
+              "token": "BUILDING_ICON_WEAPON_RACK"
+            },
+            {
+              "value": 12,
+              "branch": "0x15602d",
+              "slot": "0x264b184",
+              "token": "BUILDING_ICON_ARMOR_STAND"
+            },
+            {
+              "value": 13,
+              "branch": "0x155964",
+              "special_dispatch": true
+            },
+            {
+              "value": 14,
+              "branch": "0x15603f",
+              "slot": "0x264b0bc",
+              "token": "BUILDING_ICON_CABINET"
+            },
+            {
+              "value": 15,
+              "branch": "0x156051",
+              "slot": "0x264b0c8",
+              "token": "BUILDING_ICON_STATUE"
+            },
+            {
+              "value": 16,
+              "branch": "0x156063",
+              "slot": "0x264b11c",
+              "token": "BUILDING_ICON_WINDOW_GLASS"
+            },
+            {
+              "value": 17,
+              "branch": "0x156075",
+              "slot": "0x264b120",
+              "token": "BUILDING_ICON_WINDOW_GEM"
+            },
+            {
+              "value": 18,
+              "branch": "0x156087",
+              "slot": "0x264b134",
+              "token": "BUILDING_ICON_WELL"
+            },
+            {
+              "value": 19,
+              "branch": "0x155d18",
+              "slot": "0x264b0fc",
+              "token": "BUILDING_ICON_BRIDGE"
+            },
+            {
+              "value": 20,
+              "branch": "0x155d2a",
+              "slot": "0x264b104",
+              "token": "BUILDING_ICON_ROAD_DIRT"
+            },
+            {
+              "value": 21,
+              "branch": "0x155d3c",
+              "slot": "0x264b100",
+              "token": "BUILDING_ICON_ROAD_PAVED"
+            },
+            {
+              "value": 22,
+              "branch": "0x155d4e",
+              "special_dispatch": true
+            },
+            {
+              "value": 23,
+              "branch": "0x155dc2",
+              "special_dispatch": true
+            },
+            {
+              "value": 24,
+              "branch": "0x156099",
+              "slot": "0x264b164",
+              "token": "BUILDING_ICON_ANIMAL_TRAP"
+            },
+            {
+              "value": 25,
+              "branch": "0x1560ab",
+              "slot": "0x264b124",
+              "token": "BUILDING_ICON_SUPPORT"
+            },
+            {
+              "value": 26,
+              "branch": "0x1560bd",
+              "slot": "0x264b17c",
+              "token": "BUILDING_ICON_ARCHERY_TARGET"
+            },
+            {
+              "value": 27,
+              "branch": "0x1560cf",
+              "slot": "0x264b15c",
+              "token": "BUILDING_ICON_RESTRAINT"
+            },
+            {
+              "value": 28,
+              "branch": "0x1560e1",
+              "slot": "0x264b160",
+              "token": "BUILDING_ICON_CAGE"
+            },
+            {
+              "value": 29,
+              "branch": "0x156201",
+              "special_dispatch": true
+            },
+            {
+              "value": 30,
+              "branch": "0x156449",
+              "special_dispatch": true
+            },
+            {
+              "value": 31,
+              "branch": "0x156105",
+              "slot": "0x264b178",
+              "token": "BUILDING_ICON_WEAPON"
+            },
+            {
+              "value": 32,
+              "branch": "0x155f1f",
+              "slot": "0x264b194",
+              "token": "BUILDING_ICON_WAGON"
+            },
+            {
+              "value": 33,
+              "branch": "0x155f31",
+              "slot": "0x264b13c",
+              "token": "BUILDING_ICON_SCREW_PUMP"
+            },
+            {
+              "value": 34,
+              "branch": "0x155e67",
+              "special_dispatch": true
+            },
+            {
+              "value": 35,
+              "branch": "0x1560f3",
+              "slot": "0x264b0e4",
+              "token": "BUILDING_ICON_HATCH"
+            },
+            {
+              "value": 36,
+              "branch": "0x156117",
+              "slot": "0x264b10c",
+              "token": "BUILDING_ICON_GRATE_WALL"
+            },
+            {
+              "value": 37,
+              "branch": "0x156129",
+              "slot": "0x264b110",
+              "token": "BUILDING_ICON_GRATE_FLOOR"
+            },
+            {
+              "value": 38,
+              "branch": "0x155f43",
+              "slot": "0x264b114",
+              "token": "BUILDING_ICON_BARS_VERTICAL"
+            },
+            {
+              "value": 39,
+              "branch": "0x15613b",
+              "slot": "0x264b118",
+              "token": "BUILDING_ICON_BARS_FLOORS"
+            },
+            {
+              "value": 40,
+              "branch": "0x15614d",
+              "slot": "0x264b148",
+              "token": "BUILDING_ICON_GEAR_ASSEMBLY"
+            },
+            {
+              "value": 41,
+              "branch": "0x155f55",
+              "slot": "0x264b14c",
+              "token": "BUILDING_ICON_AXLE_HORIZONTAL"
+            },
+            {
+              "value": 42,
+              "branch": "0x15615f",
+              "slot": "0x264b150",
+              "token": "BUILDING_ICON_AXLE_VERTICAL"
+            },
+            {
+              "value": 43,
+              "branch": "0x155f67",
+              "slot": "0x264b140",
+              "token": "BUILDING_ICON_WATER_WHEEL"
+            },
+            {
+              "value": 44,
+              "branch": "0x155f79",
+              "slot": "0x264b144",
+              "token": "BUILDING_ICON_WINDMILL"
+            },
+            {
+              "value": 45,
+              "branch": "0x156171",
+              "slot": "0x264b0cc",
+              "token": "BUILDING_ICON_TRACTION_BENCH"
+            },
+            {
+              "value": 46,
+              "branch": "0x156183",
+              "slot": "0x264b0c4",
+              "token": "BUILDING_ICON_SLAB"
+            },
+            {
+              "value": 47,
+              "branch": "0x156195",
+              "slot": "0x264b0a4",
+              "token": "BUILDING_ICON_NEST_BOX"
+            },
+            {
+              "value": 48,
+              "branch": "0x156195",
+              "slot": "0x264b0a4",
+              "token": "BUILDING_ICON_NEST_BOX"
+            },
+            {
+              "value": 49,
+              "branch": "0x1561a7",
+              "slot": "0x264b0a8",
+              "token": "BUILDING_ICON_HIVE"
+            },
+            {
+              "value": 50,
+              "branch": "0x155f8b",
+              "slot": "0x264b158",
+              "token": "BUILDING_ICON_ROLLERS"
+            },
+            {
+              "value": 51,
+              "branch": "0x1561b9",
+              "slot": "0x264b0dc",
+              "token": "BUILDING_ICON_INSTRUMENT"
+            },
+            {
+              "value": 52,
+              "branch": "0x1561cb",
+              "slot": "0x264b0d0",
+              "token": "BUILDING_ICON_BOOKCASE"
+            },
+            {
+              "value": 53,
+              "branch": "0x1561dd",
+              "slot": "0x264b0d4",
+              "token": "BUILDING_ICON_DISPLAY_FURNITURE"
+            },
+            {
+              "value": 54,
+              "branch": "0x1561ef",
+              "slot": "0x264b0d8",
+              "token": "BUILDING_ICON_OFFERING_PLACE"
+            }
+          ],
+          "workshops": [
+            {
+              "value": 0,
+              "branch": "0x1559b0",
+              "slot": "0x264b030",
+              "token": "BUILDING_ICON_WORKSHOP_CARPENTER"
+            },
+            {
+              "value": 1,
+              "branch": "0x1559c2",
+              "slot": "0x264b098",
+              "token": "BUILDING_ICON_WORKSHOP_FARMER"
+            },
+            {
+              "value": 2,
+              "branch": "0x1559d4",
+              "slot": "0x264b034",
+              "token": "BUILDING_ICON_WORKSHOP_MASON"
+            },
+            {
+              "value": 3,
+              "branch": "0x1559e6",
+              "slot": "0x264b040",
+              "token": "BUILDING_ICON_WORKSHOP_CRAFTS"
+            },
+            {
+              "value": 4,
+              "branch": "0x1559f8",
+              "slot": "0x264b044",
+              "token": "BUILDING_ICON_WORKSHOP_JEWELER"
+            },
+            {
+              "value": 5,
+              "branch": "0x155a0a",
+              "slot": "0x264b038",
+              "token": "BUILDING_ICON_WORKSHOP_METALSMITH"
+            },
+            {
+              "value": 6,
+              "branch": "0x155a0a",
+              "slot": "0x264b038",
+              "token": "BUILDING_ICON_WORKSHOP_METALSMITH"
+            },
+            {
+              "value": 7,
+              "branch": "0x155a1c",
+              "slot": "0x264b050",
+              "token": "BUILDING_ICON_WORKSHOP_BOWYER"
+            },
+            {
+              "value": 8,
+              "branch": "0x155a2e",
+              "slot": "0x264b054",
+              "token": "BUILDING_ICON_WORKSHOP_MECHANIC"
+            },
+            {
+              "value": 9,
+              "branch": "0x155a40",
+              "slot": "0x264b058",
+              "token": "BUILDING_ICON_WORKSHOP_SIEGE"
+            },
+            {
+              "value": 10,
+              "branch": "0x155a52",
+              "slot": "0x264b088",
+              "token": "BUILDING_ICON_WORKSHOP_BUTCHER"
+            },
+            {
+              "value": 11,
+              "branch": "0x155a64",
+              "slot": "0x264b070",
+              "token": "BUILDING_ICON_WORKSHOP_LEATHER"
+            },
+            {
+              "value": 12,
+              "branch": "0x155a76",
+              "slot": "0x264b08c",
+              "token": "BUILDING_ICON_WORKSHOP_TANNER"
+            },
+            {
+              "value": 13,
+              "branch": "0x155a88",
+              "slot": "0x264b078",
+              "token": "BUILDING_ICON_WORKSHOP_CLOTHES"
+            },
+            {
+              "value": 14,
+              "branch": "0x155a9a",
+              "slot": "0x264b090",
+              "token": "BUILDING_ICON_WORKSHOP_FISHERY"
+            },
+            {
+              "value": 15,
+              "branch": "0x155aac",
+              "slot": "0x264b084",
+              "token": "BUILDING_ICON_WORKSHOP_STILL"
+            },
+            {
+              "value": 16,
+              "branch": "0x155abe",
+              "slot": "0x264b074",
+              "token": "BUILDING_ICON_WORKSHOP_LOOM"
+            },
+            {
+              "value": 17,
+              "branch": "0x155ad0",
+              "slot": "0x264b09c",
+              "token": "BUILDING_ICON_WORKSHOP_QUERN"
+            },
+            {
+              "value": 18,
+              "branch": "0x155ae2",
+              "slot": "0x264b0a0",
+              "token": "BUILDING_ICON_WORKSHOP_KENNEL"
+            },
+            {
+              "value": 19,
+              "branch": "0x155af4",
+              "slot": "0x264b094",
+              "token": "BUILDING_ICON_WORKSHOP_KITCHEN"
+            },
+            {
+              "value": 20,
+              "branch": "0x155b06",
+              "slot": "0x264b05c",
+              "token": "BUILDING_ICON_WORKSHOP_ASHERY"
+            },
+            {
+              "value": 21,
+              "branch": "0x155b18",
+              "slot": "0x264b07c",
+              "token": "BUILDING_ICON_WORKSHOP_DYER"
+            },
+            {
+              "value": 22,
+              "branch": "0x155b2a",
+              "slot": "0x264b154",
+              "token": "BUILDING_ICON_WORKSHOP_MILLSTONE"
+            },
+            {
+              "value": 23,
+              "branch": "0x155b39",
+              "special_dispatch": true
+            },
+            {
+              "value": 24,
+              "branch": "0x155baa",
+              "slot": "0x264b00c",
+              "token": "BUILDING_ICON_WORKSHOPS"
+            }
+          ],
+          "furnaces": [
+            {
+              "value": 0,
+              "branch": "0x155c08",
+              "slot": "0x264b060",
+              "token": "BUILDING_ICON_FURNACE_WOOD"
+            },
+            {
+              "value": 1,
+              "branch": "0x155c1a",
+              "slot": "0x264b064",
+              "token": "BUILDING_ICON_FURNACE_SMELTER"
+            },
+            {
+              "value": 2,
+              "branch": "0x155c2c",
+              "slot": "0x264b068",
+              "token": "BUILDING_ICON_FURNACE_GLASS"
+            },
+            {
+              "value": 3,
+              "branch": "0x155c3e",
+              "slot": "0x264b06c",
+              "token": "BUILDING_ICON_FURNACE_KILN"
+            },
+            {
+              "value": 4,
+              "branch": "0x155c50",
+              "slot": "0x264b064",
+              "token": "BUILDING_ICON_FURNACE_SMELTER"
+            },
+            {
+              "value": 5,
+              "branch": "0x155c62",
+              "slot": "0x264b068",
+              "token": "BUILDING_ICON_FURNACE_GLASS"
+            },
+            {
+              "value": 6,
+              "branch": "0x155c71",
+              "slot": "0x264b06c",
+              "token": "BUILDING_ICON_FURNACE_KILN"
+            },
+            {
+              "value": 7,
+              "branch": "0x155c80",
+              "special_dispatch": true
+            }
+          ],
+          "traps": [
+            {
+              "value": 0,
+              "branch": "0x155e0a",
+              "slot": "0x264b130",
+              "token": "BUILDING_ICON_LEVER"
+            },
+            {
+              "value": 1,
+              "branch": "0x155e19",
+              "slot": "0x264b168",
+              "token": "BUILDING_ICON_PRESSURE_PLATE"
+            },
+            {
+              "value": 2,
+              "branch": "0x155e28",
+              "slot": "0x264b174",
+              "token": "BUILDING_ICON_TRAP_CAGE"
+            },
+            {
+              "value": 3,
+              "branch": "0x155e37",
+              "slot": "0x264b16c",
+              "token": "BUILDING_ICON_TRAP_STONE"
+            },
+            {
+              "value": 4,
+              "branch": "0x155e46",
+              "slot": "0x264b170",
+              "token": "BUILDING_ICON_TRAP_WEAPON"
+            },
+            {
+              "value": 5,
+              "branch": "0x155e55",
+              "slot": "0x264b12c",
+              "token": "BUILDING_ICON_TRACK_STOP"
+            }
+          ],
+          "constructions": [
+            {
+              "value": 0,
+              "branch": "0x155eb3",
+              "slot": "0x264b108",
+              "token": "BUILDING_ICON_FORTIFICATION"
+            },
+            {
+              "value": 1,
+              "branch": "0x155ec2",
+              "slot": "0x264b0e8",
+              "token": "BUILDING_ICON_WALL"
+            },
+            {
+              "value": 2,
+              "branch": "0x155ee0",
+              "slot": "0x264b0f0",
+              "token": "BUILDING_ICON_FLOOR"
+            },
+            {
+              "value": 3,
+              "branch": "0x155eef",
+              "slot": "0x264b0f8",
+              "token": "BUILDING_ICON_STAIRS"
+            },
+            {
+              "value": 4,
+              "branch": "0x155eef",
+              "slot": "0x264b0f8",
+              "token": "BUILDING_ICON_STAIRS"
+            },
+            {
+              "value": 5,
+              "branch": "0x155eef",
+              "slot": "0x264b0f8",
+              "token": "BUILDING_ICON_STAIRS"
+            },
+            {
+              "value": 6,
+              "branch": "0x155efe",
+              "slot": "0x264b0f4",
+              "token": "BUILDING_ICON_RAMP"
+            },
+            {
+              "value": 7,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 8,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 9,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 10,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 11,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 12,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 13,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 14,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 15,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 16,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 17,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 18,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 19,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 20,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 21,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 22,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 23,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 24,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 25,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 26,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 27,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 28,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 29,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 30,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 31,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 32,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 33,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 34,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 35,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 36,
+              "branch": "0x155f0d",
+              "slot": "0x264b128",
+              "token": "BUILDING_ICON_TRACK"
+            },
+            {
+              "value": 37,
+              "branch": "0x155ed1",
+              "slot": "0x264b0ec",
+              "token": "BUILDING_ICON_REINFORCED_WALL"
+            }
+          ],
+          "siege": [
+            {
+              "value": 0,
+              "branch": "0x155d92",
+              "slot": "0x264b18c",
+              "token": "BUILDING_ICON_CATAPULT"
+            },
+            {
+              "value": 1,
+              "branch": "0x155da1",
+              "slot": "0x264b188",
+              "token": "BUILDING_ICON_BALLISTA"
+            },
+            {
+              "value": 2,
+              "branch": "0x155db0",
+              "slot": "0x264b190",
+              "token": "BUILDING_ICON_BOLT_THROWER"
+            }
+          ]
+        },
+        "custom_raw": {
+          "workshop": "155b39..155bb7",
+          "furnace": "155c80..155cef",
+          "lookups": [
+            "14dc70",
+            "14dd10"
+          ],
+          "list_icon_offset": "bcb8"
+        }
+      },
+      "component_holder_artwork_reference": {
+        "protocol": 222,
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-015930",
+        "owned_df_pid": 29260,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "status": "passed_with_known_issues",
+        "scope": "Controlled unfinished Workshop3 via semantic tile selection, View wood1060, View holder back to unfinished workshop, Escape. All three full panels equal native. Native item lazy weight bit is the only item flag change; viewer readback matches native and stage is unchanged. No visible alternatives exist in this sample; retirement of previously visible alternative tabs remains unqualified. Earlier014832 exposed the missing workshop holder icon and is not accepted.",
+        "native": {
+          "before": {
+            "id": 3,
+            "item_flags": 32,
+            "kind": 2,
+            "open": true,
+            "stage": 2,
+            "tabs": []
+          },
+          "building_id": 3,
+          "item": {
+            "id": 1060,
+            "item_flags": 536870944,
+            "kind": 1,
+            "open": true,
+            "stage": 2,
+            "tabs": []
+          },
+          "item_id": 1060,
+          "returned": {
+            "id": 3,
+            "item_flags": 536870944,
+            "kind": 2,
+            "open": true,
+            "stage": 2,
+            "tabs": []
+          },
+          "tile": [
+            106,
+            95,
+            165
+          ]
+        },
+        "comparisons": [
+          {
+            "phase": "before",
+            "full_panel_equal": true,
+            "viewer_sha256": "1ee3f86751c01b487e2216eacb9ced7c31f4213e537c07a7d0016f1c9886b312",
+            "native_sha256": "ebf1b0709a2717a11c2fd96de0ba7efbb60d9a3d0b8519c93de9ef4f2df826e7"
+          },
+          {
+            "phase": "item",
+            "full_panel_equal": true,
+            "viewer_sha256": "195f336ea9a86b277fbeb51d964f8e7ec10568e04af0694285f646fc6134f495",
+            "native_sha256": "46c46d0ba0fcdf440a6b47c656c190a0ef5ee1acc45e5da192fa06418673f485"
+          },
+          {
+            "phase": "return",
+            "full_panel_equal": true,
+            "viewer_sha256": "1ee3f86751c01b487e2216eacb9ced7c31f4213e537c07a7d0016f1c9886b312",
+            "native_sha256": "ebf1b0709a2717a11c2fd96de0ba7efbb60d9a3d0b8519c93de9ef4f2df826e7"
+          }
+        ],
+        "hashes": {
+          "workshop-native.json": "d2f79494e155b2ef46d25bb84ec9578e40dbadec34f11bc97217324783703acd",
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "result.json": "f19e3cb531e6b98e48f1dc11ac1de55c2b8cf364bc01726820b6f9d570baad76",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
+      },
+      "holder_artwork_contents_regression": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-020059",
+        "protocol": 222,
+        "owned_df_pid": 35460,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "status": "passed_with_known_issues",
+        "scope": "Existing natural Statue965 main-scene contents controls and item/holder navigation; eleven full panel comparisons and native-effect guards passed. Only documented thread/finalize/ObjectDB diagnostics.",
+        "hashes": {
+          "workshop-native.json": "6bafcf59edc3a978a3174a140f88bdc7f6afeb59fc99f1f061a8ad934589ad74",
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "result.json": "d16b5d0fc63b17fc09e6981b24f0c015d93b86a8b309ddcbce946b4f40b660d6",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        },
+        "panel_hashes": {
+          "chest-scene-component-dump-1.png": "65da1edab04795a442ca3aed0ffe40d0bdd067fd0be690459352ff770ccfcbf7",
+          "chest-scene-component-dump-2.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+          "chest-scene-component-forbid-1.png": "16ceae18e044ee85ea3e88b09a0cbfd2f6244611398ba8eb9e46bff8987f32b1",
+          "chest-scene-component-forbid-2.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+          "chest-scene-component-hidden-1.png": "aefb179c6f4e6e12884dbda2c20d822222d5e487e2932bf623026fce84353f20",
+          "chest-scene-component-hidden-2.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+          "chest-scene-component-initial.png": "2ac468cc66c890dc11ba9880fa869518888afb4e6655504da48abec06457b4eb",
+          "chest-scene-component-item.png": "7a7f7284131312635e79330034ca276a3d5d1ccf648c79d8d0dc11d7de159e80",
+          "chest-scene-component-melt-1.png": "db7937e7bcda0e4c044ff505fa7c5e3fd5f5b8aeb77e76cfebc1147c4fca3816",
+          "chest-scene-component-melt-2.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+          "chest-scene-component-return.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899"
+        }
       }
     },
     "door_header_reference": {

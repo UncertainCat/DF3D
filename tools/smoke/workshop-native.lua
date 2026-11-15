@@ -177,7 +177,37 @@ local ok,err=xpcall(function()
    end
    shot('pending-header-art-'..kind)
   end end
-  if not duration_probe then
+  if os.getenv('DF3D_PENDING_COMPONENT_SELECTION')=='1'then
+   local target=assert(chosen[13]);local item=assert(target.contained_items[0].item)
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(target)
+   local function observe_tabs()
+    local tabs={};for index,kind in ipairs(sheet.tab)do tabs[#tabs+1]={kind=kind,id=sheet.tab_id[index]}end
+    return {kind=sheet.active_sheet,id=sheet.active_id,open=sheet.open,tabs=tabs,item_flags=item.flags.whole,stage=target:getBuildStage()}
+   end
+   local function click_at(x,y)
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+    g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+    df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+   end
+   local reference={building_id=target.id,item_id=item.id,tile={target.centerx,target.centery,target.z},before=observe_tabs()}
+   result.pending_component_selection=reference
+   shot('pending-selection-component-before')
+   click_at(756,526)
+   assert(sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==item.id,'Workshop component View missed')
+   reference.item=observe_tabs();shot('pending-selection-component-item')
+   click_at(816,250)
+   assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==target.id,'Workshop component holder View missed')
+   reference.returned=observe_tabs();shot('pending-selection-component-return')
+   assert((reference.returned.item_flags&~(1<<29))==(reference.before.item_flags&~(1<<29)),'Native component navigation changed non-weight flags')
+   item.flags.weight_computed=(reference.before.item_flags&(1<<29))~=0
+   if os.getenv('DF3D_PENDING_COMPONENT_SELECTION_NATIVE_ONLY')~='1'then
+    capture('workshop-wire')
+    local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
+    assert(receipt.success,'Component selection viewer failed')
+    assert(item.flags.whole==reference.returned.item_flags and target:getBuildStage()==reference.before.stage,'Viewer component effects differ from native')
+   end
+  elseif not duration_probe then
    capture('workshop-wire')
    local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
    assert(receipt.success,'Pending header artwork viewer failed')

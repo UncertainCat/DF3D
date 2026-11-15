@@ -13,6 +13,7 @@ var source
 var snapshot: Dictionary={}
 var colors: Array[Color]=[]
 var icon: Texture2D
+var holder_icon: Texture2D
 var carrier_icon: Texture2D
 var portrait: Texture2D
 var hover_help
@@ -41,7 +42,8 @@ func configure(world,help=null) -> void:
 func present(value: Dictionary) -> void:
 	var reset_description: bool=snapshot.get("id",-1)!=value.get("id",-1) or snapshot.get("description","")!=value.get("description","")
 	if snapshot.get("id",-1)!=value.get("id",-1):_leave_hover()
-	snapshot=value.duplicate(true);icon=null;carrier_icon=null;portrait=null
+	snapshot=value.duplicate(true);icon=null;carrier_icon=null;portrait=null;holder_icon=null
+	if snapshot.get("holder",{}).has("appearance"):holder_icon=source.candidate_icon(snapshot.holder.appearance)
 	if snapshot.get("item_type",-1) in [51,52] and snapshot.get("appearance",{}).has("portrait") and source.has_method("item_portrait_icon"):
 		portrait=source.item_portrait_icon(snapshot.appearance.portrait)
 	# Native153b85..153bd8 reserves four additional rows for critter headers.
@@ -181,7 +183,7 @@ func _draw() -> void:
 	if camera!=null:draw_texture_rect(camera,camera_rect(),false)
 	if snapshot.get("holder_id",-1)>=0:
 		var holder_offset:=36 if snapshot.has("stockpile") else 0
-		var holder: Texture2D=art.texture(snapshot.get("holder_art",""))
+		var holder: Texture2D=holder_icon
 		if holder!=null:draw_texture_rect(holder,Rect2(10,182+holder_offset,32,32),false)
 		text_at(snapshot.get("holder_name",""),Vector2(56,204+holder_offset))
 		patch(art.texture("HORIZONTAL_OPTION_ACTIVE"),holder_rect())

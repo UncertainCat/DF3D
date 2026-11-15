@@ -114,7 +114,7 @@ func ensure_agreement_tracker():
 
 func open_building_holder(kind: int,id: int) -> void:
 	if not host.play_enabled:return
-	if kind in [4,15]:
+	if kind>=0 and kind<=54 and kind not in [29,30]:
 		var target: Dictionary=world.inspect_entity(3,id)
 		if target.get("building_kind",-1)==kind+1 and not target.get("complete",true):
 			controller("pending_building").open_target(id)

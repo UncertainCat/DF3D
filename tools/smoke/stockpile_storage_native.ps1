@@ -426,6 +426,7 @@ try {
      if($env:DF3D_PENDING_CONTENTS_RUNTIME -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/pending_contents_scene_live.gd')}
      if($env:DF3D_PENDING_HEADER_ART -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/pending_header_art_scene_live.gd')}
      if($env:DF3D_PENDING_SELECTION -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/pending_selection_scene_live.gd')}
+     if($env:DF3D_PENDING_COMPONENT_SELECTION -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/pending_component_selection_scene_live.gd')}
      if($env:DF3D_PENDING_PROGRESS_RUNTIME -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/pending_progress_scene_live.gd')}
      if($env:DF3D_DOOR_HEADER_RUNTIME -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/door_scene_live.gd')}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"

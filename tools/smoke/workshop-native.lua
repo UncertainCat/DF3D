@@ -430,6 +430,20 @@ local ok,err=xpcall(function()
      file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
     end
    end
+   if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_PLANNED_SCENE')=='1' then
+    local file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
+    local menu=json.encode(observe())
+    local images=df.global.plotinfo.main.fortress_entity.resources;local image_count=#images.art_image_ids
+    capture('workshop-wire')
+    file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
+    assert(receipt.success,'Planned engraving scene failed')
+    local detail;for _,value in ipairs(df.global.plotinfo.waypoints.location_detail)do if value.pos.x==planned.x and value.pos.y==planned.y and value.pos.z==planned.z then detail=value;break end end
+    local image=result.tile_selection_reference.engraving.planned.image
+    assert(detail and detail.art_specifier==3 and #images.art_image_ids==image_count+1 and detail.art_spec_id1==images.art_image_ids[image_count] and detail.art_spec_id2==images.art_image_subids[image_count],'Planned scene draft registration differs')
+    assert(menu==json.encode(observe()),'Planned scene changed native sheet')
+    image.scene={success=true,type=detail.art_specifier,id=detail.art_spec_id1,subid=detail.art_spec_id2}
+    file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
+   end
    return
   end
   local targets={building,original}

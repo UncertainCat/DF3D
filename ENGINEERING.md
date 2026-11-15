@@ -9607,8 +9607,18 @@ the picker cancel signal retires its local draft while preserving the parent
 receipt. The completed-engraving panel still matches native182618 exactly.
 Both captures pass_with_known_issues (the documented Godot diagnostics), at30FPS;
 GPU sampled52C/5%. Evidence: selection_reference.planned_engraving_presentation_reference.
-Main-scene planned workflow, full button boundaries, native cancellation input
-and ordinary map exposure remain unqualified.
+Protected193425 and193615 on2026-11-14 exercise the actual main scene through
+the staged tile-selection entry. The planned sheet and artwork root match native
+pixels; real pointer input opens Specify image, returns with right-click, selects
+a site, then creates a new Creature image and commits Done. The draft description
+matches native and Lua confirms exactly one new entity image row assigned to the
+tile (193615). Escape closes the sheet; a late reply after view reset cannot reopen
+it.193425 separately confirms the intermediate site assignment as type1/id320.
+Owned DF6764/34832 exit unsaved with source preservation;30FPS and GPU53C/5-7%.
+Both lanes pass_with_known_issues for the documented Godot exit diagnostics.
+Evidence: selection_reference.planned_engraving_scene_reference. Full button
+boundaries, other draft families/relationships/name edits, dirty-draft cancellation
+and ordinary map-click exposure remain unqualified.
 
 selection_art_state.gd reuses local artwork navigation state with a selected-tile
 receipt, never a proxy job. work_order_details_view.gd has an engraving context

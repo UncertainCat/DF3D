@@ -12809,6 +12809,24 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "planned_engraving_scene_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-193615",
+      "status": "passed_with_known_issues",
+      "scope": "Actual main scene opens staged planned tile selection; exact sheet and picker root pixels; real pointer Specify image, right-click back, site choice, new-image Creature choice and Done; exact native draft description; one image registered and assigned; Escape and late reset retirement. Ordinary map-click routing, other families and name editing remain unqualified.",
+      "effect": {
+        "id": 4,
+        "subid": 125,
+        "success": true,
+        "type": 3
+      },
+      "owned_df_pid": 34832,
+      "hashes": {
+        "workshop-native.json": "6bbc632b37a684f448f44b4b2c807d0b241bde9088001909d8a26d541b07264c",
+        "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+        "planned-art-root-live.png": "baf8bd046bb7811a63f5ca19e1dd7e4a228f3f42e915d66dfba9a2ec9aaf3469",
+        "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+      }
+    },
     "planned_engraving_presentation_reference": {
       "lane": "build/stockpile-storage-native-farm-discovery-20261114-192732",
       "scope": "Native planned heading via terrain formatter false; complete 488x708 staged panel pixel comparison; actual Specify image center click submits selected receipt; picker cancel signal retains parent receipt. Completed engraving panel regression passes. Main-scene planned workflow and button boundary/cancellation input remain unqualified.",

@@ -58,7 +58,8 @@ func _draw() -> void:
 	var rect:=broker_rect()
 	if body.broker_id<0:
 		_body_text("You do not have a broker.",rect.position+Vector2(0,24));return
-	_patch(picture.texture(false,false),rect)
+	_patch(art.texture("BUTTON_RECTANGLE"),rect)
+	_patch(picture.texture(false,false),Rect2(rect.position,Vector2(40,36)))
 	if broker_texture!=null:draw_texture_rect(broker_texture,Rect2(rect.position+Vector2(2,2),Vector2(32,32)),false)
 	var name: String=body.broker_name
 	var limit:=int(size.x/8)-17

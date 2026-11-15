@@ -885,8 +885,20 @@ wrong status baseline and unselected button artwork and is not acceptance.
 Owned DF42372 closes unsaved with source preservation; graphics are serial30FPS,
 sampled GPU59C. The scene reports only the established render-thread/finalize/two
 ObjectDB diagnostics, and core19 passes. Evidence:
-`completed_sheet_discovery_reference.depot_scene_reference`. Broker-card rendering,
-goods/trade buttons and navigation are staged but unqualified. Public depot map
+`completed_sheet_discovery_reference.depot_scene_reference`.
+
+Protected132214 on2026-11-15 verifies the broker card through four exact full-panel
+comparisons: temporary broker988 with Drink job, fallback Play Make Believe,
+missing historical figure and restored no-broker state. The row uses native
+BUTTON_RECTANGLE with a separate40x36 portrait frame; initial132045 incorrectly
+stretched that frame across the row and is not acceptance. The temporary child
+assignment is a display fixture, not evidence of office eligibility. Assignment,
+job pointer and depot flags are restored; native selection and paused frame stay
+unchanged. Owned DF44912 closes unsaved with source preservation, graphics capped
+30FPS, sampled GPU60C. Core19 passes; only the established rendering-thread,
+finalize and two ObjectDB diagnostics remain. Evidence:
+`completed_sheet_discovery_reference.depot_broker_scene_reference`. Inaccessible
+broker appearance, goods/trade buttons and navigation remain unqualified. Public depot map
 and holder routes remain hidden until those workflows are complete.
 
 ## Completed bridge, wagon and traction-bench sheets

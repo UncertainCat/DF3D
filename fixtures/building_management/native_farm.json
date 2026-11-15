@@ -32055,6 +32055,221 @@
           "lane": "131432",
           "reason": "No-merchant status one text row too high; unselected mode background incorrectly active. Corrected to native baseline108 and inactive artwork."
         }
+      },
+      "depot_broker_scene_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-132214",
+        "owned_df_pid": 44912,
+        "scope": "Four exact full488x708 actual-main-scene comparisons: broker job/activity, missing figure, no broker. Temporary child assignment is display fixture, not office eligibility. No inaccessible broker, navigation, goods or trade acceptance. Per-case scene results retained in native JSON; final scene image/log overwritten by restored case.",
+        "native": {
+          "broker": {
+            "cases": [
+              {
+                "accessible": true,
+                "activity": "Drink",
+                "background": 0,
+                "bright": true,
+                "broker_id": 988,
+                "broker_name": "Ã®ton Unibmamot, Dwarven Child",
+                "flags": 2,
+                "foreground": 3,
+                "goods": false,
+                "label": "assigned",
+                "scene": {
+                  "roundtrip": true,
+                  "success": true,
+                  "surface": "actual main scene"
+                },
+                "trade": false,
+                "worker": -1
+              },
+              {
+                "accessible": true,
+                "activity": "Play Make Believe",
+                "background": 0,
+                "bright": true,
+                "broker_id": 988,
+                "broker_name": "Ã®ton Unibmamot, Dwarven Child",
+                "flags": 2,
+                "foreground": 2,
+                "goods": false,
+                "label": "activity",
+                "scene": {
+                  "roundtrip": true,
+                  "success": true,
+                  "surface": "actual main scene"
+                },
+                "trade": false,
+                "worker": -1
+              },
+              {
+                "accessible": false,
+                "activity": "",
+                "background": 0,
+                "bright": false,
+                "broker_id": -1,
+                "broker_name": "",
+                "flags": 2,
+                "foreground": 7,
+                "goods": false,
+                "label": "missing-figure",
+                "scene": {
+                  "roundtrip": true,
+                  "success": true,
+                  "surface": "actual main scene"
+                },
+                "trade": false,
+                "worker": -1
+              }
+            ],
+            "restored": {
+              "accessible": false,
+              "activity": "",
+              "background": 0,
+              "bright": false,
+              "broker_id": -1,
+              "broker_name": "",
+              "flags": 2,
+              "foreground": 7,
+              "goods": false,
+              "label": "restored",
+              "scene": {
+                "roundtrip": true,
+                "success": true,
+                "surface": "actual main scene"
+              },
+              "trade": false,
+              "worker": -1
+            },
+            "success": true
+          },
+          "cases": [
+            {
+              "flags": 0,
+              "jobs": [],
+              "label": "idle"
+            },
+            {
+              "flags": 1,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "broker"
+            },
+            {
+              "flags": 3,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "anyone"
+            },
+            {
+              "flags": 1,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "broker-again"
+            },
+            {
+              "flags": 0,
+              "jobs": [],
+              "label": "dismissed"
+            },
+            {
+              "flags": 3,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382797,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "anyone-fresh"
+            },
+            {
+              "flags": 2,
+              "jobs": [],
+              "label": "dismissed-anyone"
+            }
+          ],
+          "frame": 0,
+          "id": 54,
+          "original_flags": 0,
+          "restored": true,
+          "success": true
+        },
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "diagnostics": "passed_with_known_issues: render-thread/finalize/two ObjectDB",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-132214/depot-settings-native.json": "a6995d757f53c2c88f5d4348dbfcc88c88af7248eb9e2c9a826f79cee75e7da3",
+          "build/stockpile-storage-native-farm-discovery-20261115-132214/result.json": "a569709345d2369e96798be0eccdaf58a6b161238dd60ba932a60b45c41a6e00",
+          "build/stockpile-storage-native-farm-discovery-20261115-132214/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-132214/depot-scene.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "build/stockpile-storage-native-farm-discovery-20261115-132214/depot-broker-activity.png": "91aad6ec52c86f98917928cf0c48187e82a041c5e527f8f6d5c2b11a0c42b191",
+          "build/stockpile-storage-native-farm-discovery-20261115-132214/depot-broker-assigned.png": "a664cce500ddfa17d283f838fb0b373bf127c041c4b2b7e93230e4b40cb1e21f",
+          "build/stockpile-storage-native-farm-discovery-20261115-132214/depot-broker-missing-figure.png": "63f54d60768f83f5d115fd4c3389dc15aec61dfc1dd5fdf0905bd7ce64758c65",
+          "build/stockpile-storage-native-farm-discovery-20261115-132214/depot-broker-restored.png": "63f54d60768f83f5d115fd4c3389dc15aec61dfc1dd5fdf0905bd7ce64758c65"
+        },
+        "initial_failure": {
+          "lane": "132045",
+          "reason": "Portrait frame stretched across whole row; corrected to native row background plus separate portrait frame."
+        }
       }
     },
     "pending_construction_reference": {

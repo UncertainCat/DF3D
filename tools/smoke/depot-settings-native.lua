@@ -90,6 +90,14 @@ local ok,err=xpcall(function()
     assert(text:find(facts.activity,1,true),'Missing activity: '..facts.activity)
     assert(text:find(facts.accessible and 'Broker can access depot' or 'Broker cannot access depot',1,true),'Access differs')
    else assert(text:find('You do not have a broker.',1,true))end
+   if os.getenv('DF3D_DEPOT_BROKER_SCENE')=='1' then
+    local f=assert(io.open(out..'/depot-wire-expected.json','w'))
+    f:write(json.encode{id=b.id,broker_id=facts.broker_id,reference='depot-broker-'..label});f:close()
+    local active=df.global.game.main_interface.view_sheets.active_id
+    capture('depot-scene')
+    f=assert(io.open(out..'/depot-scene-result.json'));facts.scene=json.decode(f:read('*a'));f:close()
+    assert(facts.scene.success and df.global.game.main_interface.view_sheets.active_id==active)
+   end
    facts.label=label;return facts
   end
   local broker_ok,broker_err=xpcall(function()

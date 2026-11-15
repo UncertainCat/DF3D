@@ -125,6 +125,15 @@ func run() -> void:
 	melting.rows[0].melt=true;melting.revision+=1
 	reply(melting,1,{"item_id":1000,"farm_operation":C.FarmOperation.ItemMelt,"value":1})
 	check(model.phase==Model.Phase.Ready and model.snapshot.rows[0].melt,"Eligible removing Melt receipt accepted")
+	for enabled in [false,true]:
+		setup();model.edit_unfinished=enabled;model.open(968);service.poll()
+		var unfinished:=page();unfinished.completed=false;reply(unfinished)
+		model.set_flag(1000,C.FarmOperation.ItemForbid,true)
+		check((model.ticket>0)==enabled,"Unfinished edits require explicit admission")
+		if enabled:
+			service.poll();unfinished.rows[0].forbid=true;unfinished.rows[0].in_job=false;unfinished.revision+=1
+			reply(unfinished,1,{"item_id":1000,"farm_operation":C.FarmOperation.ItemForbid,"value":1})
+			check(model.phase==Model.Phase.Ready and not model.snapshot.completed and model.snapshot.rows[0].forbid,"Unfinished receipt lost native effects")
 	model.dispose();service.free()
 	if failures==0:print("BUILDING_CONTENTS_STATE_PASS")
 	quit(0 if failures==0 else 1)

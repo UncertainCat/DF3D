@@ -51,7 +51,7 @@ func _fail(next: Phase) -> void:
 static func valid_snapshot(value: Dictionary,id: int) -> bool:
 	for field in ["id","type","revision","stage","max_stage","job_id"]:
 		if typeof(value.get(field))!=TYPE_INT:return false
-	for field in ["suspended","has_worker","removing"]:
+	for field in ["suspended","has_worker","removing","forbidden"]:
 		if typeof(value.get(field))!=TYPE_BOOL:return false
 	if value.job_id== -1 and (value.removing or value.suspended or value.has_worker):return false
 	return value.id==id and value.type>=0 and value.type<=54 and value.type not in [29,30] and value.revision>0 and value.stage>=0 and value.stage<value.max_stage and value.job_id>=-1 and typeof(value.get("header_name"))==TYPE_STRING and not value.header_name.is_empty()

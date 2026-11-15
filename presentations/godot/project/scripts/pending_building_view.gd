@@ -5,6 +5,12 @@ func header_art() -> Array:
 	building_icon=token
 	return [] if token.is_empty() else [[token,Vector2(10,14),Vector2(32,32)]]
 func _process(_delta: float) -> void:pass
+func header_color() -> Color:
+	return colors[12] if state.snapshot.get("forbidden",false) and colors.size()==16 else Color.WHITE
+func draw_header_warnings() -> void:
+	# Native180422..180679 uses building::isForbidden for title and warnings.
+	if not state.snapshot.get("forbidden",false) or colors.size()!=16 or theme.default_font==null:return
+	for y in [24,48]:theme.default_font.draw_string(get_canvas_item(),Vector2(64,y),"*** Forbidden ***",HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[4])
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or state.phase!=state.Phase.Ready or state.ticket!=0 or state.snapshot.is_empty():return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:

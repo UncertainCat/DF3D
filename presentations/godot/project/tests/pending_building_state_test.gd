@@ -16,7 +16,7 @@ var failed:=false
 func check(value: bool,message: String) -> void:
 	if not value:failed=true;push_error(message)
 func observation(stage: int) -> Dictionary:
-	return {"id":965,"type":15,"revision":9007199254740993,"stage":stage,"max_stage":3,"job_id":68196,"suspended":true,"has_worker":false,"header_name":"Platinum Statue","removing":false}
+	return {"id":965,"type":15,"revision":9007199254740993,"stage":stage,"max_stage":3,"job_id":68196,"suspended":true,"has_worker":false,"header_name":"Platinum Statue","removing":false,"forbidden":false}
 func run_case(stage: int) -> void:
 	var source=Source.new();var model=Model.new();model.configure(source)
 	model.open(965);var late: Callable=source.callbacks[model.ticket];var ticket: int=model.ticket;var intent: Dictionary=source.requests[ticket]

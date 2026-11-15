@@ -307,6 +307,52 @@ local ok,err=xpcall(function()
     end
     result.basic_building_reference.pending.effects=effects
     assert(b.jobs[0].flags.whole==before,'Pending fixture did not restore suspension')
+    if os.getenv('DF3D_PENDING_CONTENTS_REFERENCE')=='1'then
+     assert(#b.contained_items==1,'Pending contents reference requires one native component')
+     local item=b.contained_items[0].item
+     local function observe_component()
+      local jobs={};for _,job in ipairs(b.jobs)do jobs[#jobs+1]={id=job.id,type=df.job_type[job.job_type],flags=job.flags.whole}end
+      local refs={};for _,held in ipairs(b.contained_items)do refs[#refs+1]={id=held.item.id,role=held.use_mode}end
+      return {id=item.id,flags=item.flags.whole,forbid=item.flags.forbid,dump=item.flags.dump,melt=item.flags.melt,hidden=item.flags.hidden,
+       in_job=item.flags.in_job,in_building=item.flags.in_building,stockpile_countdown=item.stockpile_countdown,stockpile_delay=item.stockpile_delay,
+       stage=b:getBuildStage(),max_stage=b:getMaxBuildStage(),jobs=jobs,contents=refs,frame=df.global.world.frame_counter}
+     end
+     local reference={before=observe_component(),actions={}}
+     result.basic_building_reference.pending.contents_reference=reference
+     if os.getenv('DF3D_PENDING_CONTENTS_RUNTIME')=='1'then
+      capture('workshop-wire')
+      local f=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(f:read('*a'));f:close()
+      assert(receipt.success,'Pending component workflow failed');reference.viewer=receipt
+     else
+     for _,entry in ipairs{{'forbid',796},{'dump',820},{'melt',844},{'hidden',868}}do
+      for attempt=1,2 do
+       local prior=observe_component()
+       df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+       g.precise_mouse_x=entry[2];g.precise_mouse_y=526;g.mouse_x=entry[2]//8;g.mouse_y=(526-4)//12
+       gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+       df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+       reference.actions[#reference.actions+1]={action=entry[1],attempt=attempt,before=prior,after=observe_component()}
+       shot('pending-component-'..entry[1]..'-'..attempt)
+      end
+     end
+     end
+     reference.after=observe_component()
+     if os.getenv('DF3D_PENDING_CONTENTS_RUNTIME')=='1'then
+      local f=assert(io.open(out..'/../stockpile-storage-native-farm-discovery-20261114-235233/workshop-native.json'))
+      local native=json.decode(f:read('*a')).basic_building_reference.pending.contents_reference;f:close()
+      local function same_value(a,c)
+       if type(a)~=type(c)then return false end
+       if type(a)~='table'then return a==c end
+       for key,value in pairs(a)do if not same_value(value,c[key])then return false end end
+       for key in pairs(c)do if a[key]==nil then return false end end
+       return true
+      end
+      assert(same_value(reference.before,native.before),'Viewer component fixture differs from native baseline')
+      assert(same_value(reference.after,native.after),'Viewer component/job effects differ from native clicks')
+      reference.native_effects_equal=true
+     end
+     shot('pending-component-final')
+    end
     local pending_request
     local function request(revision,operation)
      local text,code=dfhack.run_command_silent('df3d','pending-building',tostring(b.id),revision,operation)

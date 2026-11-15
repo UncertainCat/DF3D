@@ -22,6 +22,8 @@ var pointer_position:=Vector2.ZERO
 var building_icon:="BUILDING_ICON_BOX"
 
 func show_contents_separator() -> bool:return true
+func header_color() -> Color:return Color.WHITE
+func draw_header_warnings() -> void:pass
 
 func header_art() -> Array:
 	return [[building_icon,Vector2(10,14),Vector2(32,32)],["UNIT_SHEET_CUSTOMIZE",Vector2(368,12),Vector2(32,36)],["BUILDING_SHEET_REMOVE",Vector2(400,12),Vector2(32,36)]]
@@ -130,7 +132,8 @@ func _draw() -> void:
 		if removing and entry[0]!=building_icon:continue
 		var texture: Texture2D=art.texture(entry[0])
 		if texture!=null:draw_texture_rect(texture,Rect2(entry[1],entry[2]),false)
-	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),Vector2(64,36),name_entry.text if name_entry.editing else title,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
+	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),Vector2(64,36),name_entry.text if name_entry.editing else title,HORIZONTAL_ALIGNMENT_LEFT,-1,12,header_color())
+	draw_header_warnings()
 	if removing:
 		draw_removal()
 		return

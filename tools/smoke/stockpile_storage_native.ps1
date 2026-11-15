@@ -423,6 +423,7 @@ try {
      if($env:DF3D_DOOR_CONTROL_RUNTIME -eq '1'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/door_controls_wire_live.gd')}
      if($env:DF3D_PENDING_RUNTIME -eq '1'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/pending_building_wire_live.gd')}
      if($env:DF3D_PENDING_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/pending_building_scene_live.gd')}
+     if($env:DF3D_PENDING_CONTENTS_RUNTIME -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/pending_contents_scene_live.gd')}
      if($env:DF3D_DOOR_HEADER_RUNTIME -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/door_scene_live.gd')}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
      $null=$client.Handle

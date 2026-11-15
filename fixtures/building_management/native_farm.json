@@ -14084,6 +14084,1289 @@
           "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
           "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "contents_native_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-235233",
+        "owned_df_pid": 5316,
+        "status": "passed",
+        "source_save_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Native clicks on unfinished Statue965 component22339 while paused: Forbid/Dump/Melt/Hide each toggle on/off. Forbid clears in_job and changes ConstructBuilding68196 flags2 to66; allowing again leaves those effects. Same building, stage0/max1 and component role0 remain. This is native evidence, not viewer acceptance.",
+        "observation": {
+          "actions": [
+            {
+              "action": "forbid",
+              "after": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 524288,
+                "forbid": true,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              },
+              "attempt": 1,
+              "before": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 2,
+                "forbid": false,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": true,
+                "jobs": [
+                  {
+                    "flags": 2,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              }
+            },
+            {
+              "action": "forbid",
+              "after": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 0,
+                "forbid": false,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              },
+              "attempt": 2,
+              "before": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 524288,
+                "forbid": true,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              }
+            },
+            {
+              "action": "dump",
+              "after": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": true,
+                "flags": 2097152,
+                "forbid": false,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              },
+              "attempt": 1,
+              "before": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 0,
+                "forbid": false,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              }
+            },
+            {
+              "action": "dump",
+              "after": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 0,
+                "forbid": false,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              },
+              "attempt": 2,
+              "before": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": true,
+                "flags": 2097152,
+                "forbid": false,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              }
+            },
+            {
+              "action": "melt",
+              "after": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 8388608,
+                "forbid": false,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": true,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              },
+              "attempt": 1,
+              "before": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 0,
+                "forbid": false,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              }
+            },
+            {
+              "action": "melt",
+              "after": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 0,
+                "forbid": false,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              },
+              "attempt": 2,
+              "before": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 8388608,
+                "forbid": false,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": true,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              }
+            },
+            {
+              "action": "hidden",
+              "after": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 16777216,
+                "forbid": false,
+                "frame": 0,
+                "hidden": true,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              },
+              "attempt": 1,
+              "before": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 0,
+                "forbid": false,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              }
+            },
+            {
+              "action": "hidden",
+              "after": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 0,
+                "forbid": false,
+                "frame": 0,
+                "hidden": false,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              },
+              "attempt": 2,
+              "before": {
+                "contents": [
+                  {
+                    "id": 22339,
+                    "role": 0
+                  }
+                ],
+                "dump": false,
+                "flags": 16777216,
+                "forbid": false,
+                "frame": 0,
+                "hidden": true,
+                "id": 22339,
+                "in_building": false,
+                "in_job": false,
+                "jobs": [
+                  {
+                    "flags": 66,
+                    "id": 68196,
+                    "type": "ConstructBuilding"
+                  }
+                ],
+                "max_stage": 1,
+                "melt": false,
+                "stage": 0,
+                "stockpile_countdown": 0,
+                "stockpile_delay": 0
+              }
+            }
+          ],
+          "after": {
+            "contents": [
+              {
+                "id": 22339,
+                "role": 0
+              }
+            ],
+            "dump": false,
+            "flags": 0,
+            "forbid": false,
+            "frame": 0,
+            "hidden": false,
+            "id": 22339,
+            "in_building": false,
+            "in_job": false,
+            "jobs": [
+              {
+                "flags": 66,
+                "id": 68196,
+                "type": "ConstructBuilding"
+              }
+            ],
+            "max_stage": 1,
+            "melt": false,
+            "stage": 0,
+            "stockpile_countdown": 0,
+            "stockpile_delay": 0
+          },
+          "before": {
+            "contents": [
+              {
+                "id": 22339,
+                "role": 0
+              }
+            ],
+            "dump": false,
+            "flags": 2,
+            "forbid": false,
+            "frame": 0,
+            "hidden": false,
+            "id": 22339,
+            "in_building": false,
+            "in_job": true,
+            "jobs": [
+              {
+                "flags": 2,
+                "id": 68196,
+                "type": "ConstructBuilding"
+              }
+            ],
+            "max_stage": 1,
+            "melt": false,
+            "stage": 0,
+            "stockpile_countdown": 0,
+            "stockpile_delay": 0
+          }
+        },
+        "hashes": {
+          "workshop-pending-component-dump-1.png": "299d85767e6aea50e50552d263595f2dd450f42ebbad8cb6d009731760dffe72",
+          "workshop-pending-component-dump-2.png": "4fb5b414b9cef02121a404f96c239fad47293f6a05c3d70818ad321e9c0fb26d",
+          "workshop-pending-component-forbid-1.png": "41e8fe6cf683d45c8ccb0984882d670c86878b47ebe62a89c14b6544d06d9d29",
+          "workshop-pending-component-forbid-2.png": "2f58d41540063de1692336c457fe624a78c8b38c009e75d3ac4538582cec84cb",
+          "workshop-pending-component-hidden-1.png": "b41b06173ff197608570ebd0ce24759b24e4d6518c147eb34d0bc05768f5413b",
+          "workshop-pending-component-hidden-2.png": "4fb5b414b9cef02121a404f96c239fad47293f6a05c3d70818ad321e9c0fb26d",
+          "workshop-pending-component-melt-1.png": "e21324bfee8f3312e1a305547819a1b769b8cfd07d250a63fee1a5b8d096131a",
+          "workshop-pending-component-melt-2.png": "4fb5b414b9cef02121a404f96c239fad47293f6a05c3d70818ad321e9c0fb26d",
+          "workshop-native.json": "1f7e3057535e9e92a1e849bd9f8019c0dad387ce282c496078576a274e315fdf",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        },
+        "header_predicate": {
+          "native_build": "DF53.16 Steam24557528",
+          "render_rva": "180422..180679",
+          "virtual_slot": 75,
+          "predicate_rva": "28b960",
+          "pinned_length": 44,
+          "pinned_fnv1a64": "94cb9f513f8900f1",
+          "predicate_sha256": "935bc4113c05bf4e74310b3e5c2d72ac5e666e1b45ed5febf0c5b83d9e34f6d1",
+          "scope": "Door/FarmPlot/Statue isForbidden virtual entries resolve to this native leaf. It reads the first contained item forbid bit, or returns false for empty contents; no UI/menu globals. Renderer uses the result for title palette12 versus15 and two *** Forbidden *** lines in palette4 at local baselines(64,24),(64,48). The native Forbid-on screenshot235233 confirms the visible header."
+        }
+      },
+      "header_dispatch_reference": {
+        "exe_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+        "scope": "Static building-sheet header dispatch, not live artwork acceptance.",
+        "types": [
+          {
+            "value": 0,
+            "branch": "0x17ff1c",
+            "slot": "0x264b0b0",
+            "token": "BUILDING_ICON_CHAIR"
+          },
+          {
+            "value": 1,
+            "branch": "0x17ff2e",
+            "slot": "0x264b0ac",
+            "token": "BUILDING_ICON_BED"
+          },
+          {
+            "value": 2,
+            "branch": "0x17ff40",
+            "slot": "0x264b0b4",
+            "token": "BUILDING_ICON_TABLE"
+          },
+          {
+            "value": 3,
+            "branch": "0x17ff52",
+            "slot": "0x264b0c0",
+            "token": "BUILDING_ICON_COFFIN"
+          },
+          {
+            "value": 4,
+            "branch": "0x17fc73",
+            "slot": "0x264b080",
+            "token": "BUILDING_ICON_FARM_PLOT"
+          },
+          {
+            "value": 5,
+            "branch": "0x17fb3b",
+            "special_dispatch": true
+          },
+          {
+            "value": 6,
+            "branch": "0x17fc85",
+            "slot": "0x264b02c",
+            "token": "BUILDING_ICON_TRADE_DEPOT"
+          },
+          {
+            "value": 7,
+            "branch": "0x1803c8",
+            "special_dispatch": true
+          },
+          {
+            "value": 8,
+            "branch": "0x17ff64",
+            "slot": "0x264b0e0",
+            "token": "BUILDING_ICON_DOOR"
+          },
+          {
+            "value": 9,
+            "branch": "0x17ff76",
+            "slot": "0x264b138",
+            "token": "BUILDING_ICON_FLOODGATE"
+          },
+          {
+            "value": 10,
+            "branch": "0x17ff88",
+            "slot": "0x264b0b8",
+            "token": "BUILDING_ICON_BOX"
+          },
+          {
+            "value": 11,
+            "branch": "0x17ff9a",
+            "slot": "0x264b180",
+            "token": "BUILDING_ICON_WEAPON_RACK"
+          },
+          {
+            "value": 12,
+            "branch": "0x17ffac",
+            "slot": "0x264b184",
+            "token": "BUILDING_ICON_ARMOR_STAND"
+          },
+          {
+            "value": 13,
+            "branch": "0x17f8e3",
+            "special_dispatch": true
+          },
+          {
+            "value": 14,
+            "branch": "0x17ffbe",
+            "slot": "0x264b0bc",
+            "token": "BUILDING_ICON_CABINET"
+          },
+          {
+            "value": 15,
+            "branch": "0x17ffd0",
+            "slot": "0x264b0c8",
+            "token": "BUILDING_ICON_STATUE"
+          },
+          {
+            "value": 16,
+            "branch": "0x17ffe2",
+            "slot": "0x264b11c",
+            "token": "BUILDING_ICON_WINDOW_GLASS"
+          },
+          {
+            "value": 17,
+            "branch": "0x17fff4",
+            "slot": "0x264b120",
+            "token": "BUILDING_ICON_WINDOW_GEM"
+          },
+          {
+            "value": 18,
+            "branch": "0x180006",
+            "slot": "0x264b134",
+            "token": "BUILDING_ICON_WELL"
+          },
+          {
+            "value": 19,
+            "branch": "0x17fc97",
+            "slot": "0x264b0fc",
+            "token": "BUILDING_ICON_BRIDGE"
+          },
+          {
+            "value": 20,
+            "branch": "0x17fca9",
+            "slot": "0x264b104",
+            "token": "BUILDING_ICON_ROAD_DIRT"
+          },
+          {
+            "value": 21,
+            "branch": "0x17fcbb",
+            "slot": "0x264b100",
+            "token": "BUILDING_ICON_ROAD_PAVED"
+          },
+          {
+            "value": 22,
+            "branch": "0x17fccd",
+            "special_dispatch": true
+          },
+          {
+            "value": 23,
+            "branch": "0x17fd41",
+            "special_dispatch": true
+          },
+          {
+            "value": 24,
+            "branch": "0x180018",
+            "slot": "0x264b164",
+            "token": "BUILDING_ICON_ANIMAL_TRAP"
+          },
+          {
+            "value": 25,
+            "branch": "0x18002a",
+            "slot": "0x264b124",
+            "token": "BUILDING_ICON_SUPPORT"
+          },
+          {
+            "value": 26,
+            "branch": "0x18003c",
+            "slot": "0x264b17c",
+            "token": "BUILDING_ICON_ARCHERY_TARGET"
+          },
+          {
+            "value": 27,
+            "branch": "0x18004e",
+            "slot": "0x264b15c",
+            "token": "BUILDING_ICON_RESTRAINT"
+          },
+          {
+            "value": 28,
+            "branch": "0x180060",
+            "slot": "0x264b160",
+            "token": "BUILDING_ICON_CAGE"
+          },
+          {
+            "value": 29,
+            "branch": "0x180180",
+            "special_dispatch": true
+          },
+          {
+            "value": 30,
+            "branch": "0x1803c8",
+            "special_dispatch": true
+          },
+          {
+            "value": 31,
+            "branch": "0x180084",
+            "slot": "0x264b178",
+            "token": "BUILDING_ICON_WEAPON"
+          },
+          {
+            "value": 32,
+            "branch": "0x17fe9e",
+            "slot": "0x264b194",
+            "token": "BUILDING_ICON_WAGON"
+          },
+          {
+            "value": 33,
+            "branch": "0x17feb0",
+            "slot": "0x264b13c",
+            "token": "BUILDING_ICON_SCREW_PUMP"
+          },
+          {
+            "value": 34,
+            "branch": "0x17fde6",
+            "special_dispatch": true
+          },
+          {
+            "value": 35,
+            "branch": "0x180072",
+            "slot": "0x264b0e4",
+            "token": "BUILDING_ICON_HATCH"
+          },
+          {
+            "value": 36,
+            "branch": "0x180096",
+            "slot": "0x264b10c",
+            "token": "BUILDING_ICON_GRATE_WALL"
+          },
+          {
+            "value": 37,
+            "branch": "0x1800a8",
+            "slot": "0x264b110",
+            "token": "BUILDING_ICON_GRATE_FLOOR"
+          },
+          {
+            "value": 38,
+            "branch": "0x17fec2",
+            "slot": "0x264b114",
+            "token": "BUILDING_ICON_BARS_VERTICAL"
+          },
+          {
+            "value": 39,
+            "branch": "0x1800ba",
+            "slot": "0x264b118",
+            "token": "BUILDING_ICON_BARS_FLOORS"
+          },
+          {
+            "value": 40,
+            "branch": "0x1800cc",
+            "slot": "0x264b148",
+            "token": "BUILDING_ICON_GEAR_ASSEMBLY"
+          },
+          {
+            "value": 41,
+            "branch": "0x17fed4",
+            "slot": "0x264b14c",
+            "token": "BUILDING_ICON_AXLE_HORIZONTAL"
+          },
+          {
+            "value": 42,
+            "branch": "0x1800de",
+            "slot": "0x264b150",
+            "token": "BUILDING_ICON_AXLE_VERTICAL"
+          },
+          {
+            "value": 43,
+            "branch": "0x17fee6",
+            "slot": "0x264b140",
+            "token": "BUILDING_ICON_WATER_WHEEL"
+          },
+          {
+            "value": 44,
+            "branch": "0x17fef8",
+            "slot": "0x264b144",
+            "token": "BUILDING_ICON_WINDMILL"
+          },
+          {
+            "value": 45,
+            "branch": "0x1800f0",
+            "slot": "0x264b0cc",
+            "token": "BUILDING_ICON_TRACTION_BENCH"
+          },
+          {
+            "value": 46,
+            "branch": "0x180102",
+            "slot": "0x264b0c4",
+            "token": "BUILDING_ICON_SLAB"
+          },
+          {
+            "value": 47,
+            "branch": "0x180114",
+            "slot": "0x264b0a4",
+            "token": "BUILDING_ICON_NEST_BOX"
+          },
+          {
+            "value": 48,
+            "branch": "0x180114",
+            "slot": "0x264b0a4",
+            "token": "BUILDING_ICON_NEST_BOX"
+          },
+          {
+            "value": 49,
+            "branch": "0x180126",
+            "slot": "0x264b0a8",
+            "token": "BUILDING_ICON_HIVE"
+          },
+          {
+            "value": 50,
+            "branch": "0x17ff0a",
+            "slot": "0x264b158",
+            "token": "BUILDING_ICON_ROLLERS"
+          },
+          {
+            "value": 51,
+            "branch": "0x180138",
+            "slot": "0x264b0dc",
+            "token": "BUILDING_ICON_INSTRUMENT"
+          },
+          {
+            "value": 52,
+            "branch": "0x18014a",
+            "slot": "0x264b0d0",
+            "token": "BUILDING_ICON_BOOKCASE"
+          },
+          {
+            "value": 53,
+            "branch": "0x18015c",
+            "slot": "0x264b0d4",
+            "token": "BUILDING_ICON_DISPLAY_FURNITURE"
+          },
+          {
+            "value": 54,
+            "branch": "0x18016e",
+            "slot": "0x264b0d8",
+            "token": "BUILDING_ICON_OFFERING_PLACE"
+          }
+        ],
+        "workshops": [
+          {
+            "value": 0,
+            "branch": "0x17f92f",
+            "slot": "0x264b030",
+            "token": "BUILDING_ICON_WORKSHOP_CARPENTER"
+          },
+          {
+            "value": 1,
+            "branch": "0x17f941",
+            "slot": "0x264b098",
+            "token": "BUILDING_ICON_WORKSHOP_FARMER"
+          },
+          {
+            "value": 2,
+            "branch": "0x17f953",
+            "slot": "0x264b034",
+            "token": "BUILDING_ICON_WORKSHOP_MASON"
+          },
+          {
+            "value": 3,
+            "branch": "0x17f965",
+            "slot": "0x264b040",
+            "token": "BUILDING_ICON_WORKSHOP_CRAFTS"
+          },
+          {
+            "value": 4,
+            "branch": "0x17f977",
+            "slot": "0x264b044",
+            "token": "BUILDING_ICON_WORKSHOP_JEWELER"
+          },
+          {
+            "value": 5,
+            "branch": "0x17f989",
+            "slot": "0x264b038",
+            "token": "BUILDING_ICON_WORKSHOP_METALSMITH"
+          },
+          {
+            "value": 6,
+            "branch": "0x17f989",
+            "slot": "0x264b038",
+            "token": "BUILDING_ICON_WORKSHOP_METALSMITH"
+          },
+          {
+            "value": 7,
+            "branch": "0x17f99b",
+            "slot": "0x264b050",
+            "token": "BUILDING_ICON_WORKSHOP_BOWYER"
+          },
+          {
+            "value": 8,
+            "branch": "0x17f9ad",
+            "slot": "0x264b054",
+            "token": "BUILDING_ICON_WORKSHOP_MECHANIC"
+          },
+          {
+            "value": 9,
+            "branch": "0x17f9bf",
+            "slot": "0x264b058",
+            "token": "BUILDING_ICON_WORKSHOP_SIEGE"
+          },
+          {
+            "value": 10,
+            "branch": "0x17f9d1",
+            "slot": "0x264b088",
+            "token": "BUILDING_ICON_WORKSHOP_BUTCHER"
+          },
+          {
+            "value": 11,
+            "branch": "0x17f9e3",
+            "slot": "0x264b070",
+            "token": "BUILDING_ICON_WORKSHOP_LEATHER"
+          },
+          {
+            "value": 12,
+            "branch": "0x17f9f5",
+            "slot": "0x264b08c",
+            "token": "BUILDING_ICON_WORKSHOP_TANNER"
+          },
+          {
+            "value": 13,
+            "branch": "0x17fa07",
+            "slot": "0x264b078",
+            "token": "BUILDING_ICON_WORKSHOP_CLOTHES"
+          },
+          {
+            "value": 14,
+            "branch": "0x17fa19",
+            "slot": "0x264b090",
+            "token": "BUILDING_ICON_WORKSHOP_FISHERY"
+          },
+          {
+            "value": 15,
+            "branch": "0x17fa2b",
+            "slot": "0x264b084",
+            "token": "BUILDING_ICON_WORKSHOP_STILL"
+          },
+          {
+            "value": 16,
+            "branch": "0x17fa3d",
+            "slot": "0x264b074",
+            "token": "BUILDING_ICON_WORKSHOP_LOOM"
+          },
+          {
+            "value": 17,
+            "branch": "0x17fa4f",
+            "slot": "0x264b09c",
+            "token": "BUILDING_ICON_WORKSHOP_QUERN"
+          },
+          {
+            "value": 18,
+            "branch": "0x17fa61",
+            "slot": "0x264b0a0",
+            "token": "BUILDING_ICON_WORKSHOP_KENNEL"
+          },
+          {
+            "value": 19,
+            "branch": "0x17fa73",
+            "slot": "0x264b094",
+            "token": "BUILDING_ICON_WORKSHOP_KITCHEN"
+          },
+          {
+            "value": 20,
+            "branch": "0x17fa85",
+            "slot": "0x264b05c",
+            "token": "BUILDING_ICON_WORKSHOP_ASHERY"
+          },
+          {
+            "value": 21,
+            "branch": "0x17fa97",
+            "slot": "0x264b07c",
+            "token": "BUILDING_ICON_WORKSHOP_DYER"
+          },
+          {
+            "value": 22,
+            "branch": "0x17faa9",
+            "slot": "0x264b154",
+            "token": "BUILDING_ICON_WORKSHOP_MILLSTONE"
+          },
+          {
+            "value": 23,
+            "branch": "0x17fab8",
+            "special_dispatch": true
+          },
+          {
+            "value": 24,
+            "branch": "0x17fb29",
+            "slot": "0x264b00c",
+            "token": "BUILDING_ICON_WORKSHOPS"
+          }
+        ],
+        "furnaces": [
+          {
+            "value": 0,
+            "branch": "0x17fb87",
+            "slot": "0x264b060",
+            "token": "BUILDING_ICON_FURNACE_WOOD"
+          },
+          {
+            "value": 1,
+            "branch": "0x17fb99",
+            "slot": "0x264b064",
+            "token": "BUILDING_ICON_FURNACE_SMELTER"
+          },
+          {
+            "value": 2,
+            "branch": "0x17fbab",
+            "slot": "0x264b068",
+            "token": "BUILDING_ICON_FURNACE_GLASS"
+          },
+          {
+            "value": 3,
+            "branch": "0x17fbbd",
+            "slot": "0x264b06c",
+            "token": "BUILDING_ICON_FURNACE_KILN"
+          },
+          {
+            "value": 4,
+            "branch": "0x17fbcf",
+            "slot": "0x264b064",
+            "token": "BUILDING_ICON_FURNACE_SMELTER"
+          },
+          {
+            "value": 5,
+            "branch": "0x17fbe1",
+            "slot": "0x264b068",
+            "token": "BUILDING_ICON_FURNACE_GLASS"
+          },
+          {
+            "value": 6,
+            "branch": "0x17fbf0",
+            "slot": "0x264b06c",
+            "token": "BUILDING_ICON_FURNACE_KILN"
+          },
+          {
+            "value": 7,
+            "branch": "0x17fbff",
+            "special_dispatch": true
+          }
+        ],
+        "traps": [
+          {
+            "value": 0,
+            "branch": "0x17fd89",
+            "slot": "0x264b130",
+            "token": "BUILDING_ICON_LEVER"
+          },
+          {
+            "value": 1,
+            "branch": "0x17fd98",
+            "slot": "0x264b168",
+            "token": "BUILDING_ICON_PRESSURE_PLATE"
+          },
+          {
+            "value": 2,
+            "branch": "0x17fda7",
+            "slot": "0x264b174",
+            "token": "BUILDING_ICON_TRAP_CAGE"
+          },
+          {
+            "value": 3,
+            "branch": "0x17fdb6",
+            "slot": "0x264b16c",
+            "token": "BUILDING_ICON_TRAP_STONE"
+          },
+          {
+            "value": 4,
+            "branch": "0x17fdc5",
+            "slot": "0x264b170",
+            "token": "BUILDING_ICON_TRAP_WEAPON"
+          },
+          {
+            "value": 5,
+            "branch": "0x17fdd4",
+            "slot": "0x264b12c",
+            "token": "BUILDING_ICON_TRACK_STOP"
+          }
+        ],
+        "matched_existing_selector": "tasks_artwork_native.h destinationArtwork: all47 fixed type slots,24 fixed workshop slots,7 fixed furnace slots and6 trap slots match the building-sheet header dispatch.",
+        "limits": "Static evidence only. Custom-raw fallback paths, siege/construction subtype dispatch and complete rendered coverage remain to qualify. No broader header mapping is enabled by this evidence."
+      },
+      "contents_viewer_reference": {
+        "protocol": 218,
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-001723",
+        "owned_df_pid": 21924,
+        "status": "passed_with_known_issues: rendering-thread/finalize/two-ObjectDB diagnostics",
+        "source_save_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Actual main-scene unfinished Statue965 component22339: eight pointer toggles Forbid/Dump/Melt/Hide, fresh item and Forbidden header state, Escape retirement. Nine full488x708 crops match native235233. Independent native before/after reads match all item flags, job flags, stage and component role; Forbid releases the reservation and sets construction job flags66. Other building types, removal contents, item View/hover and ordinary map routing are not accepted by this run.",
+        "comparisons": [
+          {
+            "viewer": "chest-scene-component-initial.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-235233/workshop-basic-building-pending.png",
+            "viewer_sha256": "2ac468cc66c890dc11ba9880fa869518888afb4e6655504da48abec06457b4eb",
+            "native_sha256": "584b5e8e3086ac4cb5c76305330167a91449e1fdf6e7ddf9a76a8b82af4a52d5",
+            "pixels_equal": true
+          },
+          {
+            "viewer": "chest-scene-component-forbid-1.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-235233/workshop-pending-component-forbid-1.png",
+            "viewer_sha256": "16ceae18e044ee85ea3e88b09a0cbfd2f6244611398ba8eb9e46bff8987f32b1",
+            "native_sha256": "41e8fe6cf683d45c8ccb0984882d670c86878b47ebe62a89c14b6544d06d9d29",
+            "pixels_equal": true
+          },
+          {
+            "viewer": "chest-scene-component-forbid-2.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-235233/workshop-pending-component-forbid-2.png",
+            "viewer_sha256": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+            "native_sha256": "2f58d41540063de1692336c457fe624a78c8b38c009e75d3ac4538582cec84cb",
+            "pixels_equal": true
+          },
+          {
+            "viewer": "chest-scene-component-dump-1.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-235233/workshop-pending-component-dump-1.png",
+            "viewer_sha256": "65da1edab04795a442ca3aed0ffe40d0bdd067fd0be690459352ff770ccfcbf7",
+            "native_sha256": "299d85767e6aea50e50552d263595f2dd450f42ebbad8cb6d009731760dffe72",
+            "pixels_equal": true
+          },
+          {
+            "viewer": "chest-scene-component-dump-2.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-235233/workshop-pending-component-dump-2.png",
+            "viewer_sha256": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+            "native_sha256": "4fb5b414b9cef02121a404f96c239fad47293f6a05c3d70818ad321e9c0fb26d",
+            "pixels_equal": true
+          },
+          {
+            "viewer": "chest-scene-component-melt-1.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-235233/workshop-pending-component-melt-1.png",
+            "viewer_sha256": "db7937e7bcda0e4c044ff505fa7c5e3fd5f5b8aeb77e76cfebc1147c4fca3816",
+            "native_sha256": "e21324bfee8f3312e1a305547819a1b769b8cfd07d250a63fee1a5b8d096131a",
+            "pixels_equal": true
+          },
+          {
+            "viewer": "chest-scene-component-melt-2.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-235233/workshop-pending-component-melt-2.png",
+            "viewer_sha256": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+            "native_sha256": "4fb5b414b9cef02121a404f96c239fad47293f6a05c3d70818ad321e9c0fb26d",
+            "pixels_equal": true
+          },
+          {
+            "viewer": "chest-scene-component-hidden-1.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-235233/workshop-pending-component-hidden-1.png",
+            "viewer_sha256": "aefb179c6f4e6e12884dbda2c20d822222d5e487e2932bf623026fce84353f20",
+            "native_sha256": "b41b06173ff197608570ebd0ce24759b24e4d6518c147eb34d0bc05768f5413b",
+            "pixels_equal": true
+          },
+          {
+            "viewer": "chest-scene-component-hidden-2.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-235233/workshop-pending-component-hidden-2.png",
+            "viewer_sha256": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+            "native_sha256": "4fb5b414b9cef02121a404f96c239fad47293f6a05c3d70818ad321e9c0fb26d",
+            "pixels_equal": true
+          }
+        ],
+        "native_readback": {
+          "actions": [],
+          "after": {
+            "contents": [
+              {
+                "id": 22339,
+                "role": 0
+              }
+            ],
+            "dump": false,
+            "flags": 0,
+            "forbid": false,
+            "frame": 0,
+            "hidden": false,
+            "id": 22339,
+            "in_building": false,
+            "in_job": false,
+            "jobs": [
+              {
+                "flags": 66,
+                "id": 68196,
+                "type": "ConstructBuilding"
+              }
+            ],
+            "max_stage": 1,
+            "melt": false,
+            "stage": 0,
+            "stockpile_countdown": 0,
+            "stockpile_delay": 0
+          },
+          "before": {
+            "contents": [
+              {
+                "id": 22339,
+                "role": 0
+              }
+            ],
+            "dump": false,
+            "flags": 2,
+            "forbid": false,
+            "frame": 0,
+            "hidden": false,
+            "id": 22339,
+            "in_building": false,
+            "in_job": true,
+            "jobs": [
+              {
+                "flags": 2,
+                "id": 68196,
+                "type": "ConstructBuilding"
+              }
+            ],
+            "max_stage": 1,
+            "melt": false,
+            "stage": 0,
+            "stockpile_countdown": 0,
+            "stockpile_delay": 0
+          },
+          "native_effects_equal": true,
+          "viewer": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          }
+        },
+        "hashes": {
+          "workshop-native.json": "8ef2be6cde37a01358327b92ec87c405ed6c3d5b41280e83b7978fc7ddfdf2d8",
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

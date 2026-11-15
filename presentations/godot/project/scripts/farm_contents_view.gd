@@ -49,7 +49,7 @@ func visible_count() -> int:return mini(page+(1 if row_offset()>0 else 0),rows.s
 
 func permitted() -> bool:return not input_allowed.is_valid() or input_allowed.call()
 func available() -> bool:
-	return permitted() and page>0 and state!=null and state.phase==state.Phase.Ready and state.ticket==0 and not state.snapshot.is_empty() and state.snapshot.completed and (not state.snapshot.removing or inspect_removing)
+	return permitted() and page>0 and state!=null and state.phase==state.Phase.Ready and state.ticket==0 and not state.snapshot.is_empty() and (state.snapshot.completed or state.edit_unfinished) and (not state.snapshot.removing or inspect_removing)
 func can_scroll() -> bool:
 	return permitted() and page>0 and state!=null and state.phase in [state.Phase.Ready,state.Phase.Reading] and not state.snapshot.is_empty()
 

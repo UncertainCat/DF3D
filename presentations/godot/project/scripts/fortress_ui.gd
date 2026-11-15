@@ -116,16 +116,14 @@ func open_building_holder(kind: int,id: int) -> void:
 	if not host.play_enabled:return
 	if kind>=0 and kind<=54 and kind not in [29,30]:
 		var target: Dictionary=world.inspect_entity(3,id)
-		if target.get("building_kind",-1)==kind+1 and not target.get("complete",true):
+		var mirrored_kind:=55 if kind==31 else kind if kind>=32 else kind+1
+		if target.get("building_kind",-1)==mirrored_kind and not target.get("complete",true):
 			controller("pending_building").open_target(id)
 			return
 	if kind==4:controller("farm").open_target(id)
 	elif kind==8:controller("door").open_target(id)
 	elif kind==10:controller("chest").open_target(id)
-	elif kind in [0,1,2,11,12,14,15,51,52,54]:controller("furniture").open_target(id)
-	elif kind in [3,46] and OS.get_environment("DF3D_FURNITURE_RUNTIME")=="1":
-		# Protected staged workflow only; public entry waits for full qualification.
-		controller("furniture").open_target(id)
+	elif kind in [0,1,2,3,11,12,14,15,46,51,52,54]:controller("furniture").open_target(id)
 	elif kind in [5,13]:
 		# The item receipt supplies native type/ID; resident semantics supply the
 		# subtype artwork. The opened header still obtains fresh action authority.
@@ -311,7 +309,7 @@ func open_target(tile: Vector3i, kind: int, id: int) -> void:
 	if kind==3:
 		var target: Dictionary=world.inspect_entity(kind,id)
 		var native_kind: int=target.get("building_kind",0)
-		if (native_kind in [1,2,3,9,12,13,15,16,51,52,54] and target.get("complete",false)) or (native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true)):
+		if (native_kind in [1,2,3,4,9,12,13,15,16,46,51,52,54] and target.get("complete",false)) or (native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true)):
 			open_tile_selection(tile);return
 	if kind in [0,2,3]:
 		# Loose items and room/zone meshes can cover a supported building.
@@ -319,7 +317,7 @@ func open_target(tile: Vector3i, kind: int, id: int) -> void:
 		for building in world.buildings_at_tile(tile):
 			var target: Dictionary=world.inspect_entity(3,int(building.id))
 			var native_kind: int=target.get("building_kind",0)
-			if (native_kind in [1,2,3,9,12,13,15,16,51,52,54] and target.get("complete",false)) or (native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true)):
+			if (native_kind in [1,2,3,4,9,12,13,15,16,46,51,52,54] and target.get("complete",false)) or (native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true)):
 				open_tile_selection(tile);return
 	controller("inspector").open_target(tile,kind,id)
 
@@ -348,14 +346,14 @@ func _selection_destination(kind: int,id: int,tile: Vector3i):
 			var pending=controller("pending_building")
 			pending.open_target(id)
 			return pending if host.active==pending and pending.state.building_id==id else null
-		if building_kind not in [1,2,3,5,6,9,11,12,13,14,15,16,51,52,54]:
+		if building_kind not in [1,2,3,4,5,6,9,11,12,13,14,15,16,46,51,52,54]:
 			# Keep existing building inspection available within staged selection.
 			# This does not qualify those incomplete native building controls.
 			var inspector=controller("inspector")
 			return inspector if inspector.open_target(tile,3,id,true) else null
 		# Mirror moves native Construction(31) to55; kinds32..54 retain DF IDs.
 		open_building_holder(building_kind if building_kind>=32 and building_kind<=54 else building_kind-1,id)
-		var target=controllers.get("farm" if building_kind==5 else "door" if building_kind==9 else "chest" if building_kind==11 else "furniture" if building_kind in [1,2,3,12,13,15,16,51,52,54] else "workshop")
+		var target=controllers.get("farm" if building_kind==5 else "door" if building_kind==9 else "chest" if building_kind==11 else "furniture" if building_kind in [1,2,3,4,12,13,15,16,46,51,52,54] else "workshop")
 		return target if target!=null and host.active==target and target.state.building_id==id else null
 	return null
 

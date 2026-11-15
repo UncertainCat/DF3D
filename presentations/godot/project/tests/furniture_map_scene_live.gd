@@ -1,5 +1,7 @@
 extends "res://tests/furniture_scene_live.gd"
 func open_furniture(entry: Dictionary) -> bool:
+	# Harness selection happens in the parent; product routes must work without it.
+	OS.set_environment("DF3D_FURNITURE_RUNTIME","0")
 	var tile:=Vector3i(entry.tile[0],entry.tile[1],entry.tile[2])
 	scene._ui.focus_tile(tile)
 	var camera=scene.camera_rig.get_node("Camera3D")

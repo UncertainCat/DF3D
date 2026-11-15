@@ -374,7 +374,7 @@ local ok,err=xpcall(function()
    capture('workshop-wire')
    file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
    assert(receipt.success,'Furniture viewer workflow failed');result.furniture_viewer=receipt
-   if os.getenv('DF3D_FURNITURE_DEMOLITION')=='1'then
+   if os.getenv('DF3D_FURNITURE_DEMOLITION')=='1' or os.getenv('DF3D_FURNITURE_MEMBERSHIP')=='1'then
     for _,suffix in ipairs{'stdout.log','stderr.log','result.json'}do
      local input=assert(io.open(out..'/workshop-wire'..(suffix=='result.json' and '-' or '.')..suffix,'r'))
      local output=assert(io.open(out..'/furniture-normal-'..suffix,'w'));output:write(input:read('*a'));output:close();input:close()
@@ -392,6 +392,10 @@ local ok,err=xpcall(function()
     assert(target.name==initial.name and #target.jobs==0,'Furniture viewer failed to restore name/jobs')
     assert(df.item.find(initial.item_id).flags.whole==initial.item_flags,'Furniture viewer failed to restore component flags')
    end
+  end
+  if os.getenv('DF3D_FURNITURE_MEMBERSHIP')=='1'then
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('workshop%-native.lua$','furniture-membership-native.lua')
+   assert(loadfile(source))(out,view,records,result.completed_buildings,select_map,capture)
   end
   if os.getenv('DF3D_FURNITURE_DEMOLITION')=='1'then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('workshop%-native.lua$','furniture-demolition-native.lua')

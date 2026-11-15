@@ -44,6 +44,23 @@ func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("furniture")
 	for entry in expected.buildings:
 		if not await open_furniture(entry):return
+		if entry.get("watch_membership",false):
+			for stage in ["ready","absent-seen","restored-seen"]:
+				if stage!="ready":
+					var deadline:=Time.get_ticks_msec()+10000
+					var observed:=false
+					while Time.get_ticks_msec()<deadline:
+						world.poll();actions.poll(0.01)
+						var present:=false
+						for row in owner.contents.rows():
+							if row.id==int(entry.item_id):present=true
+						if owner.contents.phase==owner.contents.Phase.Ready and present==(stage=="restored-seen"):observed=true;break
+						await create_timer(0.01).timeout
+					if not check(observed,"Contents membership did not refresh: "+stage):return
+					await panel_capture("membership-"+stage,"furniture-membership-"+("absent" if stage=="absent-seen" else "restored"))
+				var marker:=FileAccess.open(directory+"/membership-"+stage,FileAccess.WRITE)
+				marker.store_string("ready");marker.close()
+			key(KEY_ESCAPE);await drain();continue
 		if entry.get("watch_demolition",false):
 			check(owner.state.snapshot.removing,"Demolition watcher did not open queued removal")
 			var marker:=FileAccess.open(directory+"/demolition-view-ready-"+str(int(entry.id)),FileAccess.WRITE)

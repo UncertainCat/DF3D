@@ -9707,8 +9707,8 @@ the protocol214 rebuild. Contract tests cover both artwork fields through
 the client, clearing on closure, wrong target kinds, invalid page references
 and simultaneous portrait/fallback rejection.
 
-Completed Door, Chair, Bed, Table and Statue map picks use native tile selection
-and their qualified native sheets. The selection destination can also route
+Completed Door and qualified furniture map picks, including Coffin and Slab,
+use native tile selection and their native sheets. The selection destination can also route
 completed farms, containers, workshops and furnaces to staged controllers;
 other completed types retain the legacy inspector. Unfinished buildings have
 their own native sheet and qualified map entry, described below. These routes
@@ -9789,23 +9789,25 @@ assigned unit at1a0 through14db50; native1330c30 formats the resting-place name.
 The membership caption begins19548a. Slab renderer18a949 reads the first
 contained SLAB87, requires engraving_type0 and a resolved topic historical
 figure, then uses nativea94030 for the name; the memorial caption is at18aa20.
-These are provider entry-point findings, not runtime acceptance. The specialized
-wire/UI body, empty/unassigned/multiple-zone variants and complete input behavior
-remain unfinished; do not admit these types to the plain-furniture provider.
+These entry-point findings underpin the specialized provider. Its wire/UI body,
+empty/unassigned/multiple-zone variants and input behavior are qualified below;
+these types remain separate from the plain-furniture provider.
 
 funerary_native.h now exposes the semantic introduction/name and relevant zone
 IDs through the diagnostic funerary-body-probe. It calls native54bb10 including
 its pinned jump tables, and native name formatters using an owned unit context
 or copied language_name. Name formatting preserves random streams; no native
 viewscreen, selection vector or zone owner-index cache is borrowed. The unnamed
-memorial branch uses nativeaa3bd0 for its race/caste caption but remains untested.
+memorial branch uses nativeaa3bd0 for its race/caste caption, qualified by the
+controlled slab variant below.
 Protected035938 matches both introduction/name pairs against the native panel,
 repeats each provider read with identical output, and retains the shared action
 checks. Coffin resolves unit5577/zone228; slab resolves historical figure9636.
 MSVC bridge and core19 pass. Source saves remain unchanged and owned DF31456
 exits unsaved, native30FPS and sampled GPU49C. provider_reference retains the
-bridge hash and native observations. This staged provider does not yet publish
-a management snapshot or qualify owner-card rendering and input behavior.
+bridge hash and native observations. This initial diagnostic evidence covers
+the semantic provider; management publication and owner-card rendering/input
+are qualified by the later runtime references below.
 
 The staged provider also supplies native Tomb name/membership caption, Deceased,
 roomless and multiple-room notices, plus the shared full-body owner appearance
@@ -9971,8 +9973,24 @@ demolition_retirement_reference stores the bounded observations and hashes.
 Header state tests distinguish absent, wrong-ID, mixed snapshot and mutation
 results; composition, rebuilt MSVC/extension/client and core19 pass.
 
-Public map access remains gated. Remaining funerary work includes changing
-contents membership and normal map entry. Existing
+Protected055030 on2026-11-15 qualifies ordinary map and holder entry for both
+families, with the diagnostic runtime flag cleared inside the viewer. Actual
+ray/pointer selection, Escape while selection is pending, reopen, Rename,
+Forbid, Remove/Cancel, item View/holder return and external updates pass.
+The open coffin also refreshes after its temporary corpse row is removed and
+restored. This is a paused diagnostic: in_building is cleared for DFHack's
+moveToGround helper, then moveToBuilding and the original flags restore the
+fixture. It qualifies membership freshness, not native burial gameplay.
+Twenty-two complete panel crops match native. Both viewer invocations retain
+separate receipts/logs; only the documented Godot diagnostics occur. DF24088
+exits unsaved with source preservation, capped30FPS and sampled GPU60C.
+map_membership_reference retains observations and hashes. Earlier054810 passes
+map/action checks but fails the membership setup because moveToGround rejects
+in_building items; it is not whole-lane acceptance. Routing and composition
+headless tests plus core19 pass. Unfinished holder routing also uses the correct
+native-to-mirror type mapping, including Slab46 and Construction31->55.
+
+Completed Coffin and Slab map/holder routes are public. Existing
 native portrait/Tomb-icon click probes retain the coffin selection; no new
 navigation is inferred.
 

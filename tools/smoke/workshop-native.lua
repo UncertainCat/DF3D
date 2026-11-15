@@ -296,6 +296,53 @@ local ok,err=xpcall(function()
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
    result.tile_selection_reference.engraving.planned.after_escape_lines=lines()
    shot('selection-engraving-image-after-escape')
+   if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_IMAGE')=='1' then
+    local art=df.global.game.main_interface.image_creator
+    assert(art.open and art.context==3 and art.ics.location_detail,'Engraving image context missing')
+    local detail=art.ics.location_detail
+    local function effect()
+     return {type=detail.art_specifier,id=detail.art_spec_id1,subid=detail.art_spec_id2,
+      pos={detail.pos.x,detail.pos.y,detail.pos.z},open=art.open,option=art.current_option,
+      back_out_warn=art.back_out_warn,image_back_out_warn=art.image_back_out_warn,flags=art.ics.flag.whole}
+    end
+    local reference={context=art.context,header=dfhack.df2utf(art.header),after_escape=effect(),choices={}}
+    result.tile_selection_reference.engraving.planned.image=reference
+    local function reopen()
+     select_map{centerx=planned.x,centery=planned.y,z=planned.z}
+     assert(click_label('Specify image'),'Specify image button missing on return')
+     assert(art.open and art.context==3 and art.ics.location_detail==detail,'Engraving image target changed on reopen')
+    end
+    for _,entry in ipairs({{1,'Related to historical figure'},{2,'Related to site'},{3,'Related to civilization or other group'},{5,'Existing image'}})do
+     local owned
+     if entry[1]<=3 and os.getenv('DF3D_TILE_SELECTION_ENGRAVING_SUBJECTS')=='1' then
+      local before=json.encode(effect());local count=#df.global.plotinfo.waypoints.location_detail
+      local output,code=dfhack.run_command_silent('df3d','engraving-art-subjects-probe',tostring(planned.x),tostring(planned.y),tostring(planned.z),tostring(entry[1]))
+      assert(code==0,output);owned=json.decode(output);assert(owned.valid,'Owned engraving subjects rejected')
+      assert(before==json.encode(effect()) and count==#df.global.plotinfo.waypoints.location_detail,'Owned subjects changed native picker or tile specifications')
+     end
+     assert(click_label(entry[2]),'Missing engraving image option '..entry[2])
+     assert(art.current_option==entry[1],'Engraving image option did not open')
+     local source=entry[1]==1 and art.hf or entry[1]==2 and art.st or entry[1]==3 and art.ent or art.art_image
+     assert(#source>0,'Empty engraving image reference list')
+     local choices={};for _,item in ipairs(source)do choices[#choices+1]={id=item.id,subid=entry[1]==5 and item.subid or -1}end
+     local row={kind=entry[1],choices=choices,lines=lines()};reference.choices[#reference.choices+1]=row
+     if owned then
+      assert(#owned.ids==#choices,'Owned engraving subject count differs')
+      for index,choice in ipairs(choices)do assert(owned.ids[index]==choice.id,'Owned engraving subject order differs at '..index)end
+      row.owned_ids=owned.ids;row.owned_unchanged=true
+     end
+     shot('selection-engraving-image-option-'..entry[1])
+     g.precise_mouse_x=100;g.precise_mouse_y=202;g.mouse_x=12;g.mouse_y=16
+     df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+     gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
+     row.effect=effect();shot('selection-engraving-image-applied-'..entry[1])
+     assert(not art.open,'Engraving subject selection did not close picker');reopen()
+    end
+    assert(click_label('Allow artist to choose'),'Missing artist choice')
+    reference.artist=effect();assert(not art.open and detail.art_specifier==-1 and detail.art_spec_id1==-1 and detail.art_spec_id2==-1,'Artist choice did not clear tile artwork')
+    reopen();gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
+    reference.right_cancel=effect();reference.right_cancel_lines=lines();shot('selection-engraving-image-right-cancel')
+   end
    return
   end
   local targets={building,original}

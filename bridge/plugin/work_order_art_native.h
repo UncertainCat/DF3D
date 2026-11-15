@@ -61,10 +61,10 @@ inline bool workOrderArtSubjectsReady() {
 
 // These leaves build/sort/filter subjects on an owned context. Neither the
 // whole opener1ffae0 nor the mixed navigation/action dispatcher20ed00 is called.
-inline std::optional<WorkOrderArtSubjects> nativeArtSubjects(const df::image_creation_specifierst& inputs,uint64_t revision,int32_t kind,const std::string& query={}) {
+inline std::optional<WorkOrderArtSubjects> nativeArtSubjects(const df::image_creation_specifierst& inputs,uint64_t revision,int32_t kind,const std::string& query={},df::image_creator_context_type contextType=df::image_creator_context_type::JOB_DETAILS_MAIN) {
     if(kind<1 || kind>3 || query.size()>128 || !revision || !workOrderArtSubjectsReady() || !df::global::world || !df::global::plotinfo)return std::nullopt;
     df::image_creator_interfacest context;
-    context.context=df::image_creator_context_type::JOB_DETAILS_MAIN;
+    context.context=contextType;
     context.current_option=df::image_creator_option_type(kind);
     context.ics=inputs;
     context.filter=query;

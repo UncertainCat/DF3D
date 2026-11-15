@@ -9507,6 +9507,30 @@ selection_reference.engraving_panel_reference. Ordinary public map routing stays
 unchanged. Long prose, scrolling, resize and planned-engraving/image-picker
 workflows remain unqualified; this short reference does not complete the feature.
 
+Planned engraving image selection uses native context3 (DESIGNATION_ENGRAVING)
+and a semantic location_detailst in plotinfo.waypoints.location_detail. The
+diagnostic engraving_art_native.h copies that per-tile specification and calls
+the existing owned image subject collectors20f300/20f6b0/20fa90. It does not call
+the whole native opener1ffae0 or use the global image_creator menu. Existing
+Work order/job callers retain their previous default context. An absent tile
+specification uses an owned default; that first-open case remains unqualified.
+
+Protected183739 on2026-11-14 compares all10563 figures,680 sites and1263 groups
+in exact native order, with checked picker fields and specification count
+unchanged by owned reads. Native clicks select the first figure9876, site320,
+group1109 and existing image2/sub340, writing specifier types0/1/2/3 respectively
+and closing the picker. Allow artist to choose resets all three specification
+fields to-1. Right-click closes the root; simulated LEAVESCREEN leaves it open
+in this oracle, which does not establish physical Escape binding behavior.
+The native heading is "Image information for engraving".
+
+This is diagnostic provider/native-action evidence, not planned-engraving
+transport or viewer acceptance. Owned existing-image collection, filtering,
+descriptions, new-image drafts, writes and graphical/lifecycle coverage remain
+unfinished. Bridge build and core19 pass; owned DF34928 exits unsaved and source
+save preservation passes. Full-list digests, effects and evidence hashes are in
+selection_reference.engraving_image_subjects_reference.
+
 Native-only174721 and174833 pass their assertions; owned DF37032/1300
 exit unsaved with source/preferences preserved. Core19 passes. Graphics are
 serial30FPS, sampled GPU53C/13-14%; these are not continuous peaks. Native strings,

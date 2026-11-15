@@ -12809,6 +12809,197 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "engraving_image_subjects_reference": {
+      "after_escape": {
+        "back_out_warn": false,
+        "flags": 0,
+        "id": -1,
+        "image_back_out_warn": false,
+        "open": true,
+        "option": -1,
+        "pos": [
+          134,
+          78,
+          165
+        ],
+        "subid": -1,
+        "type": -1
+      },
+      "artist": {
+        "back_out_warn": false,
+        "flags": 0,
+        "id": -1,
+        "image_back_out_warn": false,
+        "open": false,
+        "option": 0,
+        "pos": [
+          134,
+          78,
+          165
+        ],
+        "subid": -1,
+        "type": -1
+      },
+      "context": 3,
+      "header": "Image information for engraving",
+      "right_cancel": {
+        "back_out_warn": false,
+        "flags": 0,
+        "id": -1,
+        "image_back_out_warn": false,
+        "open": false,
+        "option": -1,
+        "pos": [
+          134,
+          78,
+          165
+        ],
+        "subid": -1,
+        "type": -1
+      },
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-183739",
+      "status": "passed",
+      "owned_df_pid": 34928,
+      "owned_exit_unsaved": true,
+      "source_manifest_unchanged": true,
+      "choices": [
+        {
+          "kind": 1,
+          "count": 10563,
+          "first": {
+            "id": 9876,
+            "subid": -1
+          },
+          "last": {
+            "id": 5517,
+            "subid": -1
+          },
+          "choices_sha256": "83e851ef2f9e405542605a474c69e292f00d65bba6c5b80b616aa03fcf607435",
+          "owned_ids_equal": true,
+          "effect": {
+            "back_out_warn": false,
+            "flags": 0,
+            "id": 9876,
+            "image_back_out_warn": false,
+            "open": false,
+            "option": 1,
+            "pos": [
+              134,
+              78,
+              165
+            ],
+            "subid": -1,
+            "type": 0
+          }
+        },
+        {
+          "kind": 2,
+          "count": 680,
+          "first": {
+            "id": 320,
+            "subid": -1
+          },
+          "last": {
+            "id": 792,
+            "subid": -1
+          },
+          "choices_sha256": "b4bcab1a2e6bcaba825860348c2d7363e2f22c62be421a4efb2c2d2c5795ebb2",
+          "owned_ids_equal": true,
+          "effect": {
+            "back_out_warn": false,
+            "flags": 0,
+            "id": 320,
+            "image_back_out_warn": false,
+            "open": false,
+            "option": 2,
+            "pos": [
+              134,
+              78,
+              165
+            ],
+            "subid": -1,
+            "type": 1
+          }
+        },
+        {
+          "kind": 3,
+          "count": 1263,
+          "first": {
+            "id": 1109,
+            "subid": -1
+          },
+          "last": {
+            "id": 1428,
+            "subid": -1
+          },
+          "choices_sha256": "a32038780b2a3c8f09584816c46d175afee7b07adaf2d88512f8eaa1d9c392c8",
+          "owned_ids_equal": true,
+          "effect": {
+            "back_out_warn": false,
+            "flags": 0,
+            "id": 1109,
+            "image_back_out_warn": false,
+            "open": false,
+            "option": 3,
+            "pos": [
+              134,
+              78,
+              165
+            ],
+            "subid": -1,
+            "type": 2
+          }
+        },
+        {
+          "kind": 5,
+          "count": 2,
+          "first": {
+            "id": 2,
+            "subid": 340
+          },
+          "last": {
+            "id": 1,
+            "subid": 220
+          },
+          "choices_sha256": "1d2daf68ab7a9414c78f54ad82306f7bda4713e6146be5258ef1214194a2f7ef",
+          "owned_ids_equal": false,
+          "effect": {
+            "back_out_warn": false,
+            "flags": 0,
+            "id": 2,
+            "image_back_out_warn": false,
+            "open": false,
+            "option": 5,
+            "pos": [
+              134,
+              78,
+              165
+            ],
+            "subid": 340,
+            "type": 3
+          }
+        }
+      ],
+      "digest_encoding": "choices_sha256: UTF-8 JSON, sorted keys, compact separators, full native choice array",
+      "sha256": {
+        "workshop-native.json": "1710fefb4a9c18262dfe230d1c982254061dc2480a93a928eda863f5aaa909de",
+        "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+        "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "workshop-selection-engraving-image-after-escape.png": "2f12308fcc57f25e18b8c0ba5ddcdeb28e196df9016279fe0d85e2bd56c01e3b",
+        "workshop-selection-engraving-image-applied-1.png": "d9aae7cad564dc52c75ceeaa5bfbc24d1ffe0b8f43464f0d36cc10f4d50d68d0",
+        "workshop-selection-engraving-image-applied-2.png": "96394a6ebfe35660c4ac44f96cba5783bfd3f04335512b834d62fcac9b5e48fd",
+        "workshop-selection-engraving-image-applied-3.png": "6c396554e7763fea4c9a213a3e6a143249721896dbb47a306020bdc99f3c6266",
+        "workshop-selection-engraving-image-applied-5.png": "6c396554e7763fea4c9a213a3e6a143249721896dbb47a306020bdc99f3c6266",
+        "workshop-selection-engraving-image-option-1.png": "bca43b57cfc88d0a8b7dce2f0b78d88bc08fb9de15638edcc2bac874a3e2ddf8",
+        "workshop-selection-engraving-image-option-2.png": "2b8fe97dcd8d6e4700aa998a04e812658a1ecee031871227a0a34cbd4a8d554e",
+        "workshop-selection-engraving-image-option-3.png": "6c02512c3024b6db726e812c30b7e952de5cbb16e3806f295c07040c72b8f6fe",
+        "workshop-selection-engraving-image-option-5.png": "150c3e84830c8f8ccd2abfdc6c2116fdcb634183a85096e03a0a02d727cb8bbb",
+        "workshop-selection-engraving-image-picker.png": "2f12308fcc57f25e18b8c0ba5ddcdeb28e196df9016279fe0d85e2bd56c01e3b",
+        "workshop-selection-engraving-image-right-cancel.png": "aeea5b7a858ba69571a9bb487903ec1c30b9e945480748938c388ee5f11d1146"
+      },
+      "coverage": "All historical-figure/site/entity candidate IDs and order match owned native collectors in context3. Native clicks demonstrate four selection effects, artist reset and right-click closure; owned reads leave checked picker fields and semantic specification count unchanged.",
+      "limitations": "Diagnostic provider only; no planned engraving transport, writes or viewer acceptance. Absent specification, filters, new-image drafts, descriptions, scroll/resize and broader source guards remain unqualified. Simulated LEAVESCREEN leaves this native root open; physical Escape binding not tested."
+    },
     "engraving_panel_reference": {
       "protocol": 212,
       "runs": {

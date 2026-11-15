@@ -110,6 +110,7 @@
 #include "work_order_dye_native.h"
 #include "workshop_dye_native.h"
 #include "work_order_art_native.h"
+#include "engraving_art_native.h"
 #include "df/job_item.h"
 #include "musical_detail_native.h"
 #include "dance_detail_native.h"
@@ -3929,6 +3930,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               df3d_management::printStockpileCategory(out,values[0],uint32_t(values[1])):
               df3d_management::printStockpilePreset(out,values[0],values[1]);
           return ok?CR_OK:CR_FAILURE;
+        }
+        if(parameters[0]=="engraving-art-subjects-probe") {
+          const char* oracle=std::getenv("DF3D_TILE_SELECTION_ENGRAVING_IMAGE");
+          if(!oracle || std::string_view(oracle)!="1")return CR_FAILURE;
+          if(parameters.size()!=5)return CR_WRONG_USAGE;
+          int32_t p[4]{};
+          for(size_t i=0;i<4;++i){const auto& v=parameters[i+1];const auto parsed=std::from_chars(v.data(),v.data()+v.size(),p[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;}
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto subjects=df3d_selection::engravingArtSubjects(p[0],p[1],p[2],p[3]);
+          Json::Value value(Json::objectValue);value["valid"]=subjects.has_value();
+          if(subjects){value["ids"]=Json::Value(Json::arrayValue);for(auto id:subjects->ids)value["ids"].append(id);}
+          out.print("{}",Json::FastWriter().write(value));return CR_OK;
         }
         if(parameters[0]=="engraving-description-probe") {
           const char* oracle=std::getenv("DF3D_TILE_SELECTION_ENGRAVING");

@@ -9774,6 +9774,25 @@ processes are capped30FPS, sampled GPU51–52C. Only documented Godot diagnostic
 occur (passed_with_known_issues), and core19 passes. Bounded map_entry_reference
 retains hashes and effects. Separate loose-item/terrain coverage is not claimed.
 
+Protected native035425 captures exact BUILDING identities for occupied
+Coffin220 and memorial Slab280, then Rename/restore, installed-component
+Forbid/restore, Remove/Cancel and component View. Coffin220 relates to Tomb228,
+assigned to unit5577. Slab280 contains memorial8699, engraving_type0 and
+historical-figure topic9636. Portrait448,202 and Tomb icon448,286 clicks leave
+Coffin220 selected; these probes do not establish navigation. The source save
+is preserved and owned DF41336 exits unsaved, capped30FPS; sampled GPU51C.
+completed_sheet_discovery_reference.funerary_reference retains facts and hashes.
+
+The coffin renderer194b0f reads semantic building relations and filters zone
+types with native54bb10. Exactly one relevant zone of type97 supplies its
+assigned unit at1a0 through14db50; native1330c30 formats the resting-place name.
+The membership caption begins19548a. Slab renderer18a949 reads the first
+contained SLAB87, requires engraving_type0 and a resolved topic historical
+figure, then uses nativea94030 for the name; the memorial caption is at18aa20.
+These are provider entry-point findings, not runtime acceptance. The specialized
+wire/UI body, empty/unassigned/multiple-zone variants and complete input behavior
+remain unfinished; do not admit these types to the plain-furniture provider.
+
 Protected native023324 and023607 on2026-11-15 qualify ordinary furniture
 with nonempty zone relations: Chair65, Bed9, Table62 and Statue493 still show no
 membership rows (the statue also belongs to location1). The membership-caption

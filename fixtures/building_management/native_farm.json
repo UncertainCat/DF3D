@@ -16599,6 +16599,1319 @@
             "034905": "Overlap selection passes; Instrument mapping incorrectly assumed uniform native/mirror offset."
           }
         }
+      },
+      "funerary_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-035425",
+        "scope": "Native-only occupied Coffin220 and memorial Slab280. Rename/restore, component Forbid/restore, Remove/Cancel and component View. Portrait448,202 and Tomb icon448,286 clicks retain Coffin220; no navigation success claimed. Empty/unassigned/multiple-zone variants and viewer implementation remain pending.",
+        "buildings": [
+          {
+            "actions": [
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 5260,
+                "jobs": [],
+                "label": "initial",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 5260,
+                "jobs": [],
+                "label": "renamed",
+                "name": "Furniture reference"
+              },
+              {
+                "forbidden": true,
+                "item_flags": 524320,
+                "item_id": 5260,
+                "jobs": [],
+                "label": "forbidden",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 5260,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "label": "removing",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 5260,
+                "jobs": [],
+                "label": "restored",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 536870944,
+                "item_id": 5260,
+                "jobs": [],
+                "label": "view-return",
+                "name": ""
+              }
+            ],
+            "contents": [
+              {
+                "flags": 32,
+                "id": 5260,
+                "role": 2,
+                "type": "COFFIN"
+              },
+              {
+                "flags": 160,
+                "id": 5170,
+                "role": 0,
+                "type": "CORPSE"
+              }
+            ],
+            "funeral": {
+              "items": [],
+              "links": [
+                {
+                  "label": "occupant",
+                  "lines": [
+                    {
+                      "text": "                  RoderÃ²nul           Pop                                  Food  Drink           20th Malachite",
+                      "y": 0
+                    },
+                    {
+                      "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                      "y": 1
+                    },
+                    {
+                      "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                      "y": 2
+                    },
+                    {
+                      "text": "",
+                      "y": 3
+                    },
+                    {
+                      "text": "",
+                      "y": 4
+                    },
+                    {
+                      "text": "",
+                      "y": 5
+                    },
+                    {
+                      "text": "                                                            Dolomite Coffin",
+                      "y": 6
+                    },
+                    {
+                      "text": "",
+                      "y": 7
+                    },
+                    {
+                      "text": "",
+                      "y": 8
+                    },
+                    {
+                      "text": "",
+                      "y": 9
+                    },
+                    {
+                      "text": "",
+                      "y": 10
+                    },
+                    {
+                      "text": "                                                      This is the resting place of",
+                      "y": 11
+                    },
+                    {
+                      "text": "                                                      Kol Asobstettad, Stoneworker.",
+                      "y": 12
+                    },
+                    {
+                      "text": "",
+                      "y": 13
+                    },
+                    {
+                      "text": "",
+                      "y": 14
+                    },
+                    {
+                      "text": "",
+                      "y": 15
+                    },
+                    {
+                      "text": "                                                            Kol Asobstettad, Stoneworker                                            Elevation 36",
+                      "y": 16
+                    },
+                    {
+                      "text": "                                                            Deceased",
+                      "y": 17
+                    },
+                    {
+                      "text": "",
+                      "y": 18
+                    },
+                    {
+                      "text": "",
+                      "y": 19
+                    },
+                    {
+                      "text": "                                                      This furniture is a part of",
+                      "y": 20
+                    },
+                    {
+                      "text": "",
+                      "y": 21
+                    },
+                    {
+                      "text": "",
+                      "y": 22
+                    },
+                    {
+                      "text": "                                                            Unnamed tomb",
+                      "y": 23
+                    },
+                    {
+                      "text": "",
+                      "y": 24
+                    },
+                    {
+                      "text": "",
+                      "y": 25
+                    },
+                    {
+                      "text": "",
+                      "y": 26
+                    },
+                    {
+                      "text": "",
+                      "y": 27
+                    },
+                    {
+                      "text": "",
+                      "y": 28
+                    },
+                    {
+                      "text": "",
+                      "y": 29
+                    },
+                    {
+                      "text": "",
+                      "y": 30
+                    },
+                    {
+                      "text": "",
+                      "y": 31
+                    },
+                    {
+                      "text": "",
+                      "y": 32
+                    },
+                    {
+                      "text": "",
+                      "y": 33
+                    },
+                    {
+                      "text": "",
+                      "y": 34
+                    },
+                    {
+                      "text": "",
+                      "y": 35
+                    },
+                    {
+                      "text": "",
+                      "y": 36
+                    },
+                    {
+                      "text": "",
+                      "y": 37
+                    },
+                    {
+                      "text": "",
+                      "y": 38
+                    },
+                    {
+                      "text": "",
+                      "y": 39
+                    },
+                    {
+                      "text": "",
+                      "y": 40
+                    },
+                    {
+                      "text": "",
+                      "y": 41
+                    },
+                    {
+                      "text": "",
+                      "y": 42
+                    },
+                    {
+                      "text": "                                                            dolomite coffin",
+                      "y": 43
+                    },
+                    {
+                      "text": "",
+                      "y": 44
+                    },
+                    {
+                      "text": "",
+                      "y": 45
+                    },
+                    {
+                      "text": "                                                            Kol Asobstettad's skeleton",
+                      "y": 46
+                    },
+                    {
+                      "text": "",
+                      "y": 47
+                    },
+                    {
+                      "text": "",
+                      "y": 48
+                    },
+                    {
+                      "text": "",
+                      "y": 49
+                    },
+                    {
+                      "text": "",
+                      "y": 50
+                    },
+                    {
+                      "text": "",
+                      "y": 51
+                    },
+                    {
+                      "text": "",
+                      "y": 52
+                    },
+                    {
+                      "text": "",
+                      "y": 53
+                    },
+                    {
+                      "text": "",
+                      "y": 54
+                    },
+                    {
+                      "text": "",
+                      "y": 55
+                    },
+                    {
+                      "text": "",
+                      "y": 56
+                    },
+                    {
+                      "text": "",
+                      "y": 57
+                    },
+                    {
+                      "text": "",
+                      "y": 58
+                    },
+                    {
+                      "text": "",
+                      "y": 59
+                    },
+                    {
+                      "text": "",
+                      "y": 60
+                    },
+                    {
+                      "text": "",
+                      "y": 61
+                    },
+                    {
+                      "text": "",
+                      "y": 62
+                    },
+                    {
+                      "text": "",
+                      "y": 63
+                    },
+                    {
+                      "text": "",
+                      "y": 64
+                    },
+                    {
+                      "text": "",
+                      "y": 65
+                    }
+                  ],
+                  "selected_id": 220,
+                  "selected_sheet": "BUILDING"
+                },
+                {
+                  "label": "tomb",
+                  "lines": [
+                    {
+                      "text": "                  RoderÃ²nul           Pop                                  Food  Drink           20th Malachite",
+                      "y": 0
+                    },
+                    {
+                      "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                      "y": 1
+                    },
+                    {
+                      "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                      "y": 2
+                    },
+                    {
+                      "text": "",
+                      "y": 3
+                    },
+                    {
+                      "text": "",
+                      "y": 4
+                    },
+                    {
+                      "text": "",
+                      "y": 5
+                    },
+                    {
+                      "text": "                                                            Dolomite Coffin",
+                      "y": 6
+                    },
+                    {
+                      "text": "",
+                      "y": 7
+                    },
+                    {
+                      "text": "",
+                      "y": 8
+                    },
+                    {
+                      "text": "",
+                      "y": 9
+                    },
+                    {
+                      "text": "",
+                      "y": 10
+                    },
+                    {
+                      "text": "                                                      This is the resting place of",
+                      "y": 11
+                    },
+                    {
+                      "text": "                                                      Kol Asobstettad, Stoneworker.",
+                      "y": 12
+                    },
+                    {
+                      "text": "",
+                      "y": 13
+                    },
+                    {
+                      "text": "",
+                      "y": 14
+                    },
+                    {
+                      "text": "",
+                      "y": 15
+                    },
+                    {
+                      "text": "                                                            Kol Asobstettad, Stoneworker                                            Elevation 36",
+                      "y": 16
+                    },
+                    {
+                      "text": "                                                            Deceased",
+                      "y": 17
+                    },
+                    {
+                      "text": "",
+                      "y": 18
+                    },
+                    {
+                      "text": "",
+                      "y": 19
+                    },
+                    {
+                      "text": "                                                      This furniture is a part of",
+                      "y": 20
+                    },
+                    {
+                      "text": "",
+                      "y": 21
+                    },
+                    {
+                      "text": "",
+                      "y": 22
+                    },
+                    {
+                      "text": "                                                            Unnamed tomb",
+                      "y": 23
+                    },
+                    {
+                      "text": "",
+                      "y": 24
+                    },
+                    {
+                      "text": "",
+                      "y": 25
+                    },
+                    {
+                      "text": "",
+                      "y": 26
+                    },
+                    {
+                      "text": "",
+                      "y": 27
+                    },
+                    {
+                      "text": "",
+                      "y": 28
+                    },
+                    {
+                      "text": "",
+                      "y": 29
+                    },
+                    {
+                      "text": "",
+                      "y": 30
+                    },
+                    {
+                      "text": "",
+                      "y": 31
+                    },
+                    {
+                      "text": "",
+                      "y": 32
+                    },
+                    {
+                      "text": "",
+                      "y": 33
+                    },
+                    {
+                      "text": "",
+                      "y": 34
+                    },
+                    {
+                      "text": "",
+                      "y": 35
+                    },
+                    {
+                      "text": "",
+                      "y": 36
+                    },
+                    {
+                      "text": "",
+                      "y": 37
+                    },
+                    {
+                      "text": "",
+                      "y": 38
+                    },
+                    {
+                      "text": "",
+                      "y": 39
+                    },
+                    {
+                      "text": "",
+                      "y": 40
+                    },
+                    {
+                      "text": "",
+                      "y": 41
+                    },
+                    {
+                      "text": "",
+                      "y": 42
+                    },
+                    {
+                      "text": "                                                            dolomite coffin",
+                      "y": 43
+                    },
+                    {
+                      "text": "",
+                      "y": 44
+                    },
+                    {
+                      "text": "",
+                      "y": 45
+                    },
+                    {
+                      "text": "                                                            Kol Asobstettad's skeleton",
+                      "y": 46
+                    },
+                    {
+                      "text": "",
+                      "y": 47
+                    },
+                    {
+                      "text": "",
+                      "y": 48
+                    },
+                    {
+                      "text": "",
+                      "y": 49
+                    },
+                    {
+                      "text": "",
+                      "y": 50
+                    },
+                    {
+                      "text": "",
+                      "y": 51
+                    },
+                    {
+                      "text": "",
+                      "y": 52
+                    },
+                    {
+                      "text": "",
+                      "y": 53
+                    },
+                    {
+                      "text": "",
+                      "y": 54
+                    },
+                    {
+                      "text": "",
+                      "y": 55
+                    },
+                    {
+                      "text": "",
+                      "y": 56
+                    },
+                    {
+                      "text": "",
+                      "y": 57
+                    },
+                    {
+                      "text": "",
+                      "y": 58
+                    },
+                    {
+                      "text": "",
+                      "y": 59
+                    },
+                    {
+                      "text": "",
+                      "y": 60
+                    },
+                    {
+                      "text": "",
+                      "y": 61
+                    },
+                    {
+                      "text": "",
+                      "y": 62
+                    },
+                    {
+                      "text": "",
+                      "y": 63
+                    },
+                    {
+                      "text": "",
+                      "y": 64
+                    },
+                    {
+                      "text": "",
+                      "y": 65
+                    }
+                  ],
+                  "selected_id": 220,
+                  "selected_sheet": "BUILDING"
+                }
+              ],
+              "zones": [
+                {
+                  "assigned_unit_id": 5577,
+                  "id": 228,
+                  "type": 97
+                }
+              ]
+            },
+            "id": 220,
+            "jobs": [],
+            "lines": [
+              {
+                "text": "                  RoderÃ²nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "",
+                "y": 3
+              },
+              {
+                "text": "",
+                "y": 4
+              },
+              {
+                "text": "",
+                "y": 5
+              },
+              {
+                "text": "                                                            Dolomite Coffin",
+                "y": 6
+              },
+              {
+                "text": "",
+                "y": 7
+              },
+              {
+                "text": "",
+                "y": 8
+              },
+              {
+                "text": "",
+                "y": 9
+              },
+              {
+                "text": "",
+                "y": 10
+              },
+              {
+                "text": "                                                      This is the resting place of",
+                "y": 11
+              },
+              {
+                "text": "                                                      Kol Asobstettad, Stoneworker.",
+                "y": 12
+              },
+              {
+                "text": "",
+                "y": 13
+              },
+              {
+                "text": "",
+                "y": 14
+              },
+              {
+                "text": "",
+                "y": 15
+              },
+              {
+                "text": "                                                            Kol Asobstettad, Stoneworker                                            Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "                                                            Deceased",
+                "y": 17
+              },
+              {
+                "text": "",
+                "y": 18
+              },
+              {
+                "text": "",
+                "y": 19
+              },
+              {
+                "text": "                                                      This furniture is a part of",
+                "y": 20
+              },
+              {
+                "text": "",
+                "y": 21
+              },
+              {
+                "text": "",
+                "y": 22
+              },
+              {
+                "text": "                                                            Unnamed tomb",
+                "y": 23
+              },
+              {
+                "text": "",
+                "y": 24
+              },
+              {
+                "text": "",
+                "y": 25
+              },
+              {
+                "text": "",
+                "y": 26
+              },
+              {
+                "text": "",
+                "y": 27
+              },
+              {
+                "text": "",
+                "y": 28
+              },
+              {
+                "text": "",
+                "y": 29
+              },
+              {
+                "text": "",
+                "y": 30
+              },
+              {
+                "text": "",
+                "y": 31
+              },
+              {
+                "text": "",
+                "y": 32
+              },
+              {
+                "text": "",
+                "y": 33
+              },
+              {
+                "text": "",
+                "y": 34
+              },
+              {
+                "text": "",
+                "y": 35
+              },
+              {
+                "text": "",
+                "y": 36
+              },
+              {
+                "text": "",
+                "y": 37
+              },
+              {
+                "text": "",
+                "y": 38
+              },
+              {
+                "text": "",
+                "y": 39
+              },
+              {
+                "text": "",
+                "y": 40
+              },
+              {
+                "text": "",
+                "y": 41
+              },
+              {
+                "text": "",
+                "y": 42
+              },
+              {
+                "text": "                                                            dolomite coffin",
+                "y": 43
+              },
+              {
+                "text": "",
+                "y": 44
+              },
+              {
+                "text": "",
+                "y": 45
+              },
+              {
+                "text": "                                                            Kol Asobstettad's skeleton",
+                "y": 46
+              },
+              {
+                "text": "",
+                "y": 47
+              },
+              {
+                "text": "",
+                "y": 48
+              },
+              {
+                "text": "",
+                "y": 49
+              },
+              {
+                "text": "",
+                "y": 50
+              },
+              {
+                "text": "",
+                "y": 51
+              },
+              {
+                "text": "",
+                "y": 52
+              },
+              {
+                "text": "",
+                "y": 53
+              },
+              {
+                "text": "",
+                "y": 54
+              },
+              {
+                "text": "",
+                "y": 55
+              },
+              {
+                "text": "",
+                "y": 56
+              },
+              {
+                "text": "",
+                "y": 57
+              },
+              {
+                "text": "",
+                "y": 58
+              },
+              {
+                "text": "",
+                "y": 59
+              },
+              {
+                "text": "",
+                "y": 60
+              },
+              {
+                "text": "",
+                "y": 61
+              },
+              {
+                "text": "",
+                "y": 62
+              },
+              {
+                "text": "",
+                "y": 63
+              },
+              {
+                "text": "",
+                "y": 64
+              },
+              {
+                "text": "",
+                "y": 65
+              }
+            ],
+            "max_stage": 1,
+            "relations": [
+              {
+                "id": 228,
+                "location_id": -1,
+                "name": "",
+                "type": 97
+              }
+            ],
+            "selected_id": 220,
+            "selected_sheet": "BUILDING",
+            "stage": 1,
+            "tile": [
+              93,
+              124,
+              165
+            ],
+            "type": 3,
+            "type_name": "Coffin"
+          },
+          {
+            "actions": [
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 8699,
+                "jobs": [],
+                "label": "initial",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 8699,
+                "jobs": [],
+                "label": "renamed",
+                "name": "Furniture reference"
+              },
+              {
+                "forbidden": true,
+                "item_flags": 524320,
+                "item_id": 8699,
+                "jobs": [],
+                "label": "forbidden",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 8699,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382797,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "label": "removing",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 8699,
+                "jobs": [],
+                "label": "restored",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 536870944,
+                "item_id": 8699,
+                "jobs": [],
+                "label": "view-return",
+                "name": ""
+              }
+            ],
+            "contents": [
+              {
+                "flags": 32,
+                "id": 8699,
+                "role": 2,
+                "type": "SLAB"
+              }
+            ],
+            "funeral": {
+              "items": [
+                {
+                  "description": "In memory of Ber Endoksibrek / Born 18 / Drowned in the year 101 / Lover of alabaster",
+                  "engraving_type": 0,
+                  "id": 8699,
+                  "topic": 9636
+                }
+              ],
+              "links": [],
+              "zones": [
+                {
+                  "assigned_unit_id": -1,
+                  "id": 259,
+                  "type": 87
+                }
+              ]
+            },
+            "id": 280,
+            "jobs": [],
+            "lines": [
+              {
+                "text": "                  RoderÃ²nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "",
+                "y": 3
+              },
+              {
+                "text": "",
+                "y": 4
+              },
+              {
+                "text": "",
+                "y": 5
+              },
+              {
+                "text": "                                                            Jet Slab",
+                "y": 6
+              },
+              {
+                "text": "",
+                "y": 7
+              },
+              {
+                "text": "",
+                "y": 8
+              },
+              {
+                "text": "",
+                "y": 9
+              },
+              {
+                "text": "",
+                "y": 10
+              },
+              {
+                "text": "                                                      This is a memorial to",
+                "y": 11
+              },
+              {
+                "text": "                                                      Ber Endoksibrek.",
+                "y": 12
+              },
+              {
+                "text": "",
+                "y": 13
+              },
+              {
+                "text": "",
+                "y": 14
+              },
+              {
+                "text": "",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "",
+                "y": 17
+              },
+              {
+                "text": "",
+                "y": 18
+              },
+              {
+                "text": "",
+                "y": 19
+              },
+              {
+                "text": "",
+                "y": 20
+              },
+              {
+                "text": "",
+                "y": 21
+              },
+              {
+                "text": "",
+                "y": 22
+              },
+              {
+                "text": "",
+                "y": 23
+              },
+              {
+                "text": "",
+                "y": 24
+              },
+              {
+                "text": "",
+                "y": 25
+              },
+              {
+                "text": "",
+                "y": 26
+              },
+              {
+                "text": "",
+                "y": 27
+              },
+              {
+                "text": "",
+                "y": 28
+              },
+              {
+                "text": "",
+                "y": 29
+              },
+              {
+                "text": "",
+                "y": 30
+              },
+              {
+                "text": "",
+                "y": 31
+              },
+              {
+                "text": "",
+                "y": 32
+              },
+              {
+                "text": "",
+                "y": 33
+              },
+              {
+                "text": "",
+                "y": 34
+              },
+              {
+                "text": "",
+                "y": 35
+              },
+              {
+                "text": "",
+                "y": 36
+              },
+              {
+                "text": "",
+                "y": 37
+              },
+              {
+                "text": "",
+                "y": 38
+              },
+              {
+                "text": "",
+                "y": 39
+              },
+              {
+                "text": "",
+                "y": 40
+              },
+              {
+                "text": "",
+                "y": 41
+              },
+              {
+                "text": "",
+                "y": 42
+              },
+              {
+                "text": "                                                            jet memorial to Ber Endoksibrek",
+                "y": 43
+              },
+              {
+                "text": "",
+                "y": 44
+              },
+              {
+                "text": "",
+                "y": 45
+              },
+              {
+                "text": "",
+                "y": 46
+              },
+              {
+                "text": "",
+                "y": 47
+              },
+              {
+                "text": "",
+                "y": 48
+              },
+              {
+                "text": "",
+                "y": 49
+              },
+              {
+                "text": "",
+                "y": 50
+              },
+              {
+                "text": "",
+                "y": 51
+              },
+              {
+                "text": "",
+                "y": 52
+              },
+              {
+                "text": "",
+                "y": 53
+              },
+              {
+                "text": "",
+                "y": 54
+              },
+              {
+                "text": "",
+                "y": 55
+              },
+              {
+                "text": "",
+                "y": 56
+              },
+              {
+                "text": "",
+                "y": 57
+              },
+              {
+                "text": "",
+                "y": 58
+              },
+              {
+                "text": "",
+                "y": 59
+              },
+              {
+                "text": "",
+                "y": 60
+              },
+              {
+                "text": "",
+                "y": 61
+              },
+              {
+                "text": "",
+                "y": 62
+              },
+              {
+                "text": "",
+                "y": 63
+              },
+              {
+                "text": "",
+                "y": 64
+              },
+              {
+                "text": "",
+                "y": 65
+              }
+            ],
+            "max_stage": 1,
+            "relations": [
+              {
+                "id": 259,
+                "location_id": 0,
+                "name": "",
+                "type": 87
+              }
+            ],
+            "selected_id": 280,
+            "selected_sheet": "BUILDING",
+            "stage": 1,
+            "tile": [
+              138,
+              98,
+              165
+            ],
+            "type": 46,
+            "type_name": "Slab"
+          }
+        ],
+        "native_sources": {
+          "coffin": "Renderer194b0f reads building relations, filters zone type using54bb10; exactly one relevant zone of type97 selects assigned unit at zone+1a0 via14db50, formatted with1330c30. Membership caption starts19548a.",
+          "slab": "Renderer18a949 reads first contained SLAB87, engraving_type0/topic not -1, resolves historical figure via67dc0, then formats name witha94030. Header text literal18aa20."
+        },
+        "sha256": {
+          "workshop-completed-building-3.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+          "workshop-completed-building-46.png": "f3a9b369c59d3ddb3351f7caedefccfffa4c4f4835d65f54a3ca0354e86494c7",
+          "workshop-funerary-occupant.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+          "workshop-funerary-tomb.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+          "workshop-furniture-3-forbidden.png": "4ade01c2e8985efb027a90bcb215816b36a0ee2245db0dc74c3c42af973bddf9",
+          "workshop-furniture-3-initial.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+          "workshop-furniture-3-removing.png": "e28e2f39f86304a1094ca13d1cfa72fc812512938b3d6ebe9f468a52f6cf6081",
+          "workshop-furniture-3-renamed.png": "b50653aafecc095b784e02cc76fe2fa7d108eaa1af8d4059d3669a3622969348",
+          "workshop-furniture-3-restored.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+          "workshop-furniture-3-view-return.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+          "workshop-furniture-46-forbidden.png": "ebaf4abc908bf7f2657345fcb5a6e192a73a8fe85277dcf915b428a577d3b9ab",
+          "workshop-furniture-46-initial.png": "5a9a498211b244cdf3dbf44db0f8ec204ee42f48b53c179b8352f9234b855d51",
+          "workshop-furniture-46-removing.png": "5b2a6cfa550b4eac248519bee8ac1e2d4a34baa496780be78c5ed078e06582d7",
+          "workshop-furniture-46-renamed.png": "9dd50f61bd0394e8d65cca6d62d3962fbfacd60c0d0c93fd4b75b44b80a7a612",
+          "workshop-furniture-46-restored.png": "14df422ecf9d340b97721feaeefdf69e82ad49a1ec211adfa3bb59fa02221e8d",
+          "workshop-furniture-46-view-return.png": "14df422ecf9d340b97721feaeefdf69e82ad49a1ec211adfa3bb59fa02221e8d",
+          "workshop-jobs.png": "9debde5859c8b1ebb8ecbe4cd9a111c45761ce7b8e14530174eb094852a9f3a6"
+        }
       }
     },
     "pending_construction_reference": {

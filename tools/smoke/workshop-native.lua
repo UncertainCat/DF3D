@@ -138,6 +138,8 @@ local ok,err=xpcall(function()
   local memberships=os.getenv('DF3D_FURNITURE_RELATIONS_DISCOVERY')=='1'
   local generic=os.getenv('DF3D_FURNITURE_GENERIC_DISCOVERY')=='1'
   local generic_types={[11]=true,[12]=true,[14]=true,[51]=true,[52]=true,[54]=true}
+  local funerary=generic and os.getenv('DF3D_FURNITURE_FUNERARY_DISCOVERY')=='1'
+  if funerary then generic_types={[3]=true,[46]=true}end
   local chosen={}
   for _,candidate in ipairs(df.global.world.buildings.all)do
    local kind=candidate:getType()
@@ -155,6 +157,28 @@ local ok,err=xpcall(function()
    local contents={};for _,held in ipairs(target.contained_items)do contents[#contents+1]={id=held.item.id,type=df.item_type[held.item:getType()],role=held.use_mode,flags=held.item.flags.whole}end
    result.completed_buildings[#result.completed_buildings+1]={id=target.id,type=kind,type_name=df.building_type[kind],selected_sheet=df.view_sheet_type[sheet.active_sheet],selected_id=sheet.active_id,tile={target.centerx,target.centery,target.z},stage=target:getBuildStage(),max_stage=target:getMaxBuildStage(),jobs=jobs,relations=relations,contents=contents,lines=lines()}
    shot('completed-building-'..kind)
+   if funerary then
+    assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==target.id,'Funerary capture selected another entity')
+    local row=result.completed_buildings[#result.completed_buildings]
+    row.funeral={zones={},items={},links={}}
+    for _,zone in ipairs(target.relations)do row.funeral.zones[#row.funeral.zones+1]={id=zone.id,type=zone.type,assigned_unit_id=zone.assigned_unit_id}end
+    for _,held in ipairs(target.contained_items)do
+     local item=held.item
+     if df.item_slabst:is_instance(item)then row.funeral.items[#row.funeral.items+1]={id=item.id,topic=item.topic,engraving_type=item.engraving_type,description=item.description}end
+    end
+    if kind==3 then
+     for _,probe in ipairs{{'occupant',448,202},{'tomb',448,286}}do
+      g.precise_mouse_x=probe[2];g.precise_mouse_y=probe[3];g.mouse_x=probe[2]//8;g.mouse_y=(probe[3]-4)//12
+      df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+      gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+      df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+      row.funeral.links[#row.funeral.links+1]={label=probe[1],selected_sheet=df.view_sheet_type[sheet.active_sheet],selected_id=sheet.active_id,lines=lines()}
+      shot('funerary-'..probe[1])
+      gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(target)
+      assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==target.id,'Funerary link return missed its building')
+     end
+    end
+   end
    if (memberships or generic) and os.getenv('DF3D_FURNITURE_ACTIONS')=='1'then
     assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==target.id,'Furniture capture selected another entity')
     assert(#target.jobs==0 and #target.contained_items>=1 and target.contained_items[0].use_mode==2,'Furniture action fixture needs its installed component first and no job')

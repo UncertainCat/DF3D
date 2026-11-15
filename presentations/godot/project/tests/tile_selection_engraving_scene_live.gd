@@ -38,6 +38,14 @@ func planned_exercise(expected: Dictionary) -> void:
 	var region:=Rect2i(72,52,832,672)
 	image.get_region(region).save_png(directory+"/planned-art-root-live.png")
 	check(image.get_region(region).get_data()==native.get_region(region).get_data(),"Composed artwork root differs")
+	if OS.get_environment("DF3D_TILE_SELECTION_ENGRAVING_RESIZE")=="1":
+		for entry in [["small",Vector2i(960,600)],["wide",Vector2i(1600,900)],["minimum",Vector2i(912,552)],["default",Vector2i(1200,800)]]:
+			root.size=entry[1];await process_frame;await process_frame;await RenderingServer.frame_post_draw
+			image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+			native=Image.load_from_file(directory+"/workshop-selection-engraving-resize-"+entry[0]+".png");native.convert(Image.FORMAT_RGB8)
+			var frame:=Rect2i(Vector2i(selection.artwork.position),Vector2i(selection.artwork.size))
+			image.get_region(frame).save_png(directory+"/planned-resize-"+entry[0]+"-live.png")
+			check(image.get_region(frame).get_data()==native.get_region(frame).get_data(),"Engraving root resize differs: "+entry[0])
 	await pointer(Vector2(400,200),MOUSE_BUTTON_RIGHT)
 	check(not selection.artwork.visible and ui.host.active==selection and model.snapshot.kind==5,"Right-click failed to return to planned sheet")
 	await pointer(Vector2(500,120))

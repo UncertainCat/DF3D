@@ -9658,6 +9658,18 @@ Evidence: selection_reference.engraving_categories_relationship_reference.
 Other element-family commits, intransitive relations, full list pagination/filtering,
 random name controls and responsive engraving layouts remain unqualified.
 
+Protected195949 on2026-11-14 verifies engraving artwork root resizing in the
+actual main scene at960x600,1600x900,912x552 and1200x800. All four editor crops
+match native. The editor anchors to the map's right edge: x=max(32,width-1128),
+width=min(832,viewport_width-328), using whole8-pixel text columns. It moves right
+on wide windows and narrows on small ones. Existing height calculation is unchanged.
+The edit/discard/commit workflow passes after returning to default size. Earlier
+195822 exposed the fixed x72/width832 assumption and is superseded. Owned DF31424
+exits unsaved with source preservation; GPU56C/17% at30FPS. The lane
+passes_with_known_issues for the documented Godot exit diagnostics. Evidence:
+selection_reference.engraving_resize_reference. This verifies the root frame and
+restored workflow, not every nested page at every size.
+
 selection_art_state.gd reuses local artwork navigation state with a selected-tile
 receipt, never a proxy job. work_order_details_view.gd has an engraving context
 for the native frame, cell-aligned heading, root-button backing, normal subject

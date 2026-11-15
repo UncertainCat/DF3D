@@ -12809,6 +12809,43 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "engraving_resize_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-195949",
+      "status": "passed_with_known_issues",
+      "scope": "Actual main-scene artwork root resize sequence960x600,1600x900,912x552,1200x800; exact native crop at each size, followed by complete draft/discard/commit lifecycle. Does not separately qualify every nested page at each size.",
+      "native_viewports": [
+        {
+          "columns": 120,
+          "label": "small",
+          "rows": 50
+        },
+        {
+          "columns": 200,
+          "label": "wide",
+          "rows": 75
+        },
+        {
+          "columns": 114,
+          "label": "minimum",
+          "rows": 46
+        },
+        {
+          "columns": 150,
+          "label": "default",
+          "rows": 66
+        }
+      ],
+      "owned_df_pid": 31424,
+      "hashes": {
+        "workshop-native.json": "84f3548696016be4e7d9f06120eca02ba0148b258dd4284ad0c38e04424142e4",
+        "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+        "planned-resize-small-live.png": "764f7651056e9d0c67da798c9420ccd89dc242d954036ce7c3604465aa109ead",
+        "planned-resize-wide-live.png": "db3755b7a6ffbe4b8efb30be36fdd9fc0e8bad42c4e1862743a8329128a3a579",
+        "planned-resize-minimum-live.png": "248314428b2db31c7e21ca0f6c7716de07caf5c807de7b2f182f358b18d33625",
+        "planned-resize-default-live.png": "baf8bd046bb7811a63f5ca19e1dd7e4a228f3f42e915d66dfba9a2ec9aaf3469",
+        "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+      }
+    },
     "engraving_categories_relationship_reference": {
       "lane": "build/stockpile-storage-native-farm-discovery-20261114-195511",
       "status": "passed_with_known_issues",

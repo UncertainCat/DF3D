@@ -42,6 +42,9 @@ func layout(view: Vector2) -> void:
 	var origin:=Vector2(16 if global else 72,(36 if global else 48)+fposmod(view.y,12)*0.5)
 	# Native image renderer200070/geometry2142a0 follows the available map width.
 	var width:=floori(view.x/8)*8-224 if global else 832
+	if engraving_context:
+		origin.x=maxi(32,floori(view.x/8)*8-1128)
+		width=mini(832,floori(view.x/8)*8-328)
 	if name_view!=null:name_view.layout_frame(Vector2.ZERO,Vector2(width,rows_count*12))
 	if position==origin and size==Vector2(width,rows_count*12):return
 	if state.has_art():state.hover_art(-1,0)

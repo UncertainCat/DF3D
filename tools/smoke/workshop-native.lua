@@ -382,6 +382,21 @@ local ok,err=xpcall(function()
     end
     reopen();gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
     reference.right_cancel=effect();reference.right_cancel_lines=lines();shot('selection-engraving-image-right-cancel')
+    if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_RESIZE')=='1' then
+     reopen();reference.resize={}
+     local script=require('gui.script')
+     for _,label in ipairs{'small','wide','minimum','default'}do
+      local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..label);f:close()
+      assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+      local deadline=dfhack.getTickCount()+30000
+      while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
+       assert(dfhack.getTickCount()<deadline,'Engraving resize timeout');script.sleep(1,'frames')end
+      assert(os.remove(out..'/owner-input-ack'));script.sleep(3,'frames');view:render(dfhack.getTickCount())
+      reference.resize[#reference.resize+1]={label=label,columns=g.dimx,rows=g.dimy}
+      shot('selection-engraving-resize-'..label)
+     end
+     gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount());assert(not art.open,'Resized root did not close')
+    end
     if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_DRAFT')=='1' then
      reopen();assert(click_label('Specify a new image') and art.current_option==6,'Engraving new-image page missing')
      local draft={root_lines=lines()};reference.draft=draft

@@ -24430,6 +24430,29 @@
           "build/stockpile-storage-native-farm-discovery-20261115-091526/result.json": "d8ab7a9d24f01e9b0f1ae5e30c648ef273678a2efea70f0d2b292a50e49c5ec2",
           "build/stockpile-storage-native-farm-discovery-20261115-091526/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "lever_warning_scene_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-091805",
+        "scope": "Actual main-scene Link without accessible mechanisms, repeated explicit click, native warning pixels, panel/input retained, Escape, reopened warning reset, close with lookup pending and no late reopening. Native checks zero jobs and unchanged menu fields. Later independent wire Pull/Link with supplied mechanisms passes; same-owner recovery after stock changes not claimed.",
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "owned_df_pid": 40708,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-091805/lever-warning-0-viewer.png": "7a227ddb25dda808c6c2174d08c47cef0b401d7fc94adb09219596effc1f2013",
+          "build/stockpile-storage-native-farm-discovery-20261115-091805/lever-warning-1-viewer.png": "7a227ddb25dda808c6c2174d08c47cef0b401d7fc94adb09219596effc1f2013",
+          "build/stockpile-storage-native-farm-discovery-20261115-091805/lever-link-open.png": "bc487187f2fa2f51185d26d4b64eb35f1da91b0493f1e843c001f1927ccc14d6",
+          "build/stockpile-storage-native-farm-discovery-20261115-091805/lever-native.json": "664ee6c20b0ff30a36520a00d93015d2ee9f9ccdc76bf4909c8855bc9338d49c",
+          "build/stockpile-storage-native-farm-discovery-20261115-091805/lever-warning-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-091805/workshop-wire-result.json": "d90601c06778cae21eefa90a99b526719f47093a60491ca4478653a8f622e429",
+          "build/stockpile-storage-native-farm-discovery-20261115-091805/result.json": "94956329372dcb5086c2e990d4087775db967f04fae8e95fe9d9fa3d32679e70",
+          "build/stockpile-storage-native-farm-discovery-20261115-091805/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

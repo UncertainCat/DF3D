@@ -212,6 +212,15 @@ local ok,err=xpcall(function()
  end
  assert(click_label('Tasks'));sample('tasks-return')
  assert(click_label('Link lever'));sample('link-open')
+ if os.getenv('DF3D_LEVER_WARNING_VIEWER')=='1'then
+  assert(not sheet.linking_lever and sheet.need_accessible_mechanism_warning and #lever.jobs==0)
+  local menu=json.encode{sheet.open,sheet.active_id,sheet.linking_lever,sheet.need_accessible_mechanism_warning}
+  capture('lever-warning-wire')
+  local f=assert(io.open(out..'/lever-warning-wire-result.json'));local receipt=json.decode(f:read('*a'));f:close()
+  assert(receipt.success and #lever.jobs==0,'Warning viewer created jobs or failed')
+  assert(menu==json.encode{sheet.open,sheet.active_id,sheet.linking_lever,sheet.need_accessible_mechanism_warning},'Warning viewer changed native UI')
+  result.warning_viewer=receipt
+ end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());sample('link-cancel')
  if os.getenv('DF3D_LEVER_LINK')=='1'then
   local worker

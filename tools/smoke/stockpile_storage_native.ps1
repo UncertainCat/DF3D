@@ -413,7 +413,7 @@ try {
      if(-not $client.WaitForExit(60000)){$client.Kill();$client.WaitForExit();throw 'Work order client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/$name-result.json")){throw 'Work order client failed'}
     }
-    if($FarmItemCarriers -and ($name -in @('workshop-wire','workshop-order-wire') -or $name -like 'door-mode-wire-*')) {
+    if($FarmItemCarriers -and ($name -in @('workshop-wire','workshop-order-wire','lever-warning-wire') -or $name -like 'door-mode-wire-*')) {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $env:DF3D_DOOR_CAPTURE=$name
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
@@ -438,6 +438,7 @@ try {
      if($env:DF3D_LEVER_PROMPT_ART -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/lever_prompt_art_live.gd')}
      if($env:DF3D_LEVER_PANEL -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/lever_panel_live.gd')}
      if($env:DF3D_LEVER_MAP -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/lever_map_scene_live.gd')}
+     if($name -eq 'lever-warning-wire'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/lever_warning_scene_live.gd')}
      if($env:DF3D_FLOODGATE_RUNTIME -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/floodgate_scene_live.gd')}
      if($env:DF3D_FLOODGATE_SCROLL_VIEWER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/floodgate_scroll_scene_live.gd')}
      if($env:DF3D_FLOODGATE_MAP -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/floodgate_map_scene_live.gd')}

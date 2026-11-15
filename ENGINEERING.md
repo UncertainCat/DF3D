@@ -248,6 +248,18 @@ render-thread/finalize/two ObjectDB diagnostics remain. Evidence:
 queued demolition, removal entered from the linked tab, and item-holder return
 remain unqualified.
 
+Protected091805 on2026-11-15 qualifies the existing no-mechanisms warning in
+the actual main scene. Two explicit Link clicks produce the same native488x708
+panel, retain usable panel input and create no jobs. Escape releases ownership;
+reopening clears the old warning, and closing during another lookup prevents
+late reopening. The native harness confirms zero jobs and unchanged native
+menu fields. Its subsequent independent Pull/Link wire check passes after
+adding mechanisms. Same-owner recovery after stock changes is not claimed.
+Owned DF40708 closes unsaved with source preservation; graphics capped30FPS,
+sampled GPU58C. Core19 passes; the graphical client retains only the established
+render-thread/finalize/two ObjectDB diagnostics. Evidence:
+`completed_sheet_discovery_reference.lever_warning_scene_reference`.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

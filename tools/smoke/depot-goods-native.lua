@@ -110,6 +110,29 @@ local function job_facts()
  end
  return jobs
 end
+local function draft_text()
+ local changes={}
+ for _,row in ipairs(menu.master_i_list.tgi)do
+  if row.tag==1 or row.tag==-1 or row.tag==-2 then changes[#changes+1]=tostring(row.it.id)..':'..(row.tag>0 and '1' or '0')end
+ end
+ table.sort(changes);return #changes==0 and '-' or table.concat(changes,',')
+end
+local function compare_draft(label,sort_draft)
+ if os.getenv('DF3D_DEPOT_DRAFT_NATIVE')~='1' then return end
+ local before=json.encode(job_facts());local intent=draft_text()
+ local output,code=dfhack.run_command_silent('df3d','depot-selection-probe',tostring(b.id),tostring(menu.current_type),menu.sort_by_distance and '1' or '0',menu.pending_on_top and '1' or '0',menu.exclude_prohib and '1' or '0',menu.item_filter,intent,sort_draft or '-')
+ assert(code==0,output);local facts=json.decode(output)
+ assert(facts.stale_rejected and #facts.ids==#menu.current_type_tgi,'Draft size/source guard differs: '..label)
+ for i,row in ipairs(menu.current_type_tgi)do assert(facts.ids[i+1]==row.it.id and facts.tags[i+1]==row.tag,'Draft order/tag differs: '..label..' '..i)end
+ assert(#facts.groups==#menu.current_type_a_flag,'Draft group count differs: '..label)
+ for i,flag in ipairs(menu.current_type_a_flag)do
+  local group=facts.groups[i+1]
+  assert(group.flags==flag.whole and group.matches==menu.current_type_a_on[i],'Native draft aggregation differs: '..label..' '..i)
+ end
+ assert(menu.open and df.global.world.frame_counter==frame and json.encode(job_facts())==before,'Draft provider changed simulation/jobs')
+ result.draft_provider=result.draft_provider or {}
+ result.draft_provider[#result.draft_provider+1]={label=label,draft=intent,sort_draft=sort_draft or '-',ids=facts.ids,tags=facts.tags,groups=facts.groups,revision=facts.revision,stale_rejected=facts.stale_rejected}
+end
 local ok,err=xpcall(function()
  view:render(dfhack.getTickCount());capture('depot-goods-available')
  g.precise_mouse_x=520;g.precise_mouse_y=166;g.mouse_x=65;g.mouse_y=13
@@ -164,6 +187,7 @@ local ok,err=xpcall(function()
     for _,row in ipairs(menu.master_i_list.tgi)do if row.it.id~=ids[1] and row.it.id~=ids[2] and row.tag~=0 then outside=outside+1 end end
     assert(outside==0,'Draft changed another category')
     samples[#samples+1]={label=label,ids=ids,tags={a,c},group_flags=flag,other_category_changes=outside,jobs=#b.jobs}
+    compare_draft(label)
    end
    draft('initial',0,0,2)
    click(932,166);draft('individual-on',1,0,2)
@@ -173,6 +197,23 @@ local ok,err=xpcall(function()
    click(928,94);draft('select-all-off',0,0,2)
    click(932,166);click(932,166);draft('individual-roundtrip',0,0,2)
    result.draft_selection=samples
+   click(932,202);compare_draft('second-item-on')
+   local basis=draft_text()
+   click(150,130);assert(menu.current_type==df.item_type.BAG);compare_draft('bags-retain-anvil',basis)
+   click(150,94);assert(menu.current_type==df.item_type.ANVIL);compare_draft('anvils-resort-draft',basis)
+   assert(menu.current_type_tgi[0].it.id==ids[2] and menu.current_type_tgi[0].tag==1,'Category navigation did not sort selected second anvil first')
+   click(500,94)
+   for byte in ('iron'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(byte:byte()))end
+   view:render(dfhack.getTickCount());assert(menu.item_filter=='IRON');compare_draft('search-retains-draft-order',basis)
+   for i=1,4 do gui.simulateInput(view,'STRING_A000')end
+   view:render(dfhack.getTickCount());assert(menu.item_filter=='');compare_draft('clear-search-retains-draft-order',basis)
+   click(932,166);compare_draft('uncheck-retains-navigation-order',basis)
+   click(150,130);click(150,94);compare_draft('navigation-restores-order')
+   assert(menu.current_type_tgi[0].it.id==ids[1] and menu.current_type_tgi[1].it.id==ids[2] and draft_text()=='-')
+   for _,invalid in ipairs{tostring(ids[1])..':1,'..tostring(ids[1])..':0','2147483647:1'}do
+    local _,code=dfhack.run_command_silent('df3d','depot-selection-probe',tostring(b.id),'45','1','1','0','',invalid,'-')
+    assert(code~=0,'Invalid draft accepted')
+   end
   end
   if os.getenv('DF3D_DEPOT_BATCH_NATIVE')=='1' then
    local ids={menu.current_type_tgi[0].it.id,menu.current_type_tgi[1].it.id}
@@ -238,7 +279,7 @@ local ok,err=xpcall(function()
   capture('depot-goods-pending')
   compare_goods('pending')
   compare_selection('pending')
-  click(932,166);result.hauling.deselected=job_facts()
+  click(932,166);result.hauling.deselected=job_facts();compare_draft('pending-cancel-draft')
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   result.hauling.cancelled=job_facts();assert(#b.jobs==0,'Native deselection did not cancel haul')
   if os.getenv('DF3D_DEPOT_HAUL_PROVIDER')=='1' then
@@ -279,7 +320,7 @@ local ok,err=xpcall(function()
    capture('depot-goods-delivered');compare_goods('delivered')
    compare_selection('delivered')
    local delivered_flags=item.flags.whole
-   click(932,166);assert(item.flags.whole==delivered_flags,'Delivered release applied before close')
+   click(932,166);assert(item.flags.whole==delivered_flags,'Delivered release applied before close');compare_draft('delivered-release-draft')
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
    local released_flags=item.flags.whole;assert(not item.flags.in_building and #b.jobs==0)
    item.flags.whole=delivered_flags -- restore only the controlled fixture flag

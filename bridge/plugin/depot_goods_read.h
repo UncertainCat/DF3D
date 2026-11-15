@@ -27,18 +27,21 @@ inline std::optional<uint64_t> depotGoodsRevision(int32_t depotId,const DepotGoo
 // The source revision covers hauling eligibility/order and group facts, not a
 // mutation authorization. A future commit must validate its own complete intent.
 inline std::optional<DepotGoodsRead> readDepotGoods(df::building* building,int16_t category,
-    const std::string& query,bool distance,bool pending,bool exclude,const std::vector<int32_t>& ids) {
+    const std::string& query,bool distance,bool pending,bool exclude,const std::vector<int32_t>& ids,
+    uint64_t expectedRevision=0,const std::vector<DepotGoodsChange>& draft={},const std::vector<DepotGoodsChange>& sortDraft={}) {
     if(!building || category<-1 || category>=93 || query.size()>512 || ids.size()>64 || (category==-1 && !ids.empty()))return {};
     auto* tile=DFHack::Maps::getTileDesignation(building->centerx,building->centery,building->z);
     if(!tile || tile->bits.hidden)return {};
     const auto available=depotFacts(building);if(!available || !available->goods)return {};
     const auto goods=depotGoods(building);if(!goods)return {};
-    const auto categories=depotCategories(*goods,query,exclude);if(!categories)return {};
     DepotGoodsRead result;result.depotId=building->id;result.category=category;
     const auto revision=depotGoodsRevision(building->id,*goods);if(!revision)return {};result.revision=*revision;
+    if((expectedRevision && expectedRevision!=*revision) || (!expectedRevision && (!draft.empty() || !sortDraft.empty())))return {};
+    if(category==-1 && (!depotDraftTags(*goods,draft) || !depotDraftTags(*goods,sortDraft)))return {};
+    const auto categories=depotCategories(*goods,query,exclude);if(!categories)return {};
     for(auto type:*categories){auto caption=depotGroupCaption(type);if(!caption)return {};result.categories.push_back({type,std::move(*caption)});}
     if(category==-1)return result;
-    auto selection=depotSelection(*goods,category,query,distance,pending,exclude);if(!selection)return {};
+    auto selection=depotSelection(*goods,category,query,distance,pending,exclude,draft,sortDraft);if(!selection)return {};
     std::vector<int32_t> seen;
     for(auto id:ids){
         if(id<0 || std::find(seen.begin(),seen.end(),id)!=seen.end())return {};seen.push_back(id);
@@ -47,11 +50,11 @@ inline std::optional<DepotGoodsRead> readDepotGoods(df::building* building,int16
         const auto row=std::find_if(goods->rows.begin(),goods->rows.end(),[&](const auto& value){return value.id==id;});
         if(row==goods->rows.end())return {};
         result.items.push_back({*row,selection->itemCaptions[size_t(at-selection->ids.begin())]});
+        result.items.back().facts.tag=selection->tags[size_t(at-selection->ids.begin())];
     }
     result.groups=std::move(selection->groups);
     return result;
 }
-struct DepotGoodsChange {int32_t id=-1;bool desired=false;};
 struct DepotGoodsCommit {DepotSettingOutcome outcome=DepotSettingOutcome::Rejected;bool stale=false;uint64_t observedRevision=0;};
 // Caller must enforce the transport epoch and saving gate. This safe-point
 // preflight binds the entire intent to the same source identity as the read API.

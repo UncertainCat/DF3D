@@ -4944,13 +4944,30 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="depot-selection-probe") {
-        if(parameters.size()!=7)return CR_WRONG_USAGE;
+        if(parameters.size()!=7 && parameters.size()!=9)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
         int32_t values[5]={-1,-1,-1,-1,-1};
         for(size_t i=1;i<6;++i){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<0)return CR_WRONG_USAGE;}
         if(values[1]>=93 || values[2]>1 || values[3]>1 || values[4]>1)return CR_WRONG_USAGE;
         const auto facts=df3d_production::depotGoods(df::building::find(values[0]));if(!facts)return CR_FAILURE;
-        const auto selected=df3d_production::depotSelection(*facts,int16_t(values[1]),parameters[6],values[2]!=0,values[3]!=0,values[4]!=0);if(!selected)return CR_FAILURE;
+        std::vector<df3d_production::DepotGoodsChange> draft,sortDraft;
+        const auto parseDraft=[](const std::string& raw,std::vector<df3d_production::DepotGoodsChange>& target){
+          if(raw=="-")return true;
+          size_t start=0;
+          while(start<raw.size()){
+            const auto end=raw.find(',',start),colon=raw.find(':',start);
+            const auto stop=end==std::string::npos?raw.size():end;
+            if(colon==std::string::npos || colon+2!=stop || (raw[colon+1]!='0' && raw[colon+1]!='1'))return false;
+            int32_t id=-1;const auto parsed=std::from_chars(raw.data()+start,raw.data()+colon,id);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+colon || id<0 || target.size()>=64)return false;
+            target.push_back({id,raw[colon+1]=='1'});
+            if(end==std::string::npos)return true;
+            start=end+1;
+          }
+          return false;
+        };
+        if(parameters.size()==9 && (!parseDraft(parameters[7],draft) || !parseDraft(parameters[8],sortDraft)))return CR_WRONG_USAGE;
+        const auto selected=df3d_production::depotSelection(*facts,int16_t(values[1]),parameters[6],values[2]!=0,values[3]!=0,values[4]!=0,draft,sortDraft);if(!selected)return CR_FAILURE;
         const auto categories=df3d_production::depotCategories(*facts,parameters[6],values[4]!=0);if(!categories)return CR_FAILURE;
         Json::Value output;output["ids"]=Json::arrayValue;output["groups"]=Json::arrayValue;
         output["categories"]=Json::arrayValue;for(auto type:*categories)output["categories"].append(type);
@@ -4958,6 +4975,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         for(auto type:*categories){const auto caption=df3d_production::depotGroupCaption(type);if(!caption)return CR_FAILURE;output["category_captions"].append(DF2UTF(*caption));}
         output["item_captions"]=Json::arrayValue;for(const auto& caption:selected->itemCaptions)output["item_captions"].append(DF2UTF(caption));
         output["row_cells"]=selected->rowCells;
+        output["tags"]=Json::arrayValue;for(auto tag:selected->tags)output["tags"].append(int(tag));
+        if(parameters.size()==9){
+          const auto revision=df3d_production::depotGoodsRevision(values[0],*facts);if(!revision)return CR_FAILURE;
+          std::vector<int32_t> ids(selected->ids.begin(),selected->ids.begin()+std::min<size_t>(64,selected->ids.size()));
+          const auto read=df3d_production::readDepotGoods(df::building::find(values[0]),int16_t(values[1]),parameters[6],values[2]!=0,values[3]!=0,values[4]!=0,ids,*revision,draft,sortDraft);
+          if(!read || read->revision!=*revision || read->items.size()!=ids.size())return CR_FAILURE;
+          for(size_t i=0;i<ids.size();++i)if(read->items[i].facts.id!=ids[i] || read->items[i].facts.tag!=selected->tags[i])return CR_FAILURE;
+          if(df3d_production::readDepotGoods(df::building::find(values[0]),int16_t(values[1]),parameters[6],values[2]!=0,values[3]!=0,values[4]!=0,ids,*revision==1?2:*revision-1,draft,sortDraft))return CR_FAILURE;
+          output["revision"]=std::to_string(*revision);output["stale_rejected"]=true;
+        }
         for(auto id:selected->ids)output["ids"].append(id);
         for(const auto& row:selected->groups){Json::Value g;g["subtype"]=row.group.subtype;g["subcat1"]=row.group.subcat1;g["subcat2"]=row.group.subcat2;g["amount"]=row.group.amount;g["expanded"]=row.group.expanded;g["matches"]=row.matches;g["flags"]=row.flags;g["caption"]=DF2UTF(row.caption);g["ids"]=Json::arrayValue;for(auto id:row.ids)g["ids"].append(id);output["groups"].append(g);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;

@@ -59492,6 +59492,445 @@
           "bridge/plugin/depot_goods_read.h": "81652b1aadb9dd81de2427157e3b2567973e9dc7b2071ba2b554984f71e91d70",
           "presentations/godot/project/tests/depot_goods_wire_live.gd": "2a31ebd0c7f0ce5dc0354f404372e3ca0a9556521d2ba63a90182acc1f54f989"
         }
+      },
+      "depot_goods_draft_provider_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-154515",
+        "owned_df_pid": 37936,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Sixteen paused native-input comparisons of independent draft projection: individual/group/Select All, last-sort retention across clicks and search, category navigation with cross-category draft retention, pending cancellation and delivered release. Native aggregation and item order/tags match; stale revision, duplicate and foreign IDs reject. No jobs change from projection. All nine existing wire/controller cases pass. Draft transport and rendered controls remain unfinished.",
+        "samples": [
+          {
+            "label": "initial",
+            "draft": "-",
+            "sort_draft": "-",
+            "ids": [
+              296,
+              28425
+            ],
+            "tags": [
+              0,
+              0
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "individual-on",
+            "draft": "296:1",
+            "sort_draft": "-",
+            "ids": [
+              296,
+              28425
+            ],
+            "tags": [
+              1,
+              0
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "mixed-group-on",
+            "draft": "28425:1,296:1",
+            "sort_draft": "-",
+            "ids": [
+              296,
+              28425
+            ],
+            "tags": [
+              1,
+              1
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 1,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "group-off",
+            "draft": "-",
+            "sort_draft": "-",
+            "ids": [
+              296,
+              28425
+            ],
+            "tags": [
+              0,
+              0
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "select-all-on",
+            "draft": "28425:1,296:1",
+            "sort_draft": "-",
+            "ids": [
+              296,
+              28425
+            ],
+            "tags": [
+              1,
+              1
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 1,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "select-all-off",
+            "draft": "-",
+            "sort_draft": "-",
+            "ids": [
+              296,
+              28425
+            ],
+            "tags": [
+              0,
+              0
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "individual-roundtrip",
+            "draft": "-",
+            "sort_draft": "-",
+            "ids": [
+              296,
+              28425
+            ],
+            "tags": [
+              0,
+              0
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "second-item-on",
+            "draft": "28425:1",
+            "sort_draft": "-",
+            "ids": [
+              296,
+              28425
+            ],
+            "tags": [
+              0,
+              1
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "bags-retain-anvil",
+            "draft": "28425:1",
+            "sort_draft": "28425:1",
+            "ids": [
+              12862,
+              12892,
+              19773,
+              19838,
+              5951,
+              5864,
+              7450,
+              7480,
+              7506,
+              28451
+            ],
+            "tags": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 19,
+                "subcat2": 615,
+                "flags": 2,
+                "matches": true
+              },
+              {
+                "subtype": -1,
+                "subcat1": 24,
+                "subcat2": 176,
+                "flags": 2,
+                "matches": true
+              },
+              {
+                "subtype": -1,
+                "subcat1": 421,
+                "subcat2": 187,
+                "flags": 2,
+                "matches": true
+              },
+              {
+                "subtype": -1,
+                "subcat1": 422,
+                "subcat2": 174,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "anvils-resort-draft",
+            "draft": "28425:1",
+            "sort_draft": "28425:1",
+            "ids": [
+              28425,
+              296
+            ],
+            "tags": [
+              1,
+              0
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "search-retains-draft-order",
+            "draft": "28425:1",
+            "sort_draft": "28425:1",
+            "ids": [
+              28425,
+              296
+            ],
+            "tags": [
+              1,
+              0
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "clear-search-retains-draft-order",
+            "draft": "28425:1",
+            "sort_draft": "28425:1",
+            "ids": [
+              28425,
+              296
+            ],
+            "tags": [
+              1,
+              0
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "uncheck-retains-navigation-order",
+            "draft": "-",
+            "sort_draft": "28425:1",
+            "ids": [
+              28425,
+              296
+            ],
+            "tags": [
+              0,
+              0
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "navigation-restores-order",
+            "draft": "-",
+            "sort_draft": "-",
+            "ids": [
+              296,
+              28425
+            ],
+            "tags": [
+              0,
+              0
+            ],
+            "revision": "6336218185030153367",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "pending-cancel-draft",
+            "draft": "296:0",
+            "sort_draft": "-",
+            "ids": [
+              296,
+              28425
+            ],
+            "tags": [
+              -1,
+              0
+            ],
+            "revision": "837562589694578199",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          },
+          {
+            "label": "delivered-release-draft",
+            "draft": "296:0",
+            "sort_draft": "-",
+            "ids": [
+              296,
+              28425
+            ],
+            "tags": [
+              -2,
+              0
+            ],
+            "revision": "639359528506937603",
+            "stale_rejected": true,
+            "groups": [
+              {
+                "subtype": -1,
+                "subcat1": 0,
+                "subcat2": 0,
+                "flags": 2,
+                "matches": true
+              }
+            ]
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-154515/depot-goods-native.json": "71bded091f321ab0e52c0d656971d39acd7b8c4eb766e167820225d6ef01d79e",
+          "build/stockpile-storage-native-farm-discovery-20261115-154515/result.json": "122c13fd9922b76c2c250dd61249e5fa9d19c4be2a54c677c2821198f9a5cc3d",
+          "build/stockpile-storage-native-farm-discovery-20261115-154515/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/depot_selection_native.h": "57bd4a0e1c7851583d5f69d97ddabed53287ad4a2a2463951c738442c16d8ef3",
+          "bridge/plugin/depot_goods_read.h": "536fb866df20761ad287a516cf5cfec763c171b04fbb286192a642e5b8f92dd8",
+          "bridge/plugin/df3d.cpp": "a90ab3f871f1f0db7dab854f8e1eb38b22693c2cf2cf9b15d2b596b92a783657",
+          "tools/smoke/depot-goods-native.lua": "7d72b587d878dd16271ada1ef7a2c950ca8f7d82f0581f92d7a530e5e0cf7ac3"
+        }
       }
     },
     "pending_construction_reference": {

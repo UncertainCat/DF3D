@@ -71,7 +71,29 @@ inline std::optional<std::vector<int16_t>> depotCategories(const DepotGoods& goo
     return result;
 }
 struct DepotSelectedGroup {DepotGoodsGroup group;bool matches=false;uint32_t flags=0;std::string caption;std::vector<int32_t> ids;};
-struct DepotSelection {std::vector<int32_t> ids;std::vector<DepotSelectedGroup> groups;std::vector<std::string> itemCaptions;int32_t rowCells=0;};
+struct DepotGoodsChange {int32_t id=-1;bool desired=false;};
+struct DepotSelection {std::vector<int32_t> ids;std::vector<int8_t> tags;std::vector<DepotSelectedGroup> groups;std::vector<std::string> itemCaptions;int32_t rowCells=0;};
+// Local checkbox intent only. Eligibility/membership stay native; this changes
+// tags in owned records, never jobs or game items. Native input31e449 uses1-tag.
+inline std::optional<std::vector<int8_t>> depotDraftTags(const DepotGoods& goods,const std::vector<DepotGoodsChange>& changes) {
+    if(goods.rows.size()>1048576 || changes.size()>1048576)return {};
+    std::vector<std::pair<int32_t,size_t>> index;index.reserve(goods.rows.size());
+    std::vector<int8_t> tags;tags.reserve(goods.rows.size());
+    for(size_t i=0;i<goods.rows.size();++i){const auto& row=goods.rows[i];
+        if(row.id<0 || (row.tag!=0 && row.tag!=2 && row.tag!=3))return {};
+        if(!changes.empty())index.emplace_back(row.id,i);tags.push_back(row.tag);}
+    if(changes.empty())return tags;
+    std::sort(index.begin(),index.end());
+    for(size_t i=1;i<index.size();++i)if(index[i-1].first==index[i].first)return {};
+    std::vector<bool> seen(goods.rows.size(),false);
+    for(const auto& change:changes){
+        auto at=std::lower_bound(index.begin(),index.end(),std::pair<int32_t,size_t>{change.id,0});
+        if(at==index.end() || at->first!=change.id || seen[at->second])return {};
+        seen[at->second]=true;auto& tag=tags[at->second];
+        if((tag>0)!=change.desired)tag=int8_t(1-tag);
+    }
+    return tags;
+}
 // Native strings are CP437. Preserve their bytes until the transport boundary.
 inline std::optional<std::string> depotGroupCaption(int16_t type,int16_t subtype=-1,
     int16_t subcat1=-1,int16_t subcat2=-1,int32_t amount=-1) {
@@ -101,9 +123,12 @@ inline std::optional<std::string> depotGroupCaption(int16_t type,int16_t subtype
 //37d9c0 aggregates selection flags. None reads the global picker or window size.
 // Do not substitute37ba00: its category-list scroll tail reads native geometry.
 inline std::optional<DepotSelection> depotSelection(const DepotGoods& goods,int16_t type,
-    std::string query,bool sortByDistance=true,bool pendingOnTop=true,bool excludeProhibited=false) {
+    std::string query,bool sortByDistance=true,bool pendingOnTop=true,bool excludeProhibited=false,
+    const std::vector<DepotGoodsChange>& draft={},const std::vector<DepotGoodsChange>& sortDraft={}) {
     if(!depotNativeReady() || !df::global::world || type<0 || type>=93 || query.size()>512 ||
        goods.rows.size()>1048576 || goods.groups.size()>1048576)return {};
+    const auto tags=depotDraftTags(goods,draft),sortTags=depotDraftTags(goods,sortDraft);
+    if(!tags || !sortTags)return {};
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool ready=[&] {
         struct Pin {size_t rva,length;uint64_t hash;};
@@ -127,7 +152,7 @@ inline std::optional<DepotSelection> depotSelection(const DepotGoods& goods,int1
     static_assert(offsetof(df::assign_trade_interfacest,current_type_a_flag)==0x218);
     for(size_t i=0;i<records.size();++i){const auto& row=goods.rows[i];auto& record=records[i];
         record.it=df::item::find(row.id);if(!record.it)return {};
-        record.dist=row.distance;record.tag=row.tag;record.value=row.value;record.prohibited=row.prohibited;
+        record.dist=row.distance;record.tag=(*sortTags)[i];record.value=row.value;record.prohibited=row.prohibited;
         owned.master_i_list.tgi.push_back(&record);
     }
     for(const auto& group:goods.groups){
@@ -137,11 +162,17 @@ inline std::optional<DepotSelection> depotSelection(const DepotGoods& goods,int1
     }
     df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
     reinterpret_cast<void (*)(df::assign_trade_interfacest*)>(base+0x37a0a0)(&owned);
+    // Checkbox clicks keep the current native order. Navigation supplies the
+    // then-current draft as sortDraft; subsequent clicks only change draft.
+    //37a0a0 sorts using tag*100000000 before37cd50, so applying the latest tags
+    // before every sort would incorrectly move a newly checked row.
+    for(size_t i=0;i<records.size();++i)records[i].tag=(*tags)[i];
+    reinterpret_cast<void (*)(df::assign_trade_interfacest*)>(base+0x37d9c0)(&owned);
     DepotSelection result;
     result.rowCells=owned.i_height;
     // Validate the renderer's formatting leaves before obtaining item captions.
     if(!depotGroupCaption(type))return {};
-    for(auto* row:owned.current_type_tgi){result.ids.push_back(row->it->id);
+    for(auto* row:owned.current_type_tgi){result.ids.push_back(row->it->id);result.tags.push_back(row->tag);
         std::string caption;
         reinterpret_cast<void(*)(df::item*,std::string*,bool,int32_t)>(base+0xc65450)(row->it,&caption,false,-1);
         result.itemCaptions.push_back(std::move(caption));

@@ -223,9 +223,35 @@ and the simulation frame stays paused. Existing subsequent close/pending/cancel
 and delivered-release checks still pass. Owned DF45104 closes unsaved with source
 preservation, native30FPS, sampled GPU51C. All19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_goods_draft_reference`.
-This establishes the native reference only. Viewer drafts and guarded batch
-commit remain unfinished; per-item native probe acceptance does not authorize
-a series of independently applied edits as a replacement for commit-on-close.
+The owned selection provider now accepts the current checkbox draft separately
+from the draft at the last category/options sort. Native37a0a0 sorts owned
+records using that retained sort draft, then37d9c0 aggregates the current draft.
+This preserves click-time order: native input only changes tags and aggregates,
+whereas37a348..37a379 adds `tag*100000000` to the native sorting value when
+pending-on-top is enabled. Re-sorting current choices after every click would
+move newly selected rows incorrectly. No gameplay, native menu or cursor state
+is modified or borrowed. Duplicate/foreign draft IDs reject before projection.
+The internal read API requires the retained source revision for either draft
+and returns projected tags; a changed revision rejects without rebasing.
+The protocol233 read contract still admits only resting tags and supplies no
+draft arguments, so these inputs are not exposed to Godot yet. Viewer draft
+controls and transport remain unfinished; commits use the guarded whole-batch
+endpoint documented above, never a series of independently applied edits.
+
+Protected154515 on2026-11-15 compares sixteen native-input states with this
+owned projection, including individual/group/Select All drafts, selecting the
+second anvil without reordering, switching to Bags and back, search/clear,
+unchecking without reordering, and native pending-cancel/delivered-release
+tags-1/-2. Category navigation moves selected anvil28425 ahead of296; subsequent
+unchecking leaves that order until the next navigation. Group flags, matching,
+ordered IDs and tags agree with native in all cases. Each revision-bound read
+also rejects an incorrect revision; duplicate/foreign IDs reject. Projections
+leave jobs and the paused simulation frame unchanged. All nine existing
+wire/controller cases pass with empty depot-client diagnostic logs. Owned
+DF37936 closes unsaved with source preservation, native30FPS and sampled GPU48C.
+Bridge build and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_goods_draft_provider_reference`.
+This verifies the native boundary, not the still-unwired viewer draft controls.
 
 `depotSetHaulBatch` now validates an explicit vector of item IDs, expected flags
 and desired hauling states before calling native36b0c0 once with independently

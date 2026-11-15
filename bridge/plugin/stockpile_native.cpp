@@ -732,7 +732,7 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
 }
 bool nativeStockpileLinkSource(df::building& source) {
     return source.canLinkToStockpile() ||
-        (source.getType()==df::building_type::Trap && source.getSubtype()==0);
+        (source.getType()==df::building_type::Trap && (source.getSubtype()==0 || source.getSubtype()==1));
 }
 std::optional<df::building*> nativeStockpileLinkTarget(df::building& source,
     int16_t x,int16_t y,int16_t z,bool give) {

@@ -390,6 +390,23 @@ Evidence: `completed_sheet_discovery_reference.pressure_plate_edits_reference`.
 Queued/assigned removal, item navigation, worker/order edits, Connections and
 ordinary map entry remain outside this capture.
 
+Pressure plates now qualify as Connections sources through their native
+stockpile-link profile, matching levers. The stockpile-side target predicate
+is unchanged. Native095351 confirms Give/Take each create a reciprocal link
+to pile121 despite `canLinkToStockpile()==false`; removing each link clears
+both endpoints. Initial095304 stopped on a diagnostic-helper syntax error
+before exercising the plate and is not acceptance.
+Protected095632 verifies the actual main-scene Connections header, Give/Take
+Cancel, projected map clicks, Remove and Done. Seven complete Connections
+panel/prompt crops match native, and native readback confirms both directions
+were restored empty. The following projected mechanical Link to door16 also
+matches native job fields. The plate controller is registered for composition;
+ordinary source-plate map selection remains gated. Owned DF37468 closes
+unsaved with source preservation, graphics capped30FPS, sampled GPU60C. MSVC,
+areas adapter and core19 pass; only the documented render-thread/finalize/two
+ObjectDB graphics diagnostics remain. Evidence:
+`completed_sheet_discovery_reference.pressure_plate_connections_reference`.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

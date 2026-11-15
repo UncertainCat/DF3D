@@ -71,6 +71,37 @@ local ok,err=xpcall(function()
   click(832,82);assert(#plate.jobs==1 and plate.jobs[0].job_type==df.job_type.DestroyBuilding);sample('removing')
   assert(click_label('Cancel removal'));assert(#plate.jobs==0);sample('removal-cancelled')
  end
+ if os.getenv('DF3D_PRESSURE_PLATE_CONNECTIONS')=='1'then
+  result.connections={can_link=plate:canLinkToStockpile()}
+  click(768,82);sample('connections-open')
+  click(80,82);sample('connections-give')
+  assert(click_label('Cancel'));sample('connections-give-cancel')
+  click(112,82);sample('connections-take')
+  assert(click_label('Cancel'));assert(click_label('Done'));sample('connections-done')
+  do
+   local links=assert(plate:getStockpileLinks())
+   assert(#links.give_to_pile==0 and #links.take_from_pile==0)
+   local pile
+   for _,candidate in ipairs(df.global.world.buildings.other.STOCKPILE)do
+    local d=dfhack.maps.getTileFlags(candidate.centerx,candidate.centery,candidate.z)
+    if candidate.z==plate.z and d and not d.hidden then pile=candidate;break end
+   end
+   assert(pile);result.connections.pile_id=pile.id
+   result.connections.pile_tile={x=pile.centerx,y=pile.centery,z=pile.z}
+   local function has(rows,id)for _,row in ipairs(rows)do if row.id==id then return true end end;return false end
+   for _,entry in ipairs{{'give',80,'give_to_pile','take_from_workshop'},{'take',112,'take_from_pile','give_to_workshop'}}do
+    click(768,82);click(entry[2],82);select_map(pile)
+    result.connections[entry[1]]={count=#links[entry[3]],reciprocal=has(pile.links[entry[4]],plate.id)}
+    sample('connections-linked-'..entry[1])
+    if #links[entry[3]]>0 then
+     assert(#links[entry[3]]==1 and links[entry[3]][0].id==pile.id)
+     click(360,154);assert(#links[entry[3]]==0 and not has(pile.links[entry[4]],plate.id))
+     sample('connections-unlinked-'..entry[1])
+    end
+    assert(click_label('Done'))
+   end
+  end
+ end
  for _,label in ipairs{'Workers','Work orders','Tasks'}do
   if click_label(label)then sample(label:gsub(' ','-'):lower())end
  end
@@ -130,6 +161,12 @@ local ok,err=xpcall(function()
   capture('workshop-wire')
   f=assert(io.open(out..'/workshop-wire-result.json'));result.wire=json.decode(f:read('*a'));f:close()
   assert(result.wire.success and #plate.jobs==1 and plate.jobs[0].id==result.wire.link_job,'Plate wire action failed')
+  if result.connections then
+   local links=assert(plate:getStockpileLinks());local pile=assert(df.building.find(result.connections.pile_id))
+   assert(#links.give_to_pile==0 and #links.take_from_pile==0,'Viewer retained plate stockpile links')
+   for _,key in ipairs{'give_to_workshop','take_from_workshop'}do for _,b in ipairs(pile.links[key])do assert(b.id~=plate.id,'Viewer retained reciprocal plate link')end end
+   result.connections.viewer_restored=true
+  end
   if result.edits then
    assert(dfhack.df2utf(plate.name)==result.edits.name,'Viewer did not restore plate name')
    local item=assert(df.item.find(result.edits.item_id))

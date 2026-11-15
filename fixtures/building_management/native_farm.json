@@ -26179,6 +26179,58 @@
           "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-panel-removing-viewer.png": "d95c2ff88502e022ddd3a1b8538d2ad5a4961f8ff1994f1f8a0a35e74d5990a9",
           "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-panel-removal-cancelled-viewer.png": "5ffa8f3e5afbdaecd876b90524cc65a5e068dcde1c8342730ec3f2f80aec0ad0"
         }
+      },
+      "pressure_plate_connections_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-095632",
+        "scope": "Native pressure-plate Connections Give/Take create reciprocal stockpile links despite canLinkToStockpile false. Actual main-scene header, Cancel, projected pile121 clicks, Remove and Done; seven exact panel/prompt crops. Native readback confirms both directions restored empty. Following actual projected mechanical Link to door16 matches native job. Source plate opened directly; ordinary source map selection still gated.",
+        "connections": {
+          "can_link": false,
+          "give": {
+            "count": 1,
+            "reciprocal": true
+          },
+          "pile_id": 121,
+          "pile_tile": {
+            "x": 117,
+            "y": 72,
+            "z": 165
+          },
+          "take": {
+            "count": 1,
+            "reciprocal": true
+          },
+          "viewer_restored": true
+        },
+        "owned_df_pid": 37468,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "bridge_sha256": "6CDA2D4241BD32B9A999E5BF660E1492202844BB4F491D552CF156A1EC93878D",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-native.json": "2decfdd22e7e8d6c407a23ead9778ccb6d6f709ed4cd7aad646c3b4e547aa0a0",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/workshop-wire-result.json": "1e40c101467529fa30925441b6797421895cbab7d7bc9d84b20637a757fa88e2",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/result.json": "a663ece2b092b34cd96e8a2fae69d22b7ec58866f60b5616440b427f2af40042",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-open.png": "184fc7c640112dd4b407061cc8cf5620676ee9f74be5f852befd9b9bffba28a6",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-give.png": "296513b4c57070735720664b8686ac65aa3f8bf1b6450f7f38066d2c6987af85",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-take.png": "1523b69b338c2e322059d165ffdad9d3591d3edcaeb03fcd1e98ee9d6cdf67c7",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-linked-give.png": "91db5da80f8e7195e4ca8c59b6fa78a8317fca323188bd7386ef1de6da50bed8",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-linked-take.png": "c4796782a433699ee6b560532c3cef64635b5e608fdb2c02b63e6c3e1cfd3f7b",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-unlinked-give.png": "9aec0fc28f86ab7766284b59357129e04848b8819d2901420f08c2b7382a1187",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-unlinked-take.png": "379f7fec5b7a208e717d84b71b80d558eac45ac2826ee7279eb45da984d11b27",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-open-viewer.png": "2ef5da65c0af38bdd79afcdb17ba2bfd483ff0dffea69211e606c2d307a3d59a",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-give-viewer.png": "9eb0a47af610cfae6c138b638add6473c5056a241f15431e30487cbccc95fd65",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-take-viewer.png": "f0fe904b8c6bb27a09ef30fca6c61d60de7fa534272fcd3786ff950fa77acfe1",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-linked-give-viewer.png": "f0b07d42b4e181e97a8b62bcb12df89fc66261915ca31a886b0b824a19653136",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-linked-take-viewer.png": "722ced394841ab3bcf104b4db18bf97bcef661ccb08648cae2e6c8fb00a4ee5c",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-unlinked-give-viewer.png": "2ef5da65c0af38bdd79afcdb17ba2bfd483ff0dffea69211e606c2d307a3d59a",
+          "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-unlinked-take-viewer.png": "2ef5da65c0af38bdd79afcdb17ba2bfd483ff0dffea69211e606c2d307a3d59a"
+        }
       }
     },
     "pending_construction_reference": {

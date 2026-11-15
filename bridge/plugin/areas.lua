@@ -522,8 +522,8 @@ local link_sources={{key='take_from_workshop',kind=2,direction=2},
 -- Same native33616d..33633b vector order for a workshop source. This is a
 -- fresh owned semantic projection; no native link-window/cache is consulted.
 local function workshop_link_source(b)
- -- Native lever Connections uses its profile despite the target predicate.
- return b and (b:canLinkToStockpile() or (b:getType()==df.building_type.Trap and b:getSubtype()==0))
+ -- Native lever/plate Connections uses its profile despite the target predicate.
+ return b and (b:canLinkToStockpile() or (b:getType()==df.building_type.Trap and (b:getSubtype()==0 or b:getSubtype()==1)))
 end
 local function workshop_links(b,epoch)
  if not workshop_link_source(b) or b:getBuildStage()~=b:getMaxBuildStage() or B.markedForRemoval(b) or

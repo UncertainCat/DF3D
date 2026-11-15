@@ -221,12 +221,12 @@ func controller(id: String):
 		panel.inspect_requested.connect(func(tile,unit_id):
 			if host.allows_panel_input(panel) and controller("inspector").open_target(tile,1,unit_id,true):focus_tile(tile))
 		controllers[id]=panel;return panel
-	if id in ["farm","chest","furniture","workshop","lever","door","pending_building"]:
+	if id in ["farm","chest","furniture","workshop","lever","pressure_plate","door","pending_building"]:
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		ensure_follow()
 		panel.holder_requested.connect(open_building_holder)
-		if id in ["furniture","lever"]:panel.focus_requested.connect(focus_tile)
-		if id in ["workshop","lever"]:
+		if id in ["furniture","lever","pressure_plate"]:panel.focus_requested.connect(focus_tile)
+		if id in ["workshop","lever","pressure_plate"]:
 			panel.camera=view.camera_rig.get_node("Camera3D")
 			panel.unit_requested.connect(func(unit_id):open_item_carrier(2,unit_id))
 			panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))

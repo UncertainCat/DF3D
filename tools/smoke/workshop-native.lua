@@ -162,6 +162,22 @@ local ok,err=xpcall(function()
    end
   end
   if floodgate then chosen[9]=assert(df.building.find(39))end
+  local scroll_refs={}
+  if floodgate and os.getenv('DF3D_FLOODGATE_SCROLL')=='1'then
+   -- Diagnostic-only additional mechanisms exercise native row/scroll geometry;
+   -- the clone stays paused and these owned additions are removed afterward.
+   local worker
+   for _,unit in ipairs(df.global.world.units.active)do if dfhack.units.isCitizen(unit)then worker=unit;break end end
+   local original=assert(df.item.find(1617))
+   for i=1,11 do
+     local created=dfhack.items.createItem(assert(worker),df.item_type.TRAPPARTS,-1,original:getMaterial(),original:getMaterialIndex())
+     assert(#created==1);local mechanism=created[1]
+     local ref=df.general_ref_building_triggerst:new();ref.building_id=55
+     assert(dfhack.items.moveToBuilding(mechanism,chosen[9],2,true))
+     mechanism.general_refs:insert('#',ref)
+     scroll_refs[#scroll_refs+1]={item=mechanism,ref=ref}
+   end
+  end
   for kind=0,54 do local target=chosen[kind];if target then
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(target)
    local jobs={};for _,job in ipairs(target.jobs)do jobs[#jobs+1]={id=job.id,type=df.job_type[job.job_type],flags=job.flags.whole}end
@@ -320,17 +336,29 @@ local ok,err=xpcall(function()
     end
     observe('initial')
     if floodgate then
+     local link_button_x=#scroll_refs>0 and 852 or 868
      click(540,520);assert(sheet.show_linked_buildings);observe('links')
+     if #scroll_refs>0 then
+      row.link_scroll={}
+      for _,step in ipairs{{'partial',1,718},{'tail',45,718},{'top',45,550}}do
+       for i=1,step[2]do click(880,step[3])end
+       row.link_scroll[step[1]]=sheet.scroll_position_linked_buildings
+       observe('links-scroll-'..step[1])
+      end
+      assert(sheet.scroll_position_linked_buildings==0,'Native link scroll did not return to top')
+      gui.simulateInput(view,'STANDARDSCROLL_DOWN');view:render(dfhack.getTickCount())
+      row.link_scroll.keyboard=sheet.scroll_position_linked_buildings;observe('links-scroll-keyboard')
+     end
      if os.getenv('DF3D_FLOODGATE_HOVER')=='1'then
       local script=require('gui.script')
       local deadline=dfhack.getTickCount()+800
       repeat
-       g.precise_mouse_x=868;g.precise_mouse_y=562;g.mouse_x=108;g.mouse_y=46
+       g.precise_mouse_x=link_button_x;g.precise_mouse_y=562;g.mouse_x=link_button_x//8;g.mouse_y=46
        df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
        gui.simulateInput(view,{});view:render(dfhack.getTickCount())
        script.sleep(1,'frames')
       until dfhack.getTickCount()>=deadline
-      g.precise_mouse_x=868;g.precise_mouse_y=562;g.mouse_x=108;g.mouse_y=46
+      g.precise_mouse_x=link_button_x;g.precise_mouse_y=562;g.mouse_x=link_button_x//8;g.mouse_y=46
       df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
       gui.simulateInput(view,{})
       view:render(dfhack.getTickCount())
@@ -346,9 +374,12 @@ local ok,err=xpcall(function()
      end
      click(540,562);assert(sheet.open and sheet.active_id==target.id);observe('links-body')
      local linked=assert(df.building.find(55));row.link_target={id=linked.id,x=linked.centerx,y=linked.centery,z=linked.z}
-     click(868,562);assert(not sheet.open and df.global.window_z==linked.z)
+     if #scroll_refs==0 then
+      click(link_button_x,562);assert(not sheet.open and df.global.window_z==linked.z)
+     else gui.simulateInput(view,'LEAVESCREEN')end
      view:render(dfhack.getTickCount());select_map(target);assert(not sheet.show_linked_buildings);observe('reopened')
     end
+    if #scroll_refs==0 then
     click(800,82);for i=1,100 do gui.simulateInput(view,'STRING_A000')end
     for c in ('Furniture reference'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(c:byte()))end
     gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount());assert(target.name=='Furniture reference');observe('renamed')
@@ -401,13 +432,14 @@ local ok,err=xpcall(function()
      end
      file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
     end
+    end
     if (kind==1 or funerary or floodgate) and os.getenv('DF3D_FURNITURE_RESIZE')=='1'then
      for _,size in ipairs{'small','medium','wide','default'}do resize_worker(size);shot('furniture-'..kind..'-resize-'..size)end
     end
    end
   end end
   assert(#result.completed_buildings>0,'No matching completed buildings for discovery')
-  if os.getenv('DF3D_FURNITURE_RUNTIME')=='1'then
+  if os.getenv('DF3D_FURNITURE_RUNTIME')=='1' and #scroll_refs==0 then
    local file=assert(io.open(out..'/furniture-expected.json','w'));file:write(json.encode({buildings=result.completed_buildings}));file:close()
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
    os.remove(out..'/ack-workshop-wire');os.remove(out..'/workshop-wire-result.json')
@@ -432,6 +464,12 @@ local ok,err=xpcall(function()
     assert(target.name==initial.name and #target.jobs==0,'Furniture viewer failed to restore name/jobs')
     assert(df.item.find(initial.item_id).flags.whole==initial.item_flags,'Furniture viewer failed to restore component flags')
    end
+  end
+  for i=#scroll_refs,1,-1 do
+   local owned=scroll_refs[i];assert(owned.item.general_refs[#owned.item.general_refs-1]==owned.ref)
+   owned.item.general_refs:erase(#owned.item.general_refs-1);owned.ref:delete()
+   owned.item.flags.in_building=false
+   assert(dfhack.items.remove(owned.item),'Could not retire diagnostic mechanism')
   end
   if os.getenv('DF3D_FURNITURE_MEMBERSHIP')=='1'then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('workshop%-native.lua$','furniture-membership-native.lua')

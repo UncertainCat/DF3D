@@ -21790,6 +21790,112 @@
             "build/stockpile-storage-native-farm-discovery-20261115-065315/workshop-wire.stdout.log": "90664bf7e4b5266a238eb7c40f9b9d8ba4af0c7a21e53f5789c0445917c2a993",
             "build/stockpile-storage-native-farm-discovery-20261115-065315/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
           }
+        },
+        "native_scroll_defect_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-070239",
+          "status": "native_defect_confirmed_correction_approval_pending",
+          "scope": "Paused controlled12-link list on separate mechanisms;11 created items all reference lever55. Not12 completed gameplay link jobs. Native no scrollbar; arrow-area and keyboard attempts leave offset0. No viewer acceptance claimed.",
+          "observed_scroll": {
+            "keyboard": 0,
+            "partial": 0,
+            "tail": 0,
+            "top": 0
+          },
+          "contained_items": [
+            {
+              "flags": 32,
+              "id": 1592,
+              "role": 2,
+              "type": "FLOODGATE"
+            },
+            {
+              "flags": 32,
+              "id": 1617,
+              "role": 2,
+              "type": "TRAPPARTS"
+            },
+            {
+              "flags": 32,
+              "id": 48520,
+              "role": 2,
+              "type": "TRAPPARTS"
+            },
+            {
+              "flags": 32,
+              "id": 48521,
+              "role": 2,
+              "type": "TRAPPARTS"
+            },
+            {
+              "flags": 32,
+              "id": 48522,
+              "role": 2,
+              "type": "TRAPPARTS"
+            },
+            {
+              "flags": 32,
+              "id": 48523,
+              "role": 2,
+              "type": "TRAPPARTS"
+            },
+            {
+              "flags": 32,
+              "id": 48524,
+              "role": 2,
+              "type": "TRAPPARTS"
+            },
+            {
+              "flags": 32,
+              "id": 48525,
+              "role": 2,
+              "type": "TRAPPARTS"
+            },
+            {
+              "flags": 32,
+              "id": 48526,
+              "role": 2,
+              "type": "TRAPPARTS"
+            },
+            {
+              "flags": 32,
+              "id": 48527,
+              "role": 2,
+              "type": "TRAPPARTS"
+            },
+            {
+              "flags": 32,
+              "id": 48528,
+              "role": 2,
+              "type": "TRAPPARTS"
+            },
+            {
+              "flags": 32,
+              "id": 48529,
+              "role": 2,
+              "type": "TRAPPARTS"
+            },
+            {
+              "flags": 32,
+              "id": 48530,
+              "role": 2,
+              "type": "TRAPPARTS"
+            }
+          ],
+          "owned_df_pid": 13912,
+          "closed_unsaved": true,
+          "source_preserved": true,
+          "renderer_skip_rva": "19cd9c->19e135 bypasses19e05c..19e12f",
+          "input_scroll_read_rva": "1b028f",
+          "sha256": {
+            "build/stockpile-storage-native-farm-discovery-20261115-070239/result.json": "2958486d2e2b77c3ac27d7193d51768d01f7231d03cadd7c89e17a39ecf096a3",
+            "build/stockpile-storage-native-farm-discovery-20261115-070239/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "build/stockpile-storage-native-farm-discovery-20261115-070239/workshop-native.json": "d77e2484f8622b5889d12210193989ec2d3420aa15f5387a8934791bdc2b828c",
+            "build/stockpile-storage-native-farm-discovery-20261115-070239/workshop-furniture-9-links.png": "306aca97e18b0318f7e47fabf76de64afff97928fdc9caf9d2f453a0ca8267d1",
+            "build/stockpile-storage-native-farm-discovery-20261115-070239/workshop-furniture-9-links-scroll-partial.png": "306aca97e18b0318f7e47fabf76de64afff97928fdc9caf9d2f453a0ca8267d1",
+            "build/stockpile-storage-native-farm-discovery-20261115-070239/workshop-furniture-9-links-scroll-tail.png": "306aca97e18b0318f7e47fabf76de64afff97928fdc9caf9d2f453a0ca8267d1",
+            "build/stockpile-storage-native-farm-discovery-20261115-070239/workshop-furniture-9-links-scroll-top.png": "306aca97e18b0318f7e47fabf76de64afff97928fdc9caf9d2f453a0ca8267d1",
+            "build/stockpile-storage-native-farm-discovery-20261115-070239/workshop-furniture-9-links-scroll-keyboard.png": "306aca97e18b0318f7e47fabf76de64afff97928fdc9caf9d2f453a0ca8267d1"
+          }
         }
       }
     },

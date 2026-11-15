@@ -4139,6 +4139,21 @@
       "reason": "Protected ENGRAVING_ART_RUNTIME lane: selected-tile artwork reads and guarded effects. Never standalone."
     },
     {
+      "path": "presentations/godot/project/tests/tile_selection_engraving_capture.gd",
+      "status": "manual",
+      "reason": "Completed engraving panel from protected native and wire reference. Set DF3D_SELECTION_REFERENCE and DF3D_DF_PATH; serial30FPS, no DF launch."
+    },
+    {
+      "path": "presentations/godot/project/tests/tile_selection_engraving_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected ENGRAVING plus SCENE/RUNTIME lane: completed engraving main-scene crop and retirement. Never standalone."
+    },
+    {
+      "path": "presentations/godot/project/tests/tile_selection_engraving_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected ENGRAVING plus RUNTIME lane: completed engraving title/prose and selection receipt lifecycle. Never standalone."
+    },
+    {
       "path": "presentations/godot/project/tests/selection_art_capture.gd",
       "status": "manual",
       "reason": "Rendered engraving root/site pages from protected protocol213 artwork wire. Set DF3D_SELECTION_REFERENCE and DF3D_DF_PATH, cap at30FPS. Never launches DF; no complete picker claim."

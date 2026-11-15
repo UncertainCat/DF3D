@@ -117,6 +117,41 @@ protected native observations. These addresses are static investigation,
 not qualified APIs or trade UI acceptance. The legacy trade.lua implements
 preparation only and does not supply negotiation semantics.
 
+Native initializer36b590..36b969 writes the supplied trade interface's title,
+fortress/place names, selected caravan/civilization, resolved fortress trader,
+merchant speaker, unloading flag and initial dialogue state. It resets local
+filters, counteroffer and announcement storage and sets buildlists/appraisal
+work pending. Observed direct stores target the supplied interface or owned
+strings. It reads global simulation entity/unit/caravan collections; it does
+not contain the opener's global menu teardown. Its transitive leaves and the
+pending list/appraisal phases remain unqualified. Full-range FNV64 is
+7e362e3d93d7506a, length985 on the pinned EXE; this is investigation evidence,
+not a runtime call authorization or completed side-effect audit.
+
+Protected173443 on2026-11-15 captures three native entry states at1200x800.
+Temporary AtDepot caravan records and an owned TradeAtDepot job/worker reference,
+plus a temporarily moved citizen, establish paused diagnostic prerequisites.
+Without a physically present trader, Trade is inert. With one caravan and a
+resolved fortress trader but no merchant unit, native opens the empty two-column
+screen with “There are no merchants present with which to trade.” With two
+caravans it displays “Select a merchant group to trade with:” and two native
+civilization rows. Captured interface fields retain native titles and flags;
+there is no merchant inventory or completed exchange in this fixture.
+All temporary prerequisites are restored, simulation frame stays unchanged,
+and owned DF48692 closes unsaved/source-preserved at30FPS, sampled GPU52C.
+Evidence: `completed_sheet_discovery_reference.depot_trade_entry_reference`.
+Initial173218/173346 failed setup/selection and are not acceptance: moving the
+worker onto the depot before a fresh map click changed the selected object.
+The final oracle verifies native worker lookup and preserves building selection.
+
+Outstanding depot-sheet defect: Trade currently emits without checking the
+already transported worker_id and draws ordinary text. Native input1af94d
+requires5ab090 to resolve a physically present trader; renderer196cf0..196d22
+uses palette15 with a worker and palette8 without one. Correct this gate and
+appearance before public exposure. Native merchant choice, list initialization,
+prices, quantity selection, negotiation and committed exchange still need
+owned semantic providers and rendered/live acceptance.
+
 ## Depot goods value transport migration
 
 Management protocol235 adds required appraisal knowledge to depot goods replies

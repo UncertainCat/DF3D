@@ -129,5 +129,9 @@ if os.getenv('DF3D_DEPOT_GOODS_NATIVE')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-settings%-native.lua$','depot-goods-native.lua')
  result.goods=assert(loadfile(source))(out,view,b,capture,select_map)
 end
+if os.getenv('DF3D_DEPOT_TRADE_NATIVE')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-settings%-native.lua$','depot-trade-native.lua')
+ result.trade=assert(loadfile(source))(out,view,b,capture,select_map)
+end
 local f=assert(io.open(out..'/depot-settings-native.json','w'));f:write(json.encode(result));f:close()
 return result

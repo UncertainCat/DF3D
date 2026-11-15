@@ -550,7 +550,9 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       r.productionReplyRequest?m::CreateProductionReplyRequest(b,r.productionReplyRequest,r.productionReplyOffset):flatbuffers::Offset<m::ProductionReplyRequest>{},
       (r.action==ManagementAction::SelectionArtRead || r.action==ManagementAction::SelectionArtApply)?
         m::CreateSelectionArtRequest(b,r.selectionArt.receipt,r.selectionArt.expectedRevision,encodeArtRequest(b,r.selectionArt.art)):flatbuffers::Offset<m::SelectionArtRequest>{},
-      r.action==ManagementAction::DepotGoodsRead?m::CreateDepotGoodsRequest(b,r.depotGoods.depotId,r.depotGoods.category,b.CreateString(r.depotGoods.query),r.depotGoods.sortByDistance,r.depotGoods.pendingOnTop,r.depotGoods.excludeProhibited,b.CreateVector(r.depotGoods.itemIds)):flatbuffers::Offset<m::DepotGoodsRequest>{},
+      r.action==ManagementAction::DepotGoodsRead?[&](){const auto& q=r.depotGoods;
+        const auto changes=[&](const std::vector<DepotGoodsChange>& rows){std::vector<m::DepotGoodsChange> out;for(const auto& row:rows)out.emplace_back(row.id,uint8_t(row.desired));return b.CreateVectorOfStructs(out);};
+        return m::CreateDepotGoodsRequest(b,q.depotId,q.category,b.CreateString(q.query),q.sortByDistance,q.pendingOnTop,q.excludeProhibited,b.CreateVector(q.itemIds),q.expectedRevision,changes(q.draft),changes(q.sortDraft));}():flatbuffers::Offset<m::DepotGoodsRequest>{},
       r.action==ManagementAction::DepotGoodsCommit?[&](){std::vector<m::DepotGoodsChange> changes;for(const auto& row:r.depotCommit.changes)changes.emplace_back(row.id,uint8_t(row.desired));return m::CreateDepotGoodsCommitRequest(b,r.depotCommit.depotId,r.depotCommit.expectedRevision,b.CreateVectorOfStructs(changes));}():flatbuffers::Offset<m::DepotGoodsCommitRequest>{});
   b.Finish(request);
 }

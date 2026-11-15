@@ -190,8 +190,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 233;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v233";
+inline constexpr uint32_t kManagementVersion = 234;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v234";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -817,6 +817,11 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* q=r.depot_goods();if(!q || q->depot_id()<0 || q->category()<-1 || q->category()>=93 || !q->query() || q->query()->size()>2048 || !q->item_ids() || q->item_ids()->size()>64)return "invalid depot goods request";
     std::unordered_set<int32_t> ids;for(auto id:*q->item_ids())if(id<0 || !ids.insert(id).second)return "invalid depot goods item identity";
     if(q->category()==-1 && !ids.empty())return "unexpected unselected depot items";
+    if(q->expected_revision()>INT64_MAX)return "invalid depot draft revision";
+    for(const auto* rows:{q->draft(),q->sort_draft()})if(rows){
+      if(rows->size()>65536 || (rows->size() && !q->expected_revision()))return "invalid depot draft";
+      std::unordered_set<int32_t> seen;for(const auto* row:*rows)if(!row || row->id()<0 || row->desired()>1 || !seen.insert(row->id()).second)return "invalid depot draft target";
+    }
   }else if(r.depot_goods())return "unexpected depot goods request";
   if(r.action()==ManagementAction::StocksMenuRead || r.action()==ManagementAction::StocksGroupApply || r.action()==ManagementAction::StocksItemApply) {
     const auto* q=r.stocks_menu();if(!q || q->category()<-1 || q->category()>=93 || !q->query() || q->query()->size()>4096 || q->operation()>StocksFlagAction::Hidden)return "invalid stocks request";
@@ -1891,7 +1896,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       for(auto id:*row->item_ids())if(id<0 || !members.insert(id).second || members.size()>1048576)return "invalid depot membership";
     }
     std::unordered_set<int32_t> ids;
-    for(const auto* row:*r->items())if(!row || !members.count(row->id()) || !ids.insert(row->id()).second || !row->caption() || !row->caption()->size() || row->caption()->size()>16384 || (row->tag()!=0 && row->tag()!=2 && row->tag()!=3))return "invalid depot item";
+    for(const auto* row:*r->items())if(!row || !members.count(row->id()) || !ids.insert(row->id()).second || !row->caption() || !row->caption()->size() || row->caption()->size()>16384 || (row->tag()<-2 || row->tag()>3))return "invalid depot item";
     if(r->category()==-1 && (r->groups()->size() || r->items()->size()))return "unexpected unselected depot rows";
   }else if(s.status()==ManagementStatus::Ok && s.action()==ManagementAction::DepotGoodsRead)return "missing depot goods result";
   if(const auto* r=s.stocks_menu()) {

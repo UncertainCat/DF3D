@@ -1252,13 +1252,16 @@ func test_stocks_menu() -> void:
 	assert(Contract.is_mutation(A.StocksItemApply))
 
 func test_depot_goods() -> void:
-	var request={"action":A.DepotGoodsRead,"depot_id":54,"category":45,"query":"IRON","sort_by_distance":true,"pending_on_top":true,"exclude_prohibited":false,"item_ids":[296]}
+	var request={"action":A.DepotGoodsRead,"depot_id":54,"category":45,"query":"IRON","sort_by_distance":true,"pending_on_top":true,"exclude_prohibited":false,"item_ids":[296],"expected_revision":9223372036854775807,"draft":[{"id":296,"desired":false}],"sort_draft":[{"id":296,"desired":true}]}
+	for patch in [{"expected_revision":0},{"draft":[{"id":296,"desired":1}]},{"sort_draft":[{"id":296,"desired":true},{"id":296,"desired":false}]}]:
+		var invalid: Dictionary=request.duplicate(true);invalid.merge(patch,true)
+		assert(world.management_request("depot_goods",invalid)==0)
 	var seq: int=world.management_request("depot_goods",request);assert(seq>0)
 	var reply:=await receipt(seq);var value: Dictionary=reply.depot_goods
 	assert(value.depot_id==54 and value.revision==9223372036854775807 and value.category==45)
 	assert(value.categories==[{"type":45,"caption":"fixture category"}])
 	assert(value.groups[0].item_ids==[296,28425] and value.groups[0].flags==2 and value.groups[0].expanded)
-	assert(value.items==[{"id":296,"caption":"fixture item","distance":6,"value":100,"tag":2,"prohibited":false}])
+	assert(value.items==[{"id":296,"caption":"fixture item","distance":6,"value":100,"tag":-2,"prohibited":false}])
 
 func test_depot_commit() -> void:
 	assert(Contract.domain_of(A.DepotGoodsCommit)=="depot_goods" and Contract.is_mutation(A.DepotGoodsCommit))

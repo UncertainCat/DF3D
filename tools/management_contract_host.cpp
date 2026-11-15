@@ -892,9 +892,10 @@ int main(int argc,char** argv) {
       flatbuffers::Offset<m::DepotGoodsState> depotGoods;
       if(request && request->action()==m::ManagementAction::DepotGoodsRead){
         const auto* q=request->depot_goods();require(q && q->depot_id()==54 && q->category()==45 && q->query()->str()=="IRON" && q->sort_by_distance() && q->pending_on_top() && !q->exclude_prohibited() && q->item_ids()->size()==1 && q->item_ids()->Get(0)==296,"depot goods read identity");
+        require(q->expected_revision()==uint64_t(INT64_MAX) && q->draft() && q->draft()->size()==1 && q->draft()->Get(0)->id()==296 && q->draft()->Get(0)->desired()==0 && q->sort_draft() && q->sort_draft()->size()==1 && q->sort_draft()->Get(0)->id()==296 && q->sort_draft()->Get(0)->desired()==1,"depot draft and sort identity");
         const auto cat=m::CreateDepotGoodsCategory(b,45,b.CreateString("fixture category"));
         const auto group=m::CreateDepotGoodsGroup(b,-1,0,0,2,b.CreateString("fixture group"),true,true,2,b.CreateVector(std::vector<int32_t>{296,28425}));
-        const auto item=m::CreateDepotGoodsItem(b,296,b.CreateString("fixture item"),6,100,2,false);
+        const auto item=m::CreateDepotGoodsItem(b,296,b.CreateString("fixture item"),6,100,-2,false);
         depotGoods=m::CreateDepotGoodsState(b,54,INT64_MAX,45,b.CreateVector(std::vector<flatbuffers::Offset<m::DepotGoodsCategory>>{cat}),b.CreateVector(std::vector<flatbuffers::Offset<m::DepotGoodsGroup>>{group}),b.CreateVector(std::vector<flatbuffers::Offset<m::DepotGoodsItem>>{item}));
       }
       flatbuffers::Offset<m::StoneUseState> stone;bool stoneUnknown=false;

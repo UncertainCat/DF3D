@@ -891,8 +891,17 @@ bool validateDepotGoods(const Dictionary& data,String& error) {
         for(int64_t i=0;i<rows.size();++i){if(rows[i].get_type()!=Variant::DICTIONARY)return false;const Dictionary row=rows[i];if(row.size()!=2 || !integer(row,"id",0,INT32_MAX) || !ids.insert(int64_t(row["id"])).second || !row.has("desired") || row["desired"].get_type()!=Variant::BOOL)return false;}
         error=String();return true;
     }
-    if(data.size()!=8 || !integer(data,"depot_id",0,INT32_MAX) || !integer(data,"category",-1,92) || !data.has("query") || data["query"].get_type()!=Variant::STRING || String(data["query"]).utf8().length()>2048 || !data.has("item_ids") || data["item_ids"].get_type()!=Variant::ARRAY)return false;
+    if((data.size()!=8 && data.size()!=11) || !integer(data,"depot_id",0,INT32_MAX) || !integer(data,"category",-1,92) || !data.has("query") || data["query"].get_type()!=Variant::STRING || String(data["query"]).utf8().length()>2048 || !data.has("item_ids") || data["item_ids"].get_type()!=Variant::ARRAY)return false;
     for(const auto* key:{"sort_by_distance","pending_on_top","exclude_prohibited"})if(!data.has(key) || data[key].get_type()!=Variant::BOOL)return false;
+    if(data.size()==11){
+        if(!integer(data,"expected_revision",0,INT64_MAX))return false;
+        for(const auto* key:{"draft","sort_draft"}){
+            if(!data.has(key) || data[key].get_type()!=Variant::ARRAY)return false;
+            const Array rows=data[key];if(rows.size()>65536 || (!rows.is_empty() && int64_t(data["expected_revision"])==0))return false;
+            std::unordered_set<int64_t> seen;
+            for(int64_t i=0;i<rows.size();++i){if(rows[i].get_type()!=Variant::DICTIONARY)return false;const Dictionary row=rows[i];if(row.size()!=2 || !integer(row,"id",0,INT32_MAX) || !seen.insert(int64_t(row["id"])).second || !row.has("desired") || row["desired"].get_type()!=Variant::BOOL)return false;}
+        }
+    }
     const Array ids=data["item_ids"];if(ids.size()>64 || (int64_t(data["category"])==-1 && !ids.is_empty()))return false;
     std::unordered_set<int64_t> seen;for(int64_t i=0;i<ids.size();++i)if(ids[i].get_type()!=Variant::INT || int64_t(ids[i])<0 || int64_t(ids[i])>INT32_MAX || !seen.insert(int64_t(ids[i])).second)return false;
     error=String();return true;
@@ -905,6 +914,11 @@ bool readDepotGoods(const Dictionary& data,wm::ManagementRequest& request,String
     request.action=wm::ManagementAction::DepotGoodsRead;auto& q=request.depotGoods;
     q.depotId=int32_t(int64_t(data["depot_id"]));q.category=int16_t(int64_t(data["category"]));q.query=String(data["query"]).utf8().get_data();
     q.sortByDistance=bool(data["sort_by_distance"]);q.pendingOnTop=bool(data["pending_on_top"]);q.excludeProhibited=bool(data["exclude_prohibited"]);
+    if(data.has("expected_revision")){
+        q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));
+        const auto read=[](const Array& rows,std::vector<wm::DepotGoodsChange>& out){for(int64_t i=0;i<rows.size();++i){const Dictionary row=rows[i];out.push_back({int32_t(int64_t(row["id"])),bool(row["desired"])});}};
+        read(data["draft"],q.draft);read(data["sort_draft"],q.sortDraft);
+    }
     const Array ids=data["item_ids"];for(int64_t i=0;i<ids.size();++i)q.itemIds.push_back(int32_t(int64_t(ids[i])));return true;
 }
 bool validateStocksMenu(const Dictionary& data,String& error) {

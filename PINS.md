@@ -22,9 +22,10 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Current management protocol233 adds revision-bound depot goods batch commit
-requests and explicit outcomes. Protocol232 introduced owned depot goods reads.
-Both peers use `Local\df3d_management_v233`; rebuild bridge and viewer together.
+Current management protocol234 adds revision-bound depot checkbox drafts and
+retained sorting choices to goods reads. Protocol233 introduced whole-batch
+commits and explicit outcomes;232 introduced owned goods reads.
+Both peers use `Local\df3d_management_v234`; rebuild bridge and viewer together.
 Older recordings must not synthesize goods snapshots or commit receipts.
 Migration guidance is in ENGINEERING.md's depot goods transport sections.
 

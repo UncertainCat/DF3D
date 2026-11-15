@@ -1,3 +1,26 @@
+## Depot goods draft transport migration
+
+Management protocol234 extends `DepotGoodsRead` with an expected source revision,
+current checkbox choices and choices retained from the last native sort. Each
+choice vector contains at most65536 unique item-ID/Boolean desired-state pairs.
+Any nonempty vector requires a nonzero signed-safe64-bit source revision.
+Draft-free reads remain available without a revision. Preview replies may now
+contain staged tags1,-1,-2 as well as resting tags0,2,3. Native projection and
+source validation use the owned provider documented below; no preview creates
+jobs or changes items. Both peers/mailbox use234 and must be rebuilt together.
+DF53.16 compatibility pins are unchanged. Older recordings must not invent drafts.
+
+Protected155628 on2026-11-15 verifies all sixteen recorded native draft states
+through protocol234, in addition to the nine existing goods cases. Group flags,
+membership/order and staged tags match native; no preview changes jobs or the
+paused simulation frame. Owned DF13404 closes unsaved with source preservation,
+native30FPS and sampled GPU47–48C. Depot-client logs contain no diagnostics.
+Bridge, root and Godot-extension builds pass; all19 core checks pass. The full
+synthetic adapter test verifies distinct current/sorting choices, INT64_MAX
+source identity, negative staged tags and malformed-input rejection without
+diagnostics. Evidence:
+`completed_sheet_discovery_reference.depot_goods_draft_transport_reference`.
+
 ## Depot goods commit transport migration
 
 Management protocol233 adds `DepotGoodsCommit` in the `depot_goods` domain.
@@ -13,7 +36,7 @@ Unknown is propagated into the shared action service's no-replay path.
 The bridge uses the already qualified `commitDepotGoods`/`depotSetHaulBatch`
 endpoint, with the ordinary transport epoch/save and sequence guards. Godot
 admits only integer IDs/revisions and Boolean desired values. Both peers/mailbox
-use233 and must be rebuilt together; DF53.16 compatibility pins are unchanged.
+use234 and must be rebuilt together; DF53.16 compatibility pins are unchanged.
 Public depot routes and rendered draft/close integration remain unfinished.
 
 Protected153229 on2026-11-15 verifies actual Godot wire creation and cancellation
@@ -72,7 +95,7 @@ nonzero signed-safe token; rejection carries no fabricated snapshot.
 The native read producer is connected as described below. Retained paging for
 large replies, artwork/contained rows and commit authority are still unfinished.
 Public depot routes remain hidden.
-Both peers/mailbox now use233; rebuild bridge and viewer together. DF53.16 pins are
+Both peers/mailbox now use234; rebuild bridge and viewer together. DF53.16 pins are
 unchanged. Older recordings must not synthesize depot goods.
 
 Group membership may be empty after exclusion filtering:37a0a0 copies group
@@ -233,10 +256,9 @@ move newly selected rows incorrectly. No gameplay, native menu or cursor state
 is modified or borrowed. Duplicate/foreign draft IDs reject before projection.
 The internal read API requires the retained source revision for either draft
 and returns projected tags; a changed revision rejects without rebasing.
-The protocol233 read contract still admits only resting tags and supplies no
-draft arguments, so these inputs are not exposed to Godot yet. Viewer draft
-controls and transport remain unfinished; commits use the guarded whole-batch
-endpoint documented above, never a series of independently applied edits.
+Protocol234 exposes these inputs and staged tags to Godot. Commits use the
+guarded whole-batch endpoint documented above, never a series of independently
+applied edits. Full rendered/native workflow acceptance remains separate.
 
 Protected154515 on2026-11-15 compares sixteen native-input states with this
 owned projection, including individual/group/Select All drafts, selecting the

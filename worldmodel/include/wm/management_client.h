@@ -659,7 +659,7 @@ struct TasksState {
 struct DepotGoodsChange {int32_t id=-1;bool desired=false;};
 struct DepotGoodsCommitRequest {int32_t depotId=-1;uint64_t expectedRevision=0;std::vector<DepotGoodsChange> changes;};
 struct DepotGoodsCommitResult {int32_t depotId=-1;uint64_t expectedRevision=0,observedRevision=0;DepotGoodsCommitOutcome outcome=DepotGoodsCommitOutcome::Rejected;};
-struct DepotGoodsRequest {int32_t depotId=-1;int16_t category=-1;std::string query;bool sortByDistance=true,pendingOnTop=true,excludeProhibited=false;std::vector<int32_t> itemIds;};
+struct DepotGoodsRequest {int32_t depotId=-1;int16_t category=-1;std::string query;bool sortByDistance=true,pendingOnTop=true,excludeProhibited=false;std::vector<int32_t> itemIds;uint64_t expectedRevision=0;std::vector<DepotGoodsChange> draft,sortDraft;};
 struct DepotGoodsCategory {int16_t type=-1;std::string caption;};
 struct DepotGoodsGroup {int16_t subtype=-1,subcat1=-1,subcat2=-1;int32_t amount=0;std::string caption;bool matches=false,expanded=false;uint8_t flags=0;std::vector<int32_t> itemIds;};
 struct DepotGoodsItem {int32_t id=-1;std::string caption;int32_t distance=-1,value=0;int8_t tag=0;bool prohibited=false;};

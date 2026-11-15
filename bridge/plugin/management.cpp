@@ -5282,7 +5282,10 @@ void run(color_ostream& out) {
   if(r->action()==m::ManagementAction::DepotGoodsRead){
     status=m::ManagementStatus::Rejected;message.clear();
     try {const auto& q=*r->depot_goods();const std::vector<int32_t> ids(q.item_ids()->begin(),q.item_ids()->end());
-      depotGoodsReply=df3d_production::readDepotGoods(df::building::find(q.depot_id()),q.category(),UTF2DF(q.query()->str()),q.sort_by_distance(),q.pending_on_top(),q.exclude_prohibited(),ids);
+      std::vector<df3d_production::DepotGoodsChange> draft,sortDraft;
+      if(q.draft())for(const auto* row:*q.draft())draft.push_back({row->id(),row->desired()!=0});
+      if(q.sort_draft())for(const auto* row:*q.sort_draft())sortDraft.push_back({row->id(),row->desired()!=0});
+      depotGoodsReply=df3d_production::readDepotGoods(df::building::find(q.depot_id()),q.category(),UTF2DF(q.query()->str()),q.sort_by_distance(),q.pending_on_top(),q.exclude_prohibited(),ids,q.expected_revision(),draft,sortDraft);
       if(depotGoodsReply)status=m::ManagementStatus::Ok;
     }catch(...){depotGoodsReply.reset();}
     publish();return;

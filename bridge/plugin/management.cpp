@@ -2981,7 +2981,7 @@ int areaLink(lua_State* L) {
   auto* firstPile=virtual_cast<df::building_stockpilest>(workshop);
   const bool legacy=op->operation()==m::AreaOperation::None;
   if(legacy && !firstPile)return fail("Links require two different stockpiles");
-  if(!legacy && !workshop->canLinkToStockpile())return fail("This workshop cannot link to stockpiles");
+  if(!legacy && !df3d_area::nativeStockpileLinkSource(*workshop))return fail("This workshop cannot link to stockpiles");
   auto* links=legacy?&firstPile->links:workshop->getStockpileLinks();
   if(!links)return fail("This workshop cannot link to stockpiles");
   if(lua_type(L,3)!=LUA_TBOOLEAN || lua_type(L,4)!=LUA_TBOOLEAN)return fail("Invalid workshop link arguments");

@@ -521,8 +521,12 @@ local link_sources={{key='take_from_workshop',kind=2,direction=2},
  {key='take_from_pile',kind=0,direction=2},{key='give_to_pile',kind=0,direction=1}}
 -- Same native33616d..33633b vector order for a workshop source. This is a
 -- fresh owned semantic projection; no native link-window/cache is consulted.
+local function workshop_link_source(b)
+ -- Native lever Connections uses its profile despite the target predicate.
+ return b and (b:canLinkToStockpile() or (b:getType()==df.building_type.Trap and b:getSubtype()==0))
+end
 local function workshop_links(b,epoch)
- if not b or not b:canLinkToStockpile() or b:getBuildStage()~=b:getMaxBuildStage() or B.markedForRemoval(b) or
+ if not workshop_link_source(b) or b:getBuildStage()~=b:getMaxBuildStage() or B.markedForRemoval(b) or
     not visible{x=b.centerx,y=b.centery,z=b.z} then return nil,'Workshop is not available' end
  local links=b:getStockpileLinks();if not links then return nil,'Workshop has no links' end
  local hash=hash_integer(hash_integer(hash_integer(0xcbf29ce484222325,epoch),b.id),b:getType())
@@ -1346,7 +1350,7 @@ local function native_operation(r)
  if op==15 then
   workshop=df.building.find(default(a,'id',-1))
   if not workshop then return reject('Area no longer exists') end
-  if not workshop:canLinkToStockpile() then return reject('This workshop cannot link to stockpiles') end
+  if not workshop_link_source(workshop) then return reject('This workshop cannot link to stockpiles') end
   if default(a,'expected_list_revision',0)~=0 then
    local observed,why=workshop_links(workshop,r.epoch)
    if not observed then return reject(why) end

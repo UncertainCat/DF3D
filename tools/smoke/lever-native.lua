@@ -66,6 +66,7 @@ local ok,err=xpcall(function()
     if candidate.z==lever.z and d and not d.hidden then pile=candidate;break end
    end
    assert(pile);result.connections.pile_id=pile.id
+   result.connections.pile_tile={x=pile.centerx,y=pile.centery,z=pile.z}
    local function has(rows,id)for _,row in ipairs(rows)do if row.id==id then return true end end;return false end
    for _,entry in ipairs{{'give',80,'give_to_pile','take_from_workshop'},{'take',112,'take_from_pile','give_to_workshop'}}do
     click(768,82);click(entry[2],82);select_map(pile)
@@ -244,6 +245,14 @@ local ok,err=xpcall(function()
   capture('workshop-wire')
   file=assert(io.open(out..'/workshop-wire-result.json'));local wire=json.decode(file:read('*a'));file:close()
   assert(wire.success and #lever.jobs==2,'Lever wire action count mismatch');result.wire=wire
+  if os.getenv('DF3D_LEVER_CONNECTION_VIEWER')=='1'then
+   local links=lever:getStockpileLinks();local pile=df.building.find(result.connections.pile_id)
+   assert(#links.give_to_pile==0 and #links.take_from_pile==0,'Viewer retained lever stockpile links')
+   for _,field in ipairs{'take_from_workshop','give_to_workshop'}do
+    for _,target in ipairs(pile.links[field])do assert(target.id~=lever.id,'Viewer retained reciprocal link')end
+   end
+   result.connections.viewer_restored=true
+  end
   assert(menu==json.encode{sheet.open,sheet.active_id,sheet.linking_lever,sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id},'Wire borrowed native menu state')
   local observed=sample('wire-jobs')
   for index,kind in ipairs{'pull-1','link-target-click'}do

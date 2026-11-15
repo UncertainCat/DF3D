@@ -730,6 +730,10 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     }
     return result;
 }
+bool nativeStockpileLinkSource(df::building& source) {
+    return source.canLinkToStockpile() ||
+        (source.getType()==df::building_type::Trap && source.getSubtype()==0);
+}
 std::optional<df::building*> nativeStockpileLinkTarget(df::building& source,
     int16_t x,int16_t y,int16_t z,bool give) {
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -740,7 +744,7 @@ std::optional<df::building*> nativeStockpileLinkTarget(df::building& source,
     if(!compatible)return std::nullopt;
     const auto* links=source.getStockpileLinks();
     const bool stockpile=source.getType()==df::building_type::Stockpile;
-    if(!links || (!stockpile && !source.canLinkToStockpile()))return std::nullopt;
+    if(!links || (!stockpile && !nativeStockpileLinkSource(source)))return std::nullopt;
     const auto& piles=give?links->give_to_pile:links->take_from_pile;
     const auto& workshops=give?links->give_to_workshop:links->take_from_workshop;
     if(!validStockpileLinkVector(piles,source.id) || !validStockpileLinkVector(workshops,source.id))return std::nullopt;

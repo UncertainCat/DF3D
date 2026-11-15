@@ -199,10 +199,23 @@ render-thread/finalize/two ObjectDB diagnostics remain. Evidence is
 The same lane establishes that native lever Connections permits Give and Take
 despite `canLinkToStockpile()` returning false. Both directions create one link
 to stockpile121 with its reciprocal vector, and native removal restores both.
-Earlier085556 qualifies opening/list/picker cancellation only. The current
-semantic source guards still reject this lever; they must be corrected without
-relaxing stockpile-side target eligibility. No Connections viewer acceptance is
-claimed by this native discovery.
+Earlier085556 qualifies opening/list/picker cancellation only. Semantic source
+guards now admit Trap subtype0 alongside the native capability predicate.
+Stockpile-side target eligibility remains unchanged: this source exception does
+not make levers selectable from a stockpile's picker.
+
+Protected090224 on2026-11-15 qualifies lever Connections in the actual main
+scene: header opening, Give/Take cancellation, projected stockpile121 clicks,
+both link directions, Remove and Done. Seven panel crops match native exactly.
+Native readback confirms both reciprocal vectors restored; the subsequent Pull
+and projected mechanical Link workflow also passes. Owned DF38872 closes
+unsaved with source preservation. Graphics are capped30FPS, sampled GPU59–60C;
+the run has only the established render-thread/finalize/two ObjectDB diagnostics.
+MSVC, core19 and the area adapter check pass. The adapter mock now supplies
+the native building type/subtype methods used by source admission. Evidence:
+`completed_sheet_discovery_reference.lever_connections_reference`. Responsive
+and multiple-row lever Connections are not separately qualified; public lever
+selection remains gated pending the remaining workflows.
 
 ## Native bug register
 

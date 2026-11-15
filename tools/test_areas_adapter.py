@@ -114,7 +114,9 @@ def main():
      end
      return {ok=true,steps=4,tile_count=9}
     end
-    workshop={id=7,canLinkToStockpile=function()return not force_unlinkable end}
+    df.building_type={Trap=23,Workshop=5}
+    workshop={id=7,canLinkToStockpile=function()return not force_unlinkable end,
+     getType=function()return df.building_type.Workshop end,getSubtype=function()return 0 end}
     local old_find=df.building.find
     df.building.find=function(id)if id==7 then return workshop end;return old_find(id) end
     workshop_link_calls=0

@@ -7,6 +7,9 @@
 namespace df {struct building;struct building_stockpilest;}
 
 namespace df3d_area {
+// Native lever Connections accepts a source even though its target-side
+// canLinkToStockpile predicate is false. Do not use this for target discovery.
+bool nativeStockpileLinkSource(df::building& source);
 // Prepares owned endpoint vectors with native sorted insert/erase routines, then
 // publishes both ends together. nullopt rejects without mutation; false is the
 // native duplicate no-op. No native link interface or menu state is consulted.

@@ -25,6 +25,9 @@ func exercise(expected: Dictionary) -> void:
 	owner.lever.applied.connect(func(operation,id):applied_jobs[operation]=id)
 	owner.open_target(55)
 	if not await ready_jobs(0):return
+	if OS.get_environment("DF3D_LEVER_CONNECTION_VIEWER")=="1":
+		await connection_gestures()
+		if failed:return
 	await pointer(Vector2(840,154))
 	if not await ready_jobs(1):return
 	if not check(applied_jobs.has(2),"Main-scene Pull did not apply"):return
@@ -52,3 +55,46 @@ func exercise(expected: Dictionary) -> void:
 	owner.close_panel();await process_frame
 	check(scene._ui.host.active==null,"Lever close retained main-scene owner")
 	exercised=true
+func connections_ready() -> bool:
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		await process_frame
+		if owner.connections.phase==owner.connections.Phase.Ready:return true
+	return check(false,"Lever Connections did not become Ready: "+str(owner.connections.phase))
+func connection_capture(label: String,height: int) -> void:
+	var motion:=InputEventMouseMotion.new();motion.position=Vector2(400,500);root.push_input(motion,true)
+	await process_frame;await process_frame;await RenderingServer.frame_post_draw
+	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	var native:=Image.load_from_file(directory+"/lever-connections-"+label+".png");native.convert(Image.FORMAT_RGB8)
+	var rect:=Rect2i(56,52,328,height);var crop:=image.get_region(rect)
+	crop.save_png(directory+"/lever-connections-"+label+"-viewer.png")
+	check(crop.get_data()==native.get_region(rect).get_data(),"Lever Connections pixels differ: "+label)
+func connection_gestures() -> void:
+	var native: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/lever-native.json"))
+	var point: Dictionary=native.connections.pile_tile
+	var tile:=Vector3i(point.x,point.y,point.z)
+	scene._ui.focus_tile(tile)
+	await pointer(Vector2(768,82))
+	if not await connections_ready():return
+	await connection_capture("open",420)
+	for entry in [["give",80,1],["take",112,2]]:
+		await pointer(Vector2(entry[1],82))
+		check(owner.connections.picking and not owner.panel.visible,"Connections picker did not hide lever")
+		await connection_capture(entry[0],120)
+		await pointer(Vector2(328,82))
+		if not await connections_ready():return
+		check(owner.panel.visible,"Connections Cancel did not restore lever")
+		await pointer(Vector2(entry[1],82))
+		for i in 15:await process_frame
+		var position: Vector2=owner.camera.unproject_position(Vector3(tile.x+0.5,tile.z+float(world.floor_height()),tile.y+0.5))
+		if not check(world.pick_tile(owner.camera.project_ray_origin(position),owner.camera.project_ray_normal(position),world.get_top_z())==tile,"Connections map ray missed pile"):return
+		await pointer(position)
+		if not await connections_ready():return
+		check(owner.connections.rows.size()==1 and owner.connections.rows[0].id==int(native.connections.pile_id) and owner.connections.rows[0].direction==entry[2],"Connections link differs from native")
+		await connection_capture("linked-"+entry[0],420)
+		await pointer(Vector2(352,154))
+		if not await connections_ready():return
+		check(owner.connections.rows.is_empty(),"Connections Remove retained link")
+		await connection_capture("unlinked-"+entry[0],420)
+	await pointer(Vector2(328,82));await process_frame
+	check(not owner.connections_view.visible and owner.panel.visible and not owner.modal_input,"Connections Done retained modal input")

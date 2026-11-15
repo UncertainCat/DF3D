@@ -37,7 +37,7 @@ func ready() -> void:
 	setup();model.open(278);service.poll();reply(snapshot())
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
-	for kind in [0,1,2,5,8,10,13,15]:
+	for kind in [0,1,2,5,8,10,11,12,13,14,15,51,52,54]:
 		var supported:=snapshot();supported.type=kind
 		check(Model.valid_snapshot(supported,278),"native header type "+str(kind))
 	ready();check(model.phase==Model.Phase.Ready and world.calls[0].request.building_header and not world.calls[0].request.has("season"),"independent header read")

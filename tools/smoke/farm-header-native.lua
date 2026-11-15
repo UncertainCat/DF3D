@@ -198,7 +198,7 @@ local function selection_shot(name,while_waiting)
  local rendered_carrier=name=='farm-item-carrier-scene' or name=='farm-item-carrier-unit-scene'
  local furniture=name=='workshop-wire' and os.getenv('DF3D_FURNITURE_RUNTIME')=='1'
  -- The four furniture workflows may use the launcher's full45-second budget.
- local limit=dfhack.getTickCount()+(furniture and 60000 or rendered_carrier and 95000 or lifecycle and 85000 or (blink or contents_refresh or labor_navigation) and 60000 or 30000)
+ local limit=dfhack.getTickCount()+(furniture and os.getenv('DF3D_FURNITURE_GENERIC_DISCOVERY')=='1' and 95000 or furniture and 60000 or rendered_carrier and 95000 or lifecycle and 85000 or (blink or contents_refresh or labor_navigation) and 60000 or 30000)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
   assert(dfhack.getTickCount()<limit,'selection capture timeout')
   if while_waiting then while_waiting()end

@@ -195,6 +195,14 @@ local ok,err=xpcall(function()
     click(500,202);assert(#target.jobs==0);observe('restored')
     click(772+controls_offset,526);assert(sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==item.id,'Native furniture View missed its component')
     gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(target);observe('view-return')
+    if kind==14 and #target.contained_items>6 then
+     for _,direction in ipairs{{'tail',718,(#target.contained_items-6)*3},{'top',514,0}}do
+      for i=1,45 do click(880,direction[2])end
+      assert(sheet.scroll_position_item==direction[3],'Native cabinet scrollbar did not reach '..direction[1])
+      row.contents_scroll=row.contents_scroll or {};row.contents_scroll[direction[1]]=sheet.scroll_position_item
+      shot('furniture-14-contents-'..direction[1])
+     end
+    end
     if kind==1 and os.getenv('DF3D_FURNITURE_RESIZE')=='1'then
      for _,size in ipairs{'small','medium','wide','default'}do resize_worker(size);shot('furniture-1-resize-'..size)end
     end

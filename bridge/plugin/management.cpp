@@ -3435,7 +3435,7 @@ df::building_actual* contentsBuilding(int32_t id,bool editing=false) {
   auto* building=virtual_cast<df::building_actual>(df::building::find(id));
   if(!building)return nullptr;
   const auto type=building->getType();
-  if(type!=df::building_type::Chair && type!=df::building_type::Bed && type!=df::building_type::Table && type!=df::building_type::Statue && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
+  if(!df3d_production::plainFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
      (editing || (type!=df::building_type::Workshop && type!=df::building_type::Furnace)) &&
      !df3d_production::observePendingBuilding(building))return nullptr;
   auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
@@ -4190,7 +4190,7 @@ void run(color_ostream& out) {
         auto* building=df::building::find(q->building_id());
         if(!building)return nullptr;
         const auto type=building->getType();
-        if(type!=df::building_type::Chair && type!=df::building_type::Bed && type!=df::building_type::Table && type!=df::building_type::Statue && type!=df::building_type::Door && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return nullptr;
+        if(!df3d_production::plainFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return nullptr;
         auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
         return tile && !tile->bits.hidden?building:nullptr;
       };
@@ -4282,7 +4282,7 @@ void run(color_ostream& out) {
       if(before) {
         const bool unfinished=bool(df3d_production::observePendingBuilding(contentsBuilding(q->building_id(),true)));
         const auto contentsType=contentsBuilding(q->building_id())->getType();
-        const bool editRemoving=unfinished || contentsType==df::building_type::Box || contentsType==df::building_type::Chair || contentsType==df::building_type::Bed || contentsType==df::building_type::Table || contentsType==df::building_type::Statue;
+        const bool editRemoving=unfinished || contentsType==df::building_type::Box || df3d_production::plainFurnitureType(contentsType);
         auto edit=df3d_production::finishBuildingItemEdit(*before,q->expected_revision(),q->item_id(),action,q->item_value()!=0,[&] {
           auto* building=contentsBuilding(q->building_id(),true);
           if(!building)return false;

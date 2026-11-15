@@ -54,6 +54,13 @@ func exercise(expected: Dictionary) -> void:
 		if not await chest_ready():return
 		check(owner.state.building_id==int(entry.id),"Item holder returned to a different building")
 		await panel_capture(str(int(entry.id))+"-holder-return",prefix+"restored")
+		if int(entry.type)==14 and entry.get("contents",[]).size()>6:
+			for direction in [["tail",MOUSE_BUTTON_WHEEL_DOWN],["top",MOUSE_BUTTON_WHEEL_UP]]:
+				for step in 45:
+					await pointer(contents.get_global_transform_with_canvas()*Vector2(200,18),direction[1])
+					if not await chest_ready():return
+				check(contents.cell_first==(int(owner.contents.snapshot.total)*3-contents.page*3 if direction[0]=="tail" else 0),"Cabinet did not reach contents boundary")
+				await panel_capture("cabinet-"+direction[0],"workshop-furniture-14-contents-"+direction[0])
 		if int(entry.type)==1 and OS.get_environment("DF3D_FURNITURE_RESIZE")=="1":
 			for size_case in [["small",Vector2i(960,600)],["medium",Vector2i(1200,720)],["wide",Vector2i(1600,900)],["default",Vector2i(1200,800)]]:
 				root.size=size_case[1];await process_frame;await process_frame;await RenderingServer.frame_post_draw

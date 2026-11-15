@@ -87,6 +87,16 @@ inline const FarmFunctions& farmFunctions() {
     }();
     return functions;
 }
+// Families whose native sheet consists of the shared header and contents.
+inline bool plainFurnitureType(df::building_type type) {
+    switch(type) {
+    case df::building_type::Chair:case df::building_type::Bed:case df::building_type::Table:
+    case df::building_type::Weaponrack:case df::building_type::Armorstand:case df::building_type::Cabinet:
+    case df::building_type::Statue:case df::building_type::Instrument:case df::building_type::Bookcase:
+    case df::building_type::OfferingPlace:return true;
+    default:return false;
+    }
+}
 struct BuildingHeader {
     std::string customNameCp437,nativeNameCp437,headerNameCp437;
     bool removing=false,suspended=false,hasWorker=false;
@@ -97,7 +107,7 @@ struct BuildingHeader {
 inline bool cancelBuildingRemoval(df::building* building) {
     const auto& native=farmFunctions();
     if(!native || !building ||
-       (building->getType()!=df::building_type::Chair && building->getType()!=df::building_type::Bed && building->getType()!=df::building_type::Table && building->getType()!=df::building_type::Statue && building->getType()!=df::building_type::Door && building->getType()!=df::building_type::FarmPlot && building->getType()!=df::building_type::Box && building->getType()!=df::building_type::Workshop && building->getType()!=df::building_type::Furnace) || building->getBuildStage()!=building->getMaxBuildStage() ||
+       (!plainFurnitureType(building->getType()) && building->getType()!=df::building_type::Door && building->getType()!=df::building_type::FarmPlot && building->getType()!=df::building_type::Box && building->getType()!=df::building_type::Workshop && building->getType()!=df::building_type::Furnace) || building->getBuildStage()!=building->getMaxBuildStage() ||
        building->jobs.size()>size_t(INT16_MAX))return false;
     bool removing=false;
     for(const auto* job:building->jobs) {
@@ -116,7 +126,7 @@ inline std::optional<BuildingHeader> buildingHeader(df::building* farm) {
     const auto& native=farmFunctions();
     if(!native || !farm || farm->name.size()>512 || farm->jobs.size()>size_t(INT32_MAX))return {};
     const auto type=farm->getType();
-    if(type!=df::building_type::Chair && type!=df::building_type::Bed && type!=df::building_type::Table && type!=df::building_type::Statue && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return {};
+    if(!plainFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return {};
     BuildingHeader value;value.customNameCp437=farm->name;farm->getName(&value.nativeNameCp437);
     if(value.nativeNameCp437.size()>512)return {};
     value.headerNameCp437=value.nativeNameCp437;native.formatName(&value.headerNameCp437);

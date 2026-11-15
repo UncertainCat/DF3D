@@ -122,7 +122,7 @@ func open_building_holder(kind: int,id: int) -> void:
 	if kind==4:controller("farm").open_target(id)
 	elif kind==8:controller("door").open_target(id)
 	elif kind==10:controller("chest").open_target(id)
-	elif kind in [0,1,2,15]:controller("furniture").open_target(id)
+	elif kind in [0,1,2,11,12,14,15,51,52,54]:controller("furniture").open_target(id)
 	elif kind in [5,13]:
 		# The item receipt supplies native type/ID; resident semantics supply the
 		# subtype artwork. The opened header still obtains fresh action authority.

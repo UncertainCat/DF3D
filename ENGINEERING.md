@@ -9738,9 +9738,26 @@ and asserts the first row is the installed component. Earlier032215 stopped at
 the cabinet's multi-item fixture guard; it is not full action acceptance.
 Source preserved, DF41268 exits unsaved, native30FPS. Evidence is in
 completed_sheet_discovery_reference.additional_furniture_reference. These six
-families remain candidates: their DF3D target admission and contents artwork,
-including stored clothing, are not yet qualified. Coffin and Slab bodies remain
-separate specialized work.
+families use the shared controller. Header admission is centralized in
+plainFurnitureType, and each
+furniture contents row reuses itemAppearance (including native legwear facts).
+Management protocol223's layout is unchanged: this extends admitted native
+building types using existing header and item-appearance fields. Deploy the
+matching bridge/client feature build; older bridges reject these new targets.
+Protected034225 verifies86 exact full-panel comparisons across these six
+families: Rename/restore, component Forbid/restore, Remove/Cancel, component
+Forbid/Dump/Hide while removing (Melt inactive), View/holder return and Escape.
+Cabinet394's15 contents match at both scroll boundaries, including stored
+clothing artwork; native arrow clicks assert cell positions27 and0. Final native
+readbacks confirm restored names, jobs and component flags. Source saves remain
+unchanged and owned DF12560 exits unsaved. Both graphical processes are capped
+at30FPS; sampled GPU48–50C. Only documented Godot startup/shutdown diagnostics
+occur, so acceptance is passed_with_known_issues. Core19 passes.
+033817's native wheel probe did not scroll;034038 matched all panels but failed
+its diagnostic final-state bookkeeping. Neither is full lane acceptance.
+Bounded viewer_reference records034225's hashes and effects. Normal map entry
+for these six types, stored-clothing edits and worker-owned demolition remain
+unqualified. Coffin and Slab bodies remain separate specialized work.
 
 Protected native023324 and023607 on2026-11-15 qualify ordinary furniture
 with nonempty zone relations: Chair65, Bed9, Table62 and Statue493 still show no

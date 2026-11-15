@@ -435,7 +435,8 @@ try {
      if($env:DF3D_FURNITURE_MAP -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/furniture_map_scene_live.gd')}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
      $null=$client.Handle
-     if(-not $client.WaitForExit(45000)){$client.Kill();$client.WaitForExit();throw 'Workshop client timed out; no replay'}
+     $workshopClientTimeout=if($env:DF3D_FURNITURE_GENERIC_DISCOVERY -eq '1'){90000}else{45000}
+     if(-not $client.WaitForExit($workshopClientTimeout)){$client.Kill();$client.WaitForExit();throw 'Workshop client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/$name-result.json")){throw 'Workshop client failed'}
     }
     if($FarmItemCarriers -and $name -eq 'unit-header-wire') {

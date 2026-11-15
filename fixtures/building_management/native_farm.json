@@ -13196,7 +13196,7 @@
             },
             {
               "y": 43,
-              "text": "       (+\u00c2\u00ab-kumquat wood chest-\u00c2\u00bb+)"
+              "text": "       (+Â«-kumquat wood chest-Â»+)"
             },
             {
               "y": 46,
@@ -13492,7 +13492,7 @@
             },
             {
               "y": 61,
-              "text": "Vab\u00c3\u00b4k Copperlauded's dead body."
+              "text": "VabÃ´k Copperlauded's dead body."
             }
           ],
           "image_sha256": "e33ff050cf675289b9f1a2bc140d9272faf14be17f411f200435911974027e7b"
@@ -13860,7 +13860,7 @@
             },
             {
               "y": 43,
-              "text": "       \u00c2\u00ab\u00e2\u2030\u00a1bitter orange wood traction..."
+              "text": "       Â«â‰¡bitter orange wood traction..."
             }
           ],
           "image_sha256": "76a3972e2067c9c837bdb9897e18f6aeebdc80bd735b890c1e857fd1a53676ff"
@@ -13912,11 +13912,11 @@
           "panel_text": [
             {
               "y": 6,
-              "text": "       (copper r\u00c3\u00adt)"
+              "text": "       (copper rÃ­t)"
             },
             {
               "y": 43,
-              "text": "       (copper r\u00c3\u00adt)"
+              "text": "       (copper rÃ­t)"
             }
           ],
           "image_sha256": "64acd7c549194aac735a04ca710f5be491e74888d7b76f0d362206727a9772c6"
@@ -16329,7 +16329,165 @@
               "workshop-furniture-54-view-return.png": "c45c7040e56860ac05a39b49d6823cfdce3f6f8f06f2ac202480e89ff157a934"
             }
           }
-        ]
+        ],
+        "viewer_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-034225",
+          "scope": "Six additional plain furniture families, actual main-scene controllers: Rename/restore, component Forbid/restore, Remove/Cancel, Forbid/Dump/Hide during removal and inactive Melt, component View/holder return, Escape. Cabinet fifteen contents and top/tail artwork. Direct map entry not yet qualified; stored-clothing edits and worker-owned demolition not exercised.",
+          "panel_comparisons": 86,
+          "receipt": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          },
+          "post": [
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 917
+            },
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 918
+            },
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 394
+            },
+            {
+              "actual_flags": 536887328,
+              "expected_flags": 536887328,
+              "id": 468
+            },
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 866
+            },
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 274
+            }
+          ],
+          "cabinet_scroll": {
+            "tail": 27,
+            "top": 0
+          },
+          "diagnostics": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              },
+              {
+                "id": "godot-device-finalize",
+                "count": 1,
+                "reference": "https://github.com/godotengine/godot/issues/119000"
+              },
+              {
+                "id": "godot-shutdown-objects",
+                "count": 1,
+                "reference": "ENGINEERING.md#tests-and-known-problems"
+              }
+            ],
+            "unclassified": []
+          },
+          "sha256": {
+            "chest-scene-917-initial.png": "c68e654655139a0cfdf2a914920d4ac7db658e9ddf33c9f466df47f1a744c3fb",
+            "chest-scene-917-renamed.png": "70b168d5967884d6ad907c067486b332194a3dea883f8ceddc9702dc65431718",
+            "chest-scene-917-forbidden.png": "305365bcaf76f0f4f7b72416f6adbdeaff4dac24832993f2f7ca7b29544d7e20",
+            "chest-scene-917-removing.png": "8bfb533d1da6d765c46295320f163e6538315792c32f673a456fdc751fc63986",
+            "chest-scene-917-restored.png": "c68e654655139a0cfdf2a914920d4ac7db658e9ddf33c9f466df47f1a744c3fb",
+            "chest-scene-917-holder-return.png": "c68e654655139a0cfdf2a914920d4ac7db658e9ddf33c9f466df47f1a744c3fb",
+            "chest-scene-917-removing-forbid-1.png": "d557975701a0f40fe9e1a76d229d185189f61c15c96535495bf36871901103da",
+            "chest-scene-917-removing-forbid-2.png": "8bfb533d1da6d765c46295320f163e6538315792c32f673a456fdc751fc63986",
+            "chest-scene-917-removing-dump-1.png": "65b698269bb674367b9e6ee4a31d478b506af1612e3d9d96174fe66f909fb7df",
+            "chest-scene-917-removing-dump-2.png": "8bfb533d1da6d765c46295320f163e6538315792c32f673a456fdc751fc63986",
+            "chest-scene-917-removing-melt-1.png": "8bfb533d1da6d765c46295320f163e6538315792c32f673a456fdc751fc63986",
+            "chest-scene-917-removing-melt-2.png": "8bfb533d1da6d765c46295320f163e6538315792c32f673a456fdc751fc63986",
+            "chest-scene-917-removing-hidden-1.png": "989b5948ef8141de872015056e488ef7760ebc588315448eb736a6ebefda965f",
+            "chest-scene-917-removing-hidden-2.png": "8bfb533d1da6d765c46295320f163e6538315792c32f673a456fdc751fc63986",
+            "chest-scene-918-initial.png": "e5bb4f307dc0cfaf00bccdb075fb8369e7110316f00810476640cd45e6463d0d",
+            "chest-scene-918-renamed.png": "a9b1213ae6651b595894cf4293430123a8fd995ca5c4cc48150bfdafe6b07002",
+            "chest-scene-918-forbidden.png": "628d4fde9cfe51f659ccddca612c954514649d0d41d5e5f35fb21f26bb1a8ecc",
+            "chest-scene-918-removing.png": "5ebf535f79c644afebbb122fd23d0bed5a9db928231d665a41d3a3f45a56d952",
+            "chest-scene-918-restored.png": "e5bb4f307dc0cfaf00bccdb075fb8369e7110316f00810476640cd45e6463d0d",
+            "chest-scene-918-holder-return.png": "e5bb4f307dc0cfaf00bccdb075fb8369e7110316f00810476640cd45e6463d0d",
+            "chest-scene-918-removing-forbid-1.png": "9df1a9676459619e44ec9d293109bb5650e48ed9f82f31aa0f7c544164c5aa35",
+            "chest-scene-918-removing-forbid-2.png": "5ebf535f79c644afebbb122fd23d0bed5a9db928231d665a41d3a3f45a56d952",
+            "chest-scene-918-removing-dump-1.png": "8d9e0ec8de21323b78683a602de78946985c375757439b3dd72a1324956b03dc",
+            "chest-scene-918-removing-dump-2.png": "5ebf535f79c644afebbb122fd23d0bed5a9db928231d665a41d3a3f45a56d952",
+            "chest-scene-918-removing-melt-1.png": "5ebf535f79c644afebbb122fd23d0bed5a9db928231d665a41d3a3f45a56d952",
+            "chest-scene-918-removing-melt-2.png": "5ebf535f79c644afebbb122fd23d0bed5a9db928231d665a41d3a3f45a56d952",
+            "chest-scene-918-removing-hidden-1.png": "0442669d7957affbfd58f37cb3045cdd180b0669d4c12cad1756fec7d1e3398c",
+            "chest-scene-918-removing-hidden-2.png": "5ebf535f79c644afebbb122fd23d0bed5a9db928231d665a41d3a3f45a56d952",
+            "chest-scene-394-initial.png": "ab2dd363f69fbdde096b86e30b9aa4fa93624c64dd609d6d6256153dd8f7b4e7",
+            "chest-scene-394-renamed.png": "2e969596a3871a0827669d6ceedb787b1f395fc780bb0f0de62c53b742238cbf",
+            "chest-scene-394-forbidden.png": "71dd7a0d1977f0c4748b5f95dd6a8f18334af508e066c2f4a3fb0965240a42b3",
+            "chest-scene-394-removing.png": "85b732bf620854754b88db0b8ad7c3983f8312b2858ae309595b778e25fd0d0d",
+            "chest-scene-394-restored.png": "ab2dd363f69fbdde096b86e30b9aa4fa93624c64dd609d6d6256153dd8f7b4e7",
+            "chest-scene-394-holder-return.png": "ab2dd363f69fbdde096b86e30b9aa4fa93624c64dd609d6d6256153dd8f7b4e7",
+            "chest-scene-394-removing-forbid-1.png": "2d8c65c0af4f1daf591f9f09f11a3918e914f1c7e61f828876207fcb4afca926",
+            "chest-scene-394-removing-forbid-2.png": "85b732bf620854754b88db0b8ad7c3983f8312b2858ae309595b778e25fd0d0d",
+            "chest-scene-394-removing-dump-1.png": "b142feb576ea1a46bf6f5bf0c61a459dafe1ae920e700c7e0b63166073e352eb",
+            "chest-scene-394-removing-dump-2.png": "85b732bf620854754b88db0b8ad7c3983f8312b2858ae309595b778e25fd0d0d",
+            "chest-scene-394-removing-melt-1.png": "85b732bf620854754b88db0b8ad7c3983f8312b2858ae309595b778e25fd0d0d",
+            "chest-scene-394-removing-melt-2.png": "85b732bf620854754b88db0b8ad7c3983f8312b2858ae309595b778e25fd0d0d",
+            "chest-scene-394-removing-hidden-1.png": "28d5961cc97e947936d6936e2e3ff54e6696cdab2dfed2cb3939cb3ba9a8081c",
+            "chest-scene-394-removing-hidden-2.png": "85b732bf620854754b88db0b8ad7c3983f8312b2858ae309595b778e25fd0d0d",
+            "chest-scene-468-initial.png": "e905af4faf586c8a65673d8354fd0063edd479b85f0a3fe253ad9fe6510ba5fd",
+            "chest-scene-468-renamed.png": "e1e47fd8940d0e750b4122e0baaa0bb98ded586b9e6b1a909a84dbf95cf5e835",
+            "chest-scene-468-forbidden.png": "419f9013dcc9555f7794d5867a857b94eafd5408f3caee8d9bcd65ee1abf39af",
+            "chest-scene-468-removing.png": "2cd3a106329ba2d1c8e3632a2f9215dbb9018439aa57540f26cb93eccc760efe",
+            "chest-scene-468-restored.png": "e905af4faf586c8a65673d8354fd0063edd479b85f0a3fe253ad9fe6510ba5fd",
+            "chest-scene-468-holder-return.png": "e905af4faf586c8a65673d8354fd0063edd479b85f0a3fe253ad9fe6510ba5fd",
+            "chest-scene-468-removing-forbid-1.png": "1689e16759a8dcb9a21ef394f63ed159d74581703c2e1e06afdcc5c8dd86cf48",
+            "chest-scene-468-removing-forbid-2.png": "2cd3a106329ba2d1c8e3632a2f9215dbb9018439aa57540f26cb93eccc760efe",
+            "chest-scene-468-removing-dump-1.png": "b52e5d6ee6aff842d602d00cfff5226f015ef75bd32dd723cb109316facea09d",
+            "chest-scene-468-removing-dump-2.png": "2cd3a106329ba2d1c8e3632a2f9215dbb9018439aa57540f26cb93eccc760efe",
+            "chest-scene-468-removing-melt-1.png": "2cd3a106329ba2d1c8e3632a2f9215dbb9018439aa57540f26cb93eccc760efe",
+            "chest-scene-468-removing-melt-2.png": "2cd3a106329ba2d1c8e3632a2f9215dbb9018439aa57540f26cb93eccc760efe",
+            "chest-scene-468-removing-hidden-1.png": "214e6cb27893dd4313e26b5b98edb2ee04f6d70209892831c5c0bf6fb47674b4",
+            "chest-scene-468-removing-hidden-2.png": "2cd3a106329ba2d1c8e3632a2f9215dbb9018439aa57540f26cb93eccc760efe",
+            "chest-scene-866-initial.png": "89b7cdf8a71c88127d7e40cc7e562c18c2bc815c06e5fb0a022dd1aa1daeaeab",
+            "chest-scene-866-renamed.png": "dbb114e4ce1e894fa1c780da7330a0591a17a02b98ba7ae2002691f801012908",
+            "chest-scene-866-forbidden.png": "6f142f515194064f6507082637ccefce2be7450f6d2e22777336509a3d123b1a",
+            "chest-scene-866-removing.png": "ebce4f41b67bcdc5cdb75b2836a5dbf1f4ddd2740bb41b639367cddbc1d32e55",
+            "chest-scene-866-restored.png": "89b7cdf8a71c88127d7e40cc7e562c18c2bc815c06e5fb0a022dd1aa1daeaeab",
+            "chest-scene-866-holder-return.png": "89b7cdf8a71c88127d7e40cc7e562c18c2bc815c06e5fb0a022dd1aa1daeaeab",
+            "chest-scene-866-removing-forbid-1.png": "2d9e228896f3a50f9f40ae45d7a283c013ab02c0444f101cf0ed321e3e425356",
+            "chest-scene-866-removing-forbid-2.png": "ebce4f41b67bcdc5cdb75b2836a5dbf1f4ddd2740bb41b639367cddbc1d32e55",
+            "chest-scene-866-removing-dump-1.png": "e6680fc96f9f3221c30316ab03868f928a8836560e3dd5eb0eaa468c7fc688b7",
+            "chest-scene-866-removing-dump-2.png": "ebce4f41b67bcdc5cdb75b2836a5dbf1f4ddd2740bb41b639367cddbc1d32e55",
+            "chest-scene-866-removing-melt-1.png": "ebce4f41b67bcdc5cdb75b2836a5dbf1f4ddd2740bb41b639367cddbc1d32e55",
+            "chest-scene-866-removing-melt-2.png": "ebce4f41b67bcdc5cdb75b2836a5dbf1f4ddd2740bb41b639367cddbc1d32e55",
+            "chest-scene-866-removing-hidden-1.png": "7ba1e756760da87a23d768cadf042a2c52e599fa508bb8db5fe4d0fca57d47b4",
+            "chest-scene-866-removing-hidden-2.png": "ebce4f41b67bcdc5cdb75b2836a5dbf1f4ddd2740bb41b639367cddbc1d32e55",
+            "chest-scene-274-initial.png": "7b2b4dff32258174555291ac914f9566edeb8c0ead0b3b84f69b77c3fa4249fa",
+            "chest-scene-274-renamed.png": "9c23d2ecf06d739a803ebddc6f92e94f3eef2ed4cafb18b1c6894da1a1008032",
+            "chest-scene-274-forbidden.png": "d6918b3fffa531f93c84891938d8dd37a781ed097538aa1bcd013d4fdeeb76b7",
+            "chest-scene-274-removing.png": "05d3b24ccdc5f51261fdafd8133f48e117bdc2d62910c1078db9512cb6b57262",
+            "chest-scene-274-restored.png": "7b2b4dff32258174555291ac914f9566edeb8c0ead0b3b84f69b77c3fa4249fa",
+            "chest-scene-274-holder-return.png": "7b2b4dff32258174555291ac914f9566edeb8c0ead0b3b84f69b77c3fa4249fa",
+            "chest-scene-274-removing-forbid-1.png": "93d80e3c122961de65c5370b26eec42cc599fcdd0a3982ffcc26a516e345591e",
+            "chest-scene-274-removing-forbid-2.png": "05d3b24ccdc5f51261fdafd8133f48e117bdc2d62910c1078db9512cb6b57262",
+            "chest-scene-274-removing-dump-1.png": "c41d149f3f7a6e65627bdfeaf6386f07c6b17c0e4c7d91baaa0d424cf8c0b789",
+            "chest-scene-274-removing-dump-2.png": "05d3b24ccdc5f51261fdafd8133f48e117bdc2d62910c1078db9512cb6b57262",
+            "chest-scene-274-removing-melt-1.png": "05d3b24ccdc5f51261fdafd8133f48e117bdc2d62910c1078db9512cb6b57262",
+            "chest-scene-274-removing-melt-2.png": "05d3b24ccdc5f51261fdafd8133f48e117bdc2d62910c1078db9512cb6b57262",
+            "chest-scene-274-removing-hidden-1.png": "fce38df546d4a1a270280c89e9e57cac0854a1d1149e5b06171d4914792a5218",
+            "chest-scene-274-removing-hidden-2.png": "05d3b24ccdc5f51261fdafd8133f48e117bdc2d62910c1078db9512cb6b57262",
+            "chest-scene-cabinet-tail.png": "28d450107d65bfc7c3241a412452dea9e235c758996e6718ad96d86f444a6ddd",
+            "chest-scene-cabinet-top.png": "ab2dd363f69fbdde096b86e30b9aa4fa93624c64dd609d6d6256153dd8f7b4e7"
+          },
+          "excluded_attempts": {
+            "033817": "Cabinet native wheel probe did not move; viewer tail comparison failed.",
+            "034038": "All86 panels matched but diagnostic scroll records displaced final component baseline; native postcheck failed."
+          }
+        }
       }
     },
     "pending_construction_reference": {

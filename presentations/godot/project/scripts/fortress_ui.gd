@@ -306,11 +306,20 @@ func open_target(tile: Vector3i, kind: int, id: int) -> void:
 	if not host.play_enabled:return
 	if kind==3:
 		var target: Dictionary=world.inspect_entity(kind,id)
-		if target.get("building_kind",0)==9 and target.get("complete",false):
+		var native_kind: int=target.get("building_kind",0)
+		if (native_kind==9 and target.get("complete",false)) or (native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true)):
 			open_tile_selection(tile);return
+	elif kind in [0,2]:
+		# Loose items can cover an unfinished building in the rendered map.
+		# Let DF's tile selection choose the sheet and alternatives there too.
+		for building in world.buildings_at_tile(tile):
+			var target: Dictionary=world.inspect_entity(3,int(building.id))
+			var native_kind: int=target.get("building_kind",0)
+			if native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true):
+				open_tile_selection(tile);return
 	controller("inspector").open_target(tile,kind,id)
 
-# Native selection entry. Completed doors use it from ordinary map picking;
+# Native selection entry. Completed doors and unfinished buildings use ordinary map picking;
 # remaining map targets retain their separate acceptance gate.
 func open_tile_selection(tile: Vector3i) -> void:
 	if tile_selection==null:

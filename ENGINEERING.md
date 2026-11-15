@@ -9919,13 +9919,29 @@ kind except stockpiles/zones; completed-building destinations stay separately
 qualified. Ordinary map entry, responsive layout and other holder types are not
 newly accepted by these two runs.
 
-The staged tile-selection owner routes streamed unfinished buildings to the
+The tile-selection owner routes streamed unfinished buildings to the
 pending-building controller, preserving confirmed tab handoffs and retiring
 selection on Escape. It uses the existing native tab frame; the farm's former
 right-border mismatch came from opening its panel outside that composition.
 Farm tabs use the installed BUILDING_ICON_FARM_PLOT. Non-rotten picked-plant
 selection icons reuse originalItemIcon, matching native c7fa25..c7fa68's direct
 plant tile path instead of the terrain material tint. Terrain rendering is unchanged.
+
+Unfinished Workshop3 and Lever55 use the shared contents layout and hover help.
+Protected021153 on2026-11-15 compares their complete panels at960x600,
+1200x720,1600x900 and1200x800: all eight match native, including the lever's
+additional trigger-section space. Main-scene pointer hover selects permanent
+membership, View, Forbid, Dump and Visibility; unavailable wooden-component Melt
+and both construction buttons show no help. Escape clears hover ownership.
+Native021335 confirms instructions317/324/325/326/328 and exact text matching
+the existing CONTENTS_HELP provider. The earlier native hover samples lacked a
+final input/render step and captured cleared instruction IDs; those samples are
+not hover evidence. No runtime layout or tooltip workaround was required.
+Both owned sessions41164/8916 close unsaved with source preservation;30FPS,
+GPU49C sampled, and only known viewer shutdown diagnostics. Fixture
+`pending_construction_reference.layout_hover_reference` records the accepted
+observations and hashes. Shared contents' existing scroll/lifecycle evidence
+remains separate; this run qualifies resizing and hover composition.
 
 Protected014331 on2026-11-15 compares six full488x708 panels (the prior five plus
 Farm227) and its40x72 two-tab crop, all exact. Pointer navigation to Plant48436
@@ -9936,9 +9952,30 @@ fields are restored before owned DF4732 exits unsaved. Source preservation passe
 Extension build, headless parse and core19 pass; live has only documented Godot
 thread/finalize/two ObjectDB diagnostics. Failed fixture/filename/icon attempts are
 not acceptance; selection_entry_reference in pending_construction_reference
-records the accepted evidence and limits. Ordinary map picking remains separately
-gated. Component inspection with retained selection context, removal interactions,
-hover and responsive qualification remain to be completed before broad exposure.
+records the accepted evidence and limits. The component, removal, hover and
+responsive qualifications are recorded separately in this section.
+
+Ordinary map clicks now open native selection for streamed unfinished buildings
+(excluding stockpiles/zones), as well as the previously qualified completed doors.
+A loose item or terrain hit on an unfinished building tile takes the same semantic
+route: DF chooses the sheet and alternatives. This fixes Workshop3, where item46710
+was closer to the ray and formerly bypassed native selection into the old inspector.
+Other completed-building routes remain separately gated.
+
+Protected022509 on2026-11-15 verifies actual pointer entry, Escape during selection,
+and reopening for unfinished Smelter56, Workshop3, Door16, Statue493, Lever55 and
+Farm227. Six full panels and the farm two-tab crop match native. The explicit
+Farm227→Plant48436→Farm227 round trip retires the former detail owner and restores
+the building; final Escape clears owner, tabs and receipt. Earlier021454/021726
+exposed the item-over-building route.021854/022100/022306 failed the test's tab
+handoff bookkeeping; the accepted test retains the intended alternative identity
+across awaits and verifies that exact destination before returning. Those failed
+runs are not acceptance. Fixture `pending_construction_reference.map_entry_reference`
+records the accepted captures and handoff log. Owned DF34824 closes unsaved with
+source preservation,30FPS and GPU51–53C sampled (not peaks). Core19 and scene parsing
+pass; only known rendering-thread/finalize/two-ObjectDB diagnostics remain.
+Component View with previously visible alternatives and worker-owned demolition
+remain separate coverage gaps; no claim is made for every building subtype.
 
 Management protocol221 adds required pending-building trigger_kind (0 none,
 1 lever,2 pressure plate) and trigger_links (resolved BUILDING_TRIGGER and

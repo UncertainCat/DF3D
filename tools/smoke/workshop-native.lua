@@ -177,7 +177,47 @@ local ok,err=xpcall(function()
    end
    shot('pending-header-art-'..kind)
   end end
-  if os.getenv('DF3D_PENDING_COMPONENT_SELECTION')=='1'then
+  if os.getenv('DF3D_PENDING_LAYOUT')=='1'then
+   result.pending_layout={}
+   for _,kind in ipairs{13,23}do
+    local target=assert(chosen[kind]);select_map(target)
+    local sample={id=target.id,type=kind,tile={target.centerx,target.centery,target.z},sizes={},hover={}}
+    result.pending_layout[#result.pending_layout+1]=sample
+    for _,size in ipairs{'small','medium','wide','default'}do
+     resize_worker(size)
+     g.precise_mouse_x=0;g.precise_mouse_y=4;g.mouse_x=0;g.mouse_y=0;gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+     sample.sizes[#sample.sizes+1]={label=size,columns=g.dimx,rows=g.dimy}
+     shot('pending-layout-'..kind..'-'..size)
+    end
+    if kind==13 then
+     local script=require('gui.script')
+     for _,probe in ipairs{{'permanent',732,526},{'view',756,526},{'forbid',780,526},{'dump',804,526},{'',828,526},{'visibility',852,526},{'',500,202},{'',500,238}}do
+      g.precise_mouse_x=0;g.precise_mouse_y=4;g.mouse_x=0;g.mouse_y=0;gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(2,'frames')
+      local deadline=dfhack.getTickCount()+1100
+      repeat
+       df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+       g.precise_mouse_x=probe[2];g.precise_mouse_y=probe[3];g.mouse_x=probe[2]//8;g.mouse_y=(probe[3]-4)//12
+       gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+      until dfhack.getTickCount()>=deadline
+      df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+      g.precise_mouse_x=probe[2];g.precise_mouse_y=probe[3];g.mouse_x=probe[2]//8;g.mouse_y=(probe[3]-4)//12
+      gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+      local rows={};for y=0,17 do local chars={};for x=g.dimx-25,g.dimx-1 do
+       local pen=dfhack.screen.readTile(x,y);chars[#chars+1]=pen.ch>=32 and pen.ch<=255 and string.char(pen.ch)or' '
+      end;local text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','');if text:find('%S')then rows[#rows+1]={y=y,text=text}end end
+      sample.hover[#sample.hover+1]={kind=probe[1],x=probe[2],y=probe[3],instruction=df.global.game.main_interface.current_hover,enabled=df.global.game.main_interface.hover_instructions_on,rows=rows}
+     end
+    end
+   end
+   g.precise_mouse_x=0;g.precise_mouse_y=4;g.mouse_x=0;g.mouse_y=0;gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+   if os.getenv('DF3D_PENDING_COMPONENT_SELECTION_NATIVE_ONLY')=='1'then
+    shot('pending-layout-native-final')
+   else
+    capture('workshop-wire')
+    local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
+    assert(receipt.success,'Pending responsive/hover workflow failed')
+   end
+  elseif os.getenv('DF3D_PENDING_COMPONENT_SELECTION')=='1'then
    local target=assert(chosen[13]);local item=assert(target.contained_items[0].item)
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(target)
    local function observe_tabs()

@@ -18403,6 +18403,479 @@
           "result.json": "03cf939a0f6578f3d6c244eba9ee65bcfcc99dbd8d40b7ec50bfe4ec7eae5f45",
           "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "layout_hover_reference": {
+        "protocol": 222,
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-021153",
+        "hover_native_lane": "build/stockpile-storage-native-farm-discovery-20261115-021335",
+        "owned_df_pids": [
+          41164,
+          8916
+        ],
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "status": "passed_with_known_issues",
+        "scope": "Controlled unfinished Workshop3 and Lever55 at960x600,1200x720,1600x900,1200x800. Eight whole-panel comparisons exact. Actual main-scene hover selects five existing contents help kinds, unavailable Melt and construction buttons show none, Escape clears help. Native021335 confirms IDs/text against existing shared CONTENTS_HELP. Earlier021153 native hover snapshots omit final feed/render and are not accepted as hover evidence; its resized panels and viewer assertions remain valid. No runtime layout or hover behavior changed.",
+        "samples": [
+          {
+            "hover": [
+              {
+                "enabled": true,
+                "instruction": 317,
+                "kind": "permanent",
+                "rows": [
+                  {
+                    "text": " This item is a",
+                    "y": 0
+                  },
+                  {
+                    "text": " permanent part of the",
+                    "y": 1
+                  },
+                  {
+                    "text": " building.  Forbid and",
+                    "y": 2
+                  },
+                  {
+                    "text": " visibility tags set",
+                    "y": 3
+                  },
+                  {
+                    "text": " here affect the whole",
+                    "y": 4
+                  },
+                  {
+                    "text": " building.",
+                    "y": 5
+                  }
+                ],
+                "x": 732,
+                "y": 526
+              },
+              {
+                "enabled": true,
+                "instruction": 324,
+                "kind": "view",
+                "rows": [
+                  {
+                    "text": " View this item's sheet.",
+                    "y": 0
+                  }
+                ],
+                "x": 756,
+                "y": 526
+              },
+              {
+                "enabled": true,
+                "instruction": 325,
+                "kind": "forbid",
+                "rows": [
+                  {
+                    "text": " Toggle the forbidden",
+                    "y": 0
+                  },
+                  {
+                    "text": " status of the item.",
+                    "y": 1
+                  },
+                  {
+                    "text": " Citizens will not use",
+                    "y": 2
+                  },
+                  {
+                    "text": " forbidden items or",
+                    "y": 3
+                  },
+                  {
+                    "text": " buildings.  If a",
+                    "y": 4
+                  },
+                  {
+                    "text": " permanent building item",
+                    "y": 5
+                  },
+                  {
+                    "text": " is forbidden, citizens",
+                    "y": 6
+                  },
+                  {
+                    "text": " will not perform tasks",
+                    "y": 7
+                  },
+                  {
+                    "text": " there!",
+                    "y": 8
+                  }
+                ],
+                "x": 780,
+                "y": 526
+              },
+              {
+                "enabled": true,
+                "instruction": 326,
+                "kind": "dump",
+                "rows": [
+                  {
+                    "text": " Toggle the dump status",
+                    "y": 0
+                  },
+                  {
+                    "text": " of the item.  Items are",
+                    "y": 1
+                  },
+                  {
+                    "text": " dumped in dumping zones.",
+                    "y": 2
+                  }
+                ],
+                "x": 804,
+                "y": 526
+              },
+              {
+                "enabled": false,
+                "instruction": -1,
+                "kind": "",
+                "rows": [
+                  {
+                    "text": "       Elevation 36",
+                    "y": 16
+                  }
+                ],
+                "x": 828,
+                "y": 526
+              },
+              {
+                "enabled": true,
+                "instruction": 328,
+                "kind": "visibility",
+                "rows": [
+                  {
+                    "text": " Toggle the visibility",
+                    "y": 0
+                  },
+                  {
+                    "text": " of the item.  Hidden",
+                    "y": 1
+                  },
+                  {
+                    "text": " items cannot be seen",
+                    "y": 2
+                  },
+                  {
+                    "text": " but citizens will still",
+                    "y": 3
+                  },
+                  {
+                    "text": " use them.  If a",
+                    "y": 4
+                  },
+                  {
+                    "text": " permanent building item",
+                    "y": 5
+                  },
+                  {
+                    "text": " is invisible, the",
+                    "y": 6
+                  },
+                  {
+                    "text": " building will be too!",
+                    "y": 7
+                  }
+                ],
+                "x": 852,
+                "y": 526
+              },
+              {
+                "enabled": false,
+                "instruction": -1,
+                "kind": "",
+                "rows": [
+                  {
+                    "text": "       Elevation 36",
+                    "y": 16
+                  }
+                ],
+                "x": 500,
+                "y": 202
+              },
+              {
+                "enabled": false,
+                "instruction": -1,
+                "kind": "",
+                "rows": [
+                  {
+                    "text": "       Elevation 36",
+                    "y": 16
+                  }
+                ],
+                "x": 500,
+                "y": 238
+              }
+            ],
+            "id": 3,
+            "sizes": [
+              {
+                "columns": 120,
+                "label": "small",
+                "rows": 50
+              },
+              {
+                "columns": 150,
+                "label": "medium",
+                "rows": 60
+              },
+              {
+                "columns": 200,
+                "label": "wide",
+                "rows": 75
+              },
+              {
+                "columns": 150,
+                "label": "default",
+                "rows": 66
+              }
+            ],
+            "tile": [
+              106,
+              95,
+              165
+            ],
+            "type": 13
+          },
+          {
+            "hover": [],
+            "id": 55,
+            "sizes": [
+              {
+                "columns": 120,
+                "label": "small",
+                "rows": 50
+              },
+              {
+                "columns": 150,
+                "label": "medium",
+                "rows": 60
+              },
+              {
+                "columns": 200,
+                "label": "wide",
+                "rows": 75
+              },
+              {
+                "columns": 150,
+                "label": "default",
+                "rows": 66
+              }
+            ],
+            "tile": [
+              97,
+              103,
+              165
+            ],
+            "type": 23
+          }
+        ],
+        "comparisons": [
+          {
+            "label": "pending-layout-13-small",
+            "size": [
+              488,
+              516
+            ],
+            "full_panel_equal": true,
+            "viewer_sha256": "06231fb34d474f38c250d26e4c532f7cff3119e51509e0c04b080e3874ececf9",
+            "native_sha256": "65d822cb5b5f055fc5f117dbede00e5a394a8820ddeac4ae9c3e5001587b5df5"
+          },
+          {
+            "label": "pending-layout-13-medium",
+            "size": [
+              488,
+              636
+            ],
+            "full_panel_equal": true,
+            "viewer_sha256": "de4a462e5bf22105e51f9f0dcb8d2f4a0e6865fa76a25f22e3ec5f527aa59279",
+            "native_sha256": "5026b80b665a87d97b096443f3bece8fabd4faef8028a18dbe6746faa949c4fd"
+          },
+          {
+            "label": "pending-layout-13-wide",
+            "size": [
+              488,
+              816
+            ],
+            "full_panel_equal": true,
+            "viewer_sha256": "4922616a7721c961ab8a5669f094c51c361bbfedca0430762f954a6bad98bc06",
+            "native_sha256": "74a393427d365e41c0c2997e2d39ea7fbda825c7457ad8f305b2a66fe753e26d"
+          },
+          {
+            "label": "pending-layout-13-default",
+            "size": [
+              488,
+              708
+            ],
+            "full_panel_equal": true,
+            "viewer_sha256": "1ee3f86751c01b487e2216eacb9ced7c31f4213e537c07a7d0016f1c9886b312",
+            "native_sha256": "ebf1b0709a2717a11c2fd96de0ba7efbb60d9a3d0b8519c93de9ef4f2df826e7"
+          },
+          {
+            "label": "pending-layout-23-small",
+            "size": [
+              488,
+              516
+            ],
+            "full_panel_equal": true,
+            "viewer_sha256": "acf39d6f9ea225b2245ec5afd475c592756572082f87c882d2e701aa819faf82",
+            "native_sha256": "e05ab97caf4aebcbbd536ba609a44e3033c20b48bf149dab70ead690411f2a38"
+          },
+          {
+            "label": "pending-layout-23-medium",
+            "size": [
+              488,
+              636
+            ],
+            "full_panel_equal": true,
+            "viewer_sha256": "35026c8f56aed4e7790521e9501753a55d7d36f9dc76357c65a0eea59816674c",
+            "native_sha256": "c340ade72f7594b36cc03ea5955475a839d18918649d75f402c1fe89b63f2109"
+          },
+          {
+            "label": "pending-layout-23-wide",
+            "size": [
+              488,
+              816
+            ],
+            "full_panel_equal": true,
+            "viewer_sha256": "f24bb710e92fdadb2bcd5c136ed5ec06dad7344deeb736bf0475bfe04c63355e",
+            "native_sha256": "01561b96b7aa18651288d496113c63c74c968bd6b39e4357401d77cc55dcc3d8"
+          },
+          {
+            "label": "pending-layout-23-default",
+            "size": [
+              488,
+              708
+            ],
+            "full_panel_equal": true,
+            "viewer_sha256": "df16f5ea2489588bf86057c30bfdd3916cff0f8bda92bea92df8037ec49130f8",
+            "native_sha256": "cfb5c3017c42704b1fcccd1d3a32e0357d440eb995990ab7b1761e5d77e96a0c"
+          }
+        ],
+        "hashes": {
+          "build/stockpile-storage-native-farm-discovery-20261115-021153/workshop-native.json": "4eef027b3dc2f83a1cc1ae4fe53bb082a8995423317a0b243a29970935d729e5",
+          "build/stockpile-storage-native-farm-discovery-20261115-021153/result.json": "da99509f4384afcd892362930d425e912354fbad71714aab85a27e39c7a977a8",
+          "build/stockpile-storage-native-farm-discovery-20261115-021153/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-021335/workshop-native.json": "b792422f8a78169358cecd3b0db849d9715b21861ac28caeb7eebaf1ba5fb2f2",
+          "build/stockpile-storage-native-farm-discovery-20261115-021335/result.json": "f0866e434d0ad7de396bcdd5cff44c0b2d03f4f69094a437bc10245311a72418",
+          "build/stockpile-storage-native-farm-discovery-20261115-021335/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
+      },
+      "map_entry_reference": {
+        "protocol": 222,
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-022509",
+        "owned_df_pid": 34824,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "status": "passed_with_known_issues",
+        "scope": "Actual main-scene map pointer entry into six controlled unfinished types. Physical ray checks, Escape while selecting and reopening, six full488x708 panels and Farm40x72 tabs equal native. Loose item46710 over Workshop3 routes through native tile selection. Explicit alternative Plant48436 and return Farm227 confirmed; old pending authority retires and Escape clears selection. Earlier021454/021726 exposed item-over-building routing;021854/022100/022306 failed test handoff bookkeeping and are not accepted. Test retains explicit handoff identity across awaits. Other building types and worker-owned removal are not newly qualified.",
+        "comparisons": [
+          {
+            "id": 56,
+            "stage": 2,
+            "tile": [
+              116,
+              101,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 5,
+            "full_panel_equal": true,
+            "viewer_sha256": "af29473dd907de3ed29644d200099e89cf2e1dc7996053e4ab2a8e4f08cc6eed",
+            "native_sha256": "413a4f74649f4fe3fa12ec46e5b9f5ee82700531afb9cc9264263ccd0b015ec6"
+          },
+          {
+            "id": 3,
+            "stage": 2,
+            "tile": [
+              106,
+              95,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 13,
+            "full_panel_equal": true,
+            "viewer_sha256": "1ee3f86751c01b487e2216eacb9ced7c31f4213e537c07a7d0016f1c9886b312",
+            "native_sha256": "74d9267a087aff4a5be85f84197c125a781d52fa0950cea206f2951fdfb9ab4b"
+          },
+          {
+            "id": 16,
+            "stage": 0,
+            "tile": [
+              121,
+              99,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 8,
+            "full_panel_equal": true,
+            "viewer_sha256": "7e58e86d9c6de603bd8bc3e5338d65072c5d9ea070ab2f16b9c91bc91bf67517",
+            "native_sha256": "6526368181f5dec950f6294d6a40cd48c9a25c02cf8ff45cf718bb22ad5722e0"
+          },
+          {
+            "id": 493,
+            "stage": 0,
+            "tile": [
+              126,
+              46,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 15,
+            "full_panel_equal": true,
+            "viewer_sha256": "956be4d76af87d300ee05b8e16cbb397d1dae321a27fc30f240d259599943350",
+            "native_sha256": "40daa2caedcc0791dbc330134d06c90667660a6e4b69dc2523826e065224841d"
+          },
+          {
+            "id": 55,
+            "stage": 0,
+            "tile": [
+              97,
+              103,
+              165
+            ],
+            "trigger_kind": 1,
+            "trigger_links": 2,
+            "type": 23,
+            "full_panel_equal": true,
+            "viewer_sha256": "df16f5ea2489588bf86057c30bfdd3916cff0f8bda92bea92df8037ec49130f8",
+            "native_sha256": "cfb5c3017c42704b1fcccd1d3a32e0357d440eb995990ab7b1761e5d77e96a0c"
+          },
+          {
+            "id": 227,
+            "stage": 2,
+            "tile": [
+              137,
+              111,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 4,
+            "full_panel_equal": true,
+            "viewer_sha256": "42184c9132e36d4f90b7bf369736576d09265b34571dc9557f42f7bf2d42abd5",
+            "native_sha256": "1d03940d010f716300cb744a616cbf90b8eed522921507427c0512a2951d4b73"
+          }
+        ],
+        "farm_tabs_sha256": "74e4ba99d23af3e925b7fe5ab27ae06d5670e5d4b0c9eb781052e0de7b80dd36",
+        "hashes": {
+          "pending-tab-handoffs.json": "92bc5c4f361853763a535180f0e9dcc4cf9675a2b4e986734f72d686c426c965",
+          "workshop-wire.stdout.log": "bd86eca3ea1cb2253876a40619d92ead48129828b361e0c61f60093ed999ae88",
+          "workshop-native.json": "b8ca771062199d07efde9436e6a629f6e4a6c66d362252087690218aa5b70178",
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "result.json": "fb20a27975e9d4e867c7d11a8d33dc8aaa135924eb2d5efbd3ad7eb7f36518ec",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

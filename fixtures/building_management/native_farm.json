@@ -31399,6 +31399,282 @@
           "build/stockpile-storage-native-farm-discovery-20261115-124014/depot-settings-dismissed.png": "63f54d60768f83f5d115fd4c3389dc15aec61dfc1dd5fdf0905bd7ce64758c65",
           "build/stockpile-storage-native-farm-discovery-20261115-124014/depot-settings-idle.png": "63f54d60768f83f5d115fd4c3389dc15aec61dfc1dd5fdf0905bd7ce64758c65"
         }
+      },
+      "depot_provider_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-124422",
+        "owned_df_pid": 48492,
+        "native": {
+          "cases": [
+            {
+              "flags": 0,
+              "jobs": [],
+              "label": "idle"
+            },
+            {
+              "flags": 1,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "broker"
+            },
+            {
+              "flags": 3,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "anyone"
+            },
+            {
+              "flags": 1,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "broker-again"
+            },
+            {
+              "flags": 0,
+              "jobs": [],
+              "label": "dismissed"
+            },
+            {
+              "flags": 3,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382797,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "anyone-fresh"
+            },
+            {
+              "flags": 2,
+              "jobs": [],
+              "label": "dismissed-anyone"
+            },
+            {
+              "flags": 1,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382798,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "provider-broker"
+            },
+            {
+              "flags": 3,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382798,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "provider-anyone"
+            },
+            {
+              "flags": 1,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382798,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "provider-broker-again"
+            },
+            {
+              "flags": 0,
+              "jobs": [],
+              "label": "provider-dismissed"
+            },
+            {
+              "flags": 3,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382799,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "provider-anyone-fresh"
+            },
+            {
+              "flags": 2,
+              "jobs": [],
+              "label": "provider-dismissed-anyone"
+            }
+          ],
+          "frame": 0,
+          "id": 54,
+          "original_flags": 0,
+          "provider": {
+            "baseline": {
+              "flags": 0,
+              "goods": false,
+              "trade": false,
+              "worker": -1
+            },
+            "cases": [
+              {
+                "flags": 1,
+                "goods": false,
+                "outcome": 1,
+                "trade": false,
+                "worker": -1
+              },
+              {
+                "flags": 3,
+                "goods": false,
+                "outcome": 1,
+                "trade": false,
+                "worker": -1
+              },
+              {
+                "flags": 1,
+                "goods": false,
+                "outcome": 1,
+                "trade": false,
+                "worker": -1
+              },
+              {
+                "flags": 0,
+                "goods": false,
+                "outcome": 1,
+                "trade": false,
+                "worker": -1
+              },
+              {
+                "flags": 3,
+                "goods": false,
+                "outcome": 1,
+                "trade": false,
+                "worker": -1
+              },
+              {
+                "flags": 2,
+                "goods": false,
+                "outcome": 1,
+                "trade": false,
+                "worker": -1
+              }
+            ],
+            "success": true
+          },
+          "restored": true,
+          "success": true
+        },
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Native semantic provider via diagnostic command, six request transitions, native job equivalence and six exact panel crops; no production transport or public depot UI acceptance.",
+        "bridge_sha256": "e92d551fe5b5a102b85871ffba1eb95fc840b48cdae86c2c23045402571438e1",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-124422/depot-settings-native.json": "91bb3056ecfade910f85f4f08a787e15e8802cd4bb1d3daa8d74c0ee889c4ee5",
+          "build/stockpile-storage-native-farm-discovery-20261115-124422/result.json": "108ae363343839ad9cd562c9ca0d9cd0aec189387b866f2417b3d700dbc52b51",
+          "build/stockpile-storage-native-farm-discovery-20261115-124422/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

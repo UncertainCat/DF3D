@@ -772,6 +772,26 @@ preservation, native graphics capped30FPS, sampled GPU61C. This establishes
 native settings effects only, not a replacement bridge/provider, depot UI,
 goods selection, negotiations, caravan arrival or autonomous trader behavior.
 
+`depot_native.h` now supplies the owned semantic provider, pinning the native
+input branch, job leaves and caravan/worker predicates. `setDepotMode` takes an
+explicit mode and expected flags, rejects unsupported/incomplete/removing/hidden
+targets, preserves unrelated flag bits, and distinguishes rejection from an
+unknown post-mutation result. Exact duplicates do not create another job.
+It does not borrow native selection or trade-menu state. `depot-settings-probe`
+is a paused diagnostic command; the old Lua trade adapter is not yet replaced.
+
+Protected124422 on2026-11-15 compares all six setting transitions against the
+native reference. Job type/flags/unset position/building references match, mode
+switches preserve job identity, dismissal removes the job, and exact duplicates,
+stale flags and invalid modes create no extra jobs. Six full488x708 native panels
+after provider edits match native-click panels exactly. The current native sheet
+selection is unchanged. Both caravan predicates are false and the worker is
+absent in this no-merchant/no-broker fixture; active caravan and worker cases
+remain unqualified. Owned DF48492 closes unsaved with source preservation;
+native30FPS, sampled GPU59C. Bridge build and core19 pass. Evidence:
+`completed_sheet_discovery_reference.depot_provider_reference`. Production
+transport, unknown-outcome UI handling and public depot controls remain pending.
+
 ## Completed bridge, wagon and traction-bench sheets
 
 Completed Bridge19, Wagon32 and TractionBench45 use the shared native header,

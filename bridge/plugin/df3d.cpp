@@ -91,6 +91,7 @@
 #include "funerary_native.h"
 #include "machinery_native.h"
 #include "well_native.h"
+#include "depot_native.h"
 #include "building_links_native.h"
 #include "lever_native.h"
 #include "creature_office_native.h"
@@ -4937,6 +4938,20 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         output["slave_strength"]=facts->slaveStrength;output["prisoner_strength"]=facts->prisonerStrength;output["imprisoner_strength"]=facts->imprisonerStrength;
         output["deity_histfig_id"]=facts->deityHistfigId;output["deity"]=facts->deity;
         output["ordinary_color"]=Json::Value(Json::arrayValue);for(auto color:facts->ordinaryColor)output["ordinary_color"].append(int(color));
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
+      if(parameters[0]=="depot-settings-probe") {
+        if(parameters.size()!=2 && parameters.size()!=4)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        int32_t values[3]={-1,-1,-1};
+        for(size_t i=1;i<parameters.size();++i) {
+          const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<0)return CR_WRONG_USAGE;
+        }
+        auto* target=df::building::find(values[0]);Json::Value output;
+        if(parameters.size()==4)output["outcome"]=int(df3d_production::setDepotMode(target,uint32_t(values[1]),values[2]));
+        const auto facts=df3d_production::depotFacts(target);if(!facts)return CR_FAILURE;
+        output["flags"]=facts->flags;output["goods"]=facts->goods;output["trade"]=facts->trade;output["worker"]=facts->worker;
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="well-status-probe") {

@@ -1616,7 +1616,7 @@ table BuildingContentsPage {
 }
 table BuildingItemReceipt { item_id:int32 = -1; operation:FarmOperation; value:int8 = -1; }
 // Native item inspection owns its text; revision is observed after lazy formatting.
-table ItemBuildingHolder { id:int32 = -1; type:int32 = -1; name:string; }
+table ItemBuildingHolder { id:int32 = -1; type:int32 = -1; name:string; appearance:SelectionAppearance; }
 table ItemPosition { id:int32 = -1; position:TilePos (required); }
 table BuildingItemSnapshot {
   building_id:int32 = -1; revision:uint64;
@@ -2550,7 +2550,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 221;
+  schema_version:uint32 = 222;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2623,7 +2623,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 221;
+  schema_version:uint32 = 222;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

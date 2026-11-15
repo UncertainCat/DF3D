@@ -57,4 +57,16 @@ inline std::optional<df3d_production::ItemAppearanceRecipe> destinationArtwork(d
     if(!df3d_appearance::resolveOriginalItemTile(tile,recipe))return std::nullopt;
     return df3d_production::ownedItemRecipe(recipe);
 }
+// Item-holder renderer155919..156449 uses the same fixed dispatch and custom
+// raw list_icon_texpos precedence as Tasks. Keep that reuse version-qualified.
+inline std::optional<df3d_production::ItemAppearanceRecipe> itemHolderArtwork(df::building* building) {
+    static const bool ready=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0xb30;++i){hash^=base[0x155919+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x2accec46dc8a4843);
+    }();
+    return ready?destinationArtwork(building):std::nullopt;
+}
+
 }

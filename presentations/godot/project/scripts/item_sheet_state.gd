@@ -158,6 +158,7 @@ func _valid(value: Dictionary) -> bool:
 		for key in ["id","type"]:
 			if typeof(link.get(key))!=TYPE_INT or link[key]<0 or link[key]>2147483647:return false
 		if typeof(link.get("name"))!=TYPE_STRING or link.name.to_utf8_buffer().size()>512:return false
+		if link.has("appearance") and not _valid_recipe(link.appearance):return false
 		if field=="stockpile" and link.type!=29:return false
 	return true
 

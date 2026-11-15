@@ -1198,7 +1198,7 @@ void publish() {
     if(state.snapshot) {
       const auto& v=*state.snapshot;
       const auto link=[&](const std::optional<ItemBuildingHolder>& value)->flatbuffers::Offset<m::ItemBuildingHolder> {
-        if(!value)return {};return m::CreateItemBuildingHolder(b,value->id,value->type,b.CreateString(value->name));
+        if(!value)return {};return m::CreateItemBuildingHolder(b,value->id,value->type,b.CreateString(value->name),encodeItemRecipe(value->appearance));
       };
       const auto holder=link(v.holder),stockpile=link(v.stockpile);
       flatbuffers::Offset<m::ItemCarrier> carrier;
@@ -1232,7 +1232,7 @@ void publish() {
     auto item=m::CreateBuildingContentsItem(b,row.id,row.role,b.CreateString(row.name),
       row.forbid,row.dump,row.melt,row.hidden,row.canDump,row.canMelt,row.inJob,row.inBuilding,row.itemType,b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw),encodeInspectionAppearance(row.appearance));
     flatbuffers::Offset<m::ItemBuildingHolder> holder;
-    if(value.holder)holder=m::CreateItemBuildingHolder(b,value.holder->id,value.holder->type,b.CreateString(value.holder->name));
+    if(value.holder)holder=m::CreateItemBuildingHolder(b,value.holder->id,value.holder->type,b.CreateString(value.holder->name),encodeItemRecipe(value.holder->appearance));
     itemSnapshot=m::CreateBuildingItemSnapshot(b,value.buildingId,value.revision,value.completed,value.removing,item,
       b.CreateString(value.weight),b.CreateString(value.description),holder);
   }
@@ -3484,7 +3484,7 @@ std::optional<BuildingItemSnapshot> observeFarmItem(int32_t buildingId,int32_t i
     value.weight=DF2UTF(*weight);value.description=DF2UTF(*description);
     if(value.weight.size()>128||value.description.size()>32*1024)return std::nullopt;
     if(holder->id>=0) {
-      value.holder=ItemBuildingHolder{holder->id,holder->type,DF2UTF(holder->name)};
+      value.holder=ItemBuildingHolder{holder->id,holder->type,DF2UTF(holder->name),df3d_tasks::itemHolderArtwork(df::building::find(holder->id))};
       if(value.holder->name.size()>512)return std::nullopt;
     }
     return value;
@@ -3517,7 +3517,7 @@ std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_produc
   df::item_flags flags;flags.whole=item.flags;value.inJob=flags.bits.in_job;value.inBuilding=flags.bits.in_building;
   if(observed.appearance){const auto& a=*observed.appearance;value.appearance=copyInspectionAppearance(a);
     const auto& encoded=*value.appearance;if(encoded.materialToken.size()>256||encoded.subtypeRaw.size()>128||encoded.colorToken.size()>128)return std::nullopt;}
-  if(observed.buildingHolder)value.holder=ItemBuildingHolder{observed.buildingHolder->id,observed.buildingHolder->type,DF2UTF(observed.buildingHolder->name)};
+  if(observed.buildingHolder)value.holder=ItemBuildingHolder{observed.buildingHolder->id,observed.buildingHolder->type,DF2UTF(observed.buildingHolder->name),df3d_tasks::itemHolderArtwork(df::building::find(observed.buildingHolder->id))};
   if(observed.carrier){const auto& c=*observed.carrier;value.carrier=ItemCarrier{c.kind,c.id,c.itemType,DF2UTF(c.name)};
     if(c.appearance){const auto& a=*c.appearance;value.carrier->appearance=copyInspectionAppearance(a);
       const auto& encoded=*value.carrier->appearance;if(encoded.materialToken.size()>256||encoded.subtypeRaw.size()>128||encoded.colorToken.size()>128)return std::nullopt;}}

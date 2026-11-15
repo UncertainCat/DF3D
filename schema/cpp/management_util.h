@@ -184,8 +184,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 221;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v221";
+inline constexpr uint32_t kManagementVersion = 222;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v222";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -2864,8 +2864,13 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if(item->id()<0 || !item->revision() || item->revision()>INT64_MAX || item->item_type()<0 || item->item_type()>92 ||
            !text(item->name(),128*1024) || !text(item->material_token(),256) || !text(item->subtype_raw(),128) ||
            !text(item->weight(),128) || !text(item->description(),32*1024))return "invalid independent item snapshot";
-        for(const auto* link:{item->holder(),item->stockpile()})
+        for(const auto* link:{item->holder(),item->stockpile()}) {
           if(link && (link->id()<0 || link->type()<0 || !text(link->name(),512)))return "invalid independent item link";
+          if(link && link->appearance()) {
+            size_t bytes=0;if(auto error=validateOwnerAppearance(*link->appearance(),bytes))return error;
+            if(!link->appearance()->layers()->size() || bytes>131072)return "invalid item holder artwork";
+          }
+        }
         if(item->stockpile() ? (item->stockpile_categories()<0 || item->stockpile_categories()>0x1ffff) : item->stockpile_categories()!=-1)return "invalid independent stockpile categories";
         if(item->stockpile() && item->stockpile()->type()!=29)return "invalid item stockpile type";
         if((item->item_type()==30||item->item_type()==13) && !item->appearance())return "missing item appearance";
@@ -2936,6 +2941,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         return "invalid item inspection snapshot";
       if(const auto* holder=item->holder()) {
         if(holder->id()<0 || holder->type()<0 || !holder->name() || holder->name()->size()>512)return "invalid item building holder";
+        if(holder->appearance()) {
+          size_t bytes=0;if(auto error=validateOwnerAppearance(*holder->appearance(),bytes))return error;
+          if(!holder->appearance()->layers()->size() || bytes>131072)return "invalid item holder artwork";
+        }
       }
       if(p->farm() || p->contents() || p->contents_edit() || p->farm_edit_outcome()!=FarmEditOutcome::None ||
          (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) ||

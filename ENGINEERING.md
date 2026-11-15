@@ -9889,6 +9889,36 @@ ObjectDB signatures. Evidence: pending_construction_reference.component_artwork_
 This qualifies these controlled panels and icons, not every unfinished type,
 ordinary map entry, trigger-link controls or responsive layout.
 
+Management protocol222 adds optional original artwork to ItemBuildingHolder,
+shared by independent item sheets and the legacy building-item response. Bridge
+and clients must rebuild together; schema defaults and mailbox move to222.
+Older recordings without this recipe do not gain invented icons. The holder
+renderer155919..156449 has the same fixed slots and custom raw icon precedence
+as the existing Tasks/header provider; the bridge pins that dispatch and reuses
+its owned recipe. Godot renders it and removes its partial holder-type icon map.
+The static audit matches47 fixed building types,24 workshops,7 furnaces,6 traps,
+38 constructions and3 siege types. MSVC, extension, core19 and headless item-state/parser
+checks pass. Protected015930 on2026-11-15 exercises actual main-scene selection
+of controlled unfinished Workshop3, View wood1060, and holder View back to the
+workshop. All three full488x708 panels match native, including the holder icon.
+The native lazy weight bit is the only item flag change; viewer readback matches
+and construction stage is unchanged. Escape retires the returned owner.
+No visible alternative tabs exist in this sample, so their retirement during
+component navigation remains unqualified. The prior014832 run exposed the missing
+holder icon and is not accepted. Fixture `component_holder_artwork_reference`
+records native observations and image hashes alongside the static dispatch audit.
+
+Protected020059 repeats the natural Statue965 component controls and item/holder
+navigation after replacing the partial Godot icon map: eleven full panels and
+native-effect guards pass. Fixture `holder_artwork_contents_regression` records
+the result. Both owned sessions (29260/35460) close unsaved with source saves
+unchanged; graphics are capped30FPS, sampled GPU47–49C (not peaks). Both runs are
+passed_with_known_issues for the existing rendering-thread/finalize/two-ObjectDB
+diagnostics. Holder return now admits any streamed unfinished native building
+kind except stockpiles/zones; completed-building destinations stay separately
+qualified. Ordinary map entry, responsive layout and other holder types are not
+newly accepted by these two runs.
+
 The staged tile-selection owner routes streamed unfinished buildings to the
 pending-building controller, preserving confirmed tab handoffs and retiring
 selection on Escape. It uses the existing native tab frame; the farm's former

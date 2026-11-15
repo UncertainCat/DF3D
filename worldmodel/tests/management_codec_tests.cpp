@@ -4230,13 +4230,17 @@ TEST_CASE("item inspection intent is independent of contents paging and edits") 
   }
 }
 TEST_CASE("item inspection preserves native facts and rejects ambiguous authority") {
-  for(int fault=0;fault<24;++fault) {
+  for(int fault=0;fault<27;++fault) {
     CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
     auto row=wire::CreateBuildingContentsItem(b,fault==5?-1:47492,fault==6?-1:2,
       fault==7?0:b.CreateString(fault==8?std::string(131073,'x'):"native caption"),true,false,false,true,true,false,false,true,
       fault==9?93:53,fault==10?0:b.CreateString("PLANT:POD_SWEET:SEED"),b.CreateString(fault==11?std::string(129,'x'):""));
+    std::vector<wire::AppearanceLayer> layers;
+    if(fault!=24)layers.emplace_back(fault==25?1:0,3,4,1,1,65535,-1,-1,0,0);
+    const auto artwork=wire::CreateSelectionAppearance(b,b.CreateVectorOfStrings(std::vector<std::string>{"PAGE"}),
+      b.CreateVectorOfStrings(std::vector<std::string>{}),b.CreateVectorOfStructs(layers));
     auto holder=wire::CreateItemBuildingHolder(b,fault==16?-1:968,fault==17?-1:4,
-      fault==18?0:b.CreateString(fault==19?std::string(513,'x'):"Farm Plot"));
+      fault==18?0:b.CreateString(fault==19?std::string(513,'x'):"Farm Plot"),fault==26?0:artwork);
     auto item=wire::CreateBuildingItemSnapshot(b,968,fault==1?0:fault==2?UINT64_MAX:9007199254740993ULL,
       true,false,fault==4?0:row,fault==12?0:b.CreateString(fault==13?std::string(129,'x'):"<1"),
       fault==14?0:b.CreateString(fault==15?std::string(32769,'x'):"native description"),fault==23?0:holder);
@@ -4247,14 +4251,14 @@ TEST_CASE("item inspection preserves native facts and rejects ambiguous authorit
     state.add_action(fault==21?wire::ManagementAction::ProductionList:wire::ManagementAction::ProductionInspect);
     state.add_status(fault==22?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);state.add_production(prod);
     b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
-    CHECK(bool(wire::validateManagementState(*value))==(fault!=0 && fault!=23));
-    if(fault==0 || fault==23) {
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0 && fault!=23 && fault!=26));
+    if(fault==0 || fault==23 || fault==26) {
       auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.item);
       CHECK(decoded.item->revision==9007199254740993ULL);CHECK(decoded.item->item.id==47492);
       CHECK(decoded.item->item.forbid);CHECK(decoded.item->item.materialToken=="PLANT:POD_SWEET:SEED");
       CHECK(decoded.item->description=="native description");CHECK(decoded.item->weight=="<1");
-      CHECK(bool(decoded.item->holder)==(fault==0));
-      if(decoded.item->holder){CHECK(decoded.item->holder->id==968);CHECK(decoded.item->holder->name=="Farm Plot");}
+      CHECK(bool(decoded.item->holder)==(fault!=23));
+      if(decoded.item->holder){CHECK(decoded.item->holder->id==968);CHECK(decoded.item->holder->name=="Farm Plot");CHECK(decoded.item->holder->appearance.has_value()==(fault!=26));if(fault!=26)CHECK(decoded.item->holder->appearance->tilePages==std::vector<std::string>{"PAGE"});}
     }
   }
   flatbuffers::FlatBufferBuilder b;b.Finish(wire::CreateProductionState(b));

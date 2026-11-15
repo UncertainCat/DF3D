@@ -278,7 +278,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
       value["weight"]=String::utf8(s.weight.c_str());value["description"]=String::utf8(s.description.c_str());
       value["forbid"]=s.forbid;value["dump"]=s.dump;value["melt"]=s.melt;value["hidden"]=s.hidden;
       value["can_dump"]=s.canDump;value["can_melt"]=s.canMelt;value["in_job"]=s.inJob;value["in_building"]=s.inBuilding;
-      const auto link=[](const wm::ItemBuildingHolder& source){Dictionary v;v["id"]=source.id;v["type"]=source.type;v["name"]=String::utf8(source.name.c_str());return v;};
+      const auto link=[](const wm::ItemBuildingHolder& source){Dictionary v;v["id"]=source.id;v["type"]=source.type;v["name"]=String::utf8(source.name.c_str());if(source.appearance)v["appearance"]=itemRecipeDictionary(*source.appearance);return v;};
       if(s.appearance)value["appearance"]=itemAppearanceDictionary(*s.appearance);
       if(s.holder)value["holder"]=link(*s.holder);if(s.stockpile)value["stockpile"]=link(*s.stockpile);
       if(s.owner){Dictionary owner;owner["id"]=s.owner->id;owner["name"]=String::utf8(s.owner->name.c_str());value["owner"]=owner;}
@@ -322,6 +322,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     value["weight"]=String::utf8(source.weight.c_str());value["description"]=String::utf8(source.description.c_str());
     if(source.holder) {
       Dictionary holder;holder["id"]=source.holder->id;holder["type"]=source.holder->type;holder["name"]=String::utf8(source.holder->name.c_str());
+      if(source.holder->appearance)holder["appearance"]=itemRecipeDictionary(*source.holder->appearance);
       value["holder"]=holder;
     }
     prod["item"]=value;

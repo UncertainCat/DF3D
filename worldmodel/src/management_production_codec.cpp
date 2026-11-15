@@ -110,8 +110,8 @@ ProductionState decodeProduction(const m::ProductionState* p) {
       value.forbid=item->forbid();value.dump=item->dump();value.melt=item->melt();value.hidden=item->hidden();
       value.canDump=item->can_dump();value.canMelt=item->can_melt();value.inJob=item->in_job();value.inBuilding=item->in_building();
       if(const auto* a=item->appearance())value.appearance=decodeInspectionAppearance(a);
-      if(const auto* link=item->holder())value.holder=ItemBuildingHolder{link->id(),link->type(),str(link->name())};
-      if(const auto* link=item->stockpile())value.stockpile=ItemBuildingHolder{link->id(),link->type(),str(link->name())};
+      if(const auto* link=item->holder())value.holder=ItemBuildingHolder{link->id(),link->type(),str(link->name()),link->appearance()?std::optional<SelectionAppearance>(decodeItemRecipe(link->appearance())):std::nullopt};
+      if(const auto* link=item->stockpile())value.stockpile=ItemBuildingHolder{link->id(),link->type(),str(link->name()),link->appearance()?std::optional<SelectionAppearance>(decodeItemRecipe(link->appearance())):std::nullopt};
       if(const auto* c=item->carrier()){value.carrier=ItemCarrier{c->kind(),c->id(),c->item_type(),str(c->name())};
         if(const auto* a=c->appearance())value.carrier->appearance=decodeInspectionAppearance(a);}
     }
@@ -131,7 +131,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     value.weight=str(source->weight());value.description=str(source->description());
     const auto* row=source->item();value.item={row->id(),row->role(),str(row->name()),
       row->forbid(),row->dump(),row->melt(),row->hidden(),row->can_dump(),row->can_melt(),row->in_job(),row->in_building(),row->item_type(),str(row->material_token()),str(row->subtype_raw()),decodeAppearance(row->appearance())};
-    if(const auto* holder=source->holder())value.holder=ItemBuildingHolder{holder->id(),holder->type(),str(holder->name())};
+    if(const auto* holder=source->holder())value.holder=ItemBuildingHolder{holder->id(),holder->type(),str(holder->name()),holder->appearance()?std::optional<SelectionAppearance>(decodeItemRecipe(holder->appearance())):std::nullopt};
   }
   n.farmEditOutcome=static_cast<FarmEditOutcome>(p->farm_edit_outcome());
   if(const auto* f=p->farm()) {

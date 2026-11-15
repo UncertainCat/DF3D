@@ -9845,7 +9845,26 @@ All created mechanisms/references are retired, owned DF13912 closes unsaved,
 and source saves remain unchanged. No parity exception is inferred from this
 evidence; approval for usable long-list scrolling is pending.
 
-Lever task controls remain a separate outstanding surface. See
+Lever task controls remain a separate outstanding surface. The staged
+`lever_native.h` Pull wrapper invokes the pinned native factoryfd580,
+building attachment54bcf0 and requirements setupd09b70. Native constructor
+d020c0 immediately registers the job globally and assigns its ID; creation
+is a mutation boundary, never a preview. The wrapper takes an independently
+resolved completed revealed lever and rejects demolition targets before
+allocation. No native sheet or selection scratch is an input.
+
+Protected070923 on2026-11-15 compares two native Pull clicks with two wrapper
+calls: each produces a distinct registered PullLever147 job with flags0,
+position97,103,165, one building-holder reference to55, and no item inputs or
+requirements. Both native/provider panel crops match exactly. Cleanup uses
+DFHack removeJob and does not qualify native cancellation. Workers and Work
+orders tabs are observed; Link refuses “Need accessible mechanisms.” in this
+save. Owned DF42920 exits unsaved, source saves unchanged,30FPS with sampled
+GPU58C. MSVC bridge build and all19 core tests pass. The diagnostic
+`df3d lever-pull-probe ID` invokes the real action; public lever UI, typed
+mutation receipts, Link selection/materials and completed job effects remain
+unfinished. Evidence is `completed_sheet_discovery_reference.lever_pull_reference`.
+See
 `linked_buildings_reference.row_render_reference` for exact evidence scope.
 
 Protected native022800 on2026-11-15 attempts selection of29 naturally completed,

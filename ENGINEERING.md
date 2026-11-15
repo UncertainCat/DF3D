@@ -9525,11 +9525,30 @@ in this oracle, which does not establish physical Escape binding behavior.
 The native heading is "Image information for engraving".
 
 This is diagnostic provider/native-action evidence, not planned-engraving
-transport or viewer acceptance. Owned existing-image collection, filtering,
-descriptions, new-image drafts, writes and graphical/lifecycle coverage remain
-unfinished. Bridge build and core19 pass; owned DF34928 exits unsaved and source
+transport or viewer acceptance. Bridge build and core19 pass; owned DF34928 exits unsaved and source
 save preservation passes. Full-list digests, effects and evidence hashes are in
 selection_reference.engraving_image_subjects_reference.
+
+The engraving adapter also reuses nativeArtPage for headings, root options,
+subject captions and existing-image pages. Its safe-point edits refresh native
+eligibility and choices, require both specification and list revisions, and
+project only the pinned stores in the mixed native input handlers. There is no
+independent native assignment leaf. Figure/site/group change type and ID while
+preserving sub-ID; existing images set all three fields, and artist choice clears
+all three. A validated edit may allocate the semantic per-tile record; reads
+never insert one. No native menu is a runtime input or edit destination.
+
+Protected184508 on2026-11-14 compares owned first-choice effects with native
+clicks for all four pages, then compares artist reset. Root read precedes opening
+the native picker and leaves selection/specification count unchanged. Stale
+specification revisions, stale list revisions and invalid IDs reject without
+writes. The existing-image page has two rows; the first selection matches native
+image2/sub340. Bridge build and core19 pass. Owned DF37388 exits unsaved with
+source unchanged; serial30FPS GPU samples50-51C/5-8%. Bounded evidence is
+selection_reference.engraving_image_effects_reference. Product transport, viewer,
+new-image drafts, absent-record writes, filtering/paging/previews, preservation
+of an inherited nonnegative sub-ID and session/disconnect coverage remain
+unqualified. Recorded page captions alone are not graphical acceptance.
 
 Native-only174721 and174833 pass their assertions; owned DF37032/1300
 exit unsaved with source/preferences preserved. Core19 passes. Graphics are

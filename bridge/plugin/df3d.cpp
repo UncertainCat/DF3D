@@ -3931,6 +3931,31 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               df3d_management::printStockpilePreset(out,values[0],values[1]);
           return ok?CR_OK:CR_FAILURE;
         }
+        if(parameters[0]=="engraving-art-page-probe" || parameters[0]=="engraving-art-apply-probe") {
+          const char* oracle=std::getenv("DF3D_TILE_SELECTION_ENGRAVING_IMAGE");
+          if(!oracle || std::string_view(oracle)!="1")return CR_FAILURE;
+          const bool apply=parameters[0]=="engraving-art-apply-probe";
+          if(parameters.size()!=(apply?9:6))return CR_WRONG_USAGE;
+          int32_t p[5]{};uint64_t revision=0,listRevision=0;
+          const auto parse=[](const std::string& v,auto& target){auto parsed=std::from_chars(v.data(),v.data()+v.size(),target);return parsed.ec==std::errc{} && parsed.ptr==v.data()+v.size();};
+          for(size_t i=0;i<(apply?5:4);++i)if(!parse(parameters[i+1],p[i]))return CR_WRONG_USAGE;
+          if(p[3]<-1 || p[3]>6)return CR_WRONG_USAGE;
+          if(apply && (!parse(parameters[6],revision) || !parse(parameters[7],listRevision)))return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          Json::Value value(Json::objectValue);
+          if(apply) {
+            const auto outcome=df3d_selection::applyEngravingArtSubject(p[0],p[1],p[2],revision,p[3],p[4],listRevision,UTF2DF(parameters[8]));
+            value["outcome"]=int(outcome);
+          } else {
+            const auto page=df3d_selection::engravingArtPage(p[0],p[1],p[2],int16_t(p[3]),UTF2DF(parameters[5]));
+            value["valid"]=page.has_value();
+            if(page){value["revision"]=std::to_string(page->revision);value["list_revision"]=std::to_string(page->page.listRevision);
+              value["caption"]=DF2UTF(page->page.caption);value["total"]=page->page.total;
+              value["rows"]=Json::Value(Json::arrayValue);
+              for(const auto& row:page->page.rows){Json::Value r(Json::objectValue);r["id"]=row.id;r["caption"]=DF2UTF(row.caption);value["rows"].append(r);}}
+          }
+          out.print("{}",Json::FastWriter().write(value));return CR_OK;
+        }
         if(parameters[0]=="engraving-art-subjects-probe") {
           const char* oracle=std::getenv("DF3D_TILE_SELECTION_ENGRAVING_IMAGE");
           if(!oracle || std::string_view(oracle)!="1")return CR_FAILURE;

@@ -288,6 +288,19 @@ local ok,err=xpcall(function()
    assert(sheet.active_sheet==df.view_sheet_type.ENGRAVING_PLANNED,'Planned engraving is not default on fixture tile')
    result.tile_selection_reference.engraving.planned={tile={planned.x,planned.y,planned.z},native=observe(),lines=lines()}
    shot('selection-engraving-planned')
+   local art_effects=os.getenv('DF3D_TILE_SELECTION_ENGRAVING_EFFECTS')=='1'
+   local function art_probe(command,...)
+    local args={tostring(planned.x),tostring(planned.y),tostring(planned.z),...}
+    local output,code=dfhack.run_command_silent('df3d',command,table.unpack(args))
+    assert(code==0,output);return json.decode(output)
+   end
+   if art_effects then
+    local count=#df.global.plotinfo.waypoints.location_detail;local before=json.encode(observe())
+    local page=art_probe('engraving-art-page-probe','-1','')
+    assert(page.valid and page.caption=='Image information for engraving' and #page.rows==6,'Engraving root differs')
+    assert(count==#df.global.plotinfo.waypoints.location_detail and before==json.encode(observe()),'Owned root changed specification count or selection')
+    result.tile_selection_reference.engraving.planned.owned_root=page
+   end
    g.precise_mouse_x=500;g.precise_mouse_y=118;g.mouse_x=62;g.mouse_y=9
    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
@@ -331,15 +344,42 @@ local ok,err=xpcall(function()
       for index,choice in ipairs(choices)do assert(owned.ids[index]==choice.id,'Owned engraving subject order differs at '..index)end
       row.owned_ids=owned.ids;row.owned_unchanged=true
      end
+     local before_effect=effect()
      shot('selection-engraving-image-option-'..entry[1])
      g.precise_mouse_x=100;g.precise_mouse_y=202;g.mouse_x=12;g.mouse_y=16
      df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
      gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
      row.effect=effect();shot('selection-engraving-image-applied-'..entry[1])
+     if art_effects then
+      detail.art_specifier=before_effect.type;detail.art_spec_id1=before_effect.id;detail.art_spec_id2=before_effect.subid
+      local page=art_probe('engraving-art-page-probe',tostring(entry[1]),'')
+      assert(page.valid and page.total==#choices and #page.rows>0,'Owned art page differs')
+      for index,choice in ipairs(page.rows)do
+       assert(choice.id==(entry[1]==5 and index-1 or choices[index].id),'Owned page ordering differs')
+      end
+      local id=tostring(page.rows[1].id);local before=json.encode(effect())
+      local stale=art_probe('engraving-art-apply-probe',tostring(entry[1]),id,'1',page.list_revision,'')
+      assert(stale.outcome==1 and before==json.encode(effect()),'Stale engraving edit changed source')
+      local bad_list=art_probe('engraving-art-apply-probe',tostring(entry[1]),id,page.revision,'1','')
+      assert(bad_list.outcome==1 and before==json.encode(effect()),'Stale engraving list changed source')
+      local invalid=art_probe('engraving-art-apply-probe',tostring(entry[1]),'-1',page.revision,page.list_revision,'')
+      assert(invalid.outcome==0 and before==json.encode(effect()),'Invalid engraving choice changed source')
+      local applied=art_probe('engraving-art-apply-probe',tostring(entry[1]),id,page.revision,page.list_revision,'')
+      assert(applied.outcome==2 and json.encode(effect())==json.encode(row.effect),'Owned engraving write differs from native')
+      row.owned_page=page;row.owned_effect=effect();row.stale_rejected=true;row.invalid_rejected=true
+     end
      assert(not art.open,'Engraving subject selection did not close picker');reopen()
     end
+    local before_artist=effect()
     assert(click_label('Allow artist to choose'),'Missing artist choice')
     reference.artist=effect();assert(not art.open and detail.art_specifier==-1 and detail.art_spec_id1==-1 and detail.art_spec_id2==-1,'Artist choice did not clear tile artwork')
+    if art_effects then
+     detail.art_specifier=before_artist.type;detail.art_spec_id1=before_artist.id;detail.art_spec_id2=before_artist.subid
+     local page=art_probe('engraving-art-page-probe','-1','')
+     local applied=art_probe('engraving-art-apply-probe','0','-1',page.revision,'0','')
+     assert(applied.outcome==2 and json.encode(effect())==json.encode(reference.artist),'Owned artist reset differs')
+     reference.owned_artist=effect()
+    end
     reopen();gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
     reference.right_cancel=effect();reference.right_cancel_lines=lines();shot('selection-engraving-image-right-cancel')
    end

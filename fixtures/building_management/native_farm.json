@@ -12809,6 +12809,187 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "engraving_image_effects_reference": {
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-184508",
+      "status": "passed",
+      "owned_df_pid": 37388,
+      "owned_exit_unsaved": true,
+      "source_manifest_unchanged": true,
+      "root": {
+        "caption": "Image information for engraving",
+        "list_revision": "0",
+        "revision": "132578486958311716",
+        "rows": [
+          {
+            "caption": "Related to historical figure",
+            "id": 1
+          },
+          {
+            "caption": "Related to site",
+            "id": 2
+          },
+          {
+            "caption": "Related to civilization or other group",
+            "id": 3
+          },
+          {
+            "caption": "Existing image",
+            "id": 5
+          },
+          {
+            "caption": "Specify a new image",
+            "id": 6
+          },
+          {
+            "caption": "Allow artist to choose",
+            "id": 0
+          }
+        ],
+        "total": 6,
+        "valid": true
+      },
+      "choices": [
+        {
+          "kind": 1,
+          "total": 10563,
+          "returned": 128,
+          "rows_sha256": "9e75b9709b874e7f2687eb93c7fd06db04e63bfb0050c2ba699fbf52c3506bdf",
+          "first": {
+            "caption": ", \"\"",
+            "id": 9876
+          },
+          "effect": {
+            "back_out_warn": false,
+            "flags": 0,
+            "id": 9876,
+            "image_back_out_warn": false,
+            "open": false,
+            "option": 1,
+            "pos": [
+              134,
+              78,
+              165
+            ],
+            "subid": -1,
+            "type": 0
+          },
+          "native_effect_equal": true,
+          "stale_revision_rejected": true,
+          "stale_list_rejected": true,
+          "invalid_choice_rejected": true
+        },
+        {
+          "kind": 2,
+          "total": 680,
+          "returned": 128,
+          "rows_sha256": "3a2095bd0510003a14db81ea5aca85a8842cbc92d80f703aab36c562e16edfb0",
+          "first": {
+            "caption": "Abanubbul, \"Constructvault\"",
+            "id": 320
+          },
+          "effect": {
+            "back_out_warn": false,
+            "flags": 0,
+            "id": 320,
+            "image_back_out_warn": false,
+            "open": false,
+            "option": 2,
+            "pos": [
+              134,
+              78,
+              165
+            ],
+            "subid": -1,
+            "type": 1
+          },
+          "native_effect_equal": true,
+          "stale_revision_rejected": true,
+          "stale_list_rejected": true,
+          "invalid_choice_rejected": true
+        },
+        {
+          "kind": 3,
+          "total": 1263,
+          "returned": 128,
+          "rows_sha256": "042577ab7c2fb6e5e84bc3767c24a2411aedba5a617fb9259a248c7f6278567f",
+          "first": {
+            "caption": "Abdang, \"The Tame Horror\"",
+            "id": 1109
+          },
+          "effect": {
+            "back_out_warn": false,
+            "flags": 0,
+            "id": 1109,
+            "image_back_out_warn": false,
+            "open": false,
+            "option": 3,
+            "pos": [
+              134,
+              78,
+              165
+            ],
+            "subid": -1,
+            "type": 2
+          },
+          "native_effect_equal": true,
+          "stale_revision_rejected": true,
+          "stale_list_rejected": true,
+          "invalid_choice_rejected": true
+        },
+        {
+          "kind": 5,
+          "total": 2,
+          "returned": 2,
+          "rows_sha256": "197b934d8b943092fbb6e57bc1c1bca89d64c5be1847455fdc38fa4705b26149",
+          "first": {
+            "caption": "Geshud Dôbar, \"The Fortress of Creating\"",
+            "id": 0
+          },
+          "effect": {
+            "back_out_warn": false,
+            "flags": 0,
+            "id": 2,
+            "image_back_out_warn": false,
+            "open": false,
+            "option": 5,
+            "pos": [
+              134,
+              78,
+              165
+            ],
+            "subid": 340,
+            "type": 3
+          },
+          "native_effect_equal": true,
+          "stale_revision_rejected": true,
+          "stale_list_rejected": true,
+          "invalid_choice_rejected": true
+        }
+      ],
+      "artist": {
+        "back_out_warn": false,
+        "flags": 0,
+        "id": -1,
+        "image_back_out_warn": false,
+        "open": false,
+        "option": 0,
+        "pos": [
+          134,
+          78,
+          165
+        ],
+        "subid": -1,
+        "type": -1
+      },
+      "digest_encoding": "rows_sha256: UTF-8 JSON, sorted keys, compact separators, ensure_ascii=true",
+      "sha256": {
+        "workshop-native.json": "47975b4245b46bb0b5c439fcba02c341a1b14b0cd7ef58ac47e7c665e2cf1d66",
+        "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+        "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+      },
+      "coverage": "Root before native picker open; native first choices for all four pages compared with guarded owned writes; artist reset matches. Stale source/list and invalid IDs preserve fields.",
+      "limitations": "Diagnostic adapters only, no product transport or viewer. First-page captions are recorded, not pixel-compared. No new-image drafts, absent-record write, nonempty filters, paging, previews, inherited nonnegative sub-ID or session/disconnect coverage."
+    },
     "engraving_image_subjects_reference": {
       "after_escape": {
         "back_out_warn": false,

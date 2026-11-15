@@ -10,9 +10,27 @@ func chest_ready() -> bool:
 	return check(owner.links.phase==owner.links.Phase.Ready,"Trap links did not reach Ready")
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("furniture")
-	scene._ui.focus_tile(Vector3i(expected.tile[0],expected.tile[1],expected.tile[2]))
-	owner.open_target(int(expected.id))
+	var tile:=Vector3i(expected.tile[0],expected.tile[1],expected.tile[2])
+	scene._ui.focus_tile(tile)
+	var camera=scene.camera_rig.get_node("Camera3D")
+	var point:=Vector2.ZERO
+	var hit: Dictionary={}
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		await process_frame
+		point=camera.unproject_position(Vector3(tile.x+0.5,tile.z+0.5,tile.y+0.5))
+		hit=world.pick_building(camera.project_ray_origin(point),camera.project_ray_normal(point),world.get_top_z())
+		if hit.get("tile",Vector3i(-1,-1,-1))==tile and not world.inspect_entity(3,int(expected.id)).is_empty():break
+	if not check(hit.get("tile",Vector3i(-1,-1,-1))==tile,"Projected ray missed trap"):return
+	await pointer(point)
 	if not await chest_ready():return
+	key(KEY_ESCAPE);await process_frame
+	if not check(scene._ui.host.active==null,"Escape retained trap panel"):return
+	await pointer(point)
+	if not await chest_ready():return
+	if expected.get("observe_only",false):
+		await panel_capture(expected.reference,expected.reference)
+		owner.close_panel();await process_frame;exercised=true;return
 	var prefix: String="trap-sheet-"+str(int(expected.subtype))
 	await panel_capture(prefix,prefix)
 	if not await rename_to(expected.name+"x"):return

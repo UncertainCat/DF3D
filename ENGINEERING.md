@@ -15,8 +15,9 @@ Older recordings imply no lever observation. Defaults and the mailbox are227;
 rebuild bridge and client together. The bridge uses native mechanism selection,
 target validation and job creation with owned inputs. Its source revision comes
 from the shared building-header observation, admitted internally for Lever subtype0
-and PressurePlate subtype1. Completed levers use the native tile-selection route from map clicks;
-other trap subtypes retain their existing inspector route. Shared header admission
+and PressurePlate subtype1. Completed traps use the native tile-selection route
+from map clicks; ordinary subtype2..5 use the shared header/contents panel.
+Shared header admission
 is described below. Mechanism captions
 use the same native c65450(item,ownedString,false,-1) call as renderer150bd6.
 The selected item IDs remain fixed during targeting; Link does not repeat the
@@ -467,7 +468,8 @@ or simulation behavior. The initial TrackStop capture was visually inspected.
 The existing owned `buildingLinks` provider derives tab visibility from trigger
 subtype or resolved item references. Ordinary traps use the shared linked-building
 panel with subtype2..5 header/contents admission; production profiles stay limited
-to levers and pressure plates. Other traps remain on their existing inspector route.
+to levers and pressure plates. Completed ordinary traps use this panel from map
+selection and item-holder navigation.
 Owned DF40632 closes unsaved with source preservation; native graphics capped
 30FPS, sampled GPU59C; core19 passes. Evidence:
 `completed_sheet_discovery_reference.ordinary_trap_sheets_reference`.
@@ -478,12 +480,28 @@ removal. Seven full488x708 comparisons per subtype match native exactly, and the
 native diagnostic verifies restored name, item flag and absence of removal jobs.
 The same paused subtype fixtures retain their original mechanism contents and
 links. Real loaded traps, loading jobs, no-link geometry and simulation remain
-unqualified; public map entry remains gated. Owned DF6300 closes unsaved with
+unqualified in that run. Owned DF6300 closes unsaved with
 source preservation. MSVC and core19 pass; graphical runs are serial and capped
 30FPS, sampled GPU57..60C. This is passed_with_known_issues for the documented
 render-thread/finalize/two-ObjectDB diagnostics. Initial101312 failed in the test
 helper because the read-only link model has no Applying phase; it is not acceptance.
 Evidence: `completed_sheet_discovery_reference.ordinary_trap_panel_reference`.
+
+Protected102447 on2026-11-15 qualifies actual projected map clicks, Escape and
+reopening for all four ordinary trap subtypes, with four exact full488x708 native
+panel comparisons. Controlled fixtures detach mechanical references, set the
+inactive fields and add an iron cage, stone boulder or iron weapon plus the
+corresponding loading job. Native crops are identical before/after the inactive
+field changes and before/after adding the loading jobs: these states introduce
+no additional panel controls. Loaded items use the existing item artwork provider;
+ordinary trap contents now request its facts, correcting a missing cage icon found
+in initial102039. Both runs close their owned games unsaved;102447 owns DF46888
+and preserves the source save. Fixtures restore references, fields and contents;
+they do not establish natural construction, loading completion or trap simulation.
+Public map and holder routes now admit completed subtype2..5. MSVC/core19 pass,
+graphics are serial at30FPS, sampled GPU60..62C. The accepted run has only the
+known render-thread/finalize/two-ObjectDB diagnostics (passed_with_known_issues).
+Evidence: `completed_sheet_discovery_reference.ordinary_trap_map_states_reference`.
 
 ## Native bug register
 

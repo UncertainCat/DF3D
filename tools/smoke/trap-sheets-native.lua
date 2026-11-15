@@ -35,6 +35,10 @@ for subtype=2,5 do
    local text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','');if text:find('%S')then row.lines[#row.lines+1]={y=y,text=text}end
   end
   persist();capture('trap-sheet-'..subtype)
+  if os.getenv('DF3D_TRAP_STATES_NATIVE')=='1'then
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('trap%-sheets%-native.lua$','trap-states-native.lua')
+   row.states=assert(loadfile(source))(out,view,b,capture)
+  end
   if os.getenv('DF3D_TRAP_SHEETS_RUNTIME')=='1'then
    local function shot(label)view:render(dfhack.getTickCount());capture('trap-sheet-'..subtype..'-'..label)end
    local name=b.name;local item=assert(b.contained_items[0].item);row.original_forbid=item.flags.forbid

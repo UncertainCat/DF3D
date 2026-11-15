@@ -22141,6 +22141,396 @@
           "build/stockpile-storage-native-farm-discovery-20261115-070923/lever-link-open.png": "bc487187f2fa2f51185d26d4b64eb35f1da91b0493f1e843c001f1927ccc14d6",
           "build/stockpile-storage-native-farm-discovery-20261115-070923/lever-link-cancel.png": "c526a519ebd2f544cf54de00df99f2a7dc15c0efe1fcd921eccd8f7a45fddd72"
         }
+      },
+      "lever_link_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-071807",
+        "scope": "Native Link supplied/refused/cancel/map-target workflow and owned initial-mechanism provider. Firsttwo eligible TRAPPARTS in native order, native availability/position/walkability/exclusion calls, matching selected IDs before/after forbid and restore with unchanged native menu fields. Native target door16 creates type146 job with roles3/4; no runtime Link action or viewer acceptance.",
+        "owned_df_pid": 41488,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "bridge_sha256": "02394F78DB883A5C80EB9EE524F3B95CD0570B3BD8B36A99EF8F45B1E39D73C7",
+        "observations": {
+          "building_id": 55,
+          "error": "",
+          "frame": 0,
+          "link_target": 16,
+          "states": [
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "initial",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "item_roles": [],
+                  "items": 0,
+                  "pos": [
+                    97,
+                    103,
+                    165
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 55,
+                      "type": 36
+                    }
+                  ],
+                  "requirements": 0,
+                  "type": 147,
+                  "world_registered": true
+                }
+              ],
+              "label": "pull-1",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "item_roles": [],
+                  "items": 0,
+                  "pos": [
+                    97,
+                    103,
+                    165
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 55,
+                      "type": 36
+                    }
+                  ],
+                  "requirements": 0,
+                  "type": 147,
+                  "world_registered": true
+                },
+                {
+                  "flags": 0,
+                  "id": 382797,
+                  "item_roles": [],
+                  "items": 0,
+                  "pos": [
+                    97,
+                    103,
+                    165
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 55,
+                      "type": 36
+                    }
+                  ],
+                  "requirements": 0,
+                  "type": 147,
+                  "world_registered": true
+                }
+              ],
+              "label": "pull-2",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "pull-cleaned",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "workers",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 1,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "work-orders",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 2,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "tasks-return",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-open",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": true,
+              "open": true,
+              "provider": {
+                "available": false,
+                "building_id": 55,
+                "lever_mechanism": 24480,
+                "target_mechanism": -1
+              },
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-cancel",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": true,
+              "open": false,
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-with-supplies",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": true,
+              "need_mechanisms": false,
+              "open": true,
+              "provider": {
+                "available": true,
+                "building_id": 55,
+                "lever_mechanism": 24480,
+                "target_mechanism": 48520
+              },
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-forbid-first",
+              "lever_mechanism": 48520,
+              "link_source": 55,
+              "linking": true,
+              "need_mechanisms": false,
+              "open": true,
+              "provider": {
+                "available": true,
+                "building_id": 55,
+                "lever_mechanism": 48520,
+                "target_mechanism": 48521
+              },
+              "tab": 0,
+              "target_mechanism": 48521
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-restored-first",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": true,
+              "need_mechanisms": false,
+              "open": true,
+              "provider": {
+                "available": true,
+                "building_id": 55,
+                "lever_mechanism": 24480,
+                "target_mechanism": 48520
+              },
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "source-mechanism-row-click",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "target-mechanism-row-click",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382798,
+                  "item_roles": [
+                    {
+                      "flags": 0,
+                      "id": 24480,
+                      "index": -1,
+                      "role": 3
+                    },
+                    {
+                      "flags": 0,
+                      "id": 48520,
+                      "index": -1,
+                      "role": 4
+                    }
+                  ],
+                  "items": 2,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 16,
+                      "type": 33
+                    },
+                    {
+                      "building_id": 55,
+                      "type": 36
+                    }
+                  ],
+                  "requirements": 0,
+                  "type": 146,
+                  "world_registered": true
+                }
+              ],
+              "label": "link-target-click",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-job-cleaned",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-reopened",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": true,
+              "need_mechanisms": false,
+              "open": true,
+              "provider": {
+                "available": true,
+                "building_id": 55,
+                "lever_mechanism": 24480,
+                "target_mechanism": 48520
+              },
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-with-supplies-cancel",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": 48520
+            }
+          ],
+          "success": true,
+          "supplies": [
+            48520,
+            48521
+          ]
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-native.json": "7a55e78588e1da03ad2acc1025873986f0b4f6d2efb955ec85cb4f57e7c0c01e",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/result.json": "eda179f1dab9006aed316960ea6caa7354d5dba8ebe6e54c05e0b58e59854704",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-initial.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-pull-1.png": "61ef8b2dc8841861a645543199f3e61ab3a2e50ee6de9217ac44710ffab927e8",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-pull-2.png": "e9e8518940cf210f15c92e5ae7c947dbf6b2c0b3e744928cc93378b5386ed3b3",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-pull-cleaned.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-workers.png": "6d71d167d7a218ece099096ae7d9785ea8a97826ffa3af3afc6243c542ce6953",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-work-orders.png": "55baa58607f97ae95abeaa48b230df671d976184d7a15f4bf0cbaf929418b04b",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-tasks-return.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-link-open.png": "bc487187f2fa2f51185d26d4b64eb35f1da91b0493f1e843c001f1927ccc14d6",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-link-cancel.png": "c526a519ebd2f544cf54de00df99f2a7dc15c0efe1fcd921eccd8f7a45fddd72",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-link-with-supplies.png": "9270f6b6b4f0df76abd706c0bad2d37e49a09334ab64b6020adff3a225ac3e76",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-link-forbid-first.png": "2b8dc367c33de8f794ccb6665c452e7095bea45fde82af339ab1a7e4b3753e08",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-link-restored-first.png": "9270f6b6b4f0df76abd706c0bad2d37e49a09334ab64b6020adff3a225ac3e76",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-source-mechanism-row-click.png": "6ead1674bf0c89e8f1747b72697343de6db12438f6a3baa000e47ec01fefa26d",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-target-mechanism-row-click.png": "6ead1674bf0c89e8f1747b72697343de6db12438f6a3baa000e47ec01fefa26d",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-link-target-click.png": "41a08d1d265803404a6097b5c24c8d85defa55316d919e33a10233fffff6d78b",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-link-job-cleaned.png": "bfd8d7a9802df0b26dbc07d497b36b98e4e3f25494f3dac7457e32f6258222b6",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-link-reopened.png": "9270f6b6b4f0df76abd706c0bad2d37e49a09334ab64b6020adff3a225ac3e76",
+          "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-link-with-supplies-cancel.png": "6ead1674bf0c89e8f1747b72697343de6db12438f6a3baa000e47ec01fefa26d"
+        }
       }
     },
     "pending_construction_reference": {

@@ -3540,6 +3540,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(const auto order:profile->orderIds)result["order_ids"].append(order);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="lever-mechanisms-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          const auto selected=df3d_production::leverInitialMechanisms(df::building::find(id));
+          if(!selected)return CR_FAILURE;
+          Json::Value result;result["building_id"]=id;result["lever_mechanism"]=(*selected)[0];result["target_mechanism"]=(*selected)[1];
+          result["available"]=(*selected)[0]>=0 && (*selected)[1]>=0;
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="lever-pull-probe") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
           if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;

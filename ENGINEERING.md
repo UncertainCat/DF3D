@@ -9864,6 +9864,28 @@ GPU58C. MSVC bridge build and all19 core tests pass. The diagnostic
 `df3d lever-pull-probe ID` invokes the real action; public lever UI, typed
 mutation receipts, Link selection/materials and completed job effects remain
 unfinished. Evidence is `completed_sheet_discovery_reference.lever_pull_reference`.
+Protected071807 qualifies `leverInitialMechanisms` against native Link. DF's
+initial selection is inline1ad883..1adb34, so the bridge preserves its TRAPPARTS
+traversal and flag mask while invoking native availabilityc93380, effective
+positionc8baa0, walkability10afe0 and stock-exclusionc93160. It returns owned
+IDs and never reads the native selection fields. Walkability may perform DF's
+normal lazy rebuild; no menu/search scratch is borrowed.
+
+The unsupplied save has only one eligible mechanism and native refuses. Two
+diagnostic mechanisms placed on the lever tile enable Link; native chooses
+existing24480 then created48520. Forbidding24480 changes selection to48520/48521;
+restoring it returns24480/48520. The provider matches all five observed states,
+including reopen, and leaves native menu fields unchanged. Native's source and
+target mechanism rows are informational here: tested clicks exit Link, with no
+material picker observed. Re-entering Link and clicking door16 creates job146,
+target reference33, holder reference36, and mechanism roles3/4. Its initial
+position remains DF's sentinel(-30000,-30000,-30000); no corrective position
+is invented. Escape from Link returns to the lever sheet. Created supplies and
+jobs are cleaned up diagnostically, and owned DF41488 closes unsaved with
+source preservation. MSVC and core19 pass. No public lever UI or runtime Link
+action is accepted yet; target validation, material changes while targeting,
+job-completion effects and typed action receipts remain outstanding. Evidence
+is `completed_sheet_discovery_reference.lever_link_reference`.
 See
 `linked_buildings_reference.row_render_reference` for exact evidence scope.
 

@@ -20130,6 +20130,48 @@
             "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
             "build/stockpile-storage-native-farm-discovery-20261115-050220/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
           }
+        },
+        "header_refresh_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-051533",
+          "status": "passed_with_known_issues",
+          "scope": "Open furniture headers observe Remove/Cancel submitted outside panel callbacks. Sixteen exact panel comparisons include four external-change states and twelve normal action states. Paused native semantic mutations; no AI ticks, contents freshness or completed demolition acceptance.",
+          "panel_comparisons": 16,
+          "owned_df_pid": 16552,
+          "closed_unsaved": true,
+          "source_preserved": true,
+          "sha256": {
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-220-external-removing.png": "0235096822ec436997638003c2dbdec947e4a9532842bd41ec6112bef2dada72",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-220-external-restored.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-220-forbidden.png": "799339c9bc0988cdd3caf6d31df74a6cd87dcdb53a50d77731665fadabe46e97",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-220-holder-return.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-220-initial.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-220-removing.png": "0235096822ec436997638003c2dbdec947e4a9532842bd41ec6112bef2dada72",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-220-renamed.png": "c5ec55cb1e4dd8dbce44035f06a849e4d1159dda1545dfcb5ba59ecd657d5a1e",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-220-restored.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-280-external-removing.png": "57e99ee71f7ea6a83363d69eef15bbfecfa1531c9a88707ec73b42fd75237514",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-280-external-restored.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-280-forbidden.png": "dcf8477c8979141e2b1893aa9d3b75f8c85c0f3774d7654d1eda988edb188a57",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-280-holder-return.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-280-initial.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-280-removing.png": "57e99ee71f7ea6a83363d69eef15bbfecfa1531c9a88707ec73b42fd75237514",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-280-renamed.png": "979cfebb87a1b6614644a87074c6bdc0a7ccf94babbc7e5a8520b3cfe33de9dc",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/chest-scene-280-restored.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/furniture-post.json": "29445fb43a69e4217a260ded5f2dccac04ea29d2dc8bdddecc0b62b894e37c11",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/result.json": "9aff5da05b9707c6e8f1caf2e0204461b8700ed340201146de510d8380a86635",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/workshop-furniture-3-forbidden.png": "4ade01c2e8985efb027a90bcb215816b36a0ee2245db0dc74c3c42af973bddf9",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/workshop-furniture-3-initial.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/workshop-furniture-3-removing.png": "e28e2f39f86304a1094ca13d1cfa72fc812512938b3d6ebe9f468a52f6cf6081",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/workshop-furniture-3-renamed.png": "b50653aafecc095b784e02cc76fe2fa7d108eaa1af8d4059d3669a3622969348",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/workshop-furniture-3-restored.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/workshop-furniture-46-forbidden.png": "f006d6dca950986769a9182e4d88f700f2a9f72fae8913a69e4659abdaa6072d",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/workshop-furniture-46-initial.png": "d60091502f2ca4cfe116acce23180309612c6e825334bd18d890230eb91d7c26",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/workshop-furniture-46-removing.png": "513f235fcdf05ef58b814973b28b9d613bfaa61bbba55e040300cace8e7d66e5",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/workshop-furniture-46-renamed.png": "297757cde36c2bbeb5edf3ba703ed5e42d07737fae1a3c47ebe53d1c9df51e63",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/workshop-furniture-46-restored.png": "d60091502f2ca4cfe116acce23180309612c6e825334bd18d890230eb91d7c26",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+            "build/stockpile-storage-native-farm-discovery-20261115-051533/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+          }
         }
       }
     },

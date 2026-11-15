@@ -11,6 +11,26 @@ var snapshot: Dictionary={}
 var ticket:=0
 var generation:=0
 var name_session
+var refresh_ticket:=0
+var refresh_age:=0.0
+
+func _retire_refresh() -> void:
+	var previous:=refresh_ticket;refresh_ticket=0;refresh_age=0.0
+	if service!=null and previous!=0:service.detach(previous)
+
+# Reads retain the displayed authority and never reserve the input controls.
+# An edit retires the read and still uses the displayed revision as its guard.
+func poll_refresh(delta: float) -> void:
+	if phase!=Phase.Ready or ticket!=0 or name_session!=null:return
+	refresh_age+=maxf(0.0,delta)
+	if refresh_ticket!=0 or refresh_age<0.5:return
+	refresh_age=0.0
+	var owner:=generation
+	refresh_ticket=service.submit("production",{"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":building_id},func(received,result,sent):
+		if owner!=generation or received!=refresh_ticket:return
+		refresh_ticket=0;refresh_age=0.0
+		_receive(result,sent))
+	if refresh_ticket==0:_fail(Phase.Unavailable)
 
 func configure(source) -> void:
 	dispose();service=source
@@ -22,6 +42,7 @@ func dispose() -> void:
 	service=null
 
 func close() -> void:
+	_retire_refresh()
 	generation+=1
 	var previous_name=name_session;name_session=null
 	if previous_name!=null:previous_name.finish()
@@ -43,11 +64,13 @@ func refresh() -> void:
 	_read()
 
 func _read() -> void:
+	_retire_refresh()
 	snapshot={};phase=Phase.Reading
 	_send({"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":building_id})
 
 func begin_name_entry() -> bool:
 	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("type",-1) not in [0,1,2,3,5,8,10,11,12,13,14,15,46,51,52,54] or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
+	_retire_refresh()
 	var owner:=generation
 	var owned=load("res://scripts/farm_rename_session.gd").new()
 	service.add_child(owned);owned.configure(service,snapshot,true)
@@ -83,6 +106,7 @@ func cancel_removal() -> void:_edit(C.FarmOperation.CancelRemoval,{})
 func _edit(operation: int,fields: Dictionary) -> void:
 	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in [0,1,2,3,5,8,10,11,12,13,14,15,46,51,52,54] or snapshot.stage!=snapshot.max_stage:return
 	if snapshot.removing!=(operation==C.FarmOperation.CancelRemoval):return
+	_retire_refresh()
 	var intent={"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":building_id,
 		"expected_revision":snapshot.revision,"farm_operation":operation}
 	intent.merge(fields);phase=Phase.Applying;_send(intent)
@@ -156,5 +180,7 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 		if observed.stage!=observed.max_stage or observed.removing!=(operation==C.FarmOperation.Remove) or \
 			(operation==C.FarmOperation.Rename and observed.custom_name!=sent.farm_name):
 			_fail(Phase.Unknown);return
-	snapshot=observed.duplicate(true);phase=Phase.Ready;changed.emit()
+	var different: bool=phase!=Phase.Ready or snapshot!=observed
+	snapshot=observed.duplicate(true);phase=Phase.Ready
+	if different:changed.emit()
 	if editing:applied.emit()

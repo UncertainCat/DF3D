@@ -9898,8 +9898,28 @@ runs are serial/capped30FPS (sampled GPU54C); only the documented three Godot
 diagnostics occur. removal_reference retains captures, effect observations,
 per-worker receipts/logs and hashes.
 
-Public map access remains gated. Remaining funerary work includes simulation-driven
-panel refresh/completed demolition, lifecycle checks and normal map entry. Existing
+Furniture headers refresh with one outstanding background read at most, at a
+half-second interval while ready. Reads preserve visible authority and controls;
+edits retire background observers and use the displayed revision. Rename drafts,
+failed/unknown edits, close and session retirement cannot be overwritten or
+replayed by polling. Unchanged receipts do not rebuild the view. Contents reads
+remain separate and are not yet automatically refreshed.
+
+Protected051533 on2026-11-15 verifies external Remove/Cancel commands bypassing
+panel callbacks for both funerary families. The open headers update automatically;
+sixteen panel captures match native, including four external-change states and
+twelve ordinary action states. These are paused semantic edits, not AI-driven
+demolition. Header state tests cover read coalescing, interactive edits, rename,
+late replies, rejection and epoch retirement; core19 passes. DF16552 closes
+unsaved with source preservation, serial/capped30FPS and sampled GPU up to58C.
+Only the documented startup/finalize/ObjectDB diagnostics occur. Bounded
+header_refresh_reference retains the capture and receipt hashes. Earlier051317
+fails screenshot acceptance because its native capture geometry differs from
+the expected panel crop; the harness now explicitly establishes default client
+size before furniture references instead of relying on optional earlier probes.
+
+Public map access remains gated. Remaining funerary work includes automatic
+contents refresh, completed demolition, lifecycle checks and normal map entry. Existing
 native portrait/Tomb-icon click probes retain the coffin selection; no new
 navigation is inferred.
 

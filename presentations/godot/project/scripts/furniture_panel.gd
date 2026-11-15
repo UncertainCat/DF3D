@@ -9,3 +9,8 @@ func _create_view():
 	return view
 func _open_state(id: int,_season: int) -> void:state.open(id)
 func _contents_supported() -> bool:return true
+
+func _process(delta: float) -> void:
+	super._process(delta)
+	if panel!=null and panel.visible and play_enabled and contents.ticket==0:
+		state.poll_refresh(delta)

@@ -12,6 +12,20 @@ func rename_to(value: String) -> bool:
 func open_furniture(entry: Dictionary) -> bool:
 	owner.open_target(int(entry.id))
 	return await chest_ready()
+func external_removal(value: bool) -> bool:
+	# Deliberately bypass the panel model's applied/refresh callbacks.
+	var request={"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":owner.state.building_id,
+		"expected_revision":owner.state.snapshot.revision,"farm_operation":C.FarmOperation.Remove if value else C.FarmOperation.CancelRemoval}
+	var sent: int=actions.submit("production",request,Callable())
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.01)
+		var receipt: Dictionary=actions.result(sent)
+		if not receipt.is_empty():
+			if not check(receipt.get("status",-1)==C.ManagementStatus.Ok,"External removal edit rejected"):return false
+			if owner.state.phase==owner.state.Phase.Ready and owner.state.snapshot.removing==value:return true
+		await create_timer(0.01).timeout
+	return check(false,"Open furniture header did not observe external removal change")
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("furniture")
 	for entry in expected.buildings:
@@ -33,6 +47,11 @@ func exercise(expected: Dictionary) -> void:
 		var prefix: String="workshop-furniture-"+str(int(entry.type))+"-"
 		check(owner.state.snapshot.type==int(entry.type) and owner.state.snapshot.has("appearance"),"Furniture header lacks native type/artwork")
 		await panel_capture(str(int(entry.id))+"-initial",prefix+"initial")
+		if OS.get_environment("DF3D_FURNITURE_REFRESH")=="1":
+			if not await external_removal(true):return
+			await panel_capture(str(int(entry.id))+"-external-removing",prefix+"removing")
+			if not await external_removal(false):return
+			await panel_capture(str(int(entry.id))+"-external-restored",prefix+"restored")
 		if int(entry.type)==3 and OS.get_environment("DF3D_FUNERARY_HOVER")=="1":
 			var content_view=owner.panel.contents
 			var motion:=InputEventMouseMotion.new()

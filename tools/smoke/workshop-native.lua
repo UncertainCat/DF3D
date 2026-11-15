@@ -137,6 +137,9 @@ local ok,err=xpcall(function()
   result.completed_buildings={}
   local memberships=os.getenv('DF3D_FURNITURE_RELATIONS_DISCOVERY')=='1'
   local generic=os.getenv('DF3D_FURNITURE_GENERIC_DISCOVERY')=='1'
+  -- Establish the same client size before every furniture reference, rather
+  -- than depending on a preceding optional resize/worker probe.
+  if generic then resize_worker('default')end
   local generic_types={[11]=true,[12]=true,[14]=true,[51]=true,[52]=true,[54]=true}
   local funerary=generic and os.getenv('DF3D_FURNITURE_FUNERARY_DISCOVERY')=='1'
   if funerary then generic_types={[3]=true,[46]=true}end

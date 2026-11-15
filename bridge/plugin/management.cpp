@@ -4150,6 +4150,7 @@ void run(color_ostream& out) {
         const auto& row=snapshot->rows[i];BuildingLinkRow value;
         value.itemId=row.itemId;value.referenceType=row.referenceType;value.id=row.id;value.type=row.type;
         value.name=DF2UTF(row.name);value.x=row.x;value.y=row.y;value.z=row.z;
+        value.appearance=row.appearance;
         page.rows.push_back(std::move(value));
       }
       production.buildingLinks=std::move(page);status=m::ManagementStatus::Ok;

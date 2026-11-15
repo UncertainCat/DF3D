@@ -1,4 +1,5 @@
 #pragma once
+#include "tasks_artwork_native.h"
 #include "df/building.h"
 #include "df/building_actual.h"
 #include "df/building_trapst.h"
@@ -19,6 +20,7 @@ struct BuildingLink {
     int32_t itemId=-1,referenceType=-1,id=-1,type=-1;
     int32_t x=-1,y=-1,z=-1;
     std::string name;
+    std::optional<ItemAppearanceRecipe> appearance;
 };
 struct BuildingLinksSnapshot {
     int32_t buildingId=-1;
@@ -72,9 +74,16 @@ inline std::optional<BuildingLinksSnapshot> buildingLinks(df::building* building
             row.id=target->id;row.type=int(target->getType());
             row.x=target->centerx;row.y=target->centery;row.z=target->z;
             target->getName(&row.name);
+            row.appearance=df3d_tasks::linkedBuildingArtwork(target);
             if(row.name.size()>512)return {};
             for(int32_t n:{row.itemId,row.referenceType,row.id,row.type,row.x,row.y,row.z})number(n);
             number(row.name.size());for(unsigned char c:row.name){hash^=c;hash*=UINT64_C(1099511628211);}
+            number(bool(row.appearance));
+            if(row.appearance) {
+                const auto strings=[&](const auto& values){number(values.size());for(const auto& value:values){number(value.size());for(unsigned char c:value){hash^=c;hash*=UINT64_C(1099511628211);}}};
+                strings(row.appearance->pages);strings(row.appearance->palettes);number(row.appearance->layers.size());
+                for(const auto& layer:row.appearance->layers)for(auto value:layer)number(value);
+            }
             result.rows.push_back(std::move(row));
         }
     }

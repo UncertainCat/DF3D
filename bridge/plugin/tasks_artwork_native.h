@@ -8,7 +8,7 @@
 namespace df3d_tasks {
 // Native Tasks398d2f..399489 inline icon dispatch. These are original installed
 // icon slots, not composed texture caches. Custom raw icons precede fallbacks.
-inline std::optional<df3d_production::ItemAppearanceRecipe> destinationArtwork(df::building* building) {
+inline std::optional<df3d_production::ItemAppearanceRecipe> destinationArtwork(df::building* building,bool customRawIcons=true) {
     if(!building || !df::global::world)return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool pinned=[base] {
@@ -38,8 +38,10 @@ inline std::optional<df3d_production::ItemAppearanceRecipe> destinationArtwork(d
         slot=type==5?pick(furnaces,subtype):pick(workshops,subtype);
         if(slot==0xffffffff){
             const int id=building->getCustomType();
-            if(type==5){for(auto* raw:df::global::world->raws.buildings.furnaces)if(raw && raw->id==id){tile=raw->list_icon_texpos;break;}}
-            else {for(auto* raw:df::global::world->raws.buildings.workshops)if(raw && raw->id==id){tile=raw->list_icon_texpos;break;}}
+            if(customRawIcons) {
+                if(type==5){for(auto* raw:df::global::world->raws.buildings.furnaces)if(raw && raw->id==id){tile=raw->list_icon_texpos;break;}}
+                else {for(auto* raw:df::global::world->raws.buildings.workshops)if(raw && raw->id==id){tile=raw->list_icon_texpos;break;}}
+            }
             slot=type==5?0x264b03c:0x264b00c;
         }
     } else if(type==22)slot=pick(siege,building->getSubtype());
@@ -56,6 +58,17 @@ inline std::optional<df3d_production::ItemAppearanceRecipe> destinationArtwork(d
     df3d_appearance::Result recipe;
     if(!df3d_appearance::resolveOriginalItemTile(tile,recipe))return std::nullopt;
     return df3d_production::ownedItemRecipe(recipe);
+}
+// Linked-building renderer uses the same type/subtype/category slots, but
+// custom workshops/furnaces always use the generic installed icon.
+inline std::optional<df3d_production::ItemAppearanceRecipe> linkedBuildingArtwork(df::building* building) {
+    static const bool ready=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0xa39;++i){hash^=base[0x19bff9+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x2f8dfc511a72bc35);
+    }();
+    return ready?destinationArtwork(building,false):std::nullopt;
 }
 // Item-holder renderer155919..156449 uses the same fixed dispatch and custom
 // raw list_icon_texpos precedence as Tasks. Keep that reuse version-qualified.

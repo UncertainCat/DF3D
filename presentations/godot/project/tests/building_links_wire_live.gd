@@ -35,6 +35,7 @@ func run() -> void:
 		var stale:=await links(int(building.id),0,page.revision+1)
 		check(stale.get("status")==C.ManagementStatus.Rejected and not stale.get("production",{}).has("building_links"),"Stale building links retained authority")
 		receipts.append(page)
+		await inspect_render(page)
 	var empty:=await links(65)
 	var empty_page: Dictionary=empty.get("production",{}).get("building_links",{})
 	check(empty.get("status")==C.ManagementStatus.Ok and not empty_page.get("tabs",true) and empty_page.get("total",-1)==0,"Unlinked chair acquired tabs")

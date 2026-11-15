@@ -21663,6 +21663,28 @@
             "build/stockpile-storage-native-farm-discovery-20261115-062005/workshop-wire.stdout.log": "0fb41bb7cc71b68a335c01d8f84a806304e1cc6bb173f34ca02cb913d0f62013",
             "build/stockpile-storage-native-farm-discovery-20261115-062005/workshop-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
           }
+        },
+        "row_render_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-063516",
+          "protocol": 226,
+          "status": "passed_with_known_issues",
+          "scope": "Three complete linked rows in two crops match native pixels; row body inactive; recenter button emits target coordinates. Not full panel, scrolling, tooltip or public-route acceptance.",
+          "owned_df_pid": 31864,
+          "closed_unsaved": true,
+          "source_preserved": true,
+          "bridge_sha256": "177BA542C25C04736382674D1CE078E95F6FC6D7A13239DF73EA814B98745A03",
+          "sha256": {
+            "build/stockpile-storage-native-farm-discovery-20261115-063516/result.json": "1b35542170da73c8c01e1aa47ba0331c5d39be18259033cc5034167c5bdde92d",
+            "build/stockpile-storage-native-farm-discovery-20261115-063516/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "build/stockpile-storage-native-farm-discovery-20261115-063516/building-links-native.json": "4176c0633ee5e3b81805800ca4602207e3fe4f156d5136164b788ae48d568276",
+            "build/stockpile-storage-native-farm-discovery-20261115-063516/workshop-wire-result.json": "9323b96ca3e19e108693327efb90df23a11a875598a004fc28a6a3e83d85066c",
+            "build/stockpile-storage-native-farm-discovery-20261115-063516/workshop-wire.stdout.log": "2239895721611d064afc3f67dbe71d44b8ead7452cdc0df90561cacd687ebacc",
+            "build/stockpile-storage-native-farm-discovery-20261115-063516/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+            "build/stockpile-storage-native-farm-discovery-20261115-063516/building-links-39-rows-viewer.png": "519b762598c1c2752173072c8ef380b3acbd7987f918c36773a6fa292e6f13f2",
+            "build/stockpile-storage-native-farm-discovery-20261115-063516/building-links-55-rows-viewer.png": "326fa0fac972fd3f7f04124ecab7276f1eaac29b8de7631e8f6a94f8a47e684f",
+            "build/stockpile-storage-native-farm-discovery-20261115-063516/building-links-39-left-tab.png": "f672fa532d5298f7feef4e20899cca2907645835797cd2ee1781b146c1d59898",
+            "build/stockpile-storage-native-farm-discovery-20261115-063516/building-links-55-left-tab.png": "286ff5bf722e6769c9c4615d1d725d7eb73c546b20ffcf97d108f2491ef65313"
+          }
         }
       }
     },

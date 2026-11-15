@@ -9783,6 +9783,34 @@ receipts and binary/log hashes. This is transport acceptance, not rendered
 linked-row artwork or panel-control acceptance.
 Fresh root/client, Godot extension and MSVC builds pass, as do all19 root CTests.
 
+Linked-row artwork uses the native19bff9..19ca32 dispatch, pinned separately
+from Tasks. Its direct and subtype/category slots match Tasks, but custom
+workshops/furnaces use generic icons instead of raw overrides. The shared
+helper's default retains Tasks behavior; linked rows explicitly disable that
+override. Recipes are copied into protocol226 rows and included in the native
+snapshot revision. No schema change is required for these existing optional
+fields.
+
+Protected063516 verifies three rendered rows across floodgate39 and lever55:
+the complete472-pixel-wide row crops match native exactly, including frames,
+icons, names and recenter controls. Row-body clicks are inactive and the button
+emits the native target coordinates. This is row-component acceptance, not
+full-panel admission. Owned DF31864 exits unsaved with source preservation;
+native and viewer graphics are capped30FPS, sampled GPU60C. The established
+renderer-thread notice, finalize error and two ObjectDB shutdown leaks remain
+`passed_with_known_issues`. Earlier063200 exposed the missing picture frame;
+063351 stopped on an unsuccessful untimed tooltip probe and is not acceptance.
+
+The staged `building_links_state.gd` owns paging, refresh and retirement;
+headless checks cover duplicate targets, viewport retention, list shrink,
+late replies after closure and wrong-target rejection. Existing UI composition
+and all19 core checks pass. `linked_building_sheet_view.gd` adds local tabs to
+the shared furniture view; qualified existing furniture retains its prior
+layout. Floodgate header/contents admission, full-sheet geometry/actions,
+recenter integration, timed hover315 text and public map/holder routes remain
+unfinished. Lever task controls are a separate outstanding surface. See
+`linked_buildings_reference.row_render_reference` for exact evidence scope.
+
 Protected native022800 on2026-11-15 attempts selection of29 naturally completed,
 revealed building types in the paused fortress. `completed_sheet_discovery_reference` in
 native_farm.json records identities, panel text and screenshot hashes. Chair65,

@@ -107,6 +107,14 @@ struct BuildingHeader {
     std::string customNameCp437,nativeNameCp437,headerNameCp437;
     bool removing=false,suspended=false,hasWorker=false;
 };
+// Native Workers/Work orders use getWorkshopProfile for completed levers too.
+// Keep admission subtype-specific; other traps have not been qualified.
+inline bool productionProfileBuilding(df::building* building) {
+    if(!building)return false;
+    const auto type=building->getType();
+    return type==df::building_type::Workshop || type==df::building_type::Furnace ||
+        (type==df::building_type::Trap && building->getSubtype()==0);
+}
 // Native sheet1b00a3 cancels building jobs and restores completed occupancy.
 // It takes only a building, not selected-sheet or input scratch. The caller
 // owns safe-point validation and treats exceptions after entry as unknown.

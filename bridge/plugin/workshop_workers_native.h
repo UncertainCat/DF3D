@@ -40,7 +40,8 @@ inline std::optional<std::vector<std::pair<int32_t,int32_t>>> workshopWorkerSkil
     const Weights* builtin=nullptr;
     if(type==df::building_type::Workshop){if(subtype>=0 && subtype<23)builtin=&workshop[subtype];}
     else if(type==df::building_type::Furnace){if(subtype>=0 && subtype<7)builtin=&furnace[subtype];}
-    else return std::nullopt;
+    // Native3a54e4 skips builtin weights for levers, then checks reactions.
+    else if(!productionProfileBuilding(building))return std::nullopt;
     if(builtin)for(const auto& [id,weight]:*builtin)weights[id]=weight;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     using Matches=bool (*)(df::building*,df::reaction*,int32_t*);
@@ -92,7 +93,7 @@ inline std::optional<bool> workshopWorkerAllowed(df::unit* unit) {
 
 inline std::optional<std::vector<int32_t>> workshopWorkerCandidates(df::building* building) {
     if(!building || !df::global::world ||
-       (building->getType()!=df::building_type::Workshop && building->getType()!=df::building_type::Furnace) ||
+       !productionProfileBuilding(building) ||
        !building->getWorkshopProfile())return std::nullopt;
     std::vector<int32_t> result;
     for(auto* unit:df::global::world->units.active) {
@@ -136,9 +137,9 @@ struct WorkshopWorkerProfile {
 // not the selected native building or the worker selector's retained list.
 inline std::optional<WorkshopWorkerProfile> workshopWorkerProfile(df::building* building) {
     if(!workshopAssignedFunctions() || !building || !df::global::world ||
-       (building->getType()!=df::building_type::Workshop && building->getType()!=df::building_type::Furnace))return std::nullopt;
+       !productionProfileBuilding(building))return std::nullopt;
     auto* profile=building->getWorkshopProfile();
-    const auto header=observeBuildingHeader(building);
+    const auto header=observeBuildingHeader(building,true);
     if(!profile || !header || header->removing || header->stage!=header->maxStage)return std::nullopt;
     WorkshopWorkerProfile value;value.buildingId=building->id;value.permittedWorkers=profile->permitted_workers;
     if(!value.permittedWorkers.empty())if(auto* unit=df::unit::find(value.permittedWorkers.front())) {
@@ -189,7 +190,8 @@ inline WorkshopWorkerResult selectWorkshopWorker(int32_t buildingId,int32_t unit
     if(!allowed){result.outcome=WorkshopWorkerOutcome::Unavailable;return result;}
     if(!*allowed)return result;
     // Native3a8d90 keeps this effect inline: remove the last matching entry,
-    // otherwise replace the restriction with this worker (Workshop/Furnace).
+    // otherwise replace the restriction with this worker (all admitted types;
+    // only native Civzone type4 retains multiple workers at3a8e61).
     // Calling the whole handler would borrow selected-building/menu globals.
     // Prepare allocations before mutation; swapping commits only semantic data.
     auto desired=before->permittedWorkers;

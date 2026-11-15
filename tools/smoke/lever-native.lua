@@ -1,5 +1,5 @@
 -- Native action discovery in a paused, owned disposable clone only.
-local out,view,select_map,capture,click_label=...
+local out,view,select_map,capture,click_label,read_worker_reference=...
 local gui=require('gui');local json=require('json')
 local lever=assert(df.building.find(55));assert(df.building_trapst:is_instance(lever) and lever.trap_type==0)
 assert(#lever.jobs==0 and df.global.pause_state)
@@ -63,7 +63,32 @@ local ok,err=xpcall(function()
   view:render(dfhack.getTickCount());sample('provider-cleaned')
  end
  assert(click_label('Workers'));sample('workers')
+ if os.getenv('DF3D_LEVER_WORKERS')=='1'then
+  click(448,154)
+  result.worker_selector=read_worker_reference(lever,os.getenv('DF3D_LEVER_WORKERS_PROVIDER')~='1');sample('worker-selector')
+  assert(#result.worker_selector.native_order>0,'Lever worker selector is empty')
+  if os.getenv('DF3D_LEVER_WORKERS_PROVIDER')=='1'then
+   local profile=assert(lever:getWorkshopProfile());assert(#profile.permitted_workers==0)
+   click(80,106);assert(#profile.permitted_workers==1,'Lever worker selection did not assign')
+   local text,code=dfhack.run_command_silent('df3d','workshop-workers-probe',tostring(lever.id));assert(code==0,text)
+   result.assigned_worker=json.decode(text)
+   assert(result.assigned_worker.assigned.id==profile.permitted_workers[0],'Assigned worker provider differs')
+   sample('worker-assigned')
+   click(448,190);click(80,106);assert(#profile.permitted_workers==0,'Lever worker reselect did not clear')
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   sample('workers-restored')
+  else
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());sample('worker-selector-cancel')
+  end
+ end
  assert(click_label('Work orders'));sample('work-orders')
+ if os.getenv('DF3D_LEVER_WORKERS_PROVIDER')=='1'then
+  local text,code=dfhack.run_command_silent('df3d','workshop-orders-probe',tostring(lever.id));assert(code==0,text)
+  result.order_profile=json.decode(text)
+  assert(result.order_profile.general_order_limit==lever:getWorkshopProfile().max_general_orders)
+  local ids={};for _,order in ipairs(df.global.world.manager_orders.all)do if order.workshop_id==lever.id then ids[#ids+1]=order.id end end
+  assert(json.encode(ids)==json.encode(result.order_profile.order_ids),'Lever order membership differs')
+ end
  assert(click_label('Tasks'));sample('tasks-return')
  assert(click_label('Link lever'));sample('link-open')
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());sample('link-cancel')

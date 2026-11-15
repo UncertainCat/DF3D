@@ -47,9 +47,9 @@ struct WorkshopOrdersProfile {
 // Safe-point only. Returned data is owned; order IDs retain native world order.
 inline std::optional<WorkshopOrdersProfile> workshopOrdersProfile(df::building* building) {
     if(!workshopOrdersSupported() || !building || !df::global::world || !df::global::plotinfo ||
-       (building->getType()!=df::building_type::Workshop && building->getType()!=df::building_type::Furnace))return std::nullopt;
+       !productionProfileBuilding(building))return std::nullopt;
     auto* profile=building->getWorkshopProfile();
-    const auto header=observeBuildingHeader(building);
+    const auto header=observeBuildingHeader(building,true);
     if(!profile || !header || header->removing || header->stage!=header->maxStage)return std::nullopt;
     const auto* entity=df::global::plotinfo->main.fortress_entity;
     if(!entity)return std::nullopt;

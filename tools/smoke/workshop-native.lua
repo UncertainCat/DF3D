@@ -94,7 +94,7 @@ local function resize_worker(size)
   assert(dfhack.getTickCount()<limit,'worker resize timeout');script.sleep(1,'frames')end
  assert(os.remove(out..'/owner-input-ack'));script.sleep(2,'frames');view:render(dfhack.getTickCount())
 end
-local function read_worker_reference(target)
+local function read_worker_reference(target,native_only)
  local native_ids={};local nonunit={}
  local list=assert(worker_list(df.global.game.main_interface.unit_selector,0))
  for _,entry in ipairs(list.entry_list)do
@@ -103,11 +103,12 @@ local function read_worker_reference(target)
  end
  worker_names(list,native_ids,0,true)
  local geometry={};worker_geometry(list,geometry,0)
+ local native_skills={}
+ for skill=0,df.job_skill._last_item do if list.skills[skill]~=0 then native_skills[#native_skills+1]={skill=skill,weight=list.skills[skill]}end end
+ if native_only then return {building_id=target.id,native_order=native_ids,skills=native_skills,geometry=geometry,nonunit=nonunit}end
  local worker_text,worker_code=dfhack.run_command_silent('df3d','workshop-workers-probe',tostring(target.id))
  assert(worker_code==0,worker_text)
  local semantic=json.decode(worker_text);local actual_ids=semantic.ids;local sorted_ids={table.unpack(native_ids)}
- local native_skills={}
- for skill=0,df.job_skill._last_item do if list.skills[skill]~=0 then native_skills[#native_skills+1]={skill=skill,weight=list.skills[skill]}end end
  assert(json.encode(native_skills)==json.encode(semantic.skills),'Workshop native skill weights differ')
  table.sort(sorted_ids);table.sort(actual_ids)
  local comparison=assert(io.open(out..'/workshop-workers-comparison-'..target.id..'.json','w'))
@@ -136,7 +137,7 @@ local ok,err=xpcall(function()
  if os.getenv('DF3D_LEVER_NATIVE')=='1'then
   resize_worker('default')
   local source=debug.getinfo(1,'S').source:sub(2):gsub('workshop%-native.lua$','lever-native.lua')
-  assert(loadfile(source))(out,view,select_map,capture,click_label)
+  assert(loadfile(source))(out,view,select_map,capture,click_label,read_worker_reference)
   return
  end
  if os.getenv('DF3D_BUILDING_LINKS_DISCOVERY')=='1'then

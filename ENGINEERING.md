@@ -71,6 +71,24 @@ Pull; the test now bootstraps the real service. Evidence is
 Full building-panel and map integration, other names/sizes and remaining prompt
 input paths are still outstanding.
 
+The shared worker and work-order profile providers admit Trap subtype0 (Lever)
+alongside workshops/furnaces. Other traps remain excluded. Native3a54e4 skips
+builtin skill weights for levers, then runs the same reaction matching; native
+3a8e61 preserves multiple workers only for Civzone type4. Protected082002
+on2026-11-15 matches all116 native worker candidates and empty skill weights,
+observes the native assigned worker, restores unrestricted use through native
+reselection, and matches the work-order limit and membership. The picker closes
+on assigning a new worker but stays open when removing that restriction:
+3a8eec bypasses the close at3a8f1a. Preserve this distinction during panel
+integration; the current workshop owner closes on both paths and needs correction.
+Earlier081810/081906 failed test navigation because it assumed identical close
+behavior for those two actions; neither is full acceptance evidence.
+Owned DF22324 closes unsaved with source preservation. Native graphics are
+capped30FPS with sampled GPU56–57C. MSVC bridge and all19 core checks pass.
+Fixture `completed_sheet_discovery_reference.lever_profile_reference` retains
+the comparison. Semantic mutation wire checks and complete rendered lever-panel
+integration remain outstanding; this is not public lever acceptance.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

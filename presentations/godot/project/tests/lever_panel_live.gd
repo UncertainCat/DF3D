@@ -29,6 +29,16 @@ func model_ready(model) -> bool:
 		world.poll();await process_frame
 		if model.phase==model.Phase.Ready:return true
 	check(false,"Lever subpanel did not become ready: "+str(model.phase));return false
+func item_gestures(owner) -> void:
+	var native: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/lever-native.json"))
+	var id: int=int(native.item_controls.item_id)
+	for control in [["forbid",796],["dump",820],["hidden",868]]:
+		for enabled in [true,false]:
+			click(Vector2(control[1],562))
+			if not await model_ready(owner.contents):return
+			check(owner.contents.rows()[0].id==id and owner.contents.rows()[0][control[0]]==enabled,"Lever item flag differs from native: "+str(control))
+			if not await settle(owner,0):return
+			await compare("item-"+control[0]+("" if enabled else "-restored"))
 func worker_gestures(owner) -> void:
 	var native: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/lever-native.json"))
 	var expected: int=int(native.assigned_worker.assigned.id)
@@ -108,6 +118,7 @@ func inspect_prompt(_snapshot: Dictionary,_expected: Dictionary) -> void:
 		var rect:=Rect2i(416,52,488,708)
 		image.get_region(rect).save_png(directory+"/lever-panel-viewer.png")
 		check(image.get_region(rect).get_data()==native.get_region(rect).get_data(),"Composed lever initial pixels differ")
+		if OS.get_environment("DF3D_LEVER_ITEMS")=="1":await item_gestures(owner)
 		if OS.get_environment("DF3D_LEVER_TASK_CONTROLS")=="1":await gestures(owner)
 		click(Vector2(744,154))
 		deadline=Time.get_ticks_msec()+10000

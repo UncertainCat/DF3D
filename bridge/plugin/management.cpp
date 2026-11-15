@@ -3464,8 +3464,9 @@ df::building_actual* contentsBuilding(int32_t id,bool editing=false) {
   auto* building=virtual_cast<df::building_actual>(df::building::find(id));
   if(!building)return nullptr;
   const auto type=building->getType();
+  const bool lever=type==df::building_type::Trap && building->getSubtype()==0;
   if(!df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
-     (editing || !df3d_production::productionProfileBuilding(building)) &&
+     !lever && (editing || !df3d_production::productionProfileBuilding(building)) &&
      !df3d_production::observePendingBuilding(building))return nullptr;
   auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
   return tile&&!tile->bits.hidden?building:nullptr;

@@ -186,6 +186,24 @@ ObjectDB diagnostics remain. All19 core checks pass. Evidence is
 projected Link to the tested door, not public lever selection, other target
 families, simulation completion or the remaining panel workflows.
 
+Completed Lever subtype0 now admits shared contained-item edits. The existing
+native flag handlers retain eligibility, revisions and unknown-outcome handling.
+Protected085833 on2026-11-15 clicks Forbid, Dump and Hide on/off for installed
+mechanism1635 through the composed owner; all six complete panel crops match
+native and the resulting flags agree. Melt and edits during demolition remain
+unqualified. MSVC and core19 pass. Owned DF30768 closes unsaved with source
+preservation; graphics capped30FPS, sampled GPU60C; only the established
+render-thread/finalize/two ObjectDB diagnostics remain. Evidence is
+`completed_sheet_discovery_reference.lever_items_reference`.
+
+The same lane establishes that native lever Connections permits Give and Take
+despite `canLinkToStockpile()` returning false. Both directions create one link
+to stockpile121 with its reciprocal vector, and native removal restores both.
+Earlier085556 qualifies opening/list/picker cancellation only. The current
+semantic source guards still reject this lever; they must be corrected without
+relaxing stockpile-side target eligibility. No Connections viewer acceptance is
+claimed by this native discovery.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

@@ -24217,6 +24217,105 @@
           "build/stockpile-storage-native-farm-discovery-20261115-085330/result.json": "4b33e636781d69c1c2edb22bd6e9cae44311c5b84e829515cfbfda5258341a7b",
           "build/stockpile-storage-native-farm-discovery-20261115-085330/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "lever_items_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-085833",
+        "scope": "Completed lever contents admitted to shared native flag edits. Actual composed pointer Forbid/Dump/Hide on/off changes first installed mechanism1635 and six complete panel crops match native. Inherited header-free lever wire workflow passes. Melt, queued removal and other contents actions not qualified. Native-only Connections discovery confirms canLinkToStockpile false but Give/Take each create one reciprocal link to pile121; native removal restores both vectors. Connections semantic/UI provider not yet qualified.",
+        "item_controls": {
+          "item_id": 1635,
+          "states": [
+            {
+              "dump": false,
+              "forbid": false,
+              "hidden": false,
+              "label": "item-initial",
+              "melt": false
+            },
+            {
+              "dump": false,
+              "forbid": true,
+              "hidden": false,
+              "label": "item-forbid",
+              "melt": false
+            },
+            {
+              "dump": false,
+              "forbid": false,
+              "hidden": false,
+              "label": "item-forbid-restored",
+              "melt": false
+            },
+            {
+              "dump": true,
+              "forbid": false,
+              "hidden": false,
+              "label": "item-dump",
+              "melt": false
+            },
+            {
+              "dump": false,
+              "forbid": false,
+              "hidden": false,
+              "label": "item-dump-restored",
+              "melt": false
+            },
+            {
+              "dump": false,
+              "forbid": false,
+              "hidden": true,
+              "label": "item-hidden",
+              "melt": false
+            },
+            {
+              "dump": false,
+              "forbid": false,
+              "hidden": false,
+              "label": "item-hidden-restored",
+              "melt": false
+            }
+          ]
+        },
+        "connections": {
+          "can_link": false,
+          "give": {
+            "count": 1,
+            "reciprocal": true
+          },
+          "pile_id": 121,
+          "take": {
+            "count": 1,
+            "reciprocal": true
+          }
+        },
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "owned_df_pid": 30768,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-item-forbid.png": "394b6b996beee1116f176e1cfc917e19197e33ce819f120c1e32c23efca14135",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-panel-item-forbid-viewer.png": "6fc29d74bfb13a3597079b3bbced44636d80dd2a3013ccf4102f3228b4a5e581",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-item-forbid-restored.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-panel-item-forbid-restored-viewer.png": "eac86d5738f6feff14d0f985d1a953a13d374583ae726b98979ee3b08c481119",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-item-dump.png": "514105634bda5bcd541d7063a0ed456dbe699656a07645ab8435e2f4058ac5e2",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-panel-item-dump-viewer.png": "d0bcea16702679179ed94a6eb9f226f1fb25ab53a458d08f745b8516cecc60e9",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-item-dump-restored.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-panel-item-dump-restored-viewer.png": "eac86d5738f6feff14d0f985d1a953a13d374583ae726b98979ee3b08c481119",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-item-hidden.png": "67402191d1acb6087c7170cb5a7d48bd3a6b81700a6276559726d2aade746007",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-panel-item-hidden-viewer.png": "31fcad57ba12b78fee466f98584baeab1a905080618602955a9e6ff178d8cc22",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-item-hidden-restored.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-panel-item-hidden-restored-viewer.png": "eac86d5738f6feff14d0f985d1a953a13d374583ae726b98979ee3b08c481119",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-native.json": "fe84ddb58d9c26b9d985a5ed97557ee8e2c55c347be9f892c9568868115670ed",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/workshop-wire-result.json": "b83319822fb477ab35805884bb37d2928ba2e10727cdfdc7defaf9c0dd69a86e",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/result.json": "86d749f800d8da033c16020456a2ce0aa82a186586a0fd526c4fdc89bc773f70",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-connections-linked-give.png": "1575bb3df28766c3d32c2ba762674628f741ce30185facade03c506c1185c44f",
+          "build/stockpile-storage-native-farm-discovery-20261115-085833/lever-connections-linked-take.png": "d6d6a6ed09569141d6f306cae1d8f986ae224bc21d6067f58718d28c4a89109c"
+        }
       }
     },
     "pending_construction_reference": {

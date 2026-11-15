@@ -37,6 +37,49 @@ end
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(lever)
  assert(sheet.open and sheet.active_id==lever.id);sample('initial')
+ if os.getenv('DF3D_LEVER_ITEMS')=='1'then
+  local item=assert(lever.contained_items[0].item)
+  result.item_controls={item_id=item.id,states={}}
+  local function item_state(label)
+   local row={label=label,forbid=item.flags.forbid,dump=item.flags.dump,melt=item.flags.melt,hidden=item.flags.hidden}
+   result.item_controls.states[#result.item_controls.states+1]=row;sample(label)
+  end
+  item_state('item-initial')
+  for _,control in ipairs{{'forbid',796},{'dump',820},{'hidden',868}}do
+   click(control[2],562);item_state('item-'..control[1])
+   click(control[2],562);item_state('item-'..control[1]..'-restored')
+  end
+ end
+ if os.getenv('DF3D_LEVER_CONNECTIONS')=='1'then
+  result.connections={can_link=lever:canLinkToStockpile()}
+  click(768,82);sample('connections-open')
+  click(80,82);sample('connections-give')
+  assert(click_label('Cancel'));sample('connections-give-cancel')
+  click(112,82);sample('connections-take')
+  assert(click_label('Cancel'));assert(click_label('Done'));sample('connections-done')
+  if os.getenv('DF3D_LEVER_CONNECTION_EFFECTS')=='1'then
+   local links=assert(lever:getStockpileLinks())
+   assert(#links.give_to_pile==0 and #links.take_from_pile==0)
+   local pile
+   for _,candidate in ipairs(df.global.world.buildings.other.STOCKPILE)do
+    local d=dfhack.maps.getTileFlags(candidate.centerx,candidate.centery,candidate.z)
+    if candidate.z==lever.z and d and not d.hidden then pile=candidate;break end
+   end
+   assert(pile);result.connections.pile_id=pile.id
+   local function has(rows,id)for _,row in ipairs(rows)do if row.id==id then return true end end;return false end
+   for _,entry in ipairs{{'give',80,'give_to_pile','take_from_workshop'},{'take',112,'take_from_pile','give_to_workshop'}}do
+    click(768,82);click(entry[2],82);select_map(pile)
+    result.connections[entry[1]]={count=#links[entry[3]],reciprocal=has(pile.links[entry[4]],lever.id)}
+    sample('connections-linked-'..entry[1])
+    if #links[entry[3]]>0 then
+     assert(#links[entry[3]]==1 and links[entry[3]][0].id==pile.id)
+     click(360,154);assert(#links[entry[3]]==0 and not has(pile.links[entry[4]],lever.id))
+     sample('connections-unlinked-'..entry[1])
+    end
+    assert(click_label('Done'))
+   end
+  end
+ end
  if os.getenv('DF3D_LEVER_HEADER')=='1'then
   local original=lever.name
   local function key(value)gui.simulateInput(view,value);view:render(dfhack.getTickCount())end

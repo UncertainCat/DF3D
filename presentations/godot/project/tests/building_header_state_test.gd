@@ -97,7 +97,7 @@ func run() -> void:
 	check(not Model.valid_snapshot(coffin,278),"roomless notice cannot accompany membership")
 	coffin.funerary.notices=[]
 	check(Model.valid_snapshot(coffin,278),"unassigned tomb membership accepted")
-	for kind in [0,1,2,5,8,10,11,12,13,14,15,51,52,54]:
+	for kind in [0,1,2,5,8,10,11,12,13,14,15,23,51,52,54]:
 		var supported:=snapshot();supported.type=kind
 		check(Model.valid_snapshot(supported,278),"native header type "+str(kind))
 	ready();check(model.phase==Model.Phase.Ready and world.calls[0].request.building_header and not world.calls[0].request.has("season"),"independent header read")

@@ -17,7 +17,7 @@ local function persist()
  local f=assert(io.open(out..'/lever-native.json','w'));f:write(json.encode(result));f:close()
 end
 local function sample(label)
- local row={label=label,open=sheet.open,active_id=sheet.active_id,tab=sheet.active_sub_tab,linking=sheet.linking_lever,need_mechanisms=sheet.need_accessible_mechanism_warning,link_source=sheet.linking_lever_bld_id,lever_mechanism=sheet.linking_lever_mech_lever_id,target_mechanism=sheet.linking_lever_mech_target_id,jobs={}}
+ local row={label=label,custom_name=dfhack.df2utf(lever.name),stage=lever:getBuildStage(),max_stage=lever:getMaxBuildStage(),open=sheet.open,active_id=sheet.active_id,tab=sheet.active_sub_tab,linking=sheet.linking_lever,need_mechanisms=sheet.need_accessible_mechanism_warning,link_source=sheet.linking_lever_bld_id,lever_mechanism=sheet.linking_lever_mech_lever_id,target_mechanism=sheet.linking_lever_mech_target_id,jobs={}}
  for _,job in ipairs(lever.jobs)do
   local refs={};for _,ref in ipairs(job.general_refs)do refs[#refs+1]={type=ref:getType(),building_id=ref:getBuilding() and ref:getBuilding().id or -1}end
   row.jobs[#row.jobs+1]={id=job.id,type=job.job_type,flags=job.flags.whole,pos={job.pos.x,job.pos.y,job.pos.z},refs=refs,items=#job.items,requirements=#job.job_items.elements,world_registered=job.list_link~=nil and job.list_link.item==job}
@@ -37,6 +37,14 @@ end
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(lever)
  assert(sheet.open and sheet.active_id==lever.id);sample('initial')
+ if os.getenv('DF3D_LEVER_HEADER')=='1'then
+  local original=lever.name
+  local function key(value)gui.simulateInput(view,value);view:render(dfhack.getTickCount())end
+  click(800,82);key('STRING_A120');key('SELECT');assert(lever.name==original..'x');sample('header-renamed')
+  click(800,82);key('STRING_A000');key('SELECT');assert(lever.name==original);sample('header-restored')
+  click(832,82);assert(#lever.jobs==1 and lever.jobs[0].job_type==df.job_type.DestroyBuilding);sample('header-removing')
+  assert(click_label('Cancel removal'));assert(#lever.jobs==0 and lever:getBuildStage()==lever:getMaxBuildStage());sample('header-cancelled')
+ end
  for index=1,2 do
   assert(click_label('Pull lever'),'Native Pull lever control missing')
   assert(#lever.jobs==index and lever.jobs[index-1].job_type==df.job_type.PullLever)
@@ -63,7 +71,8 @@ local ok,err=xpcall(function()
    assert(code==0,text);local receipt=json.decode(text)
    assert(#lever.jobs==index and receipt.job_id==lever.jobs[index-1].id)
    view:render(dfhack.getTickCount());local observed=sample('provider-pull-'..index)
-   local native=result.states[index+1]
+   local native;for _,state in ipairs(result.states)do if state.label=='pull-'..index then native=state;break end end
+   assert(native,'Missing native Pull reference')
    for j,job in ipairs(observed.jobs)do
     assert(job.id~=native.jobs[j].id,'Provider reused a retired native job')
     for _,key in ipairs{'type','flags','pos','refs','items','requirements','world_registered'}do

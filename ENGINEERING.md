@@ -15,7 +15,7 @@ Older recordings imply no lever observation. Defaults and the mailbox are227;
 rebuild bridge and client together. The bridge uses native mechanism selection,
 target validation and job creation with owned inputs. Its source revision comes
 from the shared building-header observation, admitted internally for Lever subtype0
-only. The normal header and public lever routes remain gated. Mechanism captions
+only. The public lever map route remains gated; shared header admission is described below. Mechanism captions
 use the same native c65450(item,ownedString,false,-1) call as renderer150bd6.
 The selected item IDs remain fixed during targeting; Link does not repeat the
 initial search. Exceptions after entry remain Pending/unknown, and invalid
@@ -118,6 +118,32 @@ MSVC bridge and all19 core checks pass. Evidence is
 `completed_sheet_discovery_reference.lever_task_controls_reference`.
 Active-worker effects, simulation completion, semantic Link cancellation and
 the composed lever panel remain unqualified.
+
+The shared building header and contained-item reader admit completed Lever
+subtype0 through independently resolved simulation records. Other traps remain
+excluded. Header wire validation accepts native type23; the producer enforces
+the subtype. Protected083446 on2026-11-15 records native Rename/restore/Remove/
+Cancel removal and the corresponding Godot transport edits, including stale
+rename rejection. Owned DF9616 closes unsaved with source preservation and only
+the known render-thread notice. This qualifies the idle completed lever header;
+queued/assigned demolition and composed header gestures remain outstanding.
+Evidence: completed_sheet_discovery_reference.lever_header_reference.
+
+`lever_panel.gd` composes the shared workshop owner, lower links/items and the
+viewer-owned Link prompt. Protected084009 qualifies the live initial488x708
+panel at416,52 against native pixels, Link transferring modal input/hiding the
+sheet, and Escape restoring the sheet. The inherited wire header and lever
+checks also pass. First083709 failed because the contents reader still rejected
+completed levers; subtype-specific profile admission fixes that read. Test
+teardown now retires the owner before freeing the host's interaction control.
+Owned DF45184 closes unsaved with source preservation, both graphical processes
+capped30FPS, and sampled GPU60–61C. This is passed_with_known_issues for the
+render-thread/finalize/two ObjectDB diagnostics. Root, extension and MSVC builds,
+headless header-model checks and all19 core tests pass. Evidence is
+`completed_sheet_discovery_reference.lever_panel_reference`.
+Remaining acceptance includes actual projected map targeting, composed header/
+queue/worker/order/item/link gestures, Connections, missing-mechanism warning,
+responsive layout and lifecycle cases. Public map routing remains gated.
 
 ## Native bug register
 

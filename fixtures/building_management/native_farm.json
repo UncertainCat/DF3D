@@ -23839,6 +23839,291 @@
           "build/stockpile-storage-native-farm-discovery-20261115-082933/result.json": "5eaee82d6464b8525440bc2af9863142c5213df5220bd309ef3ffd225ee46b96",
           "build/stockpile-storage-native-farm-discovery-20261115-082933/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "lever_header_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-083446",
+        "scope": "Lever55 native Rename/restore/Remove/Cancel removal and corresponding semantic header edits through actual Godot transport, including stale rename rejection. Completed idle queue only; queued/assigned demolition and composed header gestures remain unqualified.",
+        "source_preserved": true,
+        "owned_df_pid": 9616,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice"
+        ],
+        "native_states": [
+          {
+            "label": "header-renamed",
+            "custom_name": "Main Water Controlx",
+            "stage": 1,
+            "max_stage": 1,
+            "jobs": []
+          },
+          {
+            "label": "header-restored",
+            "custom_name": "Main Water Control",
+            "stage": 1,
+            "max_stage": 1,
+            "jobs": []
+          },
+          {
+            "label": "header-removing",
+            "custom_name": "Main Water Control",
+            "stage": 1,
+            "max_stage": 1,
+            "jobs": [
+              {
+                "flags": 0,
+                "id": 382796,
+                "item_roles": [],
+                "items": 0,
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 55,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 88,
+                "world_registered": true
+              }
+            ]
+          },
+          {
+            "label": "header-cancelled",
+            "custom_name": "Main Water Control",
+            "stage": 1,
+            "max_stage": 1,
+            "jobs": []
+          }
+        ],
+        "wire_headers": [
+          {
+            "missing_building_id": -1,
+            "operation": 0,
+            "outcome": 0,
+            "snapshot": {
+              "appearance": {
+                "layers": [
+                  [
+                    0,
+                    0,
+                    9,
+                    1,
+                    1,
+                    65535,
+                    -1,
+                    -1,
+                    0,
+                    0
+                  ]
+                ],
+                "palettes": [],
+                "tile_pages": [
+                  "BUILDING_ICONS"
+                ]
+              },
+              "custom_name": "Main Water Control",
+              "forbidden": false,
+              "has_worker": false,
+              "header_name": "Main Water Control",
+              "id": 55,
+              "max_stage": 1,
+              "native_name": "Main Water Control",
+              "removing": false,
+              "revision": 5658273887544433940,
+              "stage": 1,
+              "suspended": false,
+              "type": 23
+            }
+          },
+          {
+            "missing_building_id": -1,
+            "operation": 3,
+            "outcome": 1,
+            "snapshot": {
+              "appearance": {
+                "layers": [
+                  [
+                    0,
+                    0,
+                    9,
+                    1,
+                    1,
+                    65535,
+                    -1,
+                    -1,
+                    0,
+                    0
+                  ]
+                ],
+                "palettes": [],
+                "tile_pages": [
+                  "BUILDING_ICONS"
+                ]
+              },
+              "custom_name": "Main Water Controlx",
+              "forbidden": false,
+              "has_worker": false,
+              "header_name": "Main Water Controlx",
+              "id": 55,
+              "max_stage": 1,
+              "native_name": "Main Water Controlx",
+              "removing": false,
+              "revision": 3394522963851941539,
+              "stage": 1,
+              "suspended": false,
+              "type": 23
+            }
+          },
+          {
+            "missing_building_id": -1,
+            "operation": 3,
+            "outcome": 1,
+            "snapshot": {
+              "appearance": {
+                "layers": [
+                  [
+                    0,
+                    0,
+                    9,
+                    1,
+                    1,
+                    65535,
+                    -1,
+                    -1,
+                    0,
+                    0
+                  ]
+                ],
+                "palettes": [],
+                "tile_pages": [
+                  "BUILDING_ICONS"
+                ]
+              },
+              "custom_name": "Main Water Control",
+              "forbidden": false,
+              "has_worker": false,
+              "header_name": "Main Water Control",
+              "id": 55,
+              "max_stage": 1,
+              "native_name": "Main Water Control",
+              "removing": false,
+              "revision": 5658273887544433940,
+              "stage": 1,
+              "suspended": false,
+              "type": 23
+            }
+          },
+          {
+            "missing_building_id": -1,
+            "operation": 4,
+            "outcome": 1,
+            "snapshot": {
+              "appearance": {
+                "layers": [
+                  [
+                    0,
+                    0,
+                    9,
+                    1,
+                    1,
+                    65535,
+                    -1,
+                    -1,
+                    0,
+                    0
+                  ]
+                ],
+                "palettes": [],
+                "tile_pages": [
+                  "BUILDING_ICONS"
+                ]
+              },
+              "custom_name": "Main Water Control",
+              "forbidden": false,
+              "has_worker": false,
+              "header_name": "Main Water Control",
+              "id": 55,
+              "max_stage": 1,
+              "native_name": "Main Water Control",
+              "removing": true,
+              "revision": 2286001903015850941,
+              "stage": 1,
+              "suspended": false,
+              "type": 23
+            }
+          },
+          {
+            "missing_building_id": -1,
+            "operation": 5,
+            "outcome": 1,
+            "snapshot": {
+              "appearance": {
+                "layers": [
+                  [
+                    0,
+                    0,
+                    9,
+                    1,
+                    1,
+                    65535,
+                    -1,
+                    -1,
+                    0,
+                    0
+                  ]
+                ],
+                "palettes": [],
+                "tile_pages": [
+                  "BUILDING_ICONS"
+                ]
+              },
+              "custom_name": "Main Water Control",
+              "forbidden": false,
+              "has_worker": false,
+              "header_name": "Main Water Control",
+              "id": 55,
+              "max_stage": 1,
+              "native_name": "Main Water Control",
+              "removing": false,
+              "revision": 5658273887544433940,
+              "stage": 1,
+              "suspended": false,
+              "type": 23
+            }
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-083446/lever-native.json": "05d381052ad4cd4659aecfcfad47d8feddced9a257ee584c74e342fb885c68ae",
+          "build/stockpile-storage-native-farm-discovery-20261115-083446/workshop-wire-result.json": "79caf0796e73afd685b61f74f64d3c7a95a0d6bc7fd2f994701cd6c70ea3da45",
+          "build/stockpile-storage-native-farm-discovery-20261115-083446/result.json": "46d6a1a7972e7461aad84c50e1ea4469b0cc09b77e8af4545c0e4515417899ee",
+          "build/stockpile-storage-native-farm-discovery-20261115-083446/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
+      },
+      "lever_panel_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-084009",
+        "scope": "Actual composed lever_panel owner with live header/tasks/contents/links and shared semantic service. Native initial 488x708 panel matches exactly. Link transfers modal input and hides sheet; Escape restores sheet. Inherited header/lever wire actions pass after owner closes. No main-scene public routing, actual projected map click, remaining tabs/actions or responsive acceptance claimed.",
+        "source_preserved": true,
+        "owned_df_pid": 45184,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-084009/lever-initial.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-084009/lever-panel-viewer.png": "eac86d5738f6feff14d0f985d1a953a13d374583ae726b98979ee3b08c481119",
+          "build/stockpile-storage-native-farm-discovery-20261115-084009/workshop-wire-result.json": "e21a69ac0f669a8f2a6d562b80346c658b4d744783689cabb101eb88a74dcc3a",
+          "build/stockpile-storage-native-farm-discovery-20261115-084009/result.json": "28b02487d7e1a40dada0923582db0757983a09853b494434f29a51300e34b9fd",
+          "build/stockpile-storage-native-farm-discovery-20261115-084009/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

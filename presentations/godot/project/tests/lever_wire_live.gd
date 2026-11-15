@@ -2,6 +2,25 @@ extends "res://tests/item_carrier_wire_live.gd"
 
 var receipts: Array=[]
 var task_receipts: Array=[]
+var header_receipts: Array=[]
+func inspect_header() -> void:
+	var result:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":55})
+	header_receipts.append(result)
+	var header: Dictionary=result.get("production",{}).get("building_header",{}).get("snapshot",{})
+	if not check(result.get("status")==C.ManagementStatus.Ok and header.get("type")==23,"Lever header unavailable"):return
+	var original: String=header.custom_name
+	var stale:=await request("production",{"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":55,"expected_revision":header.revision+1,"farm_operation":C.FarmOperation.Rename,"farm_name":original+"x"})
+	check(stale.get("production",{}).get("building_header",{}).get("outcome")==C.FarmEditOutcome.Stale,"Stale lever header edit accepted")
+	for operation in [C.FarmOperation.Rename,C.FarmOperation.Rename,C.FarmOperation.Remove,C.FarmOperation.CancelRemoval]:
+		var intent: Dictionary={"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":55,"expected_revision":header.revision,"farm_operation":operation}
+		if operation==C.FarmOperation.Rename:intent.farm_name=original+"x" if header.custom_name==original else original
+		result=await request("production",intent);header_receipts.append(result)
+		var receipt: Dictionary=result.get("production",{}).get("building_header",{})
+		if not check(result.get("status")==C.ManagementStatus.Ok and receipt.get("outcome")==C.FarmEditOutcome.Completed,"Lever header edit rejected"):return
+		header=receipt.snapshot
+		check(header.removing==(operation==C.FarmOperation.Remove),"Lever removal receipt differs")
+		if operation==C.FarmOperation.Rename:check(header.custom_name==intent.farm_name,"Lever rename receipt differs")
+	check(header.custom_name==original and not header.removing,"Lever header not restored")
 func task_edit(id: int,extra: Dictionary) -> Dictionary:
 	var intent: Dictionary={"action":C.ManagementAction.ProductionJobEdit,"building_id":55,"job_id":id}
 	intent.merge(extra)
@@ -52,6 +71,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	if OS.get_environment("DF3D_LEVER_HEADER")=="1":await inspect_header()
 	var initial:=await lever(0)
 	var state: Dictionary=initial.get("production",{}).get("lever",{})
 	if not check(initial.get("status")==C.ManagementStatus.Ok and not state.is_empty(),"Lever read rejected"):quit(1);return
@@ -77,5 +97,5 @@ func run() -> void:
 	check(duplicate.get("production",{}).get("lever",{}).get("outcome")==2,"Duplicate Link not rejected")
 	if OS.get_environment("DF3D_LEVER_TASK_WIRE")=="1":await inspect_tasks(pulled.job_id,linked.job_id)
 	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"receipts":receipts,"task_receipts":task_receipts,"pull_job":pulled.job_id,"link_job":linked.job_id}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"receipts":receipts,"task_receipts":task_receipts,"header_receipts":header_receipts,"pull_job":pulled.job_id,"link_job":linked.job_id}));file.close()
 	world.detach_live();world.queue_free();await process_frame;quit(1 if failed else 0)

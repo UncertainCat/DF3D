@@ -3465,7 +3465,7 @@ df::building_actual* contentsBuilding(int32_t id,bool editing=false) {
   if(!building)return nullptr;
   const auto type=building->getType();
   if(!df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
-     (editing || (type!=df::building_type::Workshop && type!=df::building_type::Furnace)) &&
+     (editing || !df3d_production::productionProfileBuilding(building)) &&
      !df3d_production::observePendingBuilding(building))return nullptr;
   auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
   return tile&&!tile->bits.hidden?building:nullptr;
@@ -4291,11 +4291,11 @@ void run(color_ostream& out) {
         auto* building=df::building::find(q->building_id());
         if(!building)return nullptr;
         const auto type=building->getType();
-        if(!df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return nullptr;
+        if(!df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && !df3d_production::productionProfileBuilding(building))return nullptr;
         auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
         return tile && !tile->bits.hidden?building:nullptr;
       };
-      const auto observe=[&]{return df3d_production::observeBuildingHeader(target());};
+      const auto observe=[&]{return df3d_production::observeBuildingHeader(target(),true);};
       const auto convert=[](const df3d_production::BuildingHeaderObservation& f)->std::optional<BuildingHeaderSnapshot> {
         BuildingHeaderSnapshot result{f.id,f.type,f.stage,f.maxStage,f.revision,DF2UTF(f.customName),DF2UTF(f.nativeName),DF2UTF(f.headerName),f.removing,f.suspended,f.hasWorker,int8_t(f.forbidden),df3d_tasks::destinationArtwork(df::building::find(f.id))};
         if(f.type==3 || f.type==46) {

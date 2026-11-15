@@ -121,7 +121,7 @@ inline bool productionProfileBuilding(df::building* building) {
 inline bool cancelBuildingRemoval(df::building* building) {
     const auto& native=farmFunctions();
     if(!native || !building ||
-       (!plainFurnitureType(building->getType()) && !funeraryFurnitureType(building->getType()) && !linkedFurnitureType(building->getType()) && building->getType()!=df::building_type::Door && building->getType()!=df::building_type::FarmPlot && building->getType()!=df::building_type::Box && building->getType()!=df::building_type::Workshop && building->getType()!=df::building_type::Furnace) || building->getBuildStage()!=building->getMaxBuildStage() ||
+       (!plainFurnitureType(building->getType()) && !funeraryFurnitureType(building->getType()) && !linkedFurnitureType(building->getType()) && building->getType()!=df::building_type::Door && building->getType()!=df::building_type::FarmPlot && building->getType()!=df::building_type::Box && !productionProfileBuilding(building)) || building->getBuildStage()!=building->getMaxBuildStage() ||
        building->jobs.size()>size_t(INT16_MAX))return false;
     bool removing=false;
     for(const auto* job:building->jobs) {

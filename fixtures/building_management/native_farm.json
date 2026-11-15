@@ -12809,6 +12809,109 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "engraving_initialization_reference": {
+      "status": "controlled_native_initialization_verified",
+      "runs": {
+        "native": {
+          "run": "build/stockpile-storage-native-farm-discovery-20261114-181924",
+          "owned_df_pid": 14836,
+          "source_manifest_unchanged": true,
+          "owned_exit_unsaved": true,
+          "observation": {
+            "after": {
+              "art_id": 4,
+              "art_subid": 123,
+              "chunks": 1,
+              "flags": 1,
+              "tile": 4
+            },
+            "before": {
+              "art_id": -1,
+              "art_subid": -1,
+              "chunks": 0,
+              "flags": 1,
+              "tile": 1
+            },
+            "controlled_missing_ids": true,
+            "description": "Engraved on the floor is an exceptionally designed image of baguette cut gems.  ",
+            "tile": [
+              129,
+              78,
+              165
+            ],
+            "title": "Tan Meb, \"The Tick of Inches\"",
+            "unresolved_count": 0
+          },
+          "sha256": {
+            "workshop-native.json": "30db758d1d74954188b1626f948457c68211be818b5fe07d0d06cf7b9743dc86",
+            "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+          }
+        },
+        "owned": {
+          "run": "build/stockpile-storage-native-farm-discovery-20261114-182109",
+          "owned_df_pid": 34624,
+          "source_manifest_unchanged": true,
+          "owned_exit_unsaved": true,
+          "observation": {
+            "after": {
+              "art_id": 4,
+              "art_subid": 123,
+              "chunks": 1,
+              "flags": 1,
+              "tile": 226
+            },
+            "before": {
+              "art_id": -1,
+              "art_subid": -1,
+              "chunks": 0,
+              "flags": 1,
+              "tile": 1
+            },
+            "controlled_missing_ids": true,
+            "description": "Engraved on the floor is an exceptionally designed image of a papaya tree.  ",
+            "owned": {
+              "effect": {
+                "art_id": 4,
+                "art_subid": 123,
+                "chunks": 1,
+                "flags": 1,
+                "tile": 226
+              },
+              "repeated": {
+                "description": "Engraved on the floor is an exceptionally designed image of a papaya tree.  ",
+                "title": "Kogan Kasben, \"The Boat of Tufts\"",
+                "valid": true
+              },
+              "sheet_unchanged": true,
+              "text": {
+                "description": "Engraved on the floor is an exceptionally designed image of a papaya tree.  ",
+                "title": "Kogan Kasben, \"The Boat of Tufts\"",
+                "valid": true
+              }
+            },
+            "tile": [
+              129,
+              78,
+              165
+            ],
+            "title": "Kogan Kasben, \"The Boat of Tufts\"",
+            "unresolved_count": 0
+          },
+          "sha256": {
+            "workshop-native.json": "34031149ea07e387b651de102cd5a25010715d5d4a448f185cfa12ce7b9c9e47",
+            "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+          }
+        }
+      },
+      "limits": [
+        "The save has no naturally unresolved engraving; the oracle clears the selected engraving artwork IDs and restores original ID/symbol/flags in cleanup.",
+        "Generation consumes native RNG. Independent sessions generate different subjects, names and symbols; cross-session text identity is not asserted.",
+        "The owned run compares its generated text with the subsequent native sheet and verifies repeated-read stability.",
+        "The regional artwork reuse branch and public viewer workflow remain unqualified."
+      ]
+    },
     "engraving_formatter_reference": {
       "run": "build/stockpile-storage-native-farm-discovery-20261114-181630",
       "status": "existing_artwork_first_access_formatter",
@@ -12843,7 +12946,7 @@
         "source_fields_unchanged": true
       },
       "limits": [
-        "Missing-artwork generation, viewer rendering and image-picker effects are unqualified.",
+        "This first-access reference does not cover missing-artwork generation; see engraving_initialization_reference. Viewer rendering and image-picker effects remain unqualified.",
         "Source comparison covers the named fields in workshop-native.lua, not every world object."
       ],
       "sha256": {

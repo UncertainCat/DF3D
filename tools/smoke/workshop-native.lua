@@ -127,6 +127,7 @@ local magma_tiles={}
 local selection_moves={}
 local selection_units={}
 local selection_designations={}
+local selection_engravings={}
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
@@ -146,6 +147,50 @@ local ok,err=xpcall(function()
     if d and not d.hidden then target=engraving;break end
    end
    assert(target,'Engraving reference needs a revealed engraving')
+   if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_INIT')=='1' then
+    local unresolved=0;local revealed
+    for _,e in ipairs(df.global.world.event.engravings)do if e.art_id==-1 then
+     unresolved=unresolved+1;local d=dfhack.maps.getTileFlags(e.pos);if d and not d.hidden and not revealed then revealed=e end
+    end end
+    local controlled=not revealed;target=revealed or target
+    selection_engravings[#selection_engravings+1]={target=target,art_id=target.art_id,art_subid=target.art_subid,tile=target.tile,flags=target.flags.whole}
+    if controlled then target.art_id=-1;target.art_subid=-1 end
+    local p=target.pos;local before={art_id=target.art_id,art_subid=target.art_subid,tile=target.tile,flags=target.flags.whole,chunks=#df.global.world.art_image_chunks.all}
+    local owned,owned_effect
+    if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_INIT_RUNTIME')=='1' then
+     local menu=json.encode(observe());local title,description=sheet.engraving_title,sheet.raw_description
+     local output,code=dfhack.run_command_silent('df3d','engraving-description-probe',tostring(p.x),tostring(p.y),tostring(p.z))
+     assert(code==0,output);owned=json.decode(output);assert(owned.valid,'Owned initializer failed: '..output)
+     assert(menu==json.encode(observe()) and title==sheet.engraving_title and description==sheet.raw_description,'Owned initializer changed native sheet')
+     owned_effect={art_id=target.art_id,art_subid=target.art_subid,tile=target.tile,flags=target.flags.whole,chunks=#df.global.world.art_image_chunks.all}
+    end
+    select_map{centerx=p.x,centery=p.y,z=p.z}
+    if sheet.active_sheet~=df.view_sheet_type.ENGRAVING then
+     local index;for i,kind in ipairs(sheet.tab)do if kind==df.view_sheet_type.ENGRAVING then index=i;break end end
+     assert(index,'Initialization reference has no engraving tab')
+     g.precise_mouse_x=(g.dimx-35)*8;g.precise_mouse_y=52+index*36+16
+     g.mouse_x=g.precise_mouse_x//8;g.mouse_y=(g.precise_mouse_y-4)//12
+     df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+     gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
+    end
+    assert(sheet.active_sheet==df.view_sheet_type.ENGRAVING and target.art_id>=0,'Native sheet did not initialize missing artwork')
+    result.tile_selection_reference.engraving_initialization={tile={p.x,p.y,p.z},unresolved_count=unresolved,
+     controlled_missing_ids=controlled,before=before,
+     after={art_id=target.art_id,art_subid=target.art_subid,tile=target.tile,flags=target.flags.whole,chunks=#df.global.world.art_image_chunks.all},
+     title=dfhack.df2utf(sheet.engraving_title),description=dfhack.df2utf(sheet.raw_description),lines=lines()}
+    if owned then
+     local reference=result.tile_selection_reference.engraving_initialization
+     assert(owned.title==reference.title and owned.description==reference.description,'Initialized artwork text differs from native sheet')
+     assert(json.encode(owned_effect)==json.encode(reference.after),'Native sheet repeated initialization after owned read')
+     local output,code=dfhack.run_command_silent('df3d','engraving-description-probe',tostring(p.x),tostring(p.y),tostring(p.z))
+     assert(code==0,output);local repeated=json.decode(output)
+     assert(repeated.valid and repeated.title==owned.title and repeated.description==owned.description,'Repeated initialized read changed text')
+     assert(target.art_id==owned_effect.art_id and target.art_subid==owned_effect.art_subid and target.tile==owned_effect.tile and #df.global.world.art_image_chunks.all==owned_effect.chunks,'Repeated read changed initialized artwork')
+     reference.owned={text=owned,effect=owned_effect,repeated=repeated,sheet_unchanged=true}
+    end
+    shot('selection-engraving-initialization')
+    return
+   end
    local p=target.pos
    local prior={art_id=target.art_id,art_subid=target.art_subid,flags=target.flags.whole}
    local function artwork_state()
@@ -2437,6 +2482,9 @@ end,debug.traceback)
 for _,prior in ipairs(selection_moves)do assert(dfhack.items.moveToGround(prior.item,prior.pos),'Selection fixture restoration failed');prior.item.flags.whole=prior.flags end
 for _,prior in ipairs(selection_units)do prior.unit.pos:assign(prior.pos)end
 for _,prior in ipairs(selection_designations)do prior.designation.whole=prior.whole end
+for _,prior in ipairs(selection_engravings)do
+ prior.target.art_id=prior.art_id;prior.target.art_subid=prior.art_subid;prior.target.tile=prior.tile;prior.target.flags.whole=prior.flags
+end
 for _,tile in ipairs(magma_tiles)do tile.upper.tiletype[tile.x][tile.y]=tile.tile;tile.lower.designation[tile.x][tile.y].whole=tile.designation end
 for index=#custom_supplies,1,-1 do assert(dfhack.items.remove(custom_supplies[index]),'Custom supply cleanup failed')end
 for _,prior in ipairs(fuel_flags)do prior.item.flags.forbid=prior.forbid end

@@ -9461,11 +9461,31 @@ remains available for subsequent native and viewer reads. Protected181630 checks
 exactly one added chunk on first access, unchanged prior chunk identities/order,
 unchanged engraving art_id/art_subid/flags and no further chunks on warm reads.
 This is independent of sheet state and does not populate native menu scratch.
-Generating missing artwork througha48120 remains a separate outstanding operation.
+For art_id-1 the adapter calls nativea48120 on an owned engraving copy and
+publishes its art_id, art_subid and tile outputs at the same safe point. Native
+world artwork allocation/registration and generation RNG effects persist; only
+the subsequent description-formatting scratch is restored. Warm reads do not
+repeat initialization. The initializer can reuse a regional coordinate mapping
+or allocate/generate artwork via1453130/144dcd0 and name it via931860/a92860.
+Its regional lookup/registration, generation, naming and entry bodies are pinned.
+
+Protected native181924 and owned182109 on2026-11-14 cover a controlled missing-ID
+case because this save has zero naturally unresolved engravings. The oracle
+clears the selected engraving's art IDs, then restores its original IDs, symbol
+and flags in cleanup. Native initializes artwork4/subimage123, adds one chunk,
+preserves flags1 and selects a symbol. The adapter does the same through an owned
+input; its generated text exactly matches the subsequent native sheet, and
+sheet opening/repeated reads leave the initialized identity and symbol unchanged.
+Independent sessions have different RNG states, so their generated subjects,
+names and symbols are not asserted identical. Newly registered semantic art
+remains in these disposable worlds; both sessions exit unsaved with source
+manifests preserved. Owned DF14836/34624 close, serial30FPS samples remain51C.
+Evidence is selection_reference.engraving_initialization_reference. Regional
+mapping reuse and naturally unresolved-world coverage remain unqualified.
 Native element naming permits negative amounts (unspecified groups), uses
 singular only for1, and prints numeric amounts from2; rejecting negative amounts
 incorrectly rejects this reference. Native1451c08 also accepts a null image ref.
-Other artwork/reference families, missing-artwork generation and rendered acceptance
+Other artwork/reference families, regional mapping reuse and rendered acceptance
 remain required.
 
 Native-only174721 and174833 pass their assertions; owned DF37032/1300

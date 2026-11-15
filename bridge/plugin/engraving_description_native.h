@@ -11,8 +11,7 @@
 #include "df/general_ref_mapsquare.h"
 
 namespace df3d_selection {
-// Staged formatter probe. Cold semantic-art initialization is deliberately a
-// separate unresolved operation; this never invokes sheet population1a9cc0.
+// Staged semantic adapter; this never invokes sheet population1a9cc0.
 struct EngravingDescription {std::string title,description;};
 inline uint64_t engravingHash(const uint8_t* p,size_t count) {
     uint64_t value=UINT64_C(14695981039346656037);
@@ -24,6 +23,13 @@ inline bool engravingDescriptionReady() {
     static const bool ready=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
         for(const auto& p:std::initializer_list<Pin>{
+            {0xa48120,0x580,UINT64_C(0xd7f7020cf831a612)}, // engraving initialization
+            {0x1453130,0xf8,UINT64_C(0x8908ab4dc6f55824)}, // artwork allocation
+            {0x144dcd0,0x3e36,UINT64_C(0xdaf8c8b2b95994a8)}, // semantic image generation
+            {0x931860,0xab,UINT64_C(0x5c71bd27c08da6ea)}, // civilization image naming
+            {0xa92860,0x17cb,UINT64_C(0x627504395969e689)}, // fallback image naming
+            {0x10aab0,0x98,UINT64_C(0x953c09b55dfc8ff2)}, // regional artwork lookup
+            {0x10a990,0x119,UINT64_C(0x6dd98a78350fe952)}, // regional artwork registration
             {0x1458b0,0xe03,UINT64_C(0xe863f0cb03756390)}, // existing artwork chunk loader
             {0x144cb0,0xa5,UINT64_C(0x5b86c4fc644fe651)}, // chunk allocation/registration
             {0x1443f0,0x7f,UINT64_C(0x93648c11fc43c8ee)}, // image construction
@@ -121,12 +127,22 @@ inline std::optional<EngravingDescription> engravingDescriptionProbe(int x,int y
     df::engraving* engraving=nullptr;
     for(auto* candidate:df::global::world->event.engravings)
         if(candidate && candidate->pos.x==x && candidate->pos.y==y && candidate->pos.z==z){engraving=candidate;break;}
-    if(!engraving || engraving->art_id<0 || engraving->art_subid<0 || engraving->art_subid>=500)return std::nullopt;
-    failure="artwork-load";
+    if(!engraving)return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    if(engraving->art_id==-1) {
+        // The semantic initializer operates on an owned engraving input, with
+        // ordinary world artwork allocation/registration and RNG effects.
+        // These three fields are its outputs; publish them at this safe point.
+        // Do not restore generation RNG or rerun initialization on a warm read.
+        auto draft=*engraving;
+        reinterpret_cast<void(*)(df::engraving*)>(base+0xa48120)(&draft);
+        engraving->art_id=draft.art_id;engraving->art_subid=draft.art_subid;engraving->tile=draft.tile;
+    }
+    if(engraving->art_id<0 || engraving->art_subid<0 || engraving->art_subid>=500)return std::nullopt;
+    failure="artwork-load";
     // Native lookup scans the semantic chunk cache before loading saved art.
     // Keep its registered world-owned chunk alive, just as a native read does.
-    // This neither populates a sheet nor generates an engraving's missing art.
+    // This does not populate a native sheet.
     using LoadChunk=df::art_image_chunk*(*)(df::art_image_chunk_handlerst*,int32_t);
     auto* chunk=reinterpret_cast<LoadChunk>(base+0x1458b0)(&df::global::world->art_image_chunks,engraving->art_id);
     if(!chunk || !chunk->images[engraving->art_subid].art_image)return std::nullopt;

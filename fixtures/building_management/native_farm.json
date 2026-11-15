@@ -14652,7 +14652,73 @@
           "pinned_length": 44,
           "pinned_fnv1a64": "94cb9f513f8900f1",
           "predicate_sha256": "935bc4113c05bf4e74310b3e5c2d72ac5e666e1b45ed5febf0c5b83d9e34f6d1",
-          "scope": "Door/FarmPlot/Statue isForbidden virtual entries resolve to this native leaf. It reads the first contained item forbid bit, or returns false for empty contents; no UI/menu globals. Renderer uses the result for title palette12 versus15 and two *** Forbidden *** lines in palette4 at local baselines(64,24),(64,48). The native Forbid-on screenshot235233 confirms the visible header."
+          "scope": "Door/FarmPlot/Statue isForbidden virtual entries resolve to this native leaf. It reads the first contained item forbid bit, or returns false for empty contents; no UI/menu globals. Renderer uses the result for title palette12 versus15 and two *** Forbidden *** lines in palette4 at local baselines(64,24),(64,48). The native Forbid-on screenshot235233 confirms the visible header.",
+          "virtual_dispatch": {
+            "source": "Pinned DF53.16 symbols.xml vtable addresses and installed executable slot75 pointers",
+            "targets": {
+              "0x28b960": [
+                "building_actualst",
+                "building_animaltrapst",
+                "building_archerytargetst",
+                "building_armorstandst",
+                "building_axle_horizontalst",
+                "building_axle_verticalst",
+                "building_bars_floorst",
+                "building_bars_verticalst",
+                "building_bedst",
+                "building_bookcasest",
+                "building_boxst",
+                "building_bridgest",
+                "building_cabinetst",
+                "building_cagest",
+                "building_chainst",
+                "building_chairst",
+                "building_coffinst",
+                "building_constructionst",
+                "building_display_furniturest",
+                "building_doorst",
+                "building_farmplotst",
+                "building_floodgatest",
+                "building_furnacest",
+                "building_gear_assemblyst",
+                "building_grate_floorst",
+                "building_grate_wallst",
+                "building_hatchst",
+                "building_hivest",
+                "building_instrumentst",
+                "building_nest_boxst",
+                "building_nestst",
+                "building_offering_placest",
+                "building_road_dirtst",
+                "building_road_pavedst",
+                "building_rollersst",
+                "building_screw_pumpst",
+                "building_shopst",
+                "building_siegeenginest",
+                "building_slabst",
+                "building_statuest",
+                "building_supportst",
+                "building_tablest",
+                "building_traction_benchst",
+                "building_tradedepotst",
+                "building_trapst",
+                "building_wagonst",
+                "building_water_wheelst",
+                "building_weaponrackst",
+                "building_weaponst",
+                "building_wellst",
+                "building_windmillst",
+                "building_window_gemst",
+                "building_window_glassst",
+                "building_workshopst"
+              ],
+              "0x67050": [
+                "building_civzonest",
+                "building_stockpilest"
+              ]
+            },
+            "scope": "All concrete actual-building classes resolve the existing pinned first-component predicate28b960. Stockpile/Civzone resolve false67050 and remain excluded from pending observer. Non-building definition/handler vtables are excluded."
+          }
         }
       },
       "header_dispatch_reference": {
@@ -16000,6 +16066,216 @@
         "scope": "Actual main-scene component View opens item22339; holder View returns to unfinished Statue965 with fresh authority. Both complete panel crops match native002629. Full item/job before and after match the native flag+navigation sequence, including weight_computed. Escape releases the panel.",
         "status": "passed_with_known_issues: rendering-thread/finalize/two-ObjectDB diagnostics",
         "owned_df_pid": 42000,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "readback": {
+          "actions": [],
+          "after": {
+            "contents": [
+              {
+                "id": 22339,
+                "role": 0
+              }
+            ],
+            "dump": false,
+            "flags": 536870912,
+            "forbid": false,
+            "frame": 0,
+            "hidden": false,
+            "id": 22339,
+            "in_building": false,
+            "in_job": false,
+            "jobs": [
+              {
+                "flags": 66,
+                "id": 68196,
+                "type": "ConstructBuilding"
+              }
+            ],
+            "max_stage": 1,
+            "melt": false,
+            "stage": 0,
+            "stockpile_countdown": 0,
+            "stockpile_delay": 0
+          },
+          "before": {
+            "contents": [
+              {
+                "id": 22339,
+                "role": 0
+              }
+            ],
+            "dump": false,
+            "flags": 2,
+            "forbid": false,
+            "frame": 0,
+            "hidden": false,
+            "id": 22339,
+            "in_building": false,
+            "in_job": true,
+            "jobs": [
+              {
+                "flags": 2,
+                "id": 68196,
+                "type": "ConstructBuilding"
+              }
+            ],
+            "max_stage": 1,
+            "melt": false,
+            "stage": 0,
+            "stockpile_countdown": 0,
+            "stockpile_delay": 0
+          },
+          "viewer": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          }
+        },
+        "hashes": {
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "pending-component-readback.json": "df287c1ab3c5dec793404d69d6e7daefccf0ff0334166b05f8f882a5696bd68d",
+          "chest-scene-component-item.png": "7a7f7284131312635e79330034ca276a3d5d1ccf648c79d8d0dc11d7de159e80",
+          "chest-scene-component-return.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
+      },
+      "header_artwork_presentation_reference": {
+        "protocol": 219,
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-004253",
+        "owned_df_pid": 5688,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "status": "passed_with_known_issues: rendering-thread/finalize/two-ObjectDB diagnostics",
+        "scope": "Controlled idle completed buildings temporarily set to maxStage-1 while paused. Five native header crops488x72 match actual main-scene bridge-recipe rendering. Stages restored after viewer; no gameplay action or natural construction progression qualified. Full-panel differences remain pending-body defects, not accepted parity.",
+        "rows": [
+          {
+            "id": 56,
+            "stage": 2,
+            "tile": [
+              116,
+              101,
+              165
+            ],
+            "type": 5
+          },
+          {
+            "id": 3,
+            "stage": 2,
+            "tile": [
+              106,
+              95,
+              165
+            ],
+            "type": 13
+          },
+          {
+            "id": 16,
+            "stage": 0,
+            "tile": [
+              121,
+              99,
+              165
+            ],
+            "type": 8
+          },
+          {
+            "id": 493,
+            "stage": 0,
+            "tile": [
+              126,
+              46,
+              165
+            ],
+            "type": 15
+          },
+          {
+            "id": 55,
+            "stage": 0,
+            "tile": [
+              97,
+              103,
+              165
+            ],
+            "type": 23
+          }
+        ],
+        "comparisons": [
+          {
+            "type": 5,
+            "id": 56,
+            "header_pixels_equal": true,
+            "full_panel_difference_bounds": null,
+            "viewer_sha256": "af29473dd907de3ed29644d200099e89cf2e1dc7996053e4ab2a8e4f08cc6eed",
+            "native_sha256": "8064825d546c5878c52619dc33e7a317a6172702e424c1bfe35c9238dc6592e7"
+          },
+          {
+            "type": 13,
+            "id": 3,
+            "header_pixels_equal": true,
+            "full_panel_difference_bounds": [
+              10,
+              495,
+              42,
+              669
+            ],
+            "viewer_sha256": "0eb6f9c6c6cb9e3558fd550c4f2b95535a076580b552bcfd0d84fd4e9d10afb7",
+            "native_sha256": "74d9267a087aff4a5be85f84197c125a781d52fa0950cea206f2951fdfb9ab4b"
+          },
+          {
+            "type": 8,
+            "id": 16,
+            "header_pixels_equal": true,
+            "full_panel_difference_bounds": [
+              16,
+              85,
+              229,
+              96
+            ],
+            "viewer_sha256": "854eb2c1207ad1df3cc60a870d4ade4a7fccb5c981cdf1cd87952c7ba2129b0e",
+            "native_sha256": "db82efd202d37ab315f939ba39b7aef6cbb86484f20b9329fe63b5cac6a0537c"
+          },
+          {
+            "type": 15,
+            "id": 493,
+            "header_pixels_equal": true,
+            "full_panel_difference_bounds": [
+              16,
+              85,
+              229,
+              96
+            ],
+            "viewer_sha256": "21cc272fca3d07d226d4f9dd2d6dad50b1e678e6131498cf72f5824891020233",
+            "native_sha256": "f844e9ee79f1afa58e3fda505301845120eb77204e83236b3720f7b4098006a9"
+          },
+          {
+            "type": 23,
+            "id": 55,
+            "header_pixels_equal": true,
+            "full_panel_difference_bounds": [
+              8,
+              85,
+              480,
+              600
+            ],
+            "viewer_sha256": "6c9b8c05fb6c404efcc5c0274f92289eb0cc5c695d5c6306f3e4abb4ea202eff",
+            "native_sha256": "cfb5c3017c42704b1fcccd1d3a32e0357d440eb995990ab7b1761e5d77e96a0c"
+          }
+        ],
+        "hashes": {
+          "workshop-native.json": "2129a0937eb576cf9d298bcf44465aa0cb8158f47b364e9038cc312476438608",
+          "result.json": "1aefebc1393ed28137f61db7be7988d38f5bcffb7ac679007d0b241c9238c4ec",
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
+      },
+      "header_artwork_component_regression_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-004548",
+        "scope": "Actual main-scene component View opens item22339; holder View returns to unfinished Statue965 with fresh authority. Both complete panel crops match native002629. Full item/job before and after match the native flag+navigation sequence, including weight_computed. Escape releases the panel.",
+        "status": "passed_with_known_issues: rendering-thread/finalize/two-ObjectDB diagnostics",
+        "owned_df_pid": 7876,
         "closed_unsaved": true,
         "source_save_preserved": true,
         "readback": {

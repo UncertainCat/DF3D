@@ -133,6 +133,32 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ if os.getenv('DF3D_PENDING_HEADER_ART')=='1'then
+  local chosen={};local rows={};local originals={}
+  for _,candidate in ipairs(df.global.world.buildings.all)do
+   local kind=candidate:getType();local tile=dfhack.maps.getTileFlags{x=candidate.centerx,y=candidate.centery,z=candidate.z}
+   if (kind==5 or kind==13 or kind==8 or kind==15 or kind==23) and not chosen[kind] and tile and not tile.hidden and candidate:getBuildStage()==candidate:getMaxBuildStage() and #candidate.jobs==0 then
+    chosen[kind]=candidate
+   end
+  end
+  assert(chosen[5] and chosen[13],'Header artwork reference needs idle furnace and workshop')
+  result.pending_header_art=rows
+  for _,kind in ipairs{5,13,8,15,23}do local candidate=chosen[kind];if candidate then
+   originals[#originals+1]={building=candidate,stage=candidate:getBuildStage()}
+   candidate:setBuildStage(candidate:getMaxBuildStage()-1)
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(candidate)
+   assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==candidate.id,'Header artwork target selection missed')
+   rows[#rows+1]={id=candidate.id,type=kind,stage=candidate:getBuildStage(),tile={candidate.centerx,candidate.centery,candidate.z}}
+   shot('pending-header-art-'..kind)
+  end end
+  capture('workshop-wire')
+  local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
+  assert(receipt.success,'Pending header artwork viewer failed')
+  for _,entry in ipairs(originals)do entry.building:setBuildStage(entry.stage)end
+  result.pending_header_art_restored=true
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
+  return
+ end
  if os.getenv('DF3D_BASIC_BUILDING_HEADER')=='1' then
   local targets={}
   for _,b in ipairs(df.global.world.buildings.all)do

@@ -1,9 +1,19 @@
 extends "res://scripts/chest_sheet_view.gd"
 # Native unfinished-building body. No completed-building rename/remove icons.
+var artwork_source
+var header_recipe: Dictionary={}
+var header_texture: Texture2D
+func configure(source,model,help=null,contents_model=null) -> void:
+	artwork_source=source
+	super.configure(source,model,help,contents_model)
+func refresh() -> void:
+	super.refresh()
+	var recipe: Dictionary=state.snapshot.get("appearance",{})
+	if recipe!=header_recipe:
+		header_recipe=recipe.duplicate(true)
+		header_texture=null if recipe.is_empty() else artwork_source.candidate_icon(recipe)
 func header_art() -> Array:
-	var token: String={4:"BUILDING_ICON_FARM_PLOT",15:"BUILDING_ICON_STATUE"}.get(state.snapshot.get("type",-1),"")
-	building_icon=token
-	return [] if token.is_empty() else [[token,Vector2(10,14),Vector2(32,32)]]
+	return []
 func _process(_delta: float) -> void:pass
 func header_color() -> Color:
 	return colors[12] if state.snapshot.get("forbidden",false) and colors.size()==16 else Color.WHITE
@@ -22,6 +32,7 @@ func _gui_input(event: InputEvent) -> void:
 		elif Rect2(16,168,192,36).has_point(event.position):state.edit(state.Operation.Cancel);accept_event()
 func _draw() -> void:
 	super._draw()
+	if not state.snapshot.is_empty() and header_texture!=null:draw_texture_rect(header_texture,Rect2(10,14,32,32),false)
 	if state.snapshot.is_empty() or removing or colors.size()!=16 or theme.default_font==null:return
 	var value: Dictionary=state.snapshot
 	var font: Font=theme.default_font

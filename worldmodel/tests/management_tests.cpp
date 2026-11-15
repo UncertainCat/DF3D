@@ -1562,6 +1562,39 @@ TEST_CASE("selection transport preserves native identity order and clears closed
   CHECK(client->state().selection.portrait.layers.empty());
 }
 
+TEST_CASE("vermin selection artwork remains bounded and survives transport") {
+  for(int invalid=-1;invalid<4;++invalid) {
+    ManagementPublisher p;p.publish(1);auto client=openClient(p);auto [seq,owner]=claim(p,*client);
+    flatbuffers::FlatBufferBuilder b;
+    const auto empty=b.CreateString("");
+    const auto image=mm::CreateSelectionAppearance(b,b.CreateVector(std::vector{b.CreateString("VERMIN_TEST")}),
+      b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{}),
+      b.CreateVectorOfStructs(std::vector{mm::AppearanceLayer(invalid==2?1:0,2,3,1,1,65535,-1,-1,0,0)}));
+    const auto identity=mm::CreateSelectionIdentity(b,invalid==0?mm::SelectionKind::Unit:mm::SelectionKind::Vermin,938,empty,-1,0,0,image);
+    const auto choices=b.CreateVector(std::vector{identity});
+    const auto items=b.CreateVector(std::vector<flatbuffers::Offset<mm::SelectionItem>>{});
+    const auto overview=b.CreateVector(std::vector<flatbuffers::Offset<mm::SelectionText>>{});
+    mm::SelectionStateBuilder page(b);page.add_open(true);page.add_receipt(17);
+    page.add_kind(invalid==1?mm::SelectionKind::Item:mm::SelectionKind::Vermin);page.add_id(938);
+    page.add_title(empty);page.add_subtitle(empty);page.add_job(empty);page.add_description(empty);
+    page.add_alternatives(choices);page.add_items(items);page.add_overview(overview);page.add_fallback(image);
+    if(invalid==3)page.add_portrait(image);
+    const auto selection=page.Finish();
+    mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(3);
+    state.add_world_epoch(7);state.add_client_id(owner);state.add_request_seq(seq);
+    state.add_action(mm::ManagementAction::Selection);state.add_status(mm::ManagementStatus::Ok);state.add_selection(selection);
+    b.Finish(state.Finish());
+    CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value()==(invalid>=0));
+    if(invalid<0) {
+      REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));REQUIRE(client->poll());
+      const auto& actual=client->state().selection;
+      REQUIRE(actual.fallback);REQUIRE(actual.alternatives.size()==1);REQUIRE(actual.alternatives[0].selector);
+      CHECK(actual.fallback->tilePages[0]=="VERMIN_TEST");CHECK(actual.alternatives[0].selector->layers[0].tileX==2);
+      p.publish(4,owner,seq);REQUIRE(client->poll());CHECK_FALSE(client->state().selection.fallback);
+    }
+  }
+}
+
 TEST_CASE("selection rejects missing receipts, invalid tiles and unbounded indexes") {
   for (int invalid=-1;invalid<4;++invalid) {
     flatbuffers::FlatBufferBuilder b;

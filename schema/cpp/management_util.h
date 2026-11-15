@@ -184,8 +184,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 213;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v213";
+inline constexpr uint32_t kManagementVersion = 214;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v214";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -3024,6 +3024,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     size_t appearanceBytes=0;
     auto identity=[&](const SelectionIdentity* e){
       if(!e || !targetId(e->kind(),e->id()) || (e->id()==-1 && !a->tile()) || !text(e->name(),512))return false;
+      if(const auto* selector=e->selector()) {
+        if(e->kind()!=SelectionKind::Vermin || e->appearance() || e->unit_appearance() || e->item_type()!=-1 ||
+           validateOwnerAppearance(*selector,appearanceBytes) || appearanceBytes>256*1024)return false;
+      }
       if(const auto* unit=e->unit_appearance()) {
         if(e->kind()!=SelectionKind::Unit || e->appearance() || e->item_type()!=-1 ||
            validateOwnerAppearance(*unit,appearanceBytes) || appearanceBytes>256*1024)return false;
@@ -3067,6 +3071,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       for(const auto* t:*p->tile_pages())if(!text(t,256))return "invalid portrait page";
       for(const auto* t:*p->palettes())if(!text(t,512))return "invalid portrait palette";
       for(const auto* l:*p->layers())if(l->page()>=p->tile_pages()->size() || !l->cells_x() || !l->cells_y() || (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid portrait layer";
+    }
+    if(const auto* fallback=a->fallback()) {
+      if(a->kind()!=SelectionKind::Vermin || a->portrait() ||
+         validateOwnerAppearance(*fallback,appearanceBytes) || appearanceBytes>256*1024)return "invalid vermin fallback";
     }
   }
   if(const auto* a=s.alert()) {

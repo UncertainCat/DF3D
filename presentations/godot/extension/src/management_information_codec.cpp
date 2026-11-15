@@ -19,8 +19,9 @@ void writeSelection(Dictionary& result,const wm::SelectionState& s) {
   value["kind"]=int(s.kind);value["id"]=s.id;value["tile"]=Vector3i(s.x,s.y,s.z);value["complete"]=s.complete;
   value["title"]=String::utf8(s.title.c_str());value["description"]=String::utf8(s.description.c_str());
   if(!s.portrait.layers.empty())value["portrait"]=itemRecipeDictionary(s.portrait);
+  if(s.fallback)value["fallback"]=itemRecipeDictionary(*s.fallback);
   const auto rows=[](const auto& source) {
-    Array values;for(const auto& target:source){Dictionary row;row["kind"]=int(target.kind);row["id"]=target.id;row["name"]=String::utf8(target.name.c_str());if(target.appearance){row["item_type"]=target.itemType;row["appearance"]=itemAppearanceDictionary(*target.appearance);}if(target.unitAppearance)row["unit_appearance"]=itemRecipeDictionary(*target.unitAppearance);values.push_back(row);}return values;
+    Array values;for(const auto& target:source){Dictionary row;row["kind"]=int(target.kind);row["id"]=target.id;row["name"]=String::utf8(target.name.c_str());if(target.appearance){row["item_type"]=target.itemType;row["appearance"]=itemAppearanceDictionary(*target.appearance);}if(target.unitAppearance)row["unit_appearance"]=itemRecipeDictionary(*target.unitAppearance);if(target.selector)row["selector"]=itemRecipeDictionary(*target.selector);values.push_back(row);}return values;
   };
   value["alternatives"]=rows(s.alternatives);value["members"]=rows(s.members);result["selection"]=value;
 }

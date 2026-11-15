@@ -28,7 +28,7 @@ SelectionState decodeSelection(const m::SelectionState* a) {
   n.complete = a->complete();
   auto identity = [](const m::SelectionIdentity* e) {
     SelectionIdentity value{SelectionKind(e->kind()), e->id(), e->name()->str()};
-    value.itemType=e->item_type();if(e->appearance())value.appearance=decodeInspectionAppearance(e->appearance());if(e->unit_appearance())value.unitAppearance=decodeItemRecipe(e->unit_appearance());return value;
+    value.itemType=e->item_type();if(e->appearance())value.appearance=decodeInspectionAppearance(e->appearance());if(e->unit_appearance())value.unitAppearance=decodeItemRecipe(e->unit_appearance());if(e->selector())value.selector=decodeItemRecipe(e->selector());return value;
   };
   for (const auto* e : *a->alternatives())
     n.alternatives.push_back(identity(e));
@@ -39,6 +39,7 @@ SelectionState decodeSelection(const m::SelectionState* a) {
     n.items.push_back({e->id(), e->name()->str()});
   for (const auto* e : *a->overview())
     n.overview.push_back({SelectionSection(e->section()), e->text()->str()});
+  if(a->fallback())n.fallback=decodeItemRecipe(a->fallback());
   if (const auto* p = a->portrait()) {
     for (const auto* t : *p->tile_pages())
       n.portrait.tilePages.push_back(t->str());

@@ -2059,7 +2059,7 @@ enum SelectionSection : uint8 { AgeSex, Traits, Health, Citizenship, Military, C
 table SelectionArtRequest { receipt:uint64; expected_revision:uint64; art:WorkOrderArtRequest (required); }
 table SelectionArtState { receipt:uint64; revision:uint64; art:WorkOrderArtState; applied:bool; }
 table SelectionRequest { operation:SelectionOperation; tile:TilePos; receipt:uint64; index:int32 = -1; }
-table SelectionIdentity { kind:SelectionKind; id:int32 = -1; name:string (required); item_type:int16 = -1; appearance:ItemInspectionAppearance; unit_appearance:SelectionAppearance; }
+table SelectionIdentity { kind:SelectionKind; id:int32 = -1; name:string (required); item_type:int16 = -1; appearance:ItemInspectionAppearance; unit_appearance:SelectionAppearance; selector:SelectionAppearance; }
 table SelectionText { section:SelectionSection; text:string (required); }
 table SelectionItem { id:int32; name:string (required); }
 // Original-asset references under the existing appearance exception.
@@ -2072,6 +2072,8 @@ table SelectionState {
  portrait:SelectionAppearance; complete:bool = true;
  // Members of the active UnitList or ItemList, in native selection order.
  members:[SelectionIdentity];
+ // Native loose-vermin small image when no portrait set is available.
+ fallback:SelectionAppearance;
 }
 enum AlertOperation : uint8 { OpenCategory, Inspect, OpenUnit, Recenter, Back, Dismiss, OpenHistory, SelectTab, Scroll }
 enum AlertView : uint8 { Closed, Category, Unit, History }
@@ -2524,7 +2526,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 213;
+  schema_version:uint32 = 214;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2597,7 +2599,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 213;
+  schema_version:uint32 = 214;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

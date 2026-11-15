@@ -227,13 +227,17 @@ local ok,err=xpcall(function()
      result.basic_building_reference.door.header=headers
      if os.getenv('DF3D_DOOR_HOVER_REFERENCE')=='1' then
       headers.hover={};local script=require('gui.script')
-      for _,probe in ipairs{{'forbid',852,154},{'passable',876,154},{'rename',800,82},{'remove',832,82}}do
+      for _,probe in ipairs{{'forbid',852,154},{'passable',876,154},{'rename',800,82},{'remove',832,82},{'remove-inset',824,82},{'remove-bottom',832,90}}do
+       g.precise_mouse_x=0;g.precise_mouse_y=4;g.mouse_x=0;g.mouse_y=0;gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(2,'frames')
        local deadline=dfhack.getTickCount()+900
        repeat
         df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
         g.precise_mouse_x=probe[2];g.precise_mouse_y=probe[3];g.mouse_x=probe[2]//8;g.mouse_y=(probe[3]-4)//12
         gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
        until dfhack.getTickCount()>=deadline
+       df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+       g.precise_mouse_x=probe[2];g.precise_mouse_y=probe[3];g.mouse_x=probe[2]//8;g.mouse_y=(probe[3]-4)//12
+       gui.simulateInput(view,{});view:render(dfhack.getTickCount())
        local rows={};for y=0,17 do local chars={};for x=g.dimx-25,g.dimx-1 do
         local pen=dfhack.screen.readTile(x,y);chars[#chars+1]=pen.ch>=32 and pen.ch<=255 and string.char(pen.ch)or' '
        end;local text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','');if text:find('%S')then rows[#rows+1]={y=y,text=text}end end

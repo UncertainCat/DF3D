@@ -14,8 +14,21 @@ func exercise(expected: Dictionary) -> void:
 	var sample: Dictionary=expected.basic_building_reference.door
 	var id:=int(sample.id)
 	scene._ui.focus_tile(Vector3i(sample.tile[0],sample.tile[1],sample.tile[2]))
-	owner=scene._ui.controller("door");scene._ui.open_building_holder(8,id)
+	owner=scene._ui.controller("door")
+	if OS.get_environment("DF3D_DOOR_SELECTION_RUNTIME")=="1":
+		var deadline:=Time.get_ticks_msec()+10000
+		while world.inspect_entity(3,id).is_empty() and Time.get_ticks_msec()<deadline:
+			world.poll();await create_timer(0.01).timeout
+		scene._ui.open_tile_selection(Vector3i(sample.tile[0],sample.tile[1],sample.tile[2]))
+	else:scene._ui.open_building_holder(8,id)
 	if not await door_ready():return
+	check(scene._ui.host.active==owner and owner.state.building_id==id,"Door route did not own the selected target")
+	for probe in [[Vector2(800,82),"building_rename"],[Vector2(852,154),""],[Vector2(876,154),""],[Vector2(832,82),"building_remove"]]:
+		var motion:=InputEventMouseMotion.new();motion.position=probe[0];root.push_input(motion,true)
+		await create_timer(0.9).timeout
+		var help=scene._fortress_hud.native_help
+		check((not help.visible) if probe[1]=="" else (help.visible and help.displayed==probe[1]),"Door hover differs: "+probe[1])
+	var away:=InputEventMouseMotion.new();away.position=Vector2.ZERO;root.push_input(away,true);await process_frame
 	await panel_capture("door-idle","workshop-basic-building-door")
 	for locked in [true,false]:
 		await pointer(Vector2(852 if locked else 876,154))

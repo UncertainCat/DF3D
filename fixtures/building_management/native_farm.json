@@ -12812,7 +12812,7 @@
     "door_header_reference": {
       "hover": [
         {
-          "enabled": false,
+          "enabled": true,
           "instruction": -1,
           "kind": "forbid",
           "rows": [
@@ -12823,7 +12823,7 @@
           ]
         },
         {
-          "enabled": false,
+          "enabled": true,
           "instruction": -1,
           "kind": "passable",
           "rows": [
@@ -12846,12 +12846,34 @@
         },
         {
           "enabled": true,
-          "instruction": -1,
+          "instruction": 302,
           "kind": "remove",
           "rows": [
             {
-              "text": "       Elevation 36",
-              "y": 16
+              "text": " Remove this building.",
+              "y": 0
+            }
+          ]
+        },
+        {
+          "enabled": true,
+          "instruction": 302,
+          "kind": "remove-inset",
+          "rows": [
+            {
+              "text": " Remove this building.",
+              "y": 0
+            }
+          ]
+        },
+        {
+          "enabled": true,
+          "instruction": 302,
+          "kind": "remove-bottom",
+          "rows": [
+            {
+              "text": " Remove this building.",
+              "y": 0
             }
           ]
         }
@@ -12963,18 +12985,19 @@
           }
         }
       ],
-      "lane": "build/stockpile-storage-native-farm-discovery-20261114-212242",
+      "holder_route_lane": "build/stockpile-storage-native-farm-discovery-20261114-212242",
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-212806",
       "status": "passed_with_known_issues",
-      "owned_df_pid": 37572,
+      "owned_df_pid": 39240,
       "source_save_preserved": true,
-      "scope": "Composed main-scene Door16 header, contents and controls: holder routing, lock/unlock, rename, removal/cancel in both lock states and Escape. Eight full-panel crops match native. Removal unlocks the door; cancellation leaves it passable. Worker-owned removal and ordinary map routing remain unqualified.",
+      "scope": "Composed main-scene Door16 header, contents and controls: native-selection routing, header hover, lock/unlock, rename, removal/cancel in both lock states and Escape. Eight full-panel crops match native. Removal unlocks the door; cancellation leaves it passable. Worker-owned removal and ordinary map routing remain unqualified.",
       "hashes": {
-        "workshop-door-header-cancel-false.png": "ce6b6b6ae2173d451400bcb2f53f9260a43808b9b70095eb3f2d443cf2387bd1",
-        "workshop-door-header-cancel-true.png": "ce6b6b6ae2173d451400bcb2f53f9260a43808b9b70095eb3f2d443cf2387bd1",
-        "workshop-door-header-ready.png": "c7594b6881adfc0ee3eb6da667e24f6c6236263651e459d31537ba1059cd7d24",
-        "workshop-door-header-remove-false.png": "b668970bf01ac8a05e33f4ca5e96bb0bc49bc11aefe762e5c9fc158bcc87f04b",
-        "workshop-door-header-remove-true.png": "0040f75ef0f3d5134a850540e31080445c488ce8719ea12d4f2f00d888d90efa",
-        "workshop-door-header-renamed.png": "fff28b0b6d5a46d4b814e01126bf310b11857e9813eb3490d2dbb0e003a14715",
+        "workshop-door-header-cancel-false.png": "73113181fee8c3746e6214368597eb9cfbab96455163200a7a860dc475647e51",
+        "workshop-door-header-cancel-true.png": "73113181fee8c3746e6214368597eb9cfbab96455163200a7a860dc475647e51",
+        "workshop-door-header-ready.png": "73113181fee8c3746e6214368597eb9cfbab96455163200a7a860dc475647e51",
+        "workshop-door-header-remove-false.png": "d9ccbd4542aec21c6d6763cfed1872a91753b21c7c8eb3d9301992aad81b798c",
+        "workshop-door-header-remove-true.png": "b668970bf01ac8a05e33f4ca5e96bb0bc49bc11aefe762e5c9fc158bcc87f04b",
+        "workshop-door-header-renamed.png": "75dac4e1dec0b82135929c0dce2133eb61a68b7f3d4b645fe076402c5108b007",
         "chest-scene-door-cancel-false.png": "ff0ca920caead2ce53a1b720782adf82fc9da4bea1b2357ca04d3eb9972a1bb9",
         "chest-scene-door-cancel-true.png": "ff0ca920caead2ce53a1b720782adf82fc9da4bea1b2357ca04d3eb9972a1bb9",
         "chest-scene-door-idle.png": "ff0ca920caead2ce53a1b720782adf82fc9da4bea1b2357ca04d3eb9972a1bb9",

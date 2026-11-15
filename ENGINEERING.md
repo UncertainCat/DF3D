@@ -9764,17 +9764,19 @@ diagnostics and the expected screenshot-readback synchronization warning;
 pixel assertions pass, but this is not a clean engine-diagnostics pass.
 Fresh root, bridge and extension builds pass; all19 root CTest checks pass.
 The staged door panel owner reuses the shared header/contents lifecycle and
-retires door state on close/removal. Protected212242 qualifies the actual
-main-scene holder route, lock/unlock, typed rename/clear, unstaffed removal/cancel
+retires door state on close/removal. Protected212806 qualifies the actual
+main-scene native-selection route, lock/unlock, typed rename/clear, unstaffed removal/cancel
 from both lock states and Escape. All eight full-sheet crops match native,
 including the component door image. Native readback verifies restored flags,
-name and an empty job list. Owned DF37572 exits unsaved with source preservation;
+name and an empty job list. Owned DF39240 exits unsaved with source preservation;
 30FPS graphics sample60–61C. Known Godot renderer/finalize/two-ObjectDB diagnostics
-retain passed_with_known_issues. Ordinary map routing, worker-owned removal and
-staged native-selection tab routing are not covered by this run.
-Native hover probes show no Forbid/Passable instruction after900ms; Rename301
-is a successful positive control. Remove did not yield302 in this probe and
-requires follow-up before claiming Door header-hover parity.
+retain passed_with_known_issues. Ordinary map routing and worker-owned removal
+are not covered by this run. Native hover probes show no Forbid/Passable
+instruction after900ms, with Rename301 and Remove302 as positive controls.
+The main-scene viewer verifies both header help messages and retires help over
+the two door buttons. Earlier intermittent negative header samples were a probe
+timing defect: the owned pointer must be re-established and rendered immediately
+before readback, after the final game-frame yield. No native UI bug is claimed.
 Earlier211611 completed effects but failed all crops solely in the32x32 component
 image; enabling the existing native item-appearance provider for held doors
 corrects that omission.211956 establishes the corrected direct-controller

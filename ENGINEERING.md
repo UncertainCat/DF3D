@@ -144,13 +144,27 @@ Initial173218/173346 failed setup/selection and are not acceptance: moving the
 worker onto the depot before a fresh map click changed the selected object.
 The final oracle verifies native worker lookup and preserves building selection.
 
-Outstanding depot-sheet defect: Trade currently emits without checking the
-already transported worker_id and draws ordinary text. Native input1af94d
-requires5ab090 to resolve a physically present trader; renderer196cf0..196d22
-uses palette15 with a worker and palette8 without one. Correct this gate and
-appearance before public exposure. Native merchant choice, list initialization,
-prices, quantity selection, negotiation and committed exchange still need
-owned semantic providers and rendered/live acceptance.
+The staged depot Trade button uses the existing native-resolved worker_id to
+gate its click and uses palette15 with a physically present trader, palette8
+without one, matching input1af94d and renderer196cf0..196d22. Broker assignment
+alone does not enable it. Move goods uses native palette15. Both merchant action
+rows and their hitboxes start at local y84, correcting their earlier12px offset;
+the mode controls below retain their independently verified positions.
+
+Protected174014 on2026-11-15 verifies both worker-absent and worker-present states
+through actual main-scene pointer dispatch and exact full488x708 panel pixels.
+The absent worker emits no Trade request; worker988 permits exactly one. This
+verifies the staged view signal, not merchant exchange navigation. Distinct
+capture/ack/result names prove two separate clients; initial173845 reused a
+capture acknowledgement and is not two-state acceptance. Initial173715 exposed
+the misplaced action rows and is not visual acceptance. Native selection, jobs
+and paused frame stay unchanged after each client. Owned DF41656 closes unsaved,
+source-preserved. Graphics are serial30FPS, sampled GPU54C; both client stderr
+logs are empty. All19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_gate_scene_reference`.
+Native merchant choice, list initialization, prices, quantity selection,
+negotiation and committed exchange still need owned semantic providers and
+rendered/live acceptance. Public depot routes remain hidden.
 
 ## Depot goods value transport migration
 

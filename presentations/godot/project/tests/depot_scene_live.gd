@@ -1,11 +1,23 @@
 extends "res://tests/chest_scene_live.gd"
+var trade_clicks:=0
 func expected_filename() -> String:return "depot-wire-expected.json"
-func result_filename() -> String:return "depot-scene-result.json"
+func result_filename() -> String:
+	var label:=OS.get_environment("DF3D_DEPOT_GATE_LABEL")
+	return "depot-scene-gate-"+label+"-result.json" if not label.is_empty() else "depot-scene-result.json"
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("furniture")
 	# Staged owner only; public map routes remain hidden until goods/trade are ready.
 	owner.open_target(int(expected.id))
 	if not await chest_ready():return
+	if expected.has("trade_worker"):
+		check(owner.state.snapshot.depot.worker_id==int(expected.trade_worker),"Native trader presence differs")
+		await panel_capture("depot-trade-present" if expected.trade_worker>=0 else "depot-trade-absent",expected.reference)
+		owner.panel.trade_requested.connect(func():trade_clicks+=1)
+		await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(64,144))
+		check(trade_clicks==(1 if expected.trade_worker>=0 else 0),"Trade click did not respect native trader presence")
+		key(KEY_ESCAPE);await drain()
+		check(scene._ui.host.active==null,"Trade gate test retained panel ownership")
+		exercised=true;return
 	if expected.has("reference"):
 		check(owner.state.snapshot.depot.broker_id==int(expected.broker_id),"Depot broker identity differs")
 		await panel_capture("depot-broker",expected.reference)

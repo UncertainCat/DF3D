@@ -61598,6 +61598,39 @@
           "build/stockpile-storage-native-farm-discovery-20261115-173443/depot-trade-no-trader.png": "039d206acec139c87571ac195690f44c684197ca4f862c8f21c91a80b61d8565",
           "build/stockpile-storage-native-farm-discovery-20261115-173443/depot-trade-single.png": "41f0af6a49d55cb4d24e52cd1ad76dec2d1a1c4d1ba1608afc2143d8d7a3d221"
         }
+      },
+      "depot_trade_gate_scene_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-174014",
+        "owned_df_pid": 41656,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Actual main scene full488x708 depot sheet matches native pixels with merchant buttons, both without a trader and with native-resolved worker988. Pointer click emits no trade request without worker and one with worker. Distinct named captures/results prove both client executions. Native menu/selection/jobs/frame unchanged after each client. Synthetic prerequisites, no negotiation or exchange effects accepted.",
+        "cases": [
+          {
+            "label": "absent",
+            "success": true,
+            "worker": -1
+          },
+          {
+            "label": "present",
+            "success": true,
+            "worker": 988
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-174014/depot-trade-native.json": "e556841494b267d8363081984a0e98ff8d707843bcce83604acc0fed9ee3f119",
+          "build/stockpile-storage-native-farm-discovery-20261115-174014/result.json": "70bc9d04aace951f812c5efd5bd58ad0ec2274c5e1e03a8865811d22bbed17f8",
+          "build/stockpile-storage-native-farm-discovery-20261115-174014/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "presentations/godot/project/scripts/depot_sheet_view.gd": "db2701d47ab717282b922ae5cad2c3a0041a1fcfb4828790d7f300b15ae62eb9",
+          "presentations/godot/project/tests/depot_scene_live.gd": "5e11d24b0928edd6d8e2e7e9c3cb7c3c7da0ae62c205fba1be4ebc9a7e519c72",
+          "tools/smoke/depot-trade-native.lua": "6611134f15c33372f0836cdbf479cd17f0361f0c8060ce9037760abb305f593a",
+          "build/stockpile-storage-native-farm-discovery-20261115-174014/depot-scene-gate-absent-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-174014/depot-scene-gate-present-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-174014/depot-trade-gate-absent.png": "039d206acec139c87571ac195690f44c684197ca4f862c8f21c91a80b61d8565",
+          "build/stockpile-storage-native-farm-discovery-20261115-174014/depot-trade-gate-present.png": "cc75900fbc9eb645cdeb233dd4488529c64daa7f3a0d403cfd4f2b5c70d085a4",
+          "build/stockpile-storage-native-farm-discovery-20261115-174014/chest-scene-depot-trade-absent.png": "2ff85ff1bf19d58ecabc3bab36daf93d10057393f2718ddf47a44bb528744b45",
+          "build/stockpile-storage-native-farm-discovery-20261115-174014/chest-scene-depot-trade-present.png": "87fc2730bce87958fc494b72715633452b4a7638cbca28023813da647b800dd5"
+        }
       }
     },
     "pending_construction_reference": {

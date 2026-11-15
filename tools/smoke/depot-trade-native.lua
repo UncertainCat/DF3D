@@ -30,12 +30,24 @@ local function record(label)
  assert(df.global.world.frame_counter==frame and unit.flags1.whole==unit_flags and unit.job.current_job==old_job and b.trade_flags.whole==flags)
  return row
 end
+
+local function gate_scene(label,worker)
+ if os.getenv('DF3D_DEPOT_TRADE_SCENE')~='1' then return end
+ view:render(dfhack.getTickCount());capture('depot-trade-gate-'..label)
+ local selected=main.view_sheets.active_id;local jobs=#b.jobs
+ local file=assert(io.open(out..'/depot-wire-expected.json','w'));file:write(json.encode{id=b.id,trade_worker=worker,reference='depot-trade-gate-'..label});file:close()
+ capture('depot-scene-gate-'..label)
+ file=assert(io.open(out..'/depot-scene-gate-'..label..'-result.json'));local observed=json.decode(file:read('*a'));file:close()
+ assert(observed.success and main.view_sheets.active_id==selected and not trade.open and #b.jobs==jobs and df.global.world.frame_counter==frame)
+ result.gate_scene=result.gate_scene or {};result.gate_scene[#result.gate_scene+1]={label=label,worker=worker,success=true}
+end
 local ok,err=xpcall(function()
  caravan();select_map(b);click(480,190)
- assert(not trade.open,'Trade opened without a trader');record('no-trader')
+ assert(not trade.open,'Trade opened without a trader');record('no-trader');gate_scene('absent',-1)
  b.jobs:insert('#',job);added_job=true;unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z
  local output,code=dfhack.run_command_silent('df3d','depot-settings-probe',tostring(b.id));assert(code==0,output)
  local facts=json.decode(output);assert(facts.worker==unit.id,'Native trader lookup: '..output)
+ gate_scene('present',unit.id)
  assert(main.view_sheets.active_id==b.id,'Depot selection lost before Trade');click(480,190);assert(trade.open and not trade.choosing_merchant,'Trade did not open: '..output)
  local single=record('single');assert(single.fortress_trader==unit.id and single.merchants==1)
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)

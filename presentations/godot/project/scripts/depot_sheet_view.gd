@@ -28,11 +28,11 @@ func _gui_input(event: InputEvent) -> void:
 		for index in 3:
 			if mode_rect(index).has_point(event.position):state.set_depot_mode(index);accept_event();return
 		var body: Dictionary=state.snapshot.depot
-		var top:=96
+		var top:=84
 		if body.goods_available:
 			if Rect2(16,top,216,36).has_point(event.position):goods_requested.emit();accept_event();return
 			top+=36
-		if body.trade_available and Rect2(16,top,112,36).has_point(event.position):trade_requested.emit();accept_event();return
+		if body.trade_available and body.worker_id>=0 and Rect2(16,top,112,36).has_point(event.position):trade_requested.emit();accept_event();return
 		if body.broker_id>=0 and broker_rect().has_point(event.position):broker_requested.emit(body.broker_id);accept_event();return
 	super._gui_input(event)
 func _draw() -> void:
@@ -40,15 +40,15 @@ func _draw() -> void:
 	if removing or state.snapshot.get("type",-1)!=6 or colors.size()!=16 or theme.default_font==null:return
 	var body: Dictionary=state.snapshot.get("depot",{})
 	if body.is_empty():return
-	var top:=96
+	var top:=84
 	if body.goods_available:
 		_patch(art.texture("HORIZONTAL_OPTION_ACTIVE"),Rect2(16,top,216,36))
-		_body_text("Move goods to/from depot",Vector2(32,top+24),7)
+		_body_text("Move goods to/from depot",Vector2(32,top+24),15)
 		if body.awaiting_items>0:_body_text("Awaiting "+str(body.awaiting_items)+(" item" if body.awaiting_items==1 else " items"),Vector2(272,top+24),14)
 		top+=36
 	if body.trade_available:
 		_patch(art.texture("HORIZONTAL_OPTION_ACTIVE"),Rect2(16,top,112,36))
-		_body_text("Trade",Vector2(32,top+24),7)
+		_body_text("Trade",Vector2(32,top+24),15 if body.worker_id>=0 else 8)
 	if not body.goods_available and not body.trade_available:_body_text("There are no merchants trading right now.",Vector2(16,108))
 	for index in 3:
 		var rect:=mode_rect(index)

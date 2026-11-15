@@ -308,15 +308,15 @@ func open_target(tile: Vector3i, kind: int, id: int) -> void:
 	if kind==3:
 		var target: Dictionary=world.inspect_entity(kind,id)
 		var native_kind: int=target.get("building_kind",0)
-		if (native_kind in [1,2,3,9,16] and target.get("complete",false)) or (native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true)):
+		if (native_kind in [1,2,3,9,12,13,15,16,51,52,54] and target.get("complete",false)) or (native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true)):
 			open_tile_selection(tile);return
-	elif kind in [0,2]:
-		# Loose items can cover a supported building in the rendered map.
+	if kind in [0,2,3]:
+		# Loose items and room/zone meshes can cover a supported building.
 		# Let DF's tile selection choose the sheet and alternatives there too.
 		for building in world.buildings_at_tile(tile):
 			var target: Dictionary=world.inspect_entity(3,int(building.id))
 			var native_kind: int=target.get("building_kind",0)
-			if (native_kind in [1,2,3,9,16] and target.get("complete",false)) or (native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true)):
+			if (native_kind in [1,2,3,9,12,13,15,16,51,52,54] and target.get("complete",false)) or (native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true)):
 				open_tile_selection(tile);return
 	controller("inspector").open_target(tile,kind,id)
 
@@ -345,13 +345,14 @@ func _selection_destination(kind: int,id: int,tile: Vector3i):
 			var pending=controller("pending_building")
 			pending.open_target(id)
 			return pending if host.active==pending and pending.state.building_id==id else null
-		if building_kind not in [1,2,3,5,6,9,11,14,16]:
+		if building_kind not in [1,2,3,5,6,9,11,12,13,14,15,16,51,52,54]:
 			# Keep existing building inspection available within staged selection.
 			# This does not qualify those incomplete native building controls.
 			var inspector=controller("inspector")
 			return inspector if inspector.open_target(tile,3,id,true) else null
-		open_building_holder(building_kind-1,id)
-		var target=controllers.get("farm" if building_kind==5 else "door" if building_kind==9 else "chest" if building_kind==11 else "furniture" if building_kind in [1,2,3,16] else "workshop")
+		# Mirror moves native Construction(31) to55; kinds32..54 retain DF IDs.
+		open_building_holder(building_kind if building_kind>=32 and building_kind<=54 else building_kind-1,id)
+		var target=controllers.get("farm" if building_kind==5 else "door" if building_kind==9 else "chest" if building_kind==11 else "furniture" if building_kind in [1,2,3,12,13,15,16,51,52,54] else "workshop")
 		return target if target!=null and host.active==target and target.state.building_id==id else null
 	return null
 

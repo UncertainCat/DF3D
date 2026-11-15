@@ -9755,9 +9755,24 @@ at30FPS; sampled GPU48–50C. Only documented Godot startup/shutdown diagnostics
 occur, so acceptance is passed_with_known_issues. Core19 passes.
 033817's native wheel probe did not scroll;034038 matched all panels but failed
 its diagnostic final-state bookkeeping. Neither is full lane acceptance.
-Bounded viewer_reference records034225's hashes and effects. Normal map entry
-for these six types, stored-clothing edits and worker-owned demolition remain
-unqualified. Coffin and Slab bodies remain separate specialized work.
+Bounded viewer_reference records034225's hashes and effects. Stored-clothing
+edits and worker-owned demolition remain unqualified. Coffin and Slab bodies
+remain separate specialized work.
+
+Protected035105 qualifies normal map entry for all six additional families,
+with38 exact full-panel comparisons, Escape during selection, reopen, exact
+native-selected building identity, actions and item-holder return. Weaponrack917
+is covered by barracks923's rendered mesh: map clicks now delegate overlapping
+building hits to native tile selection when the tile contains supported furniture.
+DF selects917, preserving native precedence instead of trusting the rendered ID.
+Mirror Instrument51/Bookcase52/OfferingPlace54 retain DF IDs; the earlier
+native-plus-one mapping applies only before Construction's relocated enum slot.
+034457/034714 diagnose the overlap;034905 fails the Instrument mapping. They
+are not full acceptance. Final035105 restores names/jobs/component flags;
+source saves remain unchanged and owned DF5212 exits unsaved. Both graphical
+processes are capped30FPS, sampled GPU51–52C. Only documented Godot diagnostics
+occur (passed_with_known_issues), and core19 passes. Bounded map_entry_reference
+retains hashes and effects. Separate loose-item/terrain coverage is not claimed.
 
 Protected native023324 and023607 on2026-11-15 qualify ordinary furniture
 with nonempty zone relations: Chair65, Bed9, Table62 and Statue493 still show no

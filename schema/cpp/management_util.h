@@ -2912,9 +2912,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(state->missing_building_id()<-1 || (missing && (f || s.action()!=ManagementAction::ProductionInspect)))return "invalid missing building authority";
       if(static_cast<uint8_t>(outcome)>4)return "invalid building header outcome";
       const auto machineryType=[](int type){return type==33 || (type>=40 && type<=44) || type==50;};
+      const auto barrierType=[](int type){return type>=35 && type<=39;};
       if(f) {
         const auto text=[](const flatbuffers::String* t,bool empty){return t && t->size()<=1536 && (empty || t->size()>0) && t->str().find('\0')==std::string::npos;};
-        if(f->id()<0 || (!machineryType(f->type()) && f->type()!=0 && f->type()!=1 && f->type()!=2 && f->type()!=3 && f->type()!=46 && f->type()!=11 && f->type()!=12 && f->type()!=14 && f->type()!=15 && f->type()!=51 && f->type()!=52 && f->type()!=54 && f->type()!=8 && f->type()!=9 && f->type()!=10 && f->type()!=5 && f->type()!=13 && f->type()!=23) || !f->revision() || f->revision()>INT64_MAX || f->stage()<0 || f->max_stage()<f->stage() ||
+        if(f->id()<0 || (!machineryType(f->type()) && !barrierType(f->type()) && f->type()!=0 && f->type()!=1 && f->type()!=2 && f->type()!=3 && f->type()!=46 && f->type()!=11 && f->type()!=12 && f->type()!=14 && f->type()!=15 && f->type()!=51 && f->type()!=52 && f->type()!=54 && f->type()!=8 && f->type()!=9 && f->type()!=10 && f->type()!=5 && f->type()!=13 && f->type()!=23) || !f->revision() || f->revision()>INT64_MAX || f->stage()<0 || f->max_stage()<f->stage() ||
            !text(f->custom_name(),true) || !text(f->native_name(),false) || !text(f->header_name(),false) ||
            (f->forbidden()<0 || f->forbidden()>1) || (!f->removing() && (f->suspended() || f->has_worker())))return "invalid building header snapshot";
         if(f->appearance()){size_t bytes=0;if(auto error=validateOwnerAppearance(*f->appearance(),bytes))return error;if(!f->appearance()->layers()->size() || bytes>131072)return "invalid building header artwork";}
@@ -2949,7 +2950,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(s.action()==ManagementAction::ProductionInspect) {
         if(outcome!=FarmEditOutcome::None || op!=FarmOperation::Crop || ((s.status()==ManagementStatus::Ok)!=(f!=nullptr || missing)))return "invalid building header read";
       } else if(s.action()==ManagementAction::FarmEdit) {
-        if(f && !machineryType(f->type()) && f->type()!=0 && f->type()!=1 && f->type()!=2 && f->type()!=3 && f->type()!=46 && f->type()!=11 && f->type()!=12 && f->type()!=14 && f->type()!=15 && f->type()!=51 && f->type()!=52 && f->type()!=54 && f->type()!=8 && f->type()!=9 && f->type()!=10 && f->type()!=13 && f->type()!=5 && f->type()!=23)return "unsupported building header edit target";
+        if(f && !machineryType(f->type()) && !barrierType(f->type()) && f->type()!=0 && f->type()!=1 && f->type()!=2 && f->type()!=3 && f->type()!=46 && f->type()!=11 && f->type()!=12 && f->type()!=14 && f->type()!=15 && f->type()!=51 && f->type()!=52 && f->type()!=54 && f->type()!=8 && f->type()!=9 && f->type()!=10 && f->type()!=13 && f->type()!=5 && f->type()!=23)return "unsupported building header edit target";
         if(outcome==FarmEditOutcome::None)return "missing building header outcome";
         if(outcome==FarmEditOutcome::Completed) {
           if(s.status()!=ManagementStatus::Ok || !f || f->stage()!=f->max_stage() || ((op<FarmOperation::Rename || op>FarmOperation::CancelRemoval) && op!=FarmOperation::PumpManual) || (op==FarmOperation::PumpManual && f->type()!=33) ||

@@ -24,6 +24,8 @@ local ok,err=xpcall(function()
    assert(b,'No fixture site for '..name)
    while #b.jobs>0 do assert(dfhack.job.removeJob(b.jobs[0]))end
    b:setBuildStage(b:getMaxBuildStage());b.flags.exists=true
+   -- Same owned per-tile virtual used by native cancel-removal54c1f2.
+   b:updateOccupancy(b.centerx,b.centery)
    fixtures[#fixtures+1]=b;fixture=true
   end
   close();view:render(dfhack.getTickCount());select_map(b)
@@ -41,6 +43,7 @@ local ok,err=xpcall(function()
    local reindex=df.global.world.reindex_pathfinding
    local _,occupancy=dfhack.maps.getTileFlags(b.centerx,b.centery,b.z)
    local occupancy_before=occupancy.whole
+   row.occupancy=occupancy_before
    row.controls={}
    local function click(x)
     g.precise_mouse_x=x;g.precise_mouse_y=154;g.mouse_x=x//8;g.mouse_y=12
@@ -60,6 +63,28 @@ local ok,err=xpcall(function()
    b.door_flags.whole=original;df.global.world.reindex_pathfinding=reindex
    assert(success,why);assert(occupancy.whole==occupancy_before)
    row.controls_restored=true
+  end
+ end
+ if os.getenv('DF3D_BARRIER_WIRE')=='1' or os.getenv('DF3D_BARRIER_SCENE')=='1'then
+  local f=assert(io.open(out..'/barrier-wire-expected.json','w'));f:write(json.encode(result));f:close()
+  local labels={}
+  if os.getenv('DF3D_BARRIER_WIRE')=='1'then labels[#labels+1]='barrier-wire'end
+  if os.getenv('DF3D_BARRIER_SCENE')=='1'then labels[#labels+1]='barrier-scene'end
+  for _,label in ipairs(labels)do
+  local active_id=sheet.active_id
+  local reindex=df.global.world.reindex_pathfinding;df.global.world.reindex_pathfinding=false
+  capture(label)
+  f=assert(io.open(out..'/'..label..'-result.json'));result[label]=json.decode(f:read('*a'));f:close()
+  assert(result[label].success and sheet.active_id==active_id)
+  for _,row in ipairs(result.buildings)do
+   local b=assert(df.building.find(row.id));assert(#b.jobs==0)
+   assert((row.type==35 and b.door_flags or b.gate_flags).whole==row.flags)
+   if row.type==35 then
+    local _,occupancy=dfhack.maps.getTileFlags(b.centerx,b.centery,b.z)
+    assert(occupancy.whole==row.occupancy and df.global.world.reindex_pathfinding)
+   end
+  end
+  df.global.world.reindex_pathfinding=reindex
   end
  end
 end,debug.traceback)

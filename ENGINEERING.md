@@ -673,6 +673,38 @@ references, not bridge/viewer acceptance. Public entry remains gated while the
 shared header/contents admission and distinct hatch action are implemented and
 verified. Linked variants and other hatch control states are not yet qualified.
 
+The shared header/contents producer and validators now admit35..39. Hatch access
+uses the existing door-control transport with a separate native mutation branch:
+it preserves occupancy and requests reindexing. Access reads reject buildings
+with removal jobs, retiring old access receipts even when their access bits have
+not changed. Protected113351 on2026-11-15 passes all five header/contents reads,
+hatch forbid/permit restoration, stale/duplicate rejection, removal/cancellation,
+and rejection of an old access receipt during removal. Native flags, jobs and
+occupancy are restored, reindexing is requested, and native selection is unchanged.
+Controlled fixtures initialize completed occupancy through the same per-tile
+virtual called by native cancel-removal54c1f2. Initial112538 exposed a missing
+transport-validator whitelist;112901 exposed planned occupancy in the diagnostic
+fixture after cancellation. Neither is acceptance.
+
+The staged shared `barrier_sheet_view.gd` adds hatch controls to furniture's
+existing links/items composition. Rendered113022 confirms actual hatch pointer
+effects and exact vertical/floor-bar panels, but fails full hatch/wall-grate crops
+at the native selection-tab overlap and the floor-grate item artwork. It is not
+rendered acceptance. The staged direct-open test does not reproduce native tile
+selection alternatives. The floor-grate mismatch is confined to its32x32 installed
+item icon. Native item selector c808ce..c80931 reads holder ref36: wall type36 adds
+bit11, and a holder of type36/37 with gate bit0 clear adds bit10. The item appearance
+contract currently lacks these wall/floor and open/closed facts; transport those
+semantics rather than borrowing native packed selectors. Public routes stay gated
+until this artwork and integrated selection are qualified.
+
+MSVC bridge, extension and root rebuilds pass; rebuilt core19 and the headless
+header-state test pass. Protocol228 shape is unchanged. Owned DF32688 closes
+unsaved with source preservation; native30FPS, sampled GPU60C. The headless live
+run has only the known rendering-thread notice. The failed graphical run also has
+the known finalize/two-ObjectDB shutdown diagnostics, separately from its real
+pixel mismatches. Evidence: `completed_sheet_discovery_reference.barrier_wire_reference`.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

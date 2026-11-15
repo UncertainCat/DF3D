@@ -99,7 +99,9 @@ inline bool plainFurnitureType(df::building_type type) {
     }
 }
 inline bool linkedFurnitureType(df::building_type type) {
-    return type==df::building_type::Floodgate;
+    return type==df::building_type::Floodgate || type==df::building_type::Hatch ||
+        type==df::building_type::GrateWall || type==df::building_type::GrateFloor ||
+        type==df::building_type::BarsVertical || type==df::building_type::BarsFloor;
 }
 inline bool ordinaryTrapBuilding(df::building* building) {
     return building && building->getType()==df::building_type::Trap &&

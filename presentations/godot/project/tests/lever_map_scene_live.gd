@@ -23,7 +23,25 @@ func run() -> void:
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("lever")
 	owner.lever.applied.connect(func(operation,id):applied_jobs[operation]=id)
-	owner.open_target(55)
+	var source_tile:=Vector3i(expected.source_tile[0],expected.source_tile[1],expected.source_tile[2])
+	scene._ui.focus_tile(source_tile)
+	var source_camera=scene.camera_rig.get_node("Camera3D")
+	var source_point:=Vector2.ZERO
+	var source_hit: Dictionary={}
+	var source_deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<source_deadline:
+		await process_frame
+		source_point=source_camera.unproject_position(Vector3(source_tile.x+0.5,source_tile.z+0.5,source_tile.y+0.5))
+		source_hit=world.pick_building(source_camera.project_ray_origin(source_point),source_camera.project_ray_normal(source_point),world.get_top_z())
+		if source_hit.get("tile",Vector3i(-1,-1,-1))==source_tile and not world.inspect_entity(3,55).is_empty():break
+	if not check(source_hit.get("tile",Vector3i(-1,-1,-1))==source_tile,"Projected source ray missed lever"):return
+	await pointer(source_point)
+	if not await ready_jobs(0):return
+	if not check(scene._ui.host.active==owner and owner.state.building_id==55,"Map selection did not open lever"):return
+	key(KEY_ESCAPE)
+	await process_frame
+	if not check(scene._ui.host.active==null and scene._ui.tile_selection.navigation.state.ticket==0,"Escape retained lever selection"):return
+	await pointer(source_point)
 	if not await ready_jobs(0):return
 	if OS.get_environment("DF3D_LEVER_QUEUED_REMOVE")=="1":
 		await queued_removal()

@@ -362,6 +362,7 @@ local ok,err=xpcall(function()
  if os.getenv('DF3D_LEVER_WIRE')=='1'then
   local target=assert(df.building.find(result.link_target))
   local expected={target_id=target.id,x=target.centerx,y=target.centery,z=target.z,
+   source_tile={lever.centerx,lever.centery,lever.z},
    source_mechanism=sheet.linking_lever_mech_lever_id,target_mechanism=sheet.linking_lever_mech_target_id}
   local file=assert(io.open(out..'/lever-wire-expected.json','w'));file:write(json.encode(expected));file:close()
   local menu=json.encode{sheet.open,sheet.active_id,sheet.linking_lever,sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id}

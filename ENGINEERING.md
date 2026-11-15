@@ -15,7 +15,9 @@ Older recordings imply no lever observation. Defaults and the mailbox are227;
 rebuild bridge and client together. The bridge uses native mechanism selection,
 target validation and job creation with owned inputs. Its source revision comes
 from the shared building-header observation, admitted internally for Lever subtype0
-only. The public lever map route remains gated; shared header admission is described below. Mechanism captions
+only. Completed levers now use the native tile-selection route from map clicks;
+other trap subtypes retain their existing inspector route. Shared header admission
+is described below. Mechanism captions
 use the same native c65450(item,ownedString,false,-1) call as renderer150bd6.
 The selected item IDs remain fixed during targeting; Link does not repeat the
 initial search. Exceptions after entry remain Pending/unknown, and invalid
@@ -270,9 +272,9 @@ unsaved with source preservation, graphics capped30FPS, sampled GPU59C. Core19
 passes; only the established render-thread/finalize/two ObjectDB diagnostics
 remain. Evidence: `completed_sheet_discovery_reference.lever_resize_reference`.
 
-The staged lever's contained-item holder action returns to the lever owner after
-fresh resident type/subtype/completion checks. This return is confined to that
-owner's item sheet; it does not expose a general public lever entry point.
+The lever's contained-item holder action returns to the lever owner after
+fresh resident type/subtype/completion checks. The same validation also admits
+completed levers through ordinary map selection.
 Protected092327 on2026-11-15 verifies actual main-scene mechanism View and
 holder View, exact item and returned-panel pixels, restored input ownership,
 and subsequent Pull/projected Link effects. Owned DF24152 closes unsaved with
@@ -305,6 +307,21 @@ preservation; native graphics capped30FPS, sampled GPU60C. Core19 passes; the
 headless client reports only the known separate-render-thread notice. Evidence:
 `completed_sheet_discovery_reference.lever_target_families_reference`. Types
 absent from the sampled level and simulation completion remain unqualified.
+
+Protected093622 on2026-11-15 qualifies ordinary completed-lever map selection
+in the actual main scene: projected click on lever55, Escape retiring selection,
+reopen by another map click, pointer Pull, projected door16 Link, and close
+releasing panel ownership. Native verifies both resulting jobs against its own
+pointer-created references. Initial093440 exposed a remaining map entry gate
+that sent completed levers to the old inspector; it is not acceptance. Both map
+entry checks and the destination route now admit only completed Trap subtype0.
+Owned DF44452 closes unsaved with source preservation. Graphics capped30FPS,
+sampled GPU58–62C; core19 passes. The run is passed_with_known_issues for the
+established render-thread/finalize/two ObjectDB diagnostics. Evidence:
+`completed_sheet_discovery_reference.lever_map_selection_reference`.
+Earlier staged-entry limitations above describe their individual captures;
+ordinary map entry is now qualified. Assigned-worker removal, absent mechanical
+target families and simulation completion remain outside these captures.
 
 ## Native bug register
 

@@ -95,12 +95,12 @@ inline bool plainFurnitureType(df::building_type type) {
     case df::building_type::Chair:case df::building_type::Bed:case df::building_type::Table:
     case df::building_type::Weaponrack:case df::building_type::Armorstand:case df::building_type::Cabinet:
     case df::building_type::Statue:case df::building_type::Instrument:case df::building_type::Bookcase:
-    case df::building_type::OfferingPlace:return true;
+    case df::building_type::OfferingPlace:case df::building_type::Wagon:case df::building_type::TractionBench:return true;
     default:return false;
     }
 }
 inline bool linkedFurnitureType(df::building_type type) {
-    return type==df::building_type::Floodgate || type==df::building_type::Hatch ||
+    return type==df::building_type::Bridge || type==df::building_type::Floodgate || type==df::building_type::Hatch ||
         type==df::building_type::GrateWall || type==df::building_type::GrateFloor ||
         type==df::building_type::BarsVertical || type==df::building_type::BarsFloor;
 }

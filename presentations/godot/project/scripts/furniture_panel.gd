@@ -24,7 +24,7 @@ func configure(world,service,host,help=null) -> void:
 			close_panel();focus_requested.emit(tile))
 func _state_changed() -> void:
 	super._state_changed()
-	if state.snapshot.get("type",-1) in [9,23,33,35,36,37,38,39,40,41,42,43,44,50]:
+	if state.snapshot.get("type",-1) in [9,19,23,33,35,36,37,38,39,40,41,42,43,44,50]:
 		if links.building_id!=state.building_id:links.open(state.building_id)
 	elif links.building_id>=0:links.close()
 	if state.snapshot.get("type",-1)==35 and not state.snapshot.get("removing",true):

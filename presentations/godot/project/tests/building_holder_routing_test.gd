@@ -20,7 +20,7 @@ func _initialize() -> void:
 		if pending.opened.size()!=1 or not furniture.opened.is_empty():failures+=1;push_error("Unfinished holder mapping differs: "+str(pair))
 		pending.opened.clear()
 	OS.set_environment("DF3D_FURNITURE_RUNTIME","0")
-	for pair in [[3,4],[18,19],[33,34],[35,35],[36,36],[37,37],[38,38],[39,39],[40,40],[41,41],[42,42],[43,43],[44,44],[46,46],[50,50]]:
+	for pair in [[3,4],[18,19],[19,20],[32,33],[33,34],[45,45],[35,35],[36,36],[37,37],[38,38],[39,39],[40,40],[41,41],[42,42],[43,43],[44,44],[46,46],[50,50]]:
 		ui.world.facts={"building_kind":pair[1],"complete":true}
 		ui.open_building_holder(pair[0],278)
 		if furniture.opened.size()!=1 or not pending.opened.is_empty():failures+=1;push_error("Completed holder remains gated: "+str(pair))

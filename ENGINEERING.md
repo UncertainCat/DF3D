@@ -740,6 +740,27 @@ Graphics are serial30FPS, sampled GPU59–62C. Runs pass with the known renderin
 thread/finalize/two-ObjectDB diagnostics. Core19, well-contract and holder-routing
 checks pass. Evidence: `completed_sheet_discovery_reference.well_workflow_reference`.
 
+## Completed bridge, wagon and traction-bench sheets
+
+Completed Bridge19, Wagon32 and TractionBench45 use the shared native header,
+installed-item contents and removal controls. Native render/input dispatch uses
+the default body19acbe and input1b001e; no additional body controls are inferred.
+Bridge retains the shared linked-building provider. The public map and holder
+routes use mirror kinds20,33 and45 respectively, including valid Wagon ID0.
+
+Protected123501 on2026-11-15 verifies existing Bridge1378, Wagon0 and
+TractionBench1105 through the actual main scene: projected map entry, holder
+entry, rename/restore, removal/cancel and Escape ownership release. All fifteen
+488x708 panel crops exactly match corresponding native captures. Names and jobs
+are restored; no simulation frames advance. This does not establish mechanism
+activation, medical treatment or natural demolition completion.
+
+Owned DF35244 closes unsaved with source preservation. Graphics are serial30FPS,
+sampled GPU60–61C. The run passes with the established rendering-thread,
+finalize and two-ObjectDB shutdown diagnostics. Bridge, extension and core builds,
+all19 core CTest checks and the headless holder-routing check pass. Evidence is retained under
+`completed_sheet_discovery_reference.simple_building_workflow_reference`.
+
 ## Completed hatch, grate and bar references
 
 Protected112109 on2026-11-15 captures native Hatch35, GrateWall36, GrateFloor37,

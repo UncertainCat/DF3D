@@ -31115,6 +31115,158 @@
           "lane": "build/stockpile-storage-native-farm-discovery-20261115-122103",
           "reason": "Operational text used base7 instead of bright15. Only497 glyph pixels differed; subsequent runs use native bright15/14."
         }
+      },
+      "simple_building_workflow_reference": {
+        "protocol": 230,
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-123501",
+        "owned_df_pid": 35244,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "native": {
+          "buildings": [
+            {
+              "custom_name": "",
+              "id": 1378,
+              "lines": [
+                {
+                  "text": "        Microcline Bridge",
+                  "y": 6
+                },
+                {
+                  "text": "        microcline blocks",
+                  "y": 43
+                },
+                {
+                  "text": "        microcline blocks",
+                  "y": 46
+                },
+                {
+                  "text": "        microcline blocks",
+                  "y": 49
+                },
+                {
+                  "text": "        microcline blocks",
+                  "y": 52
+                },
+                {
+                  "text": "        microcline blocks",
+                  "y": 55
+                },
+                {
+                  "text": "        microcline blocks",
+                  "y": 58
+                }
+              ],
+              "native_type": "Bridge",
+              "selected_id": 1378,
+              "selected_sheet": 2,
+              "subtype": -1,
+              "tile": [
+                105,
+                78,
+                165
+              ],
+              "type": 19
+            },
+            {
+              "custom_name": "",
+              "id": 0,
+              "lines": [
+                {
+                  "text": "        Wagon",
+                  "y": 6
+                },
+                {
+                  "text": "        (cherry wood)",
+                  "y": 43
+                },
+                {
+                  "text": "        (cherry wood)",
+                  "y": 46
+                },
+                {
+                  "text": "        (cherry wood)",
+                  "y": 49
+                }
+              ],
+              "native_type": "Wagon",
+              "selected_id": 0,
+              "selected_sheet": 2,
+              "subtype": -1,
+              "tile": [
+                97,
+                96,
+                170
+              ],
+              "type": 32
+            },
+            {
+              "custom_name": "",
+              "id": 1105,
+              "lines": [
+                {
+                  "text": "        Traction Bench",
+                  "y": 6
+                },
+                {
+                  "text": "        Â«â‰¡bitter orange wood traction...",
+                  "y": 43
+                }
+              ],
+              "native_type": "TractionBench",
+              "selected_id": 1105,
+              "selected_sheet": 2,
+              "subtype": -1,
+              "tile": [
+                125,
+                79,
+                165
+              ],
+              "type": 45
+            }
+          ],
+          "frame": 0,
+          "inventory": [
+            {
+              "complete": true,
+              "id": 0,
+              "revealed": true,
+              "subtype": -1,
+              "type": 32
+            },
+            {
+              "complete": true,
+              "id": 1105,
+              "revealed": true,
+              "subtype": -1,
+              "type": 45
+            },
+            {
+              "complete": true,
+              "id": 1378,
+              "revealed": true,
+              "subtype": -1,
+              "type": 19
+            }
+          ],
+          "missing": [],
+          "success": true,
+          "viewer": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          }
+        },
+        "scope": "Actual map and holder entry, rename/restore, removal/cancel, Escape; fifteen full panel crops exact. Paused; no mechanism activation, treatment or natural demolition completion claim.",
+        "diagnostics": "passed_with_known_issues: rendering-thread/finalize/two ObjectDB",
+        "bridge_sha256": "121a735690fa6a367be6d5e2246a5c8d8aa9e16595ba595e31fd8753c9c49479",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-123501/remaining-buildings-native.json": "b65276d6bc836dde010421c2e378a5acdddee1702b44329ca653ee35eb0b0d5a",
+          "build/stockpile-storage-native-farm-discovery-20261115-123501/simple-building-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-123501/simple-building-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "build/stockpile-storage-native-farm-discovery-20261115-123501/result.json": "f8fa6271c9281592fdc7c74899d915c8598480b485089cb7ff41b9f167c0f081",
+          "build/stockpile-storage-native-farm-discovery-20261115-123501/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

@@ -29797,6 +29797,186 @@
           "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-variant-3-40.png": "be2e8e7e8bf58c90e0ee5c193ee89417a4b6f3cef95e9107c87a290c02a38f5f",
           "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-variant-3-43.png": "cc1aba9b7e6d4e2c52b8b2ac9592198190b62b4c991202cbf68fc7f11656b299"
         }
+      },
+      "barrier_sheets_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-112109",
+        "scope": "Five native completed barrier sheets. Hatch forbidden/passable clicks set only forbidden flag and request pathfinding reindex, leaving tile occupancy unchanged; final flags/reindex restored. Hatch and wall grate are controlled materialless completed fixtures; other three existing buildings. No viewer/runtime acceptance or natural construction claim.",
+        "native": {
+          "buildings": [
+            {
+              "controls": [
+                {
+                  "flags": 81,
+                  "forbidden": true,
+                  "occupancy": 134217729,
+                  "reindex": true
+                },
+                {
+                  "flags": 80,
+                  "forbidden": false,
+                  "occupancy": 134217729,
+                  "reindex": true
+                }
+              ],
+              "controls_restored": true,
+              "fixture": true,
+              "flags": 80,
+              "id": 1490,
+              "items": [],
+              "lines": [
+                {
+                  "text": "        Unknown material Floor Hatch",
+                  "y": 6
+                },
+                {
+                  "text": "  Passable",
+                  "y": 11
+                }
+              ],
+              "name": "Hatch",
+              "tile": [
+                128,
+                80,
+                165
+              ],
+              "type": 35
+            },
+            {
+              "fixture": true,
+              "flags": 1,
+              "id": 1491,
+              "items": [],
+              "lines": [
+                {
+                  "text": "        Unknown material Wall Grate",
+                  "y": 6
+                }
+              ],
+              "name": "GrateWall",
+              "tile": [
+                132,
+                80,
+                165
+              ],
+              "type": 36
+            },
+            {
+              "fixture": false,
+              "flags": 1,
+              "id": 134,
+              "items": [
+                {
+                  "id": 2674,
+                  "type": 79,
+                  "use_mode": 2
+                }
+              ],
+              "lines": [
+                {
+                  "text": "        Dolomite Floor Grate",
+                  "y": 6
+                },
+                {
+                  "text": "        -dolomite grate-",
+                  "y": 43
+                }
+              ],
+              "name": "GrateFloor",
+              "tile": [
+                101,
+                70,
+                165
+              ],
+              "type": 37
+            },
+            {
+              "fixture": false,
+              "flags": 1,
+              "id": 155,
+              "items": [
+                {
+                  "id": 3260,
+                  "type": 0,
+                  "use_mode": 2
+                }
+              ],
+              "lines": [
+                {
+                  "text": "        Vertical iron Bars",
+                  "y": 6
+                },
+                {
+                  "text": "        iron bars",
+                  "y": 43
+                }
+              ],
+              "name": "BarsVertical",
+              "tile": [
+                102,
+                95,
+                165
+              ],
+              "type": 38
+            },
+            {
+              "fixture": false,
+              "flags": 1,
+              "id": 143,
+              "items": [
+                {
+                  "id": 3192,
+                  "type": 0,
+                  "use_mode": 2
+                }
+              ],
+              "lines": [
+                {
+                  "text": "        Iron Floor Bars",
+                  "y": 6
+                },
+                {
+                  "text": "        iron bars",
+                  "y": 43
+                }
+              ],
+              "name": "BarsFloor",
+              "tile": [
+                100,
+                70,
+                165
+              ],
+              "type": 39
+            }
+          ],
+          "frame": 0,
+          "success": true
+        },
+        "owned_df_pid": 30412,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "native_authority": {
+          "exe_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+          "hatch_input_rva": "0x1af80c",
+          "length": 169,
+          "fnv1a64": "0x9381db803907d9fa",
+          "door_input_rva": "0x1af741",
+          "grates_bars_input_rva": "0x1b001e",
+          "input_dispatch_index_rva": "0x1b983c",
+          "input_dispatch_table_rva": "0x1b9808",
+          "effects": "Hatch tests flags&0x2c, requires closed before forbidding, writes forbidden bit, requests pathfinding reindex. Unlike Door it does not call occupancy leaf143c9a0."
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-112109/barrier-sheets-native.json": "22fd5becac4543e429925619a5dfdb3594f6dafba29a0dd11118f3120db90179",
+          "build/stockpile-storage-native-farm-discovery-20261115-112109/result.json": "25d4db906f9ea2ffdee1f0f32b81bdf5fdc032db2b0ede426cd3ec146c001f73",
+          "build/stockpile-storage-native-farm-discovery-20261115-112109/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-112109/barrier-hatch-forbidden.png": "78f7df5c9a4e2f85288b8148674639642ecff6722fad0e7ee8a9a4c09b974bc7",
+          "build/stockpile-storage-native-farm-discovery-20261115-112109/barrier-hatch-passable.png": "8bf13638e5aeb62d43ef58faa19653f4c49fd2fdd471573e31f7ea2a23dd1b44",
+          "build/stockpile-storage-native-farm-discovery-20261115-112109/barrier-sheet-35.png": "8bf13638e5aeb62d43ef58faa19653f4c49fd2fdd471573e31f7ea2a23dd1b44",
+          "build/stockpile-storage-native-farm-discovery-20261115-112109/barrier-sheet-36.png": "3b36f6f2ffb4c2989938378d1c903536aeaedf2178ab7a708dc04cb2a8685b6a",
+          "build/stockpile-storage-native-farm-discovery-20261115-112109/barrier-sheet-37.png": "aefa33714fc4b1cf1fae7411e2ac2a373c405dc26a274cf7eb3040108031b4a0",
+          "build/stockpile-storage-native-farm-discovery-20261115-112109/barrier-sheet-38.png": "840e47051898f09dc7ab3fd071b63c9c6311a67b6c196b49c62242dca16eb445",
+          "build/stockpile-storage-native-farm-discovery-20261115-112109/barrier-sheet-39.png": "f73becfa5540217bc23594c82c07c389604b9ab88ebdd976e94b226c0383ae18"
+        }
       }
     },
     "pending_construction_reference": {

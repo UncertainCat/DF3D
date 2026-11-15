@@ -646,6 +646,33 @@ four graphical clients pass with only the established rendering-thread notice,
 render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
 `completed_sheet_discovery_reference.machinery_workflow_reference`.
 
+## Completed hatch, grate and bar references
+
+Protected112109 on2026-11-15 captures native Hatch35, GrateWall36, GrateFloor37,
+BarsVertical38 and BarsFloor39 panels. The floor grate and both bar types are
+existing completed buildings with installed items. Hatch and wall grate are
+materialless DFHack fixtures with maximum stage and `exists` set, cleared before
+teardown. Their unknown-material captions are fixture artifacts, not product copy.
+Initial111944 establishes the same five layouts without action checks.
+
+Hatch shows Passable/Forbidden and the two door-style icons. The other four
+unlinked baseline panels have no body controls. Native input dispatch1b983c/1b9808
+routes Door8 to1af741, Hatch35 to1af80c, and36..39 to default1b001e. Hatch input
+1af80c..1af8b5 tests the same blocked flag mask0x2c and closed-before-forbidden
+condition, but only writes the forbidden bit and requests pathfinding reindexing.
+It does not call the door occupancy update leaf143c9a0. Pin the169-byte hatch
+input span with FNV1a64 `9381db803907d9fa` for the supported executable.
+
+Actual native icon clicks change flags80->81->80, request reindexing after each
+click, and leave occupancy134217729 unchanged. The diagnostic restores the
+original flags and reindex state and keeps the simulation paused. It captures
+both resulting panels. Owned DF30412 closes unsaved with source preservation;
+native graphics capped30FPS, sampled GPU60C; core19 passes. Evidence:
+`completed_sheet_discovery_reference.barrier_sheets_reference`. These are native
+references, not bridge/viewer acceptance. Public entry remains gated while the
+shared header/contents admission and distinct hatch action are implemented and
+verified. Linked variants and other hatch control states are not yet qualified.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

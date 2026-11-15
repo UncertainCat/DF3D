@@ -1552,7 +1552,7 @@ table ProductionRequest {
   door_controls:bool;
   door_forbidden:int8 = -1; // -1 reads; 0/1 sets the desired state under expected_revision.
   pending_building:bool;
-  pending_operation:int8 = -1; // 0 resume, 1 suspend, 2 cancel; -1 read.
+  pending_operation:int8 = -1; // 0 resume, 1 suspend, 2 cancel, 3 cancel removal; -1 read.
 }
 table ProductionRequirement { description:string; quantity:int32; item_type:int16 = -1; }
 // Absent on legacy observations and providers without native availability evidence.
@@ -1668,7 +1668,7 @@ table IndependentItemState {
 table PendingBuildingSnapshot {
   id:int32 = -1; type:int32 = -1; revision:uint64;
   stage:int32 = -1; max_stage:int32 = -1; job_id:int32 = -1;
-  suspended:bool; has_worker:bool; header_name:string;
+  suspended:bool; has_worker:bool; header_name:string; removing:bool;
 }
 table PendingBuildingState {
   snapshot:PendingBuildingSnapshot; outcome:FarmEditOutcome;
@@ -2550,7 +2550,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 216;
+  schema_version:uint32 = 217;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2623,7 +2623,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 216;
+  schema_version:uint32 = 217;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

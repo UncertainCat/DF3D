@@ -1244,7 +1244,7 @@ void publish() {
   flatbuffers::Offset<m::PendingBuildingState> pendingBuilding;
   if(production.pendingBuilding) {
     const auto& state=*production.pendingBuilding;flatbuffers::Offset<m::PendingBuildingSnapshot> snapshot;
-    if(state.snapshot){const auto& f=*state.snapshot;snapshot=m::CreatePendingBuildingSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,f.jobId,f.suspended,f.hasWorker,b.CreateString(f.headerName));}
+    if(state.snapshot){const auto& f=*state.snapshot;snapshot=m::CreatePendingBuildingSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,f.jobId,f.suspended,f.hasWorker,b.CreateString(f.headerName),f.removing);}
     pendingBuilding=m::CreatePendingBuildingState(b,snapshot,state.outcome,state.removed,state.removing);
   }
   flatbuffers::Offset<m::DoorControlsState> doorControls;
@@ -4122,12 +4122,12 @@ void run(color_ostream& out) {
     response.outcome=editing?m::FarmEditOutcome::Rejected:m::FarmEditOutcome::None;
     const auto convert=[](const df3d_production::PendingBuildingObservation& f)->std::optional<PendingBuildingSnapshot> {
       auto* building=df::building::find(f.id);const auto& native=df3d_production::farmFunctions();
-      // Protocol216 represents construction jobs only. Removal/idle states
-      // stay unavailable until their explicit transport contract is added.
-      if(f.removing || !building || !native || building->jobs.empty() || building->jobs.front()->id!=f.jobId)return {};
+      if(!building || !native)return {};
+      auto* first=building->jobs.empty()?nullptr:building->jobs.front();
+      if((first?first->id:-1)!=f.jobId)return {};
       std::string name;building->getName(&name);native.formatName(&name);
       if(name.empty() || name.size()>512)return {};
-      return PendingBuildingSnapshot{f.id,f.type,f.revision,f.stage,f.maxStage,f.jobId,bool(f.jobFlags&2),native.hasWorker(building->jobs.front()),DF2UTF(name)};
+      return PendingBuildingSnapshot{f.id,f.type,f.revision,f.stage,f.maxStage,f.jobId,bool(f.jobFlags&2),first && native.hasWorker(first),DF2UTF(name),f.removing};
     };
     try {
       auto* building=df::building::find(q->building_id());

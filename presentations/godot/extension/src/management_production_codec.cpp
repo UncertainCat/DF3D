@@ -238,7 +238,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     const auto& state=*p.pendingBuilding;Dictionary pending;pending["outcome"]=int(state.outcome);pending["removed"]=state.removed;pending["removing"]=state.removing;
     if(state.snapshot){const auto& f=*state.snapshot;Dictionary value;
       value["id"]=f.id;value["type"]=f.type;value["revision"]=int64_t(f.revision);value["stage"]=f.stage;value["max_stage"]=f.maxStage;value["job_id"]=f.jobId;
-      value["suspended"]=f.suspended;value["has_worker"]=f.hasWorker;value["header_name"]=String(f.headerName.c_str());pending["snapshot"]=value;}
+      value["suspended"]=f.suspended;value["has_worker"]=f.hasWorker;value["header_name"]=String(f.headerName.c_str());value["removing"]=f.removing;pending["snapshot"]=value;}
     prod["pending_building"]=pending;
   }
   if(p.doorControls) {
@@ -697,7 +697,7 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   if(data.has("door_forbidden") && data["door_forbidden"].get_type()!=Variant::INT){error="Wrong management field type: door_forbidden";return false;}
   if(data.has("pending_building") && data["pending_building"].get_type()!=Variant::BOOL){error="Wrong management field type: pending_building";return false;}
   if(data.has("pending_operation") && data["pending_operation"].get_type()!=Variant::INT){error="Wrong management field type: pending_operation";return false;}
-  value.pendingBuilding=data.get("pending_building",false);value.pendingOperation=int8_t(n("pending_operation",-1,-1,2));
+  value.pendingBuilding=data.get("pending_building",false);value.pendingOperation=int8_t(n("pending_operation",-1,-1,3));
   value.doorControls=data.get("door_controls",false);value.doorForbidden=int8_t(n("door_forbidden",-1,-1,1));
   value.buildingHeader=data.get("building_header",false);
   if(data.has("workshop_orders") && data["workshop_orders"].get_type()!=Variant::BOOL){error="Wrong management field type: workshop_orders";return false;}

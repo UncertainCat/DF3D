@@ -9873,17 +9873,27 @@ fixture discovery failures are not acceptance;214809 selected an inactive citize
 and correctly did not release it. The accepted fixture selects an active citizen,
 matching the native predicate. No native defect or parity exception is claimed.
 
-Management protocol216 appends exclusive pending_building requests and an
+Management protocol217 carries exclusive pending_building requests and an
 optional PendingBuildingState response. ProductionInspect reads use operation-1
 and no revision; FarmEdit requires an exact positive revision and operation0
-(resume),1(suspend), or2(cancel). Snapshots carry native type, stage/max-stage,
-construction job identity, suspension, native worker presence and formatted
-header name. Successful suspension returns a fresh snapshot; cancellation
+(resume),1(suspend),2(cancel), or3(cancel removal). Snapshots carry native type, stage/max-stage,
+job identity, suspension, native worker presence, formatted header name and
+removal state. An idle snapshot has job_id=-1, with removal, suspension and
+worker flags all false. Successful suspension or Cancel removal returns a fresh snapshot; cancellation
 returns exactly one of removed/removing and no obsolete snapshot. Failed or
 uncertain edits grant neither snapshot nor terminal authority. Older recordings
-imply no unfinished-building observation. Both schema defaults and mailbox are216
-(`Local\\df3d_management_v216`); bridge and clients must be rebuilt together.
+imply no unfinished-building observation. Both schema defaults and mailbox are217
+(`Local\\df3d_management_v217`); bridge and clients must be rebuilt together.
+Protocol216 observations lack the removal flag and are not accepted as217
+authority; reconnect and request a fresh native observation after upgrading.
 The protocol does not by itself expose the unfinished-building panel.
+Protected222912 on2026-11-14 verifies217 through headless Godot: observe the
+demolition job, Cancel removal into stage1/3 with job_id=-1 and no worker,
+then queue demolition again from that idle state. Independent native readback
+confirms DestroyBuilding. Construction resume/suspend, exact revision, stale
+rejection and late-read retirement remain covered. DF27192 exits unsaved with
+source preservation; only the documented rendering-thread notice appears.
+Evidence: pending_construction_reference.removal_transport_reference.
 Protected220119/220256 on2026-11-14 verify the protocol through headless Godot:
 exact64-bit revisions, resume/repeated resume/suspend, stale rejection, late-read
 retirement and cancellation through pending_building_state. Stage0 Statue965
@@ -9922,8 +9932,8 @@ buildings; it does not recreate ConstructBuilding. The suspend handler's empty
 job check then makes its button a no-op. This is a controlled-state native
 defect, not evidence of natural construction progression. No correction is
 authorized. The pending observer represents construction, removal and idle/no-job
-states; protocol216 still exposes only construction-job snapshots. Transport and
-presentation must support the other states before promotion.
+states; protocol217 adds transport for removal and idle snapshots. Presentation
+must support the other states before promotion.
 DF42196 exits unsaved with source preservation. The native-bug register tracks
 this separately; pending_construction_reference.removal_return_reference retains
 the before/after captions, stage, jobs and screenshots.

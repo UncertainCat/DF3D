@@ -13920,6 +13920,117 @@
           "workshop-pending-idle-cycle.png": "498e64bccee8c4bc2e652a09b1dcae0d928e459e33806ddce1b06ecf6dcf508e",
           "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "removal_transport_reference": {
+        "protocol": 217,
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-222912",
+        "owned_df_pid": 27192,
+        "status": "passed_with_known_issues: separate-render-thread notice only",
+        "source_save_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Headless Godot217: removal observation, Cancel removal receipt with unchanged stage and job_id=-1/no worker, followed by idle Remove building. Independent native readback verifies demolition queued again. Original construction resume/suspend, exact revision, stale rejection and late-read retirement checks also pass.",
+        "wire": {
+          "receipts": [
+            {
+              "has_worker": false,
+              "header_name": "Farm Plot",
+              "id": 1490,
+              "job_id": 382796,
+              "max_stage": 3,
+              "removing": false,
+              "revision": 8414798608743560935,
+              "stage": 1,
+              "suspended": false,
+              "type": 4
+            },
+            {
+              "has_worker": false,
+              "header_name": "Farm Plot",
+              "id": 1490,
+              "job_id": 382796,
+              "max_stage": 3,
+              "removing": false,
+              "revision": 8414798608743560935,
+              "stage": 1,
+              "suspended": false,
+              "type": 4
+            },
+            {
+              "has_worker": false,
+              "header_name": "Farm Plot",
+              "id": 1490,
+              "job_id": 382796,
+              "max_stage": 3,
+              "removing": false,
+              "revision": 6254148789396981349,
+              "stage": 1,
+              "suspended": true,
+              "type": 4
+            },
+            {
+              "late_read_retired": true,
+              "retired": [
+                [
+                  1490,
+                  true
+                ]
+              ]
+            },
+            {
+              "cancel_removal": {
+                "outcome": 1,
+                "removed": false,
+                "removing": false,
+                "snapshot": {
+                  "has_worker": false,
+                  "header_name": "Farm Plot",
+                  "id": 1490,
+                  "job_id": -1,
+                  "max_stage": 3,
+                  "removing": false,
+                  "revision": 3988084734999959928,
+                  "stage": 1,
+                  "suspended": false,
+                  "type": 4
+                }
+              }
+            },
+            {
+              "idle_remove": {
+                "outcome": 1,
+                "removed": false,
+                "removing": true
+              }
+            }
+          ],
+          "success": true
+        },
+        "native_readback": {
+          "building_exists": true,
+          "frame": 0,
+          "id": 1490,
+          "job_ids": [
+            382796
+          ],
+          "jobs_remaining": [],
+          "materials_after": [],
+          "materials_before": [],
+          "occupancy_after": 1,
+          "occupancy_before": 1,
+          "remaining_jobs": [
+            {
+              "flags": 0,
+              "id": 382798,
+              "type": "DestroyBuilding"
+            }
+          ]
+        },
+        "hashes": {
+          "workshop-native.json": "6ca0fb664d87a6883ae609438007c884349f24922dfb04ba1966da1da40e4a25",
+          "workshop-wire-result.json": "216181696cc6747450495da5a4f4e44274d6c9b58b1f4e91615af6338d09231c",
+          "workshop-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

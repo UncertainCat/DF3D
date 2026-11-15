@@ -151,7 +151,7 @@ struct IndependentItemState {
 struct PendingBuildingSnapshot {
   int32_t id=-1,type=-1;uint64_t revision=0;
   int32_t stage=-1,maxStage=-1,jobId=-1;
-  bool suspended=false,hasWorker=false;std::string headerName;
+  bool suspended=false,hasWorker=false;std::string headerName;bool removing=false;
 };
 struct PendingBuildingState {
   std::optional<PendingBuildingSnapshot> snapshot;

@@ -9,6 +9,37 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("pending removal and idle snapshots retain distinct authority") {
+  for(int operation=0;operation<=3;++operation) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::FarmEdit;
+    r.production.pendingBuilding=true;r.production.buildingId=1490;
+    r.production.expectedRevision=9007199254740993ULL;r.production.pendingOperation=int8_t(operation);
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK_FALSE(wire::validateConstructionRequest(*value));
+    CHECK(value->production()->pending_operation()==operation);
+  }
+  for(int job:{-2,-1,382797})for(bool removing:{false,true})for(bool suspended:{false,true})for(bool worker:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto snapshot=wire::CreatePendingBuildingSnapshot(b,1490,4,9007199254740993ULL,
+      1,3,job,suspended,worker,b.CreateString("Farm Plot"),removing);
+    const auto payload=wire::CreatePendingBuildingState(b,snapshot,wire::FarmEditOutcome::Completed);
+    wire::ProductionStateBuilder p(b);p.add_pending_building(payload);const auto prod=p.Finish();
+    wire::ManagementStateBuilder s(b);s.add_revision(1);s.add_production(prod);
+    s.add_action(wire::ManagementAction::FarmEdit);s.add_status(wire::ManagementStatus::Ok);b.Finish(s.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool invalid=job<-1 || (job==-1 && (removing || suspended || worker));
+    CAPTURE(job);CAPTURE(removing);CAPTURE(suspended);CAPTURE(worker);
+    CHECK(bool(wire::validateManagementState(*value))==invalid);
+    if(!invalid) {
+      const auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.pendingBuilding);
+      REQUIRE(decoded.pendingBuilding->snapshot);const auto& result=*decoded.pendingBuilding->snapshot;
+      CHECK(result.jobId==job);CHECK(result.removing==removing);CHECK(result.suspended==suspended);
+      CHECK(result.hasWorker==worker);CHECK(result.revision==9007199254740993ULL);
+    }
+  }
+}
+
 TEST_CASE("pending building transport distinguishes observations from retirement") {
   for(bool edit:{false,true})for(int fault=0;fault<9;++fault) {
     wm::ManagementRequest r;r.action=edit?wm::ManagementAction::FarmEdit:wm::ManagementAction::ProductionInspect;
@@ -16,7 +47,7 @@ TEST_CASE("pending building transport distinguishes observations from retirement
     if(edit){p.expectedRevision=9007199254740993ULL;p.pendingOperation=2;}
     if(fault==1)p.buildingId=-1;
     if(fault==2)p.expectedRevision=edit?0:1;
-    if(fault==3)p.pendingOperation=edit?3:0;
+    if(fault==3)p.pendingOperation=edit?4:0;
     if(fault==4)p.doorControls=true;
     if(fault==5)p.contents=true;
     if(fault==6)p.pendingBuilding=false,p.pendingOperation=0;

@@ -52,6 +52,26 @@ func run() -> void:
 		check(retired==[[int(expected.id),bool(expected.stage>0)]],"Cancellation outcome differs from stage")
 		receipts.append({"retired":retired,"late_read_retired":true})
 		model.dispose();service.queue_free()
+	if not failed and int(expected.stage)>0:
+		var read_intent: Dictionary={"action":C.ManagementAction.ProductionInspect,"pending_building":true,"building_id":int(expected.id)}
+		result=await request("production",read_intent)
+		snapshot=result.get("production",{}).get("pending_building",{}).get("snapshot",{})
+		check(snapshot.get("removing",false) and int(snapshot.get("job_id",-1))>=0,"Removal observation missing native job")
+		if not failed:
+			intent={"action":C.ManagementAction.FarmEdit,"pending_building":true,"building_id":int(expected.id),"expected_revision":snapshot.revision,"pending_operation":3}
+			result=await request("production",intent)
+			var cancelled: Dictionary=result.get("production",{}).get("pending_building",{})
+			snapshot=cancelled.get("snapshot",{})
+			check(result.get("status")==C.ManagementStatus.Ok and cancelled.get("outcome")==C.FarmEditOutcome.Completed,"Cancel removal transport failed")
+			check(snapshot.get("job_id")==-1 and snapshot.get("removing")==false and snapshot.get("suspended")==false and snapshot.get("has_worker")==false,"Idle snapshot invented a construction job or worker")
+			check(snapshot.get("stage")==int(expected.stage),"Cancel removal changed construction stage")
+			receipts.append({"cancel_removal":cancelled.duplicate(true)})
+			if not failed:
+				intent.expected_revision=snapshot.revision;intent.pending_operation=2
+				result=await request("production",intent)
+				var queued: Dictionary=result.get("production",{}).get("pending_building",{})
+				check(queued.get("outcome")==C.FarmEditOutcome.Completed and queued.get("removing",false) and not queued.has("snapshot"),"Idle removal did not retire authority")
+				receipts.append({"idle_remove":queued})
 	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"receipts":receipts}));file.close()
 	world.detach_live();world.queue_free();await process_frame

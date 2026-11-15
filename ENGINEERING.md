@@ -453,6 +453,25 @@ ObjectDB graphics diagnostics remain. Evidence:
 Assigned-worker removal, simulation completion and custom-reaction work-order
 creation are not qualified by these captures.
 
+## Other completed trap sheets
+
+Protected100805 on2026-11-15 records native CageTrap2, StoneFallTrap3,
+WeaponTrap4 and TrackStop5 sheets. These captures show shared Rename/Remove
+headers, installed items and linked-building tabs; they do not show lever-style
+Tasks/Workers/Work orders or a track-stop settings editor. The save contains no
+completed revealed examples, so the diagnostic temporarily changes trap61's
+subtype in the paused clone and restores it after each capture. Its existing
+mechanisms and mechanical links remain present. This does not qualify native
+construction defaults, loaded/ammunition states, no-link geometry, mutations
+or simulation behavior. The initial TrackStop capture was visually inspected.
+The existing owned `buildingLinks` provider already derives tab visibility from
+trigger subtype or resolved item references; the ordinary linked-building panel
+is the implementation candidate, with subtype-specific header/contents admission
+still required. Other traps remain on their existing inspector route.
+Owned DF40632 closes unsaved with source preservation; native graphics capped
+30FPS, sampled GPU59C; core19 passes. Evidence:
+`completed_sheet_discovery_reference.ordinary_trap_sheets_reference`.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

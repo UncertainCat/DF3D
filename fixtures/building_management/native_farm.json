@@ -26310,6 +26310,284 @@
           "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-navigation-queue-removing-viewer.png": "d95c2ff88502e022ddd3a1b8538d2ad5a4961f8ff1994f1f8a0a35e74d5990a9",
           "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-navigation-queue-removal-cancelled-viewer.png": "5ffa8f3e5afbdaecd876b90524cc65a5e068dcde1c8342730ec3f2f80aec0ad0"
         }
+      },
+      "ordinary_trap_sheets_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-100805",
+        "scope": "Native completed Trap subtypes2 Cage/3 StoneFall/4 Weapon/5 TrackStop initial sheets. No existing completed revealed instances in save; trap61 subtype temporarily changed in paused clone and restored. Existing mechanism/link contents retained. Header, contents and conditional linked tabs only in these captures. No construction-default, loaded/ammunition, mutations, no-link layout or simulation claim.",
+        "native": {
+          "buildings": [
+            {
+              "fill_timer": 0,
+              "fixture": "Paused existing trap61 with temporary subtype; not native construction defaults.",
+              "id": 61,
+              "items": [
+                {
+                  "id": 2311,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 1628,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 2328,
+                  "type": 67,
+                  "use_mode": 2
+                }
+              ],
+              "lines": [
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "name": "Brooke Gates",
+              "ready_timeout": 0,
+              "state": 1,
+              "stop_flags": 0,
+              "subtype": 2,
+              "tile": [
+                96,
+                103,
+                165
+              ],
+              "track": {
+                "dump_x": 0,
+                "dump_y": 0,
+                "flags": 0,
+                "friction": 50000
+              }
+            },
+            {
+              "fill_timer": 0,
+              "fixture": "Paused existing trap61 with temporary subtype; not native construction defaults.",
+              "id": 61,
+              "items": [
+                {
+                  "id": 2311,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 1628,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 2328,
+                  "type": 67,
+                  "use_mode": 2
+                }
+              ],
+              "lines": [
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "name": "Brooke Gates",
+              "ready_timeout": 0,
+              "state": 1,
+              "stop_flags": 0,
+              "subtype": 3,
+              "tile": [
+                96,
+                103,
+                165
+              ],
+              "track": {
+                "dump_x": 0,
+                "dump_y": 0,
+                "flags": 0,
+                "friction": 50000
+              }
+            },
+            {
+              "fill_timer": 0,
+              "fixture": "Paused existing trap61 with temporary subtype; not native construction defaults.",
+              "id": 61,
+              "items": [
+                {
+                  "id": 2311,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 1628,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 2328,
+                  "type": 67,
+                  "use_mode": 2
+                }
+              ],
+              "lines": [
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "name": "Brooke Gates",
+              "ready_timeout": 0,
+              "state": 1,
+              "stop_flags": 0,
+              "subtype": 4,
+              "tile": [
+                96,
+                103,
+                165
+              ],
+              "track": {
+                "dump_x": 0,
+                "dump_y": 0,
+                "flags": 0,
+                "friction": 50000
+              }
+            },
+            {
+              "fill_timer": 0,
+              "fixture": "Paused existing trap61 with temporary subtype; not native construction defaults.",
+              "id": 61,
+              "items": [
+                {
+                  "id": 2311,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 1628,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 2328,
+                  "type": 67,
+                  "use_mode": 2
+                }
+              ],
+              "lines": [
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "name": "Brooke Gates",
+              "ready_timeout": 0,
+              "state": 1,
+              "stop_flags": 0,
+              "subtype": 5,
+              "tile": [
+                96,
+                103,
+                165
+              ],
+              "track": {
+                "dump_x": 0,
+                "dump_y": 0,
+                "flags": 0,
+                "friction": 50000
+              }
+            }
+          ],
+          "frame": 0,
+          "success": true
+        },
+        "owned_df_pid": 40632,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-100805/trap-sheets-native.json": "ecb7a7a37e642cdf24539cabc2f9ee1905795ecb24a89083614e5bc0ceb7b82c",
+          "build/stockpile-storage-native-farm-discovery-20261115-100805/result.json": "a8c10788eba38b03d8598e1c0903d6981606689b3555a6f43fcdddbc2574ad57",
+          "build/stockpile-storage-native-farm-discovery-20261115-100805/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-100805/trap-sheet-2.png": "81b9868c967358520df0f5721be71854fd20ef8d5c487a3dfa2dccc7f4aa5722",
+          "build/stockpile-storage-native-farm-discovery-20261115-100805/trap-sheet-3.png": "64fa4af766dda16ca5fd7b0e5286ad6d496a0e5fce805890965ad8e1e55f05bb",
+          "build/stockpile-storage-native-farm-discovery-20261115-100805/trap-sheet-4.png": "bda6bc468aaf7343d94200ae50ea6ddba9c571c8a51d7df9080b6289723a6a90",
+          "build/stockpile-storage-native-farm-discovery-20261115-100805/trap-sheet-5.png": "0d21e5a65159e43a75a3e60390f76b3bbe7dcee80b1b99db09b50fc8f73e032d"
+        }
       }
     },
     "pending_construction_reference": {

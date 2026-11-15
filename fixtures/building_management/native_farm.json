@@ -12809,6 +12809,92 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "engraving_art_draft_reference": {
+      "committed": {
+        "applied": true,
+        "caption": "Image information for engraving",
+        "caste": -1,
+        "description": [
+          "It is an image of a aardvark.  "
+        ],
+        "id": 4,
+        "invalid_element_rejected": true,
+        "one_registered": true,
+        "race": 755,
+        "rejections_unchanged": true,
+        "rows": [
+          "Creature",
+          "Historical figure",
+          "Plant",
+          "Tree",
+          "Shape",
+          "Object",
+          "Artifact",
+          "Action or relationship",
+          "Delete element"
+        ],
+        "stale_list_rejected": true,
+        "stale_revision_rejected": true,
+        "subid": 124,
+        "total": 2394,
+        "type": 3
+      },
+      "description": [
+        "It is an image of a aardvark.  "
+      ],
+      "native": {
+        "back_out_warn": false,
+        "flags": 0,
+        "id": 4,
+        "image_back_out_warn": false,
+        "open": false,
+        "option": 6,
+        "pos": [
+          134,
+          78,
+          165
+        ],
+        "subid": 123,
+        "type": 3
+      },
+      "owned": {
+        "caption": "Image information for engraving",
+        "caste": -1,
+        "description": [
+          "It is an image of a aardvark.  "
+        ],
+        "race": 755,
+        "rows": [
+          "Creature",
+          "Historical figure",
+          "Plant",
+          "Tree",
+          "Shape",
+          "Object",
+          "Artifact",
+          "Action or relationship",
+          "Delete element"
+        ],
+        "stale_list_rejected": true,
+        "total": 2394
+      },
+      "run": "build/stockpile-storage-native-farm-discovery-20261114-191335",
+      "status": "passed",
+      "owned_df_pid": 32984,
+      "owned_exit_unsaved": true,
+      "source_manifest_unchanged": true,
+      "sha256": {
+        "workshop-native.json": "66c3a6b5638be3a1ae4b53783ad3b3c8fd01defbf5dc907dcfadd14e7fecfa98",
+        "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+        "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "workshop-selection-engraving-draft-committed.png": "6c396554e7763fea4c9a213a3e6a143249721896dbb47a306020bdc99f3c6266",
+        "workshop-selection-engraving-draft-creature.png": "65abdc5dad2db45dfb404d35eccf2a8a1a050f7a54c18fb2269f37a01912bbf6",
+        "workshop-selection-engraving-draft-populated.png": "5475c68133c85864cfd0c43702311a4029679c69e64855d5ade9936a528a73a5",
+        "workshop-selection-engraving-draft-root.png": "d0cb9be5dc77197f7fa3c461ea5dcfbb5ca13604a75e18f06fe14bb0c8524cd6"
+      },
+      "coverage": "Native new-image root, creature count and first race/caste, one-element description and Done. Owned context3 draft read preserves checked native menu/specification and registration count. Owned commit registers exactly one image and assigns it; stale source/list and invalid element rejection guards pass.",
+      "limitations": "Diagnostic adapter only; protocol213 still rejects drafts. Names are generated separately and are not compared. Full creature ordering, other element families, relationships, naming edits, cancellation, absent specification, partial registration failure and actual DF3D draft view remain unqualified."
+    },
     "engraving_art_presentation_reference": {
       "reference": "build/stockpile-storage-native-farm-discovery-20261114-185705",
       "status": "passed_with_known_issues",

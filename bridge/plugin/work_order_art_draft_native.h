@@ -83,8 +83,8 @@ inline bool workOrderArtDraftReady() {
 class WorkOrderArtDraft {
     const uint8_t* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     df::image_creator_interfacest context;
-    WorkOrderArtDraft() {
-        context.context=df::image_creator_context_type::JOB_DETAILS_MAIN;
+    WorkOrderArtDraft(df::image_creator_context_type type) {
+        context.context=type;
         context.ics.image_ent=df::global::plotinfo->main.fortress_entity;
     }
     template<class T> T* construct(size_t rva) {
@@ -94,9 +94,9 @@ class WorkOrderArtDraft {
 public:
     WorkOrderArtDraft(const WorkOrderArtDraft&)=delete;
     WorkOrderArtDraft& operator=(const WorkOrderArtDraft&)=delete;
-    static std::unique_ptr<WorkOrderArtDraft> create() {
+    static std::unique_ptr<WorkOrderArtDraft> create(df::image_creator_context_type type=df::image_creator_context_type::JOB_DETAILS_MAIN) {
         if(!df::global::world || !df::global::plotinfo || !workOrderArtDraftReady())return {};
-        return std::unique_ptr<WorkOrderArtDraft>(new WorkOrderArtDraft);
+        return std::unique_ptr<WorkOrderArtDraft>(new WorkOrderArtDraft(type));
     }
     ~WorkOrderArtDraft() {
         reinterpret_cast<void(*)(df::art_image*)>(base+0x144470)(&context.new_image);
@@ -358,10 +358,11 @@ inline std::optional<WorkOrderArtPage> nativeArtDraftPage(WorkOrderArtPage root,
     WorkOrderArtDraftValue value,uint8_t action,const std::optional<WorkOrderArtDraftElementValue>& element,
     const std::optional<WorkOrderArtDraftRelationshipValue>& relationship,int32_t deleteIndex,
     const std::string& query,uint32_t cursor,uint64_t listRevision,uint16_t columns,
-    const WorkOrderArtNameQuery* nameQuery=nullptr,const WorkOrderArtNameEdit* nameEdit=nullptr) {
+    const WorkOrderArtNameQuery* nameQuery=nullptr,const WorkOrderArtNameEdit* nameEdit=nullptr,
+    df::image_creator_context_type contextType=df::image_creator_context_type::JOB_DETAILS_MAIN) {
     if((page<6 && page!=-1) || page>18 || (action>4 && action!=6) || query.size()>128 || !columns || columns>256 ||
        value.elements.size()>256 || value.relationships.size()>256)return std::nullopt;
-    auto draft=WorkOrderArtDraft::create();if(!draft)return std::nullopt;
+    auto draft=WorkOrderArtDraft::create(contextType);if(!draft)return std::nullopt;
     if(value.name && !draft->setName(*value.name))return std::nullopt;
     for(const auto& e:value.elements)if(!draft->addElement(e.kind,e.id,e.secondary,e.quantity))return std::nullopt;
     for(const auto& r:value.relationships)if(!draft->addRelationship(r.verb,r.transitive,r.actor,r.target))return std::nullopt;

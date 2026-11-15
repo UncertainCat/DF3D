@@ -9592,6 +9592,29 @@ main-scene picker or real-service controller acceptance. Draft requests still
 reject; the planned-engraving sheet, new-image workflow, filter/hover/scroll and
 resize qualification remain unfinished. Ordinary map routing is unchanged.
 
+The engraving draft adapter now reuses nativeArtDraftPage and WorkOrderArtDraft
+with context3. Existing job/order callers retain their default context1. Commit
+refreshes the planned tile and specification revision, builds a private draft,
+validates elements/relationships/name, and prepares any missing tile record before
+native registration. The shared native allocation/copy/registration path is the
+same as the native20b02b..20b2a5 sequence. Pinned20b3bc..20b3ef then writes only
+the engraving specification type3 and image IDs. Any failure after registration
+starts returns Unknown; it never returns rejection or retries.
+
+Protected191335 on2026-11-14 observes native new-image/Creature/Done and compares
+the owned draft:2394 creature choices, first race755/caste-1, and exact one-element
+description. Native commit registers image4/sub123; the independent owned commit
+registers4/sub124 and assigns that pair. Each adds exactly one entity image row.
+Stale source/list and invalid-element guards pass without registration or target
+changes. Names consume separate native RNG draws and are not compared. Initial
+191205 failed only because the oracle clicked the left category column instead
+of the creature list; the corrected click is320,202. Both owned sessions exit
+unsaved with source preservation; serial30FPS samples50C/3-5%. Bridge build and
+core19 pass. Evidence is selection_reference.engraving_art_draft_reference.
+This diagnostic coverage does not enable drafts in protocol213 or the viewer.
+Other element families, relationships, naming edits, cancellation, missing tile
+records and partial-registration failure remain unqualified for engraving.
+
 Native-only174721 and174833 pass their assertions; owned DF37032/1300
 exit unsaved with source/preferences preserved. Core19 passes. Graphics are
 serial30FPS, sampled GPU53C/13-14%; these are not continuous peaks. Native strings,

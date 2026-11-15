@@ -1,6 +1,7 @@
 #pragma once
 #include "tile_selection_native.h"
 #include "work_order_art_native.h"
+#include "work_order_art_draft_native.h"
 #include "df/location_detailst.h"
 
 namespace df3d_selection {
@@ -110,5 +111,51 @@ inline EngravingArtOutcome applyEngravingArtSubject(int x,int y,int z,uint64_t r
     specifications.push_back(value.get());value.release();
     if(resultingRevision)*resultingRevision=nextRevision;
     return EngravingArtOutcome::Applied;
+}
+inline std::optional<EngravingArtPage> engravingArtDraftPage(int x,int y,int z,int16_t page,
+    df3d_production::WorkOrderArtDraftValue value,uint8_t action,
+    const std::optional<df3d_production::WorkOrderArtDraftElementValue>& element,
+    const std::optional<df3d_production::WorkOrderArtDraftRelationshipValue>& relationship,int32_t deleteIndex,
+    const std::string& query,uint32_t cursor,uint64_t listRevision,uint16_t columns,
+    const df3d_production::WorkOrderArtNameQuery* nameQuery=nullptr,const df3d_production::WorkOrderArtNameEdit* nameEdit=nullptr) {
+    auto root=engravingArtPage(x,y,z,-1);if(!root)return std::nullopt;
+    auto result=df3d_production::nativeArtDraftPage(std::move(root->page),root->revision,page,std::move(value),action,
+        element,relationship,deleteIndex,query,cursor,listRevision,columns,nameQuery,nameEdit,
+        df::image_creator_context_type::DESIGNATION_ENGRAVING);
+    if(!result)return std::nullopt;
+    root->page=std::move(*result);return root;
+}
+enum class EngravingArtDraftOutcome {Rejected,Stale,Applied,Unknown};
+inline EngravingArtDraftOutcome commitEngravingArtDraft(int x,int y,int z,uint64_t revision,
+    const df3d_production::WorkOrderArtDraftValue& value,uint64_t* resultingRevision=nullptr) {
+    if(!engravingArtReady() || !df3d_production::workOrderArtDraftReady() || !revision || revision>INT64_MAX ||
+       !value.name || value.elements.empty() || value.elements.size()>256 || value.relationships.size()>256)return EngravingArtDraftOutcome::Rejected;
+    static const bool pinned=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x33;++i){hash^=base[0x20b3bc+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x82371e48b0a3f235);
+    }();if(!pinned)return EngravingArtDraftOutcome::Rejected;
+    auto source=engravingArtSource(x,y,z);
+    if(!source || source->revision!=revision)return EngravingArtDraftOutcome::Stale;
+    auto draft=df3d_production::WorkOrderArtDraft::create(df::image_creator_context_type::DESIGNATION_ENGRAVING);
+    if(!draft || !draft->setName(*value.name))return EngravingArtDraftOutcome::Rejected;
+    for(const auto& e:value.elements)if(!draft->addElement(e.kind,e.id,e.secondary,e.quantity))return EngravingArtDraftOutcome::Rejected;
+    for(const auto& r:value.relationships)if(!draft->addRelationship(r.verb,r.transitive,r.actor,r.target))return EngravingArtDraftOutcome::Rejected;
+    if(!draft->canInstall())return EngravingArtDraftOutcome::Rejected;
+    auto& specifications=df::global::plotinfo->waypoints.location_detail;df::location_detailst* destination=nullptr;
+    for(auto* row:specifications)if(row && row->pos==source->detail.pos){destination=row;break;}
+    std::unique_ptr<df::location_detailst> pending;
+    if(!destination){pending=std::make_unique<df::location_detailst>(source->detail);destination=pending.get();specifications.reserve(specifications.size()+1);}
+    // Native20b02b..20b2a5 registration is shared with jobs/orders. From this
+    // point, a partial world/entity write must never be reported as rejection.
+    try {
+        auto* image=draft->install();if(!image)return EngravingArtDraftOutcome::Unknown;
+        // Native20b3bc..20b3ef changes only the tile specification afterward.
+        destination->art_specifier=df::job_art_specifier_type(3);destination->art_spec_id1=image->id;destination->art_spec_id2=image->subid;
+        if(pending){specifications.push_back(destination);pending.release();}
+        source->detail=*destination;source->exists=true;
+        if(resultingRevision)*resultingRevision=engravingArtRevision(*source);
+        return EngravingArtDraftOutcome::Applied;
+    } catch(...) {return EngravingArtDraftOutcome::Unknown;}
 }
 }

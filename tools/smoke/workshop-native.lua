@@ -382,6 +382,36 @@ local ok,err=xpcall(function()
     end
     reopen();gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
     reference.right_cancel=effect();reference.right_cancel_lines=lines();shot('selection-engraving-image-right-cancel')
+    if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_DRAFT')=='1' then
+     reopen();assert(click_label('Specify a new image') and art.current_option==6,'Engraving new-image page missing')
+     local draft={root_lines=lines()};reference.draft=draft
+     shot('selection-engraving-draft-root')
+     local before=json.encode(effect());local resources=df.global.plotinfo.main.fortress_entity.resources
+     local count=#resources.art_image_ids;local elements=#art.new_image.elements
+     local owned=art_probe('engraving-art-draft-probe','0')
+     assert(before==json.encode(effect()) and count==#resources.art_image_ids and elements==#art.new_image.elements,'Owned draft read changed native state')
+     assert(owned.stale_list_rejected,'Owned draft accepted stale list')
+     draft.owned=owned
+     assert(click_label('Creature') and art.current_option==7,'Engraving creature picker missing')
+     assert(owned.total==#art.new_image_race and owned.race==art.new_image_race[0] and owned.caste==art.new_image_caste[0],'Owned draft creature choices differ')
+     shot('selection-engraving-draft-creature')
+     g.precise_mouse_x=320;g.precise_mouse_y=202;g.mouse_x=40;g.mouse_y=16
+     df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+     gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
+     assert(art.current_option==6 and #art.new_image.elements==1,'Engraving creature did not enter draft')
+     draft.description={};for _,line in ipairs(art.art_box.text)do draft.description[#draft.description+1]=dfhack.df2utf(line.value)end
+     assert(json.encode(owned.description)==json.encode(draft.description),'Owned engraving draft prose differs')
+     shot('selection-engraving-draft-populated')
+     assert(click_label('Done'),'Engraving draft Done missing')
+     assert(not art.open and detail.art_specifier==3 and #resources.art_image_ids==count+1,'Native engraving draft did not register one image')
+     assert(resources.art_image_ids[#resources.art_image_ids-1]==detail.art_spec_id1 and resources.art_image_subids[#resources.art_image_subids-1]==detail.art_spec_id2,'Native engraving image registration differs')
+     draft.native=effect();shot('selection-engraving-draft-committed')
+     local committed=art_probe('engraving-art-draft-probe','1')
+     assert(committed.applied and committed.one_registered and committed.stale_revision_rejected and committed.invalid_element_rejected and committed.rejections_unchanged,'Owned engraving draft commit guards failed')
+     assert(detail.art_specifier==3 and detail.art_spec_id1==committed.id and detail.art_spec_id2==committed.subid,'Owned engraving draft target differs')
+     draft.committed=committed
+     local file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
+    end
     if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_ART_RUNTIME')=='1' then
      local file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
      local menu=json.encode(observe());local count=#df.global.plotinfo.waypoints.location_detail

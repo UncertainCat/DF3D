@@ -24124,6 +24124,51 @@
           "build/stockpile-storage-native-farm-discovery-20261115-084009/result.json": "28b02487d7e1a40dada0923582db0757983a09853b494434f29a51300e34b9fd",
           "build/stockpile-storage-native-farm-discovery-20261115-084009/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "lever_panel_gestures_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-084350",
+        "scope": "Actual composed owner mouse gestures: create two Pull jobs, Repeat on/off, Suspend on/off, Move up, Priority on/off, cancel both, Workers/Work orders tabs, Link button and Escape. Ten full panel states match native. Work orders reference has no manager; order creation is not qualified. No projected map click, other tabs mutations, responsive or main-scene exposure claimed.",
+        "source_preserved": true,
+        "owned_df_pid": 14068,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-pull-1.png": "61ef8b2dc8841861a645543199f3e61ab3a2e50ee6de9217ac44710ffab927e8",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-panel-pull-1-viewer.png": "72d2e5b984f58ab781284b2789efdc61191a04e04cca56a56e1c7dcd728d87f1",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-pull-2.png": "e9e8518940cf210f15c92e5ae7c947dbf6b2c0b3e744928cc93378b5386ed3b3",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-panel-pull-2-viewer.png": "3c1aea86dee6731282143f8cb4fd74a322553505d9f97b7414564d46d0462dba",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-pull-repeat.png": "05c1391cc149a1930e1f2ceb16f04744b532290871157a16c236b86b4e7d854c",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-panel-pull-repeat-viewer.png": "fb0f6d49efdf932de2ad8013510c382c07d3695b148bb1ab8551078b61bd8d3d",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-pull-suspended.png": "41d885c1cf091a7f43967a790a7189e2b2b2fe18c2fe33520a6cc2a96583ca1c",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-panel-pull-suspended-viewer.png": "58083643175898179d92a5c818882f07e3af1c962d624ae0c1bd563e5d2787b4",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-pull-moved.png": "e9e8518940cf210f15c92e5ae7c947dbf6b2c0b3e744928cc93378b5386ed3b3",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-panel-pull-moved-viewer.png": "3c1aea86dee6731282143f8cb4fd74a322553505d9f97b7414564d46d0462dba",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-pull-priority.png": "66f1a93545f20de23ad215f32f2d220404b03ebb450586af6e01200b3599c907",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-panel-pull-priority-viewer.png": "22d1c6eaa8b3e275958a0ca2f44c48ea0686719405c4a15d96e1234925b89453",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-pull-cancel-second.png": "61ef8b2dc8841861a645543199f3e61ab3a2e50ee6de9217ac44710ffab927e8",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-panel-pull-cancel-second-viewer.png": "72d2e5b984f58ab781284b2789efdc61191a04e04cca56a56e1c7dcd728d87f1",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-pull-cancel-all.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-panel-pull-cancel-all-viewer.png": "eac86d5738f6feff14d0f985d1a953a13d374583ae726b98979ee3b08c481119",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-workers.png": "6d71d167d7a218ece099096ae7d9785ea8a97826ffa3af3afc6243c542ce6953",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-panel-workers-viewer.png": "ed690ddddf10279419a205c2610a2a4f72a86b0722cd9293eab555373ce7cdd1",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-work-orders.png": "55baa58607f97ae95abeaa48b230df671d976184d7a15f4bf0cbaf929418b04b",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/lever-panel-work-orders-viewer.png": "d71c85f9cc376e48843d04ced39a07bebc26bc790e169bf5c2bc523c5be19998",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/workshop-wire-result.json": "97b0b0a5d79965456597826a88aa1442cb326129a606dba33546f5f12b78366b",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/result.json": "a02ba708218b5aa6d73ad378c58300fefea8fddb4c425a4b08dba1f2cc85f231",
+          "build/stockpile-storage-native-farm-discovery-20261115-084350/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        },
+        "warning_art": {
+          "scope": "Standalone no-mechanisms caption matches native456x114 crop. Owner signal wiring and source-pinned lifetime implemented; composed unavailable-stock workflow remains unqualified.",
+          "sha256": {
+            "build/stockpile-storage-native-farm-discovery-20261115-082933/lever-link-open.png": "bc487187f2fa2f51185d26d4b64eb35f1da91b0493f1e843c001f1927ccc14d6",
+            "build/stockpile-storage-native-farm-discovery-20261115-082933/lever-tasks-link-open-viewer.png": "2b43710be142bf387d432d96300d495653ac0be4c7de96fe35c7c6e51e48d159"
+          }
+        }
       }
     },
     "pending_construction_reference": {

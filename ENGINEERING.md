@@ -145,6 +145,20 @@ Remaining acceptance includes actual projected map targeting, composed header/
 queue/worker/order/item/link gestures, Connections, missing-mechanism warning,
 responsive layout and lifecycle cases. Public map routing remains gated.
 
+Protected084350 adds actual composed-owner mouse gestures: two Pull creations,
+Repeat/Suspend on/off, Move up, Priority on/off, both cancellations, Workers/
+Work orders tabs, Link and Escape. Ten full-panel crops match native, including
+the actual resulting task rows. The Work orders reference has no manager, so
+order creation remains unqualified. Owned DF14068 closes unsaved with source
+preservation; native/viewer capped30FPS, sampled GPU60C. The run passes with
+the known render-thread/finalize/two ObjectDB diagnostics. Evidence is
+`completed_sheet_discovery_reference.lever_panel_gestures_reference`.
+The staged no-mechanisms warning now uses native186b8c's caption, creation-row
+position and bright-red palette12; its standalone crop matches native082933.
+The owner retains it across ordinary reads/Pull and clears it on successful
+Link lookup, matching native1adb1f/1adb2c. Composed unavailable-stock input,
+remaining mutations and actual map targeting still need acceptance.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

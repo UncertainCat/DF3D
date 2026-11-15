@@ -14,9 +14,10 @@ func run() -> void:
 	view.link_requested.connect(func():calls.append("link"))
 	view.pull_requested.connect(func():calls.append("pull"))
 	var directory:=OS.get_environment("DF3D_LEVER_REFERENCE")
-	for label in ["pull-2","link-target-click"]:
+	for label in ["pull-2","link-target-click","link-open"]:
 		state.snapshot={"jobs":[],"recipes":[]}
-		for index in (2 if label=="pull-2" else 1):
+		view.need_mechanisms=label=="link-open"
+		for index in (2 if label=="pull-2" else 0 if label=="link-open" else 1):
 			state.snapshot.jobs.append({"id":index,"name":"Pull the lever" if label=="pull-2" else "Link a building to trigger","repeat":false,"priority":false,"suspended":false,"editable":true,"can_move_up":index>0})
 		state.changed.emit()
 		await process_frame;await process_frame;await RenderingServer.frame_post_draw

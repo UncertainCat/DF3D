@@ -16,12 +16,14 @@ func configure(world,service,host,help=null) -> void:
 	lever.configure(world,service,canvas)
 	lever.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self)
 	lever.changed.connect(_lever_changed)
+	lever.mechanisms_unavailable.connect(func():panel.tasks.need_mechanisms=true;panel.tasks.queue_redraw())
 	lever.applied.connect(func(_operation,_job_id):tasks.refresh();contents.refresh();state.refresh();links.poll_refresh(0.5))
 	panel.tasks.link_requested.connect(lever.begin_link)
 	panel.tasks.pull_requested.connect(lever.pull)
 	var ordinary_input: Callable=panel.input_allowed
 	panel.input_allowed=func():return ordinary_input.call() and (state.snapshot.get("removing",false) or lever.state.phase==lever.state.Phase.Ready) and not lever.targeting
 func _open_state(id: int,season: int) -> void:
+	panel.tasks.need_mechanisms=false
 	if lever!=null:lever.close()
 	links.close();super._open_state(id,season)
 func _state_changed() -> void:
@@ -38,6 +40,10 @@ func _state_changed() -> void:
 	_lever_changed()
 func _lever_changed() -> void:
 	if lever==null or panel==null:return
+	# Native1adb1f clears the warning only after a successful mechanism search.
+	# Ordinary reads and Pull must not erase an earlier refusal.
+	if lever.state.phase in [lever.state.Phase.Targeting,lever.state.Phase.Previewing]:
+		panel.tasks.need_mechanisms=false;panel.tasks.queue_redraw()
 	modal_input=lever.targeting or _connections_open()
 	ui_host._sync_input()
 	if lever.targeting:panel.hide()

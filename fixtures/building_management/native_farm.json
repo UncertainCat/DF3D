@@ -23179,6 +23179,27 @@
           "build/stockpile-storage-native-farm-discovery-20261115-080516/result.json": "c53aea1f04602c9bcafdf9e4a7ea4687580013805ffcbf6ec3efab115e690efb",
           "build/stockpile-storage-native-farm-discovery-20261115-080516/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "linked_scroll_correction_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-081041",
+        "scope": "Approved scrollbar correction, actual main scene at1200x800. Twelve links in native mechanism order; arrow advances one text cell; wheel reaches final mechanism; top/tail row artwork and captions match native; final-row recenter releases ownership; reopen resets tab and scroll. Controlled duplicate-target mechanisms do not qualify twelve gameplay link completions.",
+        "source_preserved": true,
+        "owned_df_pid": 43984,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-081041/linked-scroll-top.png": "3b616039d32bce9224316d238977567735e2f3d9ea74a6d7c2dda53f95ccf7e8",
+          "build/stockpile-storage-native-farm-discovery-20261115-081041/linked-scroll-partial.png": "924e11e5d8c8981a8e70207d60069b0fffaab3a176c8139e0c1cfe8f74c33fd4",
+          "build/stockpile-storage-native-farm-discovery-20261115-081041/linked-scroll-tail.png": "9cd1085cbfe776bd10aa7d860a2fb41c0eb552f3e8d8287d27f7be15c0ac4b2c",
+          "build/stockpile-storage-native-farm-discovery-20261115-081041/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-081041/result.json": "e65c6ef045bc07104499f908d89ca7af8ce910045a42ba3e0bf49acc83fc75b9",
+          "build/stockpile-storage-native-farm-discovery-20261115-081041/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

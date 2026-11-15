@@ -346,6 +346,14 @@ local ok,err=xpcall(function()
      click(540,520);assert(sheet.show_linked_buildings);observe('links')
      if #scroll_refs>0 then
       row.link_scroll={}
+      row.expected_link_items={}
+      for _,held in ipairs(target.contained_items)do
+       for _,ref in ipairs(held.item.general_refs)do
+        if ref:getType()==df.general_ref_type.BUILDING_TRIGGER or ref:getType()==df.general_ref_type.BUILDING_TRIGGERTARGET then
+         if ref:getBuilding()then row.expected_link_items[#row.expected_link_items+1]=held.item.id end
+        end
+       end
+      end
       for _,step in ipairs{{'partial',1,718},{'tail',45,718},{'top',45,550}}do
        for i=1,step[2]do click(880,step[3])end
        row.link_scroll[step[1]]=sheet.scroll_position_linked_buildings
@@ -445,7 +453,7 @@ local ok,err=xpcall(function()
    end
   end end
   assert(#result.completed_buildings>0,'No matching completed buildings for discovery')
-  if os.getenv('DF3D_FURNITURE_RUNTIME')=='1' and #scroll_refs==0 then
+  if os.getenv('DF3D_FURNITURE_RUNTIME')=='1' and (#scroll_refs==0 or os.getenv('DF3D_FLOODGATE_SCROLL_VIEWER')=='1') then
    local file=assert(io.open(out..'/furniture-expected.json','w'));file:write(json.encode({buildings=result.completed_buildings}));file:close()
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
    os.remove(out..'/ack-workshop-wire');os.remove(out..'/workshop-wire-result.json')

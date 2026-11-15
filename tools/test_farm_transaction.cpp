@@ -3,6 +3,15 @@
 #include "../bridge/plugin/farm_transaction.h"
 #include "../bridge/plugin/building_item_transaction.h"
 #include "../bridge/plugin/item_transaction.h"
+#include "../bridge/plugin/pending_building_progress.h"
+
+TEST_CASE("pending progress follows native005455 job timers") {
+    const int timers[]={-1,11,10,9,7,6,4,3,0,-2};
+    const int phases[]={1,1,1,2,2,3,3,4,4,4};
+    for(int i=0;i<10;++i)CHECK(df3d_production::pendingProgress(10,0,1,true,timers[i])==phases[i]);
+    CHECK(df3d_production::pendingProgress(10,0,1,false,0)==1);
+    CHECK(df3d_production::pendingProgress(0,0,1,true,0)==0);
+}
 #include <string>
 #include <vector>
 #include <algorithm>

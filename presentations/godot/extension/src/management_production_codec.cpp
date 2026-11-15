@@ -238,7 +238,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     const auto& state=*p.pendingBuilding;Dictionary pending;pending["outcome"]=int(state.outcome);pending["removed"]=state.removed;pending["removing"]=state.removing;
     if(state.snapshot){const auto& f=*state.snapshot;Dictionary value;
       value["id"]=f.id;value["type"]=f.type;value["revision"]=int64_t(f.revision);value["stage"]=f.stage;value["max_stage"]=f.maxStage;value["job_id"]=f.jobId;
-      value["suspended"]=f.suspended;value["has_worker"]=f.hasWorker;value["header_name"]=String(f.headerName.c_str());value["removing"]=f.removing;value["forbidden"]=f.forbidden;if(f.appearance)value["appearance"]=itemRecipeDictionary(*f.appearance);pending["snapshot"]=value;}
+      value["suspended"]=f.suspended;value["has_worker"]=f.hasWorker;value["header_name"]=String(f.headerName.c_str());value["removing"]=f.removing;value["forbidden"]=f.forbidden;value["progress"]=int(f.progress);if(f.appearance)value["appearance"]=itemRecipeDictionary(*f.appearance);pending["snapshot"]=value;}
     prod["pending_building"]=pending;
   }
   if(p.doorControls) {

@@ -1,5 +1,7 @@
 #pragma once
 #include "building_header_transaction.h"
+#include "pending_building_duration_native.h"
+#include "pending_building_progress.h"
 #include "df/building.h"
 #include "df/job.h"
 #include "df/job_type.h"
@@ -14,6 +16,7 @@ struct PendingBuildingObservation {
     int32_t id=-1,type=-1,stage=-1,maxStage=-1,jobId=-1;
     uint32_t jobFlags=0;
     bool removing=false,forbidden=false;
+    int8_t progress=0;
     std::vector<int32_t> workers;
     uint64_t revision=0;
 };
@@ -29,6 +32,7 @@ inline bool pendingBuildingNativeReady() {
             {0x54c130,0xe6,UINT64_C(0xcab44276dbb81fae)},
             {0x28b960,0x2c,UINT64_C(0x94cb9f513f8900f1)},
             {0x17f8d7,0xaf1,UINT64_C(0x35c750c84ea2aa4c)},
+            {0x1811a7,0x41c,UINT64_C(0x750d4572040b0652)},
         };
         for(const auto& p:pins){uint64_t h=UINT64_C(14695981039346656037);
             for(size_t i=0;i<p.length;++i){h^=base[p.rva+i];h*=UINT64_C(1099511628211);}if(h!=p.hash)return false;}
@@ -60,6 +64,12 @@ inline std::optional<PendingBuildingObservation> observePendingBuilding(df::buil
     for(const auto* unit:world->units.active) {
         if(!unit)return {};
         if(first && !unit->flags1.bits.inactive && unit->job.current_job==first)value.workers.push_back(unit->id);
+    }
+    if(!value.removing){
+        const auto duration=pendingBuildDuration(building);if(!duration)return {};
+        const int32_t timer=first?first->completion_timer:-1;
+        value.progress=pendingProgress(*duration,value.stage,value.maxStage,first!=nullptr,timer);
+        number(uint32_t(*duration));number(uint32_t(timer));
     }
     number(value.workers.size());for(auto id:value.workers)number(id);
     value.revision=(hash&INT64_MAX)?(hash&INT64_MAX):1;return value;

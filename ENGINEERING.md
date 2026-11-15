@@ -9873,7 +9873,25 @@ fixture discovery failures are not acceptance;214809 selected an inactive citize
 and correctly did not release it. The accepted fixture selects an active citizen,
 matching the native predicate. No native defect or parity exception is claimed.
 
-Management protocol219 adds an optional native header appearance recipe to the
+Management protocol220 adds required pending-building progress state0–4 (no
+caption, waiting, initiated, partial, nearly done). Older recordings default-1
+and are not accepted as fresh progress authority. Both schema defaults and
+mailbox are220 (`Local\\df3d_management_v220`); rebuild bridge and clients together.
+The bridge uses owned native build durations and current job completion_timer,
+preserving native32-bit work sums, float division and double thresholds. Timer
+and duration participate in revision checks. Godot displays the native caption
+for the returned state; it no longer guesses progress from stage number.
+Native005455 verifies ten timer cases on Statue965, including absent timer-1,
+negative progress and the four captions. Bridge, core and extension builds plus
+all19 root tests pass. Protected010405 on2026-11-15 verifies protocol220 phase2
+in the actual main scene: the full488x708 initiated panel matches native exactly,
+Escape retires its owner, and viewing preserves stage/timer/job flags. The
+controlled timer is restored; owned DF3336 exits unsaved with source preservation.
+Only documented Godot shutdown/thread diagnostics remain (passed_with_known_issues).
+Evidence is pending_construction_reference.progress_viewer_reference. This focused
+render check does not separately qualify every caption or all building types.
+
+Management protocol219 introduced an optional native header appearance recipe to the
 pending-building snapshot. Bridge and clients must rebuild together; both schema
 defaults and mailbox are219 (`Local\\df3d_management_v219`). Older recordings
 contain no header recipe; absence is not a request to invent an icon. Recipes

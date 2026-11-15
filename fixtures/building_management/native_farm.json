@@ -16641,6 +16641,137 @@
           "result.json": "302561310beacc9276f43aee422e86b57b0db848f8e6fbbaa9752651fd8b146d",
           "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "progress_native_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-005455",
+        "owned_df_pid": 28076,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "scope": "Paused Statue965 stage0/max1 duration10, ten controlled job completion_timer values. Actual native captions captured after render, which must preserve stage/timer/job flags. Original timer/stage restored. This is native reference, not protocol220 acceptance.",
+        "rows": [
+          {
+            "caption": "Waiting for construction...",
+            "duration": 10,
+            "max_stage": 1,
+            "stage": 0,
+            "timer": -1
+          },
+          {
+            "caption": "Waiting for construction...",
+            "duration": 10,
+            "max_stage": 1,
+            "stage": 0,
+            "timer": 11
+          },
+          {
+            "caption": "Waiting for construction...",
+            "duration": 10,
+            "max_stage": 1,
+            "stage": 0,
+            "timer": 10
+          },
+          {
+            "caption": "Construction initiated.",
+            "duration": 10,
+            "max_stage": 1,
+            "stage": 0,
+            "timer": 9
+          },
+          {
+            "caption": "Construction initiated.",
+            "duration": 10,
+            "max_stage": 1,
+            "stage": 0,
+            "timer": 7
+          },
+          {
+            "caption": "Partially constructed.",
+            "duration": 10,
+            "max_stage": 1,
+            "stage": 0,
+            "timer": 6
+          },
+          {
+            "caption": "Partially constructed.",
+            "duration": 10,
+            "max_stage": 1,
+            "stage": 0,
+            "timer": 4
+          },
+          {
+            "caption": "Construction nearly done.",
+            "duration": 10,
+            "max_stage": 1,
+            "stage": 0,
+            "timer": 3
+          },
+          {
+            "caption": "Construction nearly done.",
+            "duration": 10,
+            "max_stage": 1,
+            "stage": 0,
+            "timer": 0
+          },
+          {
+            "caption": "Construction nearly done.",
+            "duration": 10,
+            "max_stage": 1,
+            "stage": 0,
+            "timer": -2
+          }
+        ],
+        "hashes": {
+          "workshop-native.json": "a868f128de14f73c8f3a1e61420afd5ac33bc882ef1f83e36a32968db04191ad",
+          "workshop-pending-progress-restored.png": "534d73a81c98a01e25693cb6e9a5efc3bb369a3838f0474594ceafe05945e9e6",
+          "result.json": "793542e45e5f509067ec126391c212648bba8c894973ed1a9f175465eb65e488",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
+      },
+      "progress_viewer_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-010405",
+        "protocol": 220,
+        "owned_df_pid": 3336,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "status": "passed_with_known_issues",
+        "scope": "Actual main scene Statue965 stage0/max1 duration10 timer9: receipt phase2, full488x708 initiated panel equals native, Escape retires owner. Native harness asserts unchanged stage/timer/job flags after viewing, restores original timer. Ten native timer cases cover all four captions; portable policy regression matches each. Other captions are not separately qualified by this rendered lane.",
+        "rgb_sha256": "bb07bee09cf1a2a8950e3621008e79e61ae078300e4aa26195aa555189356e07",
+        "hashes": {
+          "workshop-native.json": "429c65e05aede9e89786427fec6d20e4904274442b52d235bfb1cd028accb3ee",
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "result.json": "45e3a1dadf79601d49c2b2f9458fe47321cef3d2d73fb173b9efe22e490e09e2",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
+      },
+      "progress_contents_regression": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-010919",
+        "protocol": 220,
+        "owned_df_pid": 12448,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "status": "passed_with_known_issues",
+        "scope": "Existing natural Statue965 main-scene contents controls and item/holder navigation; eleven full panel comparisons and native-effect guards passed. Only documented thread/finalize/ObjectDB diagnostics.",
+        "hashes": {
+          "workshop-native.json": "6bafcf59edc3a978a3174a140f88bdc7f6afeb59fc99f1f061a8ad934589ad74",
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "result.json": "937bc90cafe338947e0c8ff5b32e6c6577b6bee1a14b859be8d63f239b047f67",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        },
+        "panel_hashes": {
+          "chest-scene-component-dump-1.png": "65da1edab04795a442ca3aed0ffe40d0bdd067fd0be690459352ff770ccfcbf7",
+          "chest-scene-component-dump-2.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+          "chest-scene-component-forbid-1.png": "16ceae18e044ee85ea3e88b09a0cbfd2f6244611398ba8eb9e46bff8987f32b1",
+          "chest-scene-component-forbid-2.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+          "chest-scene-component-hidden-1.png": "aefb179c6f4e6e12884dbda2c20d822222d5e487e2932bf623026fce84353f20",
+          "chest-scene-component-hidden-2.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+          "chest-scene-component-initial.png": "2ac468cc66c890dc11ba9880fa869518888afb4e6655504da48abec06457b4eb",
+          "chest-scene-component-item.png": "7a7f7284131312635e79330034ca276a3d5d1ccf648c79d8d0dc11d7de159e80",
+          "chest-scene-component-melt-1.png": "db7937e7bcda0e4c044ff505fa7c5e3fd5f5b8aeb77e76cfebc1147c4fca3816",
+          "chest-scene-component-melt-2.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+          "chest-scene-component-return.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899"
+        }
       }
     },
     "door_header_reference": {

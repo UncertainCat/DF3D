@@ -36,7 +36,7 @@ func _draw() -> void:
 	if state.snapshot.is_empty() or removing or colors.size()!=16 or theme.default_font==null:return
 	var value: Dictionary=state.snapshot
 	var font: Font=theme.default_font
-	var progress: String="Construction nearly done." if value.stage==value.max_stage-1 else "Waiting for construction..." if value.stage==0 else "Partially constructed."
+	var progress: String=["","Waiting for construction...","Construction initiated.","Partially constructed.","Construction nearly done."][value.progress]
 	font.draw_string(get_canvas_item(),Vector2(16,96),progress,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[7])
 	if value.suspended:font.draw_string(get_canvas_item(),Vector2(16,120),"Construction suspended.",HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[12])
 	elif not value.has_worker:font.draw_string(get_canvas_item(),Vector2(16,120),"Construction inactive.",HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[14])

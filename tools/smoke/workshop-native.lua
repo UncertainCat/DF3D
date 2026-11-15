@@ -351,6 +351,34 @@ local ok,err=xpcall(function()
     end
     result.basic_building_reference.pending.effects=effects
     assert(b.jobs[0].flags.whole==before,'Pending fixture did not restore suspension')
+    if os.getenv('DF3D_PENDING_PROGRESS')=='1'then
+     local job=b.jobs[0];local original_stage=b:getBuildStage();local original_timer=job.completion_timer
+     local samples={};result.basic_building_reference.pending.progress_reference=samples
+     local captions={'Waiting for construction...','Construction initiated.','Partially constructed.','Construction nearly done.'}
+     for stage=0,b:getMaxBuildStage()-1 do
+      b:setBuildStage(stage);local duration=b:getBuildDuration()
+      for _,timer in ipairs{-1,duration+1,duration,math.floor(duration*.9),math.floor(duration*.7),math.floor(duration*.6),math.floor(duration*.4),math.floor(duration*.3),0,-2}do
+       job.completion_timer=timer;view:render(dfhack.getTickCount())
+       local caption='';for _,line in ipairs(lines())do for _,text in ipairs(captions)do if line.text:find(text,1,true)then caption=text end end end
+       samples[#samples+1]={stage=stage,max_stage=b:getMaxBuildStage(),duration=duration,timer=timer,caption=caption}
+       assert(b:getBuildStage()==stage and job.completion_timer==timer and job.flags.whole==before,'Native progress render changed source')
+      end
+     end
+     b:setBuildStage(original_stage);job.completion_timer=original_timer;view:render(dfhack.getTickCount())
+     shot('pending-progress-restored')
+     if os.getenv('DF3D_PENDING_PROGRESS_RUNTIME')=='1'then
+      job.completion_timer=math.floor(b:getBuildDuration()*.9);view:render(dfhack.getTickCount())
+      result.basic_building_reference.pending.progress_timer=job.completion_timer
+      shot('pending-progress-initiated')
+      capture('workshop-wire')
+      local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
+      assert(receipt.success,'Pending progress viewer failed')
+      assert(b:getBuildStage()==original_stage and job.flags.whole==before and job.completion_timer==result.basic_building_reference.pending.progress_timer,'Progress viewer changed native state')
+      job.completion_timer=original_timer;view:render(dfhack.getTickCount())
+      result.basic_building_reference.pending.progress_viewer=receipt
+      return
+     end
+    end
     if os.getenv('DF3D_PENDING_CONTENTS_REFERENCE')=='1'then
      assert(#b.contained_items==1,'Pending contents reference requires one native component')
      local item=b.contained_items[0].item

@@ -235,6 +235,11 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     }
     v["rows"]=rows;prod["workshop_workers"]=v;
   }
+  if(p.lever) {
+    const auto& v=*p.lever;Dictionary d;d["building_id"]=v.buildingId;d["revision"]=int64_t(v.revision);d["operation"]=v.operation;d["outcome"]=v.outcome;
+    d["source_mechanism"]=v.sourceMechanism;d["target_mechanism"]=v.targetMechanism;d["target_id"]=v.targetId;d["job_id"]=v.jobId;
+    d["source_name"]=String::utf8(v.sourceName.c_str());d["target_name"]=String::utf8(v.targetName.c_str());prod["lever"]=d;
+  }
   if(p.buildingLinks) {
     const auto& page=*p.buildingLinks;Dictionary value;Array rows;
     value["building_id"]=page.buildingId;value["revision"]=int64_t(page.revision);value["tabs"]=page.tabs;
@@ -718,6 +723,17 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   if(data.has("pending_building") && data["pending_building"].get_type()!=Variant::BOOL){error="Wrong management field type: pending_building";return false;}
   if(data.has("pending_operation") && data["pending_operation"].get_type()!=Variant::INT){error="Wrong management field type: pending_operation";return false;}
   if(data.has("building_links") && data["building_links"].get_type()!=Variant::BOOL){error="Wrong management field type: building_links";return false;}
+  if(data.has("lever_operation")) {
+    for(const char* key:{"lever_operation","lever_target_id","lever_source_mechanism","lever_target_mechanism","lever_x","lever_y","lever_z"})
+      if(data.has(key) && data[key].get_type()!=Variant::INT){error=String("Wrong management field type: ")+key;return false;}
+    auto& v=value.lever.emplace();v.operation=uint8_t(n("lever_operation",0,0,3));
+    v.targetId=int32_t(n("lever_target_id",-1,-1,INT32_MAX));v.sourceMechanism=int32_t(n("lever_source_mechanism",-1,-1,INT32_MAX));v.targetMechanism=int32_t(n("lever_target_mechanism",-1,-1,INT32_MAX));
+    if(data.has("lever_x") || data.has("lever_y") || data.has("lever_z")) {
+      if(!data.has("lever_x") || !data.has("lever_y") || !data.has("lever_z")){error="Incomplete lever position";return false;}
+      v.position=std::array<int16_t,3>{int16_t(n("lever_x",0,0,32767)),int16_t(n("lever_y",0,0,32767)),int16_t(n("lever_z",0,0,32767))};
+    }
+  } else for(const char* key:{"lever_target_id","lever_source_mechanism","lever_target_mechanism","lever_x","lever_y","lever_z"})
+    if(data.has(key)){error="Lever fields require operation";return false;}
   value.buildingLinks=data.get("building_links",false);
   value.pendingBuilding=data.get("pending_building",false);value.pendingOperation=int8_t(n("pending_operation",-1,-1,3));
   value.doorControls=data.get("door_controls",false);value.doorForbidden=int8_t(n("door_forbidden",-1,-1,1));

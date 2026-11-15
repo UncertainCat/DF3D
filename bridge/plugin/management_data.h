@@ -216,6 +216,11 @@ struct WorkshopOrdersState {
   std::vector<int32_t> orderIds;int8_t delta=0;int16_t value=-1;
   df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
 };
+struct LeverState {
+  int32_t buildingId=-1;uint64_t revision=0;uint8_t operation=0,outcome=0;
+  int32_t sourceMechanism=-1,targetMechanism=-1,targetId=-1,jobId=-1;
+  std::string sourceName,targetName;
+};
 struct ProductionState {
   std::optional<std::string> taskCategory,taskParent;
   std::vector<ProductionTaskCategory> taskCategories;
@@ -223,6 +228,7 @@ struct ProductionState {
   std::optional<WorkshopWorkersState> workshopWorkers;
   std::optional<PendingBuildingState> pendingBuilding;
   std::optional<BuildingLinksPage> buildingLinks;
+  std::optional<LeverState> lever;
   std::optional<DoorControlsState> doorControls;
   std::optional<BuildingHeaderState> buildingHeader;
   std::optional<IndependentItemState> independentItem;

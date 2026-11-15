@@ -188,8 +188,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 226;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v226";
+inline constexpr uint32_t kManagementVersion = 227;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v227";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1007,7 +1007,25 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if(!p->workshop_orders() && (p->general_order_delta() || p->general_order_value()!=-1))return "unexpected workshop order step";
     if(!p->door_controls() && p->door_forbidden()!=-1)return "unexpected door setting";
     if(!p->pending_building() && p->pending_operation()!=-1)return "unexpected pending operation";
-    if(p->building_links()) {
+    if(const auto* v=p->lever()) {
+      const bool edit=v->operation()>=2;
+      const bool targeting=v->operation()==1 || v->operation()==3;
+      if(v->operation()>3 || r.action()!=(edit?ManagementAction::ProductionQueue:ManagementAction::ProductionInspect) || p->building_id()<0 ||
+         p->building_links() ||
+         p->pending_building() || p->pending_operation()!=-1 || p->door_controls() || p->door_forbidden()!=-1 ||
+         p->workshop_orders() || p->workshop_workers() || p->building_header() || p->contents() || p->independent_item() || p->locate_item() ||
+         p->worker_id()!=-1 || p->worker_value()!=-1 || p->worker_list_revision() || p->general_order_delta() || p->general_order_value()!=-1 ||
+         p->item_id()!=-1 || p->contents_item_id()!=-1 || p->item_value()!=-1 || p->season()!=-1 || p->crop_id()!=-1 || p->seasonal_fertilization()!=-1 ||
+         p->job_id()!=-1 || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() || p->farm_name() ||
+         p->priority()!=-1 || p->expected_priority()!=-1 || p->expected_previous_job_id()!=-1 || p->farm_operation()!=FarmOperation::Crop ||
+         (p->recipe() && p->recipe()->size()) || (p->query() && p->query()->size()) || (p->task_category() && p->task_category()->size()) ||
+         p->cursor() || p->expected_revision()>INT64_MAX || (v->operation()!=0 && !p->expected_revision()))return "invalid lever intent";
+      if(targeting) {
+        if(!v->position() || v->position()->x()<0 || v->position()->y()<0 || v->position()->z()<0 ||
+           v->source_mechanism()<0 || v->target_mechanism()<0 || v->source_mechanism()==v->target_mechanism() ||
+           (v->operation()==3?v->target_id()<0:v->target_id()!=-1))return "invalid lever target";
+      } else if(v->position() || v->target_id()!=-1 || v->source_mechanism()!=-1 || v->target_mechanism()!=-1)return "unexpected lever target";
+    } else if(p->building_links()) {
       if(r.action()!=ManagementAction::ProductionInspect || p->building_id()<0 ||
          p->pending_building() || p->pending_operation()!=-1 || p->door_controls() || p->door_forbidden()!=-1 ||
          p->workshop_orders() || p->workshop_workers() || p->building_header() || p->contents() || p->independent_item() || p->locate_item() ||
@@ -1074,7 +1092,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        (r.action()==ManagementAction::FarmEdit && (p->farm_operation()<FarmOperation::ItemForbid || p->farm_operation()>FarmOperation::ItemHidden))))return "invalid independent item intent";
     if(p->locate_item() && (r.action()!=ManagementAction::ProductionInspect || p->building_id()!=-1 || p->item_id()<0))return "invalid item position intent";
     if (r.action()!=ManagementAction::ProductionList && !p->locate_item() && !p->independent_item() && p->building_id()<0) return "production building required";
-    if (r.action()==ManagementAction::ProductionQueue && (!p->recipe() || !p->recipe()->size())) return "recipe required";
+    if (r.action()==ManagementAction::ProductionQueue && !p->lever() && (!p->recipe() || !p->recipe()->size())) return "recipe required";
     if (r.action()==ManagementAction::ProductionJobEdit && (p->job_id()<0 ||
         (p->cancel() && (p->repeat()!=-1 || p->suspend()!=-1)) ||
         (!p->cancel() && p->repeat()==-1 && p->suspend()==-1 && p->priority()==-1 && p->expected_previous_job_id()==-1))) return "invalid job edit";
@@ -2749,7 +2767,23 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }
   if(s.action()==ManagementAction::FarmEdit && s.status()==ManagementStatus::Ok && !s.production())return "missing farm edit result";
   if (const auto* p=s.production()) {
-    if(const auto* page=p->building_links()) {
+    if(const auto* v=p->lever()) {
+      const bool edit=v->operation()>=2;
+      if(v->operation()>3 || s.action()!=(edit?ManagementAction::ProductionQueue:ManagementAction::ProductionInspect) || s.status()!=ManagementStatus::Ok || p->building_links() ||
+         p->pending_building() || p->door_controls() || p->workshop_orders() || p->workshop_workers() || p->building_header() ||
+         p->independent_item() || p->item() || p->item_position() || p->farm() || p->contents() || p->contents_edit() ||
+         p->farm_edit_outcome()!=FarmEditOutcome::None || p->selected_building()!=-1 || p->created_job()!=-1 || p->current_season()!=-1 || p->next_cursor() ||
+         (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) || (p->jobs() && p->jobs()->size()) ||
+         (p->crops() && p->crops()->size()) || (p->seasonal_crops() && p->seasonal_crops()->size()) ||
+         (p->detail() && p->detail()->size()) || p->task_category() || p->task_categories() || p->task_parent())return "mixed lever result";
+      if(v->building_id()<0 || !v->revision() || v->revision()>INT64_MAX || v->outcome()>2 ||
+         (edit?v->outcome()==0:v->outcome()!=0) || v->source_mechanism() < -1 || v->target_mechanism() < -1 ||
+         (v->source_mechanism()<0 && v->target_mechanism()>=0) || (v->source_mechanism()>=0 && v->source_mechanism()==v->target_mechanism()) ||
+         !v->source_name() || !v->target_name() || v->source_name()->size()>2048 || v->target_name()->size()>2048 ||
+         v->target_id() < -1 || v->job_id() < -1 || (v->outcome()==1?v->job_id()<0:v->job_id()!=-1) ||
+         ((v->operation()==0 || v->operation()==2) && v->target_id()!=-1) ||
+         (v->operation()==3 && v->outcome()==1 && v->target_id()<0))return "invalid lever result";
+    } else if(const auto* page=p->building_links()) {
       if(s.action()!=ManagementAction::ProductionInspect || s.status()!=ManagementStatus::Ok ||
          p->pending_building() || p->door_controls() || p->workshop_orders() || p->workshop_workers() || p->building_header() ||
          p->independent_item() || p->item() || p->item_position() || p->farm() || p->contents() || p->contents_edit() ||

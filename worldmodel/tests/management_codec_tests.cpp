@@ -9,6 +9,43 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("lever intents retain identities and reject mixed or unbound actions") {
+  for(int op=0;op<4;++op)for(int fault=0;fault<8;++fault) {
+    wm::ManagementRequest r;r.action=op>=2?wm::ManagementAction::ProductionQueue:wm::ManagementAction::ProductionInspect;
+    auto& p=r.production;p.buildingId=55;p.expectedRevision=9007199254740993ULL;
+    auto& v=p.lever.emplace();v.operation=uint8_t(op);
+    if(op==1 || op==3){v.position=std::array<int16_t,3>{97,100,165};v.sourceMechanism=24480;v.targetMechanism=48520;}
+    if(op==3)v.targetId=16;
+    if(fault==1)p.buildingLinks=true;
+    if(fault==2)p.workshopWorkers=true;
+    if(fault==3)p.cursor=1;
+    if(fault==4)v.operation=4;
+    if(fault==5)p.expectedRevision=0;
+    if(fault==6)v.targetMechanism=v.sourceMechanism=5;
+    if(fault==7)r.action=wm::ManagementAction::FarmEdit;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(op);CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0 && !(fault==5 && op==0)));
+    REQUIRE(value->production()->lever());CHECK(value->production()->lever()->source_mechanism()==v.sourceMechanism);
+    CHECK(value->production()->expected_revision()==p.expectedRevision);
+  }
+}
+
+TEST_CASE("lever receipts preserve wide revisions and require a job for applied mutations") {
+  for(int fault=0;fault<6;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto lever=wire::CreateLeverState(b,55,9007199254740993ULL,3,fault==1?0:1,24480,48520,
+      b.CreateString("source mechanism"),b.CreateString("target mechanism"),fault==2?-1:16,fault==3?-1:71234);
+    wire::ProductionStateBuilder p(b);p.add_lever(lever);if(fault==4)p.add_selected_building(55);const auto prod=p.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_action(fault==5?wire::ManagementAction::ProductionInspect:wire::ManagementAction::ProductionQueue);
+    root.add_status(wire::ManagementStatus::Ok);root.add_production(prod);b.Finish(root.Finish());
+    const auto* s=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CAPTURE(fault);CHECK(bool(wire::validateManagementState(*s))==(fault!=0));
+    if(!fault){auto result=codec::decodeProduction(s->production());b.Clear();REQUIRE(result.lever);
+      CHECK(result.lever->revision==9007199254740993ULL);CHECK(result.lever->targetId==16);CHECK(result.lever->jobId==71234);CHECK(result.lever->sourceName=="source mechanism");}
+  }
+}
+
 TEST_CASE("building link requests require revision-bound exclusive reads") {
   for(int fault=0;fault<10;++fault) {
     wm::ManagementRequest r;r.action=wm::ManagementAction::ProductionInspect;

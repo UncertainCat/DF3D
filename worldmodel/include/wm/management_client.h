@@ -265,7 +265,13 @@ struct AreaState {
   int64_t countGeneration=0;
   int32_t paintedCount=-1,previewCount=-1;
 };
+struct LeverRequest {
+  uint8_t operation=0;
+  std::optional<std::array<int16_t,3>> position;
+  int32_t targetId=-1,sourceMechanism=-1,targetMechanism=-1;
+};
 struct ProductionRequest {
+  std::optional<LeverRequest> lever;
   bool pendingBuilding=false;int8_t pendingOperation=-1;bool buildingLinks=false;
   bool doorControls=false;int8_t doorForbidden=-1;
   int32_t itemId=-1;int8_t itemValue=-1;
@@ -459,6 +465,11 @@ struct WorkshopOrdersState {
   std::vector<int32_t> orderIds;int8_t delta=0;int16_t value=-1;
   FarmEditOutcome outcome=FarmEditOutcome::None;
 };
+struct LeverState {
+  int32_t buildingId=-1;uint64_t revision=0;uint8_t operation=0,outcome=0;
+  int32_t sourceMechanism=-1,targetMechanism=-1,targetId=-1,jobId=-1;
+  std::string sourceName,targetName;
+};
 struct ProductionState {
   std::optional<std::string> taskCategory,taskParent;
   std::vector<ProductionTaskCategory> taskCategories;
@@ -466,6 +477,7 @@ struct ProductionState {
   std::optional<WorkshopWorkersState> workshopWorkers;
   std::optional<PendingBuildingState> pendingBuilding;
   std::optional<BuildingLinksPage> buildingLinks;
+  std::optional<LeverState> lever;
   std::optional<DoorControlsState> doorControls;
   std::optional<BuildingHeaderState> buildingHeader;
   std::optional<IndependentItemState> independentItem;

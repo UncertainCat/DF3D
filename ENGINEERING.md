@@ -1,3 +1,22 @@
+## Lever transport migration
+
+Management protocol227 adds a distinct optional lever request/result to production.
+Operation0 requests initial native mechanism selection;1 previews an owned map
+target;2 queues Pull;3 queues Link. Reads use ProductionInspect and mutations use
+ProductionQueue. Target and mutation requests require the observed revision.
+Link carries both selected mechanism IDs, the map tile and the observed target ID;
+the producer must revalidate all of them before creating a job. It must not silently
+replace the selected mechanisms. Results carry the source identity/revision,
+operation, native mechanism names/IDs and an explicit applied/rejected receipt.
+Only an applied mutation carries a new job ID. Unknown transport outcomes must
+never replay either action.
+
+Older recordings imply no lever observation. Defaults and the mailbox are227;
+rebuild bridge and client together. The schema/codec step deliberately rejects
+lever requests at the bridge until the native producer is integrated and qualified;
+public lever exposure remains gated. Native diagnostic evidence below establishes
+the semantic routines, not completion of the transport or viewer workflow.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

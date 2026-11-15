@@ -1244,6 +1244,11 @@ void publish() {
     const auto& value=*production.itemPosition;const m::TilePos pos(value.x,value.y,value.z);
     itemPosition=m::CreateItemPosition(b,value.id,&pos);
   }
+  flatbuffers::Offset<m::LeverState> lever;
+  if(production.lever) {
+    const auto& v=*production.lever;
+    lever=m::CreateLeverState(b,v.buildingId,v.revision,v.operation,v.outcome,v.sourceMechanism,v.targetMechanism,b.CreateString(v.sourceName),b.CreateString(v.targetName),v.targetId,v.jobId);
+  }
   flatbuffers::Offset<m::BuildingLinksPage> buildingLinks;
   if(production.buildingLinks) {
     const auto& page=*production.buildingLinks;std::vector<flatbuffers::Offset<m::BuildingLinkRow>> rows;
@@ -1308,7 +1313,7 @@ void publish() {
   }
   std::vector<flatbuffers::Offset<m::ProductionTaskCategory>> taskCategories;
   for(const auto& v:production.taskCategories)taskCategories.push_back(m::CreateProductionTaskCategory(b,b.CreateString(v.key),b.CreateString(v.name),dyeStatus(v.dye)));
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders,production.taskCategory?b.CreateString(*production.taskCategory):0,production.taskCategory?b.CreateVector(taskCategories):0,production.taskParent?b.CreateString(*production.taskParent):0,doorControls,pendingBuilding,buildingLinks);
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders,production.taskCategory?b.CreateString(*production.taskCategory):0,production.taskCategory?b.CreateVector(taskCategories):0,production.taskParent?b.CreateString(*production.taskParent):0,doorControls,pendingBuilding,buildingLinks,lever);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
@@ -4136,6 +4141,11 @@ void run(color_ostream& out) {
       status=m::ManagementStatus::Rejected;workers.invalidate();
     }
     publish();return;
+  }
+  if(r->production() && r->production()->lever()) {
+    // Protocol admission precedes the semantic provider. Never fall through
+    // to generic workshop queueing while this producer is being qualified.
+    message.clear();status=m::ManagementStatus::Rejected;production={};publish();return;
   }
   if(r->production() && r->production()->building_links()) {
     message.clear();status=m::ManagementStatus::Rejected;production={};

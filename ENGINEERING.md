@@ -9837,6 +9837,23 @@ but not yet qualified through this building sheet; transport and viewer controls
 remain unfinished. Do not promote the existing completed-building header
 transaction to unfinished buildings: its stage and postcondition rules differ.
 
+`pending_building_native.h` implements that owned semantic provider. Reads
+require a revealed unfinished building whose first job is ConstructBuilding,
+exclude removal jobs, and bind revision authority to identity, stage, job flags
+and active worker IDs. Desired resume/suspend supports a no-op. Cancellation
+reacquires by stable ID after the destructive native call; it never dereferences
+the retired building pointer. Unknown outcomes retain no observation and must
+not be replayed. The diagnostic `df3d pending-building <id> <revision>
+<read|resume|suspend|cancel>` uses revision0 only for reads.
+Protected214245 verifies resume/suspend against the native clicks, repeated
+resume without mutation, stale cancellation rejection, and stage-zero deletion.
+The complete cancellation readback (building/job retirement, material flags,
+occupancy) equals native213930. DF27568 exits unsaved, source saves preserved;
+graphics capped30FPS, sampled GPU57C/24%. Bridge build and19 root checks pass.
+Provider evidence is nested under pending_construction_reference. This adds
+no public UI or wire contract; worker-owned and nonzero-stage paths remain
+static-audit only pending live qualification.
+
 The audited building-type dispatch maps Door8 to inline1af741..1af807.
 It rejects flags0x2c (invader/intruder/mechanism control), allows forbidding only
 when closed(bit0x10), and treats repeated desired state as a no-op. Actual changes

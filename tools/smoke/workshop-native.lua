@@ -280,6 +280,19 @@ local ok,err=xpcall(function()
     end
     result.basic_building_reference.pending.effects=effects
     assert(b.jobs[0].flags.whole==before,'Pending fixture did not restore suspension')
+    local pending_request
+    if os.getenv('DF3D_PENDING_PROVIDER')=='1'then
+     pending_request=function(revision,operation)
+      local text,code=dfhack.run_command_silent('df3d','pending-building',tostring(b.id),revision,operation)
+      assert(code==0,text);return json.decode(text)
+     end
+     local initial=pending_request('0','read');assert(initial.outcome==1,'Pending provider read rejected')
+     local resume=pending_request(initial.revision,'resume');assert(resume.outcome==1 and resume.flags==effects[1].flags,'Pending resume differs')
+     local noop=pending_request(resume.revision,'resume');assert(noop.outcome==1 and not noop.mutated and noop.revision==resume.revision,'Pending resume no-op differs')
+     local suspend=pending_request(resume.revision,'suspend');assert(suspend.outcome==1 and suspend.flags==effects[2].flags,'Pending suspend differs')
+     local stale=pending_request('1','cancel');assert(stale.outcome==2 and not stale.mutated and df.building.find(b.id),'Stale pending cancel changed target')
+     result.basic_building_reference.pending.provider={initial=initial,resume=resume,noop=noop,suspend=suspend,stale=stale}
+    end
     if os.getenv('DF3D_PENDING_CANCEL_REFERENCE')=='1'then
      assert(b:getBuildStage()==0,'Cancellation reference requires an unstarted building')
      local id=b.id;local job_ids={};local item_ids={}
@@ -298,7 +311,13 @@ local ok,err=xpcall(function()
      local pos={x=b.centerx,y=b.centery,z=b.z}
      local function occupancy()return dfhack.maps.getTileBlock(pos).occupancy[pos.x%16][pos.y%16].whole end
      local cancelled={id=id,job_ids=job_ids,materials_before=materials(),occupancy_before=occupancy(),frame=df.global.world.frame_counter}
-     assert(click_label('Cancel construction'),'Native Cancel construction control missing')
+     if pending_request then
+      local current=pending_request('0','read')
+      local receipt=pending_request(current.revision,'cancel')
+      assert(receipt.outcome==1 and receipt.removed and not receipt.removing,'Pending provider cancel failed')
+      result.basic_building_reference.pending.provider.cancel=receipt
+      view:render(dfhack.getTickCount())
+     else assert(click_label('Cancel construction'),'Native Cancel construction control missing')end
      cancelled.building_exists=df.building.find(id)~=nil;cancelled.jobs_remaining={}
      local link=df.global.world.jobs.list.next
      while link do

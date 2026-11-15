@@ -12945,6 +12945,109 @@
         "workshop-basic-building-pending.png": "534d73a81c98a01e25693cb6e9a5efc3bb369a3838f0474594ceafe05945e9e6",
         "workshop-native.json": "99dda99c679ce39c125aa59350eae813f505fa108b9a8d54a3397438c51863b8",
         "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+      },
+      "provider_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-214245",
+        "owned_df_pid": 27568,
+        "source_save_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Owned provider read/resume/repeated resume/suspend/stale cancel/stage-zero cancel. Effects equal independent native pointer reference. Worker-owned and nonzero-stage cases remain unqualified; no wire or viewer acceptance.",
+        "observations": {
+          "cancel": {
+            "mutated": true,
+            "outcome": 1,
+            "removed": true,
+            "removing": false
+          },
+          "initial": {
+            "flags": 2,
+            "id": 965,
+            "job_id": 68196,
+            "max_stage": 1,
+            "mutated": false,
+            "outcome": 1,
+            "removed": false,
+            "removing": false,
+            "revision": "4443474798278221606",
+            "stage": 0,
+            "workers": []
+          },
+          "noop": {
+            "flags": 0,
+            "id": 965,
+            "job_id": 68196,
+            "max_stage": 1,
+            "mutated": false,
+            "outcome": 1,
+            "removed": false,
+            "removing": false,
+            "revision": "2282824978931642020",
+            "stage": 0,
+            "workers": []
+          },
+          "resume": {
+            "flags": 0,
+            "id": 965,
+            "job_id": 68196,
+            "max_stage": 1,
+            "mutated": true,
+            "outcome": 1,
+            "removed": false,
+            "removing": false,
+            "revision": "2282824978931642020",
+            "stage": 0,
+            "workers": []
+          },
+          "stale": {
+            "mutated": false,
+            "outcome": 2,
+            "removed": false,
+            "removing": false
+          },
+          "suspend": {
+            "flags": 2,
+            "id": 965,
+            "job_id": 68196,
+            "max_stage": 1,
+            "mutated": true,
+            "outcome": 1,
+            "removed": false,
+            "removing": false,
+            "revision": "4443474798278221606",
+            "stage": 0,
+            "workers": []
+          }
+        },
+        "cancellation": {
+          "building_exists": false,
+          "frame": 0,
+          "id": 965,
+          "job_ids": [
+            68196
+          ],
+          "jobs_remaining": [],
+          "materials_after": [
+            {
+              "exists": true,
+              "flags": 1,
+              "id": 22339
+            }
+          ],
+          "materials_before": [
+            {
+              "exists": true,
+              "flags": 2,
+              "id": 22339
+            }
+          ],
+          "occupancy_after": 134217728,
+          "occupancy_before": 134217729
+        },
+        "hashes": {
+          "workshop-native.json": "f5a3c28be7bc162c26f41233901c3720c838be164d396bd0333d4b26aec1d242",
+          "result.json": "c178f5d969f4ee3e4d36d311d48318574e98b5ec65500213f948347f216ae242",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

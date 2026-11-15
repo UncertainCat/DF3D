@@ -184,8 +184,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 218;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v218";
+inline constexpr uint32_t kManagementVersion = 219;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v219";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -2743,6 +2743,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       const auto* f=state->snapshot();const auto outcome=state->outcome();const bool terminal=state->removed() || state->removing();
       if((state->removed() && state->removing()) || (terminal && (f || outcome!=FarmEditOutcome::Completed || s.action()!=ManagementAction::FarmEdit)))return "invalid pending terminal state";
       if(static_cast<uint8_t>(outcome)>4 || (f && (f->id()<0 || !f->revision() || f->revision()>INT64_MAX || f->type()<0 || f->type()>54 || f->type()==29 || f->type()==30 || f->stage()<0 || f->max_stage()<=f->stage() || f->job_id()<-1 || (f->job_id()==-1 && (f->removing() || f->suspended() || f->has_worker())) || !f->header_name() || !f->header_name()->size() || f->header_name()->size()>2048)))return "invalid pending building snapshot";
+      if(f && f->appearance()){size_t bytes=0;if(auto error=validateOwnerAppearance(*f->appearance(),bytes))return error;
+        if(!f->appearance()->layers()->size() || bytes>131072)return "invalid pending header artwork";}
       if(s.action()==ManagementAction::ProductionInspect) {
         if(outcome!=FarmEditOutcome::None || ((s.status()==ManagementStatus::Ok)!=(f!=nullptr)))return "invalid pending building read";
       } else if(s.action()==ManagementAction::FarmEdit) {

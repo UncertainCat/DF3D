@@ -9873,7 +9873,43 @@ fixture discovery failures are not acceptance;214809 selected an inactive citize
 and correctly did not release it. The accepted fixture selects an active citizen,
 matching the native predicate. No native defect or parity exception is claimed.
 
-Management protocol218 carries exclusive pending_building requests and an
+Management protocol219 adds an optional native header appearance recipe to the
+pending-building snapshot. Bridge and clients must rebuild together; both schema
+defaults and mailbox are219 (`Local\\df3d_management_v219`). Older recordings
+contain no header recipe; absence is not a request to invent an icon. Recipes
+use the existing bounded installed-artwork contract. The bridge reuses the
+audited Tasks selector after verifying the building-header dispatch bytes;
+Godot renders the returned recipe without a building-type artwork map.
+Protocol219 bridge and extension builds pass. Protected004253 on2026-11-15
+compares488x72 headers for controlled unfinished Smelter56, workshop3, Door16,
+Statue493 and Trap55: all match native exactly through the actual main scene.
+Original stages are restored, owned DF5688 exits unsaved, and the source save
+is preserved. Live status is passed_with_known_issues for the established
+rendering-thread/finalize/two-ObjectDB diagnostics; graphics capped30FPS,
+GPU sampled56C/3%. Matching core build and all19 root checks pass. Protected
+004548 also retains the natural unfinished Statue965 workflow: eight component
+flag clicks, item View, holder return and Escape. All eleven full panel crops
+match the established native references, and native item/job effects match
+002629 including weight_computed. DF7876 exits unsaved with source preservation;
+the same known Godot diagnostics remain, with GPU sampled54–55C/7–14% at30FPS.
+Evidence: header_artwork_component_regression_reference.
+The header-only scope is deliberate: full-panel captures expose unresolved
+progress text on Door/Statue, component artwork in workshop3, and body/contents
+differences in Trap55. These block broader panel promotion; header acceptance
+does not waive them. Native progress renderer181465..181585 uses a floating
+ratio and thresholds, unlike the current presentation's stage==max-1 shortcut.
+The renderer saves the current stage, iterates stages through native
+getBuildDuration, and restores the stage. Completed stages contribute their
+full duration; the current stage contributes duration minus the first job's
+completion_timer when that timer is not-1. The float ratio selects Waiting at
+<=0, then thresholds0.33 and0.66. Exposing this requires owned native duration
+inputs; do not call the renderer or mutate the live building during a read.
+First run004054 is not acceptance: JSON numeric type formatting produced missing
+reference filenames, and continuing the general workshop exercise reused the
+artwork client at an unrelated capture. The corrected dedicated lane exits
+after stage restoration. Evidence: header_artwork_presentation_reference.
+
+Management protocol218 introduced exclusive pending_building requests and an
 optional PendingBuildingState response. ProductionInspect reads use operation-1
 and no revision; FarmEdit requires an exact positive revision and operation0
 (resume),1(suspend),2(cancel), or3(cancel removal). Snapshots carry native type, stage/max-stage,
@@ -9962,6 +9998,10 @@ provider calls that native predicate and includes its result in the pending
 snapshot revision. Rendering uses title palette12 when forbidden and two native
 warning lines at local baselines64,24 and64,48 in palette4. The predicate bytes
 and native screenshot provenance are retained in contents_native_reference.
+The pinned executable's virtual-slot75 audit extends this to all54 actual
+building classes. Stockpile and Civzone resolve false67050 and remain excluded
+from the pending observer; non-building definition/handler vtables are not part
+of this audit. The concrete vtable list is retained with the predicate evidence.
 Protected `build/stockpile-storage-native-farm-discovery-20261115-001723`
 verifies all eight component flag clicks in the actual main scene and fresh
 Forbidden state after each receipt. Nine complete488x708 panel crops match

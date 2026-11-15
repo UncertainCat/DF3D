@@ -9,6 +9,26 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("pending header artwork validates native recipe references") {
+  for(int fault=0;fault<3;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    std::vector<wire::AppearanceLayer> layers;
+    if(fault!=1)layers.emplace_back(fault==2?1:0,3,4,1,1,65535,-1,-1,0,0);
+    const auto icon=wire::CreateSelectionAppearance(b,b.CreateVectorOfStrings(std::vector<std::string>{"PAGE"}),
+      b.CreateVectorOfStrings(std::vector<std::string>{}),b.CreateVectorOfStructs(layers));
+    const auto snapshot=wire::CreatePendingBuildingSnapshot(b,965,15,1,0,1,68196,true,false,b.CreateString("Statue"),false,false,icon);
+    const auto pending=wire::CreatePendingBuildingState(b,snapshot);
+    wire::ProductionStateBuilder p(b);p.add_pending_building(pending);const auto prod=p.Finish();
+    wire::ManagementStateBuilder s(b);s.add_revision(1);s.add_production(prod);
+    s.add_action(wire::ManagementAction::ProductionInspect);s.add_status(wire::ManagementStatus::Ok);b.Finish(s.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){const auto decoded=codec::decodeProduction(value->production());
+      REQUIRE(decoded.pendingBuilding->snapshot->appearance);
+      CHECK(decoded.pendingBuilding->snapshot->appearance->tilePages==std::vector<std::string>{"PAGE"});}
+  }
+}
+
 TEST_CASE("pending removal and idle snapshots retain distinct authority") {
   for(int operation=0;operation<=3;++operation) {
     wm::ManagementRequest r;r.action=wm::ManagementAction::FarmEdit;

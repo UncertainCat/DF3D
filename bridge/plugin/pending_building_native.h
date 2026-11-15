@@ -28,6 +28,7 @@ inline bool pendingBuildingNativeReady() {
             {0x587d80,0xc98,UINT64_C(0x0f7410a976032a15)},
             {0x54c130,0xe6,UINT64_C(0xcab44276dbb81fae)},
             {0x28b960,0x2c,UINT64_C(0x94cb9f513f8900f1)},
+            {0x17f8d7,0xaf1,UINT64_C(0x35c750c84ea2aa4c)},
         };
         for(const auto& p:pins){uint64_t h=UINT64_C(14695981039346656037);
             for(size_t i=0;i<p.length;++i){h^=base[p.rva+i];h*=UINT64_C(1099511628211);}if(h!=p.hash)return false;}

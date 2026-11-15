@@ -3540,6 +3540,24 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(const auto order:profile->orderIds)result["order_ids"].append(order);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="lever-target-probe" || parameters[0]=="lever-link-probe") {
+          const bool editing=parameters[0]=="lever-link-probe";
+          if(parameters.size()!=(editing?7:5))return CR_WRONG_USAGE;
+          if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+          int32_t values[6]{};
+          for(size_t i=1;i<parameters.size();++i) {
+            const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<0 || (i>=2 && i<=4 && values[i-1]>32767))return CR_WRONG_USAGE;
+          }
+          auto* source=df::building::find(values[0]);const df::coord pos(values[1],values[2],values[3]);
+          const auto target=df3d_production::leverLinkTargetAt(source,pos);if(!target)return CR_FAILURE;
+          Json::Value result;result["building_id"]=values[0];result["target_id"]=*target;
+          if(editing) {
+            auto* job=df3d_production::linkLeverNative(source,pos,values[4],values[5]);if(!job)return CR_FAILURE;
+            result["job_id"]=job->id;
+          }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="lever-mechanisms-probe") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

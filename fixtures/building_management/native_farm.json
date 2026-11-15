@@ -22531,6 +22531,457 @@
           "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-link-reopened.png": "9270f6b6b4f0df76abd706c0bad2d37e49a09334ab64b6020adff3a225ac3e76",
           "build/stockpile-storage-native-farm-discovery-20261115-071807/lever-link-with-supplies-cancel.png": "6ead1674bf0c89e8f1747b72697343de6db12438f6a3baa000e47ec01fefa26d"
         }
+      },
+      "lever_link_action_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-072600",
+        "scope": "Native door16 target and Link job versus semantic wrapper: target33/holder36, mechanism roles3/4, flags0, sentinel position and zero requirements match; fresh job ID; exact task-panel crop. Pending duplicate target read and action rejected without extra job. Other target families, job completion and viewer not qualified.",
+        "owned_df_pid": 40992,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "bridge_sha256": "D48EFB747DEE9CA7035CBF29B704FE5273DFB4E6EAC5397F241301A2EBF3D25B",
+        "observations": {
+          "building_id": 55,
+          "duplicate_rejected": true,
+          "error": "",
+          "frame": 0,
+          "link_receipt": {
+            "building_id": 55,
+            "job_id": 382799,
+            "target_id": 16
+          },
+          "link_target": 16,
+          "states": [
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "initial",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "item_roles": [],
+                  "items": 0,
+                  "pos": [
+                    97,
+                    103,
+                    165
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 55,
+                      "type": 36
+                    }
+                  ],
+                  "requirements": 0,
+                  "type": 147,
+                  "world_registered": true
+                }
+              ],
+              "label": "pull-1",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "item_roles": [],
+                  "items": 0,
+                  "pos": [
+                    97,
+                    103,
+                    165
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 55,
+                      "type": 36
+                    }
+                  ],
+                  "requirements": 0,
+                  "type": 147,
+                  "world_registered": true
+                },
+                {
+                  "flags": 0,
+                  "id": 382797,
+                  "item_roles": [],
+                  "items": 0,
+                  "pos": [
+                    97,
+                    103,
+                    165
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 55,
+                      "type": 36
+                    }
+                  ],
+                  "requirements": 0,
+                  "type": 147,
+                  "world_registered": true
+                }
+              ],
+              "label": "pull-2",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "pull-cleaned",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "workers",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 1,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "work-orders",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 2,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "tasks-return",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-open",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": true,
+              "open": true,
+              "provider": {
+                "available": false,
+                "building_id": 55,
+                "lever_mechanism": 24480,
+                "target_mechanism": -1
+              },
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-cancel",
+              "lever_mechanism": -1,
+              "link_source": -1,
+              "linking": false,
+              "need_mechanisms": true,
+              "open": false,
+              "tab": 0,
+              "target_mechanism": -1
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-with-supplies",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": true,
+              "need_mechanisms": false,
+              "open": true,
+              "provider": {
+                "available": true,
+                "building_id": 55,
+                "lever_mechanism": 24480,
+                "target_mechanism": 48520
+              },
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-forbid-first",
+              "lever_mechanism": 48520,
+              "link_source": 55,
+              "linking": true,
+              "need_mechanisms": false,
+              "open": true,
+              "provider": {
+                "available": true,
+                "building_id": 55,
+                "lever_mechanism": 48520,
+                "target_mechanism": 48521
+              },
+              "tab": 0,
+              "target_mechanism": 48521
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-restored-first",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": true,
+              "need_mechanisms": false,
+              "open": true,
+              "provider": {
+                "available": true,
+                "building_id": 55,
+                "lever_mechanism": 24480,
+                "target_mechanism": 48520
+              },
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "source-mechanism-row-click",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "target-mechanism-row-click",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382798,
+                  "item_roles": [
+                    {
+                      "flags": 0,
+                      "id": 24480,
+                      "index": -1,
+                      "role": 3
+                    },
+                    {
+                      "flags": 0,
+                      "id": 48520,
+                      "index": -1,
+                      "role": 4
+                    }
+                  ],
+                  "items": 2,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 16,
+                      "type": 33
+                    },
+                    {
+                      "building_id": 55,
+                      "type": 36
+                    }
+                  ],
+                  "requirements": 0,
+                  "type": 146,
+                  "world_registered": true
+                }
+              ],
+              "label": "link-target-click",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-job-cleaned",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382799,
+                  "item_roles": [
+                    {
+                      "flags": 0,
+                      "id": 24480,
+                      "index": -1,
+                      "role": 3
+                    },
+                    {
+                      "flags": 0,
+                      "id": 48520,
+                      "index": -1,
+                      "role": 4
+                    }
+                  ],
+                  "items": 2,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 16,
+                      "type": 33
+                    },
+                    {
+                      "building_id": 55,
+                      "type": 36
+                    }
+                  ],
+                  "requirements": 0,
+                  "type": 146,
+                  "world_registered": true
+                }
+              ],
+              "label": "provider-link-target",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "provider-link-cleaned",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-reopened",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": true,
+              "need_mechanisms": false,
+              "open": true,
+              "provider": {
+                "available": true,
+                "building_id": 55,
+                "lever_mechanism": 24480,
+                "target_mechanism": 48520
+              },
+              "tab": 0,
+              "target_mechanism": 48520
+            },
+            {
+              "active_id": 55,
+              "jobs": [],
+              "label": "link-with-supplies-cancel",
+              "lever_mechanism": 24480,
+              "link_source": 55,
+              "linking": false,
+              "need_mechanisms": false,
+              "open": true,
+              "tab": 0,
+              "target_mechanism": 48520
+            }
+          ],
+          "success": true,
+          "supplies": [
+            48520,
+            48521
+          ],
+          "target_before": {
+            "building_id": 55,
+            "target_id": 16
+          },
+          "target_pending": {
+            "building_id": 55,
+            "target_id": -1
+          }
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-072600/lever-native.json": "10cea61d7e96f32a8ebc97da3af3435386088643e48e5e04256337523a5999ac",
+          "build/stockpile-storage-native-farm-discovery-20261115-072600/result.json": "62721701191ac6eb26fd626a60684ff2d378581b35b766f09a4772fe43c55614",
+          "build/stockpile-storage-native-farm-discovery-20261115-072600/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-072600/lever-link-target-click.png": "7c09ae15960dedcd26467b4005fee5473c10233f4de1b48bd71a3f0e94829bfc",
+          "build/stockpile-storage-native-farm-discovery-20261115-072600/lever-provider-link-target.png": "7c09ae15960dedcd26467b4005fee5473c10233f4de1b48bd71a3f0e94829bfc",
+          "build/stockpile-storage-native-farm-discovery-20261115-072600/lever-provider-link-cleaned.png": "6d2363fe95c88b87bbd3877c1fe97b3027b4f2ee64b5fdd06c27b920f8658eca"
+        }
       }
     },
     "pending_construction_reference": {

@@ -102,9 +102,29 @@ local ok,err=xpcall(function()
     end
    end
    assert(target,'No revealed completed door for link probe');result.link_target=target.id
-   select_map(target);sample('link-target-click')
+   local function target_probe()
+    local text,code=dfhack.run_command_silent('df3d','lever-target-probe',tostring(lever.id),tostring(target.centerx),tostring(target.centery),tostring(target.z))
+    assert(code==0,text);return json.decode(text)
+   end
+   local mechanism_ids={sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id}
+   if os.getenv('DF3D_LEVER_LINK_PROVIDER')=='1'then result.target_before=target_probe();assert(result.target_before.target_id==target.id)end
+   select_map(target);local native_link=sample('link-target-click')
    assert(#lever.jobs==1 and lever.jobs[0].job_type==df.job_type.LinkBuildingToTrigger,'Native target click did not create link job')
+   if os.getenv('DF3D_LEVER_LINK_PROVIDER')=='1'then result.target_pending=target_probe();assert(result.target_pending.target_id==-1)end
    assert(dfhack.job.removeJob(lever.jobs[0]));view:render(dfhack.getTickCount());sample('link-job-cleaned')
+   if os.getenv('DF3D_LEVER_LINK_PROVIDER')=='1'then
+    local text,code=dfhack.run_command_silent('df3d','lever-link-probe',tostring(lever.id),tostring(target.centerx),tostring(target.centery),tostring(target.z),tostring(mechanism_ids[1]),tostring(mechanism_ids[2]))
+    assert(code==0,text);result.link_receipt=json.decode(text)
+    assert(#lever.jobs==1 and lever.jobs[0].id==result.link_receipt.job_id)
+    view:render(dfhack.getTickCount());local observed=sample('provider-link-target')
+    for _,key in ipairs{'type','flags','pos','refs','items','item_roles','requirements','world_registered'}do
+     assert(json.encode(observed.jobs[1][key])==json.encode(native_link.jobs[1][key]),'Native/provider Link differs: '..key)
+    end
+    local duplicate,duplicate_code=dfhack.run_command_silent('df3d','lever-link-probe',tostring(lever.id),tostring(target.centerx),tostring(target.centery),tostring(target.z),tostring(mechanism_ids[1]),tostring(mechanism_ids[2]))
+    assert(duplicate_code~=0 and #lever.jobs==1,'Duplicate pending Link was accepted')
+    result.duplicate_rejected=true
+    assert(dfhack.job.removeJob(lever.jobs[0]));view:render(dfhack.getTickCount());sample('provider-link-cleaned')
+   end
    if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
    select_map(lever);assert(click_label('Link lever'));sample('link-reopened')
   end

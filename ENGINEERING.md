@@ -9886,6 +9886,27 @@ source preservation. MSVC and core19 pass. No public lever UI or runtime Link
 action is accepted yet; target validation, material changes while targeting,
 job-completion effects and typed action receipts remain outstanding. Evidence
 is `completed_sheet_discovery_reference.lever_link_reference`.
+Protected072600 qualifies the staged target/action wrappers on native door16.
+`leverLinkTargetAt` traverses native buildings.other.IN_PLAY (not buildings.all),
+uses ordinary fortress visibility and native footprint57b770, preserves the
+type/subtype/stage/forbidden/invisible dispatch, then invokes5726f0 to reject
+installed or queued duplicate links. `linkLeverNative` revalidates the supplied
+mechanism identities and native item flags before the mutation boundary, then
+calls native job factory, target-reference creationd09750, item attachment
+d028e0 with roles3/4, building attachment54bcf0 and requirementsd09b70. It does
+not recalculate the selected materials or read the native linking menu.
+
+Native and provider produce matching job146 state and an exact task-panel
+crop, differing only in their newly allocated job IDs. The pending target
+probe returns-1 and a duplicate action leaves exactly one job. Owned DF40992
+closes unsaved with source preservation; the bridge build and core19 pass.
+Initial072348 rejected before mutation because the collection-address check
+caught use of buildings.all; it is not acceptance. Other target families,
+simulation completion and viewer workflows remain unqualified. Diagnostic
+commands are `lever-target-probe SOURCE X Y Z` and
+`lever-link-probe SOURCE X Y Z SOURCE_MECHANISM TARGET_MECHANISM`;
+the latter creates a real job and both require a paused nonsaving session.
+Evidence is `completed_sheet_discovery_reference.lever_link_action_reference`.
 See
 `linked_buildings_reference.row_render_reference` for exact evidence scope.
 

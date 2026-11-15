@@ -166,6 +166,10 @@ local ok,err=xpcall(function()
  for _,row in ipairs(menu.master_i_list.tgi)do result.items[#result.items+1]={id=row.it.id,distance=row.dist,tag=row.tag,prohibited=row.prohibited,value=row.value,sort_value=row.sort_value}end
  compare_goods('unassigned')
  compare_selection('anvils')
+ if os.getenv('DF3D_DEPOT_HOVER_NATIVE')=='1' then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-goods%-native.lua$','depot-hover-native.lua')
+  result.hover=assert(loadfile(source))(out,view,b,click)
+ end
  if os.getenv('DF3D_DEPOT_VALUATION_NATIVE')=='1' then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-goods%-native.lua$','depot-valuation-native.lua')
   result.valuation=assert(loadfile(source))(out,view,b,capture,click,compare_selection)

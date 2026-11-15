@@ -9,6 +9,12 @@ const ACCESS_HELP = [
 	["This option indicates","that the location is","only open to members."]]
 const OWNER_RECENTER_HELP = ["Leave this menu and","recenter on this","creature."]
 const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
+# Native depot instructions201..204, protected170642.
+const DEPOT_GOODS_HELP={
+	"exclude":["Toggle whether goods","banned by export","mandates are listed."],
+	"distance":["Sort by distance from","the depot."],
+	"value":["Sort by value."],
+	"select-all":["(De)select all","currently displayed","items"]}
 # Protected Work Details133852/134711 widget overlays (separate from main help).
 const WORK_DETAIL_WIDGET_HELP={
 	"name":{"lines":["Sort units by name."],"key":"Ctrl+n"},
@@ -261,6 +267,10 @@ func enter_tasks(owner: int,kind: String) -> void:
 	if TASKS_HELP.has(kind):state.enter(owner,"tasks_"+kind,Time.get_ticks_msec());_process(0)
 	else:leave(owner)
 
+func enter_depot_goods(owner: int,kind: String) -> void:
+	if DEPOT_GOODS_HELP.has(kind):state.enter(owner,"depot_goods_"+kind,Time.get_ticks_msec());_process(0)
+	else:leave(owner)
+
 func enter_residents(owner: int, kind: String) -> void:
 	if RESIDENTS_HELP.has(kind) or kind in ["specialization_0","specialization_1"]:
 		state.enter(owner,"residents_"+kind,Time.get_ticks_msec());_process(0)
@@ -322,6 +332,7 @@ func _draw() -> void:
 	elif displayed.begins_with("objects_"):lines=OBJECTS_HELP[displayed.trim_prefix("objects_")]
 	elif displayed.begins_with("workshop_task_"):lines=WORKSHOP_TASK_HELP[displayed.trim_prefix("workshop_task_")]
 	elif displayed.begins_with("tasks_"):lines=TASKS_HELP[displayed.trim_prefix("tasks_")]
+	elif displayed.begins_with("depot_goods_"):lines=DEPOT_GOODS_HELP[displayed.trim_prefix("depot_goods_")]
 	elif displayed.begins_with("residents_specialization_"):lines=SPECIALIZATION_HELP[int(displayed.trim_prefix("residents_specialization_"))]
 	elif displayed.begins_with("residents_"):lines=RESIDENTS_HELP[displayed.trim_prefix("residents_")]
 	elif displayed.begins_with("item_"): lines=ITEM_HELP[displayed.trim_prefix("item_")]

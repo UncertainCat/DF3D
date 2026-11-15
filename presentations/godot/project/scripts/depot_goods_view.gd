@@ -14,6 +14,26 @@ var requested:=false
 var _closing:=false
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var icons: Dictionary={}
+var hover_help
+var pointer_known:=false
+var pointer_position:=Vector2.ZERO
+func hover_target(point: Vector2) -> String:
+	if not ready():return ""
+	if exclusion_rect().has_point(point):return "exclude"
+	if select_all_rect().has_point(point):return "select-all"
+	if state.appraisal>0:
+		if sort_rect(true).has_point(point):return "distance"
+		if sort_rect(false).has_point(point):return "value"
+	return ""
+func update_hover() -> void:
+	if not is_instance_valid(hover_help):return
+	var target:=hover_target(pointer_position) if pointer_known and allowed() else ""
+	if target.is_empty():hover_help.leave(get_instance_id())
+	else:hover_help.enter_depot_goods(get_instance_id(),target)
+func _leave_hover() -> void:
+	pointer_known=false
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
+func _process(_delta: float) -> void:update_hover()
 func entry_item(entry: Dictionary) -> Dictionary:
 	return state.contained_item(entry.parent_id,entry.child_index) if entry.has("parent_id") else state.items.get(entry.get("id",-1),{})
 func entry_missing(entry: Dictionary) -> bool:
@@ -38,6 +58,9 @@ func configure_goods(source,model) -> void:
 	search=preload("res://scripts/stocks_filter.gd").new();add_child(search);search.theme=theme;search.byte_limit=2048
 	search.configure(inset,colors);search.edited.connect(func(bytes):state.set_query(bytes.get_string_from_utf8()))
 	state.changed.connect(refresh)
+	mouse_exited.connect(_leave_hover)
+	visibility_changed.connect(func():
+		if not is_visible_in_tree():_leave_hover())
 func allowed() -> bool:return is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call())
 func ready() -> bool:return allowed() and state!=null and state.phase==state.Phase.Ready
 func category_width() -> int:return int(size.x/24)*8-40
@@ -158,7 +181,9 @@ func _draw() -> void:
 		_icon(self,"SELECT_ALL",select_all_rect())
 func _input(event: InputEvent) -> void:
 	if not allowed():return
-	if event is InputEventKey and event.pressed:
+	if event is InputEventMouseMotion:
+		pointer_known=true;pointer_position=get_global_transform_with_canvas().affine_inverse()*event.position;update_hover()
+	elif event is InputEventKey and event.pressed:
 		if event.keycode==KEY_ESCAPE:_finish();get_viewport().set_input_as_handled()
 		elif search.has_focus():search.feed_key(event);get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT:
@@ -196,4 +221,5 @@ func _gui_input(event: InputEvent) -> void:
 		var index: int=int((event.position.y-category_canvas.position.y)/36)+scrollbar.first
 		if index<state.categories.size():state.select_category(state.categories[index].type)
 func _exit_tree() -> void:
+	_leave_hover()
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)

@@ -51,9 +51,29 @@ checkbox/close and value/sorting render checks also pass. Graphical checks ran
 serially at30FPS, sampled51–53C, and exited; all new logs are diagnostic-free.
 All19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_goods_container_view_reference`.
-Nested/empty-container and partial-scroll/resize rendering, option tooltips,
+Nested/empty-container and partial-scroll/resize rendering, remaining tooltip acceptance,
 large-list transport, main-scene integration, ordinary hauling and full trade
 remain unfinished. Public depot routes stay hidden.
+
+The staged picker supplies the four native header help texts through the shared
+hover renderer and owner-aware timer. Sort help is unavailable without broker
+appraisal; hitboxes follow the header's16px shift when the list scrolls. Leaving,
+hiding or freeing the picker releases its hover ownership. No new copy is added.
+
+Protected171808 on2026-11-15 records11 native text-cell/hitbox observations:
+exclusion, distance, value and Select All; exclusion on/off; missing broker; and
+scrolling header geometry. Owned DF2852 closes unsaved/source-preserved at30FPS,
+sampled GPU51C. The standalone Godot check dispatches actual pointer events,
+compares native text, verifies cold delay/delayed display and leave/hide release,
+and captures the rendered result at30FPS (sampled54C); no engine diagnostics.
+All19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_goods_header_hover_reference`.
+These native PNGs are NOT visual acceptance: the hidden-window capture loses
+hover before presentation. Earlier manual-render retries also produced mixed
+buffers. Native tooltip pixel comparison remains pending; the valid evidence is
+native text/hitboxes plus the existing shared renderer, not depot pixel parity.
+The diagnostic helper therefore records text/cells without requesting misleading
+screenshots. Search-widget help and main-scene integration remain unfinished.
 
 ## Depot goods value transport migration
 

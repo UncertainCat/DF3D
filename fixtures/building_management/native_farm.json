@@ -61144,6 +61144,149 @@
           "build/notes/pm/depot-container-depot_goods_view_interaction.stdout.log": "33171e052d427f92ffc36568cc28c8881ce75603c101588c24762b5bac9b60bd",
           "build/notes/pm/depot-container-depot_goods_value_view.stdout.log": "64bed9717a2f71529cea9e63f6be3004f1d88bc8874870bb04da935f97cc6be4"
         }
+      },
+      "depot_goods_header_hover_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-171808",
+        "owned_df_pid": 2852,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Native text-cell and hitbox evidence for four header controls, missing-broker hidden sorting targets, exclusion on/off and 16px scrollbar shift (11 observations). Standalone Godot pointer dispatch verifies native copy, cold delay, delayed visibility and release on leaving/hiding. Reuses existing shared hover renderer. Native screenshots lose hover before capture: NOT pixel-parity evidence. Search widget help and main-scene integration remain pending. Public depot routes remain hidden.",
+        "cases": [
+          {
+            "displayed": -1,
+            "instruction": -1,
+            "label": "hidden-distance",
+            "lines": [],
+            "x": 856,
+            "y": 94
+          },
+          {
+            "displayed": -1,
+            "instruction": -1,
+            "label": "hidden-value",
+            "lines": [],
+            "x": 888,
+            "y": 94
+          },
+          {
+            "displayed": 201,
+            "instruction": 201,
+            "label": "exclude",
+            "lines": [
+              "Toggle whether goods",
+              "banned by export",
+              "mandates are listed."
+            ],
+            "x": 824,
+            "y": 94
+          },
+          {
+            "displayed": 202,
+            "instruction": 202,
+            "label": "distance",
+            "lines": [
+              "Sort by distance from",
+              "the depot."
+            ],
+            "x": 856,
+            "y": 94
+          },
+          {
+            "displayed": 203,
+            "instruction": 203,
+            "label": "value",
+            "lines": [
+              "Sort by value."
+            ],
+            "x": 888,
+            "y": 94
+          },
+          {
+            "displayed": 204,
+            "instruction": 204,
+            "label": "select-all",
+            "lines": [
+              "(De)select all",
+              "currently displayed",
+              "items"
+            ],
+            "x": 928,
+            "y": 94
+          },
+          {
+            "displayed": 201,
+            "instruction": 201,
+            "label": "exclude-active",
+            "lines": [
+              "Toggle whether goods",
+              "banned by export",
+              "mandates are listed."
+            ],
+            "x": 824,
+            "y": 94
+          },
+          {
+            "displayed": 201,
+            "instruction": 201,
+            "label": "scroll-exclude",
+            "lines": [
+              "Toggle whether goods",
+              "banned by export",
+              "mandates are listed."
+            ],
+            "x": 808,
+            "y": 94
+          },
+          {
+            "displayed": 202,
+            "instruction": 202,
+            "label": "scroll-distance",
+            "lines": [
+              "Sort by distance from",
+              "the depot."
+            ],
+            "x": 840,
+            "y": 94
+          },
+          {
+            "displayed": 203,
+            "instruction": 203,
+            "label": "scroll-value",
+            "lines": [
+              "Sort by value."
+            ],
+            "x": 872,
+            "y": 94
+          },
+          {
+            "displayed": 204,
+            "instruction": 204,
+            "label": "scroll-select-all",
+            "lines": [
+              "(De)select all",
+              "currently displayed",
+              "items"
+            ],
+            "x": 912,
+            "y": 94
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-171808/depot-goods-native.json": "fcf2f477aaa3d6ad4760c836abf45b4b25a173b90f2efd9d20f33a6a8663114d",
+          "build/stockpile-storage-native-farm-discovery-20261115-171808/result.json": "1a70ab08957e086424684636b8ffd49440c93e58afdb1c8f3edc65d8ae0a7114",
+          "build/stockpile-storage-native-farm-discovery-20261115-171808/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/notes/pm/depot-hover-view.stdout.log": "d3fb173170d58fba3bfe53f9f70404e8a2b2843e810987d4e22052ef8a0db73a",
+          "presentations/godot/project/tests/depot_goods_hover_view.gd": "fd7ecf990f7c7a2872b3b996d8397837bf0f999feeeca90ba612253415ab9a4c",
+          "build/stockpile-storage-native-farm-discovery-20261115-171808/depot-hover-view-distance.png": "1f0f26556d1c21e75c812f88f2a5625618b7c7b9844db1fdb45efc080ac30310",
+          "build/stockpile-storage-native-farm-discovery-20261115-171808/depot-hover-view-exclude-active.png": "2e3a2d5da369b7a573c138a8edf36b4a275755e4be7a8e1b4f20ecbc34dfab87",
+          "build/stockpile-storage-native-farm-discovery-20261115-171808/depot-hover-view-exclude.png": "2e3a2d5da369b7a573c138a8edf36b4a275755e4be7a8e1b4f20ecbc34dfab87",
+          "build/stockpile-storage-native-farm-discovery-20261115-171808/depot-hover-view-scroll-distance.png": "8248e2c23dca59f3e256961f3ef7496dcf137be884c46625106cd57de22ec095",
+          "build/stockpile-storage-native-farm-discovery-20261115-171808/depot-hover-view-scroll-exclude.png": "05f79b0c511168187e1678309020090d14b29e2ca4632eb341ff7be1def06f76",
+          "build/stockpile-storage-native-farm-discovery-20261115-171808/depot-hover-view-scroll-select-all.png": "c8d31035a890c7a759deb2b2b4ab28f24f10d96629d250f47be71d0d4e227020",
+          "build/stockpile-storage-native-farm-discovery-20261115-171808/depot-hover-view-scroll-value.png": "c795a820d527b72371ebb607a782df176a4f98c4f635cd7bcde19c0e8faa755d",
+          "build/stockpile-storage-native-farm-discovery-20261115-171808/depot-hover-view-select-all.png": "8f7f8becd29c1ddc49b1eb3a4a0293ddf3cf184d450f076aaa2b92f9e68121b9",
+          "build/stockpile-storage-native-farm-discovery-20261115-171808/depot-hover-view-value.png": "1adcd7009155dc922fb7128fb358580eca505f63aa07dab1a8dce328a818412d"
+        }
       }
     },
     "pending_construction_reference": {

@@ -198,6 +198,12 @@ copy, fabricated progress percentages or broader native-UI departures.
 
 ## 3. Assets and native UI
 
+- Maintainer decision, 2026-11-15: keep a working scrollbar for long
+  linked-building lists. Native DF omits scrolling and leaves later links
+  inaccessible in the controlled twelve-link reproduction. Preserve native
+  row order, captions and actions; record this correction and its verification
+  scope in ENGINEERING.md's native bug register.
+
 - Maintainer decision, 2026-11-11: allow closing Nobles when an edit's outcome
   is unknown, including symbol naming. Closing retires local UI ownership;
   it must not retry the edit or advance an unfinished symbol sequence.

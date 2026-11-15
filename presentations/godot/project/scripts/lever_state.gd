@@ -14,6 +14,7 @@ var tile:=Vector3i(-1,-1,-1)
 var ticket:=0
 var generation:=0
 var pending_link:=false
+var pending_click:=false
 
 func configure(source) -> void:
 	dispose();service=source
@@ -27,11 +28,11 @@ func _retire() -> void:
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
 func close() -> void:
-	_retire();building_id=-1;snapshot={};target={};tile=Vector3i(-1,-1,-1);pending_link=false;phase=Phase.Closed;changed.emit()
+	_retire();building_id=-1;snapshot={};target={};tile=Vector3i(-1,-1,-1);pending_link=false;pending_click=false;phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func _fail(next: Phase) -> void:
-	_retire();target={};pending_link=false;phase=next;changed.emit()
+	_retire();target={};pending_link=false;pending_click=false;phase=next;changed.emit()
 func open(id: int) -> void:
 	close()
 	if id<0 or id>2147483647:_fail(Phase.Rejected);return
@@ -46,12 +47,24 @@ func begin_link() -> void:
 	_initial(true)
 func cancel_link() -> void:
 	if phase not in [Phase.Targeting,Phase.Previewing] and not (phase==Phase.Reading and pending_link):return
-	_retire();target={};tile=Vector3i(-1,-1,-1);pending_link=false;phase=Phase.Ready;changed.emit()
+	_retire();target={};tile=Vector3i(-1,-1,-1);pending_link=false;pending_click=false;phase=Phase.Ready;changed.emit()
 func preview(position: Vector3i) -> void:
+	if pending_click:return
+	_preview(position)
+func _preview(position: Vector3i) -> void:
 	if phase not in [Phase.Targeting,Phase.Previewing] or position==tile:return
 	_retire();tile=position;target={};phase=Phase.Targeting
 	if position.x<0 or position.y<0 or position.z<0 or position.x>32767 or position.y>32767 or position.z>32767:changed.emit();return
 	phase=Phase.Previewing;_send(1,_selection())
+func click_target(position: Vector3i) -> void:
+	if phase not in [Phase.Targeting,Phase.Previewing] or pending_click:return
+	pending_click=true;_preview(position)
+	if phase==Phase.Targeting:_finish_click()
+func _finish_click() -> void:
+	pending_click=false
+	# Native1aa695 retires Link mode after the click, including a non-target.
+	if target.get("target_id",-1)<0:cancel_link()
+	else:link()
 func _selection() -> Dictionary:
 	return {"lever_x":tile.x,"lever_y":tile.y,"lever_z":tile.z,
 		"lever_source_mechanism":snapshot.source_mechanism,"lever_target_mechanism":snapshot.target_mechanism}
@@ -95,6 +108,7 @@ func _send(op: int,extra: Dictionary={},linking: bool=false) -> void:
 		if op==1:
 			if value.revision!=sent.expected_revision:_fail(Phase.Rejected);return
 			target=value.duplicate(true);phase=Phase.Targeting
+			if pending_click:_finish_click();return
 		elif op==0:
 			pending_link=false
 			snapshot=value.duplicate(true);target={};tile=Vector3i(-1,-1,-1)

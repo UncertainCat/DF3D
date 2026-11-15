@@ -23159,6 +23159,26 @@
           "build/stockpile-storage-native-farm-discovery-20261115-075732/result.json": "23a3b2a997ae3d739448a05178ba11e922c2950844e1c97300ecc5947b86d190",
           "build/stockpile-storage-native-farm-discovery-20261115-075732/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "lever_prompt_owner_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-080516",
+        "scope": "Viewer-owned Link prompt through the real semantic service and item models. Exact native prompt pixels, fresh selection, both independent mechanism appearances, pointer click on mechanism row cancels and hides prompt. Inherited wire actions match native. Full building-panel/map integration remains outstanding.",
+        "source_preserved": true,
+        "owned_df_pid": 3144,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-080516/lever-link-reopened.png": "9270f6b6b4f0df76abd706c0bad2d37e49a09334ab64b6020adff3a225ac3e76",
+          "build/stockpile-storage-native-farm-discovery-20261115-080516/lever-prompt-viewer.png": "68ea30231d50c2812173431967f401a8390b6760acb727059ba298193a94629d",
+          "build/stockpile-storage-native-farm-discovery-20261115-080516/workshop-wire-result.json": "5d010b9b14da4c7625fe099b53173f87d49ea8e4098960e9ed5787519eaa8833",
+          "build/stockpile-storage-native-farm-discovery-20261115-080516/result.json": "c53aea1f04602c9bcafdf9e4a7ea4687580013805ffcbf6ec3efab115e690efb",
+          "build/stockpile-storage-native-farm-discovery-20261115-080516/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

@@ -55,6 +55,22 @@ Evidence is `completed_sheet_discovery_reference.lever_prompt_reference`.
 Other name lengths, responsive geometry, prompt input and complete panel
 integration remain unqualified; the lever is still not publicly exposed.
 
+`lever_link_owner.gd` connects the targeting model to the shared semantic request
+service and two independent item models. It retires artwork reads when targeting
+ends and exposes map-hover/click entry points to the containing panel. Explicit
+clicks retain their tile while awaiting a preview; later pointer motion cannot
+redirect them. Native1aa695 ends Link mode even for a non-target click. The state
+test covers this path and fast clicks without replaying unknown mutations.
+Protected080516 on2026-11-15 qualifies the owner-driven prompt, identical pixels,
+fresh mechanism selection and an actual first-row click cancelling and hiding it.
+The inherited wire action checks pass; owned DF3144 closes unsaved with source
+preservation and the same known shutdown diagnostics. Native/viewer remain capped
+30FPS. Initial080346 lacked the service's startup Catalog claim and failed before
+Pull; the test now bootstraps the real service. Evidence is
+`completed_sheet_discovery_reference.lever_prompt_owner_reference`.
+Full building-panel and map integration, other names/sizes and remaining prompt
+input paths are still outstanding.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped
@@ -63,7 +79,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
-| Long linked-building lists omit their scrollbar, leaving later links inaccessible through the tested controls. | Correction approval pending. DF3D's existing linked-row view has a scrollbar, but populated-list native parity is not accepted. | Protected070239 on2026-11-15: paused floodgate39 with12 links on separate mechanisms shows5 rows and no scrollbar. Expected-arrow clicks and STANDARDSCROLL_DOWN leave native offset0. Native renderer19cd9c skips the scrollbar path19e05c..19e12f; building input reads1d54 at1b028f but has no matching scrollbar handler. Controlled reproduction and limits below. |
+| Long linked-building lists omit their scrollbar, leaving later links inaccessible through the tested controls. | Maintainer approved keeping a working scrollbar on2026-11-15. DF3D's existing linked-row view has a scrollbar; populated-list verification of the correction remains pending. Preserve native row order, captions and actions. | Protected070239 on2026-11-15: paused floodgate39 with12 links on separate mechanisms shows5 rows and no scrollbar. Expected-arrow clicks and STANDARDSCROLL_DOWN leave native offset0. Native renderer19cd9c skips the scrollbar path19e05c..19e12f; building input reads1d54 at1b028f but has no matching scrollbar handler. Controlled reproduction and limits below. |
 | Cancelling demolition of a controlled partly constructed farm leaves it unfinished with no construction job. | No correction authorized or implemented; represent the native idle state when completing this panel. | Protected221104 on2026-11-14: stage1 FarmPlot1490, Remove building, then Cancel removal. Stage remains1/3 and jobs becomes empty. Native54c130 deletes jobs without recreating ConstructBuilding. Repro and limits below in pending_construction_reference.removal_return_reference. |
 | Craftsdwarf's Bone page creates wood jobs for qualifying bone tools. | No correction approved; preserve native's wood category and input requirement. | Controlled native223829 on2026-11-12 temporarily enables BONE_MAT on civilization tool10 ITEM_TOOL_NEST_BOX. Bone page shows Make wooden nest box; clicking creates job216/category2 with WOOD5 input. Native8c9061 writes2 after testing BONE_MAT16. Viewer224539 matches. Flag and queues restored, source saves preserved. `native_workshop.json.craft_runtime_reference`. |
 | Workshop Connections collapses at narrow widths, overlapping Done/Cancel with Add controls and spilling captions outside the panel. | No correction approved; preserve native layout and Add-button input priority. | Protected143039/143417 on2026-11-14: panel widths112 at960x600 and64 at912x552, versus328 at1200x800/1600x900. Resize a workshop's open Connections list, then click the Add Give position under Done: the native picker opens. Renderer33579a..3357de limits width to the space left of the workshop sheet. `native_workshop.json.workshop_connections_reference.responsive_reference`; eight viewer crops match. |
@@ -9899,8 +9915,9 @@ duplicate-target fixture tests rendering/input, not completion of12 gameplay
 link jobs. Native rendering branches around its only bottom-list scrollbar
 when links are selected; the input path likewise lacks that scrollbar handler.
 All created mechanisms/references are retired, owned DF13912 closes unsaved,
-and source saves remain unchanged. No parity exception is inferred from this
-evidence; approval for usable long-list scrolling is pending.
+and source saves remain unchanged. On2026-11-15 the maintainer explicitly
+approved keeping a working scrollbar for this case. Populated-list verification
+of DF3D's correction remains outstanding.
 
 Lever task controls remain a separate outstanding surface. The staged
 `lever_native.h` Pull wrapper invokes the pinned native factoryfd580,

@@ -41,6 +41,16 @@ func _initialize() -> void:
 	service.reply(reopened,state(0));model.begin_link();service.reply(model.ticket,state(0))
 	model.preview(Vector3i(8,9,10));old=model.ticket;model.cancel_link();service.reply(old,state(1,16))
 	check(model.phase==Model.Phase.Ready and model.target.is_empty(),"Cancelled preview regained authority")
+	model.begin_link();service.reply(model.ticket,state(0))
+	model.click_target(Vector3i(11,12,13));old=model.ticket
+	model.preview(Vector3i(14,15,16));model.click_target(Vector3i(14,15,16))
+	check(model.ticket==old and model.tile==Vector3i(11,12,13),"Explicit click drifted to a later pointer location")
+	service.reply(old,state(1,16));var linked: int=model.ticket
+	check(model.phase==Model.Phase.Applying and service.pending[linked][0].lever_x==11,"Fast click did not apply its resolved target")
+	service.reply(linked,state(3,16))
+	model.begin_link();service.reply(model.ticket,state(0));model.click_target(Vector3i(2,3,4));old=model.ticket
+	service.reply(old,state(1))
+	check(model.phase==Model.Phase.Ready and model.ticket==0 and service.next==old,"Non-target click created work or retained Link mode")
 	model.pull();old=model.ticket;service.session_changed.emit();service.reply(old,state(2))
 	check(model.phase==Model.Phase.Unavailable and model.building_id==-1,"Old-session receipt reopened the lever")
 	model.dispose();print("LEVER_STATE_PASS" if not failed else "LEVER_STATE_FAIL");quit(1 if failed else 0)

@@ -124,10 +124,8 @@ inline std::optional<std::vector<DepotItemDistance>> depotUnassignedGoods(df::bu
 struct DepotGoodsRow {int32_t id=-1,distance=0,value=0;int8_t tag=0;bool prohibited=false;};
 struct DepotGoodsGroup {int16_t type=-1,subtype=-1,subcat1=-1,subcat2=-1;int32_t amount=0;bool expanded=false;};
 struct DepotGoods {std::vector<DepotGoodsRow> rows;std::vector<DepotGoodsGroup> groups;};
-inline std::optional<DepotGoods> depotGoods(df::building* building) {
-    auto unassigned=depotUnassignedGoods(building);if(!unassigned)return {};
-    auto* depot=virtual_cast<df::building_tradedepotst>(building);auto* world=df::global::world;
-    if(!depot || !world || depot->contained_items.size()>1048576 || depot->jobs.size()>1048576 || world->mandates.all.size()>1048576)return {};
+inline bool depotGoodsValuesReady() {
+    if(!depotNativeReady())return false;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool ready=[&] {
         auto hash=[&](size_t rva,size_t length){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<length;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;};
@@ -135,7 +133,13 @@ inline std::optional<DepotGoods> depotGoods(df::building* building) {
             hash(0xc66020,0x12e)==UINT64_C(0xfe0378c306832ca2) &&
             hash(0xac9c30,0x50a)==UINT64_C(0x7fbce42d6c033414);
     }();
-    if(!ready)return {};
+    return ready;
+}
+inline std::optional<DepotGoods> depotGoods(df::building* building) {
+    auto unassigned=depotUnassignedGoods(building);if(!unassigned)return {};
+    auto* depot=virtual_cast<df::building_tradedepotst>(building);auto* world=df::global::world;
+    if(!depot || !world || depot->contained_items.size()>1048576 || depot->jobs.size()>1048576 || world->mandates.all.size()>1048576 || !depotGoodsValuesReady())return {};
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     std::vector<df::item*> pending;
     for(auto it=depot->jobs.rbegin();it!=depot->jobs.rend();++it) {
         auto* job=*it;if(!job)return {};

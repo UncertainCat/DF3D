@@ -145,6 +145,45 @@ inline std::optional<std::string> depotGroupCaption(int16_t type,int16_t subtype
     reinterpret_cast<void(*)(std::string*)>(base+0x52d650)(&caption);
     return caption;
 }
+// Native38be7b..38bebc displays direct resolved references in reference order.
+// Count semantics at38c24b..38c29c are gated by the semantic container flag.
+inline std::optional<std::vector<int32_t>> depotContainerIds(df::item* item) {
+    if(!item || item->general_refs.size()>1048576)return {};
+    std::vector<int32_t> ids;
+    if(!item->flags.bits.container)return ids;
+    for(auto* ref:item->general_refs){if(!ref)return {};
+        if(ref->getType()==df::general_ref_type::CONTAINS_ITEM)
+            if(auto* child=ref->getItem()){if(child->id<0)return {};ids.push_back(child->id);}
+    }
+    return ids;
+}
+struct DepotContainedItem {
+    int32_t id=-1,type=-1,containedCount=0,value=0;bool prohibited=false;
+    std::string caption,valueCaption;
+};
+struct DepotContainerPage {int32_t total=0;std::vector<DepotContainedItem> items;};
+// Safe-point, pointer-free projection. The caller validates parent membership
+// in the current depot goods source. No child is a separate hauling intent.
+inline std::optional<DepotContainerPage> depotContainerPage(df::item* parent,int32_t offset,int32_t limit,int32_t appraisal) {
+    if(!parent || offset<0 || limit<1 || limit>64 || appraisal<0 || !depotGoodsValuesReady() ||
+        !df::global::world || df::global::world->mandates.all.size()>1048576 || !depotGroupCaption(int16_t(parent->getType())))return {};
+    const auto ids=depotContainerIds(parent);if(!ids || size_t(offset)>ids->size())return {};
+    DepotContainerPage result;result.total=int32_t(ids->size());
+    const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+    df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    for(size_t i=size_t(offset);i<std::min(ids->size(),size_t(offset)+size_t(limit));++i){
+        auto* child=df::item::find((*ids)[i]);if(!child)return {};
+        const auto nested=depotContainerIds(child);if(!nested)return {};
+        DepotContainedItem row;row.id=child->id;row.type=int32_t(child->getType());row.containedCount=int32_t(nested->size());
+        reinterpret_cast<void(*)(df::item*,std::string*,bool,int32_t)>(base+0xc65450)(child,&row.caption,false,-1);
+        row.value=reinterpret_cast<int32_t(*)(df::item*,void*,void*,bool,bool)>(base+0xc66020)(child,nullptr,nullptr,false,false);
+        const auto caption=depotValueCaption(row.value,appraisal);if(!caption)return {};row.valueCaption=*caption;
+        for(auto* mandate:df::global::world->mandates.all)if(mandate && int(mandate->mode)==0 &&
+            reinterpret_cast<bool(*)(df::mandate*,df::item*)>(base+0xe5d5b0)(mandate,child)){row.prohibited=true;break;}
+        result.items.push_back(std::move(row));
+    }
+    return result;
+}
 // Native37a0a0 selects/sorts a category,37cd50 searches owned group/item names,
 //37d9c0 aggregates selection flags. None reads the global picker or window size.
 // Do not substitute37ba00: its category-list scroll tail reads native geometry.

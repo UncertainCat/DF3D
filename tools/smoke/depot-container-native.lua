@@ -1,6 +1,7 @@
 -- Diagnostic-only native container expansion oracle in a paused disposable save.
 local view,b,capture,click=...
 local gui=require('gui')
+local json=require('json')
 local menu=df.global.game.main_interface.assign_trade
 local frame=df.global.world.frame_counter
 assert(menu.open and #b.jobs==0 and menu.item_filter=='')
@@ -69,6 +70,36 @@ local initial_height=menu.i_height
 click(500,4+(cell-menu.scroll_position_item)*12+12)
 sample('expanded')
 assert(current().expanded_container and menu.i_height==initial_height+3*#initial_children,'Container click/height differs')
+if os.getenv('DF3D_DEPOT_CONTAINER_PROVIDER')=='1' then
+ local function probe(parent,offset,limit,expect_ok)
+  local text,code=dfhack.run_command_silent('df3d','depot-container-probe',tostring(b.id),tostring(parent),tostring(offset),tostring(limit))
+  if expect_ok then assert(code==0,text);return json.decode(text)end
+  assert(code~=0,'Malformed/foreign contents request accepted')
+ end
+ local all=probe(id,0,64,true)
+ assert(all.total==#initial_children and #all.items==#initial_children and all.appraisal==0)
+ view:render(dfhack.getTickCount())
+ for i,row in ipairs(all.items)do
+  assert(row.id==initial_children[i].id and row.type==initial_children[i].type and row.value_caption=='')
+  assert(row.contained_count==#children(df.item.find(row.id)))
+  local native=dfhack.utf2df(row.caption);local chars={}
+  local y=cell-menu.scroll_position_item+3*i+1
+  assert(y<df.global.gps.dimy-5,'Child not visible for caption comparison')
+  for x=54,54+#native-1 do chars[#chars+1]=string.char(dfhack.screen.readTile(x,y).ch)end
+  assert(table.concat(chars)==native,'Native child caption differs: '..row.caption)
+ end
+ local offset=0
+ while offset<all.total do
+  local page=probe(id,offset,3,true);assert(page.total==all.total)
+  assert(#page.items==math.min(3,all.total-offset))
+  for i,row in ipairs(page.items)do assert(row.id==all.items[offset+i].id and row.caption==all.items[offset+i].caption and row.value==all.items[offset+i].value)end
+  offset=offset+#page.items
+ end
+ assert(#probe(id,all.total,3,true).items==0)
+ probe(id,all.total+1,3,false);probe(id,0,0,false);probe(id,0,65,false)
+ probe(initial_children[1].id,0,3,false)
+ result.provider={matched=all.total,pages=math.ceil(all.total/3),bounds_rejected=true,child_as_parent_rejected=true,items=all.items}
+end
 click(500,4+(cell-menu.scroll_position_item+3)*12+12)
 sample('child-click')
 assert(current().expanded_container and menu.i_height==initial_height+3*#initial_children,'Child row changed expansion')
@@ -85,4 +116,8 @@ click(500,4+(cell-menu.scroll_position_item)*12+12)
 sample('restored')
 assert(not current().expanded_container and menu.i_height==initial_height)
 select_type(df.item_type.ANVIL)
+-- Native category navigation retains search focus. Restore the initial focus
+-- through its actual toggle before handing back to other picker checks.
+if menu.entering_item_filter then click(500,94)end
+assert(not menu.entering_item_filter)
 return result

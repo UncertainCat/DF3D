@@ -60800,6 +60800,128 @@
           "build/stockpile-storage-native-farm-discovery-20261115-163134/depot-container-returned-category.png": "06b0ebcabe505e13f35976ebf5431b2243487ad92b5b3d0d340d41d9ac672f5a",
           "build/stockpile-storage-native-farm-discovery-20261115-163134/depot-container-searched.png": "fafe9ca6ac18bc3fee179682eff722f0960c772037b0ca7cdf1101be7ac84c38"
         }
+      },
+      "depot_goods_container_provider_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-163641",
+        "owned_df_pid": 36872,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Native helper matches ten visible child captions and IDs/types/counts, four paginated reads and empty end page; rejects oversized/zero page, out-of-range offset and child outside depot master as parent. Native lifecycle and baseline goods/selection provider checks also pass. No broker value-text, positive prohibition, nested/empty container or protocol/viewer acceptance.",
+        "provider": {
+          "bounds_rejected": true,
+          "child_as_parent_rejected": true,
+          "items": [
+            {
+              "caption": "(sphalerite blocks)",
+              "contained_count": 0,
+              "id": 7565,
+              "prohibited": false,
+              "type": 2,
+              "value": 10,
+              "value_caption": ""
+            },
+            {
+              "caption": "jet blocks",
+              "contained_count": 0,
+              "id": 1929,
+              "prohibited": false,
+              "type": 2,
+              "value": 5,
+              "value_caption": ""
+            },
+            {
+              "caption": "jet blocks",
+              "contained_count": 0,
+              "id": 1962,
+              "prohibited": false,
+              "type": 2,
+              "value": 5,
+              "value_caption": ""
+            },
+            {
+              "caption": "platinum bars",
+              "contained_count": 0,
+              "id": 21748,
+              "prohibited": false,
+              "type": 0,
+              "value": 200,
+              "value_caption": ""
+            },
+            {
+              "caption": "dolomite blocks",
+              "contained_count": 0,
+              "id": 1207,
+              "prohibited": false,
+              "type": 2,
+              "value": 10,
+              "value_caption": ""
+            },
+            {
+              "caption": "microcline blocks",
+              "contained_count": 0,
+              "id": 39329,
+              "prohibited": false,
+              "type": 2,
+              "value": 5,
+              "value_caption": ""
+            },
+            {
+              "caption": "microcline blocks",
+              "contained_count": 0,
+              "id": 39505,
+              "prohibited": false,
+              "type": 2,
+              "value": 5,
+              "value_caption": ""
+            },
+            {
+              "caption": "microcline blocks",
+              "contained_count": 0,
+              "id": 39485,
+              "prohibited": false,
+              "type": 2,
+              "value": 5,
+              "value_caption": ""
+            },
+            {
+              "caption": "microcline blocks",
+              "contained_count": 0,
+              "id": 39648,
+              "prohibited": false,
+              "type": 2,
+              "value": 5,
+              "value_caption": ""
+            },
+            {
+              "caption": "microcline blocks",
+              "contained_count": 0,
+              "id": 39483,
+              "prohibited": false,
+              "type": 2,
+              "value": 5,
+              "value_caption": ""
+            }
+          ],
+          "matched": 10,
+          "pages": 4
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-163641/depot-goods-native.json": "3a2e15080bea4c265fcb538de2c86f126e2b99bc6d89336979ce860aad0cbc4f",
+          "build/stockpile-storage-native-farm-discovery-20261115-163641/result.json": "46321706a1638d9eb145ce50d10197ae29c4b3f888ae0883a3e927301893d079",
+          "build/stockpile-storage-native-farm-discovery-20261115-163641/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/depot_selection_native.h": "f45a67a3a95e923f94dd691a82fb443d098d86a54dd80774d53baa1b01465ea3",
+          "bridge/plugin/depot_goods_native.h": "88cc041734003e7242de6a0e94dcc57e60dcc0c781a7fb084241f17e8e7a6e94",
+          "bridge/plugin/df3d.cpp": "9fe49528b9d7fb4b760c071c143a315a15c63ac1051a83073d48b60174c34515",
+          "tools/smoke/depot-container-native.lua": "204398aa1ec32ffa21520648c126a00e791ffed28ce90678ea75ca0bdb99cd33",
+          "build/notes/pm/depot-container-bridge.log": "db343b4337d9b6f492d72be6c652e9aaab6940f45c873e22bd0c4feb0c9115d4",
+          "build/stockpile-storage-native-farm-discovery-20261115-163641/depot-container-child-click.png": "b5f45bd3a45ded6728b7990dcf3b775a16837abbf9aaac2af5bc0b4c7f09a354",
+          "build/stockpile-storage-native-farm-discovery-20261115-163641/depot-container-cleared-search.png": "750cae163752923c4b7ee5ad8d51f6f81270700f16927cd863ba4cc17a80ed51",
+          "build/stockpile-storage-native-farm-discovery-20261115-163641/depot-container-expanded.png": "b5f45bd3a45ded6728b7990dcf3b775a16837abbf9aaac2af5bc0b4c7f09a354",
+          "build/stockpile-storage-native-farm-discovery-20261115-163641/depot-container-initial.png": "4d386d88a2e235814ffadd76a32b9da18eafc19c07b1b836ae3bea0ce04a8cb0",
+          "build/stockpile-storage-native-farm-discovery-20261115-163641/depot-container-restored.png": "d4a8e0b13c739a47f1bbc4e9267486cedd24f14c8f14b90d6d43c8c24fc31e8b",
+          "build/stockpile-storage-native-farm-discovery-20261115-163641/depot-container-returned-category.png": "53014e1a9b5615f5604fed2b1c3ca89f296d9e4afb5cc68883aa748c240731b0",
+          "build/stockpile-storage-native-farm-discovery-20261115-163641/depot-container-searched.png": "8325b15e6cc88b2b05366d8be543fd0a5573660506ff65c4ae050ec3692020b6"
+        }
       }
     },
     "pending_construction_reference": {

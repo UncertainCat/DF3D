@@ -93,11 +93,30 @@ the height leaf adds3*container_amount for expanded rows. Renderer38be7b..38bebc
 enumerates resolved CONTAINS_ITEM references in their existing order, one level
 deep. Child descriptions use c65450; child values use c66020 and77f920. Nested
 content counts use resolved direct references gated by the child's container
-flag. These are semantic item inputs, not native menu state. DF3D still needs
-pointer-free counts/child details and local per-item expansion retained across
-category/search changes. This capture establishes native behavior only; nested
-and empty containers, DF3D rendering, transport and main-scene acceptance remain
-unfinished.
+flag. These are semantic item inputs, not native menu state.
+
+`depotContainerIds` and `depotContainerPage` now provide owned IDs and bounded
+pages of up to64 child details. They preserve reference order and call the
+native description/value/mandate leaves with semantic item inputs. Their caller
+must validate the parent against the current depot goods source; children are
+not separate hauling intents. Each page includes the current total and child
+type, nested count, description, numeric value, appraisal caption and prohibition
+fact. No pointers escape the safe point. Protocol235 does not yet carry these
+fields. Viewer transport and local per-item expansion retained across category/
+search changes remain unfinished, as do nested/empty-container, rendered and
+main-scene acceptance.
+
+Protected163641 verifies ten visible child captions against native screen text,
+plus IDs/types/counts, four paginated reads, an empty end page and rejection of
+zero/oversized pages, an out-of-range offset and a child outside the depot master
+used as a parent. The existing goods/selection comparisons and seven container
+lifecycle states pass together. Owned DF36872 closes unsaved/source-preserved at
+30FPS, sampled GPU49C; bridge build and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_goods_container_provider_reference`.
+Broker value text, positive prohibition and nested/empty-container cases are not
+covered by this run. Initial163526 is excluded: the container test left native
+search focused, causing the following test's search click to toggle focus off.
+The final harness releases that focus through its actual button before returning.
 
 Protected160300 on2026-11-15 captures six native states: initial9 cells,
 collapsed3, searched3, cleared-search3, category-return9 and restored9. Master

@@ -4943,6 +4943,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         output["ordinary_color"]=Json::Value(Json::arrayValue);for(auto color:facts->ordinaryColor)output["ordinary_color"].append(int(color));
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="depot-container-probe") {
+        if(parameters.size()!=5)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        int32_t values[4]={-1,-1,-1,-1};
+        for(size_t i=1;i<5;++i){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<0)return CR_WRONG_USAGE;}
+        const auto goods=df3d_production::depotGoods(df::building::find(values[0]));if(!goods)return CR_FAILURE;
+        if(std::none_of(goods->rows.begin(),goods->rows.end(),[&](const auto& row){return row.id==values[1];}))return CR_FAILURE;
+        const auto appraisal=df3d_production::depotAppraisal();if(!appraisal)return CR_FAILURE;
+        const auto page=df3d_production::depotContainerPage(df::item::find(values[1]),values[2],values[3],*appraisal);if(!page)return CR_FAILURE;
+        Json::Value output;output["total"]=page->total;output["appraisal"]=*appraisal;output["items"]=Json::arrayValue;
+        for(const auto& row:page->items){Json::Value item;item["id"]=row.id;item["type"]=row.type;item["contained_count"]=row.containedCount;item["value"]=row.value;item["prohibited"]=row.prohibited;item["caption"]=DF2UTF(row.caption);item["value_caption"]=DF2UTF(row.valueCaption);output["items"].append(item);}
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="depot-selection-probe") {
         if(parameters.size()!=7 && parameters.size()!=9)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;

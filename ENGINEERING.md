@@ -71,6 +71,28 @@ retained paging is connected; no partial list is published. Large-list acceptanc
 nondefault sorting, item artwork, container expansion, draft/commit authority
 and the rendered interactive viewer remain unfinished.
 
+The staged `depot_goods_state.gd` controller owns category navigation, queued
+search input, options, bounded item-detail requests and viewport projection.
+Filtering, captions, order and expansion defaults come from native snapshots.
+Each read retires the prior source; close/session replacement detach tickets
+and reject late callbacks. A filtered-out category remains selected, and an
+empty selected item list suppresses even matching abstract group rows.
+No hauling edit or local expansion action is exposed.
+
+Protected144747 on2026-11-15 verifies this controller through the actual semantic
+service against all nine native cases above, including exact source revisions,
+categories, groups and requested details. A submitted read completes after
+closing without reviving the picker. Owned DF47892 closes unsaved with source
+preservation, native30FPS and sampled GPU50–51C. Headless clients report only
+the known rendering-thread notice. Evidence:
+`completed_sheet_discovery_reference.depot_goods_controller_reference`.
+The asset-free controller test also covers queued searches, viewport bounds,
+invalid detail requests, session replacement and malformed replies; it is in
+the core QA manifest. All19 CTest checks pass. Initial144641 is not acceptance:
+its test waited a fixed100ms after detaching, then collided with the outstanding
+read. The corrected harness waits for that ticket's terminal receipt.
+This establishes controller/transport behavior, not rendered picker acceptance.
+
 ## Depot transport migration
 
 Management protocol231 adds an optional `DepotBodySnapshot` to completed building

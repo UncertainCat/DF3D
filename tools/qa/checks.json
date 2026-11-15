@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "depot_goods_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/depot_goods_state_test.gd",
+      "completion": "^PASS depot goods state$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "justice_state_test",
       "lane": "core",
       "kind": "godot",

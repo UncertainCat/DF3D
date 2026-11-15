@@ -58847,6 +58847,96 @@
           "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-prohibited.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
           "build/stockpile-storage-native-farm-discovery-20261115-143812/depot-goods-wire-restored-anvils.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
         }
+      },
+      "depot_goods_controller_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-144747",
+        "owned_df_pid": 47892,
+        "protocol": 232,
+        "scope": "Nine separately handshaken native-to-Godot cases also exercise depot_goods_state through semantic_action_service: initial catalog, selected category, search, exclusion and explicit details match native snapshots; exact revisions retained. Closing a submitted read waits for its detached terminal receipt and leaves the controller closed. Headless controller acceptance only; no rendered viewer, edits, retained paging, artwork, container expansion or nondefault sort acceptance.",
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "cases": [
+          {
+            "label": "anvils",
+            "groups": 1,
+            "details": 2,
+            "success": true
+          },
+          {
+            "label": "bags",
+            "groups": 4,
+            "details": 10,
+            "success": true
+          },
+          {
+            "label": "bars",
+            "groups": 4,
+            "details": 64,
+            "success": true
+          },
+          {
+            "label": "iron",
+            "groups": 4,
+            "details": 64,
+            "success": true
+          },
+          {
+            "label": "restored-anvils",
+            "groups": 1,
+            "details": 2,
+            "success": true
+          },
+          {
+            "label": "pending",
+            "groups": 1,
+            "details": 2,
+            "success": true
+          },
+          {
+            "label": "delivered",
+            "groups": 1,
+            "details": 2,
+            "success": true
+          },
+          {
+            "label": "prohibited",
+            "groups": 1,
+            "details": 2,
+            "success": true
+          },
+          {
+            "label": "excluded",
+            "groups": 1,
+            "details": 0,
+            "success": true
+          }
+        ],
+        "diagnostics": "passed_with_known_issues: rendering-thread notice",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-native.json": "c67b0b1dd678ed49394f77939d0353231d16ff4cd811aa6ff7d70eaa8579c7b9",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/result.json": "d2d001266925b7f48d7a179f250f9a16a33fad5d221dd5a45ea80b996465e53f",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-anvils-result.json": "4edd77ebd38f54f0c66b05131456be9197f49e28c36c424e8ee9fcb4b14e82b9",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-bags-result.json": "764bbfe11c37526e4132c7553b60bbaefc3934221bff32052f6aaa37b7dcb8d2",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-bars-result.json": "3925b76b021f2476d4b0eacd99ff1a60fda4dd0e57947cd8c14c33e7b7fb8178",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-delivered-result.json": "8db670628fcadcd212d550c26b3c74d8c9feae9b72f5b93a4d76517b5935426a",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-excluded-result.json": "c301ded67cbcfd0ea030796beff01508551175ed1be63df47a12281adead51e3",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-iron-result.json": "faf21a3353d475380d8d3e523326a23be5a344b6a358deb886d7bdc89a9ddb9d",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-pending-result.json": "f013e23fcd0bea20815fe0efca244da81463b6e214eb2ec2332477c9d0335939",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-prohibited-result.json": "a501132093c1e7faff3de8130e21818c1185dbe032932e05fdd3d5c44fb2d9a1",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-restored-anvils-result.json": "87b2438bccad85d0337fbd396d6a84c984175516f837ccfb7770e0c4b9e4e623",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-anvils.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-bags.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-bars.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-delivered.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-excluded.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-iron.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-pending.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-prohibited.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-144747/depot-goods-wire-restored-anvils.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "presentations/godot/project/scripts/depot_goods_state.gd": "e66ad3801ac8ef03905fef2205bdf3e858f944ba312e6b16b673dc8a5127d1a5",
+          "presentations/godot/project/tests/depot_goods_wire_live.gd": "1d397d0ebc7e7e0a2f96facd4bfe3b21b5432091a14318d6e0f5efbf02a47048"
+        }
       }
     },
     "pending_construction_reference": {

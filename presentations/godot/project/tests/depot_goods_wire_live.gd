@@ -1,4 +1,35 @@
 extends "res://tests/machinery_wire_live.gd"
+const GoodsModel=preload("res://scripts/depot_goods_state.gd")
+func settle_goods(model,service) -> bool:
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline and model.phase==GoodsModel.Phase.Reading:
+		world.poll();service.poll(0.01);await create_timer(0.01).timeout
+	return check(model.phase==GoodsModel.Phase.Ready,"Depot controller did not settle: "+str(model.last_result))
+func verify_controller(intent: Dictionary,snapshot: Dictionary) -> void:
+	var service=preload("res://scripts/semantic_action_service.gd").new()
+	root.add_child(service);service.configure(world,true);service.set_process(false)
+	var model=GoodsModel.new();model.configure(service);model.open(intent.depot_id)
+	if await settle_goods(model,service):
+		model.select_category(intent.category)
+		if await settle_goods(model,service):
+			model.set_query(intent.query)
+			if await settle_goods(model,service):
+				model.set_options(intent.sort_by_distance,intent.pending_on_top,intent.exclude_prohibited)
+				if await settle_goods(model,service):
+					model.request_items(intent.item_ids)
+					if await settle_goods(model,service):
+						check(model.category==snapshot.category and model.revision==snapshot.revision,"Controller source identity differs")
+						check(model.categories==snapshot.categories and model.groups==snapshot.groups,"Controller projection differs from native")
+						check(model.items.size()==snapshot.items.size(),"Controller detail count differs")
+						for row in snapshot.items:check(model.items.get(row.id)==row,"Controller detail differs")
+						if intent.exclude_prohibited and snapshot.groups.all(func(row):return row.item_ids.is_empty()):check(model.row_count()==0,"Controller exposed native empty-list groups")
+	model.close();model.open(intent.depot_id);var retired: int=model.ticket;service.poll(0.01);model.close()
+	var deadline:=Time.get_ticks_msec()+5000
+	while service.result(retired).is_empty() and Time.get_ticks_msec()<deadline:
+		world.poll();service.poll(0.01);await create_timer(0.01).timeout
+	check(service.result(retired).get("status")==C.ManagementStatus.Ok,"Detached depot read did not finish")
+	check(model.phase==GoodsModel.Phase.Closed and model.groups.is_empty(),"Late depot reply revived closed picker")
+	model.dispose();service.queue_free();await process_frame
 func integers(value):
 	if value is float:return int(value)
 	if value is Array:
@@ -35,6 +66,7 @@ func run() -> void:
 		var overview:=await request("depot_goods",categories)
 		var value: Dictionary=overview.get("depot_goods",{})
 		check(value.get("categories")==snapshot.categories and value.get("revision")==snapshot.revision and value.get("groups")==[] and value.get("items")==[],"Depot category-only read differs")
+		await verify_controller(intent,snapshot)
 	for patch in [{"depot_id":2147483647},{"item_ids":[2147483647]}]:
 		var invalid: Dictionary=intent.duplicate(true);invalid.merge(patch,true)
 		var rejection:=await request("depot_goods",invalid)

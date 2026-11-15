@@ -148,6 +148,14 @@ struct IndependentItemState {
   std::optional<BuildingItemReceipt> edit;
   df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
 };
+struct DoorControlsSnapshot {
+  int32_t id=-1;uint64_t revision=0;
+  bool forbidden=false,closed=false,takenByInvaders=false,usedByIntruder=false,operatedByMechanisms=false;
+};
+struct DoorControlsState {
+  std::optional<DoorControlsSnapshot> snapshot;
+  df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
+};
 struct BuildingHeaderSnapshot {
   int32_t id=-1,type=-1,stage=-1,maxStage=-1;uint64_t revision=0;
   std::string customName,nativeName,headerName;
@@ -183,6 +191,7 @@ struct ProductionState {
   std::vector<ProductionTaskCategory> taskCategories;
   std::optional<WorkshopOrdersState> workshopOrders;
   std::optional<WorkshopWorkersState> workshopWorkers;
+  std::optional<DoorControlsState> doorControls;
   std::optional<BuildingHeaderState> buildingHeader;
   std::optional<IndependentItemState> independentItem;
   std::optional<ItemPosition> itemPosition;

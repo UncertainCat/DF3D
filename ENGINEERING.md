@@ -9714,6 +9714,16 @@ buildings are rejected by the staged destination. These paths do not establish
 native building-sheet coverage. The next routing work must supply the missing
 building controls and pending-construction destination before promotion.
 
+Management protocol215 adds optional DoorControlsState and exclusive
+door_controls requests to production inspection/edit transport. Observations
+carry a stable building ID, exact revision, forbidden/closed state and separate
+invader, intruder and mechanism control facts. Edits require the observed
+revision and explicit desired forbidden state. Rejected, stale and unknown
+outcomes carry no authoritative snapshot. Old recordings imply no door-controls
+observation. Both schema defaults and mailbox are215
+(`Local\\df3d_management_v215`); rebuild bridge and client together.
+This transport change alone does not expose a door panel.
+
 Basic building discovery: protected203229 and203340 on2026-11-14 capture
 completed Door16 and unfinished Statue965. The door has native Passable text,
 Forbid/Passable controls, rename/removal, and the existing component-item area.

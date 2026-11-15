@@ -9,6 +9,42 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("door control transport separates read and edit authority") {
+  for(bool edit:{false,true})for(int fault=0;fault<10;++fault) {
+    wm::ManagementRequest r;r.action=edit?wm::ManagementAction::FarmEdit:wm::ManagementAction::ProductionInspect;
+    auto& p=r.production;p.doorControls=true;p.buildingId=16;
+    if(edit){p.expectedRevision=9007199254740993ULL;p.doorForbidden=1;}
+    if(fault==1)p.buildingId=-1;
+    if(fault==2)p.expectedRevision=edit?0:1;
+    if(fault==3)p.doorForbidden=edit?2:0;
+    if(fault==4)p.buildingHeader=true;
+    if(fault==5)p.workshopOrders=true;
+    if(fault==6)p.contentsItemId=1;
+    if(fault==7)p.taskCategory="category";
+    if(fault==8)p.doorControls=false,p.doorForbidden=0;
+    if(fault==9)r.action=wm::ManagementAction::ProductionQueue;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(edit);CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){CHECK(value->production()->door_controls());CHECK(value->production()->expected_revision()==p.expectedRevision);}
+  }
+  for(bool edit:{false,true})for(int fault=0;fault<7;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto snapshot=wire::CreateDoorControlsSnapshot(b,16,fault==1?0:9007199254740993ULL,true,true,true,false,true);
+    const auto door=wire::CreateDoorControlsState(b,fault==2?0:snapshot,
+      fault==3?wire::FarmEditOutcome::Unknown:edit?wire::FarmEditOutcome::Completed:wire::FarmEditOutcome::None);
+    wire::ProductionStateBuilder p(b);p.add_door_controls(door);if(fault==4)p.add_selected_building(16);
+    const auto payload=p.Finish();wire::ManagementStateBuilder s(b);s.add_revision(1);s.add_production(payload);
+    s.add_action(fault==5?wire::ManagementAction::ProductionList:edit?wire::ManagementAction::FarmEdit:wire::ManagementAction::ProductionInspect);
+    s.add_status(fault==6?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);b.Finish(s.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CAPTURE(edit);CAPTURE(fault);CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){const auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.doorControls);REQUIRE(decoded.doorControls->snapshot);
+      CHECK(decoded.doorControls->snapshot->revision==9007199254740993ULL);CHECK(decoded.doorControls->snapshot->forbidden);
+      CHECK(decoded.doorControls->snapshot->takenByInvaders);CHECK_FALSE(decoded.doorControls->snapshot->usedByIntruder);CHECK(decoded.doorControls->snapshot->operatedByMechanisms);}
+  }
+}
+
 TEST_CASE("workshop Move up requires a distinct predecessor and an exclusive job edit") {
   for(int fault=0;fault<10;++fault) {
     wm::ManagementRequest r;r.action=wm::ManagementAction::ProductionJobEdit;

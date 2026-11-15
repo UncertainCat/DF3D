@@ -266,6 +266,7 @@ struct AreaState {
   int32_t paintedCount=-1,previewCount=-1;
 };
 struct ProductionRequest {
+  bool doorControls=false;int8_t doorForbidden=-1;
   int32_t itemId=-1;int8_t itemValue=-1;
   int32_t contentsItemId=-1;
   bool contents=false,locateItem=false,independentItem=false,buildingHeader=false,workshopWorkers=false;
@@ -390,6 +391,14 @@ struct IndependentItemState {
   std::optional<BuildingItemReceipt> edit;
   FarmEditOutcome outcome=FarmEditOutcome::None;
 };
+struct DoorControlsSnapshot {
+  int32_t id=-1;uint64_t revision=0;
+  bool forbidden=false,closed=false,takenByInvaders=false,usedByIntruder=false,operatedByMechanisms=false;
+};
+struct DoorControlsState {
+  std::optional<DoorControlsSnapshot> snapshot;
+  FarmEditOutcome outcome=FarmEditOutcome::None;
+};
 struct BuildingHeaderSnapshot {
   int32_t id=-1,type=-1,stage=-1,maxStage=-1;uint64_t revision=0;
   std::string customName,nativeName,headerName;
@@ -425,6 +434,7 @@ struct ProductionState {
   std::vector<ProductionTaskCategory> taskCategories;
   std::optional<WorkshopOrdersState> workshopOrders;
   std::optional<WorkshopWorkersState> workshopWorkers;
+  std::optional<DoorControlsState> doorControls;
   std::optional<BuildingHeaderState> buildingHeader;
   std::optional<IndependentItemState> independentItem;
   std::optional<ItemPosition> itemPosition;

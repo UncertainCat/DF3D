@@ -234,6 +234,14 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     }
     v["rows"]=rows;prod["workshop_workers"]=v;
   }
+  if(p.doorControls) {
+    const auto& state=*p.doorControls;Dictionary door;door["outcome"]=int(state.outcome);
+    if(state.snapshot){const auto& f=*state.snapshot;Dictionary value;
+      value["id"]=f.id;value["revision"]=int64_t(f.revision);value["forbidden"]=f.forbidden;
+      value["closed"]=f.closed;value["taken_by_invaders"]=f.takenByInvaders;value["used_by_intruder"]=f.usedByIntruder;
+      value["operated_by_mechanisms"]=f.operatedByMechanisms;value["controlled"]=f.takenByInvaders || f.usedByIntruder || f.operatedByMechanisms;door["snapshot"]=value;}
+    prod["door_controls"]=door;
+  }
   if(p.buildingHeader) {
     const auto& state=*p.buildingHeader;Dictionary headerState;headerState["outcome"]=int(state.outcome);headerState["operation"]=int(state.operation);
     if(state.snapshot) {
@@ -678,6 +686,9 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.contentsItemId=int32_t(n("contents_item_id",-1,-1,INT32_MAX));
   if(data.has("workshop_workers") && data["workshop_workers"].get_type()!=Variant::BOOL){error="Wrong management field type: workshop_workers";return false;}
   if(data.has("building_header") && data["building_header"].get_type()!=Variant::BOOL){error="Wrong management field type: building_header";return false;}
+  if(data.has("door_controls") && data["door_controls"].get_type()!=Variant::BOOL){error="Wrong management field type: door_controls";return false;}
+  if(data.has("door_forbidden") && data["door_forbidden"].get_type()!=Variant::INT){error="Wrong management field type: door_forbidden";return false;}
+  value.doorControls=data.get("door_controls",false);value.doorForbidden=int8_t(n("door_forbidden",-1,-1,1));
   value.buildingHeader=data.get("building_header",false);
   if(data.has("workshop_orders") && data["workshop_orders"].get_type()!=Variant::BOOL){error="Wrong management field type: workshop_orders";return false;}
   value.workshopOrders=data.get("workshop_orders",false);

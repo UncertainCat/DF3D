@@ -184,8 +184,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 214;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v214";
+inline constexpr uint32_t kManagementVersion = 215;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v215";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1001,7 +1001,19 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        (r.action()!=ManagementAction::ProductionJobEdit || p->expected_priority()<0 || p->priority()==p->expected_priority() ||
         p->repeat()!=-1 || p->suspend()!=-1 || p->cancel()))return "invalid priority edit";
     if(!p->workshop_orders() && (p->general_order_delta() || p->general_order_value()!=-1))return "unexpected workshop order step";
-    if(p->workshop_orders()) {
+    if(!p->door_controls() && p->door_forbidden()!=-1)return "unexpected door setting";
+    if(p->door_controls()) {
+      const bool edit=r.action()==ManagementAction::FarmEdit;
+      if((!edit && r.action()!=ManagementAction::ProductionInspect) || p->building_id()<0 ||
+         p->workshop_orders() || p->workshop_workers() || p->building_header() || p->contents() || p->independent_item() || p->locate_item() ||
+         p->worker_id()!=-1 || p->worker_value()!=-1 || p->worker_list_revision() || p->general_order_delta() || p->general_order_value()!=-1 ||
+         p->item_id()!=-1 || p->contents_item_id()!=-1 || p->item_value()!=-1 || p->season()!=-1 || p->crop_id()!=-1 || p->seasonal_fertilization()!=-1 ||
+         p->job_id()!=-1 || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() || p->cursor() || p->farm_name() ||
+         p->priority()!=-1 || p->expected_priority()!=-1 || p->expected_previous_job_id()!=-1 ||
+         p->farm_operation()!=FarmOperation::Crop || (p->recipe() && p->recipe()->size()) || (p->query() && p->query()->size()) ||
+         (p->task_category() && p->task_category()->size()) || p->expected_revision()>INT64_MAX ||
+         (edit ? (!p->expected_revision() || p->door_forbidden()<0 || p->door_forbidden()>1) : (p->expected_revision() || p->door_forbidden()!=-1)))return "invalid door controls intent";
+    } else if(p->workshop_orders()) {
       const bool edit=r.action()==ManagementAction::FarmEdit;
       if((!edit && r.action()!=ManagementAction::ProductionInspect) || p->building_id()<0 ||
          p->workshop_workers() || p->building_header() || p->independent_item() || p->locate_item() || p->contents() ||
@@ -2709,7 +2721,24 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }
   if(s.action()==ManagementAction::FarmEdit && s.status()==ManagementStatus::Ok && !s.production())return "missing farm edit result";
   if (const auto* p=s.production()) {
-    if(const auto* state=p->workshop_orders()) {
+    if(const auto* state=p->door_controls()) {
+      if(p->workshop_orders() || p->workshop_workers() || p->building_header() || p->independent_item() || p->item() || p->item_position() || p->farm() || p->contents() || p->contents_edit() || p->farm_edit_outcome()!=FarmEditOutcome::None ||
+         p->selected_building()!=-1 || p->created_job()!=-1 || p->current_season()!=-1 || p->next_cursor() ||
+         p->task_category() || p->task_categories() || p->task_parent() ||
+         (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) ||
+         (p->jobs() && p->jobs()->size()) || (p->crops() && p->crops()->size()) ||
+         (p->seasonal_crops() && p->seasonal_crops()->size()) || (p->detail() && p->detail()->size()))return "mixed door controls response";
+      const auto* f=state->snapshot();const auto outcome=state->outcome();
+      if(static_cast<uint8_t>(outcome)>4 || (f && (f->id()<0 || !f->revision() || f->revision()>INT64_MAX)))return "invalid door controls snapshot";
+      if(s.action()==ManagementAction::ProductionInspect) {
+        if(outcome!=FarmEditOutcome::None || ((s.status()==ManagementStatus::Ok)!=(f!=nullptr)))return "invalid door controls read";
+      } else if(s.action()==ManagementAction::FarmEdit) {
+        if(outcome==FarmEditOutcome::None)return "missing door controls outcome";
+        if(outcome==FarmEditOutcome::Completed) {
+          if(s.status()!=ManagementStatus::Ok || !f)return "invalid door controls completion";
+        } else if(s.status()==ManagementStatus::Ok || f)return "unconfirmed door controls authority";
+      } else return "unexpected door controls response";
+    } else if(const auto* state=p->workshop_orders()) {
       if(p->workshop_workers() || p->building_header() || p->independent_item() || p->item() || p->item_position() || p->farm() || p->contents() || p->contents_edit() || p->farm_edit_outcome()!=FarmEditOutcome::None ||
          p->selected_building()!=-1 || p->created_job()!=-1 || p->current_season()!=-1 || p->next_cursor() ||
          (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) ||

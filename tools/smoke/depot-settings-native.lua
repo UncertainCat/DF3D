@@ -125,5 +125,9 @@ if os.getenv('DF3D_DEPOT_WIRE')=='1' or os.getenv('DF3D_DEPOT_SCENE')=='1' then
  assert(result.wire.success and sheet.active_id==active and b.trade_flags.whole==original and #b.jobs==0 and df.global.world.frame_counter==frame)
 end
 result.restored=true;result.success=true
+if os.getenv('DF3D_DEPOT_GOODS_NATIVE')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-settings%-native.lua$','depot-goods-native.lua')
+ result.goods=assert(loadfile(source))(out,view,b,capture)
+end
 local f=assert(io.open(out..'/depot-settings-native.json','w'));f:write(json.encode(result));f:close()
 return result

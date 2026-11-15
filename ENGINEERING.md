@@ -901,6 +901,36 @@ finalize and two ObjectDB diagnostics remain. Evidence:
 broker appearance, goods/trade buttons and navigation remain unqualified. Public depot map
 and holder routes remain hidden until those workflows are complete.
 
+### Depot goods native reference and ownership boundary
+
+Protected132602 on2026-11-15 opens Move goods to/from depot through a native
+pointer click on depot54. A temporary Approaching caravan record enables the
+button in the paused disposable clone; it is not a real caravan-arrival test.
+The native picker has33 categories and2009 master goods records. Anvils45 is
+initially selected; distance sorting and pending-on-top start enabled, exclusion
+of prohibited goods starts disabled. The captured first category groups two iron
+anvils with distances6 and34. The reference retains item IDs, native distances,
+tags, prohibition flags and values. Escape closes the picker; the temporary
+caravan is removed, frame0 and depot jobs0 remain unchanged. Owned DF45356 closes
+unsaved with source preservation, native graphics capped30FPS, sampled GPU60C.
+Core19 passes. Initial132515 failed diagnostic export on the incorrect field
+name `item` (native `tradegoodslistst.it`); it is not acceptance. Evidence:
+`completed_sheet_discovery_reference.depot_goods_native_reference`.
+
+Pinned native goods opener36bc30 performs global menu teardown before enumerating
+items, so it is not an admissible runtime API. Its candidate path calls c93160
+and30cc60(item,false), builds tradegoodslistst records, groups through ac9c30,
+then filters through37ba00 and selects/sorts the category through37a0a0. These
+are discovery addresses, not yet qualified runtime calls. The distance flood
+5ae710 writes shared block path-cost storage and a global generation counter;
+the enumeration reads those generated distances. Owned scratch and complete
+helper-call auditing remain required before exposing this behavior. PE unwind
+entries can describe only fragments (notably5ae710 andc93160); do not treat the
+first unwind range as the complete routine for safety or pinning. The legacy
+trade.lua eligibility scan and DFHack markForTrade job assembly are reconstructed
+logic, not native parity evidence. This reference qualifies native layout and
+initial facts only, not DF3D goods rendering, hauling effects or trade exchange.
+
 ## Completed bridge, wagon and traction-bench sheets
 
 Completed Bridge19, Wagon32 and TractionBench45 use the shared native header,

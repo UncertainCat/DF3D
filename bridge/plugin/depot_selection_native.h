@@ -6,6 +6,32 @@
 #include <array>
 
 namespace df3d_production {
+// Semantic world lookup used by native38ab20/38bc44, not picker state. It
+// returns0 without a resolvable broker, otherwise effective Appraisal+1.
+inline bool depotValuationReady() {
+    if(!depotNativeReady() || !df::global::plotinfo || !df::global::world)return false;
+    static const bool ready=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={{0xe64560,0x18d,UINT64_C(0x3932842e403f9b33)},
+            {0x77f920,0x2b0,UINT64_C(0x9ad2d1d0985ca611)}};
+        for(const auto& pin:pins){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<pin.length;++i){h^=base[pin.rva+i];h*=UINT64_C(1099511628211);}if(h!=pin.hash)return false;}
+        return true;
+    }();return ready;
+}
+inline std::optional<int32_t> depotAppraisal() {
+    if(!depotValuationReady())return {};
+    const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+    const auto value=reinterpret_cast<int32_t(*)()>(base+0xe64560)();
+    if(value<0)return {};return value;
+}
+inline std::optional<std::string> depotValueCaption(int32_t value,int32_t appraisal) {
+    if(!depotValuationReady() || appraisal<0)return {};
+    std::string result;if(!appraisal)return result;
+    const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+    reinterpret_cast<void(*)(std::string*,int32_t,int32_t)>(base+0x77f920)(&result,value,appraisal-1);
+    return result;
+}
 // The category initializer and filter contain inline projection logic around
 // native description/matching leaves. Never call their menu/geometry tails.
 inline std::optional<std::vector<int16_t>> depotCategories(const DepotGoods& goods,

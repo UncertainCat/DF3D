@@ -60214,6 +60214,363 @@
           "build/notes/pm/depot-expansion-state.stdout.log": "d87b9c9cc6a6acff7b2a7332fe249ccdcede1142650045bf5cf9ee525e9fe0a7",
           "build/notes/pm/depot-expansion-view.stdout.log": "3d6736539ecf726823768f1755596020eed60c814f746e627fc10762625e02be"
         }
+      },
+      "depot_goods_valuation_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-161400",
+        "owned_df_pid": 44520,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Native semantic appraisal lookup and value formatter agree with visible value text at effective skills0/5/15, using a restored temporary broker/skill fixture. Six distance/value comparisons over194 bins and90 visible captions, plus unassigned/missing-figure/restored cases. Native sorting buttons ignore clicks without a broker. No simulation/jobs changes. Protocol234 does not expose these new fields; viewer sort controls/value display remain unfinished.",
+        "high_value_item": 14481,
+        "high_value": 21697,
+        "samples": [
+          {
+            "label": "unassigned",
+            "category": 45,
+            "appraisal": 0,
+            "sort_by_distance": true,
+            "visible_values": 0,
+            "item_count": 2,
+            "first_ids": [
+              296,
+              28425
+            ],
+            "first_value_bytes": [
+              [],
+              []
+            ],
+            "ordered_ids_sha256": "d96d0b0f0e3e9348f9770098be03b9477e7451897fe6717610804a140a9d647f",
+            "value_bytes_sha256": "643d5437104296e21d906ecb15b2c96ad278f20cfc4af53b12bb6069bd853726"
+          },
+          {
+            "label": "distance-0",
+            "category": 32,
+            "appraisal": 1,
+            "sort_by_distance": true,
+            "visible_values": 15,
+            "item_count": 194,
+            "first_ids": [
+              18249,
+              5757,
+              14710,
+              32240
+            ],
+            "first_value_bytes": [
+              [
+                50,
+                48,
+                48,
+                48,
+                15,
+                63
+              ],
+              [
+                126,
+                49,
+                48,
+                15
+              ],
+              [
+                126,
+                49,
+                48,
+                48,
+                48,
+                15
+              ],
+              [
+                126,
+                49,
+                48,
+                15
+              ]
+            ],
+            "ordered_ids_sha256": "8eaeae9710a334217038243e8c5574b607998e8f00ed81e848e86c8f70475274",
+            "value_bytes_sha256": "d53c51d590e8f489f003c5ef85cd462d40f86cc28ad6f37aae8b3dc421086683"
+          },
+          {
+            "label": "value-0",
+            "category": 32,
+            "appraisal": 1,
+            "sort_by_distance": false,
+            "visible_values": 15,
+            "item_count": 194,
+            "first_ids": [
+              14481,
+              7608,
+              18223,
+              14385
+            ],
+            "first_value_bytes": [
+              [
+                50,
+                48,
+                48,
+                48,
+                15,
+                63
+              ],
+              [
+                50,
+                48,
+                48,
+                48,
+                15,
+                63
+              ],
+              [
+                50,
+                48,
+                48,
+                48,
+                15,
+                63
+              ],
+              [
+                50,
+                48,
+                48,
+                48,
+                15,
+                63
+              ]
+            ],
+            "ordered_ids_sha256": "86366f267be063e6c1e3ef95f990d6fadc98585dacfa58ddfb3e788173455a54",
+            "value_bytes_sha256": "7516d09293d6f14d0e25cacb07705a8ebc29a2b433148b40e61efc280591aefb"
+          },
+          {
+            "label": "distance-5",
+            "category": 32,
+            "appraisal": 6,
+            "sort_by_distance": true,
+            "visible_values": 15,
+            "item_count": 194,
+            "first_ids": [
+              18249,
+              5757,
+              14710,
+              32240
+            ],
+            "first_value_bytes": [
+              [
+                126,
+                54,
+                48,
+                48,
+                48,
+                15
+              ],
+              [
+                49,
+                48,
+                15
+              ],
+              [
+                126,
+                55,
+                48,
+                48,
+                15
+              ],
+              [
+                49,
+                52,
+                15
+              ]
+            ],
+            "ordered_ids_sha256": "8eaeae9710a334217038243e8c5574b607998e8f00ed81e848e86c8f70475274",
+            "value_bytes_sha256": "7759b77b4f61eb5a93cda81545532bb9d0fb289b3ffabcaabecd604803280d8e"
+          },
+          {
+            "label": "value-5",
+            "category": 32,
+            "appraisal": 6,
+            "sort_by_distance": false,
+            "visible_values": 15,
+            "item_count": 194,
+            "first_ids": [
+              14481,
+              7608,
+              18223,
+              14385
+            ],
+            "first_value_bytes": [
+              [
+                56,
+                48,
+                48,
+                48,
+                15,
+                63
+              ],
+              [
+                56,
+                48,
+                48,
+                48,
+                15,
+                63
+              ],
+              [
+                56,
+                48,
+                48,
+                48,
+                15,
+                63
+              ],
+              [
+                56,
+                48,
+                48,
+                48,
+                15,
+                63
+              ]
+            ],
+            "ordered_ids_sha256": "86366f267be063e6c1e3ef95f990d6fadc98585dacfa58ddfb3e788173455a54",
+            "value_bytes_sha256": "1ee608b644a402d34a88d7ff1fec1f8ba4ab12c24d03b59445260b8946cf0832"
+          },
+          {
+            "label": "distance-15",
+            "category": 32,
+            "appraisal": 16,
+            "sort_by_distance": true,
+            "visible_values": 15,
+            "item_count": 194,
+            "first_ids": [
+              18249,
+              5757,
+              14710,
+              32240
+            ],
+            "first_value_bytes": [
+              [
+                54,
+                49,
+                53,
+                55,
+                15
+              ],
+              [
+                49,
+                48,
+                15
+              ],
+              [
+                55,
+                48,
+                50,
+                15
+              ],
+              [
+                49,
+                52,
+                15
+              ]
+            ],
+            "ordered_ids_sha256": "8eaeae9710a334217038243e8c5574b607998e8f00ed81e848e86c8f70475274",
+            "value_bytes_sha256": "da13c040e41017af4588560acf261c2325d739cdc1506fbcab89cf1f2081c949"
+          },
+          {
+            "label": "value-15",
+            "category": 32,
+            "appraisal": 16,
+            "sort_by_distance": false,
+            "visible_values": 15,
+            "item_count": 194,
+            "first_ids": [
+              14481,
+              7608,
+              18223,
+              14385
+            ],
+            "first_value_bytes": [
+              [
+                50,
+                49,
+                54,
+                57,
+                55,
+                15
+              ],
+              [
+                49,
+                56,
+                50,
+                50,
+                50,
+                15
+              ],
+              [
+                49,
+                49,
+                55,
+                50,
+                49,
+                15
+              ],
+              [
+                57,
+                54,
+                53,
+                48,
+                15
+              ]
+            ],
+            "ordered_ids_sha256": "86366f267be063e6c1e3ef95f990d6fadc98585dacfa58ddfb3e788173455a54",
+            "value_bytes_sha256": "11086c01789caa949ad9ec235694eb5b64887d107340b8bb8320870b78eb9b61"
+          },
+          {
+            "label": "missing-figure",
+            "category": 32,
+            "appraisal": 0,
+            "sort_by_distance": true,
+            "visible_values": 0,
+            "item_count": 194,
+            "first_ids": [
+              18249,
+              5757,
+              14710,
+              32240
+            ],
+            "first_value_bytes": [
+              [],
+              [],
+              [],
+              []
+            ],
+            "ordered_ids_sha256": "8eaeae9710a334217038243e8c5574b607998e8f00ed81e848e86c8f70475274",
+            "value_bytes_sha256": "87c38d9eb25c81d60dae6448628a9f08f8e82af33279f3c91d34571cb54a82a8"
+          },
+          {
+            "label": "restored",
+            "category": 45,
+            "appraisal": 0,
+            "sort_by_distance": true,
+            "visible_values": 0,
+            "item_count": 2,
+            "first_ids": [
+              296,
+              28425
+            ],
+            "first_value_bytes": [
+              [],
+              []
+            ],
+            "ordered_ids_sha256": "d96d0b0f0e3e9348f9770098be03b9477e7451897fe6717610804a140a9d647f",
+            "value_bytes_sha256": "643d5437104296e21d906ecb15b2c96ad278f20cfc4af53b12bb6069bd853726"
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-161400/depot-goods-native.json": "24f586cdecd7fa000e89472c05a846ae08db3f0fd32ebfcb7e248b2a3fb47209",
+          "build/stockpile-storage-native-farm-discovery-20261115-161400/result.json": "18f8f330f7b25e83d5af8e3681845d885f9d3bf56f7d352693b1cdec3a2e9673",
+          "build/stockpile-storage-native-farm-discovery-20261115-161400/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/depot_selection_native.h": "02e03e80334b34d557c391f5a99820533f70cc41aef056736fc11f93dc6b297a",
+          "bridge/plugin/depot_goods_read.h": "931aab479159639bdcd52cba7f4f5e68e1d72c7450cdb7842eb5b485d66db776",
+          "bridge/plugin/df3d.cpp": "d3c91c102a9343c96e5f267350fc17324b988874e4709616c802ea21f15cec35",
+          "tools/smoke/depot-valuation-native.lua": "ceaba5c6bc27cbdd72be416868ecc956ccbc731099d4bfdd83a8e1b41bba655d"
+        }
       }
     },
     "pending_construction_reference": {

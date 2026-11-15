@@ -4975,6 +4975,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         for(auto type:*categories){const auto caption=df3d_production::depotGroupCaption(type);if(!caption)return CR_FAILURE;output["category_captions"].append(DF2UTF(*caption));}
         output["item_captions"]=Json::arrayValue;for(const auto& caption:selected->itemCaptions)output["item_captions"].append(DF2UTF(caption));
         output["row_cells"]=selected->rowCells;
+        const auto appraisal=df3d_production::depotAppraisal();if(!appraisal)return CR_FAILURE;
+        output["appraisal"]=*appraisal;output["value_captions"]=Json::arrayValue;
+        for(auto id:selected->ids){const auto at=std::find_if(facts->rows.begin(),facts->rows.end(),[&](const auto& row){return row.id==id;});if(at==facts->rows.end())return CR_FAILURE;
+          const auto caption=df3d_production::depotValueCaption(at->value,*appraisal);if(!caption)return CR_FAILURE;
+          Json::Value bytes=Json::arrayValue;for(unsigned char ch:*caption)bytes.append(int(ch));output["value_captions"].append(bytes);}
         output["tags"]=Json::arrayValue;for(auto tag:selected->tags)output["tags"].append(int(tag));
         if(parameters.size()==9){
           const auto revision=df3d_production::depotGoodsRevision(values[0],*facts);if(!revision)return CR_FAILURE;

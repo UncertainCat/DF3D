@@ -3,9 +3,9 @@
 
 namespace df3d_production {
 struct DepotGoodsCategory {int16_t type=-1;std::string caption;};
-struct DepotGoodsDetail {DepotGoodsRow facts;std::string caption;};
+struct DepotGoodsDetail {DepotGoodsRow facts;std::string caption,valueCaption;};
 struct DepotGoodsRead {
-    int32_t depotId=-1;uint64_t revision=0;int16_t category=-1;
+    int32_t depotId=-1;uint64_t revision=0;int16_t category=-1;int32_t appraisal=0;
     std::vector<DepotGoodsCategory> categories;
     std::vector<DepotSelectedGroup> groups;
     std::vector<DepotGoodsDetail> items;
@@ -35,6 +35,7 @@ inline std::optional<DepotGoodsRead> readDepotGoods(df::building* building,int16
     const auto available=depotFacts(building);if(!available || !available->goods)return {};
     const auto goods=depotGoods(building);if(!goods)return {};
     DepotGoodsRead result;result.depotId=building->id;result.category=category;
+    const auto appraisal=depotAppraisal();if(!appraisal)return {};result.appraisal=*appraisal;
     const auto revision=depotGoodsRevision(building->id,*goods);if(!revision)return {};result.revision=*revision;
     if((expectedRevision && expectedRevision!=*revision) || (!expectedRevision && (!draft.empty() || !sortDraft.empty())))return {};
     if(category==-1 && (!depotDraftTags(*goods,draft) || !depotDraftTags(*goods,sortDraft)))return {};
@@ -49,7 +50,8 @@ inline std::optional<DepotGoodsRead> readDepotGoods(df::building* building,int16
         if(at==selection->ids.end())return {};
         const auto row=std::find_if(goods->rows.begin(),goods->rows.end(),[&](const auto& value){return value.id==id;});
         if(row==goods->rows.end())return {};
-        result.items.push_back({*row,selection->itemCaptions[size_t(at-selection->ids.begin())]});
+        auto valueCaption=depotValueCaption(row->value,*appraisal);if(!valueCaption)return {};
+        result.items.push_back({*row,selection->itemCaptions[size_t(at-selection->ids.begin())],std::move(*valueCaption)});
         result.items.back().facts.tag=selection->tags[size_t(at-selection->ids.begin())];
     }
     result.groups=std::move(selection->groups);

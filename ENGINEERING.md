@@ -66,6 +66,30 @@ cover search/draft retention and category reset. Headless/rendered checks have
 no diagnostics, and all19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_goods_group_expansion_reference`.
 
+Native depot sorting controls and value text are gated by semantic lookup
+e64560:0 means no resolvable broker, otherwise it returns effective Appraisal+1.
+The lookup scans TRADE assignments from the end and resolves historical figures
+and units; it is distinct from the depot header's first-assignment broker lookup.
+`depotAppraisal` calls this native leaf, and `depotValueCaption` calls77f920 with
+the raw native value and effective skill. The formatter owns approximation,
+uncertainty marks and the CP437 currency glyph; DF3D must not reconstruct them.
+The owned read producer retains appraisal and per-item value captions internally;
+protocol234 does not expose them yet. There is no native menu input or mutation.
+
+Protected161400 on2026-11-15 verifies absent/missing/restored brokers and effective
+skills0/5/15 with a temporary, fully restored broker/skill fixture. Native clicks
+switch between distance and value order across194 bins; provider IDs match each
+time, and90 visible value captions match the formatter byte-for-byte. Controls
+ignore clicks without appraisal knowledge. The highest candidate value is21697.
+An item scrollbar shifts all header controls16 pixels left; initial161239 used
+the no-scrollbar button positions, clicked Value while expecting Distance, and
+is excluded from acceptance. Corrected hitboxes derive that offset from native
+list height. Owned DF44520 closes unsaved with source preservation, native30FPS
+and sampled GPU49C. Bridge build and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_goods_valuation_reference`.
+This qualifies the semantic leaves and native controls, not their still-pending
+Godot transport, value rendering, header layout or tooltip integration.
+
 ## Depot goods commit transport migration
 
 Management protocol233 adds `DepotGoodsCommit` in the `depot_goods` domain.

@@ -10,13 +10,13 @@ namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
 TEST_CASE("pending header artwork validates native recipe references") {
-  for(int fault=0;fault<5;++fault) {
+  for(int fault=0;fault<8;++fault) {
     flatbuffers::FlatBufferBuilder b;
     std::vector<wire::AppearanceLayer> layers;
     if(fault!=1)layers.emplace_back(fault==2?1:0,3,4,1,1,65535,-1,-1,0,0);
     const auto icon=wire::CreateSelectionAppearance(b,b.CreateVectorOfStrings(std::vector<std::string>{"PAGE"}),
       b.CreateVectorOfStrings(std::vector<std::string>{}),b.CreateVectorOfStructs(layers));
-    const auto snapshot=wire::CreatePendingBuildingSnapshot(b,965,15,1,0,1,68196,true,false,b.CreateString("Statue"),false,false,icon,fault==3?-1:fault==4?5:4);
+    const auto snapshot=wire::CreatePendingBuildingSnapshot(b,965,fault==6?15:23,1,0,1,68196,true,false,b.CreateString("Statue"),false,false,icon,fault==3?-1:fault==4?5:4,fault==5?-1:1,fault==7?-1:0);
     const auto pending=wire::CreatePendingBuildingState(b,snapshot);
     wire::ProductionStateBuilder p(b);p.add_pending_building(pending);const auto prod=p.Finish();
     wire::ManagementStateBuilder s(b);s.add_revision(1);s.add_production(prod);
@@ -24,7 +24,7 @@ TEST_CASE("pending header artwork validates native recipe references") {
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
     CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
     if(!fault){const auto decoded=codec::decodeProduction(value->production());
-      REQUIRE(decoded.pendingBuilding->snapshot->appearance);
+      REQUIRE(decoded.pendingBuilding->snapshot->appearance);CHECK(decoded.pendingBuilding->snapshot->triggerKind==1);
       CHECK(decoded.pendingBuilding->snapshot->appearance->tilePages==std::vector<std::string>{"PAGE"});}
   }
 }
@@ -42,7 +42,7 @@ TEST_CASE("pending removal and idle snapshots retain distinct authority") {
   for(int job:{-2,-1,382797})for(bool removing:{false,true})for(bool suspended:{false,true})for(bool worker:{false,true}) {
     flatbuffers::FlatBufferBuilder b;
     const auto snapshot=wire::CreatePendingBuildingSnapshot(b,1490,4,9007199254740993ULL,
-      1,3,job,suspended,worker,b.CreateString("Farm Plot"),removing,true,0,removing?0:3);
+      1,3,job,suspended,worker,b.CreateString("Farm Plot"),removing,true,0,removing?0:3,0,2);
     const auto payload=wire::CreatePendingBuildingState(b,snapshot,wire::FarmEditOutcome::Completed);
     wire::ProductionStateBuilder p(b);p.add_pending_building(payload);const auto prod=p.Finish();
     wire::ManagementStateBuilder s(b);s.add_revision(1);s.add_production(prod);
@@ -55,7 +55,7 @@ TEST_CASE("pending removal and idle snapshots retain distinct authority") {
       const auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.pendingBuilding);
       REQUIRE(decoded.pendingBuilding->snapshot);const auto& result=*decoded.pendingBuilding->snapshot;
       CHECK(result.jobId==job);CHECK(result.removing==removing);CHECK(result.suspended==suspended);
-      CHECK(result.hasWorker==worker);CHECK(result.revision==9007199254740993ULL);CHECK(result.forbidden);CHECK(result.progress==(removing?0:3));
+      CHECK(result.hasWorker==worker);CHECK(result.revision==9007199254740993ULL);CHECK(result.forbidden);CHECK(result.progress==(removing?0:3));CHECK(result.triggerKind==0);CHECK(result.triggerLinks==2);
     }
   }
 }
@@ -80,7 +80,7 @@ TEST_CASE("pending building transport distinguishes observations from retirement
   for(int mode=0;mode<4;++mode)for(int fault=0;fault<8;++fault) {
     flatbuffers::FlatBufferBuilder b;
     const auto snapshot=wire::CreatePendingBuildingSnapshot(b,965,15,9007199254740993ULL,
-      fault==1?1:0,1,68196,true,false,b.CreateString("Platinum Statue"),false,false,0,4);
+      fault==1?1:0,1,68196,true,false,b.CreateString("Platinum Statue"),false,false,0,4,0,0);
     const bool terminal=mode>=2;
     const auto payload=wire::CreatePendingBuildingState(b,terminal?(fault==2?snapshot:0):(fault==2?0:snapshot),
       fault==3?wire::FarmEditOutcome::Unknown:mode==0?wire::FarmEditOutcome::None:wire::FarmEditOutcome::Completed,

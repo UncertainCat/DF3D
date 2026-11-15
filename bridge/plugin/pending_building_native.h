@@ -3,6 +3,12 @@
 #include "pending_building_duration_native.h"
 #include "pending_building_progress.h"
 #include "df/building.h"
+#include "df/building_actual.h"
+#include "df/building_trapst.h"
+#include "df/buildingitemst.h"
+#include "df/item.h"
+#include "df/general_ref.h"
+#include "df/general_ref_type.h"
 #include "df/job.h"
 #include "df/job_type.h"
 #include "df/unit.h"
@@ -16,7 +22,8 @@ struct PendingBuildingObservation {
     int32_t id=-1,type=-1,stage=-1,maxStage=-1,jobId=-1;
     uint32_t jobFlags=0;
     bool removing=false,forbidden=false;
-    int8_t progress=0;
+    int8_t progress=0,triggerKind=0;
+    int32_t triggerLinks=0;
     std::vector<int32_t> workers;
     uint64_t revision=0;
 };
@@ -33,6 +40,7 @@ inline bool pendingBuildingNativeReady() {
             {0x28b960,0x2c,UINT64_C(0x94cb9f513f8900f1)},
             {0x17f8d7,0xaf1,UINT64_C(0x35c750c84ea2aa4c)},
             {0x1811a7,0x41c,UINT64_C(0x750d4572040b0652)},
+            {0x180749,0x339,UINT64_C(0xea03ece7bd271b38)},
         };
         for(const auto& p:pins){uint64_t h=UINT64_C(14695981039346656037);
             for(size_t i=0;i<p.length;++i){h^=base[p.rva+i];h*=UINT64_C(1099511628211);}if(h!=p.hash)return false;}
@@ -58,6 +66,28 @@ inline std::optional<PendingBuildingObservation> observePendingBuilding(df::buil
     uint64_t hash=UINT64_C(14695981039346656037);
     const auto number=[&](uint64_t n){for(int i=0;i<8;++i){hash^=uint8_t(n);hash*=UINT64_C(1099511628211);n>>=8;}};
     for(int32_t n:{value.id,value.type,value.stage,value.maxStage,building->centerx,building->centery,int32_t(building->z)})number(n);
+    // Native180749..180a82 reserves the trigger section for lever/plate
+    // types or actual resolved trigger references on contained items.
+    if(auto* trap=virtual_cast<df::building_trapst>(building)) {
+        const int kind=int(trap->trap_type);
+        if(kind==0 || kind==1)value.triggerKind=int8_t(kind+1);
+    }
+    if(auto* actual=virtual_cast<df::building_actual>(building)) {
+        if(actual->contained_items.size()>32767)return {};
+        for(auto* held:actual->contained_items) {
+            if(!held || !held->item || held->item->general_refs.size()>32767)return {};
+            for(auto* ref:held->item->general_refs) {
+                if(!ref)return {};
+                const auto type=ref->getType();
+                if(type!=df::general_ref_type::BUILDING_TRIGGER && type!=df::general_ref_type::BUILDING_TRIGGERTARGET)continue;
+                if(auto* linked=ref->getBuilding()) {
+                    if(value.triggerLinks==32767)return {};
+                    ++value.triggerLinks;number(held->item->id);number(int(type));number(linked->id);
+                }
+            }
+        }
+    }
+    number(value.triggerKind);number(value.triggerLinks);
     number(value.forbidden);number(building->jobs.size());
     for(const auto* job:building->jobs){if(!job)return {};value.removing|=job->job_type==df::job_type::DestroyBuilding;number(job->id);number(int32_t(job->job_type));number(job->flags.whole);}
     // Native1b012a scans active units, not job references or a UI worker list.

@@ -79,7 +79,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
   }
   if(const auto* source=p->pending_building()) {
     auto& state=n.pendingBuilding.emplace();state.outcome=static_cast<FarmEditOutcome>(source->outcome());state.removed=source->removed();state.removing=source->removing();
-    if(const auto* f=source->snapshot())state.snapshot=PendingBuildingSnapshot{f->id(),f->type(),f->revision(),f->stage(),f->max_stage(),f->job_id(),f->suspended(),f->has_worker(),f->header_name()->str(),f->removing(),f->forbidden(),f->appearance()?std::optional<SelectionAppearance>(decodeItemRecipe(f->appearance())):std::nullopt,f->progress()};
+    if(const auto* f=source->snapshot())state.snapshot=PendingBuildingSnapshot{f->id(),f->type(),f->revision(),f->stage(),f->max_stage(),f->job_id(),f->suspended(),f->has_worker(),f->header_name()->str(),f->removing(),f->forbidden(),f->appearance()?std::optional<SelectionAppearance>(decodeItemRecipe(f->appearance())):std::nullopt,f->progress(),f->trigger_kind(),f->trigger_links()};
   }
   if(const auto* source=p->door_controls()) {
     auto& state=n.doorControls.emplace();state.outcome=static_cast<FarmEditOutcome>(source->outcome());

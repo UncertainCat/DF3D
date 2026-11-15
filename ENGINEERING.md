@@ -9880,13 +9880,33 @@ directly without material composition. This correction uses the existing artwork
 contract and changes no gameplay semantics. Protected011618 on2026-11-15 compares
 full488x708 panels for controlled unfinished Smelter56, Workshop3, Door16 and
 Statue493, all pixel-identical. Lever55's three mechanism icon crops match at
-the respective viewer/native positions; its36px contents offset remains open.
+the respective viewer/native positions. Protocol221 qualification below resolves
+the36px contents offset recorded by that earlier lane.
 Earlier011301 failed millstone tint and is not acceptance. Stages are restored,
 owned DF11832 exits unsaved, and source preservation passes. Bridge/extension
 builds and core19 pass; live diagnostics are only the known thread/finalize/two
 ObjectDB signatures. Evidence: pending_construction_reference.component_artwork_reference.
 This qualifies these controlled panels and icons, not every unfinished type,
 ordinary map entry, trigger-link controls or responsive layout.
+
+Management protocol221 adds required pending-building trigger_kind (0 none,
+1 lever,2 pressure plate) and trigger_links (resolved BUILDING_TRIGGER and
+BUILDING_TRIGGERTARGET references on contained items). Missing fields default-1
+and are rejected; do not invent them for old recordings. Both schema defaults
+and mailbox move to221; bridge and clients must rebuild together. The native
+180749..180a82 layout predicate reads these world facts, reserving three text
+rows for lever/plate types or nonzero resolved links. The bridge reads owned
+semantic observations at the safe point and includes link identities in revision
+checks; it never borrows native menu state. Protected012654 on2026-11-15
+matches all five full488x708 panels, including Lever55. Native readback and
+viewer receipts agree: Lever55 has kind1/two links; the four other targets have
+kind0/no links. Controlled stages are restored, owners retired, and owned
+DF37592 exits unsaved with source preservation. Headless state and scene parse
+pass; live has only documented thread/finalize/two ObjectDB diagnostics.
+Evidence is pending_construction_reference.trigger_layout_reference. This
+qualifies default-size controlled panels, not pressure plates, connected
+nontrigger buildings, resize behavior or ordinary map entry. Bridge, extension
+and core builds plus all19 root tests pass.
 
 Management protocol220 adds required pending-building progress state0–4 (no
 caption, waiting, initiated, partial, nearly done). Older recordings default-1

@@ -61631,6 +61631,28 @@
           "build/stockpile-storage-native-farm-discovery-20261115-174014/chest-scene-depot-trade-absent.png": "2ff85ff1bf19d58ecabc3bab36daf93d10057393f2718ddf47a44bb528744b45",
           "build/stockpile-storage-native-farm-discovery-20261115-174014/chest-scene-depot-trade-present.png": "87fc2730bce87958fc494b72715633452b4a7638cbca28023813da647b800dd5"
         }
+      },
+      "depot_trade_lists_native_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-174414",
+        "owned_df_pid": 47176,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Native-only paused single fortress-owned anvil moved temporarily into depot. Native render builds merchant side0 empty/fortress side1 item296 and records296 in caravan.goods. Repeated render and actual Escape/reopen retain exactly one appraised entry. Item position/flags/building containment restored; synthetic trader/caravans removed. No merchant goods, skill-gain amount, prices, negotiation, trade commit or runtime provider acceptance.",
+        "observed": {
+          "appraised_id": 296,
+          "buildlists": 0,
+          "handle_appraisal": 0,
+          "own_id": 296,
+          "reopen_deduplicated": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-174414/depot-trade-native.json": "276c998b7fdb115c2c7434b7d3ebdb9769b3ac697c455ceba9936e4f0a1f3d4c",
+          "build/stockpile-storage-native-farm-discovery-20261115-174414/result.json": "195eb36726cce8aca35ad8ea12f1471d999e62ae02d79b89e4c1ca491bc88a2c",
+          "build/stockpile-storage-native-farm-discovery-20261115-174414/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "tools/smoke/depot-trade-native.lua": "0ea2844a41eee35fcd16d04ec95f4a88f658bb401fe63fdab7266a46fe7e0755",
+          "build/stockpile-storage-native-farm-discovery-20261115-174414/depot-trade-single.png": "41f0af6a49d55cb4d24e52cd1ad76dec2d1a1c4d1ba1608afc2143d8d7a3d221",
+          "build/stockpile-storage-native-farm-discovery-20261115-174414/depot-trade-reopened.png": "41f0af6a49d55cb4d24e52cd1ad76dec2d1a1c4d1ba1608afc2143d8d7a3d221"
+        }
       }
     },
     "pending_construction_reference": {

@@ -166,6 +166,42 @@ Native merchant choice, list initialization, prices, quantity selection,
 negotiation and committed exchange still need owned semantic providers and
 rendered/live acceptance. Public depot routes remain hidden.
 
+Native trade rendering384850..38a518 contains list construction inline at
+384d53..3855ef, rather than calling a standalone enumeration routine. It clears
+both owned good vectors, walks depot contained items, excludes construction
+role2 and items lacking in_building, splits trader-flagged goods using native
+owner resolution cb1790(item,45), and sorts each side with comparator384790.
+That comparator orders type/subtype and returns equality without an item-ID
+tie-breaker; replacing it with an independently chosen tie-breaker is unqualified.
+The renderer initializes parallel selection/quantity/group storage, then calls
+37c780(context,side) and37acc0(context,side) for both sides. Their description/
+filter and group/height projection paths require further ownership auditing;
+37acc0 also spans split unwind entries. Calling the full renderer is prohibited:
+it writes global graphics state and performs gameplay effects.
+
+Appraisal385603..3857bd is a separate one-shot phase. It searches caravan.goods
+before recording IDs. For newly inspected merchant-side goods, it calls native
+trade valuation c66c30 and skill-related routines133baf0/13d5020 with skill73;
+fortress-side goods are recorded without those calls. This is static call-path
+evidence, not a verified skill-gain calculation. A future bridge must preserve
+these native entry effects separately from repeatable query/refresh operations;
+it must not treat rendering/menu opening as a read-only catalog API.
+
+Protected174414 on2026-11-15 verifies the recording boundary with one temporary
+fortress-owned anvil296 delivered into depot54 through the existing diagnostic
+move-to-building fixture method. Native Trade builds side0 empty and side1 with
+that item, then appends296 once to caravan.goods. Repeated renders and actual
+Escape/reopen leave exactly one entry. buildlists and handle_appraisal are0
+following the initial native render. The fixture has no merchant unit and thus
+retains the native empty-merchant message; this is internal list/effect evidence,
+not populated exchange-screen visual acceptance. Item position/flags/containment,
+unit position, temporary job/references and caravans are restored; simulation
+frame is unchanged. Owned DF47176 closes unsaved/source-preserved at30FPS,
+sampled GPU52C. Core19 passes. Evidence:
+`completed_sheet_discovery_reference.depot_trade_lists_native_reference`.
+Merchant-side valuation/skill effects, native prices, list ownership qualification
+and negotiation remain outstanding; no trade runtime API is exposed yet.
+
 ## Depot goods value transport migration
 
 Management protocol235 adds required appraisal knowledge to depot goods replies

@@ -1661,8 +1661,8 @@ void publish() {
     std::vector<flatbuffers::Offset<m::DepotGoodsItem>> items;
     for(const auto& row:v.categories)categories.push_back(m::CreateDepotGoodsCategory(b,row.type,b.CreateString(DF2UTF(row.caption))));
     for(const auto& row:v.groups)groups.push_back(m::CreateDepotGoodsGroup(b,row.group.subtype,row.group.subcat1,row.group.subcat2,row.group.amount,b.CreateString(DF2UTF(row.caption)),row.matches,row.group.expanded,uint8_t(row.flags),b.CreateVector(row.ids)));
-    for(const auto& row:v.items){const auto& f=row.facts;items.push_back(m::CreateDepotGoodsItem(b,f.id,b.CreateString(DF2UTF(row.caption)),f.distance,f.value,f.tag,f.prohibited));}
-    depotGoodsResult=m::CreateDepotGoodsState(b,v.depotId,v.revision,v.category,b.CreateVector(categories),b.CreateVector(groups),b.CreateVector(items));
+    for(const auto& row:v.items){const auto& f=row.facts;items.push_back(m::CreateDepotGoodsItem(b,f.id,b.CreateString(DF2UTF(row.caption)),f.distance,f.value,f.tag,f.prohibited,b.CreateString(DF2UTF(row.valueCaption))));}
+    depotGoodsResult=m::CreateDepotGoodsState(b,v.depotId,v.revision,v.category,b.CreateVector(categories),b.CreateVector(groups),b.CreateVector(items),v.appraisal);
   }
   flatbuffers::Offset<m::StocksMenuState> stocksResult;
   if(stocks){

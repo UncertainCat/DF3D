@@ -2507,8 +2507,8 @@ table DepotGoodsCommitResult { depot_id:int32 = -1; expected_revision:uint64; ob
 table DepotGoodsRequest { depot_id:int32 = -1; category:int16 = -1; query:string (required); sort_by_distance:bool = true; pending_on_top:bool = true; exclude_prohibited:bool; item_ids:[int32] (required); expected_revision:uint64; draft:[DepotGoodsChange]; sort_draft:[DepotGoodsChange]; }
 table DepotGoodsCategory { type:int16 = -1; caption:string (required); }
 table DepotGoodsGroup { subtype:int16 = -1; subcat1:int16 = -1; subcat2:int16 = -1; amount:int32; caption:string (required); matches:bool; expanded:bool; flags:uint8; item_ids:[int32] (required); }
-table DepotGoodsItem { id:int32 = -1; caption:string (required); distance:int32 = -1; value:int32; tag:int8; prohibited:bool; }
-table DepotGoodsState { depot_id:int32 = -1; revision:uint64; category:int16 = -1; categories:[DepotGoodsCategory] (required); groups:[DepotGoodsGroup] (required); items:[DepotGoodsItem] (required); }
+table DepotGoodsItem { id:int32 = -1; caption:string (required); distance:int32 = -1; value:int32; tag:int8; prohibited:bool; value_caption:string (required); }
+table DepotGoodsState { depot_id:int32 = -1; revision:uint64; category:int16 = -1; categories:[DepotGoodsCategory] (required); groups:[DepotGoodsGroup] (required); items:[DepotGoodsItem] (required); appraisal:int32 = -1; }
 table StocksMenuRequest { category:int16 = -1; query:string (required); item_ids:[int32]; target:StocksGroupKey; expected_revision:uint64; operation:StocksFlagAction; value:int8 = -1; item_id:int32 = -1; page_request:uint64; page_offset:uint32; }
 table StocksCategoryRow { type:int16 = -1; caption:string (required); stored:string (required); unavailable:string (required); matches:bool; }
 table StocksGroupRow { key:StocksGroupKey (required); amount:int32; caption:string (required); matches:bool; expanded:bool; flags:uint8; revision:uint64; item_ids:[int32] (required); }
@@ -2619,7 +2619,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 234;
+  schema_version:uint32 = 235;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2694,7 +2694,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 234;
+  schema_version:uint32 = 235;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

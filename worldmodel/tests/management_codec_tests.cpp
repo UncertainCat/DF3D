@@ -5481,13 +5481,13 @@ TEST_CASE("Depot draft reads bind current and sorting choices to an exact source
   }
 }
 TEST_CASE("Depot goods decoding preserves group membership and rejects malformed results") {
-  for(int fault=0;fault<10;++fault){
+  for(int fault=0;fault<13;++fault){
     flatbuffers::FlatBufferBuilder b;
     const auto cat=wire::CreateDepotGoodsCategory(b,45,b.CreateString("Anvils"));
     std::vector<flatbuffers::Offset<wire::DepotGoodsCategory>> categories{cat};if(fault==1)categories.push_back(cat);
     const auto group=wire::CreateDepotGoodsGroup(b,-1,0,0,2,b.CreateString("Iron anvils [2]"),fault!=9,true,fault==2?4:2,b.CreateVector(fault==9?std::vector<int32_t>{}:std::vector<int32_t>{296,fault==3?296:28425}));
-    const auto item=wire::CreateDepotGoodsItem(b,fault==4?99:296,b.CreateString("iron anvil"),6,100,fault==5?4:2,false);
-    const auto data=wire::CreateDepotGoodsState(b,54,fault==6?0:77,fault==7?-1:45,b.CreateVector(categories),b.CreateVector(std::vector<flatbuffers::Offset<wire::DepotGoodsGroup>>{group}),b.CreateVector(fault==9?std::vector<flatbuffers::Offset<wire::DepotGoodsItem>>{}:std::vector<flatbuffers::Offset<wire::DepotGoodsItem>>{item}));
+    const auto item=wire::CreateDepotGoodsItem(b,fault==4?99:296,b.CreateString("iron anvil"),6,100,fault==5?4:2,false,b.CreateString(fault==11?"100":""));
+    const auto data=wire::CreateDepotGoodsState(b,54,fault==6?0:77,fault==7?-1:45,b.CreateVector(categories),b.CreateVector(std::vector<flatbuffers::Offset<wire::DepotGoodsGroup>>{group}),b.CreateVector(fault==9?std::vector<flatbuffers::Offset<wire::DepotGoodsItem>>{}:std::vector<flatbuffers::Offset<wire::DepotGoodsItem>>{item}),fault==10?-1:fault==12?1:0);
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(fault==8?wire::ManagementAction::Catalog:wire::ManagementAction::DepotGoodsRead);state.add_status(wire::ManagementStatus::Ok);state.add_depot_goods(data);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0 && fault!=9));
     if(fault==9){auto result=codec::decodeState(value);REQUIRE(result.depotGoods);CHECK(result.depotGoods->groups[0].itemIds.empty());CHECK(result.depotGoods->items.empty());}

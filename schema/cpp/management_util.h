@@ -190,8 +190,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 234;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v234";
+inline constexpr uint32_t kManagementVersion = 235;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v235";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1888,6 +1888,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }else if(s.status()==ManagementStatus::Ok && s.action()==ManagementAction::DepotGoodsCommit)return "missing depot commit result";
   if(const auto* r=s.depot_goods()) {
     if(s.action()!=ManagementAction::DepotGoodsRead || s.status()!=ManagementStatus::Ok || r->depot_id()<0 || !r->revision() || r->revision()>INT64_MAX || r->category()<-1 || r->category()>=93 || !r->categories() || !r->groups() || !r->items() || r->categories()->size()>93 || r->groups()->size()>65536 || r->items()->size()>64)return "invalid depot goods result";
+    if(r->appraisal()<0)return "missing depot appraisal";
     std::unordered_set<int16_t> types;
     for(const auto* row:*r->categories())if(!row || row->type()<0 || row->type()>=93 || !types.insert(row->type()).second || !row->caption() || !row->caption()->size() || row->caption()->size()>16384)return "invalid depot category";
     std::set<std::tuple<int16_t,int16_t,int16_t>> keys;std::unordered_set<int32_t> members;
@@ -1896,7 +1897,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       for(auto id:*row->item_ids())if(id<0 || !members.insert(id).second || members.size()>1048576)return "invalid depot membership";
     }
     std::unordered_set<int32_t> ids;
-    for(const auto* row:*r->items())if(!row || !members.count(row->id()) || !ids.insert(row->id()).second || !row->caption() || !row->caption()->size() || row->caption()->size()>16384 || (row->tag()<-2 || row->tag()>3))return "invalid depot item";
+    for(const auto* row:*r->items())if(!row || !members.count(row->id()) || !ids.insert(row->id()).second || !row->caption() || !row->caption()->size() || row->caption()->size()>16384 || (row->tag()<-2 || row->tag()>3) || !row->value_caption() || row->value_caption()->size()>256 || (r->appraisal()==0 ? row->value_caption()->size()!=0 : row->value_caption()->size()==0))return "invalid depot item";
     if(r->category()==-1 && (r->groups()->size() || r->items()->size()))return "unexpected unselected depot rows";
   }else if(s.status()==ManagementStatus::Ok && s.action()==ManagementAction::DepotGoodsRead)return "missing depot goods result";
   if(const auto* r=s.stocks_menu()) {

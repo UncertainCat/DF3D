@@ -1,3 +1,26 @@
+## Depot goods value transport migration
+
+Management protocol235 adds required appraisal knowledge to depot goods replies
+and required per-item value captions. Appraisal0 means no resolvable broker;
+positive values are native effective skill+1. Missing knowledge is invalid, not
+an inferred absence of a broker. Captions must be empty exactly when knowledge
+is0; otherwise they carry native approximation/uncertainty and currency text,
+converted from CP437 at the bridge boundary. The viewer does not format values
+from the raw numeric field. Both peers/mailbox use235 and must be rebuilt
+together. DF53.16 pins are unchanged; older recordings cannot invent knowledge
+or value captions.
+
+Protected162250 on2026-11-15 verifies34 native-to-Godot cases: nine resting,
+sixteen draft and nine appraisal/sorting states. Live controller/wire knowledge
+and value captions agree with native; existing draft creation/cancellation and
+stale receipts still pass. Owned DF19332 closes unsaved with source preservation,
+native30FPS and sampled GPU48C. All depot-client logs are diagnostic-free.
+Bridge, root and Godot-extension builds pass, all19 core checks pass, and the
+synthetic adapter passes known appraisal/caption decoding. Core validation also
+rejects missing knowledge, disclosed values without knowledge, and empty known
+value captions. Evidence:
+`completed_sheet_discovery_reference.depot_goods_value_transport_reference`.
+
 ## Depot goods draft transport migration
 
 Management protocol234 extends `DepotGoodsRead` with an expected source revision,
@@ -7,7 +30,7 @@ Any nonempty vector requires a nonzero signed-safe64-bit source revision.
 Draft-free reads remain available without a revision. Preview replies may now
 contain staged tags1,-1,-2 as well as resting tags0,2,3. Native projection and
 source validation use the owned provider documented below; no preview creates
-jobs or changes items. Both peers/mailbox use234 and must be rebuilt together.
+jobs or changes items. Both peers/mailbox use235 and must be rebuilt together.
 DF53.16 compatibility pins are unchanged. Older recordings must not invent drafts.
 
 Protected155628 on2026-11-15 verifies all sixteen recorded native draft states
@@ -105,7 +128,7 @@ Unknown is propagated into the shared action service's no-replay path.
 The bridge uses the already qualified `commitDepotGoods`/`depotSetHaulBatch`
 endpoint, with the ordinary transport epoch/save and sequence guards. Godot
 admits only integer IDs/revisions and Boolean desired values. Both peers/mailbox
-use234 and must be rebuilt together; DF53.16 compatibility pins are unchanged.
+use235 and must be rebuilt together; DF53.16 compatibility pins are unchanged.
 Public depot routes and full rendered workflow acceptance remain unfinished.
 
 Protected153229 on2026-11-15 verifies actual Godot wire creation and cancellation
@@ -164,7 +187,7 @@ nonzero signed-safe token; rejection carries no fabricated snapshot.
 The native read producer is connected as described below. Retained paging for
 large replies and complete artwork/contained-row coverage remain unfinished.
 Public depot routes remain hidden.
-Both peers/mailbox now use234; rebuild bridge and viewer together. DF53.16 pins are
+Both peers/mailbox now use235; rebuild bridge and viewer together. DF53.16 pins are
 unchanged. Older recordings must not synthesize depot goods.
 
 Group membership may be empty after exclusion filtering:37a0a0 copies group

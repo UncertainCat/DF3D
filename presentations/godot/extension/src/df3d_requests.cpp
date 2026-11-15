@@ -354,8 +354,8 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
     if(s.depotGoods){const auto& v=*s.depotGoods;Dictionary value;Array categories,groups,items;
         for(const auto& row:v.categories){Dictionary d;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());categories.append(d);}
         for(const auto& row:v.groups){Dictionary d;d["subtype"]=row.subtype;d["subcat1"]=row.subcat1;d["subcat2"]=row.subcat2;d["amount"]=row.amount;d["caption"]=String::utf8(row.caption.c_str());d["matches"]=row.matches;d["expanded"]=row.expanded;d["flags"]=row.flags;Array ids;for(auto id:row.itemIds)ids.append(id);d["item_ids"]=ids;groups.append(d);}
-        for(const auto& row:v.items){Dictionary d;d["id"]=row.id;d["caption"]=String::utf8(row.caption.c_str());d["distance"]=row.distance;d["value"]=row.value;d["tag"]=row.tag;d["prohibited"]=row.prohibited;items.append(d);}
-        value["depot_id"]=v.depotId;value["revision"]=int64_t(v.revision);value["category"]=v.category;value["categories"]=categories;value["groups"]=groups;value["items"]=items;result["depot_goods"]=value;
+        for(const auto& row:v.items){Dictionary d;d["id"]=row.id;d["caption"]=String::utf8(row.caption.c_str());d["distance"]=row.distance;d["value"]=row.value;d["tag"]=row.tag;d["prohibited"]=row.prohibited;d["value_caption"]=String::utf8(row.valueCaption.c_str());items.append(d);}
+        value["depot_id"]=v.depotId;value["revision"]=int64_t(v.revision);value["category"]=v.category;value["categories"]=categories;value["groups"]=groups;value["items"]=items;value["appraisal"]=v.appraisal;result["depot_goods"]=value;
     }
     if(s.stocksMenu) {
         const auto& v=*s.stocksMenu;Dictionary value;Array categories,groups,items;

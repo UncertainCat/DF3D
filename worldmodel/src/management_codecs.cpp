@@ -206,10 +206,10 @@ ManagementState decodeState(const m::ManagementState* s) {
   }
   if(const auto* r=s->depot_commit())next.depotCommit=DepotGoodsCommitResult{r->depot_id(),r->expected_revision(),r->observed_revision(),DepotGoodsCommitOutcome(r->outcome())};
   if(const auto* r=s->depot_goods()) {
-    next.depotGoods.emplace();auto& out=*next.depotGoods;out.depotId=r->depot_id();out.revision=r->revision();out.category=r->category();
+    next.depotGoods.emplace();auto& out=*next.depotGoods;out.depotId=r->depot_id();out.revision=r->revision();out.category=r->category();out.appraisal=r->appraisal();
     for(const auto* row:*r->categories())out.categories.push_back({row->type(),row->caption()->str()});
     for(const auto* row:*r->groups()){DepotGoodsGroup group{row->subtype(),row->subcat1(),row->subcat2(),row->amount(),row->caption()->str(),row->matches(),row->expanded(),row->flags()};group.itemIds.assign(row->item_ids()->begin(),row->item_ids()->end());out.groups.push_back(std::move(group));}
-    for(const auto* row:*r->items())out.items.push_back({row->id(),row->caption()->str(),row->distance(),row->value(),row->tag(),row->prohibited()});
+    for(const auto* row:*r->items())out.items.push_back({row->id(),row->caption()->str(),row->distance(),row->value(),row->tag(),row->prohibited(),row->value_caption()->str()});
   }
   if(const auto* r=s->stocks_menu()) {
     next.stocksMenu.emplace();auto& out=*next.stocksMenu;out.outcome=StocksMenuOutcome(r->outcome());out.category=r->category();

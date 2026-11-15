@@ -3542,6 +3542,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         if(parameters[0]=="lever-pull-probe") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
           int32_t id=-1;const auto& raw=parameters[1];
           const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
           if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;

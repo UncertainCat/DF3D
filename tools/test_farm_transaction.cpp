@@ -506,6 +506,24 @@ TEST_CASE("pending chest contents edits require opt-in and stable removal state"
     }
 }
 
+TEST_CASE("unfinished contents require admission and stable construction state") {
+    using namespace df3d_production;
+    for(bool allow:{false,true})for(bool completedAfter:{false,true})for(bool stale:{false,true}) {
+        BuildingContentsSnapshot before;before.buildingId=965;before.completed=false;
+        BuildingContentsRow row;row.itemType=22;row.id=22339;row.role=0;row.flags=2;before.rows={row};
+        before.revision=buildingContentsRevision(before);int calls=0;
+        auto result=finishBuildingItemEdit(before,before.revision+(stale?1:0),22339,BuildingItemAction::Forbid,true,
+            [&]{++calls;return true;},[&]()->std::optional<BuildingContentsSnapshot>{
+                auto after=before;after.completed=completedAfter;after.rows[0].forbid=true;after.rows[0].flags=524288;
+                after.revision=buildingContentsRevision(after);return after;
+            },false,allow);
+        CHECK(calls==(allow&&!stale?1:0));
+        CHECK(result.outcome==(!allow?FarmEditOutcome::Rejected:stale?FarmEditOutcome::Stale:completedAfter?FarmEditOutcome::Unknown:FarmEditOutcome::Completed));
+        CHECK(bool(result.receipt)==(allow&&!stale&&!completedAfter));
+        if(result.receipt)CHECK(result.receipt->rows[0].flags==524288);
+    }
+}
+
 TEST_CASE("removing chest Melt respects native eligibility before entry") {
     using namespace df3d_production;
     for(bool eligible:{false,true}) {

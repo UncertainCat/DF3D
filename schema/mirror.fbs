@@ -1668,7 +1668,7 @@ table IndependentItemState {
 table PendingBuildingSnapshot {
   id:int32 = -1; type:int32 = -1; revision:uint64;
   stage:int32 = -1; max_stage:int32 = -1; job_id:int32 = -1;
-  suspended:bool; has_worker:bool; header_name:string; removing:bool;
+  suspended:bool; has_worker:bool; header_name:string; removing:bool; forbidden:bool;
 }
 table PendingBuildingState {
   snapshot:PendingBuildingSnapshot; outcome:FarmEditOutcome;
@@ -2550,7 +2550,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 217;
+  schema_version:uint32 = 218;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2623,7 +2623,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 217;
+  schema_version:uint32 = 218;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

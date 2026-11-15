@@ -13,7 +13,7 @@ namespace df3d_production {
 struct PendingBuildingObservation {
     int32_t id=-1,type=-1,stage=-1,maxStage=-1,jobId=-1;
     uint32_t jobFlags=0;
-    bool removing=false;
+    bool removing=false,forbidden=false;
     std::vector<int32_t> workers;
     uint64_t revision=0;
 };
@@ -27,6 +27,7 @@ inline bool pendingBuildingNativeReady() {
             {0x1325080,0x33c3,UINT64_C(0xf84d63b3115de7d1)},
             {0x587d80,0xc98,UINT64_C(0x0f7410a976032a15)},
             {0x54c130,0xe6,UINT64_C(0xcab44276dbb81fae)},
+            {0x28b960,0x2c,UINT64_C(0x94cb9f513f8900f1)},
         };
         for(const auto& p:pins){uint64_t h=UINT64_C(14695981039346656037);
             for(size_t i=0;i<p.length;++i){h^=base[p.rva+i];h*=UINT64_C(1099511628211);}if(h!=p.hash)return false;}
@@ -45,13 +46,14 @@ inline std::optional<PendingBuildingObservation> observePendingBuilding(df::buil
     PendingBuildingObservation value;value.id=building->id;value.type=int32_t(building->getType());
     value.stage=building->getBuildStage();value.maxStage=building->getMaxBuildStage();
     if(value.stage<0 || value.stage>=value.maxStage)return {};
+    value.forbidden=building->isForbidden();
     auto* first=building->jobs.empty()?nullptr:building->jobs.front();
     if(!building->jobs.empty() && (!first || (first->job_type!=df::job_type::ConstructBuilding && first->job_type!=df::job_type::DestroyBuilding)))return {};
     if(first){value.jobId=first->id;value.jobFlags=first->flags.whole;}
     uint64_t hash=UINT64_C(14695981039346656037);
     const auto number=[&](uint64_t n){for(int i=0;i<8;++i){hash^=uint8_t(n);hash*=UINT64_C(1099511628211);n>>=8;}};
     for(int32_t n:{value.id,value.type,value.stage,value.maxStage,building->centerx,building->centery,int32_t(building->z)})number(n);
-    number(building->jobs.size());
+    number(value.forbidden);number(building->jobs.size());
     for(const auto* job:building->jobs){if(!job)return {};value.removing|=job->job_type==df::job_type::DestroyBuilding;number(job->id);number(int32_t(job->job_type));number(job->flags.whole);}
     // Native1b012a scans active units, not job references or a UI worker list.
     for(const auto* unit:world->units.active) {

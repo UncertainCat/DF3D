@@ -9873,7 +9873,7 @@ fixture discovery failures are not acceptance;214809 selected an inactive citize
 and correctly did not release it. The accepted fixture selects an active citizen,
 matching the native predicate. No native defect or parity exception is claimed.
 
-Management protocol217 carries exclusive pending_building requests and an
+Management protocol218 carries exclusive pending_building requests and an
 optional PendingBuildingState response. ProductionInspect reads use operation-1
 and no revision; FarmEdit requires an exact positive revision and operation0
 (resume),1(suspend),2(cancel), or3(cancel removal). Snapshots carry native type, stage/max-stage,
@@ -9882,10 +9882,17 @@ removal state. An idle snapshot has job_id=-1, with removal, suspension and
 worker flags all false. Successful suspension or Cancel removal returns a fresh snapshot; cancellation
 returns exactly one of removed/removing and no obsolete snapshot. Failed or
 uncertain edits grant neither snapshot nor terminal authority. Older recordings
-imply no unfinished-building observation. Both schema defaults and mailbox are217
-(`Local\\df3d_management_v217`); bridge and clients must be rebuilt together.
+imply no unfinished-building observation. Both schema defaults and mailbox are218
+(`Local\\df3d_management_v218`); bridge and clients must be rebuilt together.
 Protocol216 observations lack the removal flag and are not accepted as217
 authority; reconnect and request a fresh native observation after upgrading.
+Protocol218 additionally accepts contained-item edit receipts for unfinished
+buildings and carries their native Forbidden header state. Target/value/revision checks remain required; bridge admission still
+requires an observed native pending building. Protocol217 clients reject these
+receipts, so the mailbox change prevents mixing clients across this upgrade.
+Existing recordings retain their actual completion flag; never infer completion
+from a successful item edit. Protected001723 on2026-11-15 qualifies218 item
+receipts and refreshed Forbidden state through the actual main scene.
 The protocol does not by itself expose the unfinished-building panel.
 Protected222912 on2026-11-14 verifies217 through headless Godot: observe the
 demolition job, Cancel removal into stage1/3 with job_id=-1 and no worker,
@@ -9906,8 +9913,8 @@ retry; focused state and semantic-service headless checks pass. Owned DF36424/
 sampled GPU60C/22–33%; clients emit only the known rendering-thread notice.
 Core, bridge and extension builds and all19 root checks pass. Evidence lives
 in pending_construction_reference.transport_reference. Rendered controls and
-removal-sheet handoff are qualified below; component edits and ordinary map
-entry remain pending.
+removal-sheet handoff and component flag edits are qualified below; ordinary
+map entry remains pending.
 
 Staged pending_building_panel now renders the captured construction controls
 within the shared native building frame and reads component contents through
@@ -9921,7 +9928,7 @@ the panel. Bridge build and19 root checks pass. DF21072 exits unsaved with
 source preservation,30FPS and sampled GPU61C/24%. Known Godot rendering-thread,
 finalize and two-ObjectDB diagnostics remain. Evidence:
 pending_construction_reference.presentation_reference. This is not public
-map-entry acceptance: contents editing remains unfinished;
+map-entry acceptance: component View/hover and removal contents remain unqualified;
 only farm/statue header artwork is mapped in the staged view.
 
 Protected234907 qualifies the stage1 farm removal flow in the actual main scene.
@@ -9937,6 +9944,44 @@ Headless state checks and19 root tests pass. DF41312 exits unsaved with source
 preservation; only documented rendering-thread/finalize/two-ObjectDB diagnostics
 remain. Runs are capped30FPS; sampled GPU61C/13–22% during the final run, not peak
 measurements. Evidence: pending_construction_reference.removal_scene_reference.
+
+Native unfinished contents235233: select Statue965 (stage0/max1), then click
+Forbid, Dump, Melt and Hide twice each on its component22339 while paused.
+All four controls change the requested flag. Forbid additionally clears in_job
+and changes ConstructBuilding68196 flags2 to66; allowing the item again does not
+restore its reservation. Building stage and component role0 remain unchanged.
+Use the native item action leaves for these effects, not a presentation flag
+rewrite. DF5316 exits unsaved with source preservation; sampled GPU61C/51% at
+30FPS. Evidence: pending_construction_reference.contents_native_reference.
+The first viewer attempt235538 exposed the completed-only receipt validator;
+it is not acceptance of the new controls. Its owned source remained unchanged.
+Native header renderer180422..180679 calls virtual building::isForbidden. The
+Door/FarmPlot/Statue implementations resolve to leaf28b960, which reads the
+first contained item's forbid bit and returns false for empty contents. The
+provider calls that native predicate and includes its result in the pending
+snapshot revision. Rendering uses title palette12 when forbidden and two native
+warning lines at local baselines64,24 and64,48 in palette4. The predicate bytes
+and native screenshot provenance are retained in contents_native_reference.
+Protected `build/stockpile-storage-native-farm-discovery-20261115-001723`
+verifies all eight component flag clicks in the actual main scene and fresh
+Forbidden state after each receipt. Nine complete488x708 panel crops match
+independent native235233 exactly. Independent native before/after readbacks
+match item flags, construction job flags, stage and component role, including
+Forbid releasing the reservation. Escape retires the panel. Owned DF21924 exits
+unsaved with the source save preserved. The run is passed_with_known_issues
+for the documented rendering-thread, finalize and two-ObjectDB diagnostics;
+graphics are capped30FPS, with a sampled GPU60C/18% (not a peak measurement).
+Evidence: pending_construction_reference.contents_viewer_reference. This
+qualifies Statue965 component22339; component View/hover, removal contents,
+other header artwork and ordinary map entry remain outside this acceptance.
+Matching218 core, bridge and extension builds and all19 root checks pass.
+Static header artwork dispatch17f8d7 (type table19f7d8), workshop table19f8b4,
+furnace table19f918 and trap table19f938 matches the existing Tasks destination
+artwork selector for47 fixed types,24 fixed workshop subtypes,7 fixed furnace
+subtypes and6 trap subtypes. Token bindings are resolved from the supported
+executable's installed-graphics parser. This is reuse evidence, not rendered
+acceptance; custom-raw fallback, siege/construction branches and broader live
+coverage remain to qualify. See pending_construction_reference.header_dispatch_reference.
 
 Removal return discovery221104: use the same controlled stage1 farm setup as
 advanced_reference, click Remove building, then Cancel removal. The first

@@ -184,8 +184,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 217;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v217";
+inline constexpr uint32_t kManagementVersion = 218;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v218";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -2963,7 +2963,6 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if(const auto* edit=p->contents_edit()) {
       if(s.action()!=ManagementAction::FarmEdit || s.status()!=ManagementStatus::Ok ||
          p->farm_edit_outcome()!=FarmEditOutcome::Completed || !p->contents() || p->farm() ||
-         !p->contents()->completed() ||
          edit->item_id()<0 || edit->value()<0 || edit->value()>1 ||
          edit->operation()<FarmOperation::ItemForbid || edit->operation()>FarmOperation::ItemHidden)return "invalid contained item receipt";
       const BuildingContentsItem* target=nullptr;

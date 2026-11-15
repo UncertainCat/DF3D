@@ -1244,7 +1244,7 @@ void publish() {
   flatbuffers::Offset<m::PendingBuildingState> pendingBuilding;
   if(production.pendingBuilding) {
     const auto& state=*production.pendingBuilding;flatbuffers::Offset<m::PendingBuildingSnapshot> snapshot;
-    if(state.snapshot){const auto& f=*state.snapshot;snapshot=m::CreatePendingBuildingSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,f.jobId,f.suspended,f.hasWorker,b.CreateString(f.headerName),f.removing);}
+    if(state.snapshot){const auto& f=*state.snapshot;snapshot=m::CreatePendingBuildingSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,f.jobId,f.suspended,f.hasWorker,b.CreateString(f.headerName),f.removing,f.forbidden);}
     pendingBuilding=m::CreatePendingBuildingState(b,snapshot,state.outcome,state.removed,state.removing);
   }
   flatbuffers::Offset<m::DoorControlsState> doorControls;
@@ -4127,7 +4127,7 @@ void run(color_ostream& out) {
       if((first?first->id:-1)!=f.jobId)return {};
       std::string name;building->getName(&name);native.formatName(&name);
       if(name.empty() || name.size()>512)return {};
-      return PendingBuildingSnapshot{f.id,f.type,f.revision,f.stage,f.maxStage,f.jobId,bool(f.jobFlags&2),first && native.hasWorker(first),DF2UTF(name),f.removing};
+      return PendingBuildingSnapshot{f.id,f.type,f.revision,f.stage,f.maxStage,f.jobId,bool(f.jobFlags&2),first && native.hasWorker(first),DF2UTF(name),f.removing,f.forbidden};
     };
     try {
       auto* building=df::building::find(q->building_id());
@@ -4286,7 +4286,8 @@ void run(color_ostream& out) {
             entered=true;return df3d_production::setBuildingItemFlag(held->item,action,q->item_value()!=0);
           }
           return false;
-        },observe,contentsBuilding(q->building_id())->getType()==df::building_type::Box);
+        },observe,contentsBuilding(q->building_id())->getType()==df::building_type::Box,
+          bool(df3d_production::observePendingBuilding(contentsBuilding(q->building_id(),true))));
         mutated=edit.mutated;
         using O=df3d_production::FarmEditOutcome;
         if(edit.outcome==O::Completed) {

@@ -22,7 +22,7 @@ TEST_CASE("pending removal and idle snapshots retain distinct authority") {
   for(int job:{-2,-1,382797})for(bool removing:{false,true})for(bool suspended:{false,true})for(bool worker:{false,true}) {
     flatbuffers::FlatBufferBuilder b;
     const auto snapshot=wire::CreatePendingBuildingSnapshot(b,1490,4,9007199254740993ULL,
-      1,3,job,suspended,worker,b.CreateString("Farm Plot"),removing);
+      1,3,job,suspended,worker,b.CreateString("Farm Plot"),removing,true);
     const auto payload=wire::CreatePendingBuildingState(b,snapshot,wire::FarmEditOutcome::Completed);
     wire::ProductionStateBuilder p(b);p.add_pending_building(payload);const auto prod=p.Finish();
     wire::ManagementStateBuilder s(b);s.add_revision(1);s.add_production(prod);
@@ -35,7 +35,7 @@ TEST_CASE("pending removal and idle snapshots retain distinct authority") {
       const auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.pendingBuilding);
       REQUIRE(decoded.pendingBuilding->snapshot);const auto& result=*decoded.pendingBuilding->snapshot;
       CHECK(result.jobId==job);CHECK(result.removing==removing);CHECK(result.suspended==suspended);
-      CHECK(result.hasWorker==worker);CHECK(result.revision==9007199254740993ULL);
+      CHECK(result.hasWorker==worker);CHECK(result.revision==9007199254740993ULL);CHECK(result.forbidden);
     }
   }
 }
@@ -4182,8 +4182,8 @@ TEST_CASE("contained item completion grants authority only for the observed targ
     state.add_action(fault==8?wire::ManagementAction::ProductionInspect:wire::ManagementAction::FarmEdit);
     state.add_status(fault==9?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);state.add_production(prod);
     b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
-    CHECK(bool(wire::validateManagementState(*value))==(fault!=0 && fault!=11));
-    if(fault==0||fault==11){const auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.contentsEdit);CHECK(decoded.contentsEdit->itemId==47492);CHECK(decoded.contentsEdit->value==1);}
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0 && fault!=10 && fault!=11));
+    if(fault==0||fault==10||fault==11){const auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.contentsEdit);CHECK(decoded.contentsEdit->itemId==47492);CHECK(decoded.contentsEdit->value==1);REQUIRE(decoded.contents);CHECK(decoded.contents->completed==(fault!=10));}
   }
 }
 

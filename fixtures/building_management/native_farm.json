@@ -31912,6 +31912,149 @@
           "build/stockpile-storage-native-farm-discovery-20261115-131107/result.json": "df158a5e2560162f0ccab4a42173833613953f08142bea9d589b62fe5640448f",
           "build/stockpile-storage-native-farm-discovery-20261115-131107/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "depot_scene_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-131556",
+        "owned_df_pid": 42372,
+        "scope": "Staged furniture owner in actual main scene, no merchants/broker. Nine full488x708 native comparisons including eight mode pointer edits, restoration and Escape. Not public map routing or broker/goods/trade qualification.",
+        "native": {
+          "cases": [
+            {
+              "flags": 0,
+              "jobs": [],
+              "label": "idle"
+            },
+            {
+              "flags": 1,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "broker"
+            },
+            {
+              "flags": 3,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "anyone"
+            },
+            {
+              "flags": 1,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "broker-again"
+            },
+            {
+              "flags": 0,
+              "jobs": [],
+              "label": "dismissed"
+            },
+            {
+              "flags": 3,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382797,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "anyone-fresh"
+            },
+            {
+              "flags": 2,
+              "jobs": [],
+              "label": "dismissed-anyone"
+            }
+          ],
+          "frame": 0,
+          "id": 54,
+          "original_flags": 0,
+          "restored": true,
+          "success": true,
+          "wire": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          }
+        },
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "diagnostics": "passed_with_known_issues: render-thread/finalize/two ObjectDB",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-131556/depot-scene-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-131556/depot-scene.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "build/stockpile-storage-native-farm-discovery-20261115-131556/depot-settings-native.json": "f582521477c3e740de4def95ac1d7ec62c99c1a5051ac18214bf1f7d65b25fec",
+          "build/stockpile-storage-native-farm-discovery-20261115-131556/result.json": "3f3326fd69e8468c599469f5e8b661c027457f539d9c3c45314852019215074a",
+          "build/stockpile-storage-native-farm-discovery-20261115-131556/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-131556/chest-scene-depot-anyone-fresh.png": "ae782779d6d057435a006289d69502ad963a8110c778ac04d6acb56c7b78265c",
+          "build/stockpile-storage-native-farm-discovery-20261115-131556/chest-scene-depot-anyone.png": "ae782779d6d057435a006289d69502ad963a8110c778ac04d6acb56c7b78265c",
+          "build/stockpile-storage-native-farm-discovery-20261115-131556/chest-scene-depot-broker-again.png": "54658e0e86be20d6f7596fbcda4a5a823d74aa70ff71454c9a207e2d66f9ce6a",
+          "build/stockpile-storage-native-farm-discovery-20261115-131556/chest-scene-depot-broker.png": "54658e0e86be20d6f7596fbcda4a5a823d74aa70ff71454c9a207e2d66f9ce6a",
+          "build/stockpile-storage-native-farm-discovery-20261115-131556/chest-scene-depot-dismissed-anyone.png": "09602ca07b198ad30848e646c78cb56e826d54f0dd341ac68885afd2a2d22ffb",
+          "build/stockpile-storage-native-farm-discovery-20261115-131556/chest-scene-depot-dismissed.png": "09602ca07b198ad30848e646c78cb56e826d54f0dd341ac68885afd2a2d22ffb",
+          "build/stockpile-storage-native-farm-discovery-20261115-131556/chest-scene-depot-idle.png": "09602ca07b198ad30848e646c78cb56e826d54f0dd341ac68885afd2a2d22ffb"
+        },
+        "initial_failure": {
+          "lane": "131432",
+          "reason": "No-merchant status one text row too high; unselected mode background incorrectly active. Corrected to native baseline108 and inactive artwork."
+        }
       }
     },
     "pending_construction_reference": {

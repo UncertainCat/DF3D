@@ -108,11 +108,12 @@ if b.trade_flags.trader_requested then click(298)end
 b.trade_flags.whole=original
 assert(#b.jobs==0 and df.global.world.frame_counter==frame)
 if not ok then error(err)end
-if os.getenv('DF3D_DEPOT_WIRE')=='1' then
+if os.getenv('DF3D_DEPOT_WIRE')=='1' or os.getenv('DF3D_DEPOT_SCENE')=='1' then
  local f=assert(io.open(out..'/depot-wire-expected.json','w'));f:write(json.encode{id=b.id});f:close()
  local sheet=df.global.game.main_interface.view_sheets;local active=sheet.active_id
- capture('depot-wire')
- f=assert(io.open(out..'/depot-wire-result.json'));result.wire=json.decode(f:read('*a'));f:close()
+ local label=os.getenv('DF3D_DEPOT_SCENE')=='1' and 'depot-scene' or 'depot-wire'
+ capture(label)
+ f=assert(io.open(out..'/'..label..'-result.json'));result.wire=json.decode(f:read('*a'));f:close()
  assert(result.wire.success and sheet.active_id==active and b.trade_flags.whole==original and #b.jobs==0 and df.global.world.frame_counter==frame)
 end
 result.restored=true;result.success=true

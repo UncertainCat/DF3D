@@ -874,6 +874,21 @@ This qualifies brokerless mode transport, not the public depot panel, assigned
 broker wire artwork, goods selection or trading. The old Lua adapter remains
 unqualified and is not used by this building-header path.
 
+`depot_sheet_view.gd` stages the native depot body on the shared furniture owner.
+Protected131556 on2026-11-15 compares the complete488x708 panel in the actual main
+scene: baseline plus eight pointer-driven mode changes, all nine comparisons exact.
+The original flags/jobs are restored, and Escape releases panel ownership. This
+fixture has no merchants or broker. Mode selection uses active/inactive native
+button artwork; the no-merchant message has baseline108. Initial131432 used the
+wrong status baseline and unselected button artwork and is not acceptance.
+
+Owned DF42372 closes unsaved with source preservation; graphics are serial30FPS,
+sampled GPU59C. The scene reports only the established render-thread/finalize/two
+ObjectDB diagnostics, and core19 passes. Evidence:
+`completed_sheet_discovery_reference.depot_scene_reference`. Broker-card rendering,
+goods/trade buttons and navigation are staged but unqualified. Public depot map
+and holder routes remain hidden until those workflows are complete.
+
 ## Completed bridge, wagon and traction-bench sheets
 
 Completed Bridge19, Wagon32 and TractionBench45 use the shared native header,

@@ -9630,6 +9630,18 @@ Owned DF4728 exits unsaved with source preservation; GPU54C/6% at30FPS. The fina
 lane passes_with_known_issues for the documented Godot exit diagnostics.
 Evidence: selection_reference.engraving_discard_reference.
 
+Protected194627 on2026-11-14 verifies engraving Name in the composed main scene:
+clear all seven components, compare every Front Compound word/part pair with
+native, select the first word, and Done returns to the draft. Both cleared and
+selected name-editor crops match native exactly. The diagnostic reads native
+word_index_asp with its actual int32 stride; DFHack declares this vector's enum
+as int16. Earlier194221 used that incorrect binding and produced excessive
+per-row failures;194519 was a test-script parse failure. Neither is acceptance.
+The corrected lane passes_with_known_issues, owned DF15216 exits unsaved, and
+source preservation holds. Evidence: selection_reference.engraving_name_reference.
+No product naming implementation change was needed. Random naming and remaining
+component word lists are not yet engraving-context acceptance.
+
 selection_art_state.gd reuses local artwork navigation state with a selected-tile
 receipt, never a proxy job. work_order_details_view.gd has an engraving context
 for the native frame, cell-aligned heading, root-button backing, normal subject

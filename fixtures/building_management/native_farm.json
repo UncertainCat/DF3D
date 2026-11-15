@@ -12809,6 +12809,22 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "engraving_name_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-194627",
+      "status": "passed_with_known_issues",
+      "scope": "Native and composed main-scene Name opening, clearing all seven components, complete Front Compound word/part list, selecting first word, Done back to draft. Exact cleared and selected screen pixels. Random naming and other component word lists remain unqualified for engraving context.",
+      "word_count": 3217,
+      "selected_word": 0,
+      "selected_part": 0,
+      "owned_df_pid": 15216,
+      "hashes": {
+        "workshop-native.json": "e800f20d6f7ed194a732dd3316fc477e0a6c74c3d34dc1eafe527a511573a6f3",
+        "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+        "planned-name-cleared-live.png": "4fe79d9f96bf7b7dbccc600782f28745d88dd976435b3a56afd2101db3a03fa0",
+        "planned-name-selected-live.png": "a652b1b87c329c2f5c3b9e96e04b5223ed762d1c808c8b1312ac32fa8d59ded4",
+        "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+      }
+    },
     "engraving_discard_reference": {
       "lane": "build/stockpile-storage-native-farm-discovery-20261114-193957",
       "status": "passed_with_known_issues",

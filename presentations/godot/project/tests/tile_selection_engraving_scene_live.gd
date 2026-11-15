@@ -52,6 +52,27 @@ func planned_exercise(expected: Dictionary) -> void:
 	await pointer(Vector2(100,310))
 	if not await settle(selection.artwork_state):return
 	check(selection.artwork_state.art_page()==6,"New image did not open draft")
+	if OS.get_environment("DF3D_TILE_SELECTION_ENGRAVING_NAME")=="1":
+		await pointer(Vector2(112,430))
+		if not await settle(selection.artwork_state):return
+		var naming=selection.artwork.name_state
+		if not check(naming.active and naming.phase==naming.Phase.Ready,"Engraving name did not open"):return
+		for i in 7:
+			await pointer(Vector2(372,142+i*36))
+			if not await settle(selection.artwork_state):return
+		check(naming.rows.size()==sample.image.draft.naming.words.size(),"Naming word count differs")
+		var same_words: bool=naming.rows.size()==sample.image.draft.naming.words.size()
+		for i in mini(naming.rows.size(),sample.image.draft.naming.words.size()):
+			same_words=same_words and naming.rows[i].word==sample.image.draft.naming.words[i] and naming.rows[i].part==sample.image.draft.naming.parts[i]
+		check(same_words,"Naming word order differs")
+		await name_capture("cleared")
+		await pointer(Vector2(450,178))
+		if not await settle(selection.artwork_state):return
+		check(selection.artwork_state.draft_value.name.words[0]==sample.image.draft.naming.selected_word,"Name word selection differs")
+		await name_capture("selected")
+		await pointer(Vector2(840,82))
+		if not await settle(selection.artwork_state):return
+		check(not naming.active and selection.artwork_state.art_page()==6,"Name Done did not restore draft")
 	await pointer(Vector2(110,166))
 	if not await settle(selection.artwork_state):return
 	check(selection.artwork_state.art_page()==7,"Creature category did not open")
@@ -84,3 +105,11 @@ func planned_exercise(expected: Dictionary) -> void:
 	ui.open_tile_selection(point);actions.poll(0.01);ui.host.reset_local_views();await drain()
 	check(ui.host.active==null and model.snapshot.is_empty(),"Late planned reply reopened reset scene")
 	exercised=true
+
+func name_capture(label: String) -> void:
+	await process_frame;await RenderingServer.frame_post_draw
+	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	var native:=Image.load_from_file(directory+"/workshop-selection-engraving-name-"+label+".png");native.convert(Image.FORMAT_RGB8)
+	var region:=Rect2i(72,52,832,672)
+	image.get_region(region).save_png(directory+"/planned-name-"+label+"-live.png")
+	check(image.get_region(region).get_data()==native.get_region(region).get_data(),"Engraving name pixels differ: "+label)

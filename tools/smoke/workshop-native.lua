@@ -392,6 +392,28 @@ local ok,err=xpcall(function()
      assert(before==json.encode(effect()) and count==#resources.art_image_ids and elements==#art.new_image.elements,'Owned draft read changed native state')
      assert(owned.stale_list_rejected,'Owned draft accepted stale list')
      draft.owned=owned
+     if os.getenv('DF3D_TILE_SELECTION_ENGRAVING_NAME')=='1' then
+      local function click_name(x,y)
+       g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+       df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
+      end
+      assert(click_label('Name') and df.global.game.main_interface.name_creator.open,'Engraving Name missing')
+      local naming=df.global.game.main_interface.name_creator
+      for i=0,6 do click_name(372,142+i*36)end
+      draft.naming={words={},parts={}}
+      for _,word in ipairs(naming.word_index)do draft.naming.words[#draft.naming.words+1]=word end
+      -- DF uses int32 parts here; DFHack's enum-vector binding has int16 stride.
+      local _,parts_address=df.sizeof(naming:_field('word_index_asp'))
+      local parts_begin=df.reinterpret_cast('uint64_t',parts_address).value
+      local parts_end=df.reinterpret_cast('uint64_t',parts_address+8).value
+      assert(parts_end-parts_begin==#naming.word_index*4,'Name part vector size differs')
+      for i=0,#naming.word_index-1 do draft.naming.parts[#draft.naming.parts+1]=df.reinterpret_cast('int32_t',parts_begin+i*4).value end
+      shot('selection-engraving-name-cleared')
+      click_name(450,178)
+      draft.naming.selected_word=naming.name.words[0];draft.naming.selected_part=naming.name.parts_of_speech[0]
+      shot('selection-engraving-name-selected')
+      assert(click_label('Done') and not naming.open and art.open,'Name Done did not return to draft')
+     end
      assert(click_label('Creature') and art.current_option==7,'Engraving creature picker missing')
      assert(owned.total==#art.new_image_race and owned.race==art.new_image_race[0] and owned.caste==art.new_image_caste[0],'Owned draft creature choices differ')
      shot('selection-engraving-draft-creature')

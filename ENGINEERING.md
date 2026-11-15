@@ -15,7 +15,7 @@ Older recordings imply no lever observation. Defaults and the mailbox are227;
 rebuild bridge and client together. The bridge uses native mechanism selection,
 target validation and job creation with owned inputs. Its source revision comes
 from the shared building-header observation, admitted internally for Lever subtype0
-only. Completed levers now use the native tile-selection route from map clicks;
+and PressurePlate subtype1. Completed levers use the native tile-selection route from map clicks;
 other trap subtypes retain their existing inspector route. Shared header admission
 is described below. Mechanism captions
 use the same native c65450(item,ownedString,false,-1) call as renderer150bd6.
@@ -331,8 +331,8 @@ control or trigger-profile editor on this sheet. Native input1ad4ff dispatches
 Trap subtype1 to the mechanism search at1ad55d..1ad801. It uses the same native
 availability/position/walkability/stock-exclusion calls as the lever search,
 but an insufficient mechanism count returns without the lever warning.
-Runtime plate bridge admission remains unimplemented; do not assume the lever's
-warning or Pull behavior applies to plates.
+The owned Link provider admits plates; public panel admission remains staged.
+Do not apply the lever's warning or Pull behavior to plates.
 
 Protected094029 on2026-11-15 captures these panels, a supplied Link to door16,
 and cancellation releasing both selected mechanisms. No installed pressure
@@ -348,6 +348,21 @@ semantic bridge and map integration remain outstanding. Graphics capped30FPS,
 sampled GPU60C, core19 passes; standalone graphics report only the documented
 render-thread/finalize/two ObjectDB diagnostics. Evidence:
 `completed_sheet_discovery_reference.pressure_plate_reference`.
+
+Protected094451 qualifies the plate provider and actual protocol227 headless
+client. Initial mechanism availability/order, door16 target preview and created
+Link job match native; comparison includes flags, position, references, mechanism
+roles, requirements and world registration. Native menu fields stay unchanged.
+Pull is rejected for subtype1, as are stale/old source revisions and duplicate
+links. The existing lever request can address either trigger source by building
+ID; its schema and operation meanings are unchanged, and operation2 remains
+lever-only. Initial lookup additionally pins the plate search bytes at
+1ad55d..1ad826 (FNV64 8b1ac073c20f85cb). Shared internal header observation admits
+subtype1 for source revision authority; ordinary plate header/queue/profile
+panels remain gated. Owned DF40392 closes unsaved with source preservation;
+native graphics capped30FPS, sampled GPU60C. MSVC and core19 pass; the headless
+client has only the known separate-render-thread notice. Evidence:
+`completed_sheet_discovery_reference.pressure_plate_provider_reference`.
 
 ## Native bug register
 

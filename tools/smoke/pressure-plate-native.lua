@@ -4,6 +4,13 @@ local gui=require('gui');local json=require('json');local g=df.global.gps
 local sheet=df.global.game.main_interface.view_sheets
 local result={states={},candidates={}}
 local supplies={}
+local provider=os.getenv('DF3D_PRESSURE_PLATE_PROVIDER')=='1'
+local function owned(command,...)
+ local before=json.encode{sheet.open,sheet.active_id,sheet.linking_lever,sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id}
+ local text,code=dfhack.run_command_silent('df3d',command,...)
+ assert(before==json.encode{sheet.open,sheet.active_id,sheet.linking_lever,sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id},'Plate provider changed native menu')
+ return text,code
+end
 local plate
 for _,b in ipairs(df.global.world.buildings.other.TRAP)do
  if b.trap_type==1 then
@@ -36,7 +43,7 @@ local function sample(label)
   for _,item in ipairs(job.items)do j.item_roles[#j.item_roles+1]={id=item.item.id,role=item.role,flags=item.flags.whole,index=item.job_item_idx}end
   row.job_details[#row.job_details+1]=j
  end
- result.states[#result.states+1]=row;persist();capture('pressure-plate-'..label)
+ result.states[#result.states+1]=row;persist();capture('pressure-plate-'..label);return row
 end
 local ok,err=xpcall(function()
  if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
@@ -45,7 +52,14 @@ local ok,err=xpcall(function()
  for _,label in ipairs{'Workers','Work orders','Tasks'}do
   if click_label(label)then sample(label:gsub(' ','-'):lower())end
  end
- if click_label('Link')then sample('link');gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());sample('link-cancel')end
+ if click_label('Link')then
+  sample('link')
+  if provider then
+   local text,code=owned('lever-mechanisms-probe',tostring(plate.id));assert(code==0,text)
+   result.unavailable_provider=json.decode(text);assert(result.unavailable_provider.available==sheet.linking_lever)
+  end
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());sample('link-cancel')
+ end
  local worker
  for _,unit in ipairs(df.global.world.units.active)do if dfhack.units.isCitizen(unit)then worker=unit;break end end
  local original=assert(df.item.find(1617));result.supplies={}
@@ -58,8 +72,13 @@ local ok,err=xpcall(function()
  select_map(plate);assert(click_label('Link plate'));assert(sheet.linking_lever);sample('supplied-link')
  local selected={sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id}
  result.selected_mechanisms=selected
+ if provider then
+  local text,code=owned('lever-mechanisms-probe',tostring(plate.id));assert(code==0,text)
+  result.selected_provider=json.decode(text)
+  assert(result.selected_provider.lever_mechanism==selected[1] and result.selected_provider.target_mechanism==selected[2],'Plate mechanism order differs')
+ end
  select_map(assert(df.building.find(16)))
- assert(#plate.jobs==1 and plate.jobs[0].job_type==df.job_type.LinkBuildingToTrigger);sample('linked-job')
+ assert(#plate.jobs==1 and plate.jobs[0].job_type==df.job_type.LinkBuildingToTrigger);local native_job=sample('linked-job').job_details[1]
  g.precise_mouse_x=868;g.precise_mouse_y=154;g.mouse_x=108;g.mouse_y=12
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
@@ -67,6 +86,33 @@ local ok,err=xpcall(function()
  assert(#plate.jobs==0,'Native Link cancellation failed')
  for _,id in ipairs(selected)do assert(not df.item.find(id).flags.in_job,'Native cancellation retained mechanism')end
  sample('job-cancelled')
+ if provider then
+  local target=assert(df.building.find(16))
+  local args={tostring(plate.id),tostring(target.centerx),tostring(target.centery),tostring(target.z)}
+  local text,code=owned('lever-target-probe',table.unpack(args));assert(code==0,text)
+  result.target_provider=json.decode(text);assert(result.target_provider.target_id==target.id)
+  text,code=owned('lever-link-probe',table.unpack({args[1],args[2],args[3],args[4],tostring(selected[1]),tostring(selected[2])}));assert(code==0,text)
+  local actual=sample('provider-job').job_details[1]
+  for _,key in ipairs{'type','flags','pos','refs','item_roles','requirements','world_registered'}do assert(json.encode(actual[key])==json.encode(native_job[key]),'Plate native/provider job differs: '..key)end
+  text,code=owned('lever-link-probe',table.unpack({args[1],args[2],args[3],args[4],tostring(selected[1]),tostring(selected[2])}));assert(code~=0 and #plate.jobs==1,'Plate duplicate link accepted')
+  text,code=owned('lever-pull-probe',tostring(plate.id));assert(code~=0 and #plate.jobs==1,'Pressure plate accepted Pull')
+  result.provider_equal=true;result.pull_rejected=true;result.duplicate_rejected=true
+  assert(dfhack.job.removeJob(plate.jobs[0]));sample('provider-cleaned')
+ end
+ if os.getenv('DF3D_PRESSURE_PLATE_WIRE')=='1'then
+  assert(plate.id==61)
+  local target=assert(df.building.find(16))
+  local f=assert(io.open(out..'/pressure-plate-wire-expected.json','w'))
+  f:write(json.encode{source_mechanism=selected[1],target_mechanism=selected[2],target_id=target.id,x=target.centerx,y=target.centery,z=target.z});f:close()
+  local menu=json.encode{sheet.open,sheet.active_id,sheet.linking_lever,sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id}
+  capture('workshop-wire')
+  f=assert(io.open(out..'/workshop-wire-result.json'));result.wire=json.decode(f:read('*a'));f:close()
+  assert(result.wire.success and #plate.jobs==1 and plate.jobs[0].id==result.wire.link_job,'Plate wire action failed')
+  assert(menu==json.encode{sheet.open,sheet.active_id,sheet.linking_lever,sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id},'Plate wire changed native menu')
+  local actual=sample('wire-job').job_details[1]
+  for _,key in ipairs{'type','flags','pos','refs','item_roles','requirements','world_registered'}do assert(json.encode(actual[key])==json.encode(native_job[key]),'Plate wire/native job differs: '..key)end
+  assert(dfhack.job.removeJob(plate.jobs[0]))
+ end
 end,debug.traceback)
 if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
 while #plate.jobs>0 do assert(dfhack.job.removeJob(plate.jobs[#plate.jobs-1]))end

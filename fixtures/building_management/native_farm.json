@@ -25935,6 +25935,166 @@
           "build/notes/pm/pressure-plate-tasks.stdout.log": "95594387ba5b88f101811bb279e00cd54445fa76b7da4618849efb2eac652786",
           "build/notes/pm/pressure-plate-tasks.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
         }
+      },
+      "pressure_plate_provider_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-094451",
+        "scope": "Controlled paused PressurePlate61: owned initial mechanism availability/order, native door16 target and Link job equality; Pull and duplicate rejection. Actual protocol227 headless client initial/preview/Link, stale/old revisions and duplicate rejection, native job equality and native menu unchanged. Full panel not yet admitted.",
+        "owned_df_pid": 40392,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice"
+        ],
+        "bridge_sha256": "30E922CBA9081E531AE82C230C089DD5641838D80999ECE977F7E5B9E65ED0B1",
+        "unavailable_provider": {
+          "available": false,
+          "building_id": 61,
+          "lever_mechanism": 24480,
+          "target_mechanism": -1
+        },
+        "selected_provider": {
+          "available": true,
+          "building_id": 61,
+          "lever_mechanism": 24480,
+          "target_mechanism": 48520
+        },
+        "target_provider": {
+          "building_id": 61,
+          "target_id": 16
+        },
+        "jobs": [
+          {
+            "label": "linked-job",
+            "jobs": [
+              {
+                "flags": 0,
+                "id": 382796,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 16,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 61,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ]
+          },
+          {
+            "label": "provider-job",
+            "jobs": [
+              {
+                "flags": 0,
+                "id": 382797,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 16,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 61,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ]
+          },
+          {
+            "label": "wire-job",
+            "jobs": [
+              {
+                "flags": 0,
+                "id": 382798,
+                "item_roles": [
+                  {
+                    "flags": 0,
+                    "id": 24480,
+                    "index": -1,
+                    "role": 3
+                  },
+                  {
+                    "flags": 0,
+                    "id": 48520,
+                    "index": -1,
+                    "role": 4
+                  }
+                ],
+                "pos": [
+                  -30000,
+                  -30000,
+                  -30000
+                ],
+                "refs": [
+                  {
+                    "building_id": 16,
+                    "type": 33
+                  },
+                  {
+                    "building_id": 61,
+                    "type": 36
+                  }
+                ],
+                "requirements": 0,
+                "type": 146,
+                "world_registered": true
+              }
+            ]
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-094451/pressure-plate-native.json": "093749dd58f80bf125869746ddef421522bb73a72d2469511a1fca08f292de5b",
+          "build/stockpile-storage-native-farm-discovery-20261115-094451/workshop-wire-result.json": "f4b6ad519e9ddc602cc1034e11bec2ace36db769c8242aabd42f336ef2fe3847",
+          "build/stockpile-storage-native-farm-discovery-20261115-094451/result.json": "c4c5ad5d9dd3e449f37c1a1e1939c3d976f7d33b124283cb64101340842c3d48",
+          "build/stockpile-storage-native-farm-discovery-20261115-094451/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-094451/workshop-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
+        }
       }
     },
     "pending_construction_reference": {

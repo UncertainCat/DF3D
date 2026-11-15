@@ -8,11 +8,12 @@
 #include "modules/Maps.h"
 
 namespace df3d_production {
+// Link accepts native Lever0 and PressurePlate1; Pull below remains Lever0 only.
 // Source authority is independent of the native selected sheet and of the
 // initial mechanism search. Targeting retains the initially chosen item IDs.
 inline std::optional<BuildingHeaderObservation> observeLever(df::building* source) {
     auto* lever=virtual_cast<df::building_trapst>(source);
-    if(!lever || int(lever->trap_type)!=0 || lever->isHidden() || lever->jobs.size()>=32767 ||
+    if(!lever || (int(lever->trap_type)!=0 && int(lever->trap_type)!=1) || lever->isHidden() || lever->jobs.size()>=32767 ||
        lever->getBuildStage()!=lever->getMaxBuildStage())return std::nullopt;
     auto* tile=DFHack::Maps::getTileDesignation(lever->centerx,lever->centery,lever->z);
     if(!tile || tile->bits.hidden)return std::nullopt;
@@ -25,13 +26,14 @@ inline std::optional<BuildingHeaderObservation> observeLever(df::building* sourc
 // walkability component and stock exclusion. Output IDs are independently owned.
 inline std::optional<std::array<int32_t,2>> leverInitialMechanisms(df::building* building) {
     auto* lever=virtual_cast<df::building_trapst>(building);
-    if(!farmFunctions() || !df::global::world || !lever || int(lever->trap_type)!=0 ||
+    if(!farmFunctions() || !df::global::world || !lever || (int(lever->trap_type)!=0 && int(lever->trap_type)!=1) ||
        lever->getBuildStage()!=lever->getMaxBuildStage())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool ready=[&] {
         struct Pin {size_t rva,length;uint64_t expected;};
         constexpr Pin pins[]={
             {0x1ad883,0x2b1,UINT64_C(0x6e32f372e3f3cf02)},
+            {0x1ad55d,0x2ca,UINT64_C(0x8b1ac073c20f85cb)},
             {0xc93380,0x98,UINT64_C(0x9455ba082ba604c4)},
             {0xc93160,0x213,UINT64_C(0x07d957dea30ed105)},
             {0xc8baa0,0x11a,UINT64_C(0x2c62fce4a0555c66)},
@@ -106,7 +108,7 @@ inline bool leverLinkNativeReady() {
 // visibility uses !isHidden, excluding native hide/unhide-menu overrides.
 inline std::optional<int32_t> leverLinkTargetAt(df::building* source,df::coord pos) {
     auto* lever=virtual_cast<df::building_trapst>(source);
-    if(!leverLinkNativeReady() || !df::global::world || !lever || int(lever->trap_type)!=0 ||
+    if(!leverLinkNativeReady() || !df::global::world || !lever || (int(lever->trap_type)!=0 && int(lever->trap_type)!=1) ||
        lever->getBuildStage()!=lever->getMaxBuildStage() || lever->jobs.size()>32767 ||
        !DFHack::Maps::isValidTilePos(pos))return std::nullopt;
     for(const auto* job:lever->jobs)if(!job || job->job_type==df::job_type::DestroyBuilding)return std::nullopt;

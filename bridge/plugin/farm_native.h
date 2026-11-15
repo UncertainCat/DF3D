@@ -140,7 +140,7 @@ inline std::optional<BuildingHeader> buildingHeader(df::building* farm,bool allo
     const auto& native=farmFunctions();
     if(!native || !farm || farm->name.size()>512 || farm->jobs.size()>size_t(INT32_MAX))return {};
     const auto type=farm->getType();
-    if(!(allowLever && type==df::building_type::Trap && farm->getSubtype()==0) && !plainFurnitureType(type) && !funeraryFurnitureType(type) && !linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return {};
+    if(!(allowLever && type==df::building_type::Trap && (farm->getSubtype()==0 || farm->getSubtype()==1)) && !plainFurnitureType(type) && !funeraryFurnitureType(type) && !linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return {};
     BuildingHeader value;value.customNameCp437=farm->name;farm->getName(&value.nativeNameCp437);
     if(value.nativeNameCp437.size()>512)return {};
     value.headerNameCp437=value.nativeNameCp437;native.formatName(&value.headerNameCp437);

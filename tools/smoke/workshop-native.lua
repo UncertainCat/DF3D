@@ -147,6 +147,8 @@ local ok,err=xpcall(function()
   -- than depending on a preceding optional resize/worker probe.
   if generic then resize_worker('default')end
   local generic_types={[11]=true,[12]=true,[14]=true,[51]=true,[52]=true,[54]=true}
+  local floodgate=generic and os.getenv('DF3D_FLOODGATE_RUNTIME')=='1'
+  if floodgate then generic_types={[9]=true}end
   local funerary=generic and os.getenv('DF3D_FURNITURE_FUNERARY_DISCOVERY')=='1'
   if funerary then generic_types={[3]=true,[46]=true}end
   local chosen={}
@@ -159,6 +161,7 @@ local ok,err=xpcall(function()
     if tile and not tile.hidden then chosen[kind]=candidate end
    end
   end
+  if floodgate then chosen[9]=assert(df.building.find(39))end
   for kind=0,54 do local target=chosen[kind];if target then
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(target)
    local jobs={};for _,job in ipairs(target.jobs)do jobs[#jobs+1]={id=job.id,type=df.job_type[job.job_type],flags=job.flags.whole}end
@@ -300,6 +303,7 @@ local ok,err=xpcall(function()
     assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==target.id,'Furniture capture selected another entity')
     assert(#target.jobs==0 and #target.contained_items>=1 and target.contained_items[0].use_mode==2,'Furniture action fixture needs its installed component first and no job')
     local controls_offset=#target.contained_items>6 and -16 or 0
+    local content_y=kind==9 and 562 or 526
     local item=target.contained_items[0].item
     local initial_name=target.name;local initial_flags=item.flags.whole
     local row=result.completed_buildings[#result.completed_buildings];row.actions={}
@@ -315,26 +319,56 @@ local ok,err=xpcall(function()
      shot('furniture-'..kind..'-'..label)
     end
     observe('initial')
+    if floodgate then
+     click(540,520);assert(sheet.show_linked_buildings);observe('links')
+     if os.getenv('DF3D_FLOODGATE_HOVER')=='1'then
+      local script=require('gui.script')
+      local deadline=dfhack.getTickCount()+800
+      repeat
+       g.precise_mouse_x=868;g.precise_mouse_y=562;g.mouse_x=108;g.mouse_y=46
+       df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+       gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+       script.sleep(1,'frames')
+      until dfhack.getTickCount()>=deadline
+      g.precise_mouse_x=868;g.precise_mouse_y=562;g.mouse_x=108;g.mouse_y=46
+      df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+      gui.simulateInput(view,{})
+      view:render(dfhack.getTickCount())
+      local main=df.global.game.main_interface
+      row.link_hover={instruction=main.current_hover,enabled=main.hover_instructions_on,lines={}}
+      for yy=0,17 do
+       local chars={};for xx=g.dimx-24,g.dimx-1 do local ch=dfhack.screen.readTile(xx,yy).ch;chars[#chars+1]=ch>=32 and string.char(ch%256)or' 'end
+       row.link_hover.lines[#row.link_hover.lines+1]=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')
+      end
+     end
+     if os.getenv('DF3D_FURNITURE_RESIZE')=='1'then
+      for _,size in ipairs{'small','medium','wide','default'}do resize_worker(size);shot('furniture-9-links-resize-'..size)end
+     end
+     click(540,562);assert(sheet.open and sheet.active_id==target.id);observe('links-body')
+     local linked=assert(df.building.find(55));row.link_target={id=linked.id,x=linked.centerx,y=linked.centery,z=linked.z}
+     click(868,562);assert(not sheet.open and df.global.window_z==linked.z)
+     view:render(dfhack.getTickCount());select_map(target);assert(not sheet.show_linked_buildings);observe('reopened')
+    end
     click(800,82);for i=1,100 do gui.simulateInput(view,'STRING_A000')end
     for c in ('Furniture reference'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(c:byte()))end
     gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount());assert(target.name=='Furniture reference');observe('renamed')
     click(800,82);for i=1,100 do gui.simulateInput(view,'STRING_A000')end
     for c in initial_name:gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(c:byte()))end
     gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount());assert(target.name==initial_name)
-    click(796+controls_offset,526);assert(item.flags.forbid,'Native furniture Forbid missed');observe('forbidden');click(796+controls_offset,526);assert(item.flags.whole==initial_flags,'Furniture Forbid did not restore flags')
+    click(796+controls_offset,content_y);assert(item.flags.forbid,'Native furniture Forbid missed');observe('forbidden');click(796+controls_offset,content_y);assert(item.flags.whole==initial_flags,'Furniture Forbid did not restore flags')
     click(832,82);assert(#target.jobs==1 and target.jobs[0].job_type==df.job_type.DestroyBuilding);observe('removing')
     if os.getenv('DF3D_FURNITURE_REMOVAL_CONTROLS')=='1'then
      local removal_id=target.jobs[0].id
      for _,control in ipairs{{'forbid',796},{'dump',820},{'melt',844},{'hidden',868}}do
       for attempt=1,2 do
-       click(control[2]+controls_offset,526);observe('removing-'..control[1]..'-'..attempt)
+       click(control[2]+controls_offset,content_y);observe('removing-'..control[1]..'-'..attempt)
        assert(#target.jobs==1 and target.jobs[0].id==removal_id,'Native component edit changed demolition job')
       end
       assert(item.flags.whole==initial_flags,'Native component edit did not restore flags')
      end
     end
     click(500,202);assert(#target.jobs==0);observe('restored')
-    click(772+controls_offset,526);assert(sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==item.id,'Native furniture View missed its component')
+    click(772+controls_offset,content_y);assert(sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==item.id,'Native furniture View missed its component')
     gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(target);observe('view-return')
     if kind==14 and #target.contained_items>6 then
      for _,direction in ipairs{{'tail',718,(#target.contained_items-6)*3},{'top',514,0}}do
@@ -367,7 +401,7 @@ local ok,err=xpcall(function()
      end
      file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
     end
-    if (kind==1 or funerary) and os.getenv('DF3D_FURNITURE_RESIZE')=='1'then
+    if (kind==1 or funerary or floodgate) and os.getenv('DF3D_FURNITURE_RESIZE')=='1'then
      for _,size in ipairs{'small','medium','wide','default'}do resize_worker(size);shot('furniture-'..kind..'-resize-'..size)end
     end
    end

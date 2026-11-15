@@ -27,13 +27,13 @@ func _exit_tree() -> void:
 	if links_model!=null and links_model.changed.is_connected(_links_changed):links_model.changed.disconnect(_links_changed)
 	super._exit_tree()
 func _gui_input(event: InputEvent) -> void:
-	if contents_extra_height()>0 and contents_allowed() and event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
+	if not state.snapshot.get("removing",false) and contents_extra_height()>0 and contents_allowed() and event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
 		for index in 2:
 			if tab_rect(index).has_point(event.position):showing_links=index==0;_layout_contents();queue_redraw();accept_event();return
 	super._gui_input(event)
 func _draw() -> void:
 	super._draw()
-	if contents_extra_height()==0 or int(size.y/12)<45:return
+	if state.snapshot.get("removing",false) or contents_extra_height()==0 or int(size.y/12)<45:return
 	for index in 2:
 		var selected: bool=showing_links==(index==0)
 		var rect:=tab_rect(index);var columns:=int(rect.size.x/8)
@@ -43,4 +43,4 @@ func _draw() -> void:
 				for x in columns:
 					var sx:=x if x<2 else 4-(columns-1-x) if x>=columns-2 else 2
 					draw_texture_rect_region(texture,Rect2(rect.position+Vector2(x*8,y*12),Vector2(8,12)),Rect2(sx*8,y*12,8,12))
-		if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),rect.position+Vector2(8,18),"Show linked buildings" if index==0 else "Show items",HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color8(70,44,0) if selected else Color.WHITE)
+		if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),rect.position+Vector2(16,18),"Show linked buildings" if index==0 else "Show items",HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color8(70,44,0) if selected else Color.WHITE)

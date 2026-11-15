@@ -17,8 +17,9 @@ func refresh() -> void:
 	if not can_scroll():scrollbar.dragging=false
 	queue_redraw()
 func recenter_rect(index: int) -> Rect2:return Rect2(416+controls_offset(),index*36-row_offset(),24,36)
-# Native hover315 still needs a timed text capture before tooltip exposure.
-func help_at(_point: Vector2) -> String:return ""
+func help_at(point: Vector2) -> String:
+	var index:=floori((point.y+row_offset())/36)
+	return "linked-building" if index>=0 and index<visible_count() and recenter_rect(index).has_point(point) else ""
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:pointer_known=true;pointer_position=event.position;_process(0)
 	if not available() or not event is InputEventMouseButton or not event.pressed:return

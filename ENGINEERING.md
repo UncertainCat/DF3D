@@ -9806,9 +9806,30 @@ headless checks cover duplicate targets, viewport retention, list shrink,
 late replies after closure and wrong-target rejection. Existing UI composition
 and all19 core checks pass. `linked_building_sheet_view.gd` adds local tabs to
 the shared furniture view; qualified existing furniture retains its prior
-layout. Floodgate header/contents admission, full-sheet geometry/actions,
-recenter integration, timed hover315 text and public map/holder routes remain
-unfinished. Lever task controls are a separate outstanding surface. See
+layout. Protected064658 on2026-11-15 qualifies staged floodgate39 header and
+contents admission, rename/restore, component forbid/restore, removal/cancel,
+item View/holder return, both tabs, inactive link-row body, and recenter/reopen.
+All nine full-panel captures match native pixels. Recenter closes the sheet
+and moves to the native target elevation. Native hides tab controls during
+removal while retaining the item-row position; the viewer does likewise.
+Owned DF40640 exits unsaved with source preservation; both graphical processes
+are capped30FPS, sampled GPU59-60C. The same documented shutdown diagnostics
+make this `passed_with_known_issues`. All19 core checks pass after rebuilding
+the bridge, model and extension.
+
+Protected065134 verifies both tabs at960x600,1200x720,1600x900 and1200x800;
+all eight full-panel resize crops match native. Timed pointer sampling captures
+instruction315 verbatim: “Recenter on the linked” / “building.” The viewer
+shows those lines on the visible recenter button through its existing hover
+system. Protected065315 enters floodgate39 through actual map clicks with
+diagnostic routing flags disabled, exercises Escape/reopen and the full edit,
+item-holder, link and recenter workflow. Completed floodgates now use native
+tile selection and the furniture controller through public map/holder routes.
+Both lanes preserve source saves and close owned DF40924/38936 unsaved, with
+the same known shutdown diagnostics. These natural targets have one link and
+two items; multi-page native scrolling remains unqualified. Headless header,
+links lifecycle and UI composition checks pass, as do all19 core checks.
+Lever task controls remain a separate outstanding surface. See
 `linked_buildings_reference.row_render_reference` for exact evidence scope.
 
 Protected native022800 on2026-11-15 attempts selection of29 naturally completed,

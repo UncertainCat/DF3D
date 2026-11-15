@@ -116,6 +116,8 @@ const STOCKS_HELP={
 	"view":["Leave menu and open the","item's sheet."]}
 # Native contents235536 text cells, instructions286/317/323..328.
 const CONTENTS_HELP={
+  # Native instruction315, protected floodgate065009 text-cell capture.
+  "linked-building": ["Recenter on the linked", "building."],
   # Native instruction322, protected funerary044059.
   "resting": [
     "This item is resting",

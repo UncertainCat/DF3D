@@ -89,6 +89,14 @@ for _,kind in ipairs(kinds)do
   row.manual_toggle={initial=initial,restored=b.pump_manually,jobs=jobs,frame_unchanged=df.global.world.frame_counter==result.frame}
  end
 end
+if os.getenv('DF3D_MACHINERY_SCENE')=='1'then
+ local f=assert(io.open(out..'/machinery-wire-expected.json','w'));f:write(json.encode(result));f:close()
+ local active_id=sheet.active_id
+ capture('machinery-scene')
+ f=assert(io.open(out..'/machinery-scene-result.json'));result.scene=json.decode(f:read('*a'));f:close()
+ assert(result.scene.success and sheet.active_id==active_id)
+ for _,b in ipairs(fixtures)do if b:getType()==df.building_type.ScrewPump then assert(not b.pump_manually and #b.jobs==0)end end
+end
 if os.getenv('DF3D_MACHINERY_WIRE')=='1'then
  local f=assert(io.open(out..'/machinery-wire-expected.json','w'));f:write(json.encode(result));f:close()
  local active_id=sheet.active_id

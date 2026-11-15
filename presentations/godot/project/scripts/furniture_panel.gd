@@ -6,7 +6,7 @@ func _init() -> void:
 	state=preload("res://scripts/building_header_state.gd").new()
 	contents.edit_removing=true
 func _create_view():
-	var view=preload("res://scripts/linked_building_sheet_view.gd").new()
+	var view=preload("res://scripts/machinery_sheet_view.gd").new()
 	view.building_icon="" # Native artwork is authoritative; no Box fallback for other furniture.
 	return view
 func _open_state(id: int,_season: int) -> void:state.open(id)
@@ -20,7 +20,7 @@ func configure(world,service,host,help=null) -> void:
 			close_panel();focus_requested.emit(tile))
 func _state_changed() -> void:
 	super._state_changed()
-	if state.snapshot.get("type",-1) in [9,23]:
+	if state.snapshot.get("type",-1) in [9,23,33,40,41,42,43,44,50]:
 		if links.building_id!=state.building_id:links.open(state.building_id)
 	elif links.building_id>=0:links.close()
 func close_panel() -> void:

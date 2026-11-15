@@ -563,9 +563,8 @@ changes `pump_manually` to its opposite; it does not create or cancel a job in
 that input handler. Protected103300 clicks the visible checkbox twice, verifies
 the flag changes/restores, and confirms no job or frame change while paused.
 This does not qualify subsequent pumping simulation. The captured native labels
-are Start Pump Manually and Stop Pumping Manually. Runtime machinery management
-still needs rendered/main-scene acceptance;
-these types remain on inspector routes.
+are Start Pump Manually and Stop Pumping Manually. The staged main-scene panel
+is qualified below; public machinery entry remains on inspector routes.
 
 Evidence: `completed_sheet_discovery_reference.machinery_sheets_reference` contains
 the eight native records, exact source captions, instruction references and pins.
@@ -602,6 +601,23 @@ source preservation; graphics capped30FPS, sampled GPU59..61C. The live client h
 only the known rendering-thread notice (passed_with_known_issues). Evidence:
 `completed_sheet_discovery_reference.machinery_wire_reference`. Rendering, map
 entry, frozen/disengaged variants and subsequent pumping simulation are not claimed.
+
+The shared furniture controller now renders machinery through
+`machinery_sheet_view.gd`, using the semantic header body and existing guarded
+pump intent. Native18a7aa..18a86d supplies all four direction captions;
+18a68d/18a6d5 uses BUILDING_INFO_ACTIVE/INACTIVE for the24x36 checkbox.
+Protected110553 on2026-11-15 matches seven complete488x708 panels and both pump
+manual states against native pixels. Actual main-scene pointer clicks turn the
+pump on/off and restore its flag; Escape releases panel ownership. The native
+selection and paused frame remain unchanged. Waterwheel power and installed-item
+rows use the existing real network; the other six controlled fixtures retain
+the discovery limitations above. Public map/holder entry, frozen/disengaged
+variants, other directions and subsequent pumping simulation remain unqualified.
+Core19 and the engine script check pass. Owned DF35912 closes unsaved with source
+preservation; graphical runs are capped30FPS, sampled GPU60..61C. The live run
+passes with the known rendering-thread notice, render-thread finalize and two
+ObjectDB shutdown diagnostics. Evidence:
+`completed_sheet_discovery_reference.machinery_scene_reference`.
 
 ## Native bug register
 

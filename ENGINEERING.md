@@ -9670,6 +9670,28 @@ passes_with_known_issues for the documented Godot exit diagnostics. Evidence:
 selection_reference.engraving_resize_reference. This verifies the root frame and
 restored workflow, not every nested page at every size.
 
+Vermin selection discovery: protected200627 on2026-11-14 selects an existing
+revealed tile with two lizard castes938/939. Native and provider agree on both
+identities, tab order and default938. The native screenshot was inspected:
+portrait at(424,64), white title at(528,76), description at(432,172) in the
+1200x800 window. Owned DF36684 exits unsaved with source preservation; native
+graphics are capped30FPS, GPU samples54C/4% before and53C/6% after.
+`selection_reference.vermin_selection_reference` retains the bounded evidence.
+The diagnostic requires a nonnegative caste: the earlier200229/200527 target
+had caste-1 and correctly produced no selection in either implementation.
+
+Native renderer153273..153af5 resolves the selected combined ID through
+creature_handler.list_creature/list_caste. It calls aa3bd0(race,owned_string,
+false,caste), then52d650 for the title. Population1a1d0f..1a2022 reads
+caste_raw.description at0x220 and wraps it to56 columns through8e7310.
+Portrait selection prefers caste portrait sets, then creature portrait sets;
+unlike the existing item helper, this branch also requires profession-1 on
+the set. The renderer falls back to the caste/creature small tile when no
+portrait is present. Runtime must resolve these independently; native sheet
+text and portrait caches remain prohibited inputs. The Vermin destination,
+portrait transport and side-tab artwork are still missing; this discovery
+does not establish viewer acceptance or authorize public map routing.
+
 selection_art_state.gd reuses local artwork navigation state with a selected-tile
 receipt, never a proxy job. work_order_details_view.gd has an engraving context
 for the native frame, cell-aligned heading, root-button backing, normal subject

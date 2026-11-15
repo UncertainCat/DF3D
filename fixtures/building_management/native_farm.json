@@ -12809,6 +12809,81 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "vermin_selection_reference": {
+      "caste": 0,
+      "lines": [
+        {
+          "text": "                                                                  Lizard",
+          "y": 6
+        },
+        {
+          "text": "                                                      A small reptile.",
+          "y": 14
+        },
+        {
+          "text": "                                                                                                                                    Elevation 34",
+          "y": 16
+        }
+      ],
+      "native": {
+        "active_id": 938,
+        "active_kind": 7,
+        "building": -1,
+        "items": [],
+        "tabs": [
+          {
+            "id": 938,
+            "kind": 7
+          },
+          {
+            "id": 939,
+            "kind": 7
+          }
+        ],
+        "units": [],
+        "valid": true,
+        "vermin": [
+          938,
+          939
+        ]
+      },
+      "provider": {
+        "active_id": 938,
+        "active_kind": 7,
+        "building": -1,
+        "items": [],
+        "tabs": [
+          {
+            "id": 938,
+            "kind": 7
+          },
+          {
+            "id": 939,
+            "kind": 7
+          }
+        ],
+        "units": [],
+        "valid": true,
+        "vermin": [
+          938,
+          939
+        ]
+      },
+      "race": 479,
+      "tile": [
+        191,
+        104,
+        163
+      ],
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-200627",
+      "status": "passed",
+      "scope": "Native-only paused selection capture, two existing lizard castes. Provider membership, order and default match. No viewer destination acceptance.",
+      "screenshot_sha256": "d53b01dd4e2f2a9fcd1d0175eb161db502473e07fdf8bb7cc2b161b1babaa0b8",
+      "native_renderer": "153273..153af5",
+      "native_population": "1a1d0f..1a2022",
+      "title_formatter": "aa3bd0(race, owned_string, false, caste), then52d650",
+      "description_source": "caste_raw.description at offset0x220, wrapped by8e7310 to56 columns"
+    },
     "engraving_resize_reference": {
       "lane": "build/stockpile-storage-native-farm-discovery-20261114-195949",
       "status": "passed_with_known_issues",

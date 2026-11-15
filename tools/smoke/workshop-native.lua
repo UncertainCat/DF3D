@@ -140,6 +140,35 @@ local ok,err=xpcall(function()
     building=sheet.viewing_bldid,tabs=tabs,active_kind=sheet.active_sheet,active_id=sheet.active_id}
   end
   result.tile_selection_reference={cases={}}
+  if os.getenv('DF3D_TILE_SELECTION_VERMIN')=='1' then
+   local target
+   for _,v in ipairs(df.global.world.event.vermin)do
+    local d=dfhack.maps.getTileFlags(v.pos)
+    if v.visible and (v.flags.whole&1)==0 and v.race>=0 and v.caste>=0 and d and not d.hidden then target=v;break end
+   end
+   assert(target,'Vermin reference needs a visible revealed native record')
+   local p=target.pos
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+   select_map{centerx=p.x,centery=p.y,z=p.z}
+   local probe,probe_code=dfhack.run_command_silent('df3d','tile-selection-read',tostring(p.x),tostring(p.y),tostring(p.z))
+   assert(probe_code==0,probe)
+   result.tile_selection_reference.vermin={tile={p.x,p.y,p.z},race=target.race,caste=target.caste,native=observe(),provider=json.decode(probe),lines=lines()}
+   shot('selection-vermin-before-tab')
+   if sheet.active_sheet~=df.view_sheet_type.VERMIN then
+    local index;for i,kind in ipairs(sheet.tab)do if kind==df.view_sheet_type.VERMIN then index=i;break end end
+    assert(index,'Native vermin tab missing')
+    g.precise_mouse_x=(g.dimx-35)*8;g.precise_mouse_y=52+index*36+16
+    g.mouse_x=g.precise_mouse_x//8;g.mouse_y=(g.precise_mouse_y-4)//12
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
+   end
+   assert(sheet.active_sheet==df.view_sheet_type.VERMIN,'Native vermin sheet did not open')
+   local output,code=dfhack.run_command_silent('df3d','tile-selection-read',tostring(p.x),tostring(p.y),tostring(p.z))
+   assert(code==0,output)
+   assert(json.encode(observe())==json.encode(json.decode(output)),'Native vermin selection differs from provider')
+   result.tile_selection_reference.vermin={tile={p.x,p.y,p.z},race=target.race,caste=target.caste,native=observe(),provider=json.decode(output),lines=lines()}
+   shot('selection-vermin');return
+  end
   if os.getenv('DF3D_TILE_SELECTION_ENGRAVING')=='1' then
    local target
    for _,engraving in ipairs(df.global.world.event.engravings)do

@@ -181,7 +181,12 @@ local ok,err=xpcall(function()
     descriptions[#descriptions+1]={id=combined,semantic=semantic}
    end
    result.tile_selection_reference.vermin.descriptions=descriptions
-   shot('selection-vermin');return
+   shot('selection-vermin')
+   if os.getenv('DF3D_TILE_SELECTION_SCENE')=='1' then
+    capture('workshop-wire')
+    local f=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(f:read('*a'));f:close();assert(receipt.success)
+   end
+   return
   end
   if os.getenv('DF3D_TILE_SELECTION_ENGRAVING')=='1' then
    local target

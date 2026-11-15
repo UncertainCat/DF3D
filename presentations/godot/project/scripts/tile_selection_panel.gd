@@ -11,6 +11,7 @@ var canvas: CanvasLayer
 var panel: Panel
 var body
 var engraving
+var vermin
 var artwork_state=preload("res://scripts/selection_art_state.gd").new()
 var artwork
 var tabs
@@ -34,6 +35,7 @@ func configure(source,service,host,route: Callable) -> void:
 	engraving=preload("res://scripts/engraving_sheet_view.gd").new();panel.add_child(engraving);engraving.configure(world,navigation.state)
 	engraving.input_allowed=func():return ui_host.allows_panel_input(self)
 	engraving.specify_image.connect(_open_artwork)
+	vermin=preload("res://scripts/vermin_sheet_view.gd").new();panel.add_child(vermin);vermin.configure(world,navigation.state)
 	artwork=preload("res://scripts/work_order_details_view.gd").new();canvas.add_child(artwork)
 	artwork.engraving_context=true;artwork.job_context=true;artwork.configure_details(world,artwork_state)
 	artwork.input_allowed=func():return ui_host.allows_panel_input(self)
@@ -46,7 +48,7 @@ func configure(source,service,host,route: Callable) -> void:
 func open_tile(tile: Vector3i) -> void:navigation.open(tile)
 
 func _route(kind: int,id: int,tile: Vector3i):
-	if kind in [C.SelectionKind.ItemList,C.SelectionKind.UnitList,C.SelectionKind.Engraving,C.SelectionKind.PlannedEngraving]:
+	if kind in [C.SelectionKind.ItemList,C.SelectionKind.UnitList,C.SelectionKind.Engraving,C.SelectionKind.PlannedEngraving,C.SelectionKind.Vermin]:
 		if not ui_host.activate(self):return null
 		panel.show();return self
 	return destination.call(kind,id,tile) if destination.is_valid() else null
@@ -99,7 +101,7 @@ func _process(_delta: float) -> void:
 	var view:=viewport/factor
 	panel.position=Vector2((floori(view.x/8)-98)*8,48+fposmod(view.y,12)*0.5)
 	panel.size=Vector2(488,floori(view.y/12)*12-84)
-	body.layout(panel.size.y);engraving.layout(panel.size.y);tabs.layout(panel.position);artwork.layout(view)
+	body.layout(panel.size.y);engraving.layout(panel.size.y);vermin.layout(panel.size.y);tabs.layout(panel.position);artwork.layout(view)
 
 func _input(event: InputEvent) -> void:
 	if not ui_host.allows_panel_input(self) or artwork.visible:return

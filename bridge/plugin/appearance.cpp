@@ -831,19 +831,20 @@ bool resolveCritterItemSelector(df::item* item, Result& out) {
     return true;
 }
 
-bool resolveCritterItemPortrait(df::item* item, Result& out) {
+static bool resolveCritterPortrait(int32_t race,int32_t caste,bool loose,Result& out) {
     out = Result{};
-    if (!item || (item->getType()!=df::item_type::PET && item->getType()!=df::item_type::VERMIN)) return false;
     Ctx c;
-    if (!buildCasteCtx(c,item->getMaterial(),item->getMaterialIndex())) return false;
-    // Native1a211b..1a2323: caste portrait sets precede creature sets. Unlike
-    // unit selection, there is no role/profession filter. Each matching set
+    if (!buildCasteCtx(c,race,caste)) return false;
+    // Native1a211b..1a2323: caste portrait sets precede creature sets. Items
+    // have no role/profession filter; loose vermin additionally require prof-1.
+    // Each matching set
     // replaces the portrait, so retain the last result and native expansion
     // effects for every selected set. No view_sheets or texture cache input.
     const auto resolveSets=[&](const df::creature_raw_graphics* graphics)->int {
         bool found=false;
         if(graphics)for(const auto* set:graphics->graphics_layer_set) {
             if(!set || !set->flags.bits.portrait)continue;
+            if(loose && int(set->prof)!=-1)continue; // Native1a1e59 / 1a1f29.
             found=true;
             Result current;
             if(!resolveCtx(c,current,true,false,set))return -1;
@@ -854,6 +855,15 @@ bool resolveCritterItemPortrait(df::item* item, Result& out) {
     const int casteResult=resolveSets(c.caste->caste_graphics);
     if(casteResult!=0)return casteResult>0;
     return resolveSets(c.raw->graphics)>0;
+}
+
+bool resolveCritterItemPortrait(df::item* item, Result& out) {
+    out=Result{};
+    if(!item || (item->getType()!=df::item_type::PET && item->getType()!=df::item_type::VERMIN))return false;
+    return resolveCritterPortrait(item->getMaterial(),item->getMaterialIndex(),false,out);
+}
+bool resolveVerminPortrait(int32_t race,int32_t caste,Result& out) {
+    return resolveCritterPortrait(race,caste,true,out);
 }
 
 bool resolvePortrait(df::unit* u, Result& out) {

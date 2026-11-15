@@ -12810,6 +12810,15 @@
   },
   "selection_reference": {
     "vermin_selection_reference": {
+      "scene_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-201603",
+        "status": "passed_with_known_issues",
+        "scope": "Actual main-scene staged Vermin destination. Native panel crop416,52,488,708 matches exactly; native title and description survive typed transport; portrait present. Both caste tab clicks, Escape and late-reply retirement pass.",
+        "limitations": "Side-tab artwork remains absent. No portrait fallback, long descriptions, alternate portrait sets or resize qualification. Ordinary map routing remains staged.",
+        "owned_df_pid": 34332,
+        "gpu_samples": "60C/28% and60C/17%, graphical processes capped30FPS",
+        "diagnostics": "Known separate-render-thread warning, finalize render-thread error and two ObjectDB leaks at exit only."
+      },
       "description_provider_reference": {
         "lane": "build/stockpile-storage-native-farm-discovery-20261114-201237",
         "status": "passed",

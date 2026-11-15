@@ -633,6 +633,7 @@ struct TileSelectionSession {
   df3d_selection::Selection source;
   df3d_selection::Target active;
   std::string title,description;
+  std::optional<df3d_production::ItemAppearanceRecipe> portrait;
   std::vector<std::string> memberNames;
   std::vector<int16_t> memberTypes;
   std::vector<std::optional<ItemInspectionAppearance>> memberAppearances;
@@ -650,10 +651,16 @@ ItemInspectionAppearance copyInspectionAppearance(const df3d_production::ItemIns
 bool prepareTileSelectionReply(TileSelectionSession& value) {
   value.memberNames.clear();value.memberTypes.clear();value.memberAppearances.clear();value.memberUnitAppearances.clear();
   value.title.clear();value.description.clear();
+  value.portrait.reset();
   if(value.active.kind==df::view_sheet_type::VERMIN) {
     const auto text=df3d_selection::verminDescription(value.active.id);
     if(!text)return false;
-    value.title=text->title;value.description=text->description;return true;
+    value.title=text->title;value.description=text->description;
+    df3d_appearance::Result recipe;
+    if(df3d_appearance::resolveVerminPortrait(text->race,text->caste,recipe))value.portrait=df3d_production::ownedItemRecipe(recipe);
+    size_t appearanceBytes=0;
+    if(value.portrait && !df3d_production::validItemRecipe(*value.portrait,appearanceBytes))return false;
+    return true;
   }
   if(value.active.kind==df::view_sheet_type::ENGRAVING_PLANNED) {
     const auto terrain=df3d_hover::terrain(value.tile.x(),value.tile.y(),value.tile.z(),false);
@@ -1465,9 +1472,11 @@ void publish() {
     const auto items=b.CreateVector(std::vector<flatbuffers::Offset<m::SelectionItem>>{});
     const auto overview=b.CreateVector(std::vector<flatbuffers::Offset<m::SelectionText>>{});
     const auto title=b.CreateString(value.title),description=b.CreateString(value.description);
+    const auto portrait=encodeItemRecipe(value.portrait);
     m::SelectionStateBuilder page(b);page.add_open(value.receipt!=0);page.add_receipt(value.receipt);
     page.add_kind(kind(value.active.kind));page.add_id(value.active.id);page.add_tile(&value.tile);
     page.add_title(title);page.add_subtitle(empty);page.add_job(empty);page.add_description(description);
+    page.add_portrait(portrait);
     page.add_alternatives(alternatives);page.add_items(items);page.add_overview(overview);page.add_members(memberRows);
     selectionResult=page.Finish();
   }

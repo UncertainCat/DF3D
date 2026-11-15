@@ -66,6 +66,8 @@ bool resolveUnitSelector(df::unit* u, Result& out);
 bool resolveCritterItemSelector(df::item* item, Result& out);
 // Detail portrait recipe; separate from the small selector tile.
 bool resolveCritterItemPortrait(df::item* item, Result& out);
+// Loose vermin use only unassigned-profession portrait sets (native1a1d0f).
+bool resolveVerminPortrait(int32_t race, int32_t caste, Result& out);
 // Independent corpse item selector; no map residency or cached texture input.
 bool resolveCorpseItemSelector(df::item* item, Result& out);
 // Convert only original installed page tiles; generated cache textures fail.

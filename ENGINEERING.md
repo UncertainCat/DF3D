@@ -9688,9 +9688,9 @@ Portrait selection prefers caste portrait sets, then creature portrait sets;
 unlike the existing item helper, this branch also requires profession-1 on
 the set. The renderer falls back to the caste/creature small tile when no
 portrait is present. Runtime must resolve these independently; native sheet
-text and portrait caches remain prohibited inputs. The Vermin destination,
-portrait transport and side-tab artwork are still missing; this discovery
-does not establish viewer acceptance or authorize public map routing.
+text and portrait caches remain prohibited inputs. This native-only discovery
+does not establish viewer acceptance or authorize public map routing; staged
+destination acceptance is recorded below.
 
 The semantic Vermin description provider now resolves combined caste IDs,
 calls the pinned native title formatter/capitalizer with an owned string,
@@ -9699,9 +9699,24 @@ invalid IDs, missing raws and oversized text. Protected201237 verifies both
 lizard castes938/939 against native raw identities/descriptions and the active
 visible heading. No native sheet cache is a runtime input. Owned DF38472 exits
 unsaved; the protected lane passes. Native graphics are capped30FPS, sampled
-58C/24%. MSVC and core19 pass. This validates the provider; typed transport,
-portrait resolution and rendered Vermin destination remain unqualified.
+58C/24%. MSVC and core19 pass. This validates the text provider only.
 Evidence: vermin_selection_reference.description_provider_reference.
+
+The staged Vermin destination now renders the native title, description and
+owned portrait recipe through SelectionState's existing portrait field. Loose
+vermin resolve caste portrait sets before creature sets and require prof-1,
+as native1a1e59/1a1f29 do. Captured-creature item portraits retain their separate
+unfiltered behavior. No protocol change or native texture-cache input is needed.
+Protected201603 on2026-11-14 passes the actual main-scene selection workflow:
+panel crop(416,52,488,708) is pixel-identical for the lizard; both caste tab
+clicks, Escape closure and late-response retirement pass. The crop was inspected.
+Owned DF34332 exits unsaved with source preservation. Both graphical processes
+are capped30FPS; GPU samples60C/28% and60C/17%. MSVC, extension and core19 pass.
+The live result is passed_with_known_issues for the established rendering-thread,
+finalize and two-ObjectDB shutdown diagnostics. Evidence:
+vermin_selection_reference.scene_reference. Side-tab artwork, absent-portrait
+fallback, longer descriptions, alternate portrait sets and resizing remain
+unqualified. Ordinary map routing remains staged.
 
 selection_art_state.gd reuses local artwork navigation state with a selected-tile
 receipt, never a proxy job. work_order_details_view.gd has an engraving context

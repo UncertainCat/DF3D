@@ -9,6 +9,44 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("pending building transport distinguishes observations from retirement") {
+  for(bool edit:{false,true})for(int fault=0;fault<9;++fault) {
+    wm::ManagementRequest r;r.action=edit?wm::ManagementAction::FarmEdit:wm::ManagementAction::ProductionInspect;
+    auto& p=r.production;p.pendingBuilding=true;p.buildingId=965;
+    if(edit){p.expectedRevision=9007199254740993ULL;p.pendingOperation=2;}
+    if(fault==1)p.buildingId=-1;
+    if(fault==2)p.expectedRevision=edit?0:1;
+    if(fault==3)p.pendingOperation=edit?3:0;
+    if(fault==4)p.doorControls=true;
+    if(fault==5)p.contents=true;
+    if(fault==6)p.pendingBuilding=false,p.pendingOperation=0;
+    if(fault==7)p.taskCategory="mixed";
+    if(fault==8)r.action=wm::ManagementAction::ProductionQueue;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(edit);CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+  }
+  for(int mode=0;mode<4;++mode)for(int fault=0;fault<8;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto snapshot=wire::CreatePendingBuildingSnapshot(b,965,15,9007199254740993ULL,
+      fault==1?1:0,1,68196,true,false,b.CreateString("Platinum Statue"));
+    const bool terminal=mode>=2;
+    const auto payload=wire::CreatePendingBuildingState(b,terminal?(fault==2?snapshot:0):(fault==2?0:snapshot),
+      fault==3?wire::FarmEditOutcome::Unknown:mode==0?wire::FarmEditOutcome::None:wire::FarmEditOutcome::Completed,
+      mode==2 || fault==4,mode==3 || fault==4);
+    wire::ProductionStateBuilder p(b);p.add_pending_building(payload);if(fault==5)p.add_selected_building(965);
+    const auto prod=p.Finish();wire::ManagementStateBuilder s(b);s.add_revision(1);s.add_production(prod);
+    s.add_action(fault==6?wire::ManagementAction::ProductionList:mode==0?wire::ManagementAction::ProductionInspect:wire::ManagementAction::FarmEdit);
+    s.add_status(fault==7?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);b.Finish(s.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CAPTURE(mode);CAPTURE(fault);const bool invalid=fault!=0 && !(fault==1 && terminal);
+    CHECK(bool(wire::validateManagementState(*value))==invalid);
+    if(!invalid){const auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.pendingBuilding);
+      CHECK(decoded.pendingBuilding->removed==(mode==2));CHECK(decoded.pendingBuilding->removing==(mode==3));
+      if(!terminal){REQUIRE(decoded.pendingBuilding->snapshot);CHECK(decoded.pendingBuilding->snapshot->revision==9007199254740993ULL);CHECK(decoded.pendingBuilding->snapshot->headerName=="Platinum Statue");}}
+  }
+}
+
 TEST_CASE("door control transport separates read and edit authority") {
   for(bool edit:{false,true})for(int fault=0;fault<10;++fault) {
     wm::ManagementRequest r;r.action=edit?wm::ManagementAction::FarmEdit:wm::ManagementAction::ProductionInspect;

@@ -77,6 +77,7 @@
 #include "room_mutation_native.h"
 #include "farm_native.h"
 #include "door_native.h"
+#include "pending_building_native.h"
 #include "building_item_native.h"
 #include "creature_overview_native.h"
 #include "creature_office_native.h"
@@ -1240,6 +1241,12 @@ void publish() {
     const auto& value=*production.itemPosition;const m::TilePos pos(value.x,value.y,value.z);
     itemPosition=m::CreateItemPosition(b,value.id,&pos);
   }
+  flatbuffers::Offset<m::PendingBuildingState> pendingBuilding;
+  if(production.pendingBuilding) {
+    const auto& state=*production.pendingBuilding;flatbuffers::Offset<m::PendingBuildingSnapshot> snapshot;
+    if(state.snapshot){const auto& f=*state.snapshot;snapshot=m::CreatePendingBuildingSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,f.jobId,f.suspended,f.hasWorker,b.CreateString(f.headerName));}
+    pendingBuilding=m::CreatePendingBuildingState(b,snapshot,state.outcome,state.removed,state.removing);
+  }
   flatbuffers::Offset<m::DoorControlsState> doorControls;
   if(production.doorControls) {
     const auto& state=*production.doorControls;flatbuffers::Offset<m::DoorControlsSnapshot> snapshot;
@@ -1280,7 +1287,7 @@ void publish() {
   }
   std::vector<flatbuffers::Offset<m::ProductionTaskCategory>> taskCategories;
   for(const auto& v:production.taskCategories)taskCategories.push_back(m::CreateProductionTaskCategory(b,b.CreateString(v.key),b.CreateString(v.name),dyeStatus(v.dye)));
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders,production.taskCategory?b.CreateString(*production.taskCategory):0,production.taskCategory?b.CreateVector(taskCategories):0,production.taskParent?b.CreateString(*production.taskParent):0,doorControls);
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders,production.taskCategory?b.CreateString(*production.taskCategory):0,production.taskCategory?b.CreateVector(taskCategories):0,production.taskParent?b.CreateString(*production.taskParent):0,doorControls,pendingBuilding);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
@@ -4105,6 +4112,41 @@ void run(color_ostream& out) {
       response={};response.buildingId=q->building_id();
       response.outcome=editing?(mutated?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected):m::FarmEditOutcome::None;
       status=m::ManagementStatus::Rejected;workers.invalidate();
+    }
+    publish();return;
+  }
+  if(r->production() && r->production()->pending_building()) {
+    const auto* q=r->production();message.clear();status=m::ManagementStatus::Rejected;production={};
+    auto& response=production.pendingBuilding.emplace();const bool editing=r->action()==m::ManagementAction::FarmEdit;
+    response.outcome=editing?m::FarmEditOutcome::Rejected:m::FarmEditOutcome::None;
+    const auto convert=[](const df3d_production::PendingBuildingObservation& f)->std::optional<PendingBuildingSnapshot> {
+      auto* building=df::building::find(f.id);const auto& native=df3d_production::farmFunctions();
+      if(!building || !native || building->jobs.empty() || building->jobs.front()->id!=f.jobId)return {};
+      std::string name;building->getName(&name);native.formatName(&name);
+      if(name.empty() || name.size()>512)return {};
+      return PendingBuildingSnapshot{f.id,f.type,f.revision,f.stage,f.maxStage,f.jobId,bool(f.jobFlags&2),native.hasWorker(building->jobs.front()),DF2UTF(name)};
+    };
+    try {
+      auto* building=df::building::find(q->building_id());
+      if(!editing) {
+        if(const auto value=df3d_production::observePendingBuilding(building))response.snapshot=convert(*value);
+        if(response.snapshot)status=m::ManagementStatus::Ok;
+      } else {
+        const auto result=df3d_production::editPendingBuilding(building,q->expected_revision(),static_cast<df3d_production::PendingBuildingOperation>(q->pending_operation()));
+        mutated=result.mutated;using O=df3d_production::BuildingHeaderOutcome;
+        if(result.outcome==O::Completed) {
+          response.outcome=m::FarmEditOutcome::Unknown;
+          if(result.receipt)response.snapshot=convert(*result.receipt);
+          if(response.snapshot || result.removed || result.removing) {
+            response.removed=result.removed;response.removing=result.removing;
+            response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;
+          }
+        } else if(result.outcome==O::Stale)response.outcome=m::FarmEditOutcome::Stale;
+        else if(result.outcome==O::Unknown)response.outcome=m::FarmEditOutcome::Unknown;
+      }
+    } catch(...) {
+      response.snapshot.reset();response.removed=response.removing=false;status=m::ManagementStatus::Rejected;
+      if(editing && mutated)response.outcome=m::FarmEditOutcome::Unknown;
     }
     publish();return;
   }

@@ -9872,6 +9872,18 @@ fixture discovery failures are not acceptance;214809 selected an inactive citize
 and correctly did not release it. The accepted fixture selects an active citizen,
 matching the native predicate. No native defect or parity exception is claimed.
 
+Management protocol216 appends exclusive pending_building requests and an
+optional PendingBuildingState response. ProductionInspect reads use operation-1
+and no revision; FarmEdit requires an exact positive revision and operation0
+(resume),1(suspend), or2(cancel). Snapshots carry native type, stage/max-stage,
+construction job identity, suspension, native worker presence and formatted
+header name. Successful suspension returns a fresh snapshot; cancellation
+returns exactly one of removed/removing and no obsolete snapshot. Failed or
+uncertain edits grant neither snapshot nor terminal authority. Older recordings
+imply no unfinished-building observation. Both schema defaults and mailbox are216
+(`Local\\df3d_management_v216`); bridge and clients must be rebuilt together.
+The protocol does not by itself expose the unfinished-building panel.
+
 The audited building-type dispatch maps Door8 to inline1af741..1af807.
 It rejects flags0x2c (invader/intruder/mechanism control), allows forbidding only
 when closed(bit0x10), and treats repeated desired state as a no-op. Actual changes

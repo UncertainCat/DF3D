@@ -123,6 +123,7 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
           if(!(require("building_id") && require("expected_revision") && require("farm_operation") && require("worker_id")))return false;
           return int64_t(data.get("farm_operation",0))==10?require("worker_list_revision"):int64_t(data.get("farm_operation",0))!=12 || require("worker_value");
         }
+        if(bool(data.get("pending_building",false)))return require("building_id") && require("expected_revision") && require("pending_operation");
         if(bool(data.get("door_controls",false)))return require("building_id") && require("expected_revision") && require("door_forbidden");
         if(bool(data.get("building_header",false)))return require("building_id") && require("expected_revision") && require("farm_operation");
         if(int64_t(data.get("farm_operation",0))>=6)return (bool(data.get("independent_item",false)) || require("building_id")) && require("expected_revision") && require("item_id") && require("item_value");

@@ -77,6 +77,10 @@ ProductionState decodeProduction(const m::ProductionState* p) {
       v.rows.push_back(std::move(row));
     }
   }
+  if(const auto* source=p->pending_building()) {
+    auto& state=n.pendingBuilding.emplace();state.outcome=static_cast<FarmEditOutcome>(source->outcome());state.removed=source->removed();state.removing=source->removing();
+    if(const auto* f=source->snapshot())state.snapshot=PendingBuildingSnapshot{f->id(),f->type(),f->revision(),f->stage(),f->max_stage(),f->job_id(),f->suspended(),f->has_worker(),f->header_name()->str()};
+  }
   if(const auto* source=p->door_controls()) {
     auto& state=n.doorControls.emplace();state.outcome=static_cast<FarmEditOutcome>(source->outcome());
     if(const auto* f=source->snapshot())state.snapshot=DoorControlsSnapshot{f->id(),f->revision(),f->forbidden(),f->closed(),f->taken_by_invaders(),f->used_by_intruder(),f->operated_by_mechanisms()};
@@ -336,7 +340,7 @@ flatbuffers::Offset<m::ProductionRequest> encodeProduction(flatbuffers::FlatBuff
   return m::CreateProductionRequest(b, p.buildingId, p.jobId, b.CreateString(p.recipe),
                                     b.CreateString(p.query), p.cursor, p.repeat, p.suspend,
                                     p.cancel, p.season, p.cropId, p.expectedRevision,static_cast<m::FarmOperation>(p.farmOperation),p.seasonalFertilization,
-                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem,p.buildingHeader,p.workshopWorkers,p.workerId,p.workerListRevision,p.workerValue,p.workshopOrders,p.generalOrderDelta,p.generalOrderValue,p.contentsItemId,p.priority,p.expectedPriority,b.CreateString(p.taskCategory),p.expectedPreviousJobId,p.doorControls,p.doorForbidden);
+                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem,p.buildingHeader,p.workshopWorkers,p.workerId,p.workerListRevision,p.workerValue,p.workshopOrders,p.generalOrderDelta,p.generalOrderValue,p.contentsItemId,p.priority,p.expectedPriority,b.CreateString(p.taskCategory),p.expectedPreviousJobId,p.doorControls,p.doorForbidden,p.pendingBuilding,p.pendingOperation);
 }
 
 flatbuffers::Offset<m::WorkOrderArtRequest> encodeArtRequest(flatbuffers::FlatBufferBuilder& b,const WorkOrderArtRequest& a) {

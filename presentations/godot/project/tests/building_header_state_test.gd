@@ -38,6 +38,18 @@ func ready() -> void:
 	setup();model.open(278);service.poll();reply(snapshot())
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
+	for kind in [33,40,41,42,43,44,50]:
+		var machine:=snapshot();machine.type=kind
+		check(not Model.valid_snapshot(machine,278),"machinery requires body")
+		machine.machinery={"machine_id":-1,"produced":0,"required":0,"status":C.MachineryStatus.NoNetwork,
+			"stable_foundation":true,"disengaged":false,"pump_manual":0 if kind==33 else -1,"pump_direction":0 if kind==33 else -1}
+		check(Model.valid_snapshot(machine,278),"valid machinery body")
+		machine.machinery.status=C.MachineryStatus.Active
+		check(not Model.valid_snapshot(machine,278),"active network needs identity")
+		machine.machinery.machine_id=1;machine.machinery.produced=100;machine.machinery.required=20
+		check(Model.valid_snapshot(machine,278),"valid active network")
+		machine.machinery.stable_foundation=1
+		check(not Model.valid_snapshot(machine,278),"foundation flag must be boolean")
 	setup();model.open(278);service.poll();reply({},0,0,278)
 	check(model.phase==Model.Phase.Closed and model.building_id==-1,"confirmed absent initial target closes header")
 	ready();model.poll_refresh(0.5);service.poll();reply({},0,0,278)

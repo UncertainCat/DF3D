@@ -1,4 +1,10 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::MachineryStatus::NoNetwork) == static_cast<int>(df3d::mirror::MachineryStatus::NoNetwork));
+static_assert(static_cast<int>(wm::MachineryStatus::Active) == static_cast<int>(df3d::mirror::MachineryStatus::Active));
+static_assert(static_cast<int>(wm::MachineryStatus::Inactive) == static_cast<int>(df3d::mirror::MachineryStatus::Inactive));
+static_assert(static_cast<int>(wm::MachineryStatus::FrozenHere) == static_cast<int>(df3d::mirror::MachineryStatus::FrozenHere));
+static_assert(static_cast<int>(wm::MachineryStatus::FrozenElsewhere) == static_cast<int>(df3d::mirror::MachineryStatus::FrozenElsewhere));
+static_assert(sizeof(df3d::mirror::EnumValuesMachineryStatus()) / sizeof(df3d::mirror::MachineryStatus) == 5);
 static_assert(static_cast<int>(wm::JusticeGraphKind::None) == static_cast<int>(df3d::mirror::JusticeGraphKind::None));
 static_assert(static_cast<int>(wm::JusticeGraphKind::Actors) == static_cast<int>(df3d::mirror::JusticeGraphKind::Actors));
 static_assert(static_cast<int>(wm::JusticeGraphKind::Organizations) == static_cast<int>(df3d::mirror::JusticeGraphKind::Organizations));
@@ -189,7 +195,8 @@ static_assert(static_cast<int>(wm::FarmOperation::ItemHidden) == static_cast<int
 static_assert(static_cast<int>(wm::FarmOperation::WorkerSelect) == static_cast<int>(df3d::mirror::FarmOperation::WorkerSelect));
 static_assert(static_cast<int>(wm::FarmOperation::WorkerRemove) == static_cast<int>(df3d::mirror::FarmOperation::WorkerRemove));
 static_assert(static_cast<int>(wm::FarmOperation::WorkerSpecialize) == static_cast<int>(df3d::mirror::FarmOperation::WorkerSpecialize));
-static_assert(sizeof(df3d::mirror::EnumValuesFarmOperation()) / sizeof(df3d::mirror::FarmOperation) == 13);
+static_assert(static_cast<int>(wm::FarmOperation::PumpManual) == static_cast<int>(df3d::mirror::FarmOperation::PumpManual));
+static_assert(sizeof(df3d::mirror::EnumValuesFarmOperation()) / sizeof(df3d::mirror::FarmOperation) == 14);
 static_assert(static_cast<int>(wm::ManagementAction::Catalog) == static_cast<int>(df3d::mirror::ManagementAction::Catalog));
 static_assert(static_cast<int>(wm::ManagementAction::Preview) == static_cast<int>(df3d::mirror::ManagementAction::Preview));
 static_assert(static_cast<int>(wm::ManagementAction::Place) == static_cast<int>(df3d::mirror::ManagementAction::Place));

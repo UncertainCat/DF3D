@@ -1,3 +1,36 @@
+## Machinery transport migration
+
+Management protocol228 adds optional `MachineryBodySnapshot` to the shared
+building header and the `PumpManual` intent. Machine status distinguishes an
+absent network, Active, Inactive, Frozen Here and Frozen Elsewhere. Network identity
+and signed power totals travel independently of the stable-foundation result,
+gear disengagement and pump direction/manual flag. A machinery building requires
+this body; other types must not carry it. No-network snapshots use ID-1 and zero
+totals; only pumps carry manual/direction fields, and only gears may be disengaged.
+
+PumpManual uses a building-header FarmEdit request, a current nonzero header
+revision and explicit desired0/1 in `item_value`. It is an on/off setting, not a
+toggle to replay. Other item/worker fields remain invalid. A completed receipt must
+be a non-removing completed ScrewPump header. The producer currently rejects this
+new intent pending native guarded-mutation integration; it must never fall through
+to the legacy removal dispatch. Public machinery routes remain hidden.
+
+Both management defaults and the mailbox are228. Rebuild bridge and viewer
+together. Older recordings imply no machinery body and must not synthesize network
+or pump facts. The schema change does not alter the DF53.16 compatibility pin.
+
+Core19 passes with machinery body round-trip/malformed-state and guarded-request
+checks. The rebuilt Godot extension passes building_header_state_test and
+management_contract_test. Protected104740 on2026-11-15 reads an existing lever
+header over228, rejects both explicit pump intents on that unsupported target,
+and verifies unchanged header and native name/jobs. Owned DF44256 closes unsaved
+with source preservation. Bridge/extension/root builds pass; the headless live
+client has only the known rendering-thread notice (passed_with_known_issues),
+native graphics capped30FPS, sampled GPU60C. Evidence:
+`completed_sheet_discovery_reference.machinery_contract_reference`.
+This establishes protocol compatibility and rejection safety, not a successful
+machinery mutation or machinery snapshot from the live producer.
+
 ## Lever transport migration
 
 Management protocol227 adds a distinct optional lever request/result to production.
@@ -11,8 +44,8 @@ operation, native mechanism names/IDs and an explicit applied/rejected receipt.
 Only an applied mutation carries a new job ID. Unknown transport outcomes must
 never replay either action.
 
-Older recordings imply no lever observation. Defaults and the mailbox are227;
-rebuild bridge and client together. The bridge uses native mechanism selection,
+Older recordings imply no lever observation. Lever transport was introduced in227;
+the current protocol is listed above. Rebuild bridge and client together. The bridge uses native mechanism selection,
 target validation and job creation with owned inputs. Its source revision comes
 from the shared building-header observation, admitted internally for Lever subtype0
 and PressurePlate subtype1. Completed traps use the native tile-selection route

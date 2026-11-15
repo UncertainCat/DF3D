@@ -182,6 +182,12 @@ struct FuneraryBodySnapshot {
   std::vector<std::string> notices;
   std::optional<df3d_production::ItemAppearanceRecipe> ownerAppearance;
 };
+struct MachineryBodySnapshot {
+  int32_t machineId=-1,produced=0,required=0;
+  df3d::mirror::MachineryStatus status=df3d::mirror::MachineryStatus::NoNetwork;
+  bool stableFoundation=false,disengaged=false;
+  int8_t pumpManual=-1,pumpDirection=-1;
+};
 struct BuildingHeaderSnapshot {
   int32_t id=-1,type=-1,stage=-1,maxStage=-1;uint64_t revision=0;
   std::string customName,nativeName,headerName;
@@ -189,6 +195,7 @@ struct BuildingHeaderSnapshot {
   int8_t forbidden=-1;
   std::optional<df3d_production::ItemAppearanceRecipe> appearance;
   std::optional<FuneraryBodySnapshot> funerary;
+  std::optional<MachineryBodySnapshot> machinery;
 };
 struct BuildingHeaderState {
   std::optional<BuildingHeaderSnapshot> snapshot;

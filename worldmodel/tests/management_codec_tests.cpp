@@ -9,6 +9,43 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("machinery bodies reject missing and contradictory authority") {
+  for(int type:{33,40,41,42,43,44,50})for(int fault=0;fault<7;++fault) {
+    flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");
+    const auto body=wire::CreateMachineryBodySnapshot(b,fault==2?-1:1,100,20,
+      fault==3?wire::MachineryStatus::NoNetwork:wire::MachineryStatus::Active,true,
+      fault==4, type==33?(fault==5?2:0):(fault==5?0:-1),type==33?0:-1);
+    const auto snapshot=wire::CreateBuildingHeaderSnapshot(b,220,fault==6?15:type,9007199254740993ULL,1,1,
+      empty,b.CreateString("native"),b.CreateString("Native"),false,false,false,0,0,0,fault==1?0:body);
+    const auto header=wire::CreateBuildingHeaderState(b,snapshot);
+    wire::ProductionStateBuilder p(b);p.add_building_header(header);const auto payload=p.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_action(wire::ManagementAction::ProductionInspect);
+    root.add_status(wire::ManagementStatus::Ok);root.add_production(payload);b.Finish(root.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool valid=fault==0 || (fault==4 && type==40);
+    CAPTURE(type);CAPTURE(fault);CHECK(bool(wire::validateManagementState(*value))==!valid);
+    if(valid){const auto decoded=codec::decodeProduction(value->production());
+      REQUIRE(decoded.buildingHeader->snapshot->machinery);
+      CHECK(decoded.buildingHeader->snapshot->revision==9007199254740993ULL);
+      CHECK(decoded.buildingHeader->snapshot->machinery->produced==100);
+      CHECK(decoded.buildingHeader->snapshot->machinery->pumpManual==(type==33?0:-1));}
+  }
+}
+
+TEST_CASE("pump settings require explicit intent and header revision") {
+  for(int desired:{0,1})for(int fault=0;fault<7;++fault) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::FarmEdit;
+    auto& p=r.production;p.buildingId=42;p.buildingHeader=true;p.expectedRevision=9007199254740993ULL;
+    p.farmOperation=wm::FarmOperation::PumpManual;p.itemValue=desired;
+    if(fault==1)p.buildingHeader=false;if(fault==2)p.itemValue=-1;if(fault==3)p.expectedRevision=0;
+    if(fault==4)p.itemId=123;if(fault==5)p.workerId=123;if(fault==6)r.action=wm::ManagementAction::ProductionInspect;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(desired);CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    CHECK(value->production()->item_value()==p.itemValue);
+  }
+}
+
 TEST_CASE("lever intents retain identities and reject mixed or unbound actions") {
   for(int op=0;op<4;++op)for(int fault=0;fault<8;++fault) {
     wm::ManagementRequest r;r.action=op>=2?wm::ManagementAction::ProductionQueue:wm::ManagementAction::ProductionInspect;

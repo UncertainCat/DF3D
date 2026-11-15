@@ -279,6 +279,12 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
         body["deceased"]=String::utf8(v.deceased.c_str());Array notices;for(const auto& text:v.notices)notices.push_back(String::utf8(text.c_str()));
         body["notices"]=notices;if(v.ownerAppearance)body["owner_appearance"]=itemRecipeDictionary(*v.ownerAppearance);value["funerary"]=body;
       }
+      if(f.machinery) {
+        const auto& v=*f.machinery;Dictionary body;
+        body["machine_id"]=v.machineId;body["produced"]=v.produced;body["required"]=v.required;body["status"]=int(v.status);
+        body["stable_foundation"]=v.stableFoundation;body["disengaged"]=v.disengaged;
+        body["pump_manual"]=v.pumpManual;body["pump_direction"]=v.pumpDirection;value["machinery"]=body;
+      }
       headerState["snapshot"]=value;
     }
     prod["building_header"]=headerState;
@@ -744,7 +750,7 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.generalOrderValue=int16_t(n("general_order_value",-1,-1,99));
   value.workshopWorkers=data.get("workshop_workers",false);
   value.workerId=int32_t(n("worker_id",-1,-1,INT32_MAX));value.workerListRevision=uint64_t(n("worker_list_revision",0,0,INT64_MAX));value.workerValue=int8_t(n("worker_value",-1,-1,1));
-  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,12));
+  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,13));
   value.itemId=int32_t(n("item_id",-1,-1,INT32_MAX));value.itemValue=int8_t(n("item_value",-1,-1,1));
   String farmName=data.get("farm_name",String());
   const auto nameBytes=farmName.utf8();value.farmName.assign(nameBytes.get_data(),nameBytes.length());

@@ -551,7 +551,7 @@ func test_production() -> void:
 		request[key] = 1
 		reject_production(request, "Wrong management field type: " + key)
 	var bounds := {"building_id":[-2,2147483648],"job_id":[-2,2147483648],"cursor":[-1,4294967296],
-		"repeat":[2],"suspend":[-2],"season":[4],"crop_id":[32768],"expected_revision":[-1],"farm_operation":[Contract.FarmOperation.WorkerSpecialize+1],"seasonal_fertilization":[2],
+		"repeat":[2],"suspend":[-2],"season":[4],"crop_id":[32768],"expected_revision":[-1],"farm_operation":[Contract.FarmOperation.PumpManual+1],"seasonal_fertilization":[2],
 		"recipe":["x".repeat(129),String.chr(233).repeat(65)],"query":["x".repeat(129),String.chr(233).repeat(65)]}
 	for key in bounds:
 		for bad in bounds[key]:

@@ -2,6 +2,13 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class MachineryStatus : uint8_t {
+  NoNetwork = 0,
+  Active = 1,
+  Inactive = 2,
+  FrozenHere = 3,
+  FrozenElsewhere = 4,
+};
 enum class JusticeGraphKind : uint8_t {
   None = 0,
   Actors = 1,
@@ -225,6 +232,7 @@ enum class FarmOperation : uint8_t {
   WorkerSelect = 10,
   WorkerRemove = 11,
   WorkerSpecialize = 12,
+  PumpManual = 13,
 };
 enum class ManagementAction : uint8_t {
   Catalog = 0,

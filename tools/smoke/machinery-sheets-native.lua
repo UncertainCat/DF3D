@@ -91,6 +91,12 @@ for _,kind in ipairs(kinds)do
 end
 if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
 for _,b in ipairs(fixtures)do b:setBuildStage(0);assert(dfhack.buildings.deconstruct(b))end
+if os.getenv('DF3D_MACHINERY_CONTRACT')=='1'then
+ local lever=assert(df.building.find(61));local name=lever.name;local jobs=#lever.jobs
+ capture('machinery-contract-wire')
+ local f=assert(io.open(out..'/machinery-contract-wire-result.json'));result.contract=json.decode(f:read('*a'));f:close()
+ assert(result.contract.success and lever.name==name and #lever.jobs==jobs)
+end
 assert(df.global.world.frame_counter==result.frame)
 result.success=true
 local f=assert(io.open(out..'/machinery-sheets-native.json','w'));f:write(json.encode(result));f:close()

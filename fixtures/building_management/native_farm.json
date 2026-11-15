@@ -28295,6 +28295,27 @@
           "build/stockpile-storage-native-farm-discovery-20261115-103723/machinery-sheet-44.png": "99e9a2f7393e01adb525e6c713099788a03ccfaf1a22213c0fc18f4958856096",
           "build/stockpile-storage-native-farm-discovery-20261115-103723/machinery-sheet-50.png": "2950d427981417781dfa1276559d695dfc6426caa4c23ab6fb206a03e7a8831f"
         }
+      },
+      "machinery_contract_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-104740",
+        "protocol": 228,
+        "scope": "Rebuilt headless Godot extension reads existing lever header and submits explicit pump off/on to unsupported lever61. Both rejected with unchanged header and native name/jobs. Machinery observations and successful pump mutation are not yet exposed over wire.",
+        "result": {
+          "legacy_header": true,
+          "success": true,
+          "unsupported_pump_rejected": true
+        },
+        "owned_df_pid": 44256,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "bridge_sha256": "892EABAF05ADAEBB298C49A05C6B2E863C7AE43A3FD19AAAD42F25A46DAA56DA",
+        "diagnostics": "passed_with_known_issues: separate rendering thread notice",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-104740/machinery-contract-wire-result.json": "64793dd17d94e36d46db42503326cfa367e84dfb4e37924a68b6269297389044",
+          "build/stockpile-storage-native-farm-discovery-20261115-104740/machinery-contract-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-104740/result.json": "deeea7fb54287a7083bc3645f360249826f18734e0718ad49991204b6a61f744",
+          "build/stockpile-storage-native-farm-discovery-20261115-104740/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

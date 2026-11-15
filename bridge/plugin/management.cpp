@@ -1284,8 +1284,10 @@ void publish() {
           b.CreateString(v.introduction),b.CreateString(v.name),b.CreateString(v.roomIntroduction),b.CreateString(v.roomName),
           b.CreateString(v.deceased),b.CreateVector(notices),encodeItemRecipe(v.ownerAppearance));
       }
+      flatbuffers::Offset<m::MachineryBodySnapshot> machinery;
+      if(f.machinery){const auto& v=*f.machinery;machinery=m::CreateMachineryBodySnapshot(b,v.machineId,v.produced,v.required,v.status,v.stableFoundation,v.disengaged,v.pumpManual,v.pumpDirection);}
       snapshot=m::CreateBuildingHeaderSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,
-        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance),funerary);
+        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance),funerary,machinery);
     }
     buildingHeader=m::CreateBuildingHeaderState(b,snapshot,state.outcome,state.operation,state.missingBuildingId);
   }
@@ -4289,6 +4291,7 @@ void run(color_ostream& out) {
     response.outcome=editing?m::FarmEditOutcome::Rejected:m::FarmEditOutcome::None;bool entered=false;
     try {
       const auto target=[&]()->df::building* {
+        if(editing && q->farm_operation()==m::FarmOperation::PumpManual)return nullptr;
         auto* building=df::building::find(q->building_id());
         if(!building)return nullptr;
         const auto type=building->getType();

@@ -88,6 +88,18 @@ func commits(service,state) -> void:
 	state.open(7);ready(service,state);state.commit_and_close(state.revision,changes);pending=state.ticket
 	service.session_changed.emit();commit_reply(service,pending,C.DepotGoodsCommitOutcome.Applied)
 	check(state.phase==State.Phase.Unavailable and state.depot_id==-1,"Session replacement retires pending commit ownership")
+func expansion(service,state) -> void:
+	state.open(7);ready(service,state);var count: int=service.next
+	state.toggle_expansion(0)
+	check(state.row_count()==1 and state.page(0,10).size()==1 and service.next==count,"Group collapse is local and hides only member rows")
+	state.set_query("IRON");var value:=snapshot(45);service.reply(state.ticket,value)
+	check(not state.groups[0].expanded and state.row_count()==1,"Search retains current group collapse")
+	state.toggle_group(0);service.reply(state.ticket,value)
+	check(not state.groups[0].expanded,"Checkbox projection retains current group collapse")
+	state.set_query("");value.categories.append({"type":17,"caption":"Synthetic bags"});service.reply(state.ticket,value)
+	state.select_category(17);var other:=snapshot(17);other.categories=value.categories;other.groups=[];service.reply(state.ticket,other)
+	state.select_category(45);service.reply(state.ticket,value)
+	check(state.groups[0].expanded and state.row_count()==3,"Category return restores native expansion default")
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
 	var service:=Service.new();root.add_child(service)
@@ -134,6 +146,7 @@ func run() -> void:
 	check(service.detached.has(artwork_ticket) and state.appearances.is_empty() and not state.appearance_pending(),"Closing retires artwork ownership and late callbacks")
 	commits(service,state)
 	drafts(service,state)
+	expansion(service,state)
 	state.dispose();service.queue_free()
 	if failures==0:print("PASS depot goods state")
 	quit(1 if failures else 0)

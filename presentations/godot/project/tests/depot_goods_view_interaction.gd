@@ -36,6 +36,18 @@ func run() -> void:
 	model.phase=Model.Phase.Ready
 	var view=View.new();root.add_child(view);view.configure_goods(world,model);view.layout(Vector2(1200,800));view.cancelled.connect(func():closed=true)
 	for i in 4:await process_frame
+	var expansion_directory:=OS.get_environment("DF3D_DEPOT_EXPANSION_DIRECTORY")
+	if not expansion_directory.is_empty():
+		await click_at(Vector2(500,130))
+		if model.row_count()!=1 or view.page.size()!=1 or service.ticket!=0:push_error("Group-label click did not collapse locally");quit(1);return
+		await RenderingServer.frame_post_draw
+		var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGBA8)
+		var native:=Image.load_from_file(expansion_directory+"/depot-expansion-collapsed.png");native.convert(Image.FORMAT_RGBA8)
+		actual.save_png(expansion_directory+"/depot-expansion-view-collapsed.png")
+		var rect:=Rect2i(360,112,600,612)
+		if actual.get_region(rect).get_data()!=native.get_region(rect).get_data():push_error("Collapsed group pixels differ");quit(1);return
+		await click_at(Vector2(500,130))
+		if model.row_count()!=3 or view.page.size()!=3 or service.ticket!=0:push_error("Group-label click did not expand locally");quit(1);return
 	for step in [[Vector2(932,166),"draft-individual-on"],[Vector2(932,130),"draft-mixed-group-on"],[Vector2(932,130),"draft-group-off"],[Vector2(928,94),"draft-select-all-on"],[Vector2(928,94),"draft-select-all-off"]]:
 		await click_at(step[0])
 		if model.phase!=Model.Phase.Reading or service.intent.action!=C.ManagementAction.DepotGoodsRead:

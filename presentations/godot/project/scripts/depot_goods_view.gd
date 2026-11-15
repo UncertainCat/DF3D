@@ -53,6 +53,7 @@ func refresh() -> void:
 	scrollbar.page=maxi(0,int(category_canvas.size.y/36));scrollbar.set_rows(state.categories.size(),state.first_category)
 	category_canvas.size.x=category_width()+(0 if scrollbar.visible else 16)
 	item_scrollbar.page=maxi(0,int(item_canvas.size.y/12));item_scrollbar.set_rows(state.row_count()*3,state.first_item)
+	state.first_item=item_scrollbar.first
 	item_canvas.size.x=maxf(0,size.x-category_width()-88)+(0 if item_scrollbar.visible else 16)
 	page=state.page(int(item_scrollbar.first/3),ceili(item_canvas.size.y/36.0)+1)
 	var retained: Dictionary={}
@@ -151,6 +152,10 @@ func _gui_input(event: InputEvent) -> void:
 			var entry: Dictionary=page[index]
 			if entry.has("group"):state.toggle_group(state.groups.find(entry.group))
 			else:state.toggle_item(entry.id)
+		return
+	if Rect2(Vector2.ZERO,item_canvas.size).has_point(local):
+		var index: int=int((local.y+(item_scrollbar.first%3)*12)/36)
+		if index<page.size() and page[index].has("group"):state.toggle_expansion(state.groups.find(page[index].group))
 		return
 	if Rect2(category_canvas.position,category_canvas.size).has_point(event.position):
 		var index: int=int((event.position.y-category_canvas.position.y)/36)+scrollbar.first

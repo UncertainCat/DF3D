@@ -184,6 +184,27 @@ local ok,err=xpcall(function()
  assert(not menu.open,'Goods Escape failed')
  if os.getenv('DF3D_DEPOT_HAUL_NATIVE')=='1' then
   select_map(b);click(520,166);assert(menu.open and menu.current_type==df.item_type.ANVIL,'Reopen initial goods failed')
+  if os.getenv('DF3D_DEPOT_EXPANSION_NATIVE')=='1' then
+   local samples={}
+   local function sample(label)
+    assert(menu.open and menu.current_type==df.item_type.ANVIL and #b.jobs==0 and df.global.world.frame_counter==frame)
+    local row={label=label,height=menu.i_height,scroll=menu.scroll_position_item,query=menu.item_filter,expanded={},ids={},tags={},master_expanded={}}
+    for _,v in ipairs(menu.current_type_a_expanded)do row.expanded[#row.expanded+1]=v end
+    for _,v in ipairs(menu.current_type_tgi)do row.ids[#row.ids+1]=v.it.id;row.tags[#row.tags+1]=v.tag end
+    for i,v in ipairs(menu.master_a_list.type)do if v==df.item_type.ANVIL then row.master_expanded[#row.master_expanded+1]=menu.master_a_list.expanded[i]end end
+    samples[#samples+1]=row;capture('depot-expansion-'..label)
+   end
+   sample('initial');click(500,130);sample('collapsed')
+   assert(not menu.current_type_a_expanded[0] and menu.i_height==3,'Group label did not collapse')
+   click(500,94);for byte in ('iron'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(byte:byte()))end
+   view:render(dfhack.getTickCount());sample('searched')
+   for i=1,4 do gui.simulateInput(view,'STRING_A000')end
+   view:render(dfhack.getTickCount());sample('cleared-search')
+   click(150,130);click(150,94);sample('returned-category')
+   if not menu.current_type_a_expanded[0] then click(500,130)end
+   sample('restored');assert(menu.current_type_a_expanded[0] and menu.i_height==9)
+   result.group_expansion=samples
+  end
   if os.getenv('DF3D_DEPOT_DRAFT_NATIVE')=='1' then
    local rows=menu.current_type_tgi;assert(#rows==2 and #b.jobs==0)
    local ids={rows[0].it.id,rows[1].it.id};local samples={}

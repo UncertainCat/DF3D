@@ -60065,6 +60065,155 @@
           "build/stockpile-storage-native-farm-discovery-20261115-155628/depot-goods-interaction-draft-select-all-off.png": "ee12ae6278046ac2ae4a8fc8d10623a64e3136ca703bfec8bdc9320c4b00c011",
           "build/stockpile-storage-native-farm-discovery-20261115-155628/depot-goods-interaction-draft-select-all-on.png": "07b1e7674d553a3485bb0bc9636b67dbcc0b0d99e916a0423ff8e95454db59ff"
         }
+      },
+      "depot_goods_group_expansion_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-160300",
+        "owned_df_pid": 34172,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Six paused native group-expansion states: label click collapses only current category display; search and clear retain it; category return rebuilds expanded defaults. Native master expansion and item tags/jobs remain unchanged. Standalone Godot real-pointer collapse/expand with recorded snapshots matches the complete600x612 item-list region when collapsed; all five draft checkbox render/input states and confirmed Escape commit still pass. Controller checks search/draft retention and category reset. No container contents, sorting controls or full public/main-scene acceptance.",
+        "samples": [
+          {
+            "expanded": [
+              true
+            ],
+            "height": 9,
+            "ids": [
+              296,
+              28425
+            ],
+            "label": "initial",
+            "master_expanded": [
+              true
+            ],
+            "query": "",
+            "scroll": 0,
+            "tags": [
+              0,
+              0
+            ]
+          },
+          {
+            "expanded": [
+              false
+            ],
+            "height": 3,
+            "ids": [
+              296,
+              28425
+            ],
+            "label": "collapsed",
+            "master_expanded": [
+              true
+            ],
+            "query": "",
+            "scroll": 0,
+            "tags": [
+              0,
+              0
+            ]
+          },
+          {
+            "expanded": [
+              false
+            ],
+            "height": 3,
+            "ids": [
+              296,
+              28425
+            ],
+            "label": "searched",
+            "master_expanded": [
+              true
+            ],
+            "query": "IRON",
+            "scroll": 0,
+            "tags": [
+              0,
+              0
+            ]
+          },
+          {
+            "expanded": [
+              false
+            ],
+            "height": 3,
+            "ids": [
+              296,
+              28425
+            ],
+            "label": "cleared-search",
+            "master_expanded": [
+              true
+            ],
+            "query": "",
+            "scroll": 0,
+            "tags": [
+              0,
+              0
+            ]
+          },
+          {
+            "expanded": [
+              true
+            ],
+            "height": 9,
+            "ids": [
+              296,
+              28425
+            ],
+            "label": "returned-category",
+            "master_expanded": [
+              true
+            ],
+            "query": "",
+            "scroll": 0,
+            "tags": [
+              0,
+              0
+            ]
+          },
+          {
+            "expanded": [
+              true
+            ],
+            "height": 9,
+            "ids": [
+              296,
+              28425
+            ],
+            "label": "restored",
+            "master_expanded": [
+              true
+            ],
+            "query": "",
+            "scroll": 0,
+            "tags": [
+              0,
+              0
+            ]
+          }
+        ],
+        "region": [
+          360,
+          112,
+          600,
+          612
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-160300/depot-goods-native.json": "5a2a62694f6fb9d52b98dad936b05668dac88b8df7a99f84bd6ed6347bb35996",
+          "build/stockpile-storage-native-farm-discovery-20261115-160300/result.json": "d9f8d8a0bc53d41e3c3ac15e5920f36b2a242f168a2bbdd2780983e87524ab80",
+          "build/stockpile-storage-native-farm-discovery-20261115-160300/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-160300/depot-expansion-collapsed.png": "6d868cedab0919a9955cbe56b04ff41fbf54e071ac685ef4e810549ae8592e91",
+          "build/stockpile-storage-native-farm-discovery-20261115-160300/depot-expansion-view-collapsed.png": "879fa4138b6b907ccfdc618a8f03a6b83aae3b4d3a066f068dbf66484888e9d8",
+          "tools/smoke/depot-goods-native.lua": "1c5e157159717166815489cbe18a13b0e89336c2e9886165fe4b37fdee6b1a03",
+          "presentations/godot/project/scripts/depot_goods_state.gd": "2f80d9434f23b6add194f7bc93229e19e4b1cd9bd2ecc048a04965a98f5f6d4e",
+          "presentations/godot/project/scripts/depot_goods_view.gd": "54babf787dc6c17ee306c86735721628c282038422e53a5e1a8d4f4ac7964740",
+          "presentations/godot/project/tests/depot_goods_state_test.gd": "0877b7ebed29048507c1d3a001a2788528384777cf1d62b5f7d1b3e92af5fe38",
+          "presentations/godot/project/tests/depot_goods_view_interaction.gd": "300071d344a21043a12a27471530f9e23c74fb24abd0e827e755b74a8c444360",
+          "build/notes/pm/depot-expansion-state.stdout.log": "d87b9c9cc6a6acff7b2a7332fe249ccdcede1142650045bf5cf9ee525e9fe0a7",
+          "build/notes/pm/depot-expansion-view.stdout.log": "3d6736539ecf726823768f1755596020eed60c814f746e627fc10762625e02be"
+        }
       }
     },
     "pending_construction_reference": {

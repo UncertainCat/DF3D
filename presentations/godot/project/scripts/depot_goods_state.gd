@@ -31,6 +31,12 @@ var _draft: Dictionary={}
 var _sort_draft: Dictionary={}
 var _draft_revision: int=0
 var _finish_pending:=false
+var _expanded: Dictionary={}
+func _group_key(row: Dictionary) -> String:return "%d:%d:%d"%[row.subtype,row.subcat1,row.subcat2]
+func toggle_expansion(index: int) -> void:
+	if phase!=Phase.Ready or index<0 or index>=groups.size() or not groups[index].matches:return
+	var row: Dictionary=groups[index]
+	row.expanded=not row.expanded;_expanded[_group_key(row)]=row.expanded;changed.emit()
 func _choices(source: Dictionary) -> Array:
 	var result: Array=[]
 	for id in source:result.append({"id":id,"desired":source[id]})
@@ -100,7 +106,7 @@ func close() -> void:
 	generation+=1;var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
 	_clear();depot_id=-1;category=-1;query="";_active_query="";_queries=[]
-	_draft={};_sort_draft={};_draft_revision=0;_finish_pending=false
+	_draft={};_sort_draft={};_draft_revision=0;_finish_pending=false;_expanded={}
 	sort_by_distance=true;pending_on_top=true;exclude_prohibited=false
 	first_category=0;first_item=0;last_result={};phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:close();phase=Phase.Unavailable;changed.emit()
@@ -145,14 +151,14 @@ func _valid_commit(value: Variant,intent: Dictionary) -> bool:
 	return true
 func select_category(value: int) -> void:
 	if phase!=Phase.Ready or category==value or not categories.any(func(row):return row.type==value):return
-	category=value;first_item=0;_sort_draft=_draft.duplicate();_read()
+	category=value;first_item=0;_sort_draft=_draft.duplicate();_expanded={};_read()
 func set_query(value: String) -> void:
 	if _finish_pending or phase not in [Phase.Ready,Phase.Reading] or value==query or value.to_utf8_buffer().size()>2048:return
 	query=value;_queries.append(value)
 	if phase==Phase.Ready:_active_query=_queries.pop_front();first_item=0;_read()
 func set_options(distance: bool,pending: bool,exclude: bool) -> void:
 	if phase!=Phase.Ready or [distance,pending,exclude]==[sort_by_distance,pending_on_top,exclude_prohibited]:return
-	sort_by_distance=distance;pending_on_top=pending;exclude_prohibited=exclude;first_item=0;_sort_draft=_draft.duplicate();_read()
+	sort_by_distance=distance;pending_on_top=pending;exclude_prohibited=exclude;first_item=0;_sort_draft=_draft.duplicate();_expanded={};_read()
 func request_items(ids: Array) -> void:
 	if phase!=Phase.Ready or ids.size()>64:return
 	var members: Dictionary={};var seen: Dictionary={}
@@ -229,6 +235,10 @@ func _read(ids: Array=[]) -> void:
 		if typeof(value)!=TYPE_DICTIONARY or result.get("outcome")=="unknown" or result.get("status")!=C.ManagementStatus.Ok or result.get("action")!=intent.action or not _valid(value,intent):
 			_clear();last_result=result.duplicate(true);phase=Phase.Unknown if result.get("outcome")=="unknown" else Phase.Rejected;changed.emit();return
 		revision=value.revision;categories=value.categories.duplicate(true);groups=value.groups.duplicate(true);items={}
+		# Native group-label clicks change only current_type_a_expanded.
+		# Search/detail/draft projections retain it; category/options rebuild it.
+		for row in groups:
+			if _expanded.has(_group_key(row)):row.expanded=_expanded[_group_key(row)]
 		for row in value.items:items[row.id]=row.duplicate(true)
 		if category==-1 and not categories.is_empty():category=categories[0].type;_read();return
 		if _finish_pending:_finish_pending=false;phase=Phase.Ready;finish();return

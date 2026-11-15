@@ -47,6 +47,25 @@ evidence; it is not live main-scene acceptance. Container expansion, option
 tooltips/sorting controls, large-list transport, ordinary hauling and full trade
 remain unfinished. Public depot routes stay hidden.
 
+Group-label clicks now collapse/expand local member rows, independently of the
+checkbox hitbox. Native31e002..31e05b changes only current_type_a_expanded and
+recalculates height; it does not modify master groups or gameplay. DF3D retains
+the override through search/detail/draft reads and discards it when native
+category/options rebuilding restores defaults. Scroll position is clamped to
+the resulting displayed list. Container-row expansion is a separate unfinished
+surface; it is not implied by group expansion.
+
+Protected160300 on2026-11-15 captures six native states: initial9 cells,
+collapsed3, searched3, cleared-search3, category-return9 and restored9. Master
+expansion stays true and item tags/jobs remain unchanged. Owned DF34172 closes
+unsaved with source preservation, native30FPS and sampled GPU49C. The standalone
+Godot pointer test collapses/expands without submitting a request and matches
+the entire600x612 collapsed list region to native; all five existing checkbox
+render/input states and confirmed Escape commit still pass. Controller tests
+cover search/draft retention and category reset. Headless/rendered checks have
+no diagnostics, and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_goods_group_expansion_reference`.
+
 ## Depot goods commit transport migration
 
 Management protocol233 adds `DepotGoodsCommit` in the `depot_goods` domain.
@@ -185,7 +204,8 @@ Filtering, captions, order and expansion defaults come from native snapshots.
 Each read retires the prior source; close/session replacement detach tickets
 and reject late callbacks. A filtered-out category remains selected, and an
 empty selected item list suppresses even matching abstract group rows.
-Draft/commit integration is documented above; local expansion remains unfinished.
+Draft/commit and local group expansion are documented above; container expansion
+remains unfinished.
 
 Protected144747 on2026-11-15 verifies this controller through the actual semantic
 service against all nine native cases above, including exact source revisions,

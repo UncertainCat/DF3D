@@ -23492,6 +23492,353 @@
           "build/stockpile-storage-native-farm-discovery-20261115-075033/lever-tasks-pull-2-viewer.png": "640640418a8a5aadbea7b881602775948b8b83d07a4a419b56528ee4c47af6de",
           "build/stockpile-storage-native-farm-discovery-20261115-075033/lever-tasks-link-target-click-viewer.png": "a3e714f5c0e5f63238dc4304ec686b444220027b9fcfc38d02db62dc9054d806"
         }
+      },
+      "lever_task_controls_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-082933",
+        "scope": "Paused lever55: native Pull repeat/suspend/move/priority/cancel and Link repeat/suspend/cancel; native Link cancellation releases both mechanism reservations. Actual headless Godot transport reads native queue captions and edits both job flags, moves Link, prioritizes Pull, restores flags/order, and cancels an additional Pull. Final original two jobs match native references. Active worker cancellation, simulation completion, semantic Link cancellation and composed panel remain unqualified.",
+        "source_preserved": true,
+        "owned_df_pid": 12948,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice"
+        ],
+        "native_controls": [
+          {
+            "label": "pull-repeat",
+            "jobs": [
+              {
+                "id": 382796,
+                "type": 147,
+                "flags": 1
+              },
+              {
+                "id": 382797,
+                "type": 147,
+                "flags": 0
+              }
+            ]
+          },
+          {
+            "label": "pull-suspended",
+            "jobs": [
+              {
+                "id": 382796,
+                "type": 147,
+                "flags": 0
+              },
+              {
+                "id": 382797,
+                "type": 147,
+                "flags": 2
+              }
+            ]
+          },
+          {
+            "label": "pull-moved",
+            "jobs": [
+              {
+                "id": 382797,
+                "type": 147,
+                "flags": 0
+              },
+              {
+                "id": 382796,
+                "type": 147,
+                "flags": 0
+              }
+            ]
+          },
+          {
+            "label": "pull-priority",
+            "jobs": [
+              {
+                "id": 382796,
+                "type": 147,
+                "flags": 262144
+              },
+              {
+                "id": 382797,
+                "type": 147,
+                "flags": 0
+              }
+            ]
+          },
+          {
+            "label": "pull-cancel-second",
+            "jobs": [
+              {
+                "id": 382796,
+                "type": 147,
+                "flags": 0
+              }
+            ]
+          },
+          {
+            "label": "pull-cancel-all",
+            "jobs": []
+          },
+          {
+            "label": "link-repeat",
+            "jobs": [
+              {
+                "id": 382798,
+                "type": 146,
+                "flags": 1
+              }
+            ]
+          },
+          {
+            "label": "link-suspended",
+            "jobs": [
+              {
+                "id": 382798,
+                "type": 146,
+                "flags": 2
+              }
+            ]
+          },
+          {
+            "label": "link-job-cleaned",
+            "jobs": []
+          }
+        ],
+        "wire_edits": [
+          {
+            "status": 2,
+            "jobs": [
+              {
+                "id": 382800,
+                "name": "Pull the lever",
+                "repeat": true,
+                "suspended": false,
+                "priority": false
+              },
+              {
+                "id": 382801,
+                "name": "Link a building to trigger",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              }
+            ]
+          },
+          {
+            "status": 2,
+            "jobs": [
+              {
+                "id": 382800,
+                "name": "Pull the lever",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              },
+              {
+                "id": 382801,
+                "name": "Link a building to trigger",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              }
+            ]
+          },
+          {
+            "status": 2,
+            "jobs": [
+              {
+                "id": 382800,
+                "name": "Pull the lever",
+                "repeat": false,
+                "suspended": true,
+                "priority": false
+              },
+              {
+                "id": 382801,
+                "name": "Link a building to trigger",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              }
+            ]
+          },
+          {
+            "status": 2,
+            "jobs": [
+              {
+                "id": 382800,
+                "name": "Pull the lever",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              },
+              {
+                "id": 382801,
+                "name": "Link a building to trigger",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              }
+            ]
+          },
+          {
+            "status": 2,
+            "jobs": [
+              {
+                "id": 382800,
+                "name": "Pull the lever",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              },
+              {
+                "id": 382801,
+                "name": "Link a building to trigger",
+                "repeat": true,
+                "suspended": false,
+                "priority": false
+              }
+            ]
+          },
+          {
+            "status": 2,
+            "jobs": [
+              {
+                "id": 382800,
+                "name": "Pull the lever",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              },
+              {
+                "id": 382801,
+                "name": "Link a building to trigger",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              }
+            ]
+          },
+          {
+            "status": 2,
+            "jobs": [
+              {
+                "id": 382800,
+                "name": "Pull the lever",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              },
+              {
+                "id": 382801,
+                "name": "Link a building to trigger",
+                "repeat": false,
+                "suspended": true,
+                "priority": false
+              }
+            ]
+          },
+          {
+            "status": 2,
+            "jobs": [
+              {
+                "id": 382800,
+                "name": "Pull the lever",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              },
+              {
+                "id": 382801,
+                "name": "Link a building to trigger",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              }
+            ]
+          },
+          {
+            "status": 2,
+            "jobs": [
+              {
+                "id": 382801,
+                "name": "Link a building to trigger",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              },
+              {
+                "id": 382800,
+                "name": "Pull the lever",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              }
+            ]
+          },
+          {
+            "status": 2,
+            "jobs": [
+              {
+                "id": 382800,
+                "name": "Pull the lever",
+                "repeat": false,
+                "suspended": false,
+                "priority": true
+              },
+              {
+                "id": 382801,
+                "name": "Link a building to trigger",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              }
+            ]
+          },
+          {
+            "status": 2,
+            "jobs": [
+              {
+                "id": 382800,
+                "name": "Pull the lever",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              },
+              {
+                "id": 382801,
+                "name": "Link a building to trigger",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              }
+            ]
+          },
+          {
+            "status": 2,
+            "jobs": [
+              {
+                "id": 382800,
+                "name": "Pull the lever",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              },
+              {
+                "id": 382801,
+                "name": "Link a building to trigger",
+                "repeat": false,
+                "suspended": false,
+                "priority": false
+              }
+            ]
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-082933/lever-native.json": "4ca6b57d2a9f8851af26c28567ce40b5ad86cfe2fe3a62ac95922414b1a7c85e",
+          "build/stockpile-storage-native-farm-discovery-20261115-082933/workshop-wire-result.json": "ddd473d3e055704fcdbd996675613ce89873d03c00f8bcafdca8c5e4adf3fcff",
+          "build/stockpile-storage-native-farm-discovery-20261115-082933/result.json": "5eaee82d6464b8525440bc2af9863142c5213df5220bd309ef3ffd225ee46b96",
+          "build/stockpile-storage-native-farm-discovery-20261115-082933/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

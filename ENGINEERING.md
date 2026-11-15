@@ -102,6 +102,23 @@ Work orders with lower links/items tabs; it is parse-checked only. Full header,
 task producer, map targeting and actual composed workflows remain outstanding.
 Evidence: completed_sheet_discovery_reference.lever_tasks_art_reference.
 
+The shared production adapter admits completed, revealed Lever subtype0 for
+queue observation and edits of native PullLever147/LinkBuildingToTrigger146
+jobs. Link/Pull creation stays in the dedicated native wrapper; ordinary recipe
+creation and public production-list discovery remain excluded. Demolition
+targets reject task requests. Protected082933 on2026-11-15 confirms native
+Repeat/Suspend for both types, Pull Move up/Priority/Cancel, and native Link
+cancellation releasing both mechanism reservations. The headless Godot transport
+reads both native captions and confirms12 edits: both flags on/off for both
+jobs, Move up, Priority on/off, and cancellation of an additional Pull. The
+original two jobs finish with native-reference order/flags/references intact.
+Owned DF12948 closes unsaved with source preservation. The run passes with
+only the known separate-render-thread notice; native30FPS, sampled GPU58C.
+MSVC bridge and all19 core checks pass. Evidence is
+`completed_sheet_discovery_reference.lever_task_controls_reference`.
+Active-worker effects, simulation completion, semantic Link cancellation and
+the composed lever panel remain unqualified.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

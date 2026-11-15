@@ -42,6 +42,18 @@ local ok,err=xpcall(function()
   assert(#lever.jobs==index and lever.jobs[index-1].job_type==df.job_type.PullLever)
   sample('pull-'..index)
  end
+ if os.getenv('DF3D_LEVER_TASK_CONTROLS')=='1'then
+  local first,second=lever.jobs[0],lever.jobs[1]
+  click(748,154);assert(first.flags['repeat']);sample('pull-repeat')
+  click(748,154);assert(not first.flags['repeat'])
+  click(844,190);assert(second.flags.suspend);sample('pull-suspended')
+  click(844,190);assert(not second.flags.suspend)
+  click(796,190);assert(lever.jobs[0]==second and lever.jobs[1]==first);sample('pull-moved')
+  click(772,190);assert(first.flags.do_now and lever.jobs[0]==first);sample('pull-priority')
+  click(772,154);assert(not first.flags.do_now)
+  click(868,190);assert(#lever.jobs==1 and lever.jobs[0]==first);sample('pull-cancel-second')
+  click(868,154);assert(#lever.jobs==0);sample('pull-cancel-all')
+ end
  -- Cleanup is deliberately separate from native cancellation acceptance.
  while #lever.jobs>0 do assert(dfhack.job.removeJob(lever.jobs[#lever.jobs-1]))end
  view:render(dfhack.getTickCount());sample('pull-cleaned')
@@ -135,8 +147,19 @@ local ok,err=xpcall(function()
    if os.getenv('DF3D_LEVER_LINK_PROVIDER')=='1'then result.target_before=target_probe();assert(result.target_before.target_id==target.id)end
    select_map(target);local native_link=sample('link-target-click')
    assert(#lever.jobs==1 and lever.jobs[0].job_type==df.job_type.LinkBuildingToTrigger,'Native target click did not create link job')
+   if os.getenv('DF3D_LEVER_TASK_CONTROLS')=='1'then
+    local job=lever.jobs[0]
+    click(748,154);assert(job.flags['repeat']);sample('link-repeat')
+    click(748,154);assert(not job.flags['repeat'])
+    click(844,154);assert(job.flags.suspend);sample('link-suspended')
+    click(844,154);assert(not job.flags.suspend)
+   end
    if os.getenv('DF3D_LEVER_LINK_PROVIDER')=='1'then result.target_pending=target_probe();assert(result.target_pending.target_id==-1)end
-   assert(dfhack.job.removeJob(lever.jobs[0]));view:render(dfhack.getTickCount());sample('link-job-cleaned')
+   if os.getenv('DF3D_LEVER_TASK_CONTROLS')=='1'then
+    click(868,154);assert(#lever.jobs==0,'Native Link cancellation retained job')
+    for _,id in ipairs(mechanism_ids)do assert(not df.item.find(id).flags.in_job,'Native Link cancellation retained mechanism reservation')end
+   else assert(dfhack.job.removeJob(lever.jobs[0]))end
+   view:render(dfhack.getTickCount());sample('link-job-cleaned')
    if os.getenv('DF3D_LEVER_LINK_PROVIDER')=='1'then
     local text,code=dfhack.run_command_silent('df3d','lever-link-probe',tostring(lever.id),tostring(target.centerx),tostring(target.centery),tostring(target.z),tostring(mechanism_ids[1]),tostring(mechanism_ids[2]))
     assert(code==0,text);result.link_receipt=json.decode(text)

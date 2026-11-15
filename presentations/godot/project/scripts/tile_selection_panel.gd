@@ -75,8 +75,9 @@ func _alternative_icon(target: Dictionary):
 	if target.has("selector"):return world.candidate_icon(target.selector)
 	if target.kind==C.SelectionKind.Building:
 		var building: Dictionary=world.inspect_entity(3,target.id)
-		# Native floodgate tabs use the fixed UI icon, not the material-colored
-		# open/closed terrain sprite returned by selection_icon.
+		# Native farm/floodgate tabs use fixed UI icons, not the terrain
+		# appearance returned by selection_icon.
+		if building.get("building_kind",0)==5:return world.ui_texture("BUILDING_ICON_FARM_PLOT")
 		if building.get("building_kind",0)==10:return world.ui_texture("BUILDING_ICON_FLOODGATE")
 	return world.selection_icon(target.kind,target.id) if target.kind in [C.SelectionKind.Unit,C.SelectionKind.Item,C.SelectionKind.Building] else null
 

@@ -502,6 +502,14 @@ Ref<Texture2D> Df3dWorld::selection_icon(int kind,int64_t id,bool body_cell) {
             slot=art.slot;region=art.region;
         }
     } else if (kind==2) {
+        // Native c7fa25..c7fa68 uses the original picked-plant tile for
+        // non-rotten PLANT items. Reuse the farm's owned raw-art path instead
+        // of the terrain material tint, which changes selection-tab colors.
+        if(assets_) {
+            const auto* plant=source_.model().item(wm::ItemId(id));
+            if(plant && plant->kind==wm::ItemKind::Plant && !(plant->flags&wm::kItemRotten) && tileVisible(plant->pos))
+                return originalItemIcon(source_.model().materialName(plant->material),wm::ItemKind::Plant);
+        }
         for (int64_t i=0;i<itemIds_.size();++i) if (itemIds_[i]==id) {
             slot=itemSlots_[i];region=itemRegions_[i];break;
         }

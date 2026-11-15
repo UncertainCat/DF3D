@@ -328,8 +328,13 @@ func _selection_destination(kind: int,id: int,tile: Vector3i):
 		return target if target.open_target(tile,1,id,true) else null
 	if kind==c.SelectionKind.Building:
 		var info: Dictionary=world.inspect_entity(3,id)
-		if not info.get("complete",false):return null
+		if info.is_empty():return null
 		var building_kind: int=info.get("building_kind",0)
+		if not info.get("complete",false):
+			if building_kind<1 or building_kind>55 or building_kind in [30,31]:return null
+			var pending=controller("pending_building")
+			pending.open_target(id)
+			return pending if host.active==pending and pending.state.building_id==id else null
 		if building_kind not in [5,6,9,11,14]:
 			# Keep existing building inspection available within staged selection.
 			# This does not qualify those incomplete native building controls.

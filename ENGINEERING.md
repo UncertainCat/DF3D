@@ -9889,6 +9889,27 @@ ObjectDB signatures. Evidence: pending_construction_reference.component_artwork_
 This qualifies these controlled panels and icons, not every unfinished type,
 ordinary map entry, trigger-link controls or responsive layout.
 
+The staged tile-selection owner routes streamed unfinished buildings to the
+pending-building controller, preserving confirmed tab handoffs and retiring
+selection on Escape. It uses the existing native tab frame; the farm's former
+right-border mismatch came from opening its panel outside that composition.
+Farm tabs use the installed BUILDING_ICON_FARM_PLOT. Non-rotten picked-plant
+selection icons reuse originalItemIcon, matching native c7fa25..c7fa68's direct
+plant tile path instead of the terrain material tint. Terrain rendering is unchanged.
+
+Protected014331 on2026-11-15 compares six full488x708 panels (the prior five plus
+Farm227) and its40x72 two-tab crop, all exact. Pointer navigation to Plant48436
+and back retires the former pending owner, restores the correct building, and
+Escape clears owner, tabs and receipt. The controlled fixture lowers build stage
+and clears exists so normal resident routing sees an unfinished building; both
+fields are restored before owned DF4732 exits unsaved. Source preservation passes.
+Extension build, headless parse and core19 pass; live has only documented Godot
+thread/finalize/two ObjectDB diagnostics. Failed fixture/filename/icon attempts are
+not acceptance; selection_entry_reference in pending_construction_reference
+records the accepted evidence and limits. Ordinary map picking remains separately
+gated. Component inspection with retained selection context, removal interactions,
+hover and responsive qualification remain to be completed before broad exposure.
+
 Management protocol221 adds required pending-building trigger_kind (0 none,
 1 lever,2 pressure plate) and trigger_links (resolved BUILDING_TRIGGER and
 BUILDING_TRIGGERTARGET references on contained items). Missing fields default-1

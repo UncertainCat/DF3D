@@ -16934,6 +16934,115 @@
           "result.json": "26e462fd933fdf13740174b8cd2fd8752e94275383f685d5bda91c8a7c8aa4ac",
           "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "selection_entry_reference": {
+        "protocol": 221,
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-014331",
+        "owned_df_pid": 4732,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "status": "passed_with_known_issues",
+        "scope": "Actual main-scene semantic tile-selection entry into six controlled unfinished types, all full488x708 panels equal native. Farm two-tab40x72 crop equals native; pointer switches away and back, old pending authority retires, returned panel equals native, Escape clears selection/tabs. Controlled fixture lowers stage and clears exists, restoring both afterward. Earlier013332 incorrectly retained exists and routed as completed;013534 passed full panels but failed a test filename4.0, neither accepted. Runs013652/014044 exposed missing farm art and picked-plant tint; those are corrected by reusing fixed native UI art and the existing original crop icon path. Ordinary map picking remains separately gated; component item navigation while retaining selection context and responsive layouts are not covered.",
+        "comparisons": [
+          {
+            "id": 56,
+            "stage": 2,
+            "tile": [
+              116,
+              101,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 5,
+            "full_panel_equal": true,
+            "viewer_sha256": "af29473dd907de3ed29644d200099e89cf2e1dc7996053e4ab2a8e4f08cc6eed",
+            "native_sha256": "8064825d546c5878c52619dc33e7a317a6172702e424c1bfe35c9238dc6592e7"
+          },
+          {
+            "id": 3,
+            "stage": 2,
+            "tile": [
+              106,
+              95,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 13,
+            "full_panel_equal": true,
+            "viewer_sha256": "1ee3f86751c01b487e2216eacb9ced7c31f4213e537c07a7d0016f1c9886b312",
+            "native_sha256": "74d9267a087aff4a5be85f84197c125a781d52fa0950cea206f2951fdfb9ab4b"
+          },
+          {
+            "id": 16,
+            "stage": 0,
+            "tile": [
+              121,
+              99,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 8,
+            "full_panel_equal": true,
+            "viewer_sha256": "7e58e86d9c6de603bd8bc3e5338d65072c5d9ea070ab2f16b9c91bc91bf67517",
+            "native_sha256": "6526368181f5dec950f6294d6a40cd48c9a25c02cf8ff45cf718bb22ad5722e0"
+          },
+          {
+            "id": 493,
+            "stage": 0,
+            "tile": [
+              126,
+              46,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 15,
+            "full_panel_equal": true,
+            "viewer_sha256": "956be4d76af87d300ee05b8e16cbb397d1dae321a27fc30f240d259599943350",
+            "native_sha256": "d7c3a3d47fc2bff06c9d76250f73dc654ee8ab2d99f28fde548907c24449074f"
+          },
+          {
+            "id": 55,
+            "stage": 0,
+            "tile": [
+              97,
+              103,
+              165
+            ],
+            "trigger_kind": 1,
+            "trigger_links": 2,
+            "type": 23,
+            "full_panel_equal": true,
+            "viewer_sha256": "df16f5ea2489588bf86057c30bfdd3916cff0f8bda92bea92df8037ec49130f8",
+            "native_sha256": "cfb5c3017c42704b1fcccd1d3a32e0357d440eb995990ab7b1761e5d77e96a0c"
+          },
+          {
+            "id": 227,
+            "stage": 2,
+            "tile": [
+              137,
+              111,
+              165
+            ],
+            "trigger_kind": 0,
+            "trigger_links": 0,
+            "type": 4,
+            "full_panel_equal": true,
+            "viewer_sha256": "42184c9132e36d4f90b7bf369736576d09265b34571dc9557f42f7bf2d42abd5",
+            "native_sha256": "35581dcc738602699b5fb7a122939cb900f37bf590d9336c1215def5648c0f25"
+          }
+        ],
+        "farm_tabs_sha256": "74e4ba99d23af3e925b7fe5ab27ae06d5670e5d4b0c9eb781052e0de7b80dd36",
+        "hashes": {
+          "workshop-native.json": "b8ca771062199d07efde9436e6a629f6e4a6c66d362252087690218aa5b70178",
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "result.json": "56e90d6eeaa6103d3359250ca90a02a933cac291497ea64ad055c83a306b6a21",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

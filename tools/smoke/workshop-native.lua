@@ -136,7 +136,7 @@ local ok,err=xpcall(function()
  if os.getenv('DF3D_PENDING_HEADER_ART')=='1'then
   local chosen={};local rows={};local originals={}
   local duration_probe=os.getenv('DF3D_PENDING_DURATION')=='1'
-  local kinds=duration_probe and {5,13,8,15,23,4,19,20,21,18} or {5,13,8,15,23}
+  local kinds=duration_probe and {5,13,8,15,23,4,19,20,21,18} or os.getenv('DF3D_PENDING_SELECTION')=='1' and {5,13,8,15,23,4} or {5,13,8,15,23}
   local wanted={};for _,kind in ipairs(kinds)do wanted[kind]=true end
   for _,candidate in ipairs(df.global.world.buildings.all)do
    local kind=candidate:getType();local tile=dfhack.maps.getTileFlags{x=candidate.centerx,y=candidate.centery,z=candidate.z}
@@ -147,8 +147,9 @@ local ok,err=xpcall(function()
   assert(chosen[5] and chosen[13],'Header artwork reference needs idle furnace and workshop')
   result.pending_header_art=rows
   for _,kind in ipairs(kinds)do local candidate=chosen[kind];if candidate then
-   originals[#originals+1]={building=candidate,stage=candidate:getBuildStage()}
+   originals[#originals+1]={building=candidate,stage=candidate:getBuildStage(),exists=candidate.flags.exists}
    candidate:setBuildStage(candidate:getMaxBuildStage()-1)
+   if os.getenv('DF3D_PENDING_SELECTION')=='1'then candidate.flags.exists=false end
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(candidate)
    assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==candidate.id,'Header artwork target selection missed')
    local trigger_kind=0;local trigger_links=0
@@ -181,7 +182,7 @@ local ok,err=xpcall(function()
    local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
    assert(receipt.success,'Pending header artwork viewer failed')
   end
-  for _,entry in ipairs(originals)do entry.building:setBuildStage(entry.stage)end
+  for _,entry in ipairs(originals)do entry.building:setBuildStage(entry.stage);entry.building.flags.exists=entry.exists end
   result.pending_header_art_restored=true
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
   return

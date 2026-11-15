@@ -379,6 +379,17 @@ plates. Owned DF45936 closes unsaved with source preservation; graphics capped
 report only the documented render-thread/finalize/two ObjectDB diagnostics.
 Evidence: `completed_sheet_discovery_reference.pressure_plate_panel_reference`.
 
+Protected095120 verifies actual composed-panel Rename/restore, first installed
+mechanism Forbid/Dump/Hide toggles and restoration, idle Remove and Cancel
+removal. Ten complete488x708 crops match native. Native final readback confirms
+the name and item flags were restored; the following Link workflow also passes.
+No runtime change was needed. Owned DF10668 closes unsaved with source
+preservation; graphics capped30FPS, sampled GPU59–62C. Core19 passes, with only
+the established render-thread/finalize/two ObjectDB graphics diagnostics.
+Evidence: `completed_sheet_discovery_reference.pressure_plate_edits_reference`.
+Queued/assigned removal, item navigation, worker/order edits, Connections and
+ordinary map entry remain outside this capture.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

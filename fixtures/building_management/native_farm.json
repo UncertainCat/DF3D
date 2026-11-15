@@ -26119,6 +26119,66 @@
           "build/stockpile-storage-native-farm-discovery-20261115-094848/pressure-plate-panel-workers-viewer.png": "981c9ea6f6211445c610c1c516265fbef9d8c305025c26cc2f5a3d55abfa9e36",
           "build/stockpile-storage-native-farm-discovery-20261115-094848/pressure-plate-prompt-viewer.png": "0be1a8e55f50f7e913c2d889813710ca399785f4698f1e3ee7d9a23f11fc9a75"
         }
+      },
+      "pressure_plate_edits_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-095120",
+        "scope": "Native and composed staged plate panel rename/restore, first mechanism Forbid/Dump/Hide toggles and restores, idle Remove/Cancel removal. Ten exact488x708 panel crops; native final name/item flag restoration checks; inherited Link workflow passes. Queued/assigned removal and other panel actions remain separate.",
+        "edits": {
+          "flags": {
+            "dump": false,
+            "forbid": false,
+            "hidden": false
+          },
+          "item_id": 2311,
+          "name": "Brooke Gates"
+        },
+        "labels": [
+          "renamed",
+          "name-restored",
+          "item-forbid",
+          "item-forbid-restored",
+          "item-dump",
+          "item-dump-restored",
+          "item-hidden",
+          "item-hidden-restored",
+          "removing",
+          "removal-cancelled"
+        ],
+        "owned_df_pid": 10668,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-native.json": "8bf40558dfe61522ca73e2dcafbfb5d93e5e4fc726a17ae1bae0c897602b549c",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/workshop-wire-result.json": "c5f6820eca14809fe6cc780f6533e95623f9446c1a643696f9030ac8f3d1698f",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/result.json": "816ca33c1b285c925b2eaf721339851256146d96362f348fd3c48bde6480d7f2",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-renamed.png": "def55566d2e777418ee114c37219194f42b71a394979aead33fe4f2fb0864901",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-name-restored.png": "f0eaf01c49bf507136063085c68ec1d325494863eaadd013d24663ab2f2dfd36",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-item-forbid.png": "bfedbe32ad8f237850ec89e7e683cc970624127644eccbeaa34483fe56d85183",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-item-forbid-restored.png": "f0eaf01c49bf507136063085c68ec1d325494863eaadd013d24663ab2f2dfd36",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-item-dump.png": "18e375a1394a3079c435b6d5c11b3707abb326ba693a52d603a66dffe2894c73",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-item-dump-restored.png": "f0eaf01c49bf507136063085c68ec1d325494863eaadd013d24663ab2f2dfd36",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-item-hidden.png": "8252c19025cf3ef3a4b29566e5f99c23ff881a314d425bffad3efd6fdaa02bb2",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-item-hidden-restored.png": "f0eaf01c49bf507136063085c68ec1d325494863eaadd013d24663ab2f2dfd36",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-removing.png": "d419ed0779d960ac83258f54759afa949d39939a14409e0295715531c39dcce4",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-removal-cancelled.png": "f0eaf01c49bf507136063085c68ec1d325494863eaadd013d24663ab2f2dfd36",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-panel-renamed-viewer.png": "bba737d1636663da750aa326df1d16ed660072fbc8ae41ec7d4c01cd7491adb5",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-panel-name-restored-viewer.png": "5ffa8f3e5afbdaecd876b90524cc65a5e068dcde1c8342730ec3f2f80aec0ad0",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-panel-item-forbid-viewer.png": "5f85a719385c237dc62431bb4570b62c4d88fb01a8e525925c5dbd728ecc0158",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-panel-item-forbid-restored-viewer.png": "5ffa8f3e5afbdaecd876b90524cc65a5e068dcde1c8342730ec3f2f80aec0ad0",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-panel-item-dump-viewer.png": "2dcacab7ac12ef556a4c332523ed8841d034550dce7a3499cede2a10b773fa66",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-panel-item-dump-restored-viewer.png": "5ffa8f3e5afbdaecd876b90524cc65a5e068dcde1c8342730ec3f2f80aec0ad0",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-panel-item-hidden-viewer.png": "e6c71cea3f5daa8b1abaead0f819182f8c97c5b6119ed53c462e0988d3d7c1f8",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-panel-item-hidden-restored-viewer.png": "5ffa8f3e5afbdaecd876b90524cc65a5e068dcde1c8342730ec3f2f80aec0ad0",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-panel-removing-viewer.png": "d95c2ff88502e022ddd3a1b8538d2ad5a4961f8ff1994f1f8a0a35e74d5990a9",
+          "build/stockpile-storage-native-farm-discovery-20261115-095120/pressure-plate-panel-removal-cancelled-viewer.png": "5ffa8f3e5afbdaecd876b90524cc65a5e068dcde1c8342730ec3f2f80aec0ad0"
+        }
       }
     },
     "pending_construction_reference": {

@@ -4,6 +4,12 @@ local gui=require('gui');local json=require('json');local g=df.global.gps
 local sheet=df.global.game.main_interface.view_sheets
 local result={states={},candidates={}}
 local supplies={}
+local function click(x,y)
+ g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+ gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+end
 local provider=os.getenv('DF3D_PRESSURE_PLATE_PROVIDER')=='1'
 local function owned(command,...)
  local before=json.encode{sheet.open,sheet.active_id,sheet.linking_lever,sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id}
@@ -49,6 +55,22 @@ local ok,err=xpcall(function()
  if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
  view:render(dfhack.getTickCount());select_map(plate)
  assert(sheet.open and sheet.active_id==plate.id);sample('initial')
+ if os.getenv('DF3D_PRESSURE_PLATE_EDITS')=='1'then
+  local name=plate.name
+  click(800,82);gui.simulateInput(view,'STRING_A120');gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
+  assert(plate.name==name..'x');sample('renamed')
+  click(800,82);gui.simulateInput(view,'STRING_A000');gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
+  assert(plate.name==name);sample('name-restored')
+  local item=assert(plate.contained_items[0].item)
+  result.edits={name=dfhack.df2utf(name),item_id=item.id,flags={}}
+  for _,control in ipairs{{'forbid',796},{'dump',820},{'hidden',868}}do
+   local before=item.flags[control[1]];result.edits.flags[control[1]]=before
+   click(control[2],562);assert(item.flags[control[1]]~=before);sample('item-'..control[1])
+   click(control[2],562);assert(item.flags[control[1]]==before);sample('item-'..control[1]..'-restored')
+  end
+  click(832,82);assert(#plate.jobs==1 and plate.jobs[0].job_type==df.job_type.DestroyBuilding);sample('removing')
+  assert(click_label('Cancel removal'));assert(#plate.jobs==0);sample('removal-cancelled')
+ end
  for _,label in ipairs{'Workers','Work orders','Tasks'}do
   if click_label(label)then sample(label:gsub(' ','-'):lower())end
  end
@@ -108,6 +130,11 @@ local ok,err=xpcall(function()
   capture('workshop-wire')
   f=assert(io.open(out..'/workshop-wire-result.json'));result.wire=json.decode(f:read('*a'));f:close()
   assert(result.wire.success and #plate.jobs==1 and plate.jobs[0].id==result.wire.link_job,'Plate wire action failed')
+  if result.edits then
+   assert(dfhack.df2utf(plate.name)==result.edits.name,'Viewer did not restore plate name')
+   local item=assert(df.item.find(result.edits.item_id))
+   for key,value in pairs(result.edits.flags)do assert(item.flags[key]==value,'Viewer did not restore plate item flag: '..key)end
+  end
   assert(menu==json.encode{sheet.open,sheet.active_id,sheet.linking_lever,sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id},'Plate wire changed native menu')
   local actual=sample('wire-job').job_details[1]
   for _,key in ipairs{'type','flags','pos','refs','item_roles','requirements','world_registered'}do assert(json.encode(actual[key])==json.encode(native_job[key]),'Plate wire/native job differs: '..key)end

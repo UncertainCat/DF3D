@@ -29,6 +29,32 @@ func model_ready(model) -> bool:
 		world.poll();await process_frame
 		if model.phase==model.Phase.Ready:return true
 	check(false,"Plate subpanel did not become ready: "+str(model.phase));return false
+func key(code: int,unicode:=0) -> void:
+	for pressed in [true,false]:
+		var event:=InputEventKey.new();event.keycode=code;event.unicode=unicode;event.pressed=pressed;root.push_input(event,true)
+func edit_gestures(owner) -> void:
+	var original: String=owner.state.snapshot.custom_name
+	click(Vector2(800,82));key(0,120);key(KEY_ENTER)
+	if not await settle(owner,0):return
+	check(owner.state.snapshot.custom_name==original+"x","Plate rename failed");await compare("renamed")
+	click(Vector2(800,82));key(KEY_BACKSPACE);key(KEY_ENTER)
+	if not await settle(owner,0):return
+	check(owner.state.snapshot.custom_name==original,"Plate name not restored");await compare("name-restored")
+	for control in [["forbid",796],["dump",820],["hidden",868]]:
+		var before: bool=owner.contents.rows()[0][control[0]]
+		for restored in [false,true]:
+			click(Vector2(control[1],562))
+			if not await settle(owner,0):return
+			check(owner.contents.rows()[0][control[0]]==(before if restored else not before),"Plate item flag differs: "+control[0])
+			await compare("item-"+control[0]+("-restored" if restored else ""))
+	click(Vector2(832,82))
+	if not await model_ready(owner.state):return
+	if not await model_ready(owner.contents):return
+	check(owner.state.snapshot.removing and not owner.panel.tasks.visible,"Plate removal retained tasks")
+	await compare("removing")
+	click(owner.panel.get_global_transform_with_canvas()*owner.panel.cancel_rect().get_center())
+	if not await settle(owner,0):return
+	check(not owner.state.snapshot.removing,"Plate removal was not cancelled");await compare("removal-cancelled")
 func inspect_prompt(_snapshot: Dictionary,_expected: Dictionary) -> void:
 	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Plate panel assets unavailable"):return
 	var preferences=preload("res://scripts/presentation_settings.gd");preferences.loaded=true;preferences.ui_scale=1.0
@@ -44,6 +70,7 @@ func inspect_prompt(_snapshot: Dictionary,_expected: Dictionary) -> void:
 		if not await model_ready(owner.links):ready=false
 	if ready:
 		await create_timer(0.5).timeout;await compare("initial")
+		if OS.get_environment("DF3D_PRESSURE_PLATE_EDITS")=="1":await edit_gestures(owner)
 		for index in [1,2]:
 			click(owner.panel.global_position+owner.panel.tab_rect(index).get_center())
 			if not await model_ready(owner.workers if index==1 else owner.orders):break

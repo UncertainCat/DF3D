@@ -22,7 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Current management protocol229 adds paired optional grate orientation/open
+Current management protocol230 adds the native well status body to building
+headers. Both peers use `Local\df3d_management_v230`; rebuild bridge and viewer
+together. Older recordings imply no well status. Migration guidance is in
+ENGINEERING.md's well transport section.
+
+Management229 adds paired optional grate orientation/open
 facts. Both peers use `Local\df3d_management_v229`; rebuild bridge and viewer
 together. Older appearances retain unknown facts. Migration and protected
 compatibility evidence are in ENGINEERING.md's grate transport section.

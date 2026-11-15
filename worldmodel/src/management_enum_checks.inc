@@ -1,4 +1,9 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::WellStatus::Operational) == static_cast<int>(df3d::mirror::WellStatus::Operational));
+static_assert(static_cast<int>(wm::WellStatus::NoBucket) == static_cast<int>(df3d::mirror::WellStatus::NoBucket));
+static_assert(static_cast<int>(wm::WellStatus::BucketFull) == static_cast<int>(df3d::mirror::WellStatus::BucketFull));
+static_assert(static_cast<int>(wm::WellStatus::Dry) == static_cast<int>(df3d::mirror::WellStatus::Dry));
+static_assert(sizeof(df3d::mirror::EnumValuesWellStatus()) / sizeof(df3d::mirror::WellStatus) == 4);
 static_assert(static_cast<int>(wm::MachineryStatus::NoNetwork) == static_cast<int>(df3d::mirror::MachineryStatus::NoNetwork));
 static_assert(static_cast<int>(wm::MachineryStatus::Active) == static_cast<int>(df3d::mirror::MachineryStatus::Active));
 static_assert(static_cast<int>(wm::MachineryStatus::Inactive) == static_cast<int>(df3d::mirror::MachineryStatus::Inactive));

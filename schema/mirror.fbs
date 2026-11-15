@@ -1725,6 +1725,8 @@ table MachineryBodySnapshot {
   stable_foundation:bool; disengaged:bool;
   pump_manual:int8 = -1; pump_direction:int8 = -1;
 }
+enum WellStatus : uint8 { Operational, NoBucket, BucketFull, Dry }
+table WellBodySnapshot { status:WellStatus; }
 table BuildingHeaderSnapshot {
   id:int32 = -1; type:int32 = -1; revision:uint64;
   stage:int32 = -1; max_stage:int32 = -1;
@@ -1733,6 +1735,7 @@ table BuildingHeaderSnapshot {
   forbidden:int8 = -1; appearance:SelectionAppearance;
   funerary:FuneraryBodySnapshot;
   machinery:MachineryBodySnapshot;
+  well:WellBodySnapshot;
 }
 table BuildingHeaderState {
   snapshot:BuildingHeaderSnapshot;
@@ -2598,7 +2601,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 229;
+  schema_version:uint32 = 230;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2671,7 +2674,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 229;
+  schema_version:uint32 = 230;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

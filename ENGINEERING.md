@@ -1,10 +1,28 @@
+## Well status transport migration
+
+Management protocol230 adds `WellBodySnapshot` to completed building headers.
+Its `WellStatus` is Operational, NoBucket, BucketFull or Dry. Well18 requires
+this body; other building types must not carry it. Unknown enum values reject
+the snapshot. Older recordings have no well status and must not synthesize one.
+Both management defaults and the mailbox are230; rebuild bridge and viewer
+together. The DF53.16 compatibility pin is unchanged. Native provider evidence
+is recorded under Remaining completed-building native providers below.
+
+Bridge, viewer extension and core builds pass, as do core19 and the headless
+well-contract check. Protected121941 on2026-11-15 verifies compatibility through
+five existing barrier header/contents reads, hatch edits, stale/duplicate guards
+and removal/cancellation. Owned DF4660 closes unsaved with source preservation;
+native30FPS, sampled GPU59C. The headless viewer reports only the known rendering-
+thread notice. Evidence: `completed_sheet_discovery_reference.well_contract_reference`.
+This contract-only run does not establish well panel acceptance.
+
 ## Grate appearance transport migration
 
 Management protocol229 adds paired `grate_wall` and `grate_open` facts to item
 appearance. Both are -1 when unknown; otherwise both must be0/1 and the item
 must be GRATE79. Older recordings retain unknown facts and must not invent
-orientation or gate state. Rebuild bridge and viewer together; the mailbox and
-both schema defaults are229. The DF53.16 compatibility pin is unchanged.
+orientation or gate state. Grate appearance was introduced in229; the current
+protocol is listed above. The DF53.16 compatibility pin is unchanged.
 
 The native producer and artwork resolver use these facts as described in the
 completed barrier references below. Contract-only protected114311

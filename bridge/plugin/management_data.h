@@ -188,6 +188,7 @@ struct MachineryBodySnapshot {
   bool stableFoundation=false,disengaged=false;
   int8_t pumpManual=-1,pumpDirection=-1;
 };
+struct WellBodySnapshot { df3d::mirror::WellStatus status=df3d::mirror::WellStatus::Operational; };
 struct BuildingHeaderSnapshot {
   int32_t id=-1,type=-1,stage=-1,maxStage=-1;uint64_t revision=0;
   std::string customName,nativeName,headerName;
@@ -196,6 +197,7 @@ struct BuildingHeaderSnapshot {
   std::optional<df3d_production::ItemAppearanceRecipe> appearance;
   std::optional<FuneraryBodySnapshot> funerary;
   std::optional<MachineryBodySnapshot> machinery;
+  std::optional<WellBodySnapshot> well;
 };
 struct BuildingHeaderState {
   std::optional<BuildingHeaderSnapshot> snapshot;

@@ -285,6 +285,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
         body["stable_foundation"]=v.stableFoundation;body["disengaged"]=v.disengaged;
         body["pump_manual"]=v.pumpManual;body["pump_direction"]=v.pumpDirection;value["machinery"]=body;
       }
+      if(f.well){Dictionary body;body["status"]=int(f.well->status);value["well"]=body;}
       headerState["snapshot"]=value;
     }
     prod["building_header"]=headerState;

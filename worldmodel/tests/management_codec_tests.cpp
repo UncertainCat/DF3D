@@ -9,6 +9,25 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("well bodies preserve native state and reject missing or foreign facts") {
+  for(int type:{18,15})for(int status:{-1,0,1,2,3,4,255}) {
+    flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");
+    const auto body=status<0?flatbuffers::Offset<wire::WellBodySnapshot>{}:wire::CreateWellBodySnapshot(b,static_cast<wire::WellStatus>(status));
+    const auto snapshot=wire::CreateBuildingHeaderSnapshot(b,161,type,9007199254740993ULL,1,1,
+      empty,b.CreateString("native"),b.CreateString("Native"),false,false,false,0,0,0,0,body);
+    const auto header=wire::CreateBuildingHeaderState(b,snapshot);
+    wire::ProductionStateBuilder p(b);p.add_building_header(header);const auto payload=p.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_action(wire::ManagementAction::ProductionInspect);
+    root.add_status(wire::ManagementStatus::Ok);root.add_production(payload);b.Finish(root.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool valid=type==18 ? status>=0 && status<=3 : status==-1;
+    CAPTURE(type);CAPTURE(status);CHECK(bool(wire::validateManagementState(*value))==!valid);
+    if(valid){auto decoded=codec::decodeProduction(value->production());b.Clear();
+      REQUIRE(decoded.buildingHeader->snapshot);const auto& well=decoded.buildingHeader->snapshot->well;
+      CHECK(well.has_value()==(type==18));if(well)CHECK(int(well->status)==status);}
+  }
+}
+
 TEST_CASE("machinery bodies reject missing and contradictory authority") {
   for(int type:{33,40,41,42,43,44,50})for(int fault=0;fault<7;++fault) {
     flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");

@@ -2,6 +2,12 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class WellStatus : uint8_t {
+  Operational = 0,
+  NoBucket = 1,
+  BucketFull = 2,
+  Dry = 3,
+};
 enum class MachineryStatus : uint8_t {
   NoNetwork = 0,
   Active = 1,

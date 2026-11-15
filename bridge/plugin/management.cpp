@@ -1284,10 +1284,12 @@ void publish() {
           b.CreateString(v.introduction),b.CreateString(v.name),b.CreateString(v.roomIntroduction),b.CreateString(v.roomName),
           b.CreateString(v.deceased),b.CreateVector(notices),encodeItemRecipe(v.ownerAppearance));
       }
+      flatbuffers::Offset<m::WellBodySnapshot> well;
+      if(f.well)well=m::CreateWellBodySnapshot(b,f.well->status);
       flatbuffers::Offset<m::MachineryBodySnapshot> machinery;
       if(f.machinery){const auto& v=*f.machinery;machinery=m::CreateMachineryBodySnapshot(b,v.machineId,v.produced,v.required,v.status,v.stableFoundation,v.disengaged,v.pumpManual,v.pumpDirection);}
       snapshot=m::CreateBuildingHeaderSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,
-        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance),funerary,machinery);
+        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance),funerary,machinery,well);
     }
     buildingHeader=m::CreateBuildingHeaderState(b,snapshot,state.outcome,state.operation,state.missingBuildingId);
   }

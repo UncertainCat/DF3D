@@ -106,6 +106,8 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     state.operation=static_cast<FarmOperation>(source->operation());
     if(const auto* f=source->snapshot())state.snapshot=BuildingHeaderSnapshot{f->id(),f->type(),f->stage(),f->max_stage(),f->revision(),
       str(f->custom_name()),str(f->native_name()),str(f->header_name()),f->removing(),f->suspended(),f->has_worker(),f->forbidden(),f->appearance()?std::optional<SelectionAppearance>(decodeItemRecipe(f->appearance())):std::nullopt};
+    if(source->snapshot() && source->snapshot()->well())
+      state.snapshot->well=WellBodySnapshot{static_cast<WellStatus>(source->snapshot()->well()->status())};
     if(source->snapshot() && source->snapshot()->machinery()) {
       const auto* f=source->snapshot()->machinery();
       state.snapshot->machinery=MachineryBodySnapshot{f->machine_id(),f->produced(),f->required(),static_cast<MachineryStatus>(f->status()),

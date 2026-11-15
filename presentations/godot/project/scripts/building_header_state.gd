@@ -69,7 +69,7 @@ func _read() -> void:
 	_send({"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":building_id})
 
 func begin_name_entry() -> bool:
-	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("type",-1) not in [0,1,2,3,5,8,9,10,11,12,13,14,15,23,33,35,36,37,38,39,40,41,42,43,44,46,50,51,52,54] or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
+	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("type",-1) not in [0,1,2,3,5,8,9,10,11,12,13,14,15,18,23,33,35,36,37,38,39,40,41,42,43,44,46,50,51,52,54] or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
 	_retire_refresh()
 	var owner:=generation
 	var owned=load("res://scripts/farm_rename_session.gd").new()
@@ -107,7 +107,7 @@ func set_pump_manual(desired: bool) -> void:
 	_edit(C.FarmOperation.PumpManual,{"item_value":int(desired)})
 
 func _edit(operation: int,fields: Dictionary) -> void:
-	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in [0,1,2,3,5,8,9,10,11,12,13,14,15,23,33,35,36,37,38,39,40,41,42,43,44,46,50,51,52,54] or snapshot.stage!=snapshot.max_stage:return
+	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in [0,1,2,3,5,8,9,10,11,12,13,14,15,18,23,33,35,36,37,38,39,40,41,42,43,44,46,50,51,52,54] or snapshot.stage!=snapshot.max_stage:return
 	if snapshot.removing!=(operation==C.FarmOperation.CancelRemoval):return
 	_retire_refresh()
 	var intent={"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":building_id,
@@ -127,7 +127,7 @@ func _fail(next: Phase) -> void:
 static func valid_snapshot(value: Dictionary,id: int) -> bool:
 	for field in ["id","type","revision","stage","max_stage"]:
 		if typeof(value.get(field))!=TYPE_INT:return false
-	if value.id!=id or id<0 or id>2147483647 or value.type not in [0,1,2,3,5,8,9,10,11,12,13,14,15,23,33,35,36,37,38,39,40,41,42,43,44,46,50,51,52,54] or value.revision<=0 or value.stage<0 or value.max_stage<value.stage or value.max_stage>2147483647:return false
+	if value.id!=id or id<0 or id>2147483647 or value.type not in [0,1,2,3,5,8,9,10,11,12,13,14,15,18,23,33,35,36,37,38,39,40,41,42,43,44,46,50,51,52,54] or value.revision<=0 or value.stage<0 or value.max_stage<value.stage or value.max_stage>2147483647:return false
 	for field in ["custom_name","native_name","header_name"]:
 		if typeof(value.get(field))!=TYPE_STRING:return false
 		var bytes: PackedByteArray=value[field].to_utf8_buffer()
@@ -135,8 +135,12 @@ static func valid_snapshot(value: Dictionary,id: int) -> bool:
 	for field in ["removing","suspended","has_worker","forbidden"]:
 		if typeof(value.get(field))!=TYPE_BOOL:return false
 	if value.has("appearance") and not preload("res://scripts/item_sheet_state.gd")._valid_recipe(value.appearance):return false
-	if not valid_funerary(value) or not valid_machinery(value):return false
+	if not valid_funerary(value) or not valid_machinery(value) or not valid_well(value):return false
 	return value.removing or (not value.suspended and not value.has_worker)
+
+static func valid_well(value: Dictionary) -> bool:
+	if value.type!=18:return not value.has("well")
+	return typeof(value.get("well"))==TYPE_DICTIONARY and value.well.size()==1 and typeof(value.well.get("status"))==TYPE_INT and value.well.status in [0,1,2,3]
 
 static func valid_machinery(value: Dictionary) -> bool:
 	if value.type not in [33,40,41,42,43,44,50]:return not value.has("machinery")

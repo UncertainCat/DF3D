@@ -30949,6 +30949,23 @@
           "build/stockpile-storage-native-farm-discovery-20261115-121118/well-status-full.png": "f2f8c57276bdcd218cc73befa6a27b26c9f59c31771a302a2cc7dc6800bb3f36",
           "build/stockpile-storage-native-farm-discovery-20261115-121118/well-status-restored.png": "2031bf0771066beddfa4b7743782d2d25e97c2afdf461286325202e8918541a0"
         }
+      },
+      "well_contract_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-121941",
+        "protocol": 230,
+        "scope": "Contract compatibility over existing five barrier header/contents reads and guarded hatch edits/removal/cancel. Well body runtime is separate. Headless well contract validates required/foreign/invalid bodies.",
+        "owned_df_pid": 4660,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "bridge_sha256": "A7320A3DB4DDD0C24E20210BFA372C674EDD3BDCF010A8E60DDA7DF3E22A72BD",
+        "diagnostics": "passed_with_known_issues: rendering-thread notice",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-121941/barrier-wire-result.json": "c955e57777ec0d73639dca6748560d00aa5eb8e12f13ebb2ed9656add3908f97",
+          "build/stockpile-storage-native-farm-discovery-20261115-121941/barrier-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-121941/barrier-sheets-native.json": "093ef8cfc220784c6aa5383df2726547f426ec6c402ed712b78aab5bcf122cf5",
+          "build/stockpile-storage-native-farm-discovery-20261115-121941/result.json": "1a07b0857d55bbefe2c053b186aeb09188f671db632f96fa1f029f72ba658fcc",
+          "build/stockpile-storage-native-farm-discovery-20261115-121941/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

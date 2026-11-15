@@ -109,6 +109,20 @@ This is a standalone recorded-data view, not a main-scene/live interaction test.
 Initial separate-render-thread captures had incomplete output and known shutdown
 diagnostics and are excluded from visual evidence; no engine fix is claimed.
 
+The staged projection also draws native group selection, individual selection,
+pending/delivered and prohibition indicators, plus exclusion and Select All
+artwork. Group bit1 takes priority over bit2 (native38b49e); item tags0/2/3
+select the resting states from38bd9d..38bdf6. Selection controls remain inert
+until hauling drafts and commit are connected. Exclusion clicks request the
+native filtered snapshot through the existing controller.
+The standalone capture accepts `DF3D_DEPOT_CAPTURE_CASE` (Anvils default,
+`pending`, `delivered`, `prohibited`). All four recorded144747 cases render
+with safe-thread Vulkan at30FPS and no diagnostics. Group marker, individual
+status strip, top option artwork and sampled item caption/distance pixels match
+the native screenshots exactly; the capture checks these regions automatically.
+Sampled GPU53–55C; all four serial processes exit. This is display evidence only,
+not live hauling edits, tooltip acceptance or a complete picker.
+
 ## Depot transport migration
 
 Management protocol231 adds an optional `DepotBodySnapshot` to completed building

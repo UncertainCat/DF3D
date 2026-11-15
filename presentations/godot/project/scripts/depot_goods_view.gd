@@ -66,6 +66,10 @@ func _patch(canvas: Control,token: String,origin: Vector2,columns: int) -> void:
 		for x in columns:canvas.draw_texture_rect_region(texture,Rect2(origin+Vector2(x*8,y*12),Vector2(8,12)),Rect2(0 if x==0 else 16 if x==columns-1 else 8,y*12,8,12))
 func _text(canvas: Control,value: String,point: Vector2,color: int=15) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(canvas.get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[color])
+func _icon(canvas: Control,token: String,rect: Rect2) -> void:
+	var texture: Texture2D=art.texture(token)
+	if texture!=null:canvas.draw_texture_rect(texture,rect,false)
+func exclusion_rect() -> Rect2:return Rect2(search.position+Vector2(search.size.x+8,0),Vector2(32,36))
 func _draw_categories() -> void:
 	for index in range(scrollbar.first,mini(state.categories.size(),scrollbar.first+scrollbar.page)):
 		var row: Dictionary=state.categories[index];var y: int=(index-scrollbar.first)*36
@@ -75,16 +79,27 @@ func _draw_items() -> void:
 	for index in page.size():
 		var entry: Dictionary=page[index];var y: int=index*36-(item_scrollbar.first%3)*12
 		_patch(item_canvas,"BUTTON_CATEGORY_RECTANGLE" if entry.has("group") else "BUTTON_RECTANGLE",Vector2(0,y),int(item_canvas.size.x/8))
-		if entry.has("group"):_text(item_canvas,entry.group.caption,Vector2(16,y+24))
+		if entry.has("group"):
+			_text(item_canvas,entry.group.caption,Vector2(16,y+24))
+			# Native38b49e gives the selected bit priority for mixed groups.
+			var flags: int=entry.group.flags
+			if flags&3:_icon(item_canvas,"ASSIGN_TRADE_SELECTED" if flags&1 else "ASSIGN_TRADE_NOT_SELECTED",Rect2(item_canvas.size.x-40,y,24,36))
 		else:
 			var row: Dictionary=state.items.get(entry.id,{})
 			if row.is_empty():continue
 			_text(item_canvas,row.caption,Vector2(56,y+24))
 			_text(item_canvas,"Distance: "+str(row.distance),Vector2(item_canvas.size.x-208,y+24),10)
+			# Native38bd9d..38bdf6: prohibition, resting haul state, selection.
+			if row.prohibited:_icon(item_canvas,"ASSIGN_TRADE_PROHIBITED",Rect2(item_canvas.size.x-88,y,24,36))
+			if row.tag in [2,3]:_icon(item_canvas,"ASSIGN_TRADE_IN_DEPOT" if row.tag==3 else "ASSIGN_TRADE_BEING_BROUGHT",Rect2(item_canvas.size.x-64,y,24,36))
+			_icon(item_canvas,"ASSIGN_TRADE_SELECTED" if row.tag>0 else "ASSIGN_TRADE_NOT_SELECTED",Rect2(item_canvas.size.x-40,y,24,36))
 func _draw() -> void:
 	if world==null:return
 	draw_rect(Rect2(Vector2(4,4),size-Vector2(8,8)),Color8(28,28,28))
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
+	if search!=null:
+		_icon(self,"ASSIGN_TRADE_CULLING_MANDATES_ON" if state.exclude_prohibited else "ASSIGN_TRADE_CULLING_MANDATES_OFF",exclusion_rect())
+		_icon(self,"SELECT_ALL",Rect2(size.x-64,24,32,36))
 func _input(event: InputEvent) -> void:
 	if not allowed():return
 	if event is InputEventKey and event.pressed:
@@ -101,6 +116,7 @@ func _gui_input(event: InputEvent) -> void:
 		bar.move_to(bar.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(bar.page if event.shift_pressed else 1));return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	search.release_focus()
+	if exclusion_rect().has_point(event.position):state.set_options(state.sort_by_distance,state.pending_on_top,not state.exclude_prohibited);return
 	if Rect2(category_canvas.position,category_canvas.size).has_point(event.position):
 		var index: int=int((event.position.y-category_canvas.position.y)/36)+scrollbar.first
 		if index<state.categories.size():state.select_category(state.categories[index].type)

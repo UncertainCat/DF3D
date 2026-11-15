@@ -15,6 +15,14 @@ func exercise(expected: Dictionary) -> void:
 			check(not rows[0].in_job,"Forbid did not release native component reservation")
 			check(owner.state.snapshot.get("forbidden")==rows[0].forbid,"Native building predicate did not refresh the header")
 			await panel_capture("component-"+entry[0]+"-"+str(attempt),reference+"workshop-pending-component-"+entry[0]+"-"+str(attempt))
+	await pointer(owner.panel.contents.get_global_transform_with_canvas()*owner.panel.contents.control_rect(0,1).get_center())
+	if not await settle(owner.item_owner.state):return
+	check(scene._ui.host.active==owner.item_owner and owner.item_owner.state.item_id==22339,"Component View did not open its item")
+	await panel_capture("component-item","../stockpile-storage-native-farm-discovery-20261115-002303/workshop-pending-component-view")
+	await pointer(owner.item_owner.panel.get_global_transform_with_canvas()*owner.item_owner.panel.holder_rect().get_center())
+	if not await pending_ready():return
+	check(scene._ui.host.active==owner and owner.state.building_id==int(sample.id) and not owner.item_owner.panel.visible,"Component holder did not return to unfinished building")
+	await panel_capture("component-return",reference+"workshop-pending-component-hidden-2")
 	await key(KEY_ESCAPE);await process_frame
 	check(scene._ui.host.active==null and owner.contents.building_id==-1,"Closing component sheet retained authority")
 	exercised=true

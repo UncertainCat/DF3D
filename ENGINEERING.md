@@ -9975,6 +9975,26 @@ Evidence: pending_construction_reference.contents_viewer_reference. This
 qualifies Statue965 component22339; component View/hover, removal contents,
 other header artwork and ordinary map entry remain outside this acceptance.
 Matching218 core, bridge and extension builds and all19 root checks pass.
+Native002629 on2026-11-15 extends the component workflow: View opens item22339,
+then its holder View returns to unfinished Statue965. Escape closes the sheet.
+Opening item details sets native item flag bit29 (`weight_computed`); other
+observed item/job fields remain unchanged. Compare navigation readbacks against
+this full sequence, not the flag-only235233 baseline. Viewer002427 matched the
+item and returned-building pixels but failed the obsolete flag-only readback;
+that run is not full acceptance. Owned native DF36740 and viewer DF35544 exited
+unsaved with source saves preserved. Native screenshots, readbacks and hashes
+are in pending_construction_reference.component_view_native_reference.
+Protected002730 verifies the same sequence in DF3D: component View opens the
+item owner, holder View returns to the unfinished building under fresh action
+authority, and Escape releases it. Item and returned-building full panel crops
+match native002629; complete item/job readbacks match, including bit29. The
+holder route uses mirrored type/completion only to choose the panel, whose
+native provider reacquires current authority. Statue holder artwork uses the
+installed native icon. DF42000 exits unsaved with source preservation. All19
+core checks pass; live status is passed_with_known_issues for the established
+rendering-thread/finalize/two-ObjectDB diagnostics. Graphics remain capped30FPS;
+sampled GPU60C/5–36%. Evidence: component_viewer_navigation_reference. Component
+hover, removal contents and broader artwork/map-entry coverage remain pending.
 Static header artwork dispatch17f8d7 (type table19f7d8), workshop table19f8b4,
 furnace table19f918 and trap table19f938 matches the existing Tasks destination
 artwork selector for47 fixed types,24 fixed workshop subtypes,7 fixed furnace

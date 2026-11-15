@@ -337,8 +337,9 @@ local ok,err=xpcall(function()
      end
      end
      reference.after=observe_component()
+     local component_readback=assert(io.open(out..'/pending-component-readback.json','w'));component_readback:write(json.encode(reference));component_readback:close()
      if os.getenv('DF3D_PENDING_CONTENTS_RUNTIME')=='1'then
-      local f=assert(io.open(out..'/../stockpile-storage-native-farm-discovery-20261114-235233/workshop-native.json'))
+      local f=assert(io.open(out..'/../stockpile-storage-native-farm-discovery-20261115-002629/workshop-native.json'))
       local native=json.decode(f:read('*a')).basic_building_reference.pending.contents_reference;f:close()
       local function same_value(a,c)
        if type(a)~=type(c)then return false end
@@ -348,10 +349,29 @@ local ok,err=xpcall(function()
        return true
       end
       assert(same_value(reference.before,native.before),'Viewer component fixture differs from native baseline')
-      assert(same_value(reference.after,native.after),'Viewer component/job effects differ from native clicks')
+      assert(same_value(reference.after,native.view.returned.effects),'Viewer component/job effects differ from native flag and navigation clicks')
       reference.native_effects_equal=true
      end
      shot('pending-component-final')
+     if os.getenv('DF3D_PENDING_COMPONENT_VIEW')=='1'then
+      df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+      g.precise_mouse_x=772;g.precise_mouse_y=526;g.mouse_x=772//8;g.mouse_y=(526-4)//12
+      gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+      df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+      assert(sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==item.id,'Pending component View selected wrong item')
+      reference.view={kind=sheet.active_sheet,id=sheet.active_id,lines=lines()}
+      reference.view.effects=observe_component()
+      shot('pending-component-view')
+      df.global.enabler.mouse_lbut_lift=0
+      g.precise_mouse_x=816;g.precise_mouse_y=250;g.mouse_x=816//8;g.mouse_y=(250-4)//12
+      gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+      df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+      assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==b.id,'Component holder View did not return to unfinished building')
+      reference.view.returned={kind=sheet.active_sheet,id=sheet.active_id,effects=observe_component()}
+      shot('pending-component-return')
+      gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+      reference.view.after_escape={kind=sheet.active_sheet,id=sheet.active_id,open=sheet.open}
+     end
     end
     local pending_request
     local function request(revision,operation)

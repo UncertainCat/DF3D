@@ -15367,6 +15367,434 @@
           "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
           "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "component_view_native_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-002629",
+        "scope": "Paused native Statue965 component22339 after flag cycle. Pointer View opens item22339; native item sheet shows Statue holder with View. Holder View returns to unfinished Statue965; Escape closes it. Item inspection sets native weight_computed bit29, with other observed fields unchanged.",
+        "observation": {
+          "after_escape": {
+            "id": 965,
+            "kind": 2,
+            "open": false
+          },
+          "effects": {
+            "contents": [
+              {
+                "id": 22339,
+                "role": 0
+              }
+            ],
+            "dump": false,
+            "flags": 536870912,
+            "forbid": false,
+            "frame": 0,
+            "hidden": false,
+            "id": 22339,
+            "in_building": false,
+            "in_job": false,
+            "jobs": [
+              {
+                "flags": 66,
+                "id": 68196,
+                "type": "ConstructBuilding"
+              }
+            ],
+            "max_stage": 1,
+            "melt": false,
+            "stage": 0,
+            "stockpile_countdown": 0,
+            "stockpile_delay": 0
+          },
+          "id": 22339,
+          "kind": 1,
+          "lines": [
+            {
+              "text": "                  RoderÃ²nul           Pop                                  Food  Drink           20th Malachite",
+              "y": 0
+            },
+            {
+              "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+              "y": 1
+            },
+            {
+              "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+              "y": 2
+            },
+            {
+              "text": "",
+              "y": 3
+            },
+            {
+              "text": "",
+              "y": 4
+            },
+            {
+              "text": "",
+              "y": 5
+            },
+            {
+              "text": "                                                           -platinum statue of Stettad-",
+              "y": 6
+            },
+            {
+              "text": "                                                           Weight: 1284Î“",
+              "y": 7
+            },
+            {
+              "text": "",
+              "y": 8
+            },
+            {
+              "text": "",
+              "y": 9
+            },
+            {
+              "text": "                                                      This is a well-crafted platinum statue of Stettad.",
+              "y": 10
+            },
+            {
+              "text": "                                                      The item is a well-designed image of Stettad, the",
+              "y": 11
+            },
+            {
+              "text": "                                                      deity of wealth, depicted as a female dwarf in",
+              "y": 12
+            },
+            {
+              "text": "                                                      platinum by Datan Avuzdakon.  Stettad is striking a",
+              "y": 13
+            },
+            {
+              "text": "                                                      triumphant pose.",
+              "y": 14
+            },
+            {
+              "text": "",
+              "y": 15
+            },
+            {
+              "text": "                                                                                                                                    Elevation 36",
+              "y": 16
+            },
+            {
+              "text": "",
+              "y": 17
+            },
+            {
+              "text": "",
+              "y": 18
+            },
+            {
+              "text": "",
+              "y": 19
+            },
+            {
+              "text": "                                                           In platinum Statue                       View",
+              "y": 20
+            },
+            {
+              "text": "",
+              "y": 21
+            },
+            {
+              "text": "",
+              "y": 22
+            },
+            {
+              "text": "",
+              "y": 23
+            },
+            {
+              "text": "",
+              "y": 24
+            },
+            {
+              "text": "",
+              "y": 25
+            },
+            {
+              "text": "",
+              "y": 26
+            },
+            {
+              "text": "",
+              "y": 27
+            },
+            {
+              "text": "",
+              "y": 28
+            },
+            {
+              "text": "",
+              "y": 29
+            },
+            {
+              "text": "",
+              "y": 30
+            },
+            {
+              "text": "",
+              "y": 31
+            },
+            {
+              "text": "",
+              "y": 32
+            },
+            {
+              "text": "",
+              "y": 33
+            },
+            {
+              "text": "",
+              "y": 34
+            },
+            {
+              "text": "",
+              "y": 35
+            },
+            {
+              "text": "",
+              "y": 36
+            },
+            {
+              "text": "",
+              "y": 37
+            },
+            {
+              "text": "",
+              "y": 38
+            },
+            {
+              "text": "",
+              "y": 39
+            },
+            {
+              "text": "",
+              "y": 40
+            },
+            {
+              "text": "",
+              "y": 41
+            },
+            {
+              "text": "",
+              "y": 42
+            },
+            {
+              "text": "",
+              "y": 43
+            },
+            {
+              "text": "",
+              "y": 44
+            },
+            {
+              "text": "",
+              "y": 45
+            },
+            {
+              "text": "",
+              "y": 46
+            },
+            {
+              "text": "",
+              "y": 47
+            },
+            {
+              "text": "",
+              "y": 48
+            },
+            {
+              "text": "",
+              "y": 49
+            },
+            {
+              "text": "",
+              "y": 50
+            },
+            {
+              "text": "",
+              "y": 51
+            },
+            {
+              "text": "",
+              "y": 52
+            },
+            {
+              "text": "",
+              "y": 53
+            },
+            {
+              "text": "",
+              "y": 54
+            },
+            {
+              "text": "",
+              "y": 55
+            },
+            {
+              "text": "",
+              "y": 56
+            },
+            {
+              "text": "",
+              "y": 57
+            },
+            {
+              "text": "",
+              "y": 58
+            },
+            {
+              "text": "",
+              "y": 59
+            },
+            {
+              "text": "",
+              "y": 60
+            },
+            {
+              "text": "",
+              "y": 61
+            },
+            {
+              "text": "",
+              "y": 62
+            },
+            {
+              "text": "",
+              "y": 63
+            },
+            {
+              "text": "",
+              "y": 64
+            },
+            {
+              "text": "",
+              "y": 65
+            }
+          ],
+          "returned": {
+            "effects": {
+              "contents": [
+                {
+                  "id": 22339,
+                  "role": 0
+                }
+              ],
+              "dump": false,
+              "flags": 536870912,
+              "forbid": false,
+              "frame": 0,
+              "hidden": false,
+              "id": 22339,
+              "in_building": false,
+              "in_job": false,
+              "jobs": [
+                {
+                  "flags": 66,
+                  "id": 68196,
+                  "type": "ConstructBuilding"
+                }
+              ],
+              "max_stage": 1,
+              "melt": false,
+              "stage": 0,
+              "stockpile_countdown": 0,
+              "stockpile_delay": 0
+            },
+            "id": 965,
+            "kind": 2
+          }
+        },
+        "owned_df_pid": 36740,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "hashes": {
+          "workshop-native.json": "70947434b693f006d60fda078f62d085252bff665e37ffaf4372cb1f05a333d6",
+          "workshop-pending-component-view.png": "b029773b3f94742260af4224a2316c87af6bfbabde7f0586100c54341d06beaa",
+          "workshop-pending-component-return.png": "2f58d41540063de1692336c457fe624a78c8b38c009e75d3ac4538582cec84cb",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
+      },
+      "component_viewer_navigation_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-002730",
+        "scope": "Actual main-scene component View opens item22339; holder View returns to unfinished Statue965 with fresh authority. Both complete panel crops match native002629. Full item/job before and after match the native flag+navigation sequence, including weight_computed. Escape releases the panel.",
+        "status": "passed_with_known_issues: rendering-thread/finalize/two-ObjectDB diagnostics",
+        "owned_df_pid": 42000,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "readback": {
+          "actions": [],
+          "after": {
+            "contents": [
+              {
+                "id": 22339,
+                "role": 0
+              }
+            ],
+            "dump": false,
+            "flags": 536870912,
+            "forbid": false,
+            "frame": 0,
+            "hidden": false,
+            "id": 22339,
+            "in_building": false,
+            "in_job": false,
+            "jobs": [
+              {
+                "flags": 66,
+                "id": 68196,
+                "type": "ConstructBuilding"
+              }
+            ],
+            "max_stage": 1,
+            "melt": false,
+            "stage": 0,
+            "stockpile_countdown": 0,
+            "stockpile_delay": 0
+          },
+          "before": {
+            "contents": [
+              {
+                "id": 22339,
+                "role": 0
+              }
+            ],
+            "dump": false,
+            "flags": 2,
+            "forbid": false,
+            "frame": 0,
+            "hidden": false,
+            "id": 22339,
+            "in_building": false,
+            "in_job": true,
+            "jobs": [
+              {
+                "flags": 2,
+                "id": 68196,
+                "type": "ConstructBuilding"
+              }
+            ],
+            "max_stage": 1,
+            "melt": false,
+            "stage": 0,
+            "stockpile_countdown": 0,
+            "stockpile_delay": 0
+          },
+          "viewer": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          }
+        },
+        "hashes": {
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "pending-component-readback.json": "df287c1ab3c5dec793404d69d6e7daefccf0ff0334166b05f8f882a5696bd68d",
+          "chest-scene-component-item.png": "7a7f7284131312635e79330034ca276a3d5d1ccf648c79d8d0dc11d7de159e80",
+          "chest-scene-component-return.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

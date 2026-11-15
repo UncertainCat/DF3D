@@ -12,6 +12,17 @@ local menu=df.global.game.main_interface.assign_trade
 assert(not menu.open and #b.jobs==0)
 local result={id=b.id,synthetic_caravan=true,frame=frame}
 local restore_delivered
+local function compare_selection(label)
+ if os.getenv('DF3D_DEPOT_SELECTION_PROVIDER')~='1' then return end
+ local output,code=dfhack.run_command_silent('df3d','depot-selection-probe',tostring(b.id),tostring(menu.current_type),menu.sort_by_distance and '1' or '0',menu.pending_on_top and '1' or '0',menu.exclude_prohib and '1' or '0',menu.item_filter)
+ assert(code==0,output);local facts=json.decode(output)
+ assert(#facts.ids==#menu.current_type_tgi and #facts.groups==#menu.current_type_a_subtype,'Selection size differs: '..label)
+ for i,row in ipairs(menu.current_type_tgi)do assert(facts.ids[i+1]==row.it.id,'Selection order differs: '..label..' '..i)end
+ for i,subtype in ipairs(menu.current_type_a_subtype)do local row=facts.groups[i+1]
+  assert(row.subtype==subtype and row.subcat1==menu.current_type_a_subcat1[i] and row.subcat2==menu.current_type_a_subcat2[i] and row.amount==menu.current_type_a_amount[i] and row.expanded==menu.current_type_a_expanded[i] and row.matches==menu.current_type_a_on[i] and row.flags==menu.current_type_a_flag[i].whole,'Selected group differs: '..label..' '..i)
+ end
+ result.selections=result.selections or {};result.selections[#result.selections+1]={label=label,type=menu.current_type,query=menu.item_filter,ids=facts.ids,groups=facts.groups,success=true}
+end
 local function compare_goods(label)
  if os.getenv('DF3D_DEPOT_GOODS_PROVIDER')~='1' then return end
  local output,code=dfhack.run_command_silent('df3d','depot-goods-probe',tostring(b.id));assert(code==0,output)
@@ -58,6 +69,20 @@ local ok,err=xpcall(function()
  result.items={}
  for _,row in ipairs(menu.master_i_list.tgi)do result.items[#result.items+1]={id=row.it.id,distance=row.dist,tag=row.tag,prohibited=row.prohibited,value=row.value,sort_value=row.sort_value}end
  compare_goods('unassigned')
+ compare_selection('anvils')
+ if os.getenv('DF3D_DEPOT_SELECTION_PROVIDER')=='1' then
+  click(150,130);compare_selection('bags');capture('depot-selection-bags')
+  click(150,202);compare_selection('bars');capture('depot-selection-bars')
+  -- The Bars scrollbar narrows the header by two character cells.
+  click(768,94)
+  for byte in ('iron'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(byte:byte()))end
+  view:render(dfhack.getTickCount());capture('depot-selection-iron')
+  assert(menu.item_filter=='IRON','Search typing failed: '..menu.item_filter..' focus='..tostring(menu.entering_item_filter))
+  compare_selection('iron')
+  for i=1,4 do gui.simulateInput(view,'STRING_A000')end
+  view:render(dfhack.getTickCount());assert(menu.item_filter=='')
+  click(150,94);compare_selection('restored-anvils')
+ end
  if os.getenv('DF3D_DEPOT_DISTANCE_NATIVE')=='1' then
   local output,code=dfhack.run_command_silent('df3d','depot-distance-probe',tostring(b.id));assert(code==0,output)
   local facts=json.decode(output);assert(facts.restored)
@@ -82,6 +107,7 @@ local ok,err=xpcall(function()
   for _,row in ipairs(menu.current_type_tgi)do result.hauling.pending[#result.hauling.pending+1]={id=row.it.id,tag=row.tag,distance=row.dist}end
   capture('depot-goods-pending')
   compare_goods('pending')
+  compare_selection('pending')
   click(932,166);result.hauling.deselected=job_facts()
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   result.hauling.cancelled=job_facts();assert(#b.jobs==0,'Native deselection did not cancel haul')
@@ -121,6 +147,7 @@ local ok,err=xpcall(function()
    assert(dfhack.items.moveToBuilding(item,b,0,true))
    select_map(b);click(520,166);assert(menu.open)
    capture('depot-goods-delivered');compare_goods('delivered')
+   compare_selection('delivered')
    local delivered_flags=item.flags.whole
    click(932,166);assert(item.flags.whole==delivered_flags,'Delivered release applied before close')
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())

@@ -941,9 +941,9 @@ It never opens or reads the native picker. The flood receives the semantic depot
 all block path costs, both120000-entry frontiers and pathstart/pathclear are
 saved and restored at the DF safe point, using the construction-material pattern.
 Touched final frontier slots reject the result. Capacity is bounded at1048576
-input items and250000 map blocks. The complete master-list provider and commit
-leaves build on this primitive as described below; category selection, filtering,
-public transport and the goods UI remain unfinished.
+input items and250000 map blocks. The master-list, selected-category and commit
+providers build on this primitive as described below; filtered category-list
+navigation, public transport and the goods UI remain unfinished.
 
 Protected133430 on2026-11-15 compares all2009 native unassigned goods in exact
 order and their distances while the native picker is open. The diagnostic also
@@ -1017,6 +1017,31 @@ Positive prohibition cases, inaccessible pending items, natural hauling and
 other delivered-item families remain unqualified. The category filter37ba00
 reads native window height in its tail and is not a runtime API; use audited
 semantic leaves with owned selection data, as the Stocks provider does.
+
+`depot_selection_native.h` supplies an owned selected-category context from the
+master rows/groups and explicit type/query/sort/filter choices. Native37a0a0
+selects and sorts records,37cd50 matches group/item descriptions,37d9c0 aggregates
+selection flags, and37aeb0 computes only the supplied context's local row count.
+The descriptor cache uses the existing KnowledgeMaterialCacheRestore guard.
+Native37ba00 is still excluded because it reads the native window height.
+The result is pointer-free item IDs and material groups with native match and
+selection flags; no renderer or global picker data is a runtime input.
+
+Protected135748 on2026-11-15 verifies seven native pointer/typing cases: Anvils
+(2 items/1 group), Bags(10/4), Bars(326/4), typed IRON(326/4, only1 group matching),
+restored Anvils, pending and delivered. Item order, all group keys/amounts,
+expansion defaults, query matches and selection flags match exactly. Filtering
+retains the category's item data and changes group matches, as native DF does.
+Native search activates through its magnifying-glass control; a visible item
+scrollbar shifts that control left16 pixels, and typing stores uppercase IRON.
+Initial135452/135554 missed focus;135656 reached it but incorrectly expected
+lowercase input. Those diagnostic failures are not acceptance. Owned DF45092
+closes unsaved with source preservation, native30FPS and sampled GPU59C. MSVC
+bridge and core19 pass. Evidence:
+`completed_sheet_discovery_reference.depot_selection_reference`.
+Nondefault sort/exclusion controls, positive prohibition cases, other search
+text and local expansion editing remain unqualified. Filtered category-list
+navigation and public revision transport remain unfinished; depot stays hidden.
 
 ## Completed bridge, wagon and traction-bench sheets
 

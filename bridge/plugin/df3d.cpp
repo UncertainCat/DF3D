@@ -93,6 +93,7 @@
 #include "well_native.h"
 #include "depot_native.h"
 #include "depot_goods_native.h"
+#include "depot_selection_native.h"
 #include "building_links_native.h"
 #include "lever_native.h"
 #include "creature_office_native.h"
@@ -4939,6 +4940,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         output["slave_strength"]=facts->slaveStrength;output["prisoner_strength"]=facts->prisonerStrength;output["imprisoner_strength"]=facts->imprisonerStrength;
         output["deity_histfig_id"]=facts->deityHistfigId;output["deity"]=facts->deity;
         output["ordinary_color"]=Json::Value(Json::arrayValue);for(auto color:facts->ordinaryColor)output["ordinary_color"].append(int(color));
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
+      if(parameters[0]=="depot-selection-probe") {
+        if(parameters.size()!=7)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        int32_t values[5]={-1,-1,-1,-1,-1};
+        for(size_t i=1;i<6;++i){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<0)return CR_WRONG_USAGE;}
+        if(values[1]>=93 || values[2]>1 || values[3]>1 || values[4]>1)return CR_WRONG_USAGE;
+        const auto facts=df3d_production::depotGoods(df::building::find(values[0]));if(!facts)return CR_FAILURE;
+        const auto selected=df3d_production::depotSelection(*facts,int16_t(values[1]),parameters[6],values[2]!=0,values[3]!=0,values[4]!=0);if(!selected)return CR_FAILURE;
+        Json::Value output;output["ids"]=Json::arrayValue;output["groups"]=Json::arrayValue;
+        for(auto id:selected->ids)output["ids"].append(id);
+        for(const auto& row:selected->groups){Json::Value g;g["subtype"]=row.group.subtype;g["subcat1"]=row.group.subcat1;g["subcat2"]=row.group.subcat2;g["amount"]=row.group.amount;g["expanded"]=row.group.expanded;g["matches"]=row.matches;g["flags"]=row.flags;output["groups"].append(g);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="depot-goods-probe") {

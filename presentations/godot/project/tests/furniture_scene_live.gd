@@ -44,6 +44,18 @@ func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("furniture")
 	for entry in expected.buildings:
 		if not await open_furniture(entry):return
+		if entry.get("watch_demolition",false):
+			check(owner.state.snapshot.removing,"Demolition watcher did not open queued removal")
+			var marker:=FileAccess.open(directory+"/demolition-view-ready-"+str(int(entry.id)),FileAccess.WRITE)
+			marker.store_string("ready");marker.close()
+			var deadline:=Time.get_ticks_msec()+120000
+			while owner.state.building_id>=0 and Time.get_ticks_msec()<deadline:
+				world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+			await process_frame
+			if not check(owner.state.building_id==-1 and owner.contents.building_id==-1 and not owner.panel.visible and scene._ui.host.active==null,"Completed demolition did not retire panel and input ownership"):return
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/furniture-closed-"+str(int(entry.id))+".png")
+			continue
 		if entry.has("reference"):
 			var body: Dictionary=owner.state.snapshot.get("funerary",{})
 			for field in ["unit_id","historical_figure_id","room_id","room_type","introduction","name","room_introduction","room_name","deceased","notices"]:

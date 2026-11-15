@@ -374,6 +374,12 @@ local ok,err=xpcall(function()
    capture('workshop-wire')
    file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
    assert(receipt.success,'Furniture viewer workflow failed');result.furniture_viewer=receipt
+   if os.getenv('DF3D_FURNITURE_DEMOLITION')=='1'then
+    for _,suffix in ipairs{'stdout.log','stderr.log','result.json'}do
+     local input=assert(io.open(out..'/workshop-wire'..(suffix=='result.json' and '-' or '.')..suffix,'r'))
+     local output=assert(io.open(out..'/furniture-normal-'..suffix,'w'));output:write(input:read('*a'));output:close();input:close()
+    end
+   end
    result.furniture_post={}
    for _,row in ipairs(result.completed_buildings)do
     local target=df.building.find(row.id);local initial=row.actions[#row.actions]

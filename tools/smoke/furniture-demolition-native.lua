@@ -14,7 +14,7 @@ local function capture(label,row)
  row.frame=df.global.world.frame_counter
  persist()
  local f=assert(io.open(out..'/shot.tmp','w'));f:write(label);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+30000
+ local deadline=dfhack.getTickCount()+(label=='workshop-wire' and 180000 or 30000)
  while true do local ack=io.open(out..'/ack-'..label);if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'demolition capture timeout');script.sleep(1,'frames')end
 end
@@ -33,15 +33,41 @@ local ok,err=xpcall(function()
   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
   assert(#target.jobs==1 and target.jobs[0].job_type==df.job_type.DestroyBuilding)
   row.job_id=target.jobs[0].id;row.before={};capture('demolition-'..id..'-before',row.before)
-  local deadline=dfhack.getTickCount()+90000;local last=-1
-  while df.building.find(id) and dfhack.getTickCount()<deadline do
-   local b=df.building.find(id);local job=b.jobs[0];local worker=job and dfhack.job.getWorker(job)
-   local frame=df.global.world.frame_counter
-   if last<0 or frame-last>=100 then
-    row.samples[#row.samples+1]={frame=frame,job_id=job and job.id or -1,worker_id=worker and worker.id or -1,working=job and job.flags.working or false,counter=worker and worker.counters.job_counter or -1}
-    last=frame;persist()
+  local function advance()
+   local deadline=dfhack.getTickCount()+90000;local last=-1
+   while df.building.find(id) and dfhack.getTickCount()<deadline do
+    local b=df.building.find(id);local job=b.jobs[0];local worker=job and dfhack.job.getWorker(job)
+    local frame=df.global.world.frame_counter
+    if last<0 or frame-last>=100 then
+     row.samples[#row.samples+1]={frame=frame,job_id=job and job.id or -1,worker_id=worker and worker.id or -1,working=job and job.flags.working or false,counter=worker and worker.counters.job_counter or -1}
+     last=frame;persist()
+    end
+    df.global.pause_state=false;script.sleep(1,'frames')
    end
-   df.global.pause_state=false;script.sleep(1,'frames')
+   df.global.pause_state=true
+  end
+  if os.getenv('DF3D_FURNITURE_RUNTIME')=='1'then
+   local f=assert(io.open(out..'/furniture-expected.json','w'));f:write(json.encode({buildings={{id=id,type=row.type,watch_demolition=true}}}));f:close()
+   os.remove(out..'/ack-workshop-wire');os.remove(out..'/workshop-wire-result.json');os.remove(out..'/demolition-view-ready-'..id)
+   local finished=false;local problem
+   script.start(function()
+    local ran,why=xpcall(function()
+     local limit=dfhack.getTickCount()+90000
+     while true do local marker=io.open(out..'/demolition-view-ready-'..id);if marker then marker:close();break end
+      assert(dfhack.getTickCount()<limit,'Viewer did not open demolition panel');script.sleep(1,'frames')end
+     advance()
+    end,debug.traceback)
+    df.global.pause_state=true;finished=true;problem=not ran and why or nil
+   end)
+   row.viewer_open={};capture('workshop-wire',row.viewer_open)
+   assert(finished and not problem,problem or 'Viewer returned before simulation finished')
+   f=assert(io.open(out..'/workshop-wire-result.json'));row.viewer=json.decode(f:read('*a'));f:close();assert(row.viewer.success,'Demolition viewer failed')
+   for _,suffix in ipairs{'stdout.log','stderr.log','result.json'}do
+    local input=assert(io.open(out..'/workshop-wire'..(suffix=='result.json' and '-' or '.')..suffix,'r'))
+    local output=assert(io.open(out..'/demolition-'..id..'-'..suffix,'w'));output:write(input:read('*a'));output:close();input:close()
+   end
+  else
+   advance()
   end
   df.global.pause_state=true;row.removed=df.building.find(id)==nil;row.after={}
   capture('demolition-'..id..'-after',row.after)

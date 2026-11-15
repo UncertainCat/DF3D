@@ -20605,6 +20605,366 @@
             "build/stockpile-storage-native-farm-discovery-20261115-052446/demolition-280-after.png": "8d342274d1a7f354ee36a233de8c7e83a333e0593b3f66d6502baf63f450d844",
             "build/stockpile-storage-native-farm-discovery-20261115-052446/demolition-280-before.png": "3c052e3315690bca0d3f3b524be566172ca3e89e97045b2fc2fc6419687eb747"
           }
+        },
+        "demolition_retirement_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-054005",
+          "protocol": 225,
+          "status": "passed_with_known_issues",
+          "scope": "Two actual native demolitions while DF3D main-scene panels are open; each viewer confirms retired header/contents IDs, hidden panel and released host input. Native closes each sheet. Twenty normal/external-change pixel comparisons also match. Per-demolition viewer logs retained; the initial normal viewer log was overwritten by later launches. No changing-membership or normal-map-entry acceptance.",
+          "result": {
+            "buildings": [
+              {
+                "after": {
+                  "active_id": 220,
+                  "active_sheet": "BUILDING",
+                  "frame": 2244,
+                  "open": false
+                },
+                "before": {
+                  "active_id": 220,
+                  "active_sheet": "BUILDING",
+                  "frame": 0,
+                  "open": true
+                },
+                "id": 220,
+                "items": [
+                  5260,
+                  5170
+                ],
+                "job_id": 382802,
+                "removed": true,
+                "samples": [
+                  {
+                    "counter": -1,
+                    "frame": 0,
+                    "job_id": 382802,
+                    "worker_id": -1,
+                    "working": false
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 100,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 200,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 300,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 400,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 500,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 600,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 700,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 800,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 900,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1000,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1100,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1200,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1300,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1400,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1500,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1600,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1700,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1800,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1900,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2000,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2100,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2200,
+                    "job_id": 382802,
+                    "worker_id": 1017,
+                    "working": true
+                  }
+                ],
+                "start_frame": 0,
+                "type": 3,
+                "viewer": {
+                  "roundtrip": true,
+                  "success": true,
+                  "surface": "actual main scene"
+                },
+                "viewer_open": {
+                  "active_id": 220,
+                  "active_sheet": "BUILDING",
+                  "frame": 0,
+                  "open": true
+                }
+              },
+              {
+                "after": {
+                  "active_id": 280,
+                  "active_sheet": "BUILDING",
+                  "frame": 3065,
+                  "open": false
+                },
+                "before": {
+                  "active_id": 280,
+                  "active_sheet": "BUILDING",
+                  "frame": 2244,
+                  "open": true
+                },
+                "id": 280,
+                "items": [
+                  8699
+                ],
+                "job_id": 382904,
+                "removed": true,
+                "samples": [
+                  {
+                    "counter": -1,
+                    "frame": 2244,
+                    "job_id": 382904,
+                    "worker_id": -1,
+                    "working": false
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2344,
+                    "job_id": 382904,
+                    "worker_id": 988,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2444,
+                    "job_id": 382904,
+                    "worker_id": 988,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2544,
+                    "job_id": 382904,
+                    "worker_id": 988,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2644,
+                    "job_id": 382904,
+                    "worker_id": 988,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2744,
+                    "job_id": 382904,
+                    "worker_id": 988,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2844,
+                    "job_id": 382904,
+                    "worker_id": 988,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2944,
+                    "job_id": 382904,
+                    "worker_id": 988,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 3044,
+                    "job_id": 382904,
+                    "worker_id": 988,
+                    "working": true
+                  }
+                ],
+                "start_frame": 2244,
+                "type": 46,
+                "viewer": {
+                  "roundtrip": true,
+                  "success": true,
+                  "surface": "actual main scene"
+                },
+                "viewer_open": {
+                  "active_id": 280,
+                  "active_sheet": "BUILDING",
+                  "frame": 2244,
+                  "open": true
+                }
+              }
+            ],
+            "error": "",
+            "scope": "Native Remove clicks followed by bounded simulation; no forced job completion.",
+            "success": true
+          },
+          "pixel_comparisons": 20,
+          "owned_df_pid": 10412,
+          "closed_unsaved": true,
+          "source_preserved": true,
+          "sha256": {
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-220-external-forbidden.png": "799339c9bc0988cdd3caf6d31df74a6cd87dcdb53a50d77731665fadabe46e97",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-220-external-removing.png": "0235096822ec436997638003c2dbdec947e4a9532842bd41ec6112bef2dada72",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-220-external-restored.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-220-external-unforbidden.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-220-forbidden.png": "799339c9bc0988cdd3caf6d31df74a6cd87dcdb53a50d77731665fadabe46e97",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-220-holder-return.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-220-initial.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-220-removing.png": "0235096822ec436997638003c2dbdec947e4a9532842bd41ec6112bef2dada72",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-220-renamed.png": "c5ec55cb1e4dd8dbce44035f06a849e4d1159dda1545dfcb5ba59ecd657d5a1e",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-220-restored.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-280-external-forbidden.png": "dcf8477c8979141e2b1893aa9d3b75f8c85c0f3774d7654d1eda988edb188a57",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-280-external-removing.png": "57e99ee71f7ea6a83363d69eef15bbfecfa1531c9a88707ec73b42fd75237514",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-280-external-restored.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-280-external-unforbidden.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-280-forbidden.png": "dcf8477c8979141e2b1893aa9d3b75f8c85c0f3774d7654d1eda988edb188a57",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-280-holder-return.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-280-initial.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-280-removing.png": "57e99ee71f7ea6a83363d69eef15bbfecfa1531c9a88707ec73b42fd75237514",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-280-renamed.png": "979cfebb87a1b6614644a87074c6bdc0a7ccf94babbc7e5a8520b3cfe33de9dc",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/chest-scene-280-restored.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/demolition-220-after.png": "f7a918d62fa0bd17ad2ce905457c16a54bb803ec983599018bc23f7c1c106967",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/demolition-220-before.png": "e28e2f39f86304a1094ca13d1cfa72fc812512938b3d6ebe9f468a52f6cf6081",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/demolition-220-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/demolition-220-stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/demolition-220-stdout.log": "fd0abcd9f5019c43e5efb76faee2c349bc00e1c6813e83efaa9fd66487b0f7cd",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/demolition-280-after.png": "1385ce36e5a7f997a1102476ff71a1d11ac3a8ad02b13f2b522f22826dcbf43d",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/demolition-280-before.png": "4e2d2f5e2e8ab1de3e57cad594f7d9d7755b9f8e734b3454c564a7d0b5d63a95",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/demolition-280-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/demolition-280-stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/demolition-280-stdout.log": "d102af3990077e113738b3384706ca9e16401caa601c28dfbc59aba0418e5be4",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/furniture-closed-220.png": "e96c24ba3870920792e71f46319e8fb1c4808c1765081c346976ba5eeee6fea1",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/furniture-closed-280.png": "98ae0e0679756ac6264c68d8f813e0df236e57cad585766637871f6442b03691",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/furniture-demolition.json": "5beb208fd710b66d75982266373cb5a8985b7ecd5eeb5ae0cf2e0e1f39d85261",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/furniture-post.json": "29445fb43a69e4217a260ded5f2dccac04ea29d2dc8bdddecc0b62b894e37c11",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/result.json": "0d55159053d16ff2f7201d02dcb9931683400997aa369e3dc5f2425010debebe",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/workshop-furniture-3-forbidden.png": "4ade01c2e8985efb027a90bcb215816b36a0ee2245db0dc74c3c42af973bddf9",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/workshop-furniture-3-initial.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/workshop-furniture-3-removing.png": "e28e2f39f86304a1094ca13d1cfa72fc812512938b3d6ebe9f468a52f6cf6081",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/workshop-furniture-3-renamed.png": "b50653aafecc095b784e02cc76fe2fa7d108eaa1af8d4059d3669a3622969348",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/workshop-furniture-3-restored.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/workshop-furniture-46-forbidden.png": "04616805f80c14d5bcf379dff41d9ba4d3ab0f7b5b61109b2bc288430f51c6ab",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/workshop-furniture-46-initial.png": "5a9a498211b244cdf3dbf44db0f8ec204ee42f48b53c179b8352f9234b855d51",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/workshop-furniture-46-removing.png": "5b2a6cfa550b4eac248519bee8ac1e2d4a34baa496780be78c5ed078e06582d7",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/workshop-furniture-46-renamed.png": "47f76dfdf26a74296a1647e5cf86310967e965f601bc6b65b7a54c96dceb7435",
+            "build/stockpile-storage-native-farm-discovery-20261115-054005/workshop-furniture-46-restored.png": "14df422ecf9d340b97721feaeefdf69e82ad49a1ec211adfa3bb59fa02221e8d"
+          }
         }
       }
     },

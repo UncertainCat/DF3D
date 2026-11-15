@@ -4216,7 +4216,10 @@ void run(color_ostream& out) {
         return result;
       };
       const auto before=observe();
-      if(before && !editing){response.snapshot=convert(*before);if(response.snapshot)status=m::ManagementStatus::Ok;}
+      if(!editing && !df::building::find(q->building_id())) {
+        response.missingBuildingId=q->building_id();status=m::ManagementStatus::Ok;
+      }
+      else if(before && !editing){response.snapshot=convert(*before);if(response.snapshot)status=m::ManagementStatus::Ok;}
       else if(before) {
         using A=df3d_production::BuildingHeaderOperation;using O=df3d_production::BuildingHeaderOutcome;
         const bool rename=q->farm_operation()==m::FarmOperation::Rename;

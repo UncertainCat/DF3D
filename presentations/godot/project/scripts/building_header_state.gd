@@ -172,6 +172,12 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 		_fail(Phase.Stale if editing and outcome==C.FarmEditOutcome.Stale else Phase.Rejected);return
 	var observed: Dictionary=state.get("snapshot",{})
 	var operation: int=state.get("operation",-1)
+	var missing=state.get("missing_building_id",-1)
+	if typeof(missing)!=TYPE_INT or missing< -1:_fail(Phase.Unknown if editing else Phase.Rejected);return
+	if missing>=0:
+		if editing or missing!=building_id or result.get("action",-1)!=sent.action or state.has("snapshot") or outcome!=C.FarmEditOutcome.None or operation!=C.FarmOperation.Crop:
+			_fail(Phase.Unknown if editing else Phase.Rejected);return
+		close();return
 	if result.get("action",-1)!=sent.action or not valid_snapshot(observed,building_id) or \
 		outcome!=(C.FarmEditOutcome.Completed if editing else C.FarmEditOutcome.None) or \
 		operation!=(sent.farm_operation if editing else C.FarmOperation.Crop):

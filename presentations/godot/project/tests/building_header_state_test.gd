@@ -26,10 +26,11 @@ func setup() -> void:
 	applied=0;model.applied.connect(func():applied+=1)
 func snapshot(id:=278,revision:=9007199254740993) -> Dictionary:
 	return {"id":id,"type":10,"revision":revision,"stage":1,"max_stage":1,"custom_name":"","native_name":"native chest","header_name":"Native chest","removing":false,"suspended":false,"has_worker":false,"forbidden":false}
-func reply(value: Dictionary,outcome:=0,operation:=0) -> void:
+func reply(value: Dictionary,outcome:=0,operation:=0,missing_id: int=-1) -> void:
 	var sent: Dictionary=world.calls[-1].request
 	var state={"outcome":outcome,"operation":operation}
 	if not value.is_empty():state.snapshot=value
+	if missing_id!=-1:state.missing_building_id=missing_id
 	world.state={"world_epoch":5,"revision":world.calls.size()+1,"request_seq":world.calls.size(),"action":sent.action,
 		"status":C.ManagementStatus.Rejected if outcome>1 else C.ManagementStatus.Ok,"production":{"building_header":state}}
 	service.poll()
@@ -37,6 +38,17 @@ func ready() -> void:
 	setup();model.open(278);service.poll();reply(snapshot())
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
+	setup();model.open(278);service.poll();reply({},0,0,278)
+	check(model.phase==Model.Phase.Closed and model.building_id==-1,"confirmed absent initial target closes header")
+	ready();model.poll_refresh(0.5);service.poll();reply({},0,0,278)
+	check(model.phase==Model.Phase.Closed and model.snapshot.is_empty() and applied==0,"confirmed deletion retires open header without claiming edit")
+	for missing_fault in [279,-2]:
+		ready();model.poll_refresh(0.5);service.poll();reply({},0,0,missing_fault)
+		check(model.phase==Model.Phase.Rejected and model.building_id==278,"invalid missing identity does not close target")
+	ready();model.poll_refresh(0.5);service.poll();reply(snapshot(),0,0,278)
+	check(model.phase==Model.Phase.Rejected and model.building_id==278,"snapshot mixed with absence rejected")
+	ready();model.request_removal();service.poll();reply({},1,C.FarmOperation.Remove,278)
+	check(model.phase==Model.Phase.Unknown and model.building_id==278 and applied==0,"missing identity cannot claim mutation completion")
 	ready();model.poll_refresh(0.49);service.poll()
 	check(world.calls.size()==1,"background reads are rate limited")
 	model.poll_refresh(0.01);service.poll()

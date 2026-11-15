@@ -9828,8 +9828,10 @@ mutations cannot report deletion through this field. The consumer must match
 the missing identity to its requested building before retiring local ownership.
 Both schema defaults and the mailbox are225 (`Local\df3d_management_v225`);
 bridge, client and extension must be rebuilt together. Earlier recordings
-contain no missing-target authority. This contract does not itself implement
-the producer or panel retirement; native demolition evidence is recorded below.
+contain no missing-target authority. The producer reports absence only when
+DF's safe-point building lookup returns no such ID. Hidden/unsupported targets
+and provider failures remain rejected reads. The header controller closes only
+on a matching confirmed missing identity; edits retain their existing outcomes.
 
 Management224 appends optional FuneraryBodySnapshot to the shared building
 header. It carries native resting-place/memorial captions, Tomb identity/name,
@@ -9954,10 +9956,23 @@ opens the pause menu; it is not whole-lane acceptance. The probe now checks
 whether a sheet is open before leaving it. Only this explicit diagnostic mode
 permits simulation advancement; ordinary reference lanes remain paused.
 
-Public map access remains gated. Remaining funerary work includes DF3D panel
-retirement after confirmed deletion, changing contents membership and normal map entry.
-The current rejected header read cannot distinguish deletion from provider
-failure; it is not sufficient evidence to close a panel. Existing
+Protected054005 on2026-11-15 verifies protocol225 panel retirement in the actual
+DF3D main scene. Each viewer opens the queued-removal panel before a readiness
+handshake lets native simulation run. Demolition completes at frame2244 for
+coffin220 and3065 for slab280; both native sheets close. Both viewers confirm
+retired header/contents IDs, hidden panels and released host input. Physical
+closed-panel captures are retained, and twenty normal/external-change panel
+comparisons match native. Each demolition viewer has its own receipt and logs;
+only the known Godot startup/finalize/ObjectDB diagnostics occur in those logs.
+The initial ordinary-workflow log was overwritten by later launches, so its
+diagnostics are not separately qualified by this run. DF10412 closes unsaved,
+source saves unchanged, graphics capped30FPS and sampled GPU60C.
+demolition_retirement_reference stores the bounded observations and hashes.
+Header state tests distinguish absent, wrong-ID, mixed snapshot and mutation
+results; composition, rebuilt MSVC/extension/client and core19 pass.
+
+Public map access remains gated. Remaining funerary work includes changing
+contents membership and normal map entry. Existing
 native portrait/Tomb-icon click probes retain the coffin selection; no new
 navigation is inferred.
 

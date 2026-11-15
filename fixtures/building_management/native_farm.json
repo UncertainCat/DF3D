@@ -23477,6 +23477,21 @@
           "build/stockpile-storage-native-farm-discovery-20261115-082002/result.json": "25a2029fe5a1762a38956491a23de4e8c6d84d2595e0ca30ae9bfcab3a3ad636",
           "build/stockpile-storage-native-farm-discovery-20261115-082002/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "lever_tasks_art_reference": {
+        "scope": "Standalone lever Tasks body at1200x800: two Pull jobs and one Link job, exact native 456x114 crops at432,130. Link/Pull signals and absent Details hover checked. Supplied job rows reproduce recorded native captions; live task producer and complete panel remain unqualified.",
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-075033/lever-pull-2.png": "e9e8518940cf210f15c92e5ae7c947dbf6b2c0b3e744928cc93378b5386ed3b3",
+          "build/stockpile-storage-native-farm-discovery-20261115-075033/lever-link-target-click.png": "41a08d1d265803404a6097b5c24c8d85defa55316d919e33a10233fffff6d78b",
+          "build/stockpile-storage-native-farm-discovery-20261115-075033/lever-tasks-pull-2-viewer.png": "640640418a8a5aadbea7b881602775948b8b83d07a4a419b56528ee4c47af6de",
+          "build/stockpile-storage-native-farm-discovery-20261115-075033/lever-tasks-link-target-click-viewer.png": "a3e714f5c0e5f63238dc4304ec686b444220027b9fcfc38d02db62dc9054d806"
+        }
       }
     },
     "pending_construction_reference": {

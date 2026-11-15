@@ -79,8 +79,10 @@ on2026-11-15 matches all116 native worker candidates and empty skill weights,
 observes the native assigned worker, restores unrestricted use through native
 reselection, and matches the work-order limit and membership. The picker closes
 on assigning a new worker but stays open when removing that restriction:
-3a8eec bypasses the close at3a8f1a. Preserve this distinction during panel
-integration; the current workshop owner closes on both paths and needs correction.
+3a8eec bypasses the close at3a8f1a. The shared workshop owner now preserves this distinction across pending
+removal and refresh, retiring the picker on failure or explicit cancellation.
+Headless workshop_worker_picker_test checks that ownership and duplicate-input
+boundary. Its rendered integration remains to be verified.
 Earlier081810/081906 failed test navigation because it assumed identical close
 behavior for those two actions; neither is full acceptance evidence.
 Owned DF22324 closes unsaved with source preservation. Native graphics are
@@ -88,6 +90,17 @@ capped30FPS with sampled GPU56–57C. MSVC bridge and all19 core checks pass.
 Fixture `completed_sheet_discovery_reference.lever_profile_reference` retains
 the comparison. Semantic mutation wire checks and complete rendered lever-panel
 integration remain outstanding; this is not public lever acceptance.
+
+The staged lever Tasks view reuses workshop queue rows and adds native Link/Pull
+controls, omitting the absent job-details control. Standalone lever_tasks_capture
+on2026-11-15 matches native075033 crops for two Pull jobs and one Link job,
+456x114 at432,130, and checks both action signals and absent Details hover.
+The short graphical check runs capped30FPS and passes with the known render
+thread/finalize/two ObjectDB diagnostics. This uses supplied recorded captions,
+not a live task producer. The staged lever_sheet_view composes Tasks/Workers/
+Work orders with lower links/items tabs; it is parse-checked only. Full header,
+task producer, map targeting and actual composed workflows remain outstanding.
+Evidence: completed_sheet_discovery_reference.lever_tasks_art_reference.
 
 ## Native bug register
 

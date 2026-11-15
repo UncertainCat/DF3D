@@ -5,6 +5,7 @@ signal information_requested(destination: String)
 var workers=preload("res://scripts/workshop_workers_state.gd").new()
 var candidate_modes=preload("res://scripts/workshop_candidate_modes.gd").new()
 var refreshing_modes:=false
+var retaining_worker_picker:=false
 var selector
 var tasks=preload("res://scripts/workshop_tasks_state.gd").new()
 var orders=preload("res://scripts/workshop_orders_state.gd").new()
@@ -99,8 +100,7 @@ func configure(world,service,host,help=null) -> void:
 	selector=preload("res://scripts/workshop_candidates_view.gd").new();canvas.add_child(selector);selector.configure(world);selector.extra_columns=2;selector.responsive_height=true;selector.configure_modes(candidate_modes,help);selector.hide()
 	selector.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and workers.phase==workers.Phase.Ready and not candidate_modes.applying
 	selector.cancelled.connect(_close_picker)
-	selector.unit_chosen.connect(func(id):
-		if workers.phase==workers.Phase.Ready:_close_picker();workers.select_worker(id))
+	selector.unit_chosen.connect(_choose_worker)
 	panel.workers.choose_requested.connect(_open_picker)
 	panel.workers.unit_requested.connect(func(id):unit_requested.emit(id))
 	panel.tab_requested.connect(_select_tab)
@@ -213,9 +213,21 @@ func _open_picker() -> void:
 	if workers.phase!=workers.Phase.Ready or not panel.tasks_allowed():return
 	selector.active_header=1;selector.display_rows(workers.rows);selector.actions_enabled=true;selector.show();selector.update_icons()
 func _close_picker() -> void:
-	refreshing_modes=false;candidate_modes.clear()
+	refreshing_modes=false;retaining_worker_picker=false;candidate_modes.clear()
 	if selector!=null:selector.hide();selector.actions_enabled=false;selector.display_rows([])
+func _choose_worker(id: int) -> void:
+	if workers.phase!=workers.Phase.Ready:return
+	# Native3a8eec removes an existing restriction without closing the picker;
+	# assigning a new worker reaches the close at3a8f1a.
+	if workers.permitted_workers.has(id):retaining_worker_picker=true
+	else:_close_picker()
+	workers.select_worker(id)
 func _workers_changed() -> void:
+	if retaining_worker_picker and selector!=null and selector.visible:
+		if workers.phase==workers.Phase.Ready:
+			retaining_worker_picker=false;selector.display_rows(workers.rows,selector.first,selector.selected)
+		elif workers.phase not in [workers.Phase.Applying,workers.Phase.Reading]:_close_picker()
+		return
 	if refreshing_modes and selector!=null and selector.visible:
 		if workers.phase==workers.Phase.Ready:
 			refreshing_modes=false;selector.display_rows(workers.rows,selector.first,selector.selected)

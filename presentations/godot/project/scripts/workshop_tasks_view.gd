@@ -112,7 +112,7 @@ func help_at(point: Vector2) -> String:
 		0:return "repeat-on" if job.repeat else "repeat"
 		1:return ("priority-on" if job.priority else "priority") if job.has("priority") else ""
 		2:return "move-up" if index>0 and job.get("can_move_up",false) else ""
-		3:return "details"
+		3:return "details" if shows_job_details() else ""
 		4:return "suspend-on" if job.suspended else "suspend"
 		5:return "remove"
 	return ""
@@ -128,6 +128,12 @@ func _process(_delta: float) -> void:
 
 func add_rect() -> Rect2:
 	return Rect2(264,state.jobs().size()*36+36,112,24)
+func shows_job_details() -> bool:return true
+func creation_click(point: Vector2) -> bool:
+	if not add_rect().has_point(point):return false
+	choose_mode(true);return true
+func draw_creation_controls() -> void:
+	patch("HORIZONTAL_OPTION_ACTIVE",Rect2(add_rect().position-Vector2(0,6),add_rect().size+Vector2(0,12)));caption("Add new task",add_rect().position+Vector2(8,18),10)
 
 func cancel_rect() -> Rect2:return Rect2(size.x-88,0,80,24)
 
@@ -152,7 +158,7 @@ func _gui_input(event: InputEvent) -> void:
 		if row.has("availability") and row.availability.available:
 			state.queue_task(row.key);choose_mode(false)
 		accept_event();return
-	if add_rect().has_point(event.position):choose_mode(true);accept_event();return
+	if creation_click(event.position):accept_event();return
 	var index:=floori((event.position.y-36)/36)
 	var jobs: Array=state.jobs()
 	if index<0 or index>=jobs.size() or not jobs[index].editable:return
@@ -162,7 +168,8 @@ func _gui_input(event: InputEvent) -> void:
 		0:state.set_repeat(job.id,not job.repeat)
 		1:priority_requested.emit(job.id)
 		2:state.move_up(job.id)
-		3:details_requested.emit(job.id)
+		3:
+			if shows_job_details():details_requested.emit(job.id)
 		4:state.set_suspended(job.id,not job.suspended)
 		5:state.cancel_task(job.id)
 	accept_event()
@@ -236,11 +243,12 @@ func _draw() -> void:
 			var marker: Texture2D=art.texture("BUILDING_JOBS_ACTIVE")
 			if marker!=null:draw_texture_rect(marker,Rect2(280,y-6,24,36),false)
 		for entry in [[0,"BUILDING_JOBS_REPEAT"+("_ACTIVE" if job.repeat else "")],[1,"BUILDING_JOBS_DO_NOW"+("_ACTIVE" if job.get("priority",false) else "")],[2,"BUILDING_JOBS_PRIORITY_UP"],[3,"STOCKS_VIEW_ITEM"],[4,"BUILDING_JOBS_SUSPENDED"+("_ACTIVE" if job.suspended else "")],[5,"BUILDING_JOBS_REMOVE"]]:
+			if entry[0]==3 and not shows_job_details():continue
 			if entry[0]==1 and not job.has("priority"):continue
 			if entry[0]==2 and (index==0 or not job.get("can_move_up",false)):continue
 			var texture: Texture2D=art.texture(entry[1])
 			if texture!=null:draw_texture_rect(texture,Rect2(304+entry[0]*24,y-6,24,36),false)
-	patch("HORIZONTAL_OPTION_ACTIVE",Rect2(add_rect().position-Vector2(0,6),add_rect().size+Vector2(0,12)));caption("Add new task",add_rect().position+Vector2(8,18),10)
+	draw_creation_controls()
 
 func _exit_tree() -> void:
 	_leave_hover()

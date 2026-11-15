@@ -70,8 +70,8 @@ inline std::optional<std::vector<int16_t>> depotCategories(const DepotGoods& goo
     result.erase(std::remove_if(result.begin(),result.end(),[&](int16_t type){return !(query.empty()?eligible[type]:matched[type]);}),result.end());
     return result;
 }
-struct DepotSelectedGroup {DepotGoodsGroup group;bool matches=false;uint32_t flags=0;std::string caption;};
-struct DepotSelection {std::vector<int32_t> ids;std::vector<DepotSelectedGroup> groups;std::vector<std::string> itemCaptions;};
+struct DepotSelectedGroup {DepotGoodsGroup group;bool matches=false;uint32_t flags=0;std::string caption;std::vector<int32_t> ids;};
+struct DepotSelection {std::vector<int32_t> ids;std::vector<DepotSelectedGroup> groups;std::vector<std::string> itemCaptions;int32_t rowCells=0;};
 // Native strings are CP437. Preserve their bytes until the transport boundary.
 inline std::optional<std::string> depotGroupCaption(int16_t type,int16_t subtype=-1,
     int16_t subcat1=-1,int16_t subcat2=-1,int32_t amount=-1) {
@@ -138,6 +138,7 @@ inline std::optional<DepotSelection> depotSelection(const DepotGoods& goods,int1
     df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
     reinterpret_cast<void (*)(df::assign_trade_interfacest*)>(base+0x37a0a0)(&owned);
     DepotSelection result;
+    result.rowCells=owned.i_height;
     // Validate the renderer's formatting leaves before obtaining item captions.
     if(!depotGroupCaption(type))return {};
     for(auto* row:owned.current_type_tgi){result.ids.push_back(row->it->id);
@@ -155,6 +156,13 @@ inline std::optional<DepotSelection> depotSelection(const DepotGoods& goods,int1
         result.groups.push_back({{type,int16_t(owned.current_type_a_subtype[i]),
         int16_t(owned.current_type_a_subcat1[i]),int16_t(owned.current_type_a_subcat2[i]),
         owned.current_type_a_amount[i],owned.current_type_a_expanded[i]},owned.current_type_a_on[i],owned.current_type_a_flag[i].whole,std::move(*caption)});
+        // Native row-height leaf37af95..37afcb and renderer38b569..38b5a5
+        // use these exact virtual properties. Do not group by captions or
+        // stack amounts: a group count can differ from its number of rows.
+        auto& group=result.groups.back();
+        for(auto* row:owned.current_type_tgi)if(row->it->getSubtype()==owned.current_type_a_subtype[i] &&
+            row->it->getMaterial()==owned.current_type_a_subcat1[i] &&
+            row->it->getMaterialIndex()==owned.current_type_a_subcat2[i])group.ids.push_back(row->it->id);
     }
     return result;
 }

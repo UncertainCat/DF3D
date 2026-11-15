@@ -1068,6 +1068,17 @@ Item/group/category ordering comparisons continue to pass. Owned DF35732
 closes unsaved with source preservation; native30FPS, sampled GPU60C. Bridge
 build and core19 pass. Evidence:
 `completed_sheet_discovery_reference.depot_caption_reference`.
+Selected groups also carry their ordered member IDs. The bridge uses the exact
+native virtual subtype/material/material-index comparisons from renderer38b569
+and pinned row-height leaf37af95, preserving selected-category order within each
+group. Godot must not reconstruct membership from names or group quantities.
+Protected141327 on2026-11-15 verifies all memberships/order in the seven cases
+and compares the resulting expanded row count with native i_height. Unfiltered
+Bars has326 item rows across4 groups; IRON displays88 items beneath one matching
+group. Native list height is diagnostic evidence, not a semantic wire field.
+Owned DF46232 closes unsaved with source preservation, native30FPS, sampled
+GPU59C. Bridge build and core19 pass. Evidence:
+`completed_sheet_discovery_reference.depot_group_membership_reference`.
 Nondefault sort/exclusion controls, positive prohibition cases, other search
 text and local expansion editing remain unqualified. Viewer caption rendering,
 navigation and public revision transport remain unfinished; depot stays hidden.

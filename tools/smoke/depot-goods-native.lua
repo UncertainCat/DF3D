@@ -37,11 +37,21 @@ local function compare_selection(label)
  for _,caption in ipairs(facts.item_captions)do if text:find(caption,1,true)then item_match=true;break end end
  assert(item_match,'No displayed item caption matches: '..label)
  assert(#facts.ids==#menu.current_type_tgi and #facts.groups==#menu.current_type_a_subtype,'Selection size differs: '..label)
+ assert(facts.row_cells==menu.i_height,'Native row height differs: '..label)
  for i,row in ipairs(menu.current_type_tgi)do assert(facts.ids[i+1]==row.it.id,'Selection order differs: '..label..' '..i)end
  for i,subtype in ipairs(menu.current_type_a_subtype)do local row=facts.groups[i+1]
   assert(row.subtype==subtype and row.subcat1==menu.current_type_a_subcat1[i] and row.subcat2==menu.current_type_a_subcat2[i] and row.amount==menu.current_type_a_amount[i] and row.expanded==menu.current_type_a_expanded[i] and row.matches==menu.current_type_a_on[i] and row.flags==menu.current_type_a_flag[i].whole,'Selected group differs: '..label..' '..i)
+  local ids={}
+  for _,entry in ipairs(menu.current_type_tgi)do local item=entry.it
+   if item:getSubtype()==subtype and item:getMaterial()==menu.current_type_a_subcat1[i] and item:getMaterialIndex()==menu.current_type_a_subcat2[i]then ids[#ids+1]=item.id end
+  end
+  assert(#ids==#row.ids,'Group membership size differs: '..label)
+  for j,id in ipairs(ids)do assert(row.ids[j]==id,'Group member order differs: '..label)end
  end
- result.selections=result.selections or {};result.selections[#result.selections+1]={label=label,type=menu.current_type,query=menu.item_filter,categories=facts.categories,category_captions=facts.category_captions,visible_category_captions=visible,item_captions=facts.item_captions,screen_text=text,ids=facts.ids,groups=facts.groups,success=true}
+ local projected_cells=0
+ for _,group in ipairs(facts.groups)do if group.matches then projected_cells=projected_cells+3+(group.expanded and #group.ids*3 or 0)end end
+ assert(projected_cells==menu.i_height,'Group projection differs from native height: '..label)
+ result.selections=result.selections or {};result.selections[#result.selections+1]={label=label,type=menu.current_type,query=menu.item_filter,categories=facts.categories,category_captions=facts.category_captions,visible_category_captions=visible,item_captions=facts.item_captions,screen_text=text,ids=facts.ids,groups=facts.groups,row_cells=facts.row_cells,success=true}
 end
 local function compare_goods(label)
  if os.getenv('DF3D_DEPOT_GOODS_PROVIDER')~='1' then return end

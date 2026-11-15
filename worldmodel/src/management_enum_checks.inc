@@ -336,7 +336,8 @@ static_assert(static_cast<int>(wm::ManagementAction::JusticeIntelligenceRead) ==
 static_assert(static_cast<int>(wm::ManagementAction::JusticeIntelligenceGraphRead) == static_cast<int>(df3d::mirror::ManagementAction::JusticeIntelligenceGraphRead));
 static_assert(static_cast<int>(wm::ManagementAction::SelectionArtRead) == static_cast<int>(df3d::mirror::ManagementAction::SelectionArtRead));
 static_assert(static_cast<int>(wm::ManagementAction::SelectionArtApply) == static_cast<int>(df3d::mirror::ManagementAction::SelectionArtApply));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 133);
+static_assert(static_cast<int>(wm::ManagementAction::DepotGoodsRead) == static_cast<int>(df3d::mirror::ManagementAction::DepotGoodsRead));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 134);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -677,3 +678,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeIntelligenceRead)
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeIntelligenceGraphRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeIntelligenceGraphRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::SelectionArtRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::SelectionArtRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::SelectionArtApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::SelectionArtApply));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::DepotGoodsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DepotGoodsRead));

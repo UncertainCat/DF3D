@@ -656,6 +656,11 @@ struct TasksState {
   TasksOutcome outcome=TasksOutcome::None;uint64_t listRevision=0;uint32_t total=0,offset=0;
   std::vector<TasksRow> rows;int32_t jobId=-1;
 };
+struct DepotGoodsRequest {int32_t depotId=-1;int16_t category=-1;std::string query;bool sortByDistance=true,pendingOnTop=true,excludeProhibited=false;std::vector<int32_t> itemIds;};
+struct DepotGoodsCategory {int16_t type=-1;std::string caption;};
+struct DepotGoodsGroup {int16_t subtype=-1,subcat1=-1,subcat2=-1;int32_t amount=0;std::string caption;bool matches=false,expanded=false;uint8_t flags=0;std::vector<int32_t> itemIds;};
+struct DepotGoodsItem {int32_t id=-1;std::string caption;int32_t distance=-1,value=0;int8_t tag=0;bool prohibited=false;};
+struct DepotGoodsState {int32_t depotId=-1;uint64_t revision=0;int16_t category=-1;std::vector<DepotGoodsCategory> categories;std::vector<DepotGoodsGroup> groups;std::vector<DepotGoodsItem> items;};
 struct StocksMenuRequest {int16_t category=-1;std::string query;std::vector<int32_t> itemIds;std::optional<StocksGroupKey> target;uint64_t expectedRevision=0;StocksFlagAction operation=StocksFlagAction::Forbid;int8_t value=-1;int32_t itemId=-1;uint64_t pageRequest=0;uint32_t pageOffset=0;};
 struct StocksCategoryRow {int16_t type=-1;std::string caption,stored,unavailable;bool matches=false;};
 struct StocksGroupRow {StocksGroupKey key;int32_t amount=0;std::string caption;bool matches=false,expanded=false;uint8_t flags=0;uint64_t revision=0;std::vector<int32_t> itemIds;};
@@ -1102,6 +1107,7 @@ struct ManagementRequest {
   KitchenMenuRequest kitchenMenu;
   StoneUseRequest stoneUse;
   StocksMenuRequest stocksMenu;
+  DepotGoodsRequest depotGoods;
   TasksRequest tasks;
   PlacesRequest places;
   ObjectsRequest objects;
@@ -1175,6 +1181,7 @@ struct ManagementState {
   std::optional<KitchenMenuState> kitchenMenu;
   std::optional<StoneUseState> stoneUse;
   std::optional<StocksMenuState> stocksMenu;
+  std::optional<DepotGoodsState> depotGoods;
   std::optional<TasksState> tasks;
   std::optional<PlacesState> places;
   std::optional<ObjectsState> objects;

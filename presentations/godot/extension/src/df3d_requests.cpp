@@ -350,6 +350,12 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         }
         value["rows"]=rows;result["tasks"]=value;if(v.outcome==wm::TasksOutcome::Unknown)result["outcome"]="unknown";
     }
+    if(s.depotGoods){const auto& v=*s.depotGoods;Dictionary value;Array categories,groups,items;
+        for(const auto& row:v.categories){Dictionary d;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());categories.append(d);}
+        for(const auto& row:v.groups){Dictionary d;d["subtype"]=row.subtype;d["subcat1"]=row.subcat1;d["subcat2"]=row.subcat2;d["amount"]=row.amount;d["caption"]=String::utf8(row.caption.c_str());d["matches"]=row.matches;d["expanded"]=row.expanded;d["flags"]=row.flags;Array ids;for(auto id:row.itemIds)ids.append(id);d["item_ids"]=ids;groups.append(d);}
+        for(const auto& row:v.items){Dictionary d;d["id"]=row.id;d["caption"]=String::utf8(row.caption.c_str());d["distance"]=row.distance;d["value"]=row.value;d["tag"]=row.tag;d["prohibited"]=row.prohibited;items.append(d);}
+        value["depot_id"]=v.depotId;value["revision"]=int64_t(v.revision);value["category"]=v.category;value["categories"]=categories;value["groups"]=groups;value["items"]=items;result["depot_goods"]=value;
+    }
     if(s.stocksMenu) {
         const auto& v=*s.stocksMenu;Dictionary value;Array categories,groups,items;
         for(const auto& row:v.categories){Dictionary d;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());d["stored"]=String::utf8(row.stored.c_str());d["unavailable"]=String::utf8(row.unavailable.c_str());d["matches"]=row.matches;categories.push_back(d);}
@@ -875,6 +881,21 @@ bool readTasks(const Dictionary& data,wm::ManagementRequest& request,String&) {
     else {q.jobId=int32_t(int64_t(data["job_id"]));q.workerId=int32_t(int64_t(data["worker_id"]));q.buildingId=int32_t(int64_t(data["building_id"]));q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.operation=wm::TasksOperation(int64_t(data["operation"]));q.expectedState=int8_t(int64_t(data["expected_state"]));}
     return true;
 }
+bool validateDepotGoods(const Dictionary& data,String& error) {
+    error="Invalid depot goods request";
+    const auto integer=[](const Dictionary& d,const char* key,int64_t lo,int64_t hi){return d.has(key) && d[key].get_type()==Variant::INT && int64_t(d[key])>=lo && int64_t(d[key])<=hi;};
+    if(data.size()!=8 || !integer(data,"depot_id",0,INT32_MAX) || !integer(data,"category",-1,92) || !data.has("query") || data["query"].get_type()!=Variant::STRING || String(data["query"]).utf8().length()>2048 || !data.has("item_ids") || data["item_ids"].get_type()!=Variant::ARRAY)return false;
+    for(const auto* key:{"sort_by_distance","pending_on_top","exclude_prohibited"})if(!data.has(key) || data[key].get_type()!=Variant::BOOL)return false;
+    const Array ids=data["item_ids"];if(ids.size()>64 || (int64_t(data["category"])==-1 && !ids.is_empty()))return false;
+    std::unordered_set<int64_t> seen;for(int64_t i=0;i<ids.size();++i)if(ids[i].get_type()!=Variant::INT || int64_t(ids[i])<0 || int64_t(ids[i])>INT32_MAX || !seen.insert(int64_t(ids[i])).second)return false;
+    error=String();return true;
+}
+bool readDepotGoods(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::DepotGoodsRead;auto& q=request.depotGoods;
+    q.depotId=int32_t(int64_t(data["depot_id"]));q.category=int16_t(int64_t(data["category"]));q.query=String(data["query"]).utf8().get_data();
+    q.sortByDistance=bool(data["sort_by_distance"]);q.pendingOnTop=bool(data["pending_on_top"]);q.excludeProhibited=bool(data["exclude_prohibited"]);
+    const Array ids=data["item_ids"];for(int64_t i=0;i<ids.size();++i)q.itemIds.push_back(int32_t(int64_t(ids[i])));return true;
+}
 bool validateStocksMenu(const Dictionary& data,String& error) {
     error="Invalid stocks request";
     const bool individual=int64_t(data["action"])==int64_t(wm::ManagementAction::StocksItemApply);
@@ -1234,6 +1255,7 @@ const ManagementCodec managementCodecs[] = {
     {"work_detail_rows",validateResidentsRows,readResidentsRows},
     {"work_detail_settings",validateWorkDetailSettings,readWorkDetailSettings},
     {"hunter_ammunition",validateHunterAmmunition,readHunterAmmunition},
+    {"depot_goods",validateDepotGoods,readDepotGoods},
     {"stocks_menu",validateStocksMenu,readStocksMenu},
     {"nobles",validateNobles,readNobles},
     {"places",validatePlaces,readPlaces},
@@ -1259,7 +1281,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::SelectionArtApply)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::DepotGoodsRead)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

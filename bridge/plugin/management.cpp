@@ -5243,6 +5243,9 @@ void run(color_ostream& out) {
     }catch(...){status=m::ManagementStatus::Rejected;tasks.emplace();tasks->jobId=edit?q.job_id():-1;}
     publish();return;
   }
+  // Transport admission precedes the depot provider integration. Never send
+  // the new semantic request through legacy trade/menu dispatch.
+  if(r->action()==m::ManagementAction::DepotGoodsRead){status=m::ManagementStatus::Rejected;message.clear();publish();return;}
   if(r->action()==m::ManagementAction::StocksMenuRead || r->action()==m::ManagementAction::StocksGroupApply || r->action()==m::ManagementAction::StocksItemApply) {
     namespace h=df3d_stocks;
     status=m::ManagementStatus::Rejected;message.clear();stocks.emplace();bool writeStarted=false;

@@ -50,6 +50,12 @@ func run() -> void:
 	assert(state.status is int and state.action is int)
 	assert(Contract.is_mutation(A.Place) and Contract.is_mutation(A.AreaUpdate))
 	assert(not Contract.is_mutation(A.Preview))
+	assert(Contract.domain_of(A.DepotGoodsRead)=="depot_goods" and not Contract.is_mutation(A.DepotGoodsRead))
+	var depot={"action":A.DepotGoodsRead,"depot_id":54,"category":45,"query":"IRON","sort_by_distance":true,"pending_on_top":true,"exclude_prohibited":false,"item_ids":[296]}
+	for patch in [{"depot_id":-1},{"category":93},{"category":-1},{"item_ids":[296,296]},{"sort_by_distance":1},{"query":false},{"extra":true}]:
+		var invalid:=depot.duplicate(true);invalid.merge(patch,true)
+		assert(world.management_request("depot_goods",invalid)==0)
+		assert(world.last_error()=="Invalid depot goods request")
 	assert(Contract.is_mutation(A.JusticeConvict) and not Contract.is_mutation(A.JusticeCandidatesRead))
 	var justice := {"action":A.JusticeConvict,"tab":0,"offset":0,"limit":32,"expected_list_revision":123,
 		"crime_id":9,"expected_case_revision":456,"query":"","expected_candidate_revision":789,"unit_id":42}
@@ -418,6 +424,7 @@ func run() -> void:
 	await test_kitchen_menu()
 	await test_stone_use()
 	await test_stocks_menu()
+	await test_depot_goods()
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -551,7 +558,7 @@ func test_production() -> void:
 		request[key] = 1
 		reject_production(request, "Wrong management field type: " + key)
 	var bounds := {"building_id":[-2,2147483648],"job_id":[-2,2147483648],"cursor":[-1,4294967296],
-		"repeat":[2],"suspend":[-2],"season":[4],"crop_id":[32768],"expected_revision":[-1],"farm_operation":[Contract.FarmOperation.PumpManual+1],"seasonal_fertilization":[2],
+		"repeat":[2],"suspend":[-2],"season":[4],"crop_id":[32768],"expected_revision":[-1],"farm_operation":[Contract.FarmOperation.DepotMode+1],"seasonal_fertilization":[2],
 		"recipe":["x".repeat(129),String.chr(233).repeat(65)],"query":["x".repeat(129),String.chr(233).repeat(65)]}
 	for key in bounds:
 		for bad in bounds[key]:
@@ -1242,3 +1249,12 @@ func test_stocks_menu() -> void:
 	edit.value=0;seq=world.management_request("stocks_menu",edit);assert(seq>0);reply=await receipt(seq,S.Rejected)
 	assert(reply.outcome=="unknown" and reply.stocks_menu.groups.is_empty())
 	assert(Contract.is_mutation(A.StocksItemApply))
+
+func test_depot_goods() -> void:
+	var request={"action":A.DepotGoodsRead,"depot_id":54,"category":45,"query":"IRON","sort_by_distance":true,"pending_on_top":true,"exclude_prohibited":false,"item_ids":[296]}
+	var seq: int=world.management_request("depot_goods",request);assert(seq>0)
+	var reply:=await receipt(seq);var value: Dictionary=reply.depot_goods
+	assert(value.depot_id==54 and value.revision==9223372036854775807 and value.category==45)
+	assert(value.categories==[{"type":45,"caption":"fixture category"}])
+	assert(value.groups[0].item_ids==[296,28425] and value.groups[0].flags==2 and value.groups[0].expanded)
+	assert(value.items==[{"id":296,"caption":"fixture item","distance":6,"value":100,"tag":2,"prohibited":false}])

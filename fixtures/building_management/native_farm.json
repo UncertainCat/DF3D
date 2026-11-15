@@ -55399,6 +55399,139 @@
           "build/stockpile-storage-native-farm-discovery-20261115-141327/depot-selection-bars.png": "d8831175f81d457432a0e12dcf07ee0d21a1b07819e7b29b26cb55394913bcfb",
           "build/stockpile-storage-native-farm-discovery-20261115-141327/depot-selection-iron.png": "34f216ad0e823958e3964f07232a2ca11202aaaf1a441ee474c7432f63cfab0b"
         }
+      },
+      "depot_goods_contract_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-142412",
+        "owned_df_pid": 15028,
+        "protocol": 232,
+        "scope": "Protocol compatibility through existing depot header/mode edits, stale/duplicate guards and explicit rejection of the staged DepotGoodsRead action. No native goods production or viewer acceptance.",
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "native": {
+          "cases": [
+            {
+              "flags": 0,
+              "jobs": [],
+              "label": "idle"
+            },
+            {
+              "flags": 1,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "broker"
+            },
+            {
+              "flags": 3,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "anyone"
+            },
+            {
+              "flags": 1,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382796,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "broker-again"
+            },
+            {
+              "flags": 0,
+              "jobs": [],
+              "label": "dismissed"
+            },
+            {
+              "flags": 3,
+              "jobs": [
+                {
+                  "flags": 0,
+                  "id": 382797,
+                  "pos": [
+                    -30000,
+                    -30000,
+                    -30000
+                  ],
+                  "refs": [
+                    {
+                      "building_id": 54,
+                      "type": 36
+                    }
+                  ],
+                  "type": 197
+                }
+              ],
+              "label": "anyone-fresh"
+            },
+            {
+              "flags": 2,
+              "jobs": [],
+              "label": "dismissed-anyone"
+            }
+          ],
+          "frame": 0,
+          "id": 54,
+          "original_flags": 0,
+          "restored": true,
+          "success": true,
+          "wire": {
+            "success": true
+          }
+        },
+        "diagnostics": "passed_with_known_issues: rendering-thread notice",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-142412/depot-settings-native.json": "fd63d6d34a83cb9b5d71b0eec5f7e1526a95b9e04d78a7ab94307d9648d8ccc0",
+          "build/stockpile-storage-native-farm-discovery-20261115-142412/depot-wire-result.json": "c955e57777ec0d73639dca6748560d00aa5eb8e12f13ebb2ed9656add3908f97",
+          "build/stockpile-storage-native-farm-discovery-20261115-142412/depot-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-142412/result.json": "857d18ac589ebb971ac1bc3416441b8a2b04e7bc97136a7368e0d5c4585a1f80",
+          "build/stockpile-storage-native-farm-discovery-20261115-142412/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/notes/pm/depot-goods-adapter.stdout.log": "872e0fb2c59f79ecef5afae67248e90c0c9007b90ad8f58774cb67cee824de53",
+          "build/notes/pm/depot-goods-adapter.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
+        }
       }
     },
     "pending_construction_reference": {

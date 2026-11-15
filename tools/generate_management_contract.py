@@ -10,6 +10,7 @@ ENUMS = ("WellStatus", "MachineryStatus", "JusticeGraphKind", "JusticeCandidateC
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
+    "depot_goods": ("DepotGoodsRead", "DepotGoodsRead"),
     "selection_art": ("SelectionArtRead", "SelectionArtApply"),
     "selection": ("Selection", "Selection"),
     "justice": ("JusticeRead", "JusticeIntelligenceGraphRead"),

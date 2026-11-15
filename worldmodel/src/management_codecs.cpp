@@ -204,6 +204,12 @@ ManagementState decodeState(const m::ManagementState* s) {
       out.rows.push_back(std::move(v));
     }
   }
+  if(const auto* r=s->depot_goods()) {
+    next.depotGoods.emplace();auto& out=*next.depotGoods;out.depotId=r->depot_id();out.revision=r->revision();out.category=r->category();
+    for(const auto* row:*r->categories())out.categories.push_back({row->type(),row->caption()->str()});
+    for(const auto* row:*r->groups()){DepotGoodsGroup group{row->subtype(),row->subcat1(),row->subcat2(),row->amount(),row->caption()->str(),row->matches(),row->expanded(),row->flags()};group.itemIds.assign(row->item_ids()->begin(),row->item_ids()->end());out.groups.push_back(std::move(group));}
+    for(const auto* row:*r->items())out.items.push_back({row->id(),row->caption()->str(),row->distance(),row->value(),row->tag(),row->prohibited()});
+  }
   if(const auto* r=s->stocks_menu()) {
     next.stocksMenu.emplace();auto& out=*next.stocksMenu;out.outcome=StocksMenuOutcome(r->outcome());out.category=r->category();
     for(const auto* row:*r->categories())out.categories.push_back({row->type(),row->caption()->str(),row->stored()->str(),row->unavailable()->str(),row->matches()});
@@ -542,7 +548,8 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse,stocksMenu,tasks,places,nobles,objects,justice,
       r.productionReplyRequest?m::CreateProductionReplyRequest(b,r.productionReplyRequest,r.productionReplyOffset):flatbuffers::Offset<m::ProductionReplyRequest>{},
       (r.action==ManagementAction::SelectionArtRead || r.action==ManagementAction::SelectionArtApply)?
-        m::CreateSelectionArtRequest(b,r.selectionArt.receipt,r.selectionArt.expectedRevision,encodeArtRequest(b,r.selectionArt.art)):flatbuffers::Offset<m::SelectionArtRequest>{});
+        m::CreateSelectionArtRequest(b,r.selectionArt.receipt,r.selectionArt.expectedRevision,encodeArtRequest(b,r.selectionArt.art)):flatbuffers::Offset<m::SelectionArtRequest>{},
+      r.action==ManagementAction::DepotGoodsRead?m::CreateDepotGoodsRequest(b,r.depotGoods.depotId,r.depotGoods.category,b.CreateString(r.depotGoods.query),r.depotGoods.sortByDistance,r.depotGoods.pendingOnTop,r.depotGoods.excludeProhibited,b.CreateVector(r.depotGoods.itemIds)):flatbuffers::Offset<m::DepotGoodsRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

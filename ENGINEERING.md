@@ -1,3 +1,40 @@
+## Depot goods transport migration
+
+Management protocol232 adds the read-only `DepotGoodsRead` action and owned
+`DepotGoodsRequest`/`DepotGoodsState` payloads. Requests carry an explicit depot,
+category, search, sort/exclusion choices and up to64 unique item-detail IDs.
+Replies preserve native category order/captions, group keys/counts/captions,
+matching and expansion flags, ordered member IDs, and item captions/distance/
+value/hauling tags/prohibition. Membership is unique across groups. Read replies
+admit only native resting tags0,2,3; staged selection tags belong to a future
+edit contract. Item details must belong to a returned group. Revision is a
+nonzero signed-safe token; rejection carries no fabricated snapshot.
+
+This is transport admission only. Runtime dispatch currently rejects explicitly;
+native snapshot production, retained paging for large replies, artwork/contained
+rows and commit authority are still unfinished. Public depot routes remain hidden.
+Both peers/mailbox use232; rebuild bridge and viewer together. DF53.16 pins are
+unchanged. Older recordings must not synthesize depot goods.
+
+Before enabling native production, revise the initial nonempty-group validation
+for exclusion filtering:37a0a0 copies group keys before excluding prohibited
+individuals, so a retained group can have no eligible member IDs. Qualify this
+with a positive prohibition case. The present staged read rejects at dispatch.
+
+Protected142412 on2026-11-15 verifies protocol232 through existing depot header
+reads and eight mode edits with stale/duplicate guards, plus explicit rejection
+of DepotGoodsRead without a snapshot. The native flags/jobs remain restored.
+Owned DF15028 closes unsaved with source preservation, native30FPS and sampled
+GPU59C. The live headless client and synthetic management adapter check report
+only the known rendering-thread notice. The adapter exercises the new domain,
+typed request rejection, group/member decoding and signed-safe64-bit revisions.
+Its obsolete PumpManual+1 out-of-range test now uses DepotMode+1; the initial
+run with that assertion failure is not acceptance. Evidence:
+`completed_sheet_discovery_reference.depot_goods_contract_reference`.
+Bridge, viewer extension and root builds pass. All19 core checks pass, including
+depot request bounds, duplicate membership, wrong item identity, staged tag,
+missing revision and wrong-action rejection, plus successful state decoding.
+
 ## Depot transport migration
 
 Management protocol231 adds an optional `DepotBodySnapshot` to completed building
@@ -13,7 +50,7 @@ explicit item_value0 Broker,1 Anyone or2 no trader. Mixed item/worker intents an
 out-of-range modes reject. Only a completed TradeDepot header may be returned for
 an applied mode edit. This transport admission alone does not expose the depot
 panel or qualify production effects. Native provider references are below.
-Both peers and mailbox use231; rebuild bridge and viewer together. DF53.16 pins
+Depot body was introduced in231; the current protocol is listed above. DF53.16 pins
 are unchanged.
 
 Protected130341 on2026-11-15 verifies protocol231 through five existing barrier

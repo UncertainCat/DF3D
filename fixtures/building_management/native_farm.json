@@ -26588,6 +26588,370 @@
           "build/stockpile-storage-native-farm-discovery-20261115-100805/trap-sheet-4.png": "bda6bc468aaf7343d94200ae50ea6ddba9c571c8a51d7df9080b6289723a6a90",
           "build/stockpile-storage-native-farm-discovery-20261115-100805/trap-sheet-5.png": "0d21e5a65159e43a75a3e60390f76b3bbe7dcee80b1b99db09b50fc8f73e032d"
         }
+      },
+      "ordinary_trap_panel_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-101616",
+        "scope": "Staged actual-main-scene Trap2 Cage,3 StoneFall,4 Weapon,5 TrackStop header/contents/links. Seven full488x708 crops per subtype match native. Rename/restore, Forbid/restore, linked tab, Remove/Cancel; native final state restored. Controlled paused trap61 subtype fixtures retain original mechanisms/links. No real loaded/ammunition, loading jobs, no-link layout, construction defaults or simulation claim. Public map remains inspector.",
+        "native": {
+          "buildings": [
+            {
+              "fill_timer": 0,
+              "fixture": "Paused existing trap61 with temporary subtype; not native construction defaults.",
+              "id": 61,
+              "items": [
+                {
+                  "id": 2311,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 1628,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 2328,
+                  "type": 67,
+                  "use_mode": 2
+                }
+              ],
+              "lines": [
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "name": "Brooke Gates",
+              "original_forbid": false,
+              "ready_timeout": 0,
+              "state": 1,
+              "stop_flags": 0,
+              "subtype": 2,
+              "tile": [
+                96,
+                103,
+                165
+              ],
+              "track": {
+                "dump_x": 0,
+                "dump_y": 0,
+                "flags": 0,
+                "friction": 50000
+              },
+              "viewer": {
+                "roundtrip": true,
+                "success": true,
+                "surface": "actual main scene"
+              }
+            },
+            {
+              "fill_timer": 0,
+              "fixture": "Paused existing trap61 with temporary subtype; not native construction defaults.",
+              "id": 61,
+              "items": [
+                {
+                  "id": 2311,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 1628,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 2328,
+                  "type": 67,
+                  "use_mode": 2
+                }
+              ],
+              "lines": [
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "name": "Brooke Gates",
+              "original_forbid": false,
+              "ready_timeout": 0,
+              "state": 1,
+              "stop_flags": 0,
+              "subtype": 3,
+              "tile": [
+                96,
+                103,
+                165
+              ],
+              "track": {
+                "dump_x": 0,
+                "dump_y": 0,
+                "flags": 0,
+                "friction": 50000
+              },
+              "viewer": {
+                "roundtrip": true,
+                "success": true,
+                "surface": "actual main scene"
+              }
+            },
+            {
+              "fill_timer": 0,
+              "fixture": "Paused existing trap61 with temporary subtype; not native construction defaults.",
+              "id": 61,
+              "items": [
+                {
+                  "id": 2311,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 1628,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 2328,
+                  "type": 67,
+                  "use_mode": 2
+                }
+              ],
+              "lines": [
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "name": "Brooke Gates",
+              "original_forbid": false,
+              "ready_timeout": 0,
+              "state": 1,
+              "stop_flags": 0,
+              "subtype": 4,
+              "tile": [
+                96,
+                103,
+                165
+              ],
+              "track": {
+                "dump_x": 0,
+                "dump_y": 0,
+                "flags": 0,
+                "friction": 50000
+              },
+              "viewer": {
+                "roundtrip": true,
+                "success": true,
+                "surface": "actual main scene"
+              }
+            },
+            {
+              "fill_timer": 0,
+              "fixture": "Paused existing trap61 with temporary subtype; not native construction defaults.",
+              "id": 61,
+              "items": [
+                {
+                  "id": 2311,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 1628,
+                  "type": 67,
+                  "use_mode": 2
+                },
+                {
+                  "id": 2328,
+                  "type": 67,
+                  "use_mode": 2
+                }
+              ],
+              "lines": [
+                {
+                  "text": "        Brooke Gates",
+                  "y": 6
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 42
+                },
+                {
+                  "text": "   Show linked buildings         Show items",
+                  "y": 43
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 49
+                },
+                {
+                  "text": "        jet mechanisms",
+                  "y": 52
+                }
+              ],
+              "name": "Brooke Gates",
+              "original_forbid": false,
+              "ready_timeout": 0,
+              "state": 1,
+              "stop_flags": 0,
+              "subtype": 5,
+              "tile": [
+                96,
+                103,
+                165
+              ],
+              "track": {
+                "dump_x": 0,
+                "dump_y": 0,
+                "flags": 0,
+                "friction": 50000
+              },
+              "viewer": {
+                "roundtrip": true,
+                "success": true,
+                "surface": "actual main scene"
+              }
+            }
+          ],
+          "frame": 0,
+          "success": true
+        },
+        "owned_df_pid": 6300,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "diagnostics": "passed_with_known_issues: render-thread notice, finalize and two ObjectDB shutdown instances",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-2-forbid.png": "71190891430749915a2620ab6e909eab72a206097d3341985a469bfa71ebffde",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-2-links.png": "109c12542be5c85886850aec8c2fca3453be07eda44cfbeebd01a1d1edbb3696",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-2-removal-cancelled.png": "9b77efc0aff43d74ab6355f36760b49eed516b9b8cee38556662c92fcd9a9ac6",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-2-removing.png": "9dbae8a4e9473e75f0794949c45b80152e06c3afed407e463720789eff298215",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-2-renamed.png": "839172b59452ae372025d0615c113a0a5a5ae21ff945c2df262714ddf1257e95",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-2-restored.png": "9b77efc0aff43d74ab6355f36760b49eed516b9b8cee38556662c92fcd9a9ac6",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-2.png": "9b77efc0aff43d74ab6355f36760b49eed516b9b8cee38556662c92fcd9a9ac6",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-3-forbid.png": "ae51898b3299a6b7d8ac7b765a3626dfcaa4e53f661aa90424674758c0ecbef9",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-3-links.png": "ea626c574f933814b18ca461dd0426586f6f390342d1cc1dda862af28183b9e3",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-3-removal-cancelled.png": "9aed527225c2919c8e0d4c53d07c12a1b720744ea0826c631951bc4b3aac6950",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-3-removing.png": "3a769851b6b6a65dbbf90e0c41282bea58b62266443ff6e41015ed5c4a1ba459",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-3-renamed.png": "09c82739d847eb0d85e01fd009036421091377b49d5edaf129de137fd2fd9525",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-3-restored.png": "9aed527225c2919c8e0d4c53d07c12a1b720744ea0826c631951bc4b3aac6950",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-3.png": "9aed527225c2919c8e0d4c53d07c12a1b720744ea0826c631951bc4b3aac6950",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-4-forbid.png": "4f3435b26771eaeeaa452e528f2cc25a377c9102d2ddcefcf2d8eb23432fca78",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-4-links.png": "e1726d67027d8a95a9c48f8c11cc781e63b92a5685bd85e9590d87efa0fee961",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-4-removal-cancelled.png": "2929eccfb15df91694d5030b685c5a66365288d237aee97af7d024391fff0517",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-4-removing.png": "4d6f63513da14c5c69e02c83cfebf9e55c1389db4823b4fd9ffe76b936b99508",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-4-renamed.png": "2b16cba68e6386b189b77548e3b6c1d0ed000805cd24a25d69dd198b5ed2ae60",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-4-restored.png": "2929eccfb15df91694d5030b685c5a66365288d237aee97af7d024391fff0517",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-4.png": "2929eccfb15df91694d5030b685c5a66365288d237aee97af7d024391fff0517",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-5-forbid.png": "c7c6b2e764fc59460f88a40f8297e9750152c276e0ba94b1b8967ec2796fe3ed",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-5-links.png": "d24ead980d2af454c84928d490235829fe93065fab562a9cb881f700f016f35e",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-5-removal-cancelled.png": "b3d1b40d92355394603c16374d1e3c41db982a7a73818812f8f7de7dc898104d",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-5-removing.png": "e332f61967acbfc789ff5d56ead5a3307f541867430326bf1281f9e26c2c3b4e",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-5-renamed.png": "fb22f96d464ae2315544917d7e2af7cb66f11b357620e665718f1b2d743ddc83",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-5-restored.png": "b3d1b40d92355394603c16374d1e3c41db982a7a73818812f8f7de7dc898104d",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/chest-scene-trap-sheet-5.png": "b3d1b40d92355394603c16374d1e3c41db982a7a73818812f8f7de7dc898104d",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/result.json": "7472c77a63b0810f6ef00b52856b4204c522775314947b7f6de861bfdfe08069",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-2-forbid.png": "bbe9b0bd45021aa9c6a56e423f40d417c4b8a4fb170f960e74377d20ae221f50",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-2-links.png": "f2c37b7fce9429c29ddaa094df7ddcb75e6aa405f53fc26ef5801c28bd1452bf",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-2-removal-cancelled.png": "81b9868c967358520df0f5721be71854fd20ef8d5c487a3dfa2dccc7f4aa5722",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-2-removing.png": "cab4191839ef39f01442e2eb29459333cea97ed35ddf44f7f3a26b4914c446f9",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-2-renamed.png": "ace1ff8314b7d0d0ac58512ef645e5c3d78489e9c7bd6d6b93df63d23407a7a7",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-2-restored.png": "81b9868c967358520df0f5721be71854fd20ef8d5c487a3dfa2dccc7f4aa5722",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-2.png": "81b9868c967358520df0f5721be71854fd20ef8d5c487a3dfa2dccc7f4aa5722",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-3-forbid.png": "f6a72188a75983fc7940864a9e5f473946013f0f4ccdec11279f14733d77b980",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-3-links.png": "44a55d22be84c22422816f49f233e98fdd191e3dd75cd0f804db2c6c8d1b57a0",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-3-removal-cancelled.png": "64fa4af766dda16ca5fd7b0e5286ad6d496a0e5fce805890965ad8e1e55f05bb",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-3-removing.png": "ca646b5271daf730c488878ea5f84c8c316bd2c3a20c948e4573a0794383902b",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-3-renamed.png": "c4ea8c2fa5bfb3a37e9c41ee344112c05ac0eb4204b26d5acb1ca24a4ca51e41",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-3-restored.png": "64fa4af766dda16ca5fd7b0e5286ad6d496a0e5fce805890965ad8e1e55f05bb",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-3.png": "64fa4af766dda16ca5fd7b0e5286ad6d496a0e5fce805890965ad8e1e55f05bb",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-4-forbid.png": "be947246c8b682f5e9bc44ddf67349b67eb9f92cf007f753036ff1fad3eab232",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-4-links.png": "ef1fcf47dc4e90491a701640896d72a75d2fa6ba93b1f66087ef89058cd4dc89",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-4-removal-cancelled.png": "bda6bc468aaf7343d94200ae50ea6ddba9c571c8a51d7df9080b6289723a6a90",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-4-removing.png": "738649b29bd52cea8842c0deee8b47a877f71e8b8904e497ec8ea485658dc1cb",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-4-renamed.png": "d32289e6d8c62039ab23bf43bfb2f6bfe0efd51231fc3c750dace0f4ef30837c",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-4-restored.png": "bda6bc468aaf7343d94200ae50ea6ddba9c571c8a51d7df9080b6289723a6a90",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-4.png": "bda6bc468aaf7343d94200ae50ea6ddba9c571c8a51d7df9080b6289723a6a90",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-5-forbid.png": "fa9f4f036a61e9ca2c3657607f5b30ce44a2df71d52ea9ce8e3ac750216f9759",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-5-links.png": "776112ff94362742a61373aa055c2bf2a2c7c3d76398f8edcb83381372afa242",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-5-removal-cancelled.png": "0d21e5a65159e43a75a3e60390f76b3bbe7dcee80b1b99db09b50fc8f73e032d",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-5-removing.png": "a400dbee5ac21e0a2f0cfbf70e0a2274b20968fb8f2224295bbc4c24fd6a6aa0",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-5-renamed.png": "58520c0f7cbb1de672f5e9cc74b911580a92895ab4de3bbbafa25c2f26d1570f",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-5-restored.png": "0d21e5a65159e43a75a3e60390f76b3bbe7dcee80b1b99db09b50fc8f73e032d",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-5.png": "0d21e5a65159e43a75a3e60390f76b3bbe7dcee80b1b99db09b50fc8f73e032d",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-expected.json": "e07e1b1a0269400723e278e314f347bdae56bd0402474936f68e8b9f4e58fb01",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-wire-2-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-wire-2.png": "81b9868c967358520df0f5721be71854fd20ef8d5c487a3dfa2dccc7f4aa5722",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-wire-3-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-wire-3.png": "64fa4af766dda16ca5fd7b0e5286ad6d496a0e5fce805890965ad8e1e55f05bb",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-wire-4-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-wire-4.png": "bda6bc468aaf7343d94200ae50ea6ddba9c571c8a51d7df9080b6289723a6a90",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-wire-5-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheet-wire-5.png": "0d21e5a65159e43a75a3e60390f76b3bbe7dcee80b1b99db09b50fc8f73e032d",
+          "build/stockpile-storage-native-farm-discovery-20261115-101616/trap-sheets-native.json": "2364e1770a19f2e338face1ac105e620d8c5a3a94850536313989a3ccd4e044b"
+        }
       }
     },
     "pending_construction_reference": {

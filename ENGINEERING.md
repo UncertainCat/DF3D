@@ -464,13 +464,26 @@ subtype in the paused clone and restores it after each capture. Its existing
 mechanisms and mechanical links remain present. This does not qualify native
 construction defaults, loaded/ammunition states, no-link geometry, mutations
 or simulation behavior. The initial TrackStop capture was visually inspected.
-The existing owned `buildingLinks` provider already derives tab visibility from
-trigger subtype or resolved item references; the ordinary linked-building panel
-is the implementation candidate, with subtype-specific header/contents admission
-still required. Other traps remain on their existing inspector route.
+The existing owned `buildingLinks` provider derives tab visibility from trigger
+subtype or resolved item references. Ordinary traps use the shared linked-building
+panel with subtype2..5 header/contents admission; production profiles stay limited
+to levers and pressure plates. Other traps remain on their existing inspector route.
 Owned DF40632 closes unsaved with source preservation; native graphics capped
 30FPS, sampled GPU59C; core19 passes. Evidence:
 `completed_sheet_discovery_reference.ordinary_trap_sheets_reference`.
+
+Protected101616 on2026-11-15 qualifies the staged actual-main-scene panel for all
+four subtypes: Rename/restore, item Forbid/restore, linked tab, Remove and Cancel
+removal. Seven full488x708 comparisons per subtype match native exactly, and the
+native diagnostic verifies restored name, item flag and absence of removal jobs.
+The same paused subtype fixtures retain their original mechanism contents and
+links. Real loaded traps, loading jobs, no-link geometry and simulation remain
+unqualified; public map entry remains gated. Owned DF6300 closes unsaved with
+source preservation. MSVC and core19 pass; graphical runs are serial and capped
+30FPS, sampled GPU57..60C. This is passed_with_known_issues for the documented
+render-thread/finalize/two-ObjectDB diagnostics. Initial101312 failed in the test
+helper because the read-only link model has no Applying phase; it is not acceptance.
+Evidence: `completed_sheet_discovery_reference.ordinary_trap_panel_reference`.
 
 ## Native bug register
 

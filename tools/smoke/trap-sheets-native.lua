@@ -1,8 +1,14 @@
--- Read-only native screen discovery in a paused owned disposable clone.
+-- Native screen discovery and optional restored edits in a paused owned clone.
 local out,view,select_map,capture=...
 local gui=require('gui');local json=require('json');local g=df.global.gps
 local sheet=df.global.game.main_interface.view_sheets
 local result={buildings={},frame=df.global.world.frame_counter}
+local function click(x,y)
+ g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+ gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+end
 local function persist()
  local f=assert(io.open(out..'/trap-sheets-native.json','w'));f:write(json.encode(result));f:close()
 end
@@ -29,6 +35,22 @@ for subtype=2,5 do
    local text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','');if text:find('%S')then row.lines[#row.lines+1]={y=y,text=text}end
   end
   persist();capture('trap-sheet-'..subtype)
+  if os.getenv('DF3D_TRAP_SHEETS_RUNTIME')=='1'then
+   local function shot(label)view:render(dfhack.getTickCount());capture('trap-sheet-'..subtype..'-'..label)end
+   local name=b.name;local item=assert(b.contained_items[0].item);row.original_forbid=item.flags.forbid
+   click(800,82);gui.simulateInput(view,'STRING_A120');gui.simulateInput(view,'SELECT');assert(b.name==name..'x');shot('renamed')
+   click(800,82);gui.simulateInput(view,'STRING_A000');gui.simulateInput(view,'SELECT');assert(b.name==name);shot('restored')
+   click(796,562);assert(item.flags.forbid~=row.original_forbid);shot('forbid')
+   click(796,562);assert(item.flags.forbid==row.original_forbid)
+   click(540,520);shot('links');click(720,520)
+   click(832,82);assert(#b.jobs==1 and b.jobs[0].job_type==df.job_type.DestroyBuilding);shot('removing')
+   -- Native cancel removal appears at the shared header's first action row.
+   click(520,202);assert(#b.jobs==0);shot('removal-cancelled')
+   local f=assert(io.open(out..'/trap-sheet-expected.json','w'));f:write(json.encode(row));f:close()
+   local label='trap-sheet-wire-'..subtype;capture(label)
+   f=assert(io.open(out..'/'..label..'-result.json'));row.viewer=json.decode(f:read('*a'));f:close()
+   assert(row.viewer.success and b.name==name and item.flags.forbid==row.original_forbid and #b.jobs==0,'Trap viewer did not restore native state')
+  end
   assert(#b.jobs==0 and df.global.world.frame_counter==result.frame)
  end,debug.traceback)
  if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end

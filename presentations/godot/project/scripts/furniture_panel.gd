@@ -20,7 +20,7 @@ func configure(world,service,host,help=null) -> void:
 			close_panel();focus_requested.emit(tile))
 func _state_changed() -> void:
 	super._state_changed()
-	if state.snapshot.get("type",-1)==9:
+	if state.snapshot.get("type",-1) in [9,23]:
 		if links.building_id!=state.building_id:links.open(state.building_id)
 	elif links.building_id>=0:links.close()
 func close_panel() -> void:

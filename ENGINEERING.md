@@ -146,6 +146,28 @@ The depot-only headless clients now use `--render-thread safe`; all nine150124
 client logs are free of diagnostics. No engine fix or product setting change
 is claimed.
 
+Depot draft selection is inline in native input311c10, not a separately callable
+semantic helper: individual31e449..31e48f changes `tag` to `1-tag`, then calls
+owned-context aggregate37d9c0. Thus resting0 becomes staged1, pending2 becomes
+staged-1 and delivered3 becomes staged-2; a second click restores the tag.
+Group31de96..31df20 clears a fully selected group, otherwise selects its
+unselected members. Native37db42..37db56 sets group flag1 only when every member
+is selected, flag2 when any member is unselected; it is not an any-selected bit.
+The entire input handler reads native pointer/menu state and is not admissible
+as a runtime API. Retain independently owned draft inputs; aggregate37d9c0 and
+commit36b0c0 already have independently owned-context boundaries.
+
+Protected150612 on2026-11-15 verifies seven native draft states with two anvils:
+initial, individual-on, mixed-group-on, group-off, Select All on/off and individual
+roundtrip. Item order stays fixed, other categories remain untouched, jobs stay0
+and the simulation frame stays paused. Existing subsequent close/pending/cancel
+and delivered-release checks still pass. Owned DF45104 closes unsaved with source
+preservation, native30FPS, sampled GPU51C. All19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_goods_draft_reference`.
+This establishes the native reference only. Viewer drafts and guarded batch
+commit remain unfinished; per-item native probe acceptance does not authorize
+a series of independently applied edits as a replacement for commit-on-close.
+
 ## Depot transport migration
 
 Management protocol231 adds an optional `DepotBodySnapshot` to completed building

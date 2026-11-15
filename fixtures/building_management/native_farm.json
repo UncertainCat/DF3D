@@ -59029,6 +59029,119 @@
           "build/stockpile-storage-native-farm-discovery-20261115-150124/depot-goods-view-anvils.png": "50940128ede84b314a4b9f7f11ea610e1a252713496aa1f426fdda2898fe81e2",
           "presentations/godot/project/scripts/depot_goods_view.gd": "f8b0f9df406c902c6c5acdd248a7b6f2f345806a805b8b50da857eab2eca39d7"
         }
+      },
+      "depot_goods_draft_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-150612",
+        "owned_df_pid": 45104,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Native paused two-anvil draft clicks: individual, mixed group, group off, Select All on/off and individual roundtrip. Other categories untouched; zero jobs until existing close/haul test. Not a DF3D draft or batch commit acceptance.",
+        "samples": [
+          {
+            "group_flags": 2,
+            "ids": [
+              296,
+              28425
+            ],
+            "jobs": 0,
+            "label": "initial",
+            "other_category_changes": 0,
+            "tags": [
+              0,
+              0
+            ]
+          },
+          {
+            "group_flags": 2,
+            "ids": [
+              296,
+              28425
+            ],
+            "jobs": 0,
+            "label": "individual-on",
+            "other_category_changes": 0,
+            "tags": [
+              1,
+              0
+            ]
+          },
+          {
+            "group_flags": 1,
+            "ids": [
+              296,
+              28425
+            ],
+            "jobs": 0,
+            "label": "mixed-group-on",
+            "other_category_changes": 0,
+            "tags": [
+              1,
+              1
+            ]
+          },
+          {
+            "group_flags": 2,
+            "ids": [
+              296,
+              28425
+            ],
+            "jobs": 0,
+            "label": "group-off",
+            "other_category_changes": 0,
+            "tags": [
+              0,
+              0
+            ]
+          },
+          {
+            "group_flags": 1,
+            "ids": [
+              296,
+              28425
+            ],
+            "jobs": 0,
+            "label": "select-all-on",
+            "other_category_changes": 0,
+            "tags": [
+              1,
+              1
+            ]
+          },
+          {
+            "group_flags": 2,
+            "ids": [
+              296,
+              28425
+            ],
+            "jobs": 0,
+            "label": "select-all-off",
+            "other_category_changes": 0,
+            "tags": [
+              0,
+              0
+            ]
+          },
+          {
+            "group_flags": 2,
+            "ids": [
+              296,
+              28425
+            ],
+            "jobs": 0,
+            "label": "individual-roundtrip",
+            "other_category_changes": 0,
+            "tags": [
+              0,
+              0
+            ]
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-150612/depot-goods-native.json": "61276876324379221ff4b535f18c302796a2e9701abe0de9481b11d21ba5524f",
+          "build/stockpile-storage-native-farm-discovery-20261115-150612/result.json": "3d412cdbc63f6324c1323424d00880d3993e07d274cca5280f1382def0fa52f3",
+          "build/stockpile-storage-native-farm-discovery-20261115-150612/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "tools/smoke/depot-goods-native.lua": "2dd901ccca13763b5d22156ec9114c486f6d241a221eed2084be8e8c91110791"
+        }
       }
     },
     "pending_construction_reference": {

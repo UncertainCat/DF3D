@@ -142,6 +142,28 @@ local ok,err=xpcall(function()
  assert(not menu.open,'Goods Escape failed')
  if os.getenv('DF3D_DEPOT_HAUL_NATIVE')=='1' then
   select_map(b);click(520,166);assert(menu.open and menu.current_type==df.item_type.ANVIL,'Reopen initial goods failed')
+  if os.getenv('DF3D_DEPOT_DRAFT_NATIVE')=='1' then
+   local rows=menu.current_type_tgi;assert(#rows==2 and #b.jobs==0)
+   local ids={rows[0].it.id,rows[1].it.id};local samples={}
+   local function draft(label,a,c,flag)
+    assert(menu.open and df.global.world.frame_counter==frame and #b.jobs==0,'Draft changed simulation/jobs')
+    assert(#menu.current_type_tgi==2 and menu.current_type_tgi[0].it.id==ids[1] and menu.current_type_tgi[1].it.id==ids[2],'Draft reordered items')
+    assert(menu.current_type_tgi[0].tag==a and menu.current_type_tgi[1].tag==c,'Unexpected native draft tags: '..label)
+    assert(menu.current_type_a_flag[0].whole==flag,'Unexpected native aggregate: '..label)
+    local outside=0
+    for _,row in ipairs(menu.master_i_list.tgi)do if row.it.id~=ids[1] and row.it.id~=ids[2] and row.tag~=0 then outside=outside+1 end end
+    assert(outside==0,'Draft changed another category')
+    samples[#samples+1]={label=label,ids=ids,tags={a,c},group_flags=flag,other_category_changes=outside,jobs=#b.jobs}
+   end
+   draft('initial',0,0,2)
+   click(932,166);draft('individual-on',1,0,2)
+   click(932,130);draft('mixed-group-on',1,1,1)
+   click(932,130);draft('group-off',0,0,2)
+   click(928,94);draft('select-all-on',1,1,1)
+   click(928,94);draft('select-all-off',0,0,2)
+   click(932,166);click(932,166);draft('individual-roundtrip',0,0,2)
+   result.draft_selection=samples
+  end
   result.hauling={}
   click(932,166);capture('depot-goods-selected')
   result.hauling.selected=job_facts()

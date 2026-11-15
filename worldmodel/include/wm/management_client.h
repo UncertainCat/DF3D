@@ -266,7 +266,7 @@ struct AreaState {
   int32_t paintedCount=-1,previewCount=-1;
 };
 struct ProductionRequest {
-  bool pendingBuilding=false;int8_t pendingOperation=-1;
+  bool pendingBuilding=false;int8_t pendingOperation=-1;bool buildingLinks=false;
   bool doorControls=false;int8_t doorForbidden=-1;
   int32_t itemId=-1;int8_t itemValue=-1;
   int32_t contentsItemId=-1;
@@ -353,6 +353,15 @@ struct BuildingContentsItem {
   bool forbid=false,dump=false,melt=false,hidden=false,canDump=false,canMelt=false,inJob=false,inBuilding=false;
   int32_t itemType=-1;std::string materialToken,subtypeRaw;
   std::optional<ItemInspectionAppearance> appearance;
+};
+struct BuildingLinkRow {
+  int32_t itemId=-1,referenceType=-1,id=-1,type=-1,x=-1,y=-1,z=-1;
+  std::string name;std::optional<SelectionAppearance> appearance;
+};
+struct BuildingLinksPage {
+  int32_t buildingId=-1;uint64_t revision=0;bool tabs=false;
+  uint32_t cursor=0,nextCursor=0,total=0;
+  std::vector<BuildingLinkRow> rows;
 };
 struct BuildingContentsPage {
   int32_t buildingId=-1;uint64_t revision=0;
@@ -456,6 +465,7 @@ struct ProductionState {
   std::optional<WorkshopOrdersState> workshopOrders;
   std::optional<WorkshopWorkersState> workshopWorkers;
   std::optional<PendingBuildingState> pendingBuilding;
+  std::optional<BuildingLinksPage> buildingLinks;
   std::optional<DoorControlsState> doorControls;
   std::optional<BuildingHeaderState> buildingHeader;
   std::optional<IndependentItemState> independentItem;

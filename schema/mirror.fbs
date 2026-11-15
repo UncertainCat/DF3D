@@ -1553,6 +1553,7 @@ table ProductionRequest {
   door_forbidden:int8 = -1; // -1 reads; 0/1 sets the desired state under expected_revision.
   pending_building:bool;
   pending_operation:int8 = -1; // 0 resume, 1 suspend, 2 cancel, 3 cancel removal; -1 read.
+  building_links:bool;
 }
 table ProductionRequirement { description:string; quantity:int32; item_type:int16 = -1; }
 // Absent on legacy observations and providers without native availability evidence.
@@ -1613,6 +1614,17 @@ table BuildingContentsPage {
   building_id:int32 = -1; revision:uint64;
   cursor:uint32; next_cursor:uint32; total:uint32;
   completed:bool; removing:bool; rows:[BuildingContentsItem];
+}
+// Ordered resolved mechanism references. Duplicate targets remain distinct rows.
+table BuildingLinkRow {
+  item_id:int32 = -1; reference_type:int8 = -1;
+  id:int32 = -1; type:int32 = -1; name:string (required);
+  position:TilePos (required); appearance:SelectionAppearance;
+}
+table BuildingLinksPage {
+  building_id:int32 = -1; revision:uint64; tabs:bool;
+  cursor:uint32; next_cursor:uint32; total:uint32;
+  rows:[BuildingLinkRow] (required);
 }
 table BuildingItemReceipt { item_id:int32 = -1; operation:FarmOperation; value:int8 = -1; }
 // Native item inspection owns its text; revision is observed after lazy formatting.
@@ -1739,6 +1751,7 @@ table ProductionState {
   task_parent:string; // Present: native Back target (empty=root). Absent: Cancel leaves picker.
   door_controls:DoorControlsState;
   pending_building:PendingBuildingState;
+  building_links:BuildingLinksPage;
 }
 // Details is a distinct intent; choice IDs refer to the observed native catalog.
 // Artwork subject IDs are simulation IDs, not Details choice ordinals.
@@ -2559,7 +2572,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 225;
+  schema_version:uint32 = 226;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2632,7 +2645,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 225;
+  schema_version:uint32 = 226;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

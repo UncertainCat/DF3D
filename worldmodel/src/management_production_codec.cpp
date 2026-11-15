@@ -77,6 +77,16 @@ ProductionState decodeProduction(const m::ProductionState* p) {
       v.rows.push_back(std::move(row));
     }
   }
+  if(const auto* page=p->building_links()) {
+    auto& v=n.buildingLinks.emplace();v.buildingId=page->building_id();v.revision=page->revision();v.tabs=page->tabs();
+    v.cursor=page->cursor();v.nextCursor=page->next_cursor();v.total=page->total();
+    for(const auto* row:*page->rows()) {
+      BuildingLinkRow value;value.itemId=row->item_id();value.referenceType=row->reference_type();value.id=row->id();value.type=row->type();value.name=str(row->name());
+      value.x=row->position()->x();value.y=row->position()->y();value.z=row->position()->z();
+      if(row->appearance())value.appearance=decodeItemRecipe(row->appearance());
+      v.rows.push_back(std::move(value));
+    }
+  }
   if(const auto* source=p->pending_building()) {
     auto& state=n.pendingBuilding.emplace();state.outcome=static_cast<FarmEditOutcome>(source->outcome());state.removed=source->removed();state.removing=source->removing();
     if(const auto* f=source->snapshot())state.snapshot=PendingBuildingSnapshot{f->id(),f->type(),f->revision(),f->stage(),f->max_stage(),f->job_id(),f->suspended(),f->has_worker(),f->header_name()->str(),f->removing(),f->forbidden(),f->appearance()?std::optional<SelectionAppearance>(decodeItemRecipe(f->appearance())):std::nullopt,f->progress(),f->trigger_kind(),f->trigger_links()};
@@ -349,7 +359,7 @@ flatbuffers::Offset<m::ProductionRequest> encodeProduction(flatbuffers::FlatBuff
   return m::CreateProductionRequest(b, p.buildingId, p.jobId, b.CreateString(p.recipe),
                                     b.CreateString(p.query), p.cursor, p.repeat, p.suspend,
                                     p.cancel, p.season, p.cropId, p.expectedRevision,static_cast<m::FarmOperation>(p.farmOperation),p.seasonalFertilization,
-                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem,p.buildingHeader,p.workshopWorkers,p.workerId,p.workerListRevision,p.workerValue,p.workshopOrders,p.generalOrderDelta,p.generalOrderValue,p.contentsItemId,p.priority,p.expectedPriority,b.CreateString(p.taskCategory),p.expectedPreviousJobId,p.doorControls,p.doorForbidden,p.pendingBuilding,p.pendingOperation);
+                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem,p.buildingHeader,p.workshopWorkers,p.workerId,p.workerListRevision,p.workerValue,p.workshopOrders,p.generalOrderDelta,p.generalOrderValue,p.contentsItemId,p.priority,p.expectedPriority,b.CreateString(p.taskCategory),p.expectedPreviousJobId,p.doorControls,p.doorForbidden,p.pendingBuilding,p.pendingOperation,p.buildingLinks);
 }
 
 flatbuffers::Offset<m::WorkOrderArtRequest> encodeArtRequest(flatbuffers::FlatBufferBuilder& b,const WorkOrderArtRequest& a) {

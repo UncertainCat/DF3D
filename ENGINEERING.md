@@ -9742,6 +9742,19 @@ sampled GPU59–63C is not a continuous peak. All19 core checks pass. Fixture
 and hashes. Earlier055934/060029 stopped on incorrect diagnostic expectations
 of target-sheet navigation/global cursor updates; neither is full acceptance.
 
+Management protocol226 adds the exclusive `ProductionInspect building_links`
+read and `BuildingLinksPage` response. Pages contain at most64 ordered mechanism
+references, with item/ref identities, target type/name/position and optional
+installed-art recipes. Duplicate targets remain separate rows. Tab availability
+is explicit, so an empty lever list differs from furniture without link tabs.
+Continuation requests carry the complete-list revision; changed revisions are
+rejected rather than mixing pages. There is no link mutation in this contract.
+Protocol225 recordings contain no link observation: absence is unknown, not an
+empty list. Both management defaults and `Local\df3d_management_v226` are226;
+rebuild and deploy the bridge and client together. This contract alone does not
+qualify linked-building UI exposure or artwork; provider/viewer acceptance is
+recorded separately below.
+
 `building_links_native.h` supplies an owned semantic snapshot with native
 reference order, target names/coordinates and a revision covering all row
 facts. It preserves duplicate resolved references and omits unresolved ones,

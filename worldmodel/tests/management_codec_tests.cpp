@@ -9,6 +9,52 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("building link requests require revision-bound exclusive reads") {
+  for(int fault=0;fault<10;++fault) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::ProductionInspect;
+    auto& p=r.production;p.buildingLinks=true;p.buildingId=55;p.cursor=64;p.expectedRevision=9007199254740993ULL;
+    if(fault==1)p.expectedRevision=0;
+    if(fault==2)p.contents=true;
+    if(fault==3)p.pendingBuilding=true;
+    if(fault==4)p.buildingHeader=true;
+    if(fault==5)p.itemId=17;
+    if(fault==6)r.action=wm::ManagementAction::FarmEdit;
+    if(fault==7)p.cursor=32768;
+    if(fault==8)p.taskCategory="mixed";
+    if(fault==9)p.farmOperation=wm::FarmOperation::Remove;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    CHECK(value->production()->building_links());
+    CHECK(value->production()->expected_revision()==p.expectedRevision);
+  }
+}
+
+TEST_CASE("building link pages preserve duplicate targets and reject broken continuations") {
+  for(int fault=0;fault<10;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    const wire::TilePos position(97,105,fault==6?-1:164);
+    std::vector<flatbuffers::Offset<wire::BuildingLinkRow>> rows;
+    for(int i=0;i<2;++i)rows.push_back(wire::CreateBuildingLinkRow(b,1588+i,fault==5?34:33,40,9,b.CreateString("dolomite Floodgate"),&position));
+    const auto page=wire::CreateBuildingLinksPage(b,55,fault==3?0:9007199254740993ULL,fault!=4,64,fault==1?65:66,fault==2?65:67,b.CreateVector(rows));
+    wire::ProductionStateBuilder p(b);p.add_building_links(page);
+    if(fault==7)p.add_selected_building(55);
+    const auto prod=p.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(prod);
+    state.add_action(fault==8?wire::ManagementAction::FarmEdit:wire::ManagementAction::ProductionInspect);
+    state.add_status(fault==9?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);
+    b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CAPTURE(fault);CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault) {
+      const auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.buildingLinks);
+      const auto& result=*decoded.buildingLinks;CHECK(result.revision==9007199254740993ULL);CHECK(result.nextCursor==66);
+      REQUIRE(result.rows.size()==2);CHECK(result.rows[0].id==result.rows[1].id);
+      CHECK(result.rows[0].itemId!=result.rows[1].itemId);CHECK(result.rows[0].z==164);
+      CHECK(result.rows[0].name=="dolomite Floodgate");
+    }
+  }
+}
+
 TEST_CASE("pending header artwork validates native recipe references") {
   for(int fault=0;fault<8;++fault) {
     flatbuffers::FlatBufferBuilder b;

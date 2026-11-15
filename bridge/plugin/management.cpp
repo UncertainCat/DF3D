@@ -1243,6 +1243,16 @@ void publish() {
     const auto& value=*production.itemPosition;const m::TilePos pos(value.x,value.y,value.z);
     itemPosition=m::CreateItemPosition(b,value.id,&pos);
   }
+  flatbuffers::Offset<m::BuildingLinksPage> buildingLinks;
+  if(production.buildingLinks) {
+    const auto& page=*production.buildingLinks;std::vector<flatbuffers::Offset<m::BuildingLinkRow>> rows;
+    for(const auto& row:page.rows) {
+      const m::TilePos position(row.x,row.y,row.z);
+      rows.push_back(m::CreateBuildingLinkRow(b,row.itemId,int8_t(row.referenceType),row.id,row.type,b.CreateString(row.name),&position,
+        encodeItemRecipe(row.appearance)));
+    }
+    buildingLinks=m::CreateBuildingLinksPage(b,page.buildingId,page.revision,page.tabs,page.cursor,page.nextCursor,page.total,b.CreateVector(rows));
+  }
   flatbuffers::Offset<m::PendingBuildingState> pendingBuilding;
   if(production.pendingBuilding) {
     const auto& state=*production.pendingBuilding;flatbuffers::Offset<m::PendingBuildingSnapshot> snapshot;
@@ -1297,7 +1307,7 @@ void publish() {
   }
   std::vector<flatbuffers::Offset<m::ProductionTaskCategory>> taskCategories;
   for(const auto& v:production.taskCategories)taskCategories.push_back(m::CreateProductionTaskCategory(b,b.CreateString(v.key),b.CreateString(v.name),dyeStatus(v.dye)));
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders,production.taskCategory?b.CreateString(*production.taskCategory):0,production.taskCategory?b.CreateVector(taskCategories):0,production.taskParent?b.CreateString(*production.taskParent):0,doorControls,pendingBuilding);
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders,production.taskCategory?b.CreateString(*production.taskCategory):0,production.taskCategory?b.CreateVector(taskCategories):0,production.taskParent?b.CreateString(*production.taskParent):0,doorControls,pendingBuilding,buildingLinks);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;

@@ -235,6 +235,15 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     }
     v["rows"]=rows;prod["workshop_workers"]=v;
   }
+  if(p.buildingLinks) {
+    const auto& page=*p.buildingLinks;Dictionary value;Array rows;
+    value["building_id"]=page.buildingId;value["revision"]=int64_t(page.revision);value["tabs"]=page.tabs;
+    value["cursor"]=int64_t(page.cursor);value["next_cursor"]=int64_t(page.nextCursor);value["total"]=int64_t(page.total);
+    for(const auto& r:page.rows){Dictionary row;row["item_id"]=r.itemId;row["reference_type"]=r.referenceType;row["id"]=r.id;row["type"]=r.type;
+      row["name"]=String::utf8(r.name.c_str());row["x"]=r.x;row["y"]=r.y;row["z"]=r.z;
+      if(r.appearance)row["appearance"]=itemRecipeDictionary(*r.appearance);rows.push_back(row);}
+    value["rows"]=rows;prod["building_links"]=value;
+  }
   if(p.pendingBuilding) {
     const auto& state=*p.pendingBuilding;Dictionary pending;pending["outcome"]=int(state.outcome);pending["removed"]=state.removed;pending["removing"]=state.removing;
     if(state.snapshot){const auto& f=*state.snapshot;Dictionary value;
@@ -708,6 +717,8 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   if(data.has("door_forbidden") && data["door_forbidden"].get_type()!=Variant::INT){error="Wrong management field type: door_forbidden";return false;}
   if(data.has("pending_building") && data["pending_building"].get_type()!=Variant::BOOL){error="Wrong management field type: pending_building";return false;}
   if(data.has("pending_operation") && data["pending_operation"].get_type()!=Variant::INT){error="Wrong management field type: pending_operation";return false;}
+  if(data.has("building_links") && data["building_links"].get_type()!=Variant::BOOL){error="Wrong management field type: building_links";return false;}
+  value.buildingLinks=data.get("building_links",false);
   value.pendingBuilding=data.get("pending_building",false);value.pendingOperation=int8_t(n("pending_operation",-1,-1,3));
   value.doorControls=data.get("door_controls",false);value.doorForbidden=int8_t(n("door_forbidden",-1,-1,1));
   value.buildingHeader=data.get("building_header",false);

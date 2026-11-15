@@ -20,6 +20,44 @@ func snapshot(category: int=-1) -> Dictionary:
 func ready(service,state) -> void:
 	service.reply(state.ticket,snapshot())
 	service.reply(state.ticket,snapshot(45))
+func commit_reply(service,ticket: int,outcome: int,patch: Dictionary={}) -> void:
+	var call: Dictionary=service.calls[ticket]
+	var intent: Dictionary=call.intent
+	var receipt: Dictionary={"depot_id":intent.depot_id,"expected_revision":intent.expected_revision,"observed_revision":intent.expected_revision-1 if outcome==C.DepotGoodsCommitOutcome.Stale else intent.expected_revision,"outcome":outcome}
+	receipt.merge(patch,true)
+	call.observer.call(ticket,{"status":C.ManagementStatus.Ok,"action":intent.action,"depot_commit":receipt},intent)
+func commits(service,state) -> void:
+	state.open(7);ready(service,state)
+	var changes: Array=[{"id":11,"desired":true},{"id":12,"desired":false}]
+	var original: int=state.revision;var count: int=service.next
+	check(not state.commit_and_close(original-1,changes),"Draft revision cannot be silently rebased")
+	for invalid in [[],[changes[0],changes[0]],[{"id":11,"desired":1}],[{"id":-1,"desired":true}]]:
+		check(not state.commit_and_close(original,invalid),"Malformed draft must remain unsent")
+	check(service.next==count and state.phase==State.Phase.Ready,"Invalid drafts leave ready source intact")
+	check(state.commit_and_close(original,changes),"Valid draft submits")
+	var pending: int=state.ticket
+	changes[0].desired=false
+	check(service.calls[pending].intent.changes[0].desired and service.calls[pending].intent.expected_revision==9007199254740993,"Commit owns a precise immutable draft")
+	state.set_query("ignored");state.select_category(45);state.request_items([11])
+	check(not state.commit_and_close(original,changes) and state.ticket==pending and state.phase==State.Phase.Applying,"Pending commit disables reads and duplicate submissions")
+	commit_reply(service,pending,C.DepotGoodsCommitOutcome.Applied)
+	check(state.phase==State.Phase.Closed and state.depot_id==-1,"Confirmed application closes picker")
+	for outcome in [C.DepotGoodsCommitOutcome.Rejected,C.DepotGoodsCommitOutcome.Stale,C.DepotGoodsCommitOutcome.Unknown]:
+		state.open(7);ready(service,state);state.commit_and_close(state.revision,changes);pending=state.ticket
+		commit_reply(service,pending,outcome)
+		var expected: int={C.DepotGoodsCommitOutcome.Rejected:State.Phase.Rejected,C.DepotGoodsCommitOutcome.Stale:State.Phase.Stale,C.DepotGoodsCommitOutcome.Unknown:State.Phase.Unknown}[outcome]
+		check(state.phase==expected and not state.groups.is_empty(),"Unsuccessful commit keeps disabled source without retry")
+		count=service.next;check(not state.commit_and_close(original,changes) and service.next==count,"Terminal commit cannot replay")
+	state.open(7);ready(service,state);state.commit_and_close(state.revision,changes);pending=state.ticket
+	commit_reply(service,pending,C.DepotGoodsCommitOutcome.Applied,{"depot_id":8})
+	check(state.phase==State.Phase.Unknown,"Mismatched success receipt is uncertain, never successful")
+	state.open(7);ready(service,state);state.commit_and_close(state.revision,changes);pending=state.ticket
+	state.close();state.open(8);var replacement: int=state.ticket
+	commit_reply(service,pending,C.DepotGoodsCommitOutcome.Applied)
+	check(service.detached.has(pending) and state.depot_id==8 and state.ticket==replacement and state.phase==State.Phase.Reading,"Late success cannot close a replacement picker")
+	state.open(7);ready(service,state);state.commit_and_close(state.revision,changes);pending=state.ticket
+	service.session_changed.emit();commit_reply(service,pending,C.DepotGoodsCommitOutcome.Applied)
+	check(state.phase==State.Phase.Unavailable and state.depot_id==-1,"Session replacement retires pending commit ownership")
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
 	var service:=Service.new();root.add_child(service)
@@ -64,6 +102,7 @@ func run() -> void:
 	service.reply(state.ticket,value);state.request_appearances([11]);artwork_ticket=service.next
 	state.close();service.reply(artwork_ticket,{})
 	check(service.detached.has(artwork_ticket) and state.appearances.is_empty() and not state.appearance_pending(),"Closing retires artwork ownership and late callbacks")
+	commits(service,state)
 	state.dispose();service.queue_free()
 	if failures==0:print("PASS depot goods state")
 	quit(1 if failures else 0)

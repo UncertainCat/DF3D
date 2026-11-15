@@ -14,7 +14,7 @@ The bridge uses the already qualified `commitDepotGoods`/`depotSetHaulBatch`
 endpoint, with the ordinary transport epoch/save and sequence guards. Godot
 admits only integer IDs/revisions and Boolean desired values. Both peers/mailbox
 use233 and must be rebuilt together; DF53.16 compatibility pins are unchanged.
-Public depot routes and viewer draft/close integration remain unfinished.
+Public depot routes and rendered draft/close integration remain unfinished.
 
 Protected153229 on2026-11-15 verifies actual Godot wire creation and cancellation
 of two hauling jobs, stale receipts after both transitions, foreign-ID rejection,
@@ -37,6 +37,25 @@ bit on a copy of flags, while retaining all other flags and native goods facts.
 No game flag is cleared. This fixes DF3D's overly broad revision guard; it is not
 a native gameplay bug or a change to hauling eligibility. Large-batch transport,
 viewer drafts/commit-on-close and ordinary hauling remain unfinished.
+
+The staged goods controller now accepts an explicit draft and its retained
+source revision through `commit_and_close`. It submits one immutable batch,
+disables reads/edits while applying and closes only after a matching Applied
+receipt. Rejected, Stale and Unknown retain disabled source rows without retry;
+malformed success receipts become Unknown. Close/session replacement detach
+ownership, and late receipts cannot affect a replacement picker. This is a
+controller boundary, not wiring of the rendered selection or Escape controls.
+
+Protected153846 on2026-11-15 creates and cancels two native hauling jobs through
+this controller and confirms closure after each Applied receipt. Both stale
+raw requests still reject; all nine read/controller cases pass. Owned DF40360
+closes unsaved with source preservation, native30FPS and sampled GPU49C.
+Depot clients and the headless controller check have no diagnostics. The latter
+also covers pending input exclusion, immutable precise revisions, terminal
+no-replay, malformed receipts, reopening and session replacement. Evidence:
+`completed_sheet_discovery_reference.depot_goods_commit_controller_reference`.
+Rendered draft selection, cross-category draft retention, large-batch transport
+and ordinary hauling remain unfinished; depot routes stay hidden.
 
 ## Depot goods read transport migration
 

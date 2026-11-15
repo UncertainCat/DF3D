@@ -1,5 +1,20 @@
 extends "res://tests/machinery_wire_live.gd"
 const GoodsModel=preload("res://scripts/depot_goods_state.gd")
+func controller_commit(intent: Dictionary) -> Dictionary:
+	var service=preload("res://scripts/semantic_action_service.gd").new()
+	root.add_child(service);service.configure(world,true);service.set_process(false)
+	var model=GoodsModel.new();model.configure(service);model.open(intent.depot_id)
+	var result: Dictionary={}
+	if await settle_goods(model,service):
+		if check(model.commit_and_close(intent.expected_revision,intent.changes),"Controller refused qualified commit"):
+			var ticket: int=model.ticket
+			var deadline:=Time.get_ticks_msec()+5000
+			while model.phase==GoodsModel.Phase.Applying and Time.get_ticks_msec()<deadline:
+				world.poll();service.poll(0.01);await create_timer(0.01).timeout
+			result=service.result(ticket)
+			check(model.phase==GoodsModel.Phase.Closed and model.depot_id==-1,"Applied controller commit did not close picker")
+	model.dispose();service.queue_free();await process_frame
+	return result
 func verify_commit(read_intent: Dictionary,initial: Dictionary) -> Array:
 	var receipts: Array=[];var changes: Array=[]
 	for row in initial.items:changes.append({"id":row.id,"desired":true})
@@ -11,7 +26,7 @@ func verify_commit(read_intent: Dictionary,initial: Dictionary) -> Array:
 	var rejected:=await request("depot_goods",foreign)
 	check(rejected.get("depot_commit",{}).get("outcome")==C.DepotGoodsCommitOutcome.Rejected,"Foreign depot commit did not reject: "+str(rejected.get("depot_commit",{}))+" "+str(rejected.get("message","")))
 	if failed:return receipts
-	var applied:=await request("depot_goods",intent);receipts.append(applied)
+	var applied:=await controller_commit(intent);receipts.append(applied)
 	if not check(applied.get("depot_commit",{}).get("outcome")==C.DepotGoodsCommitOutcome.Applied,"Depot batch was not applied"):return receipts
 	check(applied.depot_commit.expected_revision==initial.revision and applied.depot_commit.observed_revision==initial.revision,"Commit receipt lost source identity")
 	var pending_reply:=await request("depot_goods",read_intent);var pending: Dictionary=pending_reply.get("depot_goods",{})
@@ -20,7 +35,7 @@ func verify_commit(read_intent: Dictionary,initial: Dictionary) -> Array:
 	check(stale.get("depot_commit",{}).get("outcome")==C.DepotGoodsCommitOutcome.Stale and stale.depot_commit.observed_revision==pending.revision,"Old creation receipt did not reject as stale")
 	intent.expected_revision=pending.revision
 	for row in intent.changes:row.desired=false
-	var cancelled:=await request("depot_goods",intent);receipts.append(cancelled)
+	var cancelled:=await controller_commit(intent);receipts.append(cancelled)
 	if not check(cancelled.get("depot_commit",{}).get("outcome")==C.DepotGoodsCommitOutcome.Applied,"Wire cancellation failed"):return receipts
 	var restored:=await request("depot_goods",read_intent)
 	check(restored.get("depot_goods",{})==initial,"Wire cancellation did not restore native goods facts")

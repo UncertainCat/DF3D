@@ -59398,6 +59398,100 @@
           "bridge/plugin/depot_goods_read.h": "81652b1aadb9dd81de2427157e3b2567973e9dc7b2071ba2b554984f71e91d70",
           "presentations/godot/project/tests/depot_goods_wire_live.gd": "5f44cde6c53c2e33cb4a15175ad9435e9baab6b3d0e5248dd17299f2715491c8"
         }
+      },
+      "depot_goods_commit_controller_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-153846",
+        "owned_df_pid": 40360,
+        "protocol": 233,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Actual viewer controller creates/cancels two native hauls and closes only after Applied; stale raw receipts still reject and all nine read/controller cases pass. Asset-free controller checks pending input exclusion, rejected/stale/unknown no-replay, precise immutable draft ownership, mismatched receipts, late success after reopening and session replacement. No rendered draft controls, large batch or ordinary hauling acceptance.",
+        "commits": [
+          {
+            "depot_id": 54,
+            "expected_revision": 6336218185030153367,
+            "observed_revision": 6336218185030153367,
+            "outcome": 1
+          },
+          {
+            "depot_id": 54,
+            "expected_revision": 6336218185030153367,
+            "observed_revision": 2386085905837940055,
+            "outcome": 2
+          },
+          {
+            "depot_id": 54,
+            "expected_revision": 2386085905837940055,
+            "observed_revision": 2386085905837940055,
+            "outcome": 1
+          },
+          {
+            "depot_id": 54,
+            "expected_revision": 2386085905837940055,
+            "observed_revision": 6336218185030153367,
+            "outcome": 2
+          }
+        ],
+        "weight_cache_changes": [
+          {
+            "case": "anvils",
+            "items": [
+              {
+                "after": 536887297,
+                "before": 16385,
+                "id": 296
+              },
+              {
+                "after": 536887297,
+                "before": 16385,
+                "id": 28425
+              }
+            ]
+          },
+          {
+            "case": "bags",
+            "items": [
+              {
+                "after": 536887360,
+                "before": 16448,
+                "id": 12862
+              },
+              {
+                "after": 536887360,
+                "before": 16448,
+                "id": 12892
+              }
+            ]
+          },
+          {
+            "case": "bars",
+            "items": [
+              {
+                "after": 536870912,
+                "before": 0,
+                "id": 31751
+              },
+              {
+                "after": 536870912,
+                "before": 0,
+                "id": 32254
+              }
+            ]
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-153846/depot-goods-native.json": "32dbd7f4d0aed639f7412e0fe9d7a8ecc15cc1ba44311c78be1a3f101a23a786",
+          "build/stockpile-storage-native-farm-discovery-20261115-153846/depot-goods-wire-anvils-result.json": "152eac6b1d8916d856c780d9515dbedc227efdd3432a92f873953a0096681280",
+          "build/stockpile-storage-native-farm-discovery-20261115-153846/result.json": "5ee573f3982a4d43cfba4f41b1a410c5ad81c0ab6303b3aa74acfaa5aa062be2",
+          "build/stockpile-storage-native-farm-discovery-20261115-153846/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/notes/pm/depot-commit-state.stdout.log": "d87b9c9cc6a6acff7b2a7332fe249ccdcede1142650045bf5cf9ee525e9fe0a7",
+          "build/notes/pm/depot-commit-state.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "presentations/godot/project/scripts/depot_goods_state.gd": "3f43cb03ce990570d10f7539ae37d96e44220046384c47227b590d031522ea35",
+          "presentations/godot/project/tests/depot_goods_state_test.gd": "45de31e6293d58cda136334d811431543697444cac3939542e6ea51508e8094f",
+          "schema/mirror.fbs": "02c7bc5819f0c9a5dff2104c42d7e1d6aebbb02bed715d4a49e00457439f933a",
+          "bridge/plugin/depot_goods_read.h": "81652b1aadb9dd81de2427157e3b2567973e9dc7b2071ba2b554984f71e91d70",
+          "presentations/godot/project/tests/depot_goods_wire_live.gd": "2a31ebd0c7f0ce5dc0354f404372e3ca0a9556521d2ba63a90182acc1f54f989"
+        }
       }
     },
     "pending_construction_reference": {

@@ -1,9 +1,9 @@
 extends RefCounted
 # Native snapshots own filtering, captions, membership and order. This staged
-# controller only navigates reads; hauling drafts/commit are not exposed yet.
+# controller owns reads and commit retirement. Draft controls remain staged.
 signal changed
 const C=preload("res://scripts/management_contract.gd")
-enum Phase {Closed,Reading,Ready,Rejected,Unknown,Unavailable}
+enum Phase {Closed,Reading,Ready,Rejected,Unknown,Unavailable,Applying,Stale}
 var service
 var phase:=Phase.Closed
 var depot_id: int=-1
@@ -73,6 +73,41 @@ func open(id: int) -> void:
 	close()
 	if id<0 or id>2147483647:return
 	depot_id=id;_read()
+func commit_and_close(expected_revision: int,changes: Array) -> bool:
+	# The caller must retain the draft's original revision. Never rebase a draft
+	# onto a later read, split it, or replay a rejected/uncertain commit.
+	if phase!=Phase.Ready or revision<=0 or expected_revision!=revision or changes.is_empty() or changes.size()>65536:return false
+	var seen: Dictionary={}
+	for row in changes:
+		if typeof(row)!=TYPE_DICTIONARY or row.size()!=2 or not _integer(row.get("id"),0,2147483647) or typeof(row.get("desired"))!=TYPE_BOOL:return false
+		if seen.has(row.id):return false
+		seen[row.id]=true
+	if service==null:phase=Phase.Unavailable;changed.emit();return false
+	var intent: Dictionary={"action":C.ManagementAction.DepotGoodsCommit,"depot_id":depot_id,"expected_revision":expected_revision,"changes":changes.duplicate(true)}
+	var owner:=generation
+	phase=Phase.Applying;last_result={}
+	_appearance_queue=[];_appearance_id=-1
+	if _inspection!=null:_inspection.close()
+	ticket=service.submit("depot_goods",intent,func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0;last_result=result.duplicate(true)
+		var receipt: Variant=result.get("depot_commit",{})
+		if result.get("outcome")=="unknown":phase=Phase.Unknown
+		elif result.get("status")==C.ManagementStatus.Rejected:phase=Phase.Rejected
+		elif result.get("status")!=C.ManagementStatus.Ok or result.get("action")!=intent.action or not _valid_commit(receipt,intent):phase=Phase.Unknown
+		elif receipt.outcome==C.DepotGoodsCommitOutcome.Applied:close();return
+		elif receipt.outcome==C.DepotGoodsCommitOutcome.Stale:phase=Phase.Stale
+		elif receipt.outcome==C.DepotGoodsCommitOutcome.Rejected:phase=Phase.Rejected
+		else:phase=Phase.Unknown
+		changed.emit())
+	if ticket==0:phase=Phase.Unavailable
+	changed.emit();return ticket!=0
+func _valid_commit(value: Variant,intent: Dictionary) -> bool:
+	if typeof(value)!=TYPE_DICTIONARY or value.get("depot_id")!=intent.depot_id or value.get("expected_revision")!=intent.expected_revision:return false
+	if not _integer(value.get("outcome"),0,3) or not _integer(value.get("observed_revision"),0,9223372036854775807):return false
+	if value.outcome==C.DepotGoodsCommitOutcome.Stale:return value.observed_revision>0 and value.observed_revision!=intent.expected_revision
+	if value.outcome in [C.DepotGoodsCommitOutcome.Applied,C.DepotGoodsCommitOutcome.Unknown]:return value.observed_revision==intent.expected_revision
+	return true
 func select_category(value: int) -> void:
 	if phase!=Phase.Ready or category==value or not categories.any(func(row):return row.type==value):return
 	category=value;first_item=0;_read()

@@ -29161,6 +29161,642 @@
           "build/stockpile-storage-native-farm-discovery-20261115-110553/chest-scene-machinery-pump-1.png": "09244fe228819b230366c2362528066b79c95d63ef7b23db8aa8176f8f27beb0",
           "build/stockpile-storage-native-farm-discovery-20261115-110553/chest-scene-machinery-pump-2.png": "891b648f8e847071394d79472061fe507dd8730fb201982d8b84f76bd611c432"
         }
+      },
+      "machinery_workflow_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-111458",
+        "protocol": 228,
+        "scope": "Public actual map clicks and holder entry for seven machinery types; rename/restore, remove/cancel, Escape, pump on/off. 46 full 488x708 native panel matches, including inactive/frozen here/frozen elsewhere, gear disengaged, all pump directions. Variant simulation fields are changed only by paused diagnostic and restored; no natural freezing, construction, power transmission or pumping simulation claim.",
+        "native": {
+          "buildings": [
+            {
+              "id": 233,
+              "lines": [
+                {
+                  "text": "        Millstone",
+                  "y": 6
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 8
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 9
+                },
+                {
+                  "text": "                                    Add new task",
+                  "y": 12
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 43
+                },
+                {
+                  "text": "        jet millstone",
+                  "y": 46
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": 1,
+              "name": "",
+              "network": {
+                "flags": 1,
+                "produced": 100,
+                "required": 20
+              },
+              "power": {
+                "consumed": 10,
+                "produced": 0
+              },
+              "tile": [
+                121,
+                107,
+                165
+              ],
+              "type": 13
+            },
+            {
+              "fixture": "DFHack construction completed by diagnostic; no construction simulation, contents or network.",
+              "id": 1494,
+              "lines": [
+                {
+                  "text": "        Screw Pump",
+                  "y": 6
+                },
+                {
+                  "text": "  Stable Foundation",
+                  "y": 11
+                },
+                {
+                  "text": "      Start Pump Manually",
+                  "y": 13
+                },
+                {
+                  "text": "  Pumps from the north",
+                  "y": 15
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": -1,
+              "manual_toggle": {
+                "frame_unchanged": true,
+                "initial": false,
+                "jobs": 0,
+                "restored": false
+              },
+              "name": "",
+              "power": {
+                "consumed": 10,
+                "produced": 0
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": -1,
+                "produced": 0,
+                "pump_direction": 0,
+                "pump_manual": 0,
+                "required": 0,
+                "stable_foundation": true,
+                "status": 0
+              },
+              "tile": [
+                152,
+                84,
+                165
+              ],
+              "type": 33
+            },
+            {
+              "fixture": "DFHack construction completed by diagnostic; no construction simulation, contents or network.",
+              "id": 1490,
+              "lines": [
+                {
+                  "text": "        Unknown material Gear Assembly",
+                  "y": 6
+                },
+                {
+                  "text": "  Stable Foundation",
+                  "y": 11
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": -1,
+              "name": "",
+              "power": {
+                "consumed": 5,
+                "produced": 0
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": -1,
+                "produced": 0,
+                "pump_direction": -1,
+                "pump_manual": -1,
+                "required": 0,
+                "stable_foundation": true,
+                "status": 0
+              },
+              "tile": [
+                136,
+                84,
+                165
+              ],
+              "type": 40
+            },
+            {
+              "fixture": "DFHack construction completed by diagnostic; no construction simulation, contents or network.",
+              "id": 1491,
+              "lines": [
+                {
+                  "text": "        Horizontal unknown material Axle",
+                  "y": 6
+                },
+                {
+                  "text": "  Stable Foundation",
+                  "y": 11
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": -1,
+              "name": "",
+              "power": {
+                "consumed": 1,
+                "produced": 0
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": -1,
+                "produced": 0,
+                "pump_direction": -1,
+                "pump_manual": -1,
+                "required": 0,
+                "stable_foundation": true,
+                "status": 0
+              },
+              "tile": [
+                140,
+                84,
+                165
+              ],
+              "type": 41
+            },
+            {
+              "fixture": "DFHack construction completed by diagnostic; no construction simulation, contents or network.",
+              "id": 1492,
+              "lines": [
+                {
+                  "text": "        Vertical unknown material Axle",
+                  "y": 6
+                },
+                {
+                  "text": "  Stable Foundation",
+                  "y": 11
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": -1,
+              "name": "",
+              "power": {
+                "consumed": 1,
+                "produced": 0
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": -1,
+                "produced": 0,
+                "pump_direction": -1,
+                "pump_manual": -1,
+                "required": 0,
+                "stable_foundation": true,
+                "status": 0
+              },
+              "tile": [
+                144,
+                84,
+                165
+              ],
+              "type": 42
+            },
+            {
+              "id": 234,
+              "lines": [
+                {
+                  "text": "        Water Wheel",
+                  "y": 6
+                },
+                {
+                  "text": "  Active",
+                  "y": 11
+                },
+                {
+                  "text": "  Total Power: 100",
+                  "y": 12
+                },
+                {
+                  "text": "  Total Power Needed: 20",
+                  "y": 13
+                },
+                {
+                  "text": "  Hanging",
+                  "y": 14
+                },
+                {
+                  "text": "        citron wood",
+                  "y": 43
+                },
+                {
+                  "text": "        citron wood",
+                  "y": 46
+                },
+                {
+                  "text": "        citron wood",
+                  "y": 49
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": 1,
+              "name": "",
+              "network": {
+                "flags": 1,
+                "produced": 100,
+                "required": 20
+              },
+              "power": {
+                "consumed": 10,
+                "produced": 100
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": 1,
+                "produced": 100,
+                "pump_direction": -1,
+                "pump_manual": -1,
+                "required": 20,
+                "stable_foundation": false,
+                "status": 1
+              },
+              "tile": [
+                121,
+                106,
+                165
+              ],
+              "type": 43
+            },
+            {
+              "fixture": "DFHack construction completed by diagnostic; no construction simulation, contents or network.",
+              "id": 1495,
+              "lines": [
+                {
+                  "text": "        Windmill",
+                  "y": 6
+                },
+                {
+                  "text": "  Stable Foundation",
+                  "y": 11
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": -1,
+              "name": "",
+              "power": {
+                "consumed": 0,
+                "produced": 0
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": -1,
+                "produced": 0,
+                "pump_direction": -1,
+                "pump_manual": -1,
+                "required": 0,
+                "stable_foundation": true,
+                "status": 0
+              },
+              "tile": [
+                113,
+                101,
+                165
+              ],
+              "type": 44
+            },
+            {
+              "fixture": "DFHack construction completed by diagnostic; no construction simulation, contents or network.",
+              "id": 1493,
+              "lines": [
+                {
+                  "text": "        Unknown material Rollers",
+                  "y": 6
+                },
+                {
+                  "text": "  Stable Foundation",
+                  "y": 11
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": -1,
+              "name": "",
+              "power": {
+                "consumed": 2,
+                "produced": 0
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": -1,
+                "produced": 0,
+                "pump_direction": -1,
+                "pump_manual": -1,
+                "required": 0,
+                "stable_foundation": true,
+                "status": 0
+              },
+              "tile": [
+                148,
+                84,
+                165
+              ],
+              "type": 50
+            }
+          ],
+          "frame": 0,
+          "inventory": [
+            {
+              "complete": true,
+              "id": 233,
+              "revealed": true,
+              "type": 13
+            },
+            {
+              "complete": true,
+              "id": 234,
+              "revealed": true,
+              "type": 43
+            },
+            {
+              "complete": true,
+              "id": 409,
+              "revealed": true,
+              "type": 13
+            },
+            {
+              "complete": true,
+              "id": 410,
+              "revealed": true,
+              "type": 43
+            },
+            {
+              "complete": true,
+              "id": 411,
+              "revealed": true,
+              "type": 13
+            },
+            {
+              "complete": true,
+              "id": 412,
+              "revealed": true,
+              "type": 43
+            }
+          ],
+          "scene": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          },
+          "success": true,
+          "variants": {
+            "cases": [
+              {
+                "buildings": [
+                  {
+                    "id": 1494,
+                    "reference": "machinery-variant-1-33",
+                    "semantic": {
+                      "disengaged": false,
+                      "machine_id": -1,
+                      "produced": 0,
+                      "pump_direction": 1,
+                      "pump_manual": 0,
+                      "required": 0,
+                      "stable_foundation": true,
+                      "status": 0
+                    },
+                    "type": 33
+                  },
+                  {
+                    "id": 1490,
+                    "reference": "machinery-variant-1-40",
+                    "semantic": {
+                      "disengaged": true,
+                      "machine_id": -1,
+                      "produced": 0,
+                      "pump_direction": -1,
+                      "pump_manual": -1,
+                      "required": 0,
+                      "stable_foundation": true,
+                      "status": 0
+                    },
+                    "type": 40
+                  },
+                  {
+                    "id": 234,
+                    "reference": "machinery-variant-1-43",
+                    "semantic": {
+                      "disengaged": false,
+                      "machine_id": 1,
+                      "produced": 100,
+                      "pump_direction": -1,
+                      "pump_manual": -1,
+                      "required": 20,
+                      "stable_foundation": false,
+                      "status": 2
+                    },
+                    "type": 43
+                  }
+                ],
+                "viewer": {
+                  "roundtrip": true,
+                  "success": true,
+                  "surface": "actual main scene"
+                }
+              },
+              {
+                "buildings": [
+                  {
+                    "id": 1494,
+                    "reference": "machinery-variant-2-33",
+                    "semantic": {
+                      "disengaged": false,
+                      "machine_id": -1,
+                      "produced": 0,
+                      "pump_direction": 2,
+                      "pump_manual": 0,
+                      "required": 0,
+                      "stable_foundation": true,
+                      "status": 0
+                    },
+                    "type": 33
+                  },
+                  {
+                    "id": 1490,
+                    "reference": "machinery-variant-2-40",
+                    "semantic": {
+                      "disengaged": false,
+                      "machine_id": -1,
+                      "produced": 0,
+                      "pump_direction": -1,
+                      "pump_manual": -1,
+                      "required": 0,
+                      "stable_foundation": true,
+                      "status": 0
+                    },
+                    "type": 40
+                  },
+                  {
+                    "id": 234,
+                    "reference": "machinery-variant-2-43",
+                    "semantic": {
+                      "disengaged": false,
+                      "machine_id": 1,
+                      "produced": 100,
+                      "pump_direction": -1,
+                      "pump_manual": -1,
+                      "required": 20,
+                      "stable_foundation": false,
+                      "status": 4
+                    },
+                    "type": 43
+                  }
+                ],
+                "viewer": {
+                  "roundtrip": true,
+                  "success": true,
+                  "surface": "actual main scene"
+                }
+              },
+              {
+                "buildings": [
+                  {
+                    "id": 1494,
+                    "reference": "machinery-variant-3-33",
+                    "semantic": {
+                      "disengaged": false,
+                      "machine_id": -1,
+                      "produced": 0,
+                      "pump_direction": 3,
+                      "pump_manual": 0,
+                      "required": 0,
+                      "stable_foundation": true,
+                      "status": 0
+                    },
+                    "type": 33
+                  },
+                  {
+                    "id": 1490,
+                    "reference": "machinery-variant-3-40",
+                    "semantic": {
+                      "disengaged": false,
+                      "machine_id": -1,
+                      "produced": 0,
+                      "pump_direction": -1,
+                      "pump_manual": -1,
+                      "required": 0,
+                      "stable_foundation": true,
+                      "status": 0
+                    },
+                    "type": 40
+                  },
+                  {
+                    "id": 234,
+                    "reference": "machinery-variant-3-43",
+                    "semantic": {
+                      "disengaged": false,
+                      "machine_id": 1,
+                      "produced": 100,
+                      "pump_direction": -1,
+                      "pump_manual": -1,
+                      "required": 20,
+                      "stable_foundation": false,
+                      "status": 3
+                    },
+                    "type": 43
+                  }
+                ],
+                "viewer": {
+                  "roundtrip": true,
+                  "success": true,
+                  "surface": "actual main scene"
+                }
+              }
+            ],
+            "restored": true
+          }
+        },
+        "owned_df_pid": 36128,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "gpu_temperature_c": [
+          58,
+          61
+        ],
+        "diagnostics": "passed_with_known_issues: rendering-thread notice, render-thread finalize, two ObjectDB shutdown instances",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/machinery-scene-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/machinery-scene.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/machinery-sheets-native.json": "b77816c27ca2fecf888f7b009fdc4b1662fd213c38754c79cdef76120ce7cae8",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/result.json": "04e4f44198777e72f7935fec9c25b6d3755a9f9557a8e73ed8b64467a3f4e921",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/machinery-variant-wire-1-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/machinery-variant-wire-2-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/machinery-variant-wire-3-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/machinery-variant-wire-1.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/machinery-variant-wire-2.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/machinery-variant-wire-3.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-33.png": "891b648f8e847071394d79472061fe507dd8730fb201982d8b84f76bd611c432",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-40.png": "be2e8e7e8bf58c90e0ee5c193ee89417a4b6f3cef95e9107c87a290c02a38f5f",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-41.png": "6f41c6b6f37085673c645af89d0bb473af8dd12b864052131917f96be7dab640",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-42.png": "81ac990fd187640fda87115969d5e8a751d44689e906aa402caa1385ab74e8b2",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-43.png": "772e09415f13ab3eff2685b9c905750e4aab53acf8dc752f4fbc8ec321a8ad11",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-44.png": "e92e9c942981648d0aface2ac4f54c06cd9da8db1c6100208b5ddfa3e1c76864",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-50.png": "73ca70e45fe83d9bae57b8080f967c5cb174623a8bc4e8b11d4045f9f369e802",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-pump-1.png": "09244fe228819b230366c2362528066b79c95d63ef7b23db8aa8176f8f27beb0",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-pump-2.png": "891b648f8e847071394d79472061fe507dd8730fb201982d8b84f76bd611c432",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-33-removal-cancelled.png": "891b648f8e847071394d79472061fe507dd8730fb201982d8b84f76bd611c432",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-33-removing.png": "021b732eafd83d3d62bad51a67d13320541fff62701cf056fb51f182bb266968",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-33-renamed.png": "6059af64cd66656eedd7890e8306684a37b88a6d6cfbb43d457e869f747d104c",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-33-restored.png": "891b648f8e847071394d79472061fe507dd8730fb201982d8b84f76bd611c432",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-40-removal-cancelled.png": "be2e8e7e8bf58c90e0ee5c193ee89417a4b6f3cef95e9107c87a290c02a38f5f",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-40-removing.png": "b5e0be8378ef3cb78c8d6191ea36c2212d9992ce2586a20b89f030a6a5df9fee",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-40-renamed.png": "7da338a05c1ac020bdfab606310513b06c84f2fdc72f1344657585cdcdb25a7c",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-40-restored.png": "be2e8e7e8bf58c90e0ee5c193ee89417a4b6f3cef95e9107c87a290c02a38f5f",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-41-removal-cancelled.png": "6f41c6b6f37085673c645af89d0bb473af8dd12b864052131917f96be7dab640",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-41-removing.png": "c6c9d48d7c9a82f84d8e4f20870253381c85ab6a6e37501947ca2d29f3919ed8",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-41-renamed.png": "8be167095b67876f6e23a1031b3a818d0098d403551ffd9e2d2cf34ac78dc62c",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-41-restored.png": "6f41c6b6f37085673c645af89d0bb473af8dd12b864052131917f96be7dab640",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-42-removal-cancelled.png": "81ac990fd187640fda87115969d5e8a751d44689e906aa402caa1385ab74e8b2",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-42-removing.png": "ad0446d23c5d2c00435e082cbeeee5e040138db5fa150cd93406bcfe904cfa81",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-42-renamed.png": "7215c626f19923525a29f6f598181afce81585e4dd502ee59ddf2b7985701866",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-42-restored.png": "81ac990fd187640fda87115969d5e8a751d44689e906aa402caa1385ab74e8b2",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-43-removal-cancelled.png": "772e09415f13ab3eff2685b9c905750e4aab53acf8dc752f4fbc8ec321a8ad11",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-43-removing.png": "3a528ac8053624bb14c3fc5df8567168abb25f1b44ab9dafc56dae2fd206be0f",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-43-renamed.png": "ff4eb3978a83bfe22a80fa4b42f665a5f9a945ea2d1ae05c29dbdfecd2dca91f",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-43-restored.png": "772e09415f13ab3eff2685b9c905750e4aab53acf8dc752f4fbc8ec321a8ad11",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-44-removal-cancelled.png": "e92e9c942981648d0aface2ac4f54c06cd9da8db1c6100208b5ddfa3e1c76864",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-44-removing.png": "756c3059598aa8dce08e4611d42746f182a2b8b85aea3a9e3591de342e500a16",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-44-renamed.png": "e730c83bff8d67e03fe8551fc77b1e69c658f6ac7bfe06e70fe19eb2ca1f8784",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-44-restored.png": "e92e9c942981648d0aface2ac4f54c06cd9da8db1c6100208b5ddfa3e1c76864",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-50-removal-cancelled.png": "73ca70e45fe83d9bae57b8080f967c5cb174623a8bc4e8b11d4045f9f369e802",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-50-removing.png": "b99c79b9363cacd1274c99b798e9fa7ebb514635fdb851e28ea364e67cedbb9d",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-50-renamed.png": "7293907834640f1d80f194a32e9ed7002a09d6f62f7e033d181e1de905e04f7b",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-sheet-50-restored.png": "73ca70e45fe83d9bae57b8080f967c5cb174623a8bc4e8b11d4045f9f369e802",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-variant-1-33.png": "5b1d5dc264f1156ccae16307f95012f3faa46719a6ee8ff15457b30d4b233552",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-variant-1-40.png": "7b13f6f7d3f2eefa806f26767a2663340068610bbad83d9e99b7dd1fba7af255",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-variant-1-43.png": "b786b5aa9c95787defa00b674ee82d83fea309619910fff5ec0e06949a5a9860",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-variant-2-33.png": "17519af7c70d5f428edd711d3b28b7b0fcc76ef0702b8441325672637dd78b80",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-variant-2-40.png": "be2e8e7e8bf58c90e0ee5c193ee89417a4b6f3cef95e9107c87a290c02a38f5f",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-variant-2-43.png": "f1df1528576ffaa74418c73f58ec1793151a44ab001a7b5257719f22c74b225d",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-variant-3-33.png": "ef84f7dafec354ee80c27b4fc296ca006bad955c1c17b6a9ea58785f6a2dce0b",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-variant-3-40.png": "be2e8e7e8bf58c90e0ee5c193ee89417a4b6f3cef95e9107c87a290c02a38f5f",
+          "build/stockpile-storage-native-farm-discovery-20261115-111458/chest-scene-machinery-variant-3-43.png": "cc1aba9b7e6d4e2c52b8b2ac9592198190b62b4c991202cbf68fc7f11656b299"
+        }
       }
     },
     "pending_construction_reference": {

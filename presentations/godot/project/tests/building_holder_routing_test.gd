@@ -13,16 +13,17 @@ func _initialize() -> void:
 	var pending:=HolderPanel.new();var furniture:=HolderPanel.new()
 	ui.controllers={"pending_building":pending,"furniture":furniture}
 	var failures:=0
-	for pair in [[3,4],[46,46],[31,55],[54,54]]:
+	# entities.cpp anchors Construction34 between ScrewPump33 and Hatch35.
+	for pair in [[3,4],[31,32],[32,33],[33,34],[34,55],[35,35],[46,46],[54,54]]:
 		ui.world.facts={"building_kind":pair[1],"complete":false}
 		ui.open_building_holder(pair[0],278)
 		if pending.opened.size()!=1 or not furniture.opened.is_empty():failures+=1;push_error("Unfinished holder mapping differs: "+str(pair))
 		pending.opened.clear()
 	OS.set_environment("DF3D_FURNITURE_RUNTIME","0")
-	for pair in [[3,4],[46,46]]:
+	for pair in [[3,4],[33,34],[40,40],[41,41],[42,42],[43,43],[44,44],[46,46],[50,50]]:
 		ui.world.facts={"building_kind":pair[1],"complete":true}
 		ui.open_building_holder(pair[0],278)
-		if furniture.opened.size()!=1 or not pending.opened.is_empty():failures+=1;push_error("Completed funerary holder remains gated")
+		if furniture.opened.size()!=1 or not pending.opened.is_empty():failures+=1;push_error("Completed holder remains gated: "+str(pair))
 		furniture.opened.clear()
 	ui.free()
 	if failures==0:print("BUILDING_HOLDER_ROUTING_PASS")

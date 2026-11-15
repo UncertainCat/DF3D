@@ -14,7 +14,8 @@ toggle to replay. Other item/worker fields remain invalid. A completed receipt m
 be a non-removing completed ScrewPump header. The producer applies it only after
 validating current type, completion, removal state and revision, and confirms that
 only the requested pump flag changed. Already-set intents return the current
-receipt without mutation. Public machinery routes remain hidden pending UI acceptance.
+receipt without mutation. Public machinery routes use the verified shared panel;
+rendered and live acceptance is recorded in Completed machinery sheets below.
 
 Both management defaults and the mailbox are228. Rebuild bridge and viewer
 together. Older recordings imply no machinery body and must not synthesize network
@@ -563,8 +564,8 @@ changes `pump_manually` to its opposite; it does not create or cancel a job in
 that input handler. Protected103300 clicks the visible checkbox twice, verifies
 the flag changes/restores, and confirms no job or frame change while paused.
 This does not qualify subsequent pumping simulation. The captured native labels
-are Start Pump Manually and Stop Pumping Manually. The staged main-scene panel
-is qualified below; public machinery entry remains on inspector routes.
+are Start Pump Manually and Stop Pumping Manually. The main-scene panel and
+public machinery entry are qualified below.
 
 Evidence: `completed_sheet_discovery_reference.machinery_sheets_reference` contains
 the eight native records, exact source captions, instruction references and pins.
@@ -618,6 +619,32 @@ preservation; graphical runs are capped30FPS, sampled GPU60..61C. The live run
 passes with the known rendering-thread notice, render-thread finalize and two
 ObjectDB shutdown diagnostics. Evidence:
 `completed_sheet_discovery_reference.machinery_scene_reference`.
+
+Protected111458 on2026-11-15 qualifies public map selection and native-type holder
+entry for all seven types. Actual pointer workflows rename/restore, remove/cancel,
+close with Escape and toggle the manual pump on/off. Forty-six complete488x708
+panels match native pixels: seven ordinary panels,28 rename/removal states, two
+pump states and nine controlled variants. Variants cover Inactive, Frozen Here,
+Frozen Elsewhere, gear Disengaged and east/south/west pumping captions. Their live
+header facts match the native provider. The diagnostic restores all changed
+simulation flags/directions; it does not establish natural freeze transitions,
+power transmission, construction completion or subsequent pumping simulation.
+
+The map route uses the same enum boundary as entities.cpp: native ScrewPump33
+maps to mirror34, native Construction34 maps to appended55, and kinds35..54 keep
+their IDs. This also corrects the earlier pending-holder boundary; the headless
+building_holder_routing_test covers both sides. Initial110917/111130/111317 map
+runs were not acceptance. They exposed the ID mismatch and a diagnostic fixture
+that set maximum build stage without the completed `exists` flag. Controlled
+fixtures now set both before capture and clear them before teardown; production
+completion detection is unchanged. The public routes no longer use the inspector
+for these seven machinery types.
+
+Core19 and the holder-routing engine test pass. Owned DF36128 closes unsaved with
+source preservation; serial graphics stay capped30FPS, sampled GPU58..61C. The
+four graphical clients pass with only the established rendering-thread notice,
+render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
+`completed_sheet_discovery_reference.machinery_workflow_reference`.
 
 ## Native bug register
 

@@ -4,6 +4,12 @@ local gui=require('gui');local json=require('json');local g=df.global.gps
 local sheet=df.global.game.main_interface.view_sheets
 local result={buildings={},inventory={},frame=df.global.world.frame_counter}
 local selected={};local fixtures={}
+local function click(x,y)
+ g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+ gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+end
 for _,b in ipairs(df.global.world.buildings.all)do
  local info=b:getMachineInfo()
  if info then
@@ -33,6 +39,7 @@ if os.getenv('DF3D_MACHINERY_FIXTURES')=='1'then
    assert(placed,'No machinery fixture site for '..name)
    while #placed.jobs>0 do assert(dfhack.job.removeJob(placed.jobs[0]))end
    placed:setBuildStage(placed:getMaxBuildStage())
+   placed.flags.exists=true -- Match the completed entity state used by normal map routing.
    selected[kind]=placed;fixtures[#fixtures+1]=placed
   end
  end
@@ -88,6 +95,14 @@ for _,kind in ipairs(kinds)do
   end
   row.manual_toggle={initial=initial,restored=b.pump_manually,jobs=jobs,frame_unchanged=df.global.world.frame_counter==result.frame}
  end
+ if kind~=df.building_type.Workshop and os.getenv('DF3D_MACHINERY_WORKFLOW')=='1'then
+  local name=b.name;assert(#b.jobs==0)
+  local function shot(label)view:render(dfhack.getTickCount());capture('machinery-sheet-'..kind..'-'..label)end
+  click(800,82);gui.simulateInput(view,'STRING_A120');gui.simulateInput(view,'SELECT');assert(b.name==name..'x');shot('renamed')
+  click(800,82);gui.simulateInput(view,'STRING_A000');gui.simulateInput(view,'SELECT');assert(b.name==name);shot('restored')
+  click(832,82);assert(#b.jobs==1 and b.jobs[0].job_type==df.job_type.DestroyBuilding);shot('removing')
+  click(520,202);assert(#b.jobs==0);shot('removal-cancelled')
+ end
 end
 if os.getenv('DF3D_MACHINERY_SCENE')=='1'then
  local f=assert(io.open(out..'/machinery-wire-expected.json','w'));f:write(json.encode(result));f:close()
@@ -105,8 +120,12 @@ if os.getenv('DF3D_MACHINERY_WIRE')=='1'then
  assert(result.wire.success and sheet.active_id==active_id)
  for _,b in ipairs(fixtures)do if b:getType()==df.building_type.ScrewPump then assert(not b.pump_manually and #b.jobs==0)end end
 end
+if os.getenv('DF3D_MACHINERY_VARIANTS')=='1'then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('machinery%-sheets%-native.lua$','machinery-variants-native.lua')
+ result.variants=assert(loadfile(source))(out,view,select_map,capture,selected)
+end
 if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
-for _,b in ipairs(fixtures)do b:setBuildStage(0);assert(dfhack.buildings.deconstruct(b))end
+for _,b in ipairs(fixtures)do b:setBuildStage(0);b.flags.exists=false;assert(dfhack.buildings.deconstruct(b))end
 if os.getenv('DF3D_MACHINERY_CONTRACT')=='1'then
  local lever=assert(df.building.find(61));local name=lever.name;local jobs=#lever.jobs
  capture('machinery-contract-wire')

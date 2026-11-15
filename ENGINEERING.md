@@ -93,6 +93,22 @@ its test waited a fixed100ms after detaching, then collided with the outstanding
 read. The corrected harness waits for that ticket's terminal receipt.
 This establishes controller/transport behavior, not rendered picker acceptance.
 
+`depot_goods_view.gd` stages the two-column frame, category navigation, search,
+scrolling and native group/item captions with distance values. It has no public
+owner or route. Native item artwork, contained rows, option/hauling controls,
+commit-on-close and interactive resize acceptance remain unfinished.
+`depot_goods_view_capture.gd` loads the recorded Anvils reply from protected144747
+and the installed assets. At1200x800 its headless geometry check passes; the
+30FPS Vulkan capture with `--render-thread safe` renders the initial projection
+without diagnostics. The screenshot is `depot-goods-view-initial.png` in that
+lane directory. Sampled GPU50–53C; the capture process exits afterward.
+Pixel comparisons match the sampled group-caption, item-caption and distance
+rectangles exactly. Category comparison differs in the scrollbar region and
+the empty search placeholder differs; these remain visual follow-up items.
+This is a standalone recorded-data view, not a main-scene/live interaction test.
+Initial separate-render-thread captures had incomplete output and known shutdown
+diagnostics and are excluded from visual evidence; no engine fix is claimed.
+
 ## Depot transport migration
 
 Management protocol231 adds an optional `DepotBodySnapshot` to completed building

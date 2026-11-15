@@ -9714,8 +9714,8 @@ other completed types retain the legacy inspector. Unfinished buildings have
 their own native sheet and qualified map entry, described below. These routes
 do not qualify the remaining specialized building controls.
 
-Protected native022800 on2026-11-15 captures29 naturally completed, revealed
-building types in the paused fortress. `completed_sheet_discovery_reference` in
+Protected native022800 on2026-11-15 attempts selection of29 naturally completed,
+revealed building types in the paused fortress. `completed_sheet_discovery_reference` in
 native_farm.json records identities, panel text and screenshot hashes. Chair65,
 Bed9, Table62 and Statue493 show a common header/contents structure in these
 samples. Floodgate39 includes linked-building tabs; occupied Coffin220 includes
@@ -9723,7 +9723,24 @@ resting-place and Tomb rows; Slab280 has memorial text; WaterWheel234 shows powe
 facts. Other specialized sheets remain distinct. This is native-only discovery,
 not action or viewer acceptance. In particular, empty furniture bodies do not
 establish assigned-zone variants. Owned DF27908 closes unsaved, source preserved,
-native30FPS and sampled GPU51C; core19 passes.
+native30FPS and sampled GPU51C; core19 passes. The Cabinet279 capture actually
+selected a dwarf occupying its tile, so it is not cabinet-sheet evidence.
+Subsequent furniture action captures assert the selected native building ID;
+generic discovery chooses an unoccupied reference tile before clicking it.
+
+Protected native032431 verifies actual BUILDING selection identities for
+Weaponrack917, Armorstand918, Cabinet394, Instrument468, Bookcase866 and
+OfferingPlace274, then Rename/restore, installed-component Forbid/restore,
+Remove/Cancel and component View. Each uses the plain header/contents body.
+Cabinet394 has15 contents, including stored trousers and shoes; its scrollbar
+moves the item controls16 pixels left. The capture keeps this populated case
+and asserts the first row is the installed component. Earlier032215 stopped at
+the cabinet's multi-item fixture guard; it is not full action acceptance.
+Source preserved, DF41268 exits unsaved, native30FPS. Evidence is in
+completed_sheet_discovery_reference.additional_furniture_reference. These six
+families remain candidates: their DF3D target admission and contents artwork,
+including stored clothing, are not yet qualified. Coffin and Slab bodies remain
+separate specialized work.
 
 Protected native023324 and023607 on2026-11-15 qualify ordinary furniture
 with nonempty zone relations: Chair65, Bed9, Table62 and Statue493 still show no

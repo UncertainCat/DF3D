@@ -15679,6 +15679,657 @@
           "source_preserved": true,
           "owned_df_closed": 34256
         }
+      },
+      "known_invalid_references": [
+        {
+          "type": 14,
+          "building_id": 279,
+          "reason": "Native022800 selected a dwarf on the cabinet tile; recorded text/screenshot is a creature sheet, not cabinet-sheet evidence. New action captures assert actual selection identity."
+        }
+      ],
+      "additional_furniture_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-032431",
+        "scope": "Native-only verified selection identity and header/component Rename, Forbid, Remove/Cancel and View for Weaponrack, Armorstand, Cabinet, Instrument, Bookcase and OfferingPlace. Cabinet394 has15contents; installed component is first and scrollbar shifts controls16px left. No DF3D admission/appearance/action acceptance for these six families yet.",
+        "source_preserved": true,
+        "owned_df_closed": 41268,
+        "buildings": [
+          {
+            "id": 917,
+            "type": 11,
+            "type_name": "Weaponrack",
+            "selected_sheet": "BUILDING",
+            "selected_id": 917,
+            "tile": [
+              174,
+              69,
+              165
+            ],
+            "relations": [
+              {
+                "id": 923,
+                "location_id": -1,
+                "name": "",
+                "type": 92
+              }
+            ],
+            "contents": [
+              {
+                "flags": 32,
+                "id": 20981,
+                "role": 2,
+                "type": "WEAPONRACK"
+              }
+            ],
+            "actions": [
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 20981,
+                "jobs": [],
+                "label": "initial",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 20981,
+                "jobs": [],
+                "label": "renamed",
+                "name": "Furniture reference"
+              },
+              {
+                "forbidden": true,
+                "item_flags": 524320,
+                "item_id": 20981,
+                "jobs": [],
+                "label": "forbidden",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 20981,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "label": "removing",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 20981,
+                "jobs": [],
+                "label": "restored",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 536870944,
+                "item_id": 20981,
+                "jobs": [],
+                "label": "view-return",
+                "name": ""
+              }
+            ],
+            "screenshots": {
+              "workshop-furniture-11-forbidden.png": "ae4251ead84077d5b35af48d983fd466378c7f97e4f74e6b675ee887d41d2f4d",
+              "workshop-furniture-11-initial.png": "56a8e134bcd7f57d5d1e2a6e7736254cc207073b35a109fed42ec78962b7efd4",
+              "workshop-furniture-11-removing.png": "0c1b5d400137ed63455d113388a553a3a7a310c983dd28e812ebbcb882290ba3",
+              "workshop-furniture-11-renamed.png": "f360d8c937a7d867e74ef1ec413ced2a6e6e1a2008e2d61d1e4935eda0ee9589",
+              "workshop-furniture-11-restored.png": "56a8e134bcd7f57d5d1e2a6e7736254cc207073b35a109fed42ec78962b7efd4",
+              "workshop-furniture-11-view-return.png": "56a8e134bcd7f57d5d1e2a6e7736254cc207073b35a109fed42ec78962b7efd4"
+            }
+          },
+          {
+            "id": 918,
+            "type": 12,
+            "type_name": "Armorstand",
+            "selected_sheet": "BUILDING",
+            "selected_id": 918,
+            "tile": [
+              174,
+              68,
+              165
+            ],
+            "relations": [
+              {
+                "id": 923,
+                "location_id": -1,
+                "name": "",
+                "type": 92
+              }
+            ],
+            "contents": [
+              {
+                "flags": 32,
+                "id": 20954,
+                "role": 2,
+                "type": "ARMORSTAND"
+              }
+            ],
+            "actions": [
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 20954,
+                "jobs": [],
+                "label": "initial",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 20954,
+                "jobs": [],
+                "label": "renamed",
+                "name": "Furniture reference"
+              },
+              {
+                "forbidden": true,
+                "item_flags": 524320,
+                "item_id": 20954,
+                "jobs": [],
+                "label": "forbidden",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 20954,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382797,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "label": "removing",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 20954,
+                "jobs": [],
+                "label": "restored",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 536870944,
+                "item_id": 20954,
+                "jobs": [],
+                "label": "view-return",
+                "name": ""
+              }
+            ],
+            "screenshots": {
+              "workshop-furniture-12-forbidden.png": "a1bbfade7fd82115f945e55025a44987a5d29268f05598e3f42e8dab6446acf9",
+              "workshop-furniture-12-initial.png": "9f196d45afdc4bab2aa9ec1557ccd62cdd2a4619e4e818e4fc8ea82308aa3b37",
+              "workshop-furniture-12-removing.png": "6434619322a9a783064c4242beceeab87ce2792cc9205a985edef8b8d81da34d",
+              "workshop-furniture-12-renamed.png": "7d4a715da41cbd6cca72c0f641ac91d403170976988399b85b3186f8b2e05fac",
+              "workshop-furniture-12-restored.png": "9f196d45afdc4bab2aa9ec1557ccd62cdd2a4619e4e818e4fc8ea82308aa3b37",
+              "workshop-furniture-12-view-return.png": "9f196d45afdc4bab2aa9ec1557ccd62cdd2a4619e4e818e4fc8ea82308aa3b37"
+            }
+          },
+          {
+            "id": 394,
+            "type": 14,
+            "type_name": "Cabinet",
+            "selected_sheet": "BUILDING",
+            "selected_id": 394,
+            "tile": [
+              128,
+              92,
+              165
+            ],
+            "relations": [
+              {
+                "id": 25,
+                "location_id": -1,
+                "name": "",
+                "type": 92
+              }
+            ],
+            "contents": [
+              {
+                "flags": 32,
+                "id": 7931,
+                "role": 2,
+                "type": "CABINET"
+              },
+              {
+                "flags": 81920,
+                "id": 264,
+                "role": 0,
+                "type": "PANTS"
+              },
+              {
+                "flags": 81920,
+                "id": 269,
+                "role": 0,
+                "type": "SHOES"
+              },
+              {
+                "flags": 81920,
+                "id": 7290,
+                "role": 0,
+                "type": "SHOES"
+              },
+              {
+                "flags": 81920,
+                "id": 7291,
+                "role": 0,
+                "type": "SHOES"
+              },
+              {
+                "flags": 81920,
+                "id": 7292,
+                "role": 0,
+                "type": "SHOES"
+              },
+              {
+                "flags": 81920,
+                "id": 7293,
+                "role": 0,
+                "type": "SHOES"
+              },
+              {
+                "flags": 65536,
+                "id": 30389,
+                "role": 0,
+                "type": "HELM"
+              },
+              {
+                "flags": 81920,
+                "id": 266,
+                "role": 0,
+                "type": "SHOES"
+              },
+              {
+                "flags": 81920,
+                "id": 267,
+                "role": 0,
+                "type": "SHOES"
+              },
+              {
+                "flags": 81920,
+                "id": 268,
+                "role": 0,
+                "type": "SHOES"
+              },
+              {
+                "flags": 65536,
+                "id": 31737,
+                "role": 0,
+                "type": "HELM"
+              },
+              {
+                "flags": 65536,
+                "id": 28695,
+                "role": 0,
+                "type": "ARMOR"
+              },
+              {
+                "flags": 65536,
+                "id": 35908,
+                "role": 0,
+                "type": "ARMOR"
+              },
+              {
+                "flags": 81920,
+                "id": 265,
+                "role": 0,
+                "type": "ARMOR"
+              }
+            ],
+            "actions": [
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 7931,
+                "jobs": [],
+                "label": "initial",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 7931,
+                "jobs": [],
+                "label": "renamed",
+                "name": "Furniture reference"
+              },
+              {
+                "forbidden": true,
+                "item_flags": 524320,
+                "item_id": 7931,
+                "jobs": [],
+                "label": "forbidden",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 7931,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382798,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "label": "removing",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 7931,
+                "jobs": [],
+                "label": "restored",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 536870944,
+                "item_id": 7931,
+                "jobs": [],
+                "label": "view-return",
+                "name": ""
+              }
+            ],
+            "screenshots": {
+              "workshop-furniture-14-forbidden.png": "3f0a9b1a51b89e32fd0df09315e31d43b697a45eb0b1a4f5c311dc3b36f02078",
+              "workshop-furniture-14-initial.png": "b6f5f88e842640e743efb08bd968b25e751800fbe17862b4af865823ac8e9b6e",
+              "workshop-furniture-14-removing.png": "0b73f7ac6a8b9942d42ebf8d0a8d1e7c2f3a8d89fa7d5a2ab81edffc9832edad",
+              "workshop-furniture-14-renamed.png": "49d40a8e6b138feeea32b088209e25e7b2c73786f3d417d8b6fb05aea68644e0",
+              "workshop-furniture-14-restored.png": "73b64554c3cdf080cfb82a49f2565ef3cb7f2c473a9dffdbadeeab3a562843f8",
+              "workshop-furniture-14-view-return.png": "73b64554c3cdf080cfb82a49f2565ef3cb7f2c473a9dffdbadeeab3a562843f8"
+            }
+          },
+          {
+            "id": 468,
+            "type": 51,
+            "type_name": "Instrument",
+            "selected_sheet": "BUILDING",
+            "selected_id": 468,
+            "tile": [
+              129,
+              55,
+              165
+            ],
+            "relations": [
+              {
+                "id": 408,
+                "location_id": 1,
+                "name": "",
+                "type": 80
+              }
+            ],
+            "contents": [
+              {
+                "flags": 16416,
+                "id": 12737,
+                "role": 2,
+                "type": "INSTRUMENT"
+              }
+            ],
+            "actions": [
+              {
+                "forbidden": false,
+                "item_flags": 16416,
+                "item_id": 12737,
+                "jobs": [],
+                "label": "initial",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 16416,
+                "item_id": 12737,
+                "jobs": [],
+                "label": "renamed",
+                "name": "Furniture reference"
+              },
+              {
+                "forbidden": true,
+                "item_flags": 540704,
+                "item_id": 12737,
+                "jobs": [],
+                "label": "forbidden",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 16416,
+                "item_id": 12737,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382799,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "label": "removing",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 16416,
+                "item_id": 12737,
+                "jobs": [],
+                "label": "restored",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 536887328,
+                "item_id": 12737,
+                "jobs": [],
+                "label": "view-return",
+                "name": ""
+              }
+            ],
+            "screenshots": {
+              "workshop-furniture-51-forbidden.png": "ace6e77bef686c5f413e6096e974015a5e62e5d206c0ca5ffb762b748271b0db",
+              "workshop-furniture-51-initial.png": "b64cfd7b3daca880afae4914055cb359f1489d2c3b19385f76c317227dbd0e64",
+              "workshop-furniture-51-removing.png": "53454b6e9ba8ae2c7599442b2ba12f02034abb10632b5540020e9ba7978b439f",
+              "workshop-furniture-51-renamed.png": "46ccbf3676bdb7e6f4526183adbc59c98a85c38b96e103877a511aad69e059a1",
+              "workshop-furniture-51-restored.png": "38ed1a7aee8120509f8c962bbfa727aff802a2505748071a03742dc2f60f7aa8",
+              "workshop-furniture-51-view-return.png": "38ed1a7aee8120509f8c962bbfa727aff802a2505748071a03742dc2f60f7aa8"
+            }
+          },
+          {
+            "id": 866,
+            "type": 52,
+            "type_name": "Bookcase",
+            "selected_sheet": "BUILDING",
+            "selected_id": 866,
+            "tile": [
+              161,
+              61,
+              165
+            ],
+            "relations": [
+              {
+                "id": 914,
+                "location_id": 4,
+                "name": "",
+                "type": 87
+              }
+            ],
+            "contents": [
+              {
+                "flags": 32,
+                "id": 20778,
+                "role": 2,
+                "type": "TOOL"
+              }
+            ],
+            "actions": [
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 20778,
+                "jobs": [],
+                "label": "initial",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 20778,
+                "jobs": [],
+                "label": "renamed",
+                "name": "Furniture reference"
+              },
+              {
+                "forbidden": true,
+                "item_flags": 524320,
+                "item_id": 20778,
+                "jobs": [],
+                "label": "forbidden",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 20778,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382800,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "label": "removing",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 20778,
+                "jobs": [],
+                "label": "restored",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 536870944,
+                "item_id": 20778,
+                "jobs": [],
+                "label": "view-return",
+                "name": ""
+              }
+            ],
+            "screenshots": {
+              "workshop-furniture-52-forbidden.png": "264d20a5b94101f431f0ec6af98f9ecb9f8267fd20069c84569ef5348d2ec3f0",
+              "workshop-furniture-52-initial.png": "6235a111b9e4712c4358cc3294eafc78d222fad2f402b73810e0f2423a4cc343",
+              "workshop-furniture-52-removing.png": "d31f4edf5a05e831c0ea4c5fdd0917947d376b750f0d924fef2c0798e8b85be9",
+              "workshop-furniture-52-renamed.png": "a19bda98f361bb5d0dd1c5f006fd4e8f4c229722fd44ae1f8dee788f8b02a509",
+              "workshop-furniture-52-restored.png": "6235a111b9e4712c4358cc3294eafc78d222fad2f402b73810e0f2423a4cc343",
+              "workshop-furniture-52-view-return.png": "6235a111b9e4712c4358cc3294eafc78d222fad2f402b73810e0f2423a4cc343"
+            }
+          },
+          {
+            "id": 274,
+            "type": 54,
+            "type_name": "OfferingPlace",
+            "selected_sheet": "BUILDING",
+            "selected_id": 274,
+            "tile": [
+              141,
+              100,
+              165
+            ],
+            "relations": [
+              {
+                "id": 259,
+                "location_id": 0,
+                "name": "",
+                "type": 87
+              }
+            ],
+            "contents": [
+              {
+                "flags": 32,
+                "id": 8356,
+                "role": 2,
+                "type": "TOOL"
+              }
+            ],
+            "actions": [
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 8356,
+                "jobs": [],
+                "label": "initial",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 8356,
+                "jobs": [],
+                "label": "renamed",
+                "name": "Furniture reference"
+              },
+              {
+                "forbidden": true,
+                "item_flags": 524320,
+                "item_id": 8356,
+                "jobs": [],
+                "label": "forbidden",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 8356,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382801,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "label": "removing",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 8356,
+                "jobs": [],
+                "label": "restored",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 536870944,
+                "item_id": 8356,
+                "jobs": [],
+                "label": "view-return",
+                "name": ""
+              }
+            ],
+            "screenshots": {
+              "workshop-furniture-54-forbidden.png": "a9a9bea923abc9cc006b18d1b03c5f2e7b3c8a95f6f8898501863cfd7d37a9ee",
+              "workshop-furniture-54-initial.png": "c45c7040e56860ac05a39b49d6823cfdce3f6f8f06f2ac202480e89ff157a934",
+              "workshop-furniture-54-removing.png": "c1c86f9aeeda52be8e98e59b007c2d3977a7df53192ad237d753e8794cbcbeb8",
+              "workshop-furniture-54-renamed.png": "dfed6816fecbc1c7781116f33d263aa22588ed99a2f077065aa8f241ebdf6ee4",
+              "workshop-furniture-54-restored.png": "c45c7040e56860ac05a39b49d6823cfdce3f6f8f06f2ac202480e89ff157a934",
+              "workshop-furniture-54-view-return.png": "c45c7040e56860ac05a39b49d6823cfdce3f6f8f06f2ac202480e89ff157a934"
+            }
+          }
+        ]
       }
     },
     "pending_construction_reference": {

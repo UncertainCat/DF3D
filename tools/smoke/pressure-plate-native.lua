@@ -140,7 +140,8 @@ local ok,err=xpcall(function()
  for index=1,2 do
   local created=dfhack.items.createItem(assert(worker),df.item_type.TRAPPARTS,-1,original:getMaterial(),original:getMaterialIndex())
   assert(#created==1);local item=created[1];supplies[#supplies+1]=item
-  assert(dfhack.items.moveToGround(item,{x=plate.centerx,y=plate.centery,z=plate.z}))
+  local supply_site=assert(df.building.find(55)) -- known reachable adjacent lever; keep plate tile free of loose-item tabs
+  assert(dfhack.items.moveToGround(item,{x=supply_site.centerx,y=supply_site.centery,z=supply_site.z}))
   item.flags.forbid=false;result.supplies[#result.supplies+1]=item.id
  end
  select_map(plate);assert(click_label('Link plate'));assert(sheet.linking_lever);sample('supplied-link')
@@ -153,6 +154,13 @@ local ok,err=xpcall(function()
  end
  select_map(assert(df.building.find(16)))
  assert(#plate.jobs==1 and plate.jobs[0].job_type==df.job_type.LinkBuildingToTrigger);local native_job=sample('linked-job').job_details[1]
+ if os.getenv('DF3D_PRESSURE_PLATE_QUEUE')=='1'then
+  local job=plate.jobs[0]
+  for _,control in ipairs{{'repeat',748},{'do_now',772},{'suspend',844}}do
+   click(control[2],154);assert(job.flags[control[1]]);sample('queue-'..control[1])
+   click(control[2],154);assert(not job.flags[control[1]])
+  end
+ end
  g.precise_mouse_x=868;g.precise_mouse_y=154;g.mouse_x=108;g.mouse_y=12
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
@@ -160,6 +168,15 @@ local ok,err=xpcall(function()
  assert(#plate.jobs==0,'Native Link cancellation failed')
  for _,id in ipairs(selected)do assert(not df.item.find(id).flags.in_job,'Native cancellation retained mechanism')end
  sample('job-cancelled')
+ if os.getenv('DF3D_PRESSURE_PLATE_QUEUE')=='1'then
+  assert(click_label('Link plate'));select_map(assert(df.building.find(16)));assert(#plate.jobs==1)
+  local retired=plate.jobs[0].id
+  click(832,82);assert(#plate.jobs==1 and plate.jobs[0].job_type==df.job_type.DestroyBuilding);sample('queue-removing')
+  for _,id in ipairs(selected)do assert(not df.item.find(id).flags.in_job,'Removal retained Link mechanism')end
+  local link=df.global.world.jobs.list.next
+  while link do assert(not link.item or link.item.id~=retired,'Removal retained Link job');link=link.next end
+  assert(click_label('Cancel removal'));assert(#plate.jobs==0);sample('queue-removal-cancelled')
+ end
  if provider then
   local target=assert(df.building.find(16))
   local args={tostring(plate.id),tostring(target.centerx),tostring(target.centery),tostring(target.z)}

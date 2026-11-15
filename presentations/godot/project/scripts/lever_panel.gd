@@ -1,5 +1,5 @@
 extends "res://scripts/workshop_panel.gd"
-# Lever owner, also reused by the staged plate panel. All map intent belongs
+# Lever owner, also reused by the plate panel. All map intent belongs
 # to this panel, not native UI.
 signal focus_requested(tile: Vector3i)
 var links=preload("res://scripts/building_links_state.gd").new()

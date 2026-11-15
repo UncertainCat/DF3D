@@ -125,12 +125,11 @@ func open_building_holder(kind: int,id: int) -> void:
 	elif kind==10:controller("chest").open_target(id)
 	elif kind in [0,1,2,3,9,11,12,14,15,46,51,52,54]:controller("furniture").open_target(id)
 	elif kind==23:
-		# Fresh resident facts distinguish completed levers from other traps.
+		# Fresh resident facts distinguish completed levers/plates from other traps.
 		var target: Dictionary=world.inspect_entity(3,id)
 		if target.get("building_kind",-1)==24 and target.get("subtype",-1)==0 and target.get("complete",false):
 			controller("lever").open_target(id)
-		elif target.get("building_kind",-1)==24 and target.get("subtype",-1)==1 and target.get("complete",false) and controllers.has("pressure_plate") and host.active==controllers.pressure_plate.item_owner:
-			# Staged plate holder return; ordinary source map entry remains gated.
+		elif target.get("building_kind",-1)==24 and target.get("subtype",-1)==1 and target.get("complete",false):
 			controller("pressure_plate").open_target(id)
 	elif kind in [5,13]:
 		# The item receipt supplies native type/ID; resident semantics supply the
@@ -318,7 +317,7 @@ func open_target(tile: Vector3i, kind: int, id: int) -> void:
 	if kind==3:
 		var target: Dictionary=world.inspect_entity(kind,id)
 		var native_kind: int=target.get("building_kind",0)
-		if ((native_kind in [1,2,3,4,9,10,12,13,15,16,46,51,52,54] or (native_kind==24 and target.get("subtype",-1)==0)) and target.get("complete",false)) or (native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true)):
+		if ((native_kind in [1,2,3,4,9,10,12,13,15,16,46,51,52,54] or (native_kind==24 and target.get("subtype",-1) in [0,1])) and target.get("complete",false)) or (native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true)):
 			open_tile_selection(tile);return
 	if kind in [0,2,3]:
 		# Loose items and room/zone meshes can cover a supported building.
@@ -326,7 +325,7 @@ func open_target(tile: Vector3i, kind: int, id: int) -> void:
 		for building in world.buildings_at_tile(tile):
 			var target: Dictionary=world.inspect_entity(3,int(building.id))
 			var native_kind: int=target.get("building_kind",0)
-			if ((native_kind in [1,2,3,4,9,10,12,13,15,16,46,51,52,54] or (native_kind==24 and target.get("subtype",-1)==0)) and target.get("complete",false)) or (native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true)):
+			if ((native_kind in [1,2,3,4,9,10,12,13,15,16,46,51,52,54] or (native_kind==24 and target.get("subtype",-1) in [0,1])) and target.get("complete",false)) or (native_kind>=1 and native_kind<=55 and native_kind not in [30,31] and not target.get("complete",true)):
 				open_tile_selection(tile);return
 	controller("inspector").open_target(tile,kind,id)
 
@@ -356,14 +355,15 @@ func _selection_destination(kind: int,id: int,tile: Vector3i):
 			pending.open_target(id)
 			return pending if host.active==pending and pending.state.building_id==id else null
 		var is_lever: bool=building_kind==24 and info.get("subtype",-1)==0
-		if not is_lever and building_kind not in [1,2,3,4,5,6,9,10,11,12,13,14,15,16,46,51,52,54]:
+		var is_plate: bool=building_kind==24 and info.get("subtype",-1)==1
+		if not is_lever and not is_plate and building_kind not in [1,2,3,4,5,6,9,10,11,12,13,14,15,16,46,51,52,54]:
 			# Keep existing building inspection available within staged selection.
 			# This does not qualify those incomplete native building controls.
 			var inspector=controller("inspector")
 			return inspector if inspector.open_target(tile,3,id,true) else null
 		# Mirror moves native Construction(31) to55; kinds32..54 retain DF IDs.
 		open_building_holder(building_kind if building_kind>=32 and building_kind<=54 else building_kind-1,id)
-		var target=controllers.get("lever" if is_lever else "farm" if building_kind==5 else "door" if building_kind==9 else "chest" if building_kind==11 else "furniture" if building_kind in [1,2,3,4,10,12,13,15,16,46,51,52,54] else "workshop")
+		var target=controllers.get("pressure_plate" if is_plate else "lever" if is_lever else "farm" if building_kind==5 else "door" if building_kind==9 else "chest" if building_kind==11 else "furniture" if building_kind in [1,2,3,4,10,12,13,15,16,46,51,52,54] else "workshop")
 		return target if target!=null and host.active==target and target.state.building_id==id else null
 	return null
 

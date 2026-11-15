@@ -18,30 +18,31 @@ func exercise(expected: Dictionary) -> void:
 	owner.lever.applied.connect(func(operation,id):applied_jobs[operation]=id)
 	var source_tile:=Vector3i(expected.source_tile[0],expected.source_tile[1],expected.source_tile[2])
 	scene._ui.focus_tile(source_tile)
-	owner.open_target(61)
+	var source_camera=scene.camera_rig.get_node("Camera3D")
+	var source_point:=Vector2.ZERO
+	var source_hit: Dictionary={}
+	var source_deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<source_deadline:
+		await process_frame
+		source_point=source_camera.unproject_position(Vector3(source_tile.x+0.5,source_tile.z+0.5,source_tile.y+0.5))
+		source_hit=world.pick_building(source_camera.project_ray_origin(source_point),source_camera.project_ray_normal(source_point),world.get_top_z())
+		if source_hit.get("tile",Vector3i(-1,-1,-1))==source_tile and not world.inspect_entity(3,61).is_empty():break
+	if not check(source_hit.get("tile",Vector3i(-1,-1,-1))==source_tile,"Projected source ray missed plate"):return
+	await pointer(source_point)
+	if not await ready_jobs(0):return
+	if not check(scene._ui.host.active==owner and owner.state.building_id==61,"Map selection did not open plate"):return
+	key(KEY_ESCAPE)
+	await process_frame
+	if not check(scene._ui.host.active==null and scene._ui.tile_selection.navigation.state.ticket==0,"Escape retained plate selection"):return
+	await pointer(source_point)
 	if not await ready_jobs(0):return
 	if OS.get_environment("DF3D_PRESSURE_PLATE_ITEM_NAV")=="1":await item_navigation()
 	if OS.get_environment("DF3D_PRESSURE_PLATE_CONNECTIONS")=="1":await connection_gestures()
 	if failed:return
-	var tile:=Vector3i(expected.x,expected.y,expected.z)
-	scene._ui.focus_tile(tile)
-	await pointer(Vector2(744,154))
-	var deadline:=Time.get_ticks_msec()+10000
-	while not owner.lever.view.visible and Time.get_ticks_msec()<deadline:await process_frame
-	if not check(owner.lever.view.visible and not owner.panel.visible and scene._ui.host.active==owner,"Plate Link did not retain input ownership"):return
-	var camera=scene.camera_rig.get_node("Camera3D")
-	var point:=Vector2.ZERO
-	var picked:=Vector3i(-1,-1,-1)
-	deadline=Time.get_ticks_msec()+10000
-	while Time.get_ticks_msec()<deadline:
-		await process_frame
-		point=camera.unproject_position(Vector3(tile.x+0.5,tile.z+0.5,tile.y+0.5))
-		picked=world.pick_tile(camera.project_ray_origin(point),camera.project_ray_normal(point),world.get_top_z())
-		if picked==tile:break
-	if not check(picked==tile,"Plate Link ray missed target"):return
-	await pointer(point)
-	if not await ready_jobs(1):return
-	check(applied_jobs.has(3) and owner.panel.visible and not owner.lever.view.visible and not owner.modal_input,"Plate map Link did not apply and restore panel")
+	if not await create_link(expected):return
+	if OS.get_environment("DF3D_PRESSURE_PLATE_QUEUE")=="1":
+		await queue_gestures(expected)
+		if failed:return
 	owner.close_panel();await process_frame
 	check(scene._ui.host.active==null,"Plate close retained owner")
 	exercised=true
@@ -108,3 +109,43 @@ func lever_capture(label: String) -> void:
 	var native:=Image.load_from_file(directory+"/pressure-plate-"+label+".png");native.convert(Image.FORMAT_RGB8)
 	var crop:=image.get_region(Rect2i(416,52,488,708));crop.save_png(directory+"/pressure-plate-navigation-"+label+"-viewer.png")
 	check(crop.get_data()==native.get_region(Rect2i(416,52,488,708)).get_data(),"Plate navigation pixels differ: "+label)
+
+func create_link(expected: Dictionary) -> bool:
+	var tile:=Vector3i(expected.x,expected.y,expected.z)
+	scene._ui.focus_tile(tile)
+	await pointer(Vector2(744,154))
+	var deadline:=Time.get_ticks_msec()+10000
+	while not owner.lever.view.visible and Time.get_ticks_msec()<deadline:await process_frame
+	if not check(owner.lever.view.visible and not owner.panel.visible and scene._ui.host.active==owner,"Plate Link did not retain input ownership"):return false
+	var camera=scene.camera_rig.get_node("Camera3D")
+	var point:=Vector2.ZERO
+	var picked:=Vector3i(-1,-1,-1)
+	deadline=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		await process_frame
+		point=camera.unproject_position(Vector3(tile.x+0.5,tile.z+0.5,tile.y+0.5))
+		picked=world.pick_tile(camera.project_ray_origin(point),camera.project_ray_normal(point),world.get_top_z())
+		if picked==tile:break
+	if not check(picked==tile,"Plate Link ray missed target"):return false
+	await pointer(point)
+	if not await ready_jobs(1):return false
+	return check(applied_jobs.has(3) and owner.panel.visible and not owner.lever.view.visible and not owner.modal_input,"Plate map Link did not apply and restore panel")
+func queue_gestures(expected: Dictionary) -> void:
+	for control in [["repeat",748,"repeat"],["do_now",772,"priority"],["suspend",844,"suspended"]]:
+		await pointer(Vector2(control[1],154))
+		if not await ready_jobs(1):return
+		check(owner.tasks.jobs()[0][control[2]],"Plate queue flag did not apply: "+control[0]);await lever_capture("queue-"+control[0])
+		await pointer(Vector2(control[1],154))
+		if not await ready_jobs(1):return
+		check(not owner.tasks.jobs()[0][control[2]],"Plate queue flag did not restore: "+control[0])
+	await pointer(Vector2(868,154))
+	if not await ready_jobs(0):return
+	await lever_capture("job-cancelled")
+	if not await create_link(expected):return
+	await pointer(Vector2(832,82))
+	if not await header_ready():return
+	check(owner.state.snapshot.removing,"Queued plate removal failed");await lever_capture("queue-removing")
+	await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.cancel_rect().get_center())
+	if not await ready_jobs(0):return
+	await lever_capture("queue-removal-cancelled")
+	await create_link(expected)

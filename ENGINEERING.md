@@ -323,7 +323,13 @@ Earlier staged-entry limitations above describe their individual captures;
 ordinary map entry is now qualified. Assigned-worker removal, absent mechanical
 target families and simulation completion remain outside these captures.
 
-## Completed pressure plate discovery
+## Completed pressure plates
+
+Completed pressure plates open from ordinary map clicks and installed-item holder
+navigation. Their native Link, queue, header, contents, worker profile and
+Connections controls use owned semantic inputs. Earlier captures below establish
+the individual providers and surfaces; their staged-entry restrictions are
+superseded by protected100525's map-entry qualification.
 
 Completed pressure plates use native Tasks/Workers/Work orders and lower
 linked-building/items tabs. Tasks offers only `Link plate`; there is no Pull
@@ -331,7 +337,7 @@ control or trigger-profile editor on this sheet. Native input1ad4ff dispatches
 Trap subtype1 to the mechanism search at1ad55d..1ad801. It uses the same native
 availability/position/walkability/stock-exclusion calls as the lever search,
 but an insufficient mechanism count returns without the lever warning.
-The owned Link provider admits plates; public panel admission remains staged.
+The owned Link provider and completed-building panel admit plates.
 Do not apply the lever's warning or Pull behavior to plates.
 
 Protected094029 on2026-11-15 captures these panels, a supplied Link to door16,
@@ -429,6 +435,23 @@ runtime change was needed. Owned DF40444 closes unsaved with source preservation
 graphics capped30FPS, sampled GPU60C, core19 passes. Only the documented
 render-thread/finalize/two ObjectDB graphics diagnostics remain. Evidence:
 `completed_sheet_discovery_reference.pressure_plate_profile_reference`.
+
+Protected100525 verifies actual main-scene plate61 map selection, Escape retiring
+selection, reopening by map click, and projected Link creation. Repeat, Priority
+and Suspend toggle on/off; job cancellation, a new queued Link, Remove/Cancel
+removal, and another fresh Link all succeed. Six complete488x708 queue/removal
+crops match native. Native removal retires the job and releases both mechanisms;
+the final viewer job matches native fields. Initial100320 exercised the actions
+but failed pixels at the right tab edge: loose diagnostic supplies on the plate
+tile added native selection alternatives absent from its directly opened viewer
+panel. Supplies now occupy adjacent reachable lever55's tile, and the final run
+uses actual source map selection. The earlier run is not full acceptance.
+Owned DF12576 closes unsaved with source preservation, graphics capped30FPS,
+sampled GPU59C; core19 passes. Only the documented render-thread/finalize/two
+ObjectDB graphics diagnostics remain. Evidence:
+`completed_sheet_discovery_reference.pressure_plate_map_queue_reference`.
+Assigned-worker removal, simulation completion and custom-reaction work-order
+creation are not qualified by these captures.
 
 ## Native bug register
 

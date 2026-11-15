@@ -26279,6 +26279,37 @@
           "build/stockpile-storage-native-farm-discovery-20261115-100116/pressure-plate-panel-order-limit-plus-viewer.png": "726d5e6e3b023deef69500a482d84ecd119943ca677cae3a302af348ed1c1a29",
           "build/stockpile-storage-native-farm-discovery-20261115-100116/pressure-plate-panel-order-limit-restored-viewer.png": "c1927668ed5df2b35b996f202f0538e6750649c9fd3c49c84141bf7403a4282b"
         }
+      },
+      "pressure_plate_map_queue_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-100525",
+        "scope": "Actual main-scene source plate61 map click, Escape retires selection, reopen. Projected Link then Repeat/Priority/Suspend on/off, cancel, new Link, Remove/Cancel removal, fresh Link. Six exact488x708 crops. Native removal retires Link job and releases both mechanisms; final viewer Link matches native job fields. Assigned-worker removal/simulation completion not covered.",
+        "owned_df_pid": 12576,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-native.json": "0be24cab4309efdb665b400ff3331dffdd7e7152dcf2094c4f8be0fbfafc53e7",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/workshop-wire-result.json": "5d2dc0102bf463f3794859b782c46a23bbae946b1b4759916cb452092a954feb",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/result.json": "c92462682847e688d607fe089e3710b1344919f68e490e362bd0cf38cb275a25",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-queue-repeat.png": "7fe3a7ae69895c4fe54c04707f3da1638927f1921e72a5068b069919e3dba7f8",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-queue-do_now.png": "f0a1c857a8ce1f8b050c91f70dac46270fdad365d37d4815571428fa99c825da",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-queue-suspend.png": "e741b8785100b918e13fa3cfb0ed982b6499a1b8e367a73da239b45bfe716867",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-job-cancelled.png": "1dff488ee4cffdc3c9793c3ab746a652d88fbfe147223f93f61513f5a061d6c0",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-queue-removing.png": "151ac4de88df7c715dce1c8a74aa898b1dffd359f0e4f90228b0f64417b431cb",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-queue-removal-cancelled.png": "1dff488ee4cffdc3c9793c3ab746a652d88fbfe147223f93f61513f5a061d6c0",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-navigation-queue-repeat-viewer.png": "4bd7d98799bb00e59aacb25c0ba46c6e2a62b367be1a239fc8ce1b524dfca5b8",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-navigation-queue-do_now-viewer.png": "f326dcbb0c3264d671dd04d74ff9ef3dee32bcd04d12411a594698514d70e4a5",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-navigation-queue-suspend-viewer.png": "1acdb66fea5cfa6e93b215599ee0a9f626cdb9dfb375a646be13aa3886b5cc72",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-navigation-job-cancelled-viewer.png": "5ffa8f3e5afbdaecd876b90524cc65a5e068dcde1c8342730ec3f2f80aec0ad0",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-navigation-queue-removing-viewer.png": "d95c2ff88502e022ddd3a1b8538d2ad5a4961f8ff1994f1f8a0a35e74d5990a9",
+          "build/stockpile-storage-native-farm-discovery-20261115-100525/pressure-plate-navigation-queue-removal-cancelled-viewer.png": "5ffa8f3e5afbdaecd876b90524cc65a5e068dcde1c8342730ec3f2f80aec0ad0"
+        }
       }
     },
     "pending_construction_reference": {

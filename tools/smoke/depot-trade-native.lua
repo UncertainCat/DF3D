@@ -27,6 +27,19 @@ local function record(label)
  view:render(dfhack.getTickCount());capture('depot-trade-'..label)
  local row={label=label,open=trade.open,choosing=trade.choosing_merchant,merchants=#trade.merlist,title=dfhack.df2utf(trade.title),talker=dfhack.df2utf(trade.talker),fortname=dfhack.df2utf(trade.fortname),place=dfhack.df2utf(trade.place),stillunloading=trade.stillunloading,havetalker=trade.havetalker,fortress_trader=trade.fortress_trader and trade.fortress_trader.id or -1,merchant_trader=trade.merchant_trader and trade.merchant_trader.id or -1,talkline=trade.talkline,goods={#trade.good[0],#trade.good[1]},lines={}}
  for y=0,gps.dimy-1 do local line={};for x=0,gps.dimx-1 do local c=dfhack.screen.readTile(x,y).ch;line[#line+1]=c>=32 and c<=255 and string.char(c)or' 'end;row.lines[#row.lines+1]=dfhack.df2utf(table.concat(line)):gsub('%s+$','')end
+ if os.getenv('DF3D_DEPOT_TRADE_PROVIDER')=='1' and trade.open and not trade.choosing_merchant then
+  local goods={};for _,id in ipairs(added[1].goods)do goods[#goods+1]=id end
+  local active=main.view_sheets.active_id;local lists=trade.buildlists;local appraisal=trade.handle_appraisal
+  for iteration=1,2 do
+   local output,code=dfhack.run_command_silent('df3d','trade-entry-probe',tostring(b.id),'0');assert(code==0,output)
+   local facts=json.decode(output);assert(facts.available,output)
+   for _,key in ipairs{'title','talker','fortname','place','stillunloading','havetalker','fortress_trader','merchant_trader','talkline'}do assert(facts[key]==row[key],'Owned trade initializer differs: '..key)end
+   assert(facts.entity==added[1].entity)
+   local after={};for _,id in ipairs(added[1].goods)do after[#after+1]=id end
+   assert(json.encode(after)==json.encode(goods) and main.view_sheets.active_id==active and trade.buildlists==lists and trade.handle_appraisal==appraisal and trade.title==dfhack.utf2df(row.title) and #trade.good[0]==row.goods[1] and #trade.good[1]==row.goods[2])
+   row.provider=facts
+  end
+ end
  result.cases[#result.cases+1]=row
  assert(df.global.world.frame_counter==frame and unit.flags1.whole==unit_flags and unit.job.current_job==old_job and b.trade_flags.whole==flags)
  return row
@@ -45,9 +58,15 @@ end
 local ok,err=xpcall(function()
  caravan();select_map(b);click(480,190)
  assert(not trade.open,'Trade opened without a trader');record('no-trader');gate_scene('absent',-1)
+ if os.getenv('DF3D_DEPOT_TRADE_PROVIDER')=='1' then
+  local output,code=dfhack.run_command_silent('df3d','trade-entry-probe',tostring(b.id),'0');assert(code==0 and not json.decode(output).available,'Missing trader must reject')
+ end
  b.jobs:insert('#',job);added_job=true;unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z
  local output,code=dfhack.run_command_silent('df3d','depot-settings-probe',tostring(b.id));assert(code==0,output)
  local facts=json.decode(output);assert(facts.worker==unit.id,'Native trader lookup: '..output)
+ if os.getenv('DF3D_DEPOT_TRADE_PROVIDER')=='1' then
+  local invalid,code=dfhack.run_command_silent('df3d','trade-entry-probe',tostring(b.id),'100');assert(code==0 and not json.decode(invalid).available,'Foreign caravan must reject')
+ end
  gate_scene('present',unit.id)
  if os.getenv('DF3D_DEPOT_TRADE_LISTS')=='1' then
   local item=df.item.find(296);assert(item and item.flags.on_ground and not item.flags.in_inventory and not item.flags.trader)

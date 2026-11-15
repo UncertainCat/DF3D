@@ -202,6 +202,29 @@ sampled GPU52C. Core19 passes. Evidence:
 Merchant-side valuation/skill effects, native prices, list ownership qualification
 and negotiation remain outstanding; no trade runtime API is exposed yet.
 
+`trade_entry_native.h` now stages an owned merchant-entry provider. It checks
+pinned native initializer/name/clear routines, resolves the current fortress
+site from simulation state, validates a completed non-removing depot with a
+physically present trader, and accepts only a current non-tribute AtDepot
+caravan. It initializes a local trade_interfacest with the semantic site/depot
+and calls36b590. Only bounded value strings, IDs and entry flags leave that
+context; native menu storage, the global opener and renderer are never used.
+The native constructor/destructor own all temporary strings/vectors. Its caravan
+index is a synchronous diagnostic selector only: public transport still needs
+revision/identity validation. No protocol or compatibility pin changed.
+
+Protected174805 on2026-11-15 compares nine native entry text/identity/flag fields
+and civilization against this provider on initial and reopened Trade, twice per
+state. Native menu selection/title, list sizes, pending list/appraisal flags and
+caravan appraisal history remain unchanged by the calls. Missing trader and
+foreign caravan index reject. The temporary own-goods fixture, trader and
+caravans restore; owned DF43668 closes unsaved/source-preserved at30FPS, sampled
+GPU51C. The MSVC bridge builds and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_entry_provider_reference`.
+This qualifies the current no-merchant-speaker fixture, not speaker selection or
+unloading branches, list projection, appraisal mutation, prices, negotiation,
+public transport or exchange UI. Those remain required before exposing Trade.
+
 ## Depot goods value transport migration
 
 Management protocol235 adds required appraisal knowledge to depot goods replies

@@ -92,6 +92,7 @@
 #include "machinery_native.h"
 #include "well_native.h"
 #include "depot_native.h"
+#include "trade_entry_native.h"
 #include "depot_goods_native.h"
 #include "depot_selection_native.h"
 #include "depot_goods_read.h"
@@ -5089,6 +5090,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         output["available"]=Json::arrayValue;
         for(const auto& row:*available)output["available"].append(row.id);
         for(const auto& row:*rows){Json::Value value;value["id"]=row.id;value["distance"]=row.distance;output["rows"].append(value);}
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
+      if(parameters[0]=="trade-entry-probe") {
+        if(parameters.size()!=3)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        int32_t values[2]={-1,-1};
+        for(size_t i=1;i<parameters.size();++i){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<0)return CR_WRONG_USAGE;}
+        const auto facts=df3d_production::tradeEntryFacts(df::building::find(values[0]),size_t(values[1]));
+        Json::Value output;output["available"]=bool(facts);
+        if(facts){output["entity"]=facts->entity;output["fortress_trader"]=facts->fortressTrader;output["merchant_trader"]=facts->merchantTrader;
+          output["talkline"]=facts->dialogue;output["stillunloading"]=int(facts->unloading);output["havetalker"]=int(facts->hasSpeaker);
+          output["title"]=DF2UTF(facts->title);output["talker"]=DF2UTF(facts->speaker);output["fortname"]=DF2UTF(facts->fortress);output["place"]=DF2UTF(facts->place);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="depot-settings-probe") {

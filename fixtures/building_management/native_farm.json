@@ -24587,6 +24587,33 @@
           "build/stockpile-storage-native-farm-discovery-20261115-092327/result.json": "ac462f204c0628c13f82212a3ba357b623ad07e557fe56855ef7067528c33077",
           "build/stockpile-storage-native-farm-discovery-20261115-092327/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "lever_queued_removal_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-092750",
+        "scope": "Two native and actual main-scene Pull jobs, select linked tab, Remove discards queued jobs and shows contained items, Cancel removal restores linked tab with empty task queue, Show items returns normally. Four full-panel crops match. Subsequent Pull/projected Link passes. Assigned worker and simulation completion not qualified.",
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "owned_df_pid": 40544,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-092750/lever-queued-linked.png": "833ad067bfc897673d9dcc0d97d6e649051a6f72ad46e05407b5a825a97912d0",
+          "build/stockpile-storage-native-farm-discovery-20261115-092750/lever-navigation-queued-linked-viewer.png": "ef8a7edef2d6fb5bbd9181491f151f67279133f748028650c56627382b2c49ba",
+          "build/stockpile-storage-native-farm-discovery-20261115-092750/lever-queued-removing.png": "5e3d55ef2cecb19c76d7822294abdb1b921d51e0662810beae2ab34f11fd1b12",
+          "build/stockpile-storage-native-farm-discovery-20261115-092750/lever-navigation-queued-removing-viewer.png": "459012ca8a75435e274dc76c18d88771cde47f2f55c7a9d0a2ca58aebe131890",
+          "build/stockpile-storage-native-farm-discovery-20261115-092750/lever-queued-cancelled.png": "286ff5bf722e6769c9c4615d1d725d7eb73c546b20ffcf97d108f2491ef65313",
+          "build/stockpile-storage-native-farm-discovery-20261115-092750/lever-navigation-queued-cancelled-viewer.png": "2c32eb11906678f3902273640a213bea6dd0839c96307d39d4bcd75bcd3f4bad",
+          "build/stockpile-storage-native-farm-discovery-20261115-092750/lever-queued-items-restored.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-092750/lever-navigation-queued-items-restored-viewer.png": "eac86d5738f6feff14d0f985d1a953a13d374583ae726b98979ee3b08c481119",
+          "build/stockpile-storage-native-farm-discovery-20261115-092750/lever-native.json": "7234dc533d997da5deefbc15ad1ea3b49d161271ca1b613744f5295f3d15739c",
+          "build/stockpile-storage-native-farm-discovery-20261115-092750/workshop-wire-result.json": "40cdfe8872c2fb6cb6d93da0f21bc31406dc3343898b85e4e1b18894bb7435a8",
+          "build/stockpile-storage-native-farm-discovery-20261115-092750/result.json": "c4e76b8322a54f03021e7d7e7557da8bdc02b76c65f5733c3c0547b95d3739d7",
+          "build/stockpile-storage-native-farm-discovery-20261115-092750/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

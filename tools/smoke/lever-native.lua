@@ -113,6 +113,20 @@ local ok,err=xpcall(function()
   assert(#lever.jobs==index and lever.jobs[index-1].job_type==df.job_type.PullLever)
   sample('pull-'..index)
  end
+ if os.getenv('DF3D_LEVER_QUEUED_REMOVE')=='1'then
+  local first,second=lever.jobs[0].id,lever.jobs[1].id
+  click(540,520);sample('queued-linked')
+  click(832,82)
+  assert(#lever.jobs==1 and lever.jobs[0].job_type==df.job_type.DestroyBuilding)
+  local link=df.global.world.jobs.list.next
+  while link do
+   assert(not link.item or (link.item.id~=first and link.item.id~=second),'Native removal retained Pull jobs')
+   link=link.next
+  end
+  sample('queued-removing')
+  assert(click_label('Cancel removal'));assert(#lever.jobs==0);sample('queued-cancelled')
+  click(720,520);sample('queued-items-restored')
+ end
  if os.getenv('DF3D_LEVER_TASK_CONTROLS')=='1'then
   local first,second=lever.jobs[0],lever.jobs[1]
   click(748,154);assert(first.flags['repeat']);sample('pull-repeat')

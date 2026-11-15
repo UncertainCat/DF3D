@@ -280,6 +280,20 @@ source preservation; graphics capped30FPS, sampled GPU59C. Core19 passes;
 only the established render-thread/finalize/two ObjectDB diagnostics remain.
 Evidence: `completed_sheet_discovery_reference.lever_item_navigation_reference`.
 
+Lever removal temporarily displays contained items while remembering the lower
+linked-tab selection. Cancelling removal restores that selection. Protected
+092750 on2026-11-15 verifies two queued Pull jobs, selection of linked buildings,
+Remove discarding the queue, Cancel returning to an empty queue, and Show items.
+Four complete main-scene panel crops match native; subsequent Pull/projected
+Link also passes. Native checks the retired Pull IDs are absent from the world
+job list. Initial092538 used an unavailable diagnostic job lookup;092628 exposed
+the incorrect linked-row display during removal. Neither is acceptance.
+Owned DF40544 closes unsaved with source preservation, graphics capped30FPS,
+sampled GPU60C. Core19 passes; only the established render-thread/finalize/two
+ObjectDB diagnostics remain. Evidence:
+`completed_sheet_discovery_reference.lever_queued_removal_reference`. Assigned
+worker cleanup and simulation completion are not qualified by this run.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

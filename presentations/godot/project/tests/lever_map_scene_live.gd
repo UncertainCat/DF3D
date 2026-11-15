@@ -25,6 +25,9 @@ func exercise(expected: Dictionary) -> void:
 	owner.lever.applied.connect(func(operation,id):applied_jobs[operation]=id)
 	owner.open_target(55)
 	if not await ready_jobs(0):return
+	if OS.get_environment("DF3D_LEVER_QUEUED_REMOVE")=="1":
+		await queued_removal()
+		if failed:return
 	if OS.get_environment("DF3D_LEVER_ITEM_NAV")=="1":
 		await item_navigation()
 		if failed:return
@@ -61,6 +64,21 @@ func exercise(expected: Dictionary) -> void:
 	owner.close_panel();await process_frame
 	check(scene._ui.host.active==null,"Lever close retained main-scene owner")
 	exercised=true
+func queued_removal() -> void:
+	for count in [1,2]:
+		await pointer(Vector2(840,154+(count-1)*36))
+		if not await ready_jobs(count):return
+	await pointer(Vector2(540,520));await lever_capture("queued-linked")
+	await pointer(Vector2(832,82))
+	if not await header_ready():return
+	check(owner.state.snapshot.removing and not owner.panel.tasks.visible,"Queued removal retained task controls")
+	await lever_capture("queued-removing")
+	await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.cancel_rect().get_center())
+	if not await ready_jobs(0):return
+	await lever_capture("queued-cancelled")
+	await pointer(Vector2(720,520));await lever_capture("queued-items-restored")
+	# The ordinary workflow below creates its own Pull/Link receipts.
+	applied_jobs.clear()
 func item_navigation() -> void:
 	var item_id: int=owner.contents.rows()[0].id
 	await pointer(owner.panel.contents.get_global_transform_with_canvas()*owner.panel.contents.control_rect(0,1).get_center())

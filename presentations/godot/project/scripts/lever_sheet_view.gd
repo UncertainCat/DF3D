@@ -22,8 +22,10 @@ func _layout_contents() -> void:
 	super._layout_contents()
 	if links_view==null:return
 	links_view.position=contents.position;links_view.set_capacity(contents.page)
-	links_view.visible=contents.page>0 and showing_links
-	contents.visible=contents.page>0 and not showing_links
+	# Removal displays items without discarding the tab restored on cancellation.
+	var display_links: bool=showing_links and not state.snapshot.get("removing",false)
+	links_view.visible=contents.page>0 and display_links
+	contents.visible=contents.page>0 and not display_links
 func refresh() -> void:
 	if state.building_id!=target:showing_links=false
 	super.refresh();_layout_contents()

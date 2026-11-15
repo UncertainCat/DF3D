@@ -61287,6 +61287,31 @@
           "build/stockpile-storage-native-farm-discovery-20261115-171808/depot-hover-view-select-all.png": "8f7f8becd29c1ddc49b1eb3a4a0293ddf3cf184d450f076aaa2b92f9e68121b9",
           "build/stockpile-storage-native-farm-discovery-20261115-171808/depot-hover-view-value.png": "1adcd7009155dc922fb7128fb358580eca505f63aa07dab1a8dce328a818412d"
         }
+      },
+      "depot_goods_scene_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-172638",
+        "owned_df_pid": 47224,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Actual main scene staged furniture owner opens goods through native sheet button. Full initial goods panel including two anvil icons matches native pixels. Group pointer selects both items; Escape commits two hauling jobs and refreshes native awaiting count2. Reopen/group-off/Escape cancels both, count0. Teardown retires a pending goods read. Native verifies jobs0, paused frame and native menu/selection unchanged after client. Not ordinary-hauler completion, all categories, container scene or full trade acceptance. Public depot routing remains hidden.",
+        "pixel_region": [
+          32,
+          52,
+          944,
+          708
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-172638/depot-goods-native.json": "4a8bf843fdfd288e325275ca2aa524c9d5a745fa2b680d08d30e47b5d8425337",
+          "build/stockpile-storage-native-farm-discovery-20261115-172638/depot-goods-scene-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261115-172638/depot-goods-scene.stdout.log": "fd0abcd9f5019c43e5efb76faee2c349bc00e1c6813e83efaa9fd66487b0f7cd",
+          "build/stockpile-storage-native-farm-discovery-20261115-172638/depot-goods-scene-initial.png": "9188ec7c53fdac4e7c6f8fb822f238caf7c93f76d18bd60c78bdbd1e16961806",
+          "build/stockpile-storage-native-farm-discovery-20261115-172638/depot-goods-initial.png": "9564b0052c7a5ea2c2fed1ec792437d127ec43f121075736440d210c4914c49b",
+          "build/stockpile-storage-native-farm-discovery-20261115-172638/result.json": "b214b40e8ba2fc6b81b90aa868e77490e166dec46dda2f7f7e4f14ba3bf37c79",
+          "build/stockpile-storage-native-farm-discovery-20261115-172638/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "presentations/godot/project/scripts/furniture_panel.gd": "0d020d97e6e01800c7b9596f5da6b2db98fc3ec55ddcff6728227e44a8f24394",
+          "presentations/godot/project/scripts/depot_goods_view.gd": "4d9bb017cd8fdb0a0aa02ccb6648f53fccaed33fb90c1849055fe313eb3f97d8",
+          "presentations/godot/project/tests/depot_goods_scene_live.gd": "02356696aeb8218856e83b45fdec56e1281e1895fc74a8361e1b0f0db8662331"
+        }
       }
     },
     "pending_construction_reference": {

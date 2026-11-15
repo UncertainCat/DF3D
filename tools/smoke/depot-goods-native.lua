@@ -203,6 +203,13 @@ local ok,err=xpcall(function()
  end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  assert(not menu.open,'Goods Escape failed')
+ if os.getenv('DF3D_DEPOT_GOODS_SCENE')=='1' then
+  local file=assert(io.open(out..'/depot-goods-scene-expected.json','w'));file:write(json.encode{id=b.id});file:close()
+  local selected=df.global.game.main_interface.view_sheets.active_id
+  capture('depot-goods-scene')
+  file=assert(io.open(out..'/depot-goods-scene-result.json'));result.scene=json.decode(file:read('*a'));file:close()
+  assert(result.scene.success and #b.jobs==0 and not menu.open and df.global.world.frame_counter==frame and df.global.game.main_interface.view_sheets.active_id==selected)
+ end
  if os.getenv('DF3D_DEPOT_HAUL_NATIVE')=='1' then
   select_map(b);click(520,166);assert(menu.open and menu.current_type==df.item_type.ANVIL,'Reopen initial goods failed')
   if os.getenv('DF3D_DEPOT_EXPANSION_NATIVE')=='1' then

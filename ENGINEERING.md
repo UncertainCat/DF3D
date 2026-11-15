@@ -75,6 +75,29 @@ native text/hitboxes plus the existing shared renderer, not depot pixel parity.
 The diagnostic helper therefore records text/cells without requesting misleading
 screenshots. Search-widget help and main-scene integration remain unfinished.
 
+The staged furniture owner now connects the depot goods button to its picker,
+with shared hover ownership and host input gating. Escape finishes the owned
+draft before returning to the depot; the parent refreshes awaiting counts from
+DF. Target replacement, session retirement and teardown detach goods work
+without replay. Parent polling is suspended while the picker owns the view.
+The depot uses native INTERFACE_BITS scrollbar artwork and the native fixed
+RGB160 empty-search hint; other search controls retain their existing colors.
+
+Protected172638 on2026-11-15 verifies the actual main-scene button roundtrip.
+The full944x708 initial goods panel, including both anvil icons, matches native
+pixels. Pointer group selection followed by Escape creates two hauling jobs;
+the returned sheet reads awaiting2. Reopening and deselecting cancels both,
+returning awaiting0. Closing the owner during a pending read retires the picker.
+The native oracle verifies jobs0, unchanged paused frame and unchanged native
+menu/selection afterward. Owned DF47224 closes unsaved/source-preserved. Both
+native and Godot are capped30FPS, sampled GPU52C, with clean scene diagnostics.
+All19 core checks pass. Controller lifecycle checks pass with the already
+tracked experimental rendering-thread warning (not a diagnostic-free result).
+Evidence: `completed_sheet_discovery_reference.depot_goods_scene_reference`.
+Public depot routes remain hidden. Ordinary hauler completion, container and
+all-category scene workflows, search-widget help, tooltip pixel comparison,
+large-list behavior and full merchant exchange remain unfinished.
+
 ## Depot goods value transport migration
 
 Management protocol235 adds required appraisal knowledge to depot goods replies

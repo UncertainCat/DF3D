@@ -1,6 +1,7 @@
 extends "res://scripts/area_owner_filter.gd"
 # Native Stocks empty, unfocused filter hint (capture215344).
 var focused_before_click:=false
+var placeholder_ink:=Color.TRANSPARENT
 
 func _input(event: InputEvent) -> void:
 	# Capture before Godot's FOCUS_CLICK handling focuses the control.
@@ -23,5 +24,5 @@ func feed_key(event: InputEventKey) -> void:
 
 func _draw() -> void:
 	if value.is_empty() and not has_focus() and theme!=null and theme.default_font!=null:
-		theme.default_font.draw_string(get_canvas_item(),Vector2(16,24),"...",HORIZONTAL_ALIGNMENT_LEFT,-1,12,ink)
+		theme.default_font.draw_string(get_canvas_item(),Vector2(16,24),"...",HORIZONTAL_ALIGNMENT_LEFT,-1,12,ink if placeholder_ink.a==0 else placeholder_ink)
 	else:super._draw()

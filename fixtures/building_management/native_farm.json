@@ -30552,6 +30552,403 @@
           "build/stockpile-storage-native-farm-discovery-20261115-115844/result.json": "9b854b6353dda2232c160a64a49ebdbe421ad36f3e787dd4588868ee456a01bd",
           "build/stockpile-storage-native-farm-discovery-20261115-115844/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "remaining_buildings_well_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-121118",
+        "protocol": 229,
+        "scope": "Native inventory for six remaining building families; native well status provider matches all four displayed states and restored operational baseline. Not management wire or viewer acceptance.",
+        "native": {
+          "buildings": [
+            {
+              "id": 54,
+              "lines": [
+                {
+                  "text": "        Trade Depot",
+                  "y": 6
+                },
+                {
+                  "text": "  There are no merchants trading right now.",
+                  "y": 12
+                },
+                {
+                  "text": "    Broker requested at depot",
+                  "y": 18
+                },
+                {
+                  "text": "    Anyone requested at depot",
+                  "y": 21
+                },
+                {
+                  "text": "    No trader needed at depot",
+                  "y": 24
+                },
+                {
+                  "text": "  You do not have a broker.",
+                  "y": 30
+                },
+                {
+                  "text": "        dolomite blocks",
+                  "y": 43
+                },
+                {
+                  "text": "        dolomite blocks",
+                  "y": 46
+                },
+                {
+                  "text": "        dolomite blocks",
+                  "y": 49
+                },
+                {
+                  "text": "        iron pipe section",
+                  "y": 52
+                },
+                {
+                  "text": "        iron pipe section",
+                  "y": 55
+                },
+                {
+                  "text": "        iron pipe section",
+                  "y": 58
+                }
+              ],
+              "native_type": "TradeDepot",
+              "selected_id": 54,
+              "selected_sheet": 2,
+              "subtype": -1,
+              "tile": [
+                111,
+                94,
+                165
+              ],
+              "type": 6
+            },
+            {
+              "id": 161,
+              "lines": [
+                {
+                  "text": "        Well",
+                  "y": 6
+                },
+                {
+                  "text": "  The well is operational.",
+                  "y": 11
+                },
+                {
+                  "text": "        dolomite mechanisms",
+                  "y": 43
+                },
+                {
+                  "text": "        (pig tail rope)",
+                  "y": 46
+                },
+                {
+                  "text": "        (maple bucket)",
+                  "y": 49
+                },
+                {
+                  "text": "        dolomite blocks",
+                  "y": 52
+                }
+              ],
+              "native_type": "Well",
+              "selected_id": 161,
+              "selected_sheet": 2,
+              "subtype": -1,
+              "tile": [
+                111,
+                105,
+                165
+              ],
+              "type": 18
+            },
+            {
+              "id": 1378,
+              "lines": [
+                {
+                  "text": "        Microcline Bridge",
+                  "y": 6
+                },
+                {
+                  "text": "        microcline blocks",
+                  "y": 43
+                },
+                {
+                  "text": "        microcline blocks",
+                  "y": 46
+                },
+                {
+                  "text": "        microcline blocks",
+                  "y": 49
+                },
+                {
+                  "text": "        microcline blocks",
+                  "y": 52
+                },
+                {
+                  "text": "        microcline blocks",
+                  "y": 55
+                },
+                {
+                  "text": "        microcline blocks",
+                  "y": 58
+                }
+              ],
+              "native_type": "Bridge",
+              "selected_id": 1378,
+              "selected_sheet": 2,
+              "subtype": -1,
+              "tile": [
+                105,
+                78,
+                165
+              ],
+              "type": 19
+            },
+            {
+              "id": 261,
+              "lines": [
+                {
+                  "text": "        Masked Lovebird ( ) Cage (lead)",
+                  "y": 6
+                },
+                {
+                  "text": "  This furniture is a part of",
+                  "y": 35
+                },
+                {
+                  "text": "        Unnamed memorial hall",
+                  "y": 38
+                },
+                {
+                  "text": "        (masked lovebird ( ) cage (le...",
+                  "y": 43
+                }
+              ],
+              "native_type": "Cage",
+              "selected_id": 261,
+              "selected_sheet": 2,
+              "subtype": -1,
+              "tile": [
+                136,
+                98,
+                165
+              ],
+              "type": 28
+            },
+            {
+              "id": 0,
+              "lines": [
+                {
+                  "text": "        Wagon",
+                  "y": 6
+                },
+                {
+                  "text": "        (cherry wood)",
+                  "y": 43
+                },
+                {
+                  "text": "        (cherry wood)",
+                  "y": 46
+                },
+                {
+                  "text": "        (cherry wood)",
+                  "y": 49
+                }
+              ],
+              "native_type": "Wagon",
+              "selected_id": 0,
+              "selected_sheet": 2,
+              "subtype": -1,
+              "tile": [
+                97,
+                96,
+                170
+              ],
+              "type": 32
+            },
+            {
+              "id": 1105,
+              "lines": [
+                {
+                  "text": "        Traction Bench",
+                  "y": 6
+                },
+                {
+                  "text": "        Â«â‰¡bitter orange wood traction...",
+                  "y": 43
+                }
+              ],
+              "native_type": "TractionBench",
+              "selected_id": 1105,
+              "selected_sheet": 2,
+              "subtype": -1,
+              "tile": [
+                125,
+                79,
+                165
+              ],
+              "type": 45
+            }
+          ],
+          "frame": 0,
+          "inventory": [
+            {
+              "complete": true,
+              "id": 0,
+              "revealed": true,
+              "subtype": -1,
+              "type": 32
+            },
+            {
+              "complete": true,
+              "id": 54,
+              "revealed": true,
+              "subtype": -1,
+              "type": 6
+            },
+            {
+              "complete": true,
+              "id": 161,
+              "revealed": true,
+              "subtype": -1,
+              "type": 18
+            },
+            {
+              "complete": true,
+              "id": 261,
+              "revealed": true,
+              "subtype": -1,
+              "type": 28
+            },
+            {
+              "complete": true,
+              "id": 262,
+              "revealed": true,
+              "subtype": -1,
+              "type": 28
+            },
+            {
+              "complete": true,
+              "id": 487,
+              "revealed": true,
+              "subtype": -1,
+              "type": 18
+            },
+            {
+              "complete": true,
+              "id": 488,
+              "revealed": true,
+              "subtype": -1,
+              "type": 18
+            },
+            {
+              "complete": true,
+              "id": 1105,
+              "revealed": true,
+              "subtype": -1,
+              "type": 45
+            },
+            {
+              "complete": false,
+              "id": 1284,
+              "revealed": true,
+              "subtype": -1,
+              "type": 18
+            },
+            {
+              "complete": true,
+              "id": 1378,
+              "revealed": true,
+              "subtype": -1,
+              "type": 19
+            }
+          ],
+          "missing": [
+            7,
+            16,
+            17,
+            20,
+            21,
+            22,
+            24,
+            25,
+            26,
+            27,
+            31,
+            47,
+            48,
+            49,
+            53
+          ],
+          "success": true,
+          "well_status": {
+            "bucket_capacity": 600,
+            "building_id": 161,
+            "cases": [
+              {
+                "label": "operational",
+                "status": -1,
+                "text": "The well is operational."
+              },
+              {
+                "label": "no-bucket",
+                "status": 84,
+                "text": "There is no bucket."
+              },
+              {
+                "label": "dry",
+                "status": 86,
+                "text": "The well is dry."
+              },
+              {
+                "label": "full",
+                "status": 85,
+                "text": "The bucket is full."
+              },
+              {
+                "label": "restored",
+                "status": -1,
+                "text": "The well is operational."
+              }
+            ],
+            "restored": true,
+            "water_stack": 10,
+            "water_volume": 600
+          }
+        },
+        "owned_df_pid": 10080,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "bridge_sha256": "ACBCF267B147CBBEB4E79B4D74A81B59013CB96CA425F465B452402EFA990762",
+        "source": {
+          "well_entry": "560b60",
+          "length": 941,
+          "fnv1a64": "1e6023461b843633",
+          "renderer_call": "189edf",
+          "status_codes": [
+            -1,
+            84,
+            85,
+            86
+          ],
+          "input": "1af6cf",
+          "ownership": "Native installed contents, remaining bucket capacity and map column; no menu scratch."
+        },
+        "initial_failures": {
+          "120635": "Water fixture did not fill bucket; provider correctly remained operational.",
+          "120803": "Fixture assumed liquid dimension equals volume.",
+          "120943": "Confirmed liquid dimension does not increase native storage volume. Final fixture sizes stack from native volume/capacity."
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-121118/remaining-buildings-native.json": "e8f60479b6f66a4a7b8ef3d04d3547fd5b6f05819cbddf8dd2bf6925c2680d14",
+          "build/stockpile-storage-native-farm-discovery-20261115-121118/result.json": "8086567bb7891a7f912e86488b162e6afc6e180a6e5a9d134dc03bb9294c8094",
+          "build/stockpile-storage-native-farm-discovery-20261115-121118/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-121118/well-status-operational.png": "2031bf0771066beddfa4b7743782d2d25e97c2afdf461286325202e8918541a0",
+          "build/stockpile-storage-native-farm-discovery-20261115-121118/well-status-no-bucket.png": "e5082afb2ca52b1521e078addf78e8c36b13dfecda4b36aae1f88efd799b609b",
+          "build/stockpile-storage-native-farm-discovery-20261115-121118/well-status-dry.png": "5eadd083760aa78d3d594002384f2bdf9e2fc1291dd4e8893598b6cb227bdcf2",
+          "build/stockpile-storage-native-farm-discovery-20261115-121118/well-status-full.png": "f2f8c57276bdcd218cc73befa6a27b26c9f59c31771a302a2cc7dc6800bb3f36",
+          "build/stockpile-storage-native-farm-discovery-20261115-121118/well-status-restored.png": "2031bf0771066beddfa4b7743782d2d25e97c2afdf461286325202e8918541a0"
+        }
       }
     },
     "pending_construction_reference": {

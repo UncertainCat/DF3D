@@ -666,6 +666,40 @@ four graphical clients pass with only the established rendering-thread notice,
 render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
 `completed_sheet_discovery_reference.machinery_workflow_reference`.
 
+## Remaining completed-building native providers
+
+Protected120249 on2026-11-15 inventories the completed building families outside
+the current public routes. Existing revealed examples cover TradeDepot6, Well18,
+Bridge19, Cage28, Wagon32 and TractionBench45. It captures their actual native
+panels without modifying them. Native body/input dispatch identifies specialized
+paths for trade depots, wells, siege engines, animal traps, archery targets,
+restraints, cages, nest boxes, hives and display furniture. Windows, bridges,
+roads, supports, upright weapons, wagons and traction benches reach the default
+body/input branches; this static result alone does not qualify their panels.
+Shop7 and natural Nest47 also reach those defaults, without establishing a
+fortress-mode product route. Missing examples are retained in the fixture.
+
+The well renderer189edf calls native560b60 directly. Its result is -1 for an
+operational well,84 for no bucket,85 for a full bucket and86 for a dry well.
+It reads installed contents, native remaining capacity (c8a580) and the water
+column; it does not consume selected-sheet or menu scratch. `well_native.h`
+calls this routine at a safe point and pins its complete0x3ad-byte span with
+FNV1a64 `1e6023461b843633`. Unknown results fail closed. `well-status-probe`
+is a diagnostic entry; this provider has not yet been added to the management
+wire or a public well panel. Native copy comes from renderer189f21..18a081:
+“There is no bucket.”, “The bucket is full.”, “The well is operational.” and
+“The well is dry.” The operational message uses color7; the others use color6.
+
+Protected121118 verifies every result against the native displayed message on
+well161: operational, temporarily detached bucket, bucket_z0 (dry), a created
+ten-unit water stack filling native capacity600, then restored operational state.
+The diagnostic sizes the water stack using native item volume; liquid dimension
+does not control that volume. Initial120635/120803/120943 failed fixture setup
+and are not complete acceptance. Every owned run closes unsaved with source
+preservation. The successful run owns DF10080, keeps simulation paused and native
+graphics capped30FPS, sampled GPU58–60C. MSVC bridge and core19 pass. Evidence:
+`completed_sheet_discovery_reference.remaining_buildings_well_reference`.
+
 ## Completed hatch, grate and bar references
 
 Protected112109 on2026-11-15 captures native Hatch35, GrateWall36, GrateFloor37,

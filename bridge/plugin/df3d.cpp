@@ -89,6 +89,7 @@
 #include "pending_building_duration_native.h"
 #include "building_item_native.h"
 #include "funerary_native.h"
+#include "machinery_native.h"
 #include "building_links_native.h"
 #include "lever_native.h"
 #include "creature_office_native.h"
@@ -4935,6 +4936,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         output["slave_strength"]=facts->slaveStrength;output["prisoner_strength"]=facts->prisonerStrength;output["imprisoner_strength"]=facts->imprisonerStrength;
         output["deity_histfig_id"]=facts->deityHistfigId;output["deity"]=facts->deity;
         output["ordinary_color"]=Json::Value(Json::arrayValue);for(auto color:facts->ordinaryColor)output["ordinary_color"].append(int(color));
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
+      if(parameters[0]=="machinery-body-probe") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& text=parameters[1];
+        const auto parsed=std::from_chars(text.data(),text.data()+text.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        const auto value=df3d_production::machineryBody(df::building::find(id));if(!value)return CR_FAILURE;
+        Json::Value output;output["machine_id"]=value->machineId;output["produced"]=value->produced;output["required"]=value->required;
+        output["status"]=int(value->status);output["stable_foundation"]=value->stableFoundation;output["disengaged"]=value->disengaged;
+        output["pump_manual"]=int(value->pumpManual);output["pump_direction"]=int(value->pumpDirection);
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="zone-animal-restraint-read") {

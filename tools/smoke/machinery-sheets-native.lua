@@ -54,6 +54,24 @@ for _,kind in ipairs(kinds)do
   local text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','');if text:find('%S')then row.lines[#row.lines+1]={y=y,text=text}end
  end
  capture('machinery-sheet-'..kind);result.buildings[#result.buildings+1]=row
+ local function read_semantics()
+  local text,code=dfhack.run_command_silent('df3d','machinery-body-probe',tostring(b.id));assert(code==0,text)
+  return json.decode(text)
+ end
+ if kind~=df.building_type.Workshop and os.getenv('DF3D_MACHINERY_PROVIDER')=='1'then
+  row.semantic=read_semantics();local s=row.semantic
+  assert(s.machine_id==(machine and machine.id or -1))
+  assert(s.produced==(machine and machine.cur_power or 0) and s.required==(machine and machine.min_power or 0))
+  local labels={[1]='Active',[2]='Inactive',[3]='Frozen Here',[4]='Frozen Elsewhere'}
+  local found_foundation,found_status=false,s.status==0
+  for _,line in ipairs(row.lines)do
+   local text=line.text:match('^%s*(.-)%s*$')
+   if text==(s.stable_foundation and 'Stable Foundation' or 'Hanging')then found_foundation=true end
+   if text==labels[s.status]then found_status=true end
+  end
+  assert(found_foundation and found_status,'Native machinery body differs from owned semantic inputs')
+  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==b.id)
+ end
  if kind==df.building_type.ScrewPump and os.getenv('DF3D_MACHINERY_ACTIONS')=='1'then
   local initial=b.pump_manually;local jobs=#b.jobs
   -- Without a network, native puts the 3x3 checkbox immediately below foundation.
@@ -65,6 +83,7 @@ for _,kind in ipairs(kinds)do
    df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
    local expected=initial;if step==1 then expected=not initial end
    assert(b.pump_manually==expected and #b.jobs==jobs)
+   if os.getenv('DF3D_MACHINERY_PROVIDER')=='1'then assert(read_semantics().pump_manual==(expected and 1 or 0))end
    capture('machinery-pump-manual-'..step)
   end
   row.manual_toggle={initial=initial,restored=b.pump_manually,jobs=jobs,frame_unchanged=df.global.world.frame_counter==result.frame}

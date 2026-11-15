@@ -538,6 +538,18 @@ the eight native records, exact source captions, instruction references and pins
 Owned DF39748 closes unsaved with source preservation; core19 passes, graphical
 runs serial at30FPS, sampled GPU58..60C. No bridge/protocol change in this milestone.
 
+The staged `machinery_native.h` provider returns pointer-free network status,
+totals, foundation, gear disengagement and pump flag/direction. It invokes the
+pinned5acd00 foundation predicate rather than reproducing terrain classification.
+Protected103723 on2026-11-15 compares its seven machinery observations with native
+status/foundation text and simulation totals, and verifies pump flag observations
+after both native clicks. Active/no-network and stable/hanging cases are covered;
+frozen, disengaged and other pump directions still need live comparison. The
+read-only `machinery-body-probe` diagnostic leaves native selection unchanged.
+MSVC/core19 pass; owned DF30304 closes unsaved with source preservation,30FPS and
+sampled GPU61C. Evidence: `completed_sheet_discovery_reference.machinery_provider_reference`.
+No management-wire exposure or public machinery panel is implied by this provider.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

@@ -9873,6 +9873,21 @@ fixture discovery failures are not acceptance;214809 selected an inactive citize
 and correctly did not release it. The accepted fixture selects an active citizen,
 matching the native predicate. No native defect or parity exception is claimed.
 
+Unfinished building contents include the existing owned appearance facts for
+floodgates, mechanisms and millstones. Item icons use the untinted installed
+millstone tile: native c83890 dispatch81 reaches c87954, which returns the tile
+directly without material composition. This correction uses the existing artwork
+contract and changes no gameplay semantics. Protected011618 on2026-11-15 compares
+full488x708 panels for controlled unfinished Smelter56, Workshop3, Door16 and
+Statue493, all pixel-identical. Lever55's three mechanism icon crops match at
+the respective viewer/native positions; its36px contents offset remains open.
+Earlier011301 failed millstone tint and is not acceptance. Stages are restored,
+owned DF11832 exits unsaved, and source preservation passes. Bridge/extension
+builds and core19 pass; live diagnostics are only the known thread/finalize/two
+ObjectDB signatures. Evidence: pending_construction_reference.component_artwork_reference.
+This qualifies these controlled panels and icons, not every unfinished type,
+ordinary map entry, trigger-link controls or responsive layout.
+
 Management protocol220 adds required pending-building progress state0–4 (no
 caption, waiting, initiated, partial, nearly done). Older recordings default-1
 and are not accepted as fresh progress authority. Both schema defaults and

@@ -16772,6 +16772,74 @@
           "chest-scene-component-melt-2.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
           "chest-scene-component-return.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899"
         }
+      },
+      "component_artwork_reference": {
+        "protocol": 220,
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-011618",
+        "owned_df_pid": 11832,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "status": "passed_with_known_issues",
+        "scope": "Controlled unfinished furnace, workshop, door and statue full panels match native. Workshop floodgate and millstone now receive existing owned item appearance. Lever three mechanism icon crops match at respective native/viewer positions; lever full-panel layout remains unaccepted, offset36px. Millstone uses the untinted installed tile, as native c83890 dispatch81 at c87954 does. No protocol change. Earlier011301 failed only millstone tint and is not acceptance. Stages restored after read-only viewer.",
+        "comparisons": [
+          {
+            "type": 5,
+            "id": 56,
+            "full_panel_equal": true,
+            "difference_bounds": null,
+            "mechanism_icons_equal": null,
+            "viewer_sha256": "af29473dd907de3ed29644d200099e89cf2e1dc7996053e4ab2a8e4f08cc6eed",
+            "native_sha256": "8064825d546c5878c52619dc33e7a317a6172702e424c1bfe35c9238dc6592e7"
+          },
+          {
+            "type": 13,
+            "id": 3,
+            "full_panel_equal": true,
+            "difference_bounds": null,
+            "mechanism_icons_equal": null,
+            "viewer_sha256": "1ee3f86751c01b487e2216eacb9ced7c31f4213e537c07a7d0016f1c9886b312",
+            "native_sha256": "74d9267a087aff4a5be85f84197c125a781d52fa0950cea206f2951fdfb9ab4b"
+          },
+          {
+            "type": 8,
+            "id": 16,
+            "full_panel_equal": true,
+            "difference_bounds": null,
+            "mechanism_icons_equal": null,
+            "viewer_sha256": "7e58e86d9c6de603bd8bc3e5338d65072c5d9ea070ab2f16b9c91bc91bf67517",
+            "native_sha256": "db82efd202d37ab315f939ba39b7aef6cbb86484f20b9329fe63b5cac6a0537c"
+          },
+          {
+            "type": 15,
+            "id": 493,
+            "full_panel_equal": true,
+            "difference_bounds": null,
+            "mechanism_icons_equal": null,
+            "viewer_sha256": "956be4d76af87d300ee05b8e16cbb397d1dae321a27fc30f240d259599943350",
+            "native_sha256": "f844e9ee79f1afa58e3fda505301845120eb77204e83236b3720f7b4098006a9"
+          },
+          {
+            "type": 23,
+            "id": 55,
+            "full_panel_equal": false,
+            "difference_bounds": [
+              8,
+              456,
+              480,
+              600
+            ],
+            "mechanism_icons_equal": true,
+            "viewer_sha256": "41563e62e28a8948eb712ee077a305060b53643fd5bb8d159f76dc8ba093b1e1",
+            "native_sha256": "cfb5c3017c42704b1fcccd1d3a32e0357d440eb995990ab7b1761e5d77e96a0c"
+          }
+        ],
+        "hashes": {
+          "workshop-native.json": "2129a0937eb576cf9d298bcf44465aa0cb8158f47b364e9038cc312476438608",
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "result.json": "6e126311c5d6c53ec95e33b6561723c822eb14cd37aeb07552cd1c2b346bef4e",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

@@ -277,8 +277,11 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     // Native hunter list captures142845 use the untinted diagonal sprite for
     // silver, iron and copper alike. Other icon callers retain material tint.
     const bool nativeBarrel=query.kind==wm::ItemKind::Barrel && contents.has_value();
-    const int palette=rawSlab || diagonalAmmo ? -1 : (nativeBarrel || colorToken.empty() ? resolved.paletteRow : assets_->index.paletteRow(colorToken));
-    if(!colorToken.empty() && palette<0 && !rawSlab && !diagonalAmmo && !nativeBarrel)return {};
+    // Native c83890 dispatch81 -> c87954 returns the installed millstone tile
+    // directly, without the material-color compositor used by other items.
+    const bool rawMillstone=query.kind==wm::ItemKind::Millstone;
+    const int palette=rawSlab || diagonalAmmo || rawMillstone ? -1 : (nativeBarrel || colorToken.empty() ? resolved.paletteRow : assets_->index.paletteRow(colorToken));
+    if(!colorToken.empty() && palette<0 && !rawSlab && !diagonalAmmo && !nativeBarrel && !rawMillstone)return {};
     const int slot=slotFor(resolved.sprite.page,palette,false);
     const TextureSlot* texture=slot>=0?spriteResources_.slots.find(slot):nullptr;
     if(!texture || texture->texture.is_null())return {};

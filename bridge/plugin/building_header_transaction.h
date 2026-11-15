@@ -10,7 +10,7 @@ namespace df3d_production {
 struct BuildingHeaderObservation {
     int32_t id=-1,type=-1,stage=-1,maxStage=-1;
     std::string customName,nativeName,headerName;
-    bool removing=false,suspended=false,hasWorker=false;
+    bool removing=false,suspended=false,hasWorker=false,forbidden=false;
     struct Job {int32_t id,type;uint32_t flags;};
     std::vector<Job> jobs;
     uint64_t revision=0;
@@ -23,7 +23,7 @@ inline uint64_t buildingHeaderRevision(const BuildingHeaderObservation& value) {
     for(const auto* text:{&value.customName,&value.nativeName,&value.headerName}) {
         number(text->size());for(unsigned char c:*text)byte(c);
     }
-    byte(value.removing);byte(value.suspended);byte(value.hasWorker);
+    byte(value.removing);byte(value.suspended);byte(value.hasWorker);byte(value.forbidden);
     number(value.jobs.size());for(const auto& job:value.jobs){number(job.id);number(job.type);number(job.flags);}
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;
 }

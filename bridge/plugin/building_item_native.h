@@ -394,6 +394,7 @@ inline std::optional<bool> itemCoffinUnused(df::item* item) {
 inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     if(!item)return std::nullopt;
     ItemInspectionAppearance appearance;
+    if(item->getType()==df::item_type::BED) {auto facts=df3d_bed::facts(item);if(facts.sheet<0)return std::nullopt;appearance.bedding=std::move(facts);}
     if(item->getType()==df::item_type::CORPSE) {
         df3d_appearance::Result recipe;
         const auto skeleton=corpseSkeletonArtwork(item);
@@ -1311,7 +1312,7 @@ inline std::optional<BuildingContentsSnapshot> buildingContents(df::building_act
         row.role=static_cast<int32_t>(held->use_mode);
         // Construction materials use the same owned appearance facts as their
         // item sheets. Omitting them leaves workshop contents picture boxes blank.
-        if((row.itemType>=0&&row.itemType<=5)||row.itemType==static_cast<int>(df::item_type::DOOR)||row.itemType==static_cast<int>(df::item_type::STATUE)||row.itemType==static_cast<int>(df::item_type::CHAIR)||row.itemType==static_cast<int>(df::item_type::TABLE)||row.itemType==static_cast<int>(df::item_type::FLOODGATE)||row.itemType==static_cast<int>(df::item_type::TRAPPARTS)||row.itemType==static_cast<int>(df::item_type::MILLSTONE)||row.itemType==13||row.itemType==17||row.itemType==30||row.itemType==86){row.appearance=itemAppearance(held->item);if(!row.appearance)return std::nullopt;}
+        if(row.itemType==static_cast<int>(df::item_type::BED)||(row.itemType>=0&&row.itemType<=5)||row.itemType==static_cast<int>(df::item_type::DOOR)||row.itemType==static_cast<int>(df::item_type::STATUE)||row.itemType==static_cast<int>(df::item_type::CHAIR)||row.itemType==static_cast<int>(df::item_type::TABLE)||row.itemType==static_cast<int>(df::item_type::FLOODGATE)||row.itemType==static_cast<int>(df::item_type::TRAPPARTS)||row.itemType==static_cast<int>(df::item_type::MILLSTONE)||row.itemType==13||row.itemType==17||row.itemType==30||row.itemType==86){row.appearance=itemAppearance(held->item);if(!row.appearance)return std::nullopt;}
         snapshot.rows.push_back(std::move(row));
     }
     snapshot.revision=buildingContentsRevision(snapshot);

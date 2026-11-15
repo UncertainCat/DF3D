@@ -89,7 +89,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     auto& state=n.buildingHeader.emplace();state.outcome=static_cast<FarmEditOutcome>(source->outcome());
     state.operation=static_cast<FarmOperation>(source->operation());
     if(const auto* f=source->snapshot())state.snapshot=BuildingHeaderSnapshot{f->id(),f->type(),f->stage(),f->max_stage(),f->revision(),
-      str(f->custom_name()),str(f->native_name()),str(f->header_name()),f->removing(),f->suspended(),f->has_worker()};
+      str(f->custom_name()),str(f->native_name()),str(f->header_name()),f->removing(),f->suspended(),f->has_worker(),f->forbidden(),f->appearance()?std::optional<SelectionAppearance>(decodeItemRecipe(f->appearance())):std::nullopt};
   }
   if(const auto* source=p->independent_item()) {
     auto& state=n.independentItem.emplace();state.outcome=static_cast<FarmEditOutcome>(source->outcome());

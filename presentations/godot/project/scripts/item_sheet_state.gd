@@ -197,7 +197,14 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	if editing and owner==generation:applied.emit()
 
 static func _valid_appearance(look: Variant,item_type: int) -> bool:
-	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("door"))+int(look.has("bucket_liquid"))+int(look.has("cage"))+int(look.has("restraint"))+int(look.has("portrait"))+int(look.has("slab_engraving"))+int(look.has("corpse_selector"))+int(look.has("legwear_selector"))+int(look.has("craft_gem_color"))+int(look.has("craft_soft_material"))+int(look.has("artifact_mood"))+int(look.has("coffin_unused")):return false
+	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("door"))+int(look.has("bucket_liquid"))+int(look.has("cage"))+int(look.has("restraint"))+int(look.has("portrait"))+int(look.has("slab_engraving"))+int(look.has("corpse_selector"))+int(look.has("legwear_selector"))+int(look.has("craft_gem_color"))+int(look.has("craft_soft_material"))+int(look.has("artifact_mood"))+int(look.has("coffin_unused"))+int(look.has("bedding")):return false
+	if look.has("bedding"):
+		var bed=look.bedding
+		if item_type!=8 or typeof(bed)!=TYPE_DICTIONARY or bed.size()!=4:return false
+		for field in ["sheet","pillow"]:
+			if typeof(bed.get(field))!=TYPE_INT or bed[field]<0 or bed[field]>(1 if field=="sheet" else 2):return false
+		for field in ["base_color","sheet_color"]:
+			if typeof(bed.get(field))!=TYPE_STRING or bed[field].to_utf8_buffer().size()>128 or bed[field].to_utf8_buffer().has(0):return false
 	if look.has("slab_engraving") and (item_type!=87 or typeof(look.slab_engraving)!=TYPE_INT or look.slab_engraving< -1 or look.slab_engraving>26):return false
 	if look.has("portrait") and (item_type not in [51,52] or not _valid_recipe(look.portrait)):return false
 	if look.has("coffin_unused") and (item_type!=21 or typeof(look.coffin_unused)!=TYPE_BOOL):return false

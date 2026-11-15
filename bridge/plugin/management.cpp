@@ -742,6 +742,7 @@ bool prepareTileSelectionReply(TileSelectionSession& value) {
     appearanceBytes+=256+look.materialToken.size()+look.subtypeRaw.size()+look.colorToken.size()+
       look.restraintSolidColor.size()+look.cageSolidColor.size()+look.bucketLiquidColor.size();
     if(look.craftGemColor)appearanceBytes+=look.craftGemColor->size();
+    if(look.bedding)appearanceBytes+=32+look.bedding->baseColor.size()+look.bedding->sheetColor.size();
     for(const auto* recipe:{&look.portrait,&look.corpseSelector,&look.cageOccupant,&look.legwearSelector})
       if(*recipe && !df3d_production::validItemRecipe(**recipe,appearanceBytes))return false;
     if(look.contents){appearanceBytes+=64+look.contents->solidColor.size();
@@ -1176,7 +1177,7 @@ void publish() {
   };
   const auto encodeInspectionAppearance=[&](const std::optional<ItemInspectionAppearance>& look) {
     flatbuffers::Offset<m::ItemInspectionAppearance> result;
-    if(look){const auto& a=*look;result=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector),a.craftGemColor?b.CreateString(*a.craftGemColor):0,a.craftSoftMaterial,a.artifactMood,a.coffinUnused);}return result;
+    if(look){const auto& a=*look;result=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector),a.craftGemColor?b.CreateString(*a.craftGemColor):0,a.craftSoftMaterial,a.artifactMood,a.coffinUnused,a.bedding?m::CreateBeddingFactsDirect(b,a.bedding->sheet,a.bedding->pillow,a.bedding->baseColor.c_str(),a.bedding->sheetColor.c_str()):0);}return result;
   };
   flatbuffers::Offset<m::BuildingContentsPage> contentsPage;
   if(production.contents) {
@@ -1203,10 +1204,10 @@ void publish() {
       const auto holder=link(v.holder),stockpile=link(v.stockpile);
       flatbuffers::Offset<m::ItemCarrier> carrier;
       if(v.carrier){const auto& c=*v.carrier;flatbuffers::Offset<m::ItemInspectionAppearance> appearance;
-        if(c.appearance){const auto& a=*c.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector),a.craftGemColor?b.CreateString(*a.craftGemColor):0,a.craftSoftMaterial,a.artifactMood,a.coffinUnused);}
+        if(c.appearance){const auto& a=*c.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector),a.craftGemColor?b.CreateString(*a.craftGemColor):0,a.craftSoftMaterial,a.artifactMood,a.coffinUnused,a.bedding?m::CreateBeddingFactsDirect(b,a.bedding->sheet,a.bedding->pillow,a.bedding->baseColor.c_str(),a.bedding->sheetColor.c_str()):0);}
         carrier=m::CreateItemCarrier(b,int8_t(c.kind),c.id,c.itemType,b.CreateString(c.name),appearance);}
       flatbuffers::Offset<m::ItemInspectionAppearance> appearance;
-      if(v.appearance){const auto& a=*v.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector),a.craftGemColor?b.CreateString(*a.craftGemColor):0,a.craftSoftMaterial,a.artifactMood,a.coffinUnused);}
+      if(v.appearance){const auto& a=*v.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector),a.craftGemColor?b.CreateString(*a.craftGemColor):0,a.craftSoftMaterial,a.artifactMood,a.coffinUnused,a.bedding?m::CreateBeddingFactsDirect(b,a.bedding->sheet,a.bedding->pillow,a.bedding->baseColor.c_str(),a.bedding->sheetColor.c_str()):0);}
       flatbuffers::Offset<m::ItemOwner> owner;
       if(v.owner)owner=m::CreateItemOwner(b,v.owner->id,b.CreateString(v.owner->name));
       flatbuffers::Offset<m::ItemAmmunitionAssignment> assignment;
@@ -1214,7 +1215,7 @@ void publish() {
       flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<m::ItemSheetContent>>> contents;
       if(v.contents){std::vector<flatbuffers::Offset<m::ItemSheetContent>> rows;
         for(const auto& row:*v.contents){flatbuffers::Offset<m::ItemInspectionAppearance> look;
-          if(row.appearance){const auto& a=*row.appearance;look=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector),a.craftGemColor?b.CreateString(*a.craftGemColor):0,a.craftSoftMaterial,a.artifactMood,a.coffinUnused);}
+          if(row.appearance){const auto& a=*row.appearance;look=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector),a.craftGemColor?b.CreateString(*a.craftGemColor):0,a.craftSoftMaterial,a.artifactMood,a.coffinUnused,a.bedding?m::CreateBeddingFactsDirect(b,a.bedding->sheet,a.bedding->pillow,a.bedding->baseColor.c_str(),a.bedding->sheetColor.c_str()):0);}
           rows.push_back(m::CreateItemSheetContent(b,int8_t(row.kind),row.id,b.CreateString(row.caption),row.itemType,row.flags,row.canDump,row.canMelt,look));
         }contents=b.CreateVector(rows);
       }
@@ -1258,7 +1259,7 @@ void publish() {
     const auto& state=*production.buildingHeader;flatbuffers::Offset<m::BuildingHeaderSnapshot> snapshot;
     if(state.snapshot) {
       const auto& f=*state.snapshot;snapshot=m::CreateBuildingHeaderSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,
-        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker);
+        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance));
     }
     buildingHeader=m::CreateBuildingHeaderState(b,snapshot,state.outcome,state.operation);
   }
@@ -1629,7 +1630,7 @@ void publish() {
     for(const auto& row:stocks->items){
       flatbuffers::Offset<m::ItemInspectionAppearance> appearance;
       if(row.appearance){const auto& a=*row.appearance;
-        appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector),a.craftGemColor?b.CreateString(*a.craftGemColor):0,a.craftSoftMaterial,a.artifactMood,a.coffinUnused);}
+        appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector),a.craftGemColor?b.CreateString(*a.craftGemColor):0,a.craftSoftMaterial,a.artifactMood,a.coffinUnused,a.bedding?m::CreateBeddingFactsDirect(b,a.bedding->sheet,a.bedding->pillow,a.bedding->baseColor.c_str(),a.bedding->sheetColor.c_str()):0);}
       items.push_back(m::CreateStocksItemRow(b,row.id,int16_t(row.itemType),b.CreateString(row.caption),row.flags,row.canDump,row.canMelt,
         b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw),appearance));
     }
@@ -3434,7 +3435,7 @@ df::building_actual* contentsBuilding(int32_t id,bool editing=false) {
   auto* building=virtual_cast<df::building_actual>(df::building::find(id));
   if(!building)return nullptr;
   const auto type=building->getType();
-  if(type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
+  if(type!=df::building_type::Chair && type!=df::building_type::Bed && type!=df::building_type::Table && type!=df::building_type::Statue && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
      (editing || (type!=df::building_type::Workshop && type!=df::building_type::Furnace)) &&
      !df3d_production::observePendingBuilding(building))return nullptr;
   auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
@@ -3493,7 +3494,7 @@ std::optional<BuildingItemSnapshot> observeFarmItem(int32_t buildingId,int32_t i
 }
 ItemInspectionAppearance copyInspectionAppearance(const df3d_production::ItemInspectionAppearance& a) {
   ItemInspectionAppearance result{DF2UTF(a.materialToken),DF2UTF(a.subtypeRaw),DF2UTF(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced};
-  result.floodgateOpen=a.floodgateOpen;result.doorOpen=a.doorOpen;result.doorForbidden=a.doorForbidden;result.doorWear=a.doorWear;result.bucketLiquid=a.bucketLiquid;result.bucketLiquidColor=DF2UTF(a.bucketLiquidColor);result.cageMaterialFamily=a.cageMaterialFamily;result.cageOccupantEntity=a.cageOccupantEntity;result.cageOccupantId=a.cageOccupantId;result.cageSolidColor=DF2UTF(a.cageSolidColor);result.restraintRope=a.restraintRope;result.restraintSolidColor=DF2UTF(a.restraintSolidColor);result.slabEngraving=a.slabEngraving;result.portrait=a.portrait;result.cageOccupant=a.cageOccupant;result.corpseSelector=a.corpseSelector;result.legwearSelector=a.legwearSelector;result.craftSoftMaterial=a.craftSoftMaterial;result.artifactMood=a.artifactMood;result.coffinUnused=a.coffinUnused;if(a.craftGemColor)result.craftGemColor=DF2UTF(*a.craftGemColor);
+  result.floodgateOpen=a.floodgateOpen;result.doorOpen=a.doorOpen;result.doorForbidden=a.doorForbidden;result.doorWear=a.doorWear;result.bucketLiquid=a.bucketLiquid;result.bucketLiquidColor=DF2UTF(a.bucketLiquidColor);result.cageMaterialFamily=a.cageMaterialFamily;result.cageOccupantEntity=a.cageOccupantEntity;result.cageOccupantId=a.cageOccupantId;result.cageSolidColor=DF2UTF(a.cageSolidColor);result.restraintRope=a.restraintRope;result.restraintSolidColor=DF2UTF(a.restraintSolidColor);result.slabEngraving=a.slabEngraving;result.portrait=a.portrait;result.cageOccupant=a.cageOccupant;result.corpseSelector=a.corpseSelector;result.legwearSelector=a.legwearSelector;result.craftSoftMaterial=a.craftSoftMaterial;result.artifactMood=a.artifactMood;result.coffinUnused=a.coffinUnused;result.bedding=a.bedding;if(a.craftGemColor)result.craftGemColor=DF2UTF(*a.craftGemColor);
   if(a.contents){auto& c=result.contents.emplace();c.container=a.contents->container;c.materialInorganic=a.contents->materialInorganic;c.solidColor=DF2UTF(a.contents->solidColor);
     for(const auto& e:a.contents->entries)c.entries.push_back({e.itemType,DF2UTF(e.materialToken),DF2UTF(e.colorToken),e.effectiveArmorLevel,e.metal,e.coal,e.containsPowder,e.rollsSheets,e.protectsFoldedSheets,e.containsWriting,e.liquid,e.subterraneanPlant});}
   return result;
@@ -4189,13 +4190,13 @@ void run(color_ostream& out) {
         auto* building=df::building::find(q->building_id());
         if(!building)return nullptr;
         const auto type=building->getType();
-        if(type!=df::building_type::Door && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return nullptr;
+        if(type!=df::building_type::Chair && type!=df::building_type::Bed && type!=df::building_type::Table && type!=df::building_type::Statue && type!=df::building_type::Door && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return nullptr;
         auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
         return tile && !tile->bits.hidden?building:nullptr;
       };
       const auto observe=[&]{return df3d_production::observeBuildingHeader(target());};
       const auto convert=[](const df3d_production::BuildingHeaderObservation& f) {
-        return BuildingHeaderSnapshot{f.id,f.type,f.stage,f.maxStage,f.revision,DF2UTF(f.customName),DF2UTF(f.nativeName),DF2UTF(f.headerName),f.removing,f.suspended,f.hasWorker};
+        return BuildingHeaderSnapshot{f.id,f.type,f.stage,f.maxStage,f.revision,DF2UTF(f.customName),DF2UTF(f.nativeName),DF2UTF(f.headerName),f.removing,f.suspended,f.hasWorker,int8_t(f.forbidden),df3d_tasks::destinationArtwork(df::building::find(f.id))};
       };
       const auto before=observe();
       if(before && !editing){response.snapshot=convert(*before);status=m::ManagementStatus::Ok;}

@@ -9725,14 +9725,42 @@ not action or viewer acceptance. In particular, empty furniture bodies do not
 establish assigned-zone variants. Owned DF27908 closes unsaved, source preserved,
 native30FPS and sampled GPU51C; core19 passes.
 
-The next furniture implementation must expose membership semantics as well as
-the shared native name/artwork/item actions. Native membership captions occur at
-renderer18f1a3,190ebc and19548a. The first branch collects building.relations at
-offseta0 into an owned local vector, filtering zone type through native54bb10
-at18ee64 before choosing zero/one/multiple-room layout. This identifies an audit
-candidate, not a qualified runtime provider; ordering, other branch predicates,
-zone/location captions and navigation still need verification. Do not infer
-membership from geometry or recreate the native room filter in Godot.
+Protected native023324 and023607 on2026-11-15 qualify ordinary furniture
+with nonempty zone relations: Chair65, Bed9, Table62 and Statue493 still show no
+membership rows (the statue also belongs to location1). The membership-caption
+branches at18f1a3,190ebc and19548a belong to specialized cage/chain/coffin sheets;
+they are not an ordinary furniture requirement.
+
+Native023607 exercises Rename and restoration, component Forbid and restoration,
+Remove and Cancel removal for all four types. Forbidden observations have item
+flags524320 versus32 and building::isForbidden=true; removal creates one
+DestroyBuilding job and cancellation leaves none. Source saves are unchanged;
+the owned game exits unsaved. This is native action evidence, not viewer
+acceptance or evidence for component edits during removal.
+
+Management protocol223 (implementation in progress) adds native forbidden state
+and optional artwork to the independent header, and admits Chair, Bed, Table
+and Statue. Shared item appearance also carries optional native bedding facts
+(sheet, pillow and colors) for bed contents and inspection. These use the existing
+owned native bedding selector; absence remains unknown. Upgrade version222 peers
+together; the mailbox changes to v223.
+Missing forbidden state is unknown (-1), rejected as current header authority
+rather than migrated to false. Old recordings do not acquire invented artwork.
+Protected main-scene030100 on2026-11-15 verifies all four furniture types through
+Rename/restore, Forbid/restore, Remove/Cancel, component View, holder return and
+Escape. All24 full-panel crops match native. Native post-checks match names,
+empty job queues and complete component flags. Native View sets weight_computed
+(bit29): flags32 become536870944, exactly as DF3D does. The earlier025901 run
+passed pixels/actions but incorrectly compared those flags with a pre-View
+baseline; its failed post-check is superseded by the native View comparison.
+Owned DF40540 exits unsaved and source preservation passes; only documented
+render-thread/finalize/two-ObjectDB diagnostics remain. Evidence is recorded in
+completed_sheet_discovery_reference.ordinary_furniture_actions_reference.viewer_reference.
+Protected030227 also verifies the shared header against five unfinished-building
+full panels, trigger facts and Escape cleanup; source preserved, DF38996 closed,
+only the same known diagnostics.
+Component edits during removal, normal map entry, resize and worker-owned
+demolition remain unqualified; ordinary furniture map exposure stays gated.
 
 Basic building discovery: protected203229 and203340 on2026-11-14 capture
 completed Door16 and unfinished Statue965.

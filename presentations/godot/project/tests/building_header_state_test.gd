@@ -25,7 +25,7 @@ func setup() -> void:
 	world=World.new();service=Service.new();service.configure(world);model=Model.new();model.configure(service)
 	applied=0;model.applied.connect(func():applied+=1)
 func snapshot(id:=278,revision:=9007199254740993) -> Dictionary:
-	return {"id":id,"type":10,"revision":revision,"stage":1,"max_stage":1,"custom_name":"","native_name":"native chest","header_name":"Native chest","removing":false,"suspended":false,"has_worker":false}
+	return {"id":id,"type":10,"revision":revision,"stage":1,"max_stage":1,"custom_name":"","native_name":"native chest","header_name":"Native chest","removing":false,"suspended":false,"has_worker":false,"forbidden":false}
 func reply(value: Dictionary,outcome:=0,operation:=0) -> void:
 	var sent: Dictionary=world.calls[-1].request
 	var state={"outcome":outcome,"operation":operation}
@@ -37,6 +37,9 @@ func ready() -> void:
 	setup();model.open(278);service.poll();reply(snapshot())
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
+	for kind in [0,1,2,5,8,10,13,15]:
+		var supported:=snapshot();supported.type=kind
+		check(Model.valid_snapshot(supported,278),"native header type "+str(kind))
 	ready();check(model.phase==Model.Phase.Ready and world.calls[0].request.building_header and not world.calls[0].request.has("season"),"independent header read")
 	model.rename("new");service.poll();var sent: Dictionary=world.calls[-1].request
 	check(sent.expected_revision==9007199254740993 and sent.farm_name=="new" and not sent.has("season"),"rename preserves exact revision without farm data")
@@ -48,7 +51,7 @@ func run() -> void:
 	reply(removed,1,C.FarmOperation.Remove);check(model.snapshot.removing,"remove receipt accepted")
 	var count: int=world.calls.size();model.rename("wrong");model.request_removal();service.poll();check(world.calls.size()==count,"removing blocks rename and second removal")
 	model.cancel_removal();service.poll();reply(snapshot(),1,C.FarmOperation.CancelRemoval);check(applied==3 and not model.snapshot.removing,"cancellation receipt accepted")
-	for fault in 11:
+	for fault in 14:
 		setup();model.open(278);service.poll();var bad:=snapshot()
 		match fault:
 			0:bad.id=279
@@ -62,6 +65,9 @@ func run() -> void:
 			8:bad.suspended=true
 			9:bad.removing=1
 			10:bad.revision=1.0
+			11:bad.erase("forbidden")
+			12:bad.forbidden=1
+			13:bad.appearance={}
 		reply(bad);check(model.phase==Model.Phase.Rejected and model.snapshot.is_empty(),"malformed header refused "+str(fault))
 	for fault in 4:
 		ready();model.rename("new");service.poll();var bad:=snapshot();bad.custom_name="new"

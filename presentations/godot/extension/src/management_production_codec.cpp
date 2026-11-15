@@ -31,6 +31,7 @@ Dictionary contentsDictionary(const wm::ItemContainerContentsFacts& contents) {
 }
 Dictionary itemAppearanceDictionary(const wm::ItemInspectionAppearance& a) {
   Dictionary look;
+  if(a.bedding){Dictionary bed;bed["sheet"]=int(a.bedding->sheet);bed["pillow"]=int(a.bedding->pillow);bed["base_color"]=String::utf8(a.bedding->baseColor.c_str());bed["sheet_color"]=String::utf8(a.bedding->sheetColor.c_str());look["bedding"]=bed;}
   if(a.slabEngraving!=-2)look["slab_engraving"]=a.slabEngraving;
   if(a.coffinUnused!=-1)look["coffin_unused"]=bool(a.coffinUnused);
   if(a.artifactMood!=-1)look["artifact_mood"]=bool(a.artifactMood);
@@ -255,7 +256,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
       const auto& f=*state.snapshot;Dictionary value;
       value["id"]=f.id;value["type"]=f.type;value["revision"]=int64_t(f.revision);value["stage"]=f.stage;value["max_stage"]=f.maxStage;
       value["custom_name"]=String::utf8(f.customName.c_str());value["native_name"]=String::utf8(f.nativeName.c_str());value["header_name"]=String::utf8(f.headerName.c_str());
-      value["removing"]=f.removing;value["suspended"]=f.suspended;value["has_worker"]=f.hasWorker;headerState["snapshot"]=value;
+      value["removing"]=f.removing;value["suspended"]=f.suspended;value["has_worker"]=f.hasWorker;if(f.forbidden>=0)value["forbidden"]=f.forbidden!=0;if(f.appearance)value["appearance"]=itemRecipeDictionary(*f.appearance);headerState["snapshot"]=value;
     }
     prod["building_header"]=headerState;
   }

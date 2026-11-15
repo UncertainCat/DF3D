@@ -144,6 +144,10 @@ inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t 
   if(const auto* legwear=a.legwear_selector()) {
     if(type!=60 || validateOwnerAppearance(*legwear,recipeBytes) || legwear->layers()->size()==0)return false;
   }
+  if(const auto* bed=a.bedding()) {
+    const auto text=[](const flatbuffers::String* s){return s && s->size()<=128 && s->str().find('\0')==std::string::npos;};
+    if(type!=8 || bed->sheet()<0 || bed->sheet()>1 || bed->pillow()<0 || bed->pillow()>2 || !text(bed->base_color()) || !text(bed->sheet_color()))return false;
+  }
   if(a.coffin_unused() < -1 || a.coffin_unused()>1 || (type!=21 && a.coffin_unused()!=-1))return false;
   if(a.artifact_mood() < -1 || a.artifact_mood()>1 || (type!=24 && a.artifact_mood()!=-1))return false;
   if(a.craft_soft_material() < -1 || a.craft_soft_material()>1 ||
@@ -184,8 +188,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 222;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v222";
+inline constexpr uint32_t kManagementVersion = 223;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v223";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1590,6 +1594,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         for(const auto* p:{a->portrait(),a->corpse_selector(),a->cage_occupant(),a->legwear_selector()})if(p)if(auto error=validateOwnerAppearance(*p,recipe))return error;
         bytes+=recipe;
         for(const auto* text:{a->restraint_solid_color(),a->cage_solid_color(),a->bucket_liquid_color(),a->craft_gem_color()})if(text)bytes+=text->size();
+        if(const auto* bed=a->bedding())bytes+=32+bed->base_color()->size()+bed->sheet_color()->size();
         if(const auto* c=a->contents()){
           bytes+=64;if(c->solid_color())bytes+=c->solid_color()->size();
           for(const auto* e:*c->entries())bytes+=64+e->material_token()->size()+e->color_token()->size();
@@ -1758,6 +1763,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         for(const auto* p:{a->portrait(),a->corpse_selector(),a->cage_occupant(),a->legwear_selector()})if(p)if(auto error=validateOwnerAppearance(*p,recipe))return error;
         bytes+=recipe;
         for(const auto* text:{a->restraint_solid_color(),a->cage_solid_color(),a->bucket_liquid_color(),a->craft_gem_color()})if(text)bytes+=text->size();
+        if(const auto* bed=a->bedding())bytes+=32+bed->base_color()->size()+bed->sheet_color()->size();
         if(const auto* c=a->contents()){
           bytes+=64;if(c->solid_color())bytes+=c->solid_color()->size();
           for(const auto* e:*c->entries())bytes+=64+e->material_token()->size()+e->color_token()->size();
@@ -2836,14 +2842,15 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(static_cast<uint8_t>(outcome)>4)return "invalid building header outcome";
       if(f) {
         const auto text=[](const flatbuffers::String* t,bool empty){return t && t->size()<=1536 && (empty || t->size()>0) && t->str().find('\0')==std::string::npos;};
-        if(f->id()<0 || (f->type()!=8 && f->type()!=10 && f->type()!=5 && f->type()!=13) || !f->revision() || f->revision()>INT64_MAX || f->stage()<0 || f->max_stage()<f->stage() ||
+        if(f->id()<0 || (f->type()!=0 && f->type()!=1 && f->type()!=2 && f->type()!=15 && f->type()!=8 && f->type()!=10 && f->type()!=5 && f->type()!=13) || !f->revision() || f->revision()>INT64_MAX || f->stage()<0 || f->max_stage()<f->stage() ||
            !text(f->custom_name(),true) || !text(f->native_name(),false) || !text(f->header_name(),false) ||
-           (!f->removing() && (f->suspended() || f->has_worker())))return "invalid building header snapshot";
+           (f->forbidden()<0 || f->forbidden()>1) || (!f->removing() && (f->suspended() || f->has_worker())))return "invalid building header snapshot";
+        if(f->appearance()){size_t bytes=0;if(auto error=validateOwnerAppearance(*f->appearance(),bytes))return error;if(!f->appearance()->layers()->size() || bytes>131072)return "invalid building header artwork";}
       }
       if(s.action()==ManagementAction::ProductionInspect) {
         if(outcome!=FarmEditOutcome::None || op!=FarmOperation::Crop || ((s.status()==ManagementStatus::Ok)!=(f!=nullptr)))return "invalid building header read";
       } else if(s.action()==ManagementAction::FarmEdit) {
-        if(f && f->type()!=8 && f->type()!=10 && f->type()!=13 && f->type()!=5)return "unsupported building header edit target";
+        if(f && f->type()!=0 && f->type()!=1 && f->type()!=2 && f->type()!=15 && f->type()!=8 && f->type()!=10 && f->type()!=13 && f->type()!=5)return "unsupported building header edit target";
         if(outcome==FarmEditOutcome::None)return "missing building header outcome";
         if(outcome==FarmEditOutcome::Completed) {
           if(s.status()!=ManagementStatus::Ok || !f || f->stage()!=f->max_stage() || op<FarmOperation::Rename || op>FarmOperation::CancelRemoval ||
@@ -3110,6 +3117,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       for(const auto* p:{look->portrait(),look->corpse_selector(),look->cage_occupant(),look->legwear_selector()})if(p)
         if(validateOwnerAppearance(*p,appearanceBytes))return false;
       for(const auto* t:{look->restraint_solid_color(),look->cage_solid_color(),look->bucket_liquid_color(),look->craft_gem_color()})if(t)appearanceBytes+=t->size();
+      if(const auto* bed=look->bedding())appearanceBytes+=32+bed->base_color()->size()+bed->sheet_color()->size();
       if(const auto* c=look->contents()){
         appearanceBytes+=64;if(c->solid_color())appearanceBytes+=c->solid_color()->size();
         for(const auto* row:*c->entries())appearanceBytes+=64+row->material_token()->size()+row->color_token()->size();

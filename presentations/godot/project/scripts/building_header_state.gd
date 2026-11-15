@@ -47,7 +47,7 @@ func _read() -> void:
 	_send({"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":building_id})
 
 func begin_name_entry() -> bool:
-	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("type",-1) not in [5,8,10,13] or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
+	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("type",-1) not in [0,1,2,5,8,10,13,15] or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
 	var owner:=generation
 	var owned=load("res://scripts/farm_rename_session.gd").new()
 	service.add_child(owned);owned.configure(service,snapshot,true)
@@ -81,7 +81,7 @@ func request_removal() -> void:_edit(C.FarmOperation.Remove,{})
 func cancel_removal() -> void:_edit(C.FarmOperation.CancelRemoval,{})
 
 func _edit(operation: int,fields: Dictionary) -> void:
-	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in [5,8,10,13] or snapshot.stage!=snapshot.max_stage:return
+	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in [0,1,2,5,8,10,13,15] or snapshot.stage!=snapshot.max_stage:return
 	if snapshot.removing!=(operation==C.FarmOperation.CancelRemoval):return
 	var intent={"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":building_id,
 		"expected_revision":snapshot.revision,"farm_operation":operation}
@@ -100,13 +100,14 @@ func _fail(next: Phase) -> void:
 static func valid_snapshot(value: Dictionary,id: int) -> bool:
 	for field in ["id","type","revision","stage","max_stage"]:
 		if typeof(value.get(field))!=TYPE_INT:return false
-	if value.id!=id or id<0 or id>2147483647 or value.type not in [5,8,10,13] or value.revision<=0 or value.stage<0 or value.max_stage<value.stage or value.max_stage>2147483647:return false
+	if value.id!=id or id<0 or id>2147483647 or value.type not in [0,1,2,5,8,10,13,15] or value.revision<=0 or value.stage<0 or value.max_stage<value.stage or value.max_stage>2147483647:return false
 	for field in ["custom_name","native_name","header_name"]:
 		if typeof(value.get(field))!=TYPE_STRING:return false
 		var bytes: PackedByteArray=value[field].to_utf8_buffer()
 		if bytes.size()>1536 or bytes.has(0) or (field!="custom_name" and bytes.is_empty()):return false
-	for field in ["removing","suspended","has_worker"]:
+	for field in ["removing","suspended","has_worker","forbidden"]:
 		if typeof(value.get(field))!=TYPE_BOOL:return false
+	if value.has("appearance") and not preload("res://scripts/item_sheet_state.gd")._valid_recipe(value.appearance):return false
 	return value.removing or (not value.suspended and not value.has_worker)
 
 func _receive(result: Dictionary,sent: Dictionary) -> void:

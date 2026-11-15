@@ -4432,10 +4432,10 @@ TEST_CASE("building header requests preserve revisions and exclude unrelated int
   }
 }
 TEST_CASE("building header receipts preserve authority and reject malformed state") {
-  for(int type:{5,8,10,13})for(bool edit:{false,true})for(int fault=0;fault<13;++fault) {
+  for(int type:{0,1,2,5,8,10,13,15})for(bool edit:{false,true})for(int fault=0;fault<15;++fault) {
     CAPTURE(edit);CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
     auto snapshot=wire::CreateBuildingHeaderSnapshot(b,fault==1?-1:278,fault==2?4:type,fault==3?0:9007199254740993ULL,
-      fault==4?-1:1,1,b.CreateString("name"),b.CreateString("name"),fault==5?0:b.CreateString("Name"),false,fault==6,false);
+      fault==4?-1:1,1,b.CreateString("name"),b.CreateString("name"),fault==5?0:b.CreateString("Name"),false,fault==6,false,fault==13?-1:fault==14?2:1);
     auto header=wire::CreateBuildingHeaderState(b,fault==7?0:snapshot,
       edit?(fault==8?wire::FarmEditOutcome::Unknown:wire::FarmEditOutcome::Completed):(fault==8?wire::FarmEditOutcome::Completed:wire::FarmEditOutcome::None),
       fault==9?wire::FarmOperation::Remove:edit?wire::FarmOperation::Rename:wire::FarmOperation::Crop);
@@ -4446,7 +4446,7 @@ TEST_CASE("building header receipts preserve authority and reject malformed stat
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
     CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
     if(!fault){auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.buildingHeader);REQUIRE(decoded.buildingHeader->snapshot);
-      CHECK(decoded.buildingHeader->snapshot->revision==9007199254740993ULL);CHECK(decoded.buildingHeader->snapshot->headerName=="Name");CHECK_FALSE(decoded.farm);}
+      CHECK(decoded.buildingHeader->snapshot->revision==9007199254740993ULL);CHECK(decoded.buildingHeader->snapshot->headerName=="Name");CHECK(decoded.buildingHeader->snapshot->forbidden==1);CHECK_FALSE(decoded.farm);}
   }
   for(auto outcome:{wire::FarmEditOutcome::Rejected,wire::FarmEditOutcome::Stale,wire::FarmEditOutcome::Unknown}) {
     flatbuffers::FlatBufferBuilder b;auto header=wire::CreateBuildingHeaderState(b,0,outcome);
@@ -5598,5 +5598,17 @@ TEST_CASE("selected zone owner rows preserve native order and reject malformed p
       CHECK(decoded.areas[0].ownerRows[0].id==8);CHECK(decoded.areas[0].ownerRows[1].id==9);
       CHECK(decoded.areas[0].ownerRows[0].caption==std::string(25,'x'));CHECK(decoded.areas[0].ownerRows[0].status=="Deceased");
       REQUIRE(decoded.areas[0].ownerRows[1].sheetIcon);CHECK(decoded.areas[0].ownerRows[1].sheetIcon->tilePages[0]=="synthetic-owner");}
+  }
+}
+TEST_CASE("item bedding preserves native variants and rejects malformed or non-bed facts") {
+  for(int fault=0;fault<7;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    auto bed=wire::CreateBeddingFactsDirect(b,fault==1?-1:fault==2?2:1,fault==3?-1:fault==4?3:2,
+      fault==5?std::string(129,'x').c_str():"BROWN","RED");
+    auto material=b.CreateString("PLANT:OLIVE:WOOD"),empty=b.CreateString("");
+    wire::ItemInspectionAppearanceBuilder a(b);a.add_material_token(material);a.add_subtype_raw(empty);a.add_color_token(empty);a.add_stack(1);a.add_bedding(bed);b.Finish(a.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ItemInspectionAppearance>(b.GetBufferPointer());
+    CHECK(wire::validInspectionInstrument(*value,fault==6?9:8)==(fault==0));
+    if(!fault){auto decoded=codec::decodeInspectionAppearance(value);b.Clear();REQUIRE(decoded.bedding);CHECK(decoded.bedding->sheet==1);CHECK(decoded.bedding->pillow==2);CHECK(decoded.bedding->baseColor=="BROWN");CHECK(decoded.bedding->sheetColor=="RED");}
   }
 }

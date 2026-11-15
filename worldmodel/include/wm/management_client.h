@@ -330,7 +330,7 @@ struct ItemContainerContentsFacts {
     std::vector<ItemContainerContentFacts> entries;
     int8_t materialInorganic=-1;std::string solidColor;
 };
-struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1;std::optional<ItemContainerContentsFacts> contents={};int8_t floodgateOpen=-1,doorOpen=-1,doorForbidden=-1,doorWear=-1,bucketLiquid=-1;std::string bucketLiquidColor; int8_t cageMaterialFamily=-1,cageOccupantEntity=-1;int32_t cageOccupantId=-1;std::string cageSolidColor;int8_t restraintRope=-1;std::string restraintSolidColor;std::optional<SelectionAppearance> portrait,cageOccupant;int8_t slabEngraving=-2;std::optional<SelectionAppearance> corpseSelector,legwearSelector;std::optional<std::string> craftGemColor;int8_t craftSoftMaterial=-1,artifactMood=-1,coffinUnused=-1; };
+struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1;std::optional<ItemContainerContentsFacts> contents={};int8_t floodgateOpen=-1,doorOpen=-1,doorForbidden=-1,doorWear=-1,bucketLiquid=-1;std::string bucketLiquidColor; int8_t cageMaterialFamily=-1,cageOccupantEntity=-1;int32_t cageOccupantId=-1;std::string cageSolidColor;int8_t restraintRope=-1;std::string restraintSolidColor;std::optional<SelectionAppearance> portrait,cageOccupant;int8_t slabEngraving=-2;std::optional<SelectionAppearance> corpseSelector,legwearSelector;std::optional<std::string> craftGemColor;int8_t craftSoftMaterial=-1,artifactMood=-1,coffinUnused=-1; std::optional<BeddingFacts> bedding; };
 struct SelectionIdentity { SelectionKind kind=SelectionKind::None; int32_t id=-1; std::string name; int16_t itemType=-1; std::optional<ItemInspectionAppearance> appearance; std::optional<SelectionAppearance> unitAppearance,selector; };
 struct SelectionState {
   bool open=false;
@@ -414,6 +414,8 @@ struct BuildingHeaderSnapshot {
   int32_t id=-1,type=-1,stage=-1,maxStage=-1;uint64_t revision=0;
   std::string customName,nativeName,headerName;
   bool removing=false,suspended=false,hasWorker=false;
+  int8_t forbidden=-1;
+  std::optional<SelectionAppearance> appearance;
 };
 struct BuildingHeaderState {
   std::optional<BuildingHeaderSnapshot> snapshot;

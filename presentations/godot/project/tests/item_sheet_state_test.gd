@@ -28,6 +28,12 @@ func completed(wrong_flag:=false) -> void:
 
 func run() -> void:
 	setup();model.item_id=1000
+	var bed_look={"material_token":"PLANT:OLIVE:WOOD","subtype_raw":"","color_token":"BROWN","stack":1,"flags":0,"bedding":{"sheet":1,"pillow":2,"base_color":"BROWN","sheet_color":"RED"}}
+	check(model._valid_appearance(bed_look,8),"Native bedding facts rejected")
+	check(not model._valid_appearance(bed_look,9),"Non-bed accepted bedding facts")
+	bed_look.bedding.pillow=3
+	check(not model._valid_appearance(bed_look,8),"Invalid native pillow accepted")
+
 	var craft_look={"material_token":"CREATURE:TIGER:HAIR","subtype_raw":"","color_token":"GRAY","stack":1,"flags":0,"craft_soft_material":0,"craft_gem_color":"CLEAR"}
 	check(model._valid_appearance(craft_look,42),"Native craft material fact rejected")
 	check(not model._valid_appearance(craft_look,39),"Ammo accepted craft facts")

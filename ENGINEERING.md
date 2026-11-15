@@ -6,7 +6,8 @@ must be GRATE79. Older recordings retain unknown facts and must not invent
 orientation or gate state. Rebuild bridge and viewer together; the mailbox and
 both schema defaults are229. The DF53.16 compatibility pin is unchanged.
 
-This contract precedes the native producer and artwork resolver. Protected114311
+The native producer and artwork resolver use these facts as described in the
+completed barrier references below. Contract-only protected114311
 on2026-11-15 verifies five barrier header/contents reads, hatch access changes,
 stale/duplicate rejection and removal/cancellation over229. Owned DF44016 closes
 unsaved with source preservation. The headless viewer reports only the known
@@ -710,12 +711,23 @@ existing links/items composition. Rendered113022 confirms actual hatch pointer
 effects and exact vertical/floor-bar panels, but fails full hatch/wall-grate crops
 at the native selection-tab overlap and the floor-grate item artwork. It is not
 rendered acceptance. The staged direct-open test does not reproduce native tile
-selection alternatives. The floor-grate mismatch is confined to its32x32 installed
-item icon. Native item selector c808ce..c80931 reads holder ref36: wall type36 adds
-bit11, and a holder of type36/37 with gate bit0 clear adds bit10. The item appearance
-contract currently lacks these wall/floor and open/closed facts; transport those
-semantics rather than borrowing native packed selectors. Public routes stay gated
-until this artwork and integrated selection are qualified.
+selection alternatives. Native item selector c808ce..c80931 reads holder ref36:
+wall type36 adds bit11, and a holder of type36/37 with gate bit0 clear adds bit10.
+The producer now uses native cb16b0 to obtain the holder and transports independent
+orientation/open facts through229. The asset resolver chooses the installed
+ITEM_GRATE material/orientation/state token without consulting native graphics
+caches. Unknown older appearances retain their legacy fallback.
+
+Protected115127 on2026-11-15 confirms the floor-grate artwork correction: its full
+488x708 panel and both bar panels match native exactly. Wire checks pass. The
+overall graphical run remains failed because hatch/wall-grate selection tabs
+still differ at panel-local482,0..488,36, including both hatch access states.
+This is partial evidence, not complete barrier acceptance. Wall/open/loose grate
+variants and integrated selection remain unqualified; public routes stay gated.
+All three builds and core19 pass. Owned DF10940 closes unsaved with source
+preservation; serial30FPS, sampled GPU59C. Known rendering-thread/finalize/two-
+ObjectDB diagnostics accompany the four real crop failures. Evidence:
+`completed_sheet_discovery_reference.grate_artwork_reference`.
 
 MSVC bridge, extension and root rebuilds pass; rebuilt core19 and the headless
 header-state test pass. Protocol228 shape is unchanged. Owned DF32688 closes

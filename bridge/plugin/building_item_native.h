@@ -10,6 +10,8 @@
 #include "item_craft_native.h"
 #include "df/building_stockpilest.h"
 #include "df/building_floodgatest.h"
+#include "df/building_grate_wallst.h"
+#include "df/building_grate_floorst.h"
 #include "df/building_doorst.h"
 #include "df/building_coffinst.h"
 #include "df/buildingitemst.h"
@@ -489,6 +491,18 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
         appearance.doorOpen=door && door->close_timer>0 ? 1 : 0;
         appearance.doorForbidden=door && door->door_flags.bits.forbidden ? 1 : 0;
         appearance.doorWear=int8_t(wear);
+    }
+    if(item->getType()==df::item_type::GRATE) {
+        // Native c808ce..c80931: BUILDING_HOLDER selects floor/wall;
+        // each holder's closed flag selects its open variant. Loose is floor closed.
+        const auto find=itemBuildingLookup();if(!find)return std::nullopt;
+        auto* holder=find(item,0x24);
+        appearance.grateWall=0;appearance.grateOpen=0;
+        if(auto* wall=virtual_cast<df::building_grate_wallst>(holder)) {
+            appearance.grateWall=1;appearance.grateOpen=wall->gate_flags.bits.closed?0:1;
+        } else if(auto* floor=virtual_cast<df::building_grate_floorst>(holder)) {
+            appearance.grateOpen=floor->gate_flags.bits.closed?0:1;
+        }
     }
     if(item->getType()==df::item_type::FLOODGATE) {
         // Native c81fc7..c81ffa: only a linked floodgate's open flag changes

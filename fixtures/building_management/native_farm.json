@@ -30174,6 +30174,46 @@
           "build/stockpile-storage-native-farm-discovery-20261115-114311/result.json": "fe9044e5b0508bab42d8340520adeb603e71b5bd5348375054802b1331757ec9",
           "build/stockpile-storage-native-farm-discovery-20261115-114311/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "grate_artwork_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-115127",
+        "protocol": 229,
+        "status": "partial evidence; overall graphical run failed",
+        "wire_passed": true,
+        "full_panel_exact": [
+          37,
+          38,
+          39
+        ],
+        "remaining_crop_difference": {
+          "35": [
+            482,
+            0,
+            488,
+            36
+          ],
+          "36": [
+            482,
+            0,
+            488,
+            36
+          ]
+        },
+        "unqualified": [
+          "wall/open/loose grate variants",
+          "integrated selection",
+          "public barrier workflows"
+        ],
+        "owned_df_pid": 10940,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "bridge_sha256": "4A7D13DAC4BBAF904DD2AE8194C065886C41732C6C749A5DFD803425665C5A5E",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-115127/barrier-wire-result.json": "c955e57777ec0d73639dca6748560d00aa5eb8e12f13ebb2ed9656add3908f97",
+          "build/stockpile-storage-native-farm-discovery-20261115-115127/barrier-scene-result.json": "e0e63ff1e394898699f7114d033ccd0ccdbe858738894659d437a35802f71b94",
+          "build/stockpile-storage-native-farm-discovery-20261115-115127/barrier-scene.stderr.log": "591393d7661e8788af036d4ed4ddd3b8d41d38257a90b8a9d97d21751f1f1d15",
+          "build/stockpile-storage-native-farm-discovery-20261115-115127/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

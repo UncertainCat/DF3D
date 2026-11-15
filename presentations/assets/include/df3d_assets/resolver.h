@@ -171,6 +171,7 @@ struct ItemQuery {
   int8_t craftSoftMaterial=-1; // Native semantic flags; -1 preserves unknown for legacy/map callers.
   std::string_view craftGemColor; // Native-selected descriptor token; empty never invents an overlay.
   std::optional<DoorItemFacts> door; // Absent until the caller owns linked-door and wear facts.
+  int8_t grateWall=-1, grateOpen=-1; // Paired native holder orientation/state; unknown preserves legacy artwork.
   int8_t floodgateOpen=-1; // Unknown for legacy/map callers; owned linked-building state otherwise.
   bool diagonalAmmo=false; // Native ammunition-list icon; map queries retain straight sprites.
   int8_t slabEngraving=-2;

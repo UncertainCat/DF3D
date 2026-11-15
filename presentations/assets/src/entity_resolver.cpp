@@ -1256,7 +1256,11 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     }
     case ItemKind::Floodgate: return member("ITEM_FLOODGATE", q.floodgateOpen<0?"":q.floodgateOpen?"_OPEN":"_CLOSED", "item.floodgate");
     case ItemKind::HatchCover: return member("ITEM_HATCH_COVER", "", "item.hatch");
-    case ItemKind::Grate: return member("ITEM_GRATE", "", "item.grate");
+    case ItemKind::Grate: {
+      if(q.grateWall<0 || q.grateOpen<0)return member("ITEM_GRATE", "", "item.grate");
+      const std::string suffix=std::string(q.grateWall?"_WALL":"_FLOOR")+(q.grateOpen?"_OPEN":"_CLOSED");
+      return member("ITEM_GRATE", suffix.c_str(), "item.grate");
+    }
     case ItemKind::Bed: return member("ITEM_BED", "", "item.bed");
     case ItemKind::Chair: return member("ITEM_CHAIR", "", "item.chair");
     case ItemKind::Table: return member("ITEM_TABLE", "", "item.table");

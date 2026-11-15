@@ -190,8 +190,9 @@ local ok,err=xpcall(function()
      for _,key in ipairs{'room_introduction','room_name','deceased'}do
       assert(body[key]=='' or visible:find(body[key],1,true),'Funerary card text differs: '..key)
      end
-     if kind==3 and os.getenv('DF3D_FUNERARY_VARIANTS')=='1'then
+     if kind==3 and (os.getenv('DF3D_FUNERARY_VARIANTS')=='1' or os.getenv('DF3D_FUNERARY_LONG_NAME')=='1')then
       local tomb=assert(df.building.find(body.room_id));local owner=tomb.assigned_unit_id;local cached=tomb.owner_unit_cached_index
+      local occupant=assert(df.unit.find(owner));local nickname=occupant.name.nickname
       local original={};for _,zone in ipairs(target.relations)do original[#original+1]=zone end
       local function restore_relations()
        target.relations:resize(0);for _,zone in ipairs(original)do target.relations:insert('#',zone)end
@@ -201,18 +202,20 @@ local ok,err=xpcall(function()
        local other
        for _,zone in ipairs(df.global.world.buildings.all)do if df.building_civzonest:is_instance(zone) and zone.type==92 and zone.id~=tomb.id then other=zone;break end end
        assert(other,'Barracks needed for native multiple-room reference')
-       for _,label in ipairs{'unassigned','roomless','multiple'}do
+       local labels=os.getenv('DF3D_FUNERARY_LONG_NAME')=='1' and {'long-name'} or {'unassigned','roomless','multiple'}
+       for _,label in ipairs(labels)do
         restore_relations();tomb.assigned_unit_id=owner;tomb.owner_unit_cached_index=cached
-        if label=='unassigned'then tomb.assigned_unit_id=-1;tomb.owner_unit_cached_index=-1
+        if label=='long-name'then occupant.name.nickname=string.rep('N',64)
+        elseif label=='unassigned'then tomb.assigned_unit_id=-1;tomb.owner_unit_cached_index=-1
         elseif label=='roomless'then target.relations:resize(0)
         else target.relations:insert('#',other)end
         view:render(dfhack.getTickCount())
         local output,status=dfhack.run_command_silent('df3d','funerary-body-probe',tostring(target.id));assert(status==0,output)
         local value=json.decode(output);local text_lines=lines();local text={};for _,line in ipairs(text_lines)do text[#text+1]=line.text end;text=table.concat(text,'\n')
         for _,notice in ipairs(value.notices)do assert(text:find(notice,1,true),'Native coffin notice differs')end
-        assert(value.unit_id==-1 and value.introduction=='','Variant retained an assigned owner')
+        assert(label=='long-name' or (value.unit_id==-1 and value.introduction==''),'Variant retained an assigned owner')
         assert(label~='unassigned' or (value.room_id==tomb.id and text:find(value.room_name,1,true)),'Unassigned Tomb row differs')
-        assert(label=='unassigned' or #value.notices>0,'Missing coffin notice')
+        assert(label=='long-name' or label=='unassigned' or #value.notices>0,'Missing coffin notice')
         row.funeral.variants[#row.funeral.variants+1]={label=label,provider=value,lines=text_lines}
         shot('funerary-'..label)
         if os.getenv('DF3D_FUNERARY_VARIANT_RUNTIME')=='1'then
@@ -231,9 +234,40 @@ local ok,err=xpcall(function()
         end
        end
       end,debug.traceback)
-      restore_relations();tomb.assigned_unit_id=owner;tomb.owner_unit_cached_index=cached;view:render(dfhack.getTickCount())
+      restore_relations();tomb.assigned_unit_id=owner;tomb.owner_unit_cached_index=cached;occupant.name.nickname=nickname;view:render(dfhack.getTickCount())
       assert(variant_ok,variant_error)
      end
+    end
+    if kind==46 and os.getenv('DF3D_FUNERARY_SLAB_VARIANTS')=='1'then
+     local slab=assert(df.item_slabst:is_instance(target.contained_items[0].item) and target.contained_items[0].item)
+     local engraving,topic=slab.engraving_type,slab.topic
+     local figure=assert(df.historical_figure.find(topic));local named=figure.name.has_name
+     row.funeral.variants={}
+     local variant_ok,variant_error=xpcall(function()
+      for _,label in ipairs{'unengraved','unnamed'}do
+       slab.engraving_type=engraving;slab.topic=topic;figure.name.has_name=named
+       if label=='unengraved'then slab.engraving_type=-1;slab.topic=-1 else figure.name.has_name=false end
+       view:render(dfhack.getTickCount())
+       local text,code=dfhack.run_command_silent('df3d','funerary-body-probe',tostring(target.id));assert(code==0,text)
+       local body=json.decode(text)
+       assert((label=='unengraved' and body.name=='' and body.historical_figure_id==-1) or (label=='unnamed' and #body.name>0 and body.historical_figure_id==topic),'Slab variant body differs')
+       local entry={label=label,provider=body,lines=lines()};row.funeral.variants[#row.funeral.variants+1]=entry
+       shot('funerary-'..label)
+       local file=assert(io.open(out..'/furniture-expected.json','w'))
+       file:write(json.encode({buildings={{id=target.id,type=kind,reference='workshop-funerary-'..label,body=body}}}));file:close()
+       os.remove(out..'/ack-workshop-wire');os.remove(out..'/workshop-wire-result.json')
+       capture('workshop-wire')
+       file=assert(io.open(out..'/workshop-wire-result.json'));entry.viewer=json.decode(file:read('*a'));file:close()
+       assert(entry.viewer.success,'Slab variant viewer failed: '..label)
+       for _,suffix in ipairs{'stdout.log','stderr.log','result.json'}do
+        local input=assert(io.open(out..'/workshop-wire'..(suffix=='result.json' and '-' or '.')..suffix,'r'))
+        local output=assert(io.open(out..'/funerary-'..label..'.'..suffix,'w'));output:write(input:read('*a'));output:close();input:close()
+       end
+       file=assert(io.open(out..'/workshop-native.json','w'));file:write(json.encode(result));file:close()
+      end
+     end,debug.traceback)
+     slab.engraving_type=engraving;slab.topic=topic;figure.name.has_name=named;view:render(dfhack.getTickCount())
+     assert(variant_ok,variant_error)
     end
     for _,zone in ipairs(target.relations)do row.funeral.zones[#row.funeral.zones+1]={id=zone.id,type=zone.type,assigned_unit_id=zone.assigned_unit_id}end
     for _,held in ipairs(target.contained_items)do
@@ -301,8 +335,8 @@ local ok,err=xpcall(function()
       shot('furniture-14-contents-'..direction[1])
      end
     end
-    if kind==1 and os.getenv('DF3D_FURNITURE_RESIZE')=='1'then
-     for _,size in ipairs{'small','medium','wide','default'}do resize_worker(size);shot('furniture-1-resize-'..size)end
+    if (kind==1 or funerary) and os.getenv('DF3D_FURNITURE_RESIZE')=='1'then
+     for _,size in ipairs{'small','medium','wide','default'}do resize_worker(size);shot('furniture-'..kind..'-resize-'..size)end
     end
    end
   end end

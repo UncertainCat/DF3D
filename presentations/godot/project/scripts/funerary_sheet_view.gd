@@ -31,7 +31,12 @@ func _draw() -> void:
 		_body_text(body.name+".",Vector2(16,108),introduction_color)
 	if body.unit_id>=0:
 		if owner_texture!=null:draw_texture_rect(owner_texture,Rect2(18,134,32,32),false)
-		_body_text(body.name,Vector2(64,156))
+		# Native195202..1952cb: forty-one cells in this fixed-width card,
+		# with the final three replaced by dots when the name exceeds it.
+		var owner_name: String=body.name
+		var limit:=int(size.x/8)-20
+		if owner_name.length()>limit:owner_name=owner_name.left(limit-3)+"..."
+		_body_text(owner_name,Vector2(64,156))
 		_body_text(body.deceased,Vector2(64,168),13)
 	if body.room_id>=0:
 		var top:=216 if body.unit_id>=0 else 108

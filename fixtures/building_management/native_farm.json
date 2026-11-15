@@ -19193,6 +19193,636 @@
             "build/stockpile-storage-native-farm-discovery-20261115-044927/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
             "build/stockpile-storage-native-farm-discovery-20261115-044927/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
           }
+        },
+        "slab_resize_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-045328",
+          "status": "passed_with_known_issues",
+          "scope": "Twenty-two exact panels: twelve normal action states, two controlled slab variants, eight resized panels across both families. Native engraving/topic and historical-figure has_name restored after diagnostic variants; no gameplay creation of memorials inferred.",
+          "panel_comparisons": 22,
+          "variants": [
+            {
+              "label": "unengraved",
+              "provider": {
+                "building_id": 280,
+                "deceased": "",
+                "historical_figure_id": -1,
+                "introduction": "",
+                "name": "",
+                "notices": [],
+                "room_id": -1,
+                "room_introduction": "",
+                "room_name": "",
+                "room_type": -1,
+                "unit_id": -1,
+                "zones": []
+              },
+              "viewer": {
+                "roundtrip": true,
+                "success": true,
+                "surface": "actual main scene"
+              }
+            },
+            {
+              "label": "unnamed",
+              "provider": {
+                "building_id": 280,
+                "deceased": "",
+                "historical_figure_id": 9636,
+                "introduction": "This is a memorial to",
+                "name": "a dwarf",
+                "notices": [],
+                "room_id": -1,
+                "room_introduction": "",
+                "room_name": "",
+                "room_type": -1,
+                "unit_id": -1,
+                "zones": []
+              },
+              "viewer": {
+                "roundtrip": true,
+                "success": true,
+                "surface": "actual main scene"
+              }
+            }
+          ],
+          "sizes": [
+            [
+              960,
+              600
+            ],
+            [
+              1200,
+              720
+            ],
+            [
+              1600,
+              900
+            ],
+            [
+              1200,
+              800
+            ]
+          ],
+          "owned_df_pid": 42344,
+          "closed_unsaved": true,
+          "source_preserved": true,
+          "sha256": {
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-220-forbidden.png": "799339c9bc0988cdd3caf6d31df74a6cd87dcdb53a50d77731665fadabe46e97",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-220-holder-return.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-220-initial.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-220-removing.png": "0235096822ec436997638003c2dbdec947e4a9532842bd41ec6112bef2dada72",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-220-renamed.png": "c5ec55cb1e4dd8dbce44035f06a849e4d1159dda1545dfcb5ba59ecd657d5a1e",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-220-restored.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-280-forbidden.png": "dcf8477c8979141e2b1893aa9d3b75f8c85c0f3774d7654d1eda988edb188a57",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-280-holder-return.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-280-initial.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-280-removing.png": "57e99ee71f7ea6a83363d69eef15bbfecfa1531c9a88707ec73b42fd75237514",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-280-renamed.png": "979cfebb87a1b6614644a87074c6bdc0a7ccf94babbc7e5a8520b3cfe33de9dc",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-280-restored.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-workshop-funerary-unengraved.png": "ab2a9cce647bfc850970c82d1dea3feab7a8934d874984f5e00a3c21b3e0cdbe",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/chest-scene-workshop-funerary-unnamed.png": "a0ac34cb1ffd57b7b51885325c55ca8a7383758bffd69ef8f5113b48827dd25e",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/funerary-unengraved.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/funerary-unnamed.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/furniture-3-resize-default.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/furniture-3-resize-medium.png": "10eaebfcb0651484a63d17de672dd75df9f4439a67390ab9702f0f24d5455f0a",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/furniture-3-resize-small.png": "1779b322655a96c26178070c8fb63110d1c5b6c00f94c9bd42c098020677a0e0",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/furniture-3-resize-wide.png": "cd56480f0c56ff65e22a944954dbe516c30862ed897adb853c390a5513ba7766",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/furniture-46-resize-default.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/furniture-46-resize-medium.png": "b813e71e7ab42cd3a23f088496cfc8347e1a6d5c0145efa900fb8e24aa86909e",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/furniture-46-resize-small.png": "da248ce83d3acc0ac6f3a486bbcd98fbf080de2bb997d50dc11cdc5ffdfd24af",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/furniture-46-resize-wide.png": "6539a5a0c59dea65f0635f7f881e87c0f4e38f5bfebd6e450b4c585f096c6efa",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/furniture-post.json": "29445fb43a69e4217a260ded5f2dccac04ea29d2dc8bdddecc0b62b894e37c11",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/result.json": "d6c0e48451565b6810f8434b372bea57cf176f713b0f31982d0a6abe0e0c7fc9",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-funerary-unengraved.png": "93e5dbb7d0c6870a449b62d5cf677ed88b361b752c59cec1dfa358283820a1b6",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-funerary-unnamed.png": "0b067a9f359c9ed9cc60a6118bdf40464d75ed267fd6dd226dc91ae40319a394",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-3-forbidden.png": "4ade01c2e8985efb027a90bcb215816b36a0ee2245db0dc74c3c42af973bddf9",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-3-initial.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-3-removing.png": "e28e2f39f86304a1094ca13d1cfa72fc812512938b3d6ebe9f468a52f6cf6081",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-3-renamed.png": "b50653aafecc095b784e02cc76fe2fa7d108eaa1af8d4059d3669a3622969348",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-3-resize-default.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-3-resize-medium.png": "65c9f7a69248fbbed2ec957e666136a98f048c4d661369df2fa58d7ae458b3d5",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-3-resize-small.png": "c920d180334129d6060cefc2a101d61fc6490a7d8b1db216e14355c4e9cdb029",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-3-resize-wide.png": "693aaa26ee1a9f7503cde8377c81519c55fe48670934dbf46c29242c7c1e7e52",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-3-restored.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-46-forbidden.png": "f006d6dca950986769a9182e4d88f700f2a9f72fae8913a69e4659abdaa6072d",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-46-initial.png": "d60091502f2ca4cfe116acce23180309612c6e825334bd18d890230eb91d7c26",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-46-removing.png": "513f235fcdf05ef58b814973b28b9d613bfaa61bbba55e040300cace8e7d66e5",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-46-renamed.png": "297757cde36c2bbeb5edf3ba703ed5e42d07737fae1a3c47ebe53d1c9df51e63",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-46-resize-default.png": "5a9a498211b244cdf3dbf44db0f8ec204ee42f48b53c179b8352f9234b855d51",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-46-resize-medium.png": "8de1206e07c239f7fbdbdc59d95641e850f8b8ef4b94a9363b941d5078b9baa0",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-46-resize-small.png": "e808eb1b632f880c82bbcd83592463022c9b667d266acf1cc79e0e022f4ad052",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-46-resize-wide.png": "2a725c3983f6b70cafcecda7a07ecd650f19c45144273aaf4fa51f88500765aa",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-furniture-46-restored.png": "d60091502f2ca4cfe116acce23180309612c6e825334bd18d890230eb91d7c26",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-native.json": "5fe651ba3c3c716d545e8cfeb6857e6f5a6510e1aaa767554105f8f2387b3833",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+            "build/stockpile-storage-native-farm-discovery-20261115-045328/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+          }
+        },
+        "long_name_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-045705",
+          "status": "passed_with_known_issues",
+          "scope": "Thirteen exact panels: twelve action states plus a controlled sixty-four-character owner nickname. Native195202..1952cb shortens the owner card to forty-one cells, replacing its final three with dots; introductory name stays full. Nickname restored before the normal workflow.",
+          "panel_comparisons": 13,
+          "native_rva": [
+            "195202",
+            "1952cb"
+          ],
+          "variant": {
+            "label": "long-name",
+            "lines": [
+              {
+                "text": "                  RoderÃ²nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "",
+                "y": 3
+              },
+              {
+                "text": "",
+                "y": 4
+              },
+              {
+                "text": "",
+                "y": 5
+              },
+              {
+                "text": "                                                            Dolomite Coffin",
+                "y": 6
+              },
+              {
+                "text": "",
+                "y": 7
+              },
+              {
+                "text": "",
+                "y": 8
+              },
+              {
+                "text": "",
+                "y": 9
+              },
+              {
+                "text": "",
+                "y": 10
+              },
+              {
+                "text": "                                                      This is the resting place of",
+                "y": 11
+              },
+              {
+                "text": "                                                      `NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN' Asobstettad, Stoneworker.",
+                "y": 12
+              },
+              {
+                "text": "",
+                "y": 13
+              },
+              {
+                "text": "",
+                "y": 14
+              },
+              {
+                "text": "",
+                "y": 15
+              },
+              {
+                "text": "                                                            `NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN...                               Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "                                                            Deceased",
+                "y": 17
+              },
+              {
+                "text": "",
+                "y": 18
+              },
+              {
+                "text": "",
+                "y": 19
+              },
+              {
+                "text": "                                                      This furniture is a part of",
+                "y": 20
+              },
+              {
+                "text": "",
+                "y": 21
+              },
+              {
+                "text": "",
+                "y": 22
+              },
+              {
+                "text": "                                                            Unnamed tomb",
+                "y": 23
+              },
+              {
+                "text": "",
+                "y": 24
+              },
+              {
+                "text": "",
+                "y": 25
+              },
+              {
+                "text": "",
+                "y": 26
+              },
+              {
+                "text": "",
+                "y": 27
+              },
+              {
+                "text": "",
+                "y": 28
+              },
+              {
+                "text": "",
+                "y": 29
+              },
+              {
+                "text": "",
+                "y": 30
+              },
+              {
+                "text": "",
+                "y": 31
+              },
+              {
+                "text": "",
+                "y": 32
+              },
+              {
+                "text": "",
+                "y": 33
+              },
+              {
+                "text": "",
+                "y": 34
+              },
+              {
+                "text": "",
+                "y": 35
+              },
+              {
+                "text": "",
+                "y": 36
+              },
+              {
+                "text": "",
+                "y": 37
+              },
+              {
+                "text": "",
+                "y": 38
+              },
+              {
+                "text": "",
+                "y": 39
+              },
+              {
+                "text": "",
+                "y": 40
+              },
+              {
+                "text": "",
+                "y": 41
+              },
+              {
+                "text": "",
+                "y": 42
+              },
+              {
+                "text": "                                                            dolomite coffin",
+                "y": 43
+              },
+              {
+                "text": "",
+                "y": 44
+              },
+              {
+                "text": "",
+                "y": 45
+              },
+              {
+                "text": "                                                            `NNNNNNNNNNNNNNNNNNNNNNNNNNNN...",
+                "y": 46
+              },
+              {
+                "text": "",
+                "y": 47
+              },
+              {
+                "text": "",
+                "y": 48
+              },
+              {
+                "text": "",
+                "y": 49
+              },
+              {
+                "text": "",
+                "y": 50
+              },
+              {
+                "text": "",
+                "y": 51
+              },
+              {
+                "text": "",
+                "y": 52
+              },
+              {
+                "text": "",
+                "y": 53
+              },
+              {
+                "text": "",
+                "y": 54
+              },
+              {
+                "text": "",
+                "y": 55
+              },
+              {
+                "text": "",
+                "y": 56
+              },
+              {
+                "text": "",
+                "y": 57
+              },
+              {
+                "text": "",
+                "y": 58
+              },
+              {
+                "text": "",
+                "y": 59
+              },
+              {
+                "text": "",
+                "y": 60
+              },
+              {
+                "text": "",
+                "y": 61
+              },
+              {
+                "text": "",
+                "y": 62
+              },
+              {
+                "text": "",
+                "y": 63
+              },
+              {
+                "text": "",
+                "y": 64
+              },
+              {
+                "text": "",
+                "y": 65
+              }
+            ],
+            "provider": {
+              "building_id": 220,
+              "deceased": "Deceased",
+              "historical_figure_id": -1,
+              "introduction": "This is the resting place of",
+              "name": "`NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN' Asobstettad, Stoneworker",
+              "notices": [],
+              "owner_appearance": {
+                "layers": [
+                  [
+                    0,
+                    8,
+                    0,
+                    1,
+                    1,
+                    65535,
+                    -1,
+                    -1,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    3,
+                    1,
+                    1,
+                    1,
+                    0,
+                    3,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    2,
+                    1,
+                    1,
+                    1,
+                    0,
+                    3,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    3,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    1,
+                    1,
+                    1,
+                    0,
+                    3,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    7,
+                    1,
+                    1,
+                    1,
+                    0,
+                    3,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    8,
+                    1,
+                    1,
+                    1,
+                    0,
+                    3,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    4,
+                    1,
+                    1,
+                    1,
+                    0,
+                    3,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    5,
+                    1,
+                    1,
+                    1,
+                    0,
+                    3,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    6,
+                    0,
+                    1,
+                    1,
+                    0,
+                    3,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    2,
+                    6,
+                    1,
+                    1,
+                    1,
+                    5,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    4,
+                    5,
+                    1,
+                    1,
+                    1,
+                    5,
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    6,
+                    1,
+                    1,
+                    1,
+                    0,
+                    3,
+                    0,
+                    0,
+                    0
+                  ]
+                ],
+                "pages": [
+                  "DWARF_BODY",
+                  "DWARF_HAIR"
+                ],
+                "palettes": [
+                  "data/vanilla/vanilla_creatures_graphics/graphics/images/dwarf/dwarf_body_palettes.png",
+                  "data/vanilla/vanilla_creatures_graphics/graphics/images/dwarf/dwarf_hair_palettes.png"
+                ]
+              },
+              "room_id": 228,
+              "room_introduction": "This furniture is a part of",
+              "room_name": "Unnamed tomb",
+              "room_type": 97,
+              "unit_id": 5577,
+              "zones": [
+                228
+              ]
+            },
+            "viewer": {
+              "roundtrip": true,
+              "success": true,
+              "surface": "actual main scene"
+            }
+          },
+          "owned_df_pid": 41844,
+          "closed_unsaved": true,
+          "source_preserved": true,
+          "sha256": {
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/chest-scene-220-forbidden.png": "799339c9bc0988cdd3caf6d31df74a6cd87dcdb53a50d77731665fadabe46e97",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/chest-scene-220-holder-return.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/chest-scene-220-initial.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/chest-scene-220-removing.png": "0235096822ec436997638003c2dbdec947e4a9532842bd41ec6112bef2dada72",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/chest-scene-220-renamed.png": "c5ec55cb1e4dd8dbce44035f06a849e4d1159dda1545dfcb5ba59ecd657d5a1e",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/chest-scene-220-restored.png": "07a7711673d79c8122a61c72bc1cbf93c87e1ab067b79c1676e92caaee709324",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/chest-scene-280-forbidden.png": "dcf8477c8979141e2b1893aa9d3b75f8c85c0f3774d7654d1eda988edb188a57",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/chest-scene-280-holder-return.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/chest-scene-280-initial.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/chest-scene-280-removing.png": "57e99ee71f7ea6a83363d69eef15bbfecfa1531c9a88707ec73b42fd75237514",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/chest-scene-280-renamed.png": "979cfebb87a1b6614644a87074c6bdc0a7ccf94babbc7e5a8520b3cfe33de9dc",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/chest-scene-280-restored.png": "e18c0b29b88b497e155e49da85dbbdde28b173b232427081ef1ce30a04511ca3",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/chest-scene-workshop-funerary-long-name.png": "295b8634b99e6290ce1f464c57f7dd3549baa4c86eecd8886e71b35dc3bc67c4",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/funerary-long-name.result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/funerary-long-name.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/furniture-post.json": "29445fb43a69e4217a260ded5f2dccac04ea29d2dc8bdddecc0b62b894e37c11",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/result.json": "5a9eddc084bfa7d64f92b3a56a388e54c33f4f2095a78efa81f92ee083c2d581",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-funerary-long-name.png": "15faffc06e5834ce766ecafb7a1cfdae8c40679715e1429e222e3e2fe318e2e5",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-furniture-3-forbidden.png": "4ade01c2e8985efb027a90bcb215816b36a0ee2245db0dc74c3c42af973bddf9",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-furniture-3-initial.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-furniture-3-removing.png": "e28e2f39f86304a1094ca13d1cfa72fc812512938b3d6ebe9f468a52f6cf6081",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-furniture-3-renamed.png": "b50653aafecc095b784e02cc76fe2fa7d108eaa1af8d4059d3669a3622969348",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-furniture-3-restored.png": "4c4757f7ea0793bb395f92b3770c48757ece6b939e48d8639314d3ed6253468c",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-furniture-46-forbidden.png": "f006d6dca950986769a9182e4d88f700f2a9f72fae8913a69e4659abdaa6072d",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-furniture-46-initial.png": "46b711c3999b541337ce67024283f7ffc2dd40d0ad3b1f7238bcbf0bc36dddfb",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-furniture-46-removing.png": "513f235fcdf05ef58b814973b28b9d613bfaa61bbba55e040300cace8e7d66e5",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-furniture-46-renamed.png": "297757cde36c2bbeb5edf3ba703ed5e42d07737fae1a3c47ebe53d1c9df51e63",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-furniture-46-restored.png": "d60091502f2ca4cfe116acce23180309612c6e825334bd18d890230eb91d7c26",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-native.json": "109c46130b6045f6ac69b465f817c75889ee68fe4ddc8224578283a51e1403a4",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+            "build/stockpile-storage-native-farm-discovery-20261115-045705/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+          }
         }
       }
     },

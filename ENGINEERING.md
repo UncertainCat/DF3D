@@ -9866,9 +9866,25 @@ they do not qualify the combined workflow. The corrected harness removes old
 acknowledgements and receipts before each viewer launch, retains separate logs,
 and requires all fifteen physical captures to match.
 
-Public map access remains gated. Remaining funerary work includes responsive
-layout/long captions, empty and unnamed slab bodies, removal-time item editing,
-worker-owned demolition, full lifecycle checks and normal map entry. Existing
+Protected045328 on2026-11-15 adds twenty-two exact panel comparisons: the twelve
+action states, unengraved and unnamed slab variants, and eight resize captures
+across both families at960x600,1200x720,1600x900 and1200x800. Unengraved slabs
+have no memorial body; the unnamed historical figure uses native “a dwarf”.
+The diagnostic restores engraving type/topic and the figure's has_name field.
+Protected native045545 and live045705 verify a sixty-four-character owner
+nickname. Native195202..1952cb leaves the introduction full and shortens the
+portrait-row name to forty-one cells, replacing its last three with dots.
+Thirteen full panels match after implementing that presentation rule; nickname
+restoration and the normal action workflow pass. Each viewer launch consumes a
+fresh acknowledgement/receipt and keeps its own logs. Both lanes preserve source
+saves and close owned DF42344/41844 unsaved, capped30FPS, sampled GPU up to55C.
+Only the documented Godot startup/shutdown diagnostics occur. Bounded
+slab_resize_reference and long_name_reference retain physical capture hashes,
+variant receipts and logs; these are paused diagnostic field variants, not
+memorial creation or historical-figure naming gameplay.
+
+Public map access remains gated. Remaining funerary work includes removal-time
+item editing, worker-owned demolition, full lifecycle checks and normal map entry. Existing
 native portrait/Tomb-icon click probes retain the coffin selection; no new
 navigation is inferred.
 

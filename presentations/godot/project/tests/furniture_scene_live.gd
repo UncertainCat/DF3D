@@ -78,13 +78,13 @@ func exercise(expected: Dictionary) -> void:
 					if not await chest_ready():return
 				check(contents.cell_first==(int(owner.contents.snapshot.total)*3-contents.page*3 if direction[0]=="tail" else 0),"Cabinet did not reach contents boundary")
 				await panel_capture("cabinet-"+direction[0],"workshop-furniture-14-contents-"+direction[0])
-		if int(entry.type)==1 and OS.get_environment("DF3D_FURNITURE_RESIZE")=="1":
+		if int(entry.type) in [1,3,46] and OS.get_environment("DF3D_FURNITURE_RESIZE")=="1":
 			for size_case in [["small",Vector2i(960,600)],["medium",Vector2i(1200,720)],["wide",Vector2i(1600,900)],["default",Vector2i(1200,800)]]:
 				root.size=size_case[1];await process_frame;await process_frame;await RenderingServer.frame_post_draw
 				var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
 				var region:=Rect2i(Vector2i(owner.panel.position),Vector2i(owner.panel.size))
-				var native:=Image.load_from_file(directory+"/workshop-furniture-1-resize-"+size_case[0]+".png");native.convert(Image.FORMAT_RGB8)
-				var crop:=image.get_region(region);crop.save_png(directory+"/furniture-resize-"+size_case[0]+".png")
+				var native:=Image.load_from_file(directory+"/workshop-furniture-"+str(int(entry.type))+"-resize-"+size_case[0]+".png");native.convert(Image.FORMAT_RGB8)
+				var crop:=image.get_region(region);crop.save_png(directory+"/furniture-"+str(int(entry.type))+"-resize-"+size_case[0]+".png")
 				check(crop.get_data()==native.get_region(region).get_data(),"Furniture resize differs: "+size_case[0])
 		key(KEY_ESCAPE);await drain()
 		check(scene._ui.host.active==null and not owner.panel.visible,"Furniture Escape retained input")

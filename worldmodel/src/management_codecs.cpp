@@ -204,6 +204,7 @@ ManagementState decodeState(const m::ManagementState* s) {
       out.rows.push_back(std::move(v));
     }
   }
+  if(const auto* r=s->depot_commit())next.depotCommit=DepotGoodsCommitResult{r->depot_id(),r->expected_revision(),r->observed_revision(),DepotGoodsCommitOutcome(r->outcome())};
   if(const auto* r=s->depot_goods()) {
     next.depotGoods.emplace();auto& out=*next.depotGoods;out.depotId=r->depot_id();out.revision=r->revision();out.category=r->category();
     for(const auto* row:*r->categories())out.categories.push_back({row->type(),row->caption()->str()});
@@ -549,7 +550,8 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       r.productionReplyRequest?m::CreateProductionReplyRequest(b,r.productionReplyRequest,r.productionReplyOffset):flatbuffers::Offset<m::ProductionReplyRequest>{},
       (r.action==ManagementAction::SelectionArtRead || r.action==ManagementAction::SelectionArtApply)?
         m::CreateSelectionArtRequest(b,r.selectionArt.receipt,r.selectionArt.expectedRevision,encodeArtRequest(b,r.selectionArt.art)):flatbuffers::Offset<m::SelectionArtRequest>{},
-      r.action==ManagementAction::DepotGoodsRead?m::CreateDepotGoodsRequest(b,r.depotGoods.depotId,r.depotGoods.category,b.CreateString(r.depotGoods.query),r.depotGoods.sortByDistance,r.depotGoods.pendingOnTop,r.depotGoods.excludeProhibited,b.CreateVector(r.depotGoods.itemIds)):flatbuffers::Offset<m::DepotGoodsRequest>{});
+      r.action==ManagementAction::DepotGoodsRead?m::CreateDepotGoodsRequest(b,r.depotGoods.depotId,r.depotGoods.category,b.CreateString(r.depotGoods.query),r.depotGoods.sortByDistance,r.depotGoods.pendingOnTop,r.depotGoods.excludeProhibited,b.CreateVector(r.depotGoods.itemIds)):flatbuffers::Offset<m::DepotGoodsRequest>{},
+      r.action==ManagementAction::DepotGoodsCommit?[&](){std::vector<m::DepotGoodsChange> changes;for(const auto& row:r.depotCommit.changes)changes.emplace_back(row.id,uint8_t(row.desired));return m::CreateDepotGoodsCommitRequest(b,r.depotCommit.depotId,r.depotCommit.expectedRevision,b.CreateVectorOfStructs(changes));}():flatbuffers::Offset<m::DepotGoodsCommitRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

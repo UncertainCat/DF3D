@@ -61,9 +61,19 @@ local function compare_selection(label)
    expected.items[#expected.items+1]={id=entry.it.id,caption=facts.item_captions[i+1],distance=entry.dist,value=entry.value,tag=entry.tag,prohibited=entry.prohibited}
   end
   local file=assert(io.open(out..'/depot-goods-wire-expected.json','w'));file:write(json.encode(expected));file:close()
+  local before_flags={};for _,entry in ipairs(menu.master_i_list.tgi)do before_flags[entry.it.id]=entry.it.flags.whole end
   capture('depot-goods-wire-'..label)
+  local cache_changes={}
+  for _,entry in ipairs(menu.master_i_list.tgi)do
+   local before=before_flags[entry.it.id];local after=entry.it.flags.whole
+   if before~=after then
+    assert((before ~ after)==0x20000000 and entry.it.flags.weight_computed,'Inspection changed a non-cache item flag')
+    cache_changes[#cache_changes+1]={id=entry.it.id,before=before,after=after}
+   end
+  end
   file=assert(io.open(out..'/depot-goods-wire-'..label..'-result.json'));local wire=json.decode(file:read('*a'));file:close();assert(wire.success and wire.label==label,'Goods wire failed: '..label)
   assert(menu.open and menu.trade_depot_bld.id==b.id and df.global.world.frame_counter==frame,'Goods read changed native picker/frame')
+  wire.weight_cache_changes=cache_changes
   result.wire=result.wire or {};result.wire[#result.wire+1]=wire
  end
  result.selections=result.selections or {};result.selections[#result.selections+1]={label=label,type=menu.current_type,query=menu.item_filter,categories=facts.categories,category_captions=facts.category_captions,visible_category_captions=visible,item_captions=facts.item_captions,screen_text=text,ids=facts.ids,groups=facts.groups,row_cells=facts.row_cells,success=true}

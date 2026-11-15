@@ -1,4 +1,9 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::DepotGoodsCommitOutcome::Rejected) == static_cast<int>(df3d::mirror::DepotGoodsCommitOutcome::Rejected));
+static_assert(static_cast<int>(wm::DepotGoodsCommitOutcome::Applied) == static_cast<int>(df3d::mirror::DepotGoodsCommitOutcome::Applied));
+static_assert(static_cast<int>(wm::DepotGoodsCommitOutcome::Stale) == static_cast<int>(df3d::mirror::DepotGoodsCommitOutcome::Stale));
+static_assert(static_cast<int>(wm::DepotGoodsCommitOutcome::Unknown) == static_cast<int>(df3d::mirror::DepotGoodsCommitOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesDepotGoodsCommitOutcome()) / sizeof(df3d::mirror::DepotGoodsCommitOutcome) == 4);
 static_assert(static_cast<int>(wm::WellStatus::Operational) == static_cast<int>(df3d::mirror::WellStatus::Operational));
 static_assert(static_cast<int>(wm::WellStatus::NoBucket) == static_cast<int>(df3d::mirror::WellStatus::NoBucket));
 static_assert(static_cast<int>(wm::WellStatus::BucketFull) == static_cast<int>(df3d::mirror::WellStatus::BucketFull));
@@ -337,7 +342,8 @@ static_assert(static_cast<int>(wm::ManagementAction::JusticeIntelligenceGraphRea
 static_assert(static_cast<int>(wm::ManagementAction::SelectionArtRead) == static_cast<int>(df3d::mirror::ManagementAction::SelectionArtRead));
 static_assert(static_cast<int>(wm::ManagementAction::SelectionArtApply) == static_cast<int>(df3d::mirror::ManagementAction::SelectionArtApply));
 static_assert(static_cast<int>(wm::ManagementAction::DepotGoodsRead) == static_cast<int>(df3d::mirror::ManagementAction::DepotGoodsRead));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 134);
+static_assert(static_cast<int>(wm::ManagementAction::DepotGoodsCommit) == static_cast<int>(df3d::mirror::ManagementAction::DepotGoodsCommit));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 135);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -679,3 +685,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeIntelligenceGraph
 static_assert(wm::isRuntimeAction(wm::ManagementAction::SelectionArtRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::SelectionArtRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::SelectionArtApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::SelectionArtApply));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::DepotGoodsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DepotGoodsRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::DepotGoodsCommit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DepotGoodsCommit));

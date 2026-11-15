@@ -59306,6 +59306,98 @@
           "bridge/plugin/df3d.cpp": "51c08fcba8ac1c9aa055b34b8f22614a4abcecfbc73240749327e829c3fad16e",
           "tools/smoke/depot-goods-native.lua": "20d812b4f49225c83821a9d2013d105c8be1262bba368d00484aa4c1f092e6cc"
         }
+      },
+      "depot_goods_commit_transport_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-153229",
+        "owned_df_pid": 38308,
+        "protocol": 233,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Actual Godot wire creates/cancels two native hauls, rejects stale receipts after both transitions, rejects foreign ID and malformed request shapes; all nine read/controller cases pass. Synthetic adapter verifies all four outcomes and INT64_MAX precision. No viewer draft/close, large batch or ordinary hauling acceptance.",
+        "commits": [
+          {
+            "depot_id": 54,
+            "expected_revision": 6336218185030153367,
+            "observed_revision": 6336218185030153367,
+            "outcome": 1
+          },
+          {
+            "depot_id": 54,
+            "expected_revision": 6336218185030153367,
+            "observed_revision": 2386085905837940055,
+            "outcome": 2
+          },
+          {
+            "depot_id": 54,
+            "expected_revision": 2386085905837940055,
+            "observed_revision": 2386085905837940055,
+            "outcome": 1
+          },
+          {
+            "depot_id": 54,
+            "expected_revision": 2386085905837940055,
+            "observed_revision": 6336218185030153367,
+            "outcome": 2
+          }
+        ],
+        "weight_cache_changes": [
+          {
+            "case": "anvils",
+            "items": [
+              {
+                "after": 536887297,
+                "before": 16385,
+                "id": 296
+              },
+              {
+                "after": 536887297,
+                "before": 16385,
+                "id": 28425
+              }
+            ]
+          },
+          {
+            "case": "bags",
+            "items": [
+              {
+                "after": 536887360,
+                "before": 16448,
+                "id": 12862
+              },
+              {
+                "after": 536887360,
+                "before": 16448,
+                "id": 12892
+              }
+            ]
+          },
+          {
+            "case": "bars",
+            "items": [
+              {
+                "after": 536870912,
+                "before": 0,
+                "id": 31751
+              },
+              {
+                "after": 536870912,
+                "before": 0,
+                "id": 32254
+              }
+            ]
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-153229/depot-goods-native.json": "ee618e60cc2305bb284370518240fb8af84ed0e76734b24ddebb3876c7d1cd12",
+          "build/stockpile-storage-native-farm-discovery-20261115-153229/depot-goods-wire-anvils-result.json": "45c2b3e3613badc093468ee54eb6d8b6e6f2bd7a4743ebff76e5bd5e8e8bf181",
+          "build/stockpile-storage-native-farm-discovery-20261115-153229/result.json": "ef509160da06e1a4cb8fa8bc5ff4a809e1b8d120ad9fae7fae69f8b352f21540",
+          "build/stockpile-storage-native-farm-discovery-20261115-153229/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/notes/pm/depot-commit-adapter.stdout.log": "872e0fb2c59f79ecef5afae67248e90c0c9007b90ad8f58774cb67cee824de53",
+          "build/notes/pm/depot-commit-adapter.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "schema/mirror.fbs": "02c7bc5819f0c9a5dff2104c42d7e1d6aebbb02bed715d4a49e00457439f933a",
+          "bridge/plugin/depot_goods_read.h": "81652b1aadb9dd81de2427157e3b2567973e9dc7b2071ba2b554984f71e91d70",
+          "presentations/godot/project/tests/depot_goods_wire_live.gd": "5f44cde6c53c2e33cb4a15175ad9435e9baab6b3d0e5248dd17299f2715491c8"
+        }
       }
     },
     "pending_construction_reference": {

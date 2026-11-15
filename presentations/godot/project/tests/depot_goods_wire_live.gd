@@ -1,5 +1,32 @@
 extends "res://tests/machinery_wire_live.gd"
 const GoodsModel=preload("res://scripts/depot_goods_state.gd")
+func verify_commit(read_intent: Dictionary,initial: Dictionary) -> Array:
+	var receipts: Array=[];var changes: Array=[]
+	for row in initial.items:changes.append({"id":row.id,"desired":true})
+	var intent: Dictionary={"action":C.ManagementAction.DepotGoodsCommit,"depot_id":initial.depot_id,"expected_revision":initial.revision,"changes":changes}
+	for patch in [{"expected_revision":0},{"changes":[]},{"changes":[changes[0],changes[0]]},{"changes":[{"id":changes[0].id,"desired":1}]}]:
+		var invalid: Dictionary=intent.duplicate(true);invalid.merge(patch,true)
+		check(world.management_request("depot_goods",invalid)==0,"Malformed depot commit reached transport")
+	var foreign: Dictionary=intent.duplicate(true);foreign.changes=[{"id":2147483647,"desired":true}]
+	var rejected:=await request("depot_goods",foreign)
+	check(rejected.get("depot_commit",{}).get("outcome")==C.DepotGoodsCommitOutcome.Rejected,"Foreign depot commit did not reject: "+str(rejected.get("depot_commit",{}))+" "+str(rejected.get("message","")))
+	if failed:return receipts
+	var applied:=await request("depot_goods",intent);receipts.append(applied)
+	if not check(applied.get("depot_commit",{}).get("outcome")==C.DepotGoodsCommitOutcome.Applied,"Depot batch was not applied"):return receipts
+	check(applied.depot_commit.expected_revision==initial.revision and applied.depot_commit.observed_revision==initial.revision,"Commit receipt lost source identity")
+	var pending_reply:=await request("depot_goods",read_intent);var pending: Dictionary=pending_reply.get("depot_goods",{})
+	if not check(pending.get("items",[]).size()==changes.size() and pending.items.all(func(row):return row.tag==2),"Native pending jobs absent after wire commit"):return receipts
+	var stale:=await request("depot_goods",intent);receipts.append(stale)
+	check(stale.get("depot_commit",{}).get("outcome")==C.DepotGoodsCommitOutcome.Stale and stale.depot_commit.observed_revision==pending.revision,"Old creation receipt did not reject as stale")
+	intent.expected_revision=pending.revision
+	for row in intent.changes:row.desired=false
+	var cancelled:=await request("depot_goods",intent);receipts.append(cancelled)
+	if not check(cancelled.get("depot_commit",{}).get("outcome")==C.DepotGoodsCommitOutcome.Applied,"Wire cancellation failed"):return receipts
+	var restored:=await request("depot_goods",read_intent)
+	check(restored.get("depot_goods",{})==initial,"Wire cancellation did not restore native goods facts")
+	var late:=await request("depot_goods",intent);receipts.append(late)
+	check(late.get("depot_commit",{}).get("outcome")==C.DepotGoodsCommitOutcome.Stale,"Old cancellation receipt did not reject as stale")
+	return receipts
 func settle_goods(model,service) -> bool:
 	var deadline:=Time.get_ticks_msec()+5000
 	while Time.get_ticks_msec()<deadline and model.phase==GoodsModel.Phase.Reading:
@@ -66,6 +93,7 @@ func run() -> void:
 	var response:=await request("depot_goods",intent)
 	var snapshot: Dictionary=response.get("depot_goods",{})
 	var appearances: Dictionary={}
+	var commits: Array=[]
 	if check(response.get("status")==C.ManagementStatus.Ok and not snapshot.is_empty(),"Depot goods snapshot unavailable: "+str(response)):
 		check(snapshot.depot_id==intent.depot_id and snapshot.category==intent.category and snapshot.revision>0,"Depot goods identity differs")
 		for key in ["categories","groups","items"]:check(snapshot[key]==expected[key],"Depot goods "+key+" differs: "+str(snapshot[key]))
@@ -80,6 +108,7 @@ func run() -> void:
 		var invalid: Dictionary=intent.duplicate(true);invalid.merge(patch,true)
 		var rejection:=await request("depot_goods",invalid)
 		check(rejection.get("status")==C.ManagementStatus.Rejected and not rejection.has("depot_goods"),"Invalid depot target retained a snapshot")
+	if not failed and expected.label=="anvils":commits=await verify_commit(intent,snapshot)
 	var file:=FileAccess.open(directory+"/depot-goods-wire-"+str(expected.label)+"-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"label":expected.label,"snapshot":snapshot,"appearances":appearances}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"label":expected.label,"snapshot":snapshot,"appearances":appearances,"commits":commits}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)

@@ -15,7 +15,10 @@ inline std::optional<uint64_t> depotGoodsRevision(int32_t depotId,const DepotGoo
     const auto add=[&](uint64_t value){for(unsigned i=0;i<8;++i){hash^=uint8_t(value>>(8*i));hash*=UINT64_C(1099511628211);}};
     add(uint32_t(depotId));add(goods.rows.size());
     for(const auto& row:goods.rows){auto* item=df::item::find(row.id);if(!item)return {};
-        add(uint32_t(row.id));add(uint32_t(row.distance));add(uint32_t(row.value));add(uint8_t(row.tag));add(row.prohibited);add(item->flags.whole);}
+        // Independent inspection computes weight lazily. Cache validity is not
+        // hauling authority; hashing it would invalidate a picker by drawing it.
+        auto flags=item->flags;flags.bits.weight_computed=false;
+        add(uint32_t(row.id));add(uint32_t(row.distance));add(uint32_t(row.value));add(uint8_t(row.tag));add(row.prohibited);add(flags.whole);}
     add(goods.groups.size());
     for(const auto& group:goods.groups){add(uint16_t(group.type));add(uint16_t(group.subtype));add(uint16_t(group.subcat1));add(uint16_t(group.subcat2));add(uint32_t(group.amount));add(group.expanded);}
     hash&=uint64_t(INT64_MAX);return hash?hash:1;

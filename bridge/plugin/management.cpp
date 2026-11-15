@@ -598,6 +598,8 @@ struct StocksResult {
 };
 std::optional<StocksResult> stocks;
 std::optional<df3d_production::DepotGoodsRead> depotGoodsReply;
+struct DepotCommitReply {int32_t depotId=-1;uint64_t expected=0,observed=0;m::DepotGoodsCommitOutcome outcome=m::DepotGoodsCommitOutcome::Rejected;};
+std::optional<DepotCommitReply> depotCommitReply;
 df3d::stocks_pages::Store pagedReplies;
 
 // Category -1 requests only the catalog. Selection and expansion belong to
@@ -771,7 +773,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();depotGoodsReply.reset();tasks.reset();objects.reset();justice.reset();places.reset();nobles.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();depotGoodsReply.reset();depotCommitReply.reset();tasks.reset();objects.reset();justice.reset();places.reset();nobles.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1650,6 +1652,8 @@ void publish() {
     }
     tasksResult=m::CreateTasksState(b,tasks->outcome,tasks->listRevision,tasks->total,tasks->offset,b.CreateVector(rows),tasks->jobId);
   }
+  flatbuffers::Offset<m::DepotGoodsCommitResult> depotCommitResult;
+  if(depotCommitReply){const auto& v=*depotCommitReply;depotCommitResult=m::CreateDepotGoodsCommitResult(b,v.depotId,v.expected,v.observed,v.outcome);}
   flatbuffers::Offset<m::DepotGoodsState> depotGoodsResult;
   if(depotGoodsReply){const auto& v=*depotGoodsReply;
     std::vector<flatbuffers::Offset<m::DepotGoodsCategory>> categories;
@@ -1733,7 +1737,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult,depotGoodsResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult,depotGoodsResult,depotCommitResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
@@ -1758,6 +1762,9 @@ void publish() {
     // No rejection may follow a completed artwork store. If its minimal reply
     // is invalid, retain Pending so the sent mutation times out as unknown.
     if(action==m::ManagementAction::SelectionArtApply && mutated)return;
+    // A batch may already have changed jobs. Never turn a malformed receipt
+    // into a definite rejection; retain Pending for unknown-outcome retirement.
+    if(action==m::ManagementAction::DepotGoodsCommit && mutated)return;
     // A malformed lever receipt after native job creation is uncertain, never
     // a rejection that could encourage retrying the mutation.
     if(action==m::ManagementAction::ProductionQueue && production.lever && mutated)return;
@@ -5257,6 +5264,19 @@ void run(color_ostream& out) {
         }
       }
     }catch(...){status=m::ManagementStatus::Rejected;tasks.emplace();tasks->jobId=edit?q.job_id():-1;}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::DepotGoodsCommit){
+    const auto& q=*r->depot_commit();depotCommitReply.emplace();auto& reply=*depotCommitReply;
+    reply.depotId=q.depot_id();reply.expected=q.expected_revision();status=m::ManagementStatus::Ok;message.clear();
+    try {
+      std::vector<df3d_production::DepotGoodsChange> changes;changes.reserve(q.changes()->size());
+      for(const auto* row:*q.changes())changes.push_back({row->id(),row->desired()!=0});
+      const auto result=df3d_production::commitDepotGoods(df::building::find(q.depot_id()),q.expected_revision(),changes);
+      reply.observed=result.observedRevision;
+      reply.outcome=result.stale?m::DepotGoodsCommitOutcome::Stale:result.outcome==df3d_production::DepotSettingOutcome::Applied?m::DepotGoodsCommitOutcome::Applied:result.outcome==df3d_production::DepotSettingOutcome::Unknown?m::DepotGoodsCommitOutcome::Unknown:m::DepotGoodsCommitOutcome::Rejected;
+      mutated=reply.outcome==m::DepotGoodsCommitOutcome::Applied || reply.outcome==m::DepotGoodsCommitOutcome::Unknown;
+    }catch(...){reply.outcome=m::DepotGoodsCommitOutcome::Rejected;}
     publish();return;
   }
   if(r->action()==m::ManagementAction::DepotGoodsRead){

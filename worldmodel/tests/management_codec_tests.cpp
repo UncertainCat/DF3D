@@ -5434,6 +5434,27 @@ TEST_CASE("Stocks requests distinguish reads from guarded group intents") {
     if(!fault){REQUIRE(value->stocks_menu());CHECK(value->stocks_menu()->category()==39);CHECK(value->stocks_menu()->expected_revision()==(apply?77:0));}
   }
 }
+TEST_CASE("Depot commit transport binds an explicit unique batch to a precise revision") {
+  for(int fault=0;fault<5;++fault){
+    wm::ManagementRequest request;request.action=wm::ManagementAction::DepotGoodsCommit;
+    auto& q=request.depotCommit;q.depotId=54;q.expectedRevision=UINT64_C(9007199254740993);q.changes={{296,true},{28425,false}};
+    if(fault==1)q.expectedRevision=0;if(fault==2)q.changes[1].id=296;if(fault==3)q.changes.clear();if(fault==4)q.depotId=-1;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){REQUIRE(value->depot_commit());CHECK(value->depot_commit()->expected_revision()==q.expectedRevision);CHECK(value->depot_commit()->changes()->Get(0)->desired()==1);CHECK(value->depot_commit()->changes()->Get(1)->desired()==0);}
+  }
+}
+TEST_CASE("Depot commit receipts distinguish stale and unknown without losing revision identity") {
+  for(int outcome=0;outcome<4;++outcome)for(int fault=0;fault<3;++fault){
+    flatbuffers::FlatBufferBuilder b;const uint64_t expected=UINT64_C(9007199254740993);
+    const uint64_t observed=outcome==2?expected+1:expected;
+    const auto result=wire::CreateDepotGoodsCommitResult(b,54,fault==1?0:expected,observed,wire::DepotGoodsCommitOutcome(outcome));
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(fault==2?wire::ManagementAction::DepotGoodsRead:wire::ManagementAction::DepotGoodsCommit);state.add_status(wire::ManagementStatus::Ok);state.add_depot_commit(result);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeState(value);REQUIRE(decoded.depotCommit);CHECK(decoded.depotCommit->expectedRevision==expected);CHECK(decoded.depotCommit->observedRevision==observed);CHECK(int(decoded.depotCommit->outcome)==outcome);}
+  }
+}
 TEST_CASE("Depot goods reads preserve explicit filters and bounded unique item requests") {
   for(int fault=0;fault<6;++fault){
     wm::ManagementRequest request;request.action=wm::ManagementAction::DepotGoodsRead;

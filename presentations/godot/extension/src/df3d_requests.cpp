@@ -350,6 +350,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         }
         value["rows"]=rows;result["tasks"]=value;if(v.outcome==wm::TasksOutcome::Unknown)result["outcome"]="unknown";
     }
+    if(s.depotCommit){const auto& v=*s.depotCommit;Dictionary value;value["depot_id"]=v.depotId;value["expected_revision"]=int64_t(v.expectedRevision);value["observed_revision"]=int64_t(v.observedRevision);value["outcome"]=int(v.outcome);result["depot_commit"]=value;if(v.outcome==wm::DepotGoodsCommitOutcome::Unknown)result["outcome"]="unknown";}
     if(s.depotGoods){const auto& v=*s.depotGoods;Dictionary value;Array categories,groups,items;
         for(const auto& row:v.categories){Dictionary d;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());categories.append(d);}
         for(const auto& row:v.groups){Dictionary d;d["subtype"]=row.subtype;d["subcat1"]=row.subcat1;d["subcat2"]=row.subcat2;d["amount"]=row.amount;d["caption"]=String::utf8(row.caption.c_str());d["matches"]=row.matches;d["expanded"]=row.expanded;d["flags"]=row.flags;Array ids;for(auto id:row.itemIds)ids.append(id);d["item_ids"]=ids;groups.append(d);}
@@ -884,6 +885,12 @@ bool readTasks(const Dictionary& data,wm::ManagementRequest& request,String&) {
 bool validateDepotGoods(const Dictionary& data,String& error) {
     error="Invalid depot goods request";
     const auto integer=[](const Dictionary& d,const char* key,int64_t lo,int64_t hi){return d.has(key) && d[key].get_type()==Variant::INT && int64_t(d[key])>=lo && int64_t(d[key])<=hi;};
+    if(int64_t(data["action"])==int64_t(wm::ManagementAction::DepotGoodsCommit)){
+        if(data.size()!=4 || !integer(data,"depot_id",0,INT32_MAX) || !integer(data,"expected_revision",1,INT64_MAX) || !data.has("changes") || data["changes"].get_type()!=Variant::ARRAY)return false;
+        const Array rows=data["changes"];if(rows.is_empty() || rows.size()>65536)return false;std::unordered_set<int64_t> ids;
+        for(int64_t i=0;i<rows.size();++i){if(rows[i].get_type()!=Variant::DICTIONARY)return false;const Dictionary row=rows[i];if(row.size()!=2 || !integer(row,"id",0,INT32_MAX) || !ids.insert(int64_t(row["id"])).second || !row.has("desired") || row["desired"].get_type()!=Variant::BOOL)return false;}
+        error=String();return true;
+    }
     if(data.size()!=8 || !integer(data,"depot_id",0,INT32_MAX) || !integer(data,"category",-1,92) || !data.has("query") || data["query"].get_type()!=Variant::STRING || String(data["query"]).utf8().length()>2048 || !data.has("item_ids") || data["item_ids"].get_type()!=Variant::ARRAY)return false;
     for(const auto* key:{"sort_by_distance","pending_on_top","exclude_prohibited"})if(!data.has(key) || data[key].get_type()!=Variant::BOOL)return false;
     const Array ids=data["item_ids"];if(ids.size()>64 || (int64_t(data["category"])==-1 && !ids.is_empty()))return false;
@@ -891,6 +898,10 @@ bool validateDepotGoods(const Dictionary& data,String& error) {
     error=String();return true;
 }
 bool readDepotGoods(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    if(int64_t(data["action"])==int64_t(wm::ManagementAction::DepotGoodsCommit)){
+        request.action=wm::ManagementAction::DepotGoodsCommit;auto& q=request.depotCommit;q.depotId=int32_t(int64_t(data["depot_id"]));q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));
+        const Array rows=data["changes"];for(int64_t i=0;i<rows.size();++i){const Dictionary row=rows[i];q.changes.push_back({int32_t(int64_t(row["id"])),bool(row["desired"])});}return true;
+    }
     request.action=wm::ManagementAction::DepotGoodsRead;auto& q=request.depotGoods;
     q.depotId=int32_t(int64_t(data["depot_id"]));q.category=int16_t(int64_t(data["category"]));q.query=String(data["query"]).utf8().get_data();
     q.sortByDistance=bool(data["sort_by_distance"]);q.pendingOnTop=bool(data["pending_on_top"]);q.excludeProhibited=bool(data["exclude_prohibited"]);
@@ -1281,7 +1292,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::DepotGoodsRead)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::DepotGoodsCommit)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

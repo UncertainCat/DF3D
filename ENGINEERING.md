@@ -1,4 +1,44 @@
-## Depot goods transport migration
+## Depot goods commit transport migration
+
+Management protocol233 adds `DepotGoodsCommit` in the `depot_goods` domain.
+The request carries a depot ID, nonzero signed-safe64-bit expected revision and
+one through65536 unique item-ID/desired-state pairs. Compact eight-byte wire
+entries fit inside the existing2MiB command bound. The batch is never split into
+independently applied commands. Larger draft transport remains unfinished.
+The reply echoes depot/expected revision and reports the observed preflight
+revision with Rejected, Applied, Stale or Unknown. Stale requires a different
+nonzero source revision; Applied/Unknown require the expected source identity.
+Unknown is propagated into the shared action service's no-replay path.
+
+The bridge uses the already qualified `commitDepotGoods`/`depotSetHaulBatch`
+endpoint, with the ordinary transport epoch/save and sequence guards. Godot
+admits only integer IDs/revisions and Boolean desired values. Both peers/mailbox
+use233 and must be rebuilt together; DF53.16 compatibility pins are unchanged.
+Public depot routes and viewer draft/close integration remain unfinished.
+
+Protected153229 on2026-11-15 verifies actual Godot wire creation and cancellation
+of two hauling jobs, stale receipts after both transitions, foreign-ID rejection,
+and adapter rejection of empty/duplicate batches, zero revision and non-Boolean
+choices. All nine native read/controller cases still pass. Owned DF38308 closes
+unsaved with source preservation, native30FPS and sampled GPU49C; depot-client
+logs contain no diagnostics. Evidence:
+`completed_sheet_discovery_reference.depot_goods_commit_transport_reference`.
+Bridge, root and Godot-extension builds pass. All19 core checks pass, including
+batch request bounds and precise outcome decoding. The full synthetic management
+adapter test passes all four outcomes with INT64_MAX revisions and Unknown
+propagation, without diagnostics. A malformed reply after possible native edits
+retains Pending for unknown-outcome retirement, never a fabricated rejection.
+
+Initial152628/152846 are excluded from commit acceptance: independent item
+inspection computed weight, changing the source hash before the foreign-ID
+check. Native153229 measures exactly the weight_computed bit0x20000000 changing
+on two anvils, two bags and two bars. Source revisions now mask that cache-validity
+bit on a copy of flags, while retaining all other flags and native goods facts.
+No game flag is cleared. This fixes DF3D's overly broad revision guard; it is not
+a native gameplay bug or a change to hauling eligibility. Large-batch transport,
+viewer drafts/commit-on-close and ordinary hauling remain unfinished.
+
+## Depot goods read transport migration
 
 Management protocol232 adds the read-only `DepotGoodsRead` action and owned
 `DepotGoodsRequest`/`DepotGoodsState` payloads. Requests carry an explicit depot,
@@ -13,7 +53,7 @@ nonzero signed-safe token; rejection carries no fabricated snapshot.
 The native read producer is connected as described below. Retained paging for
 large replies, artwork/contained rows and commit authority are still unfinished.
 Public depot routes remain hidden.
-Both peers/mailbox use232; rebuild bridge and viewer together. DF53.16 pins are
+Both peers/mailbox now use233; rebuild bridge and viewer together. DF53.16 pins are
 unchanged. Older recordings must not synthesize depot goods.
 
 Group membership may be empty after exclusion filtering:37a0a0 copies group
@@ -188,7 +228,7 @@ create/cancel and delivered-release probes still pass. Owned DF8684 closes
 unsaved with source preservation, native30FPS and sampled GPU51C. The bridge
 build and all19 core checks pass; depot wire clients have no diagnostics.
 Evidence: `completed_sheet_discovery_reference.depot_goods_batch_reference`.
-Public epoch/revision-bound batch transport, viewer drafts, mixed desired-state
+Viewer drafts, mixed desired-state
 batch acceptance, large lists and ordinary hauling execution remain unfinished.
 
 `commitDepotGoods` binds explicit desired hauling states to the same source hash
@@ -199,7 +239,7 @@ current flags and call the validated native batch implementation. The returned
 observed revision identifies the preflight source, not a post-edit snapshot.
 This hash is a state identity, not a one-use nonce. Transport epoch/save gating
 and sequence retirement remain separate requirements; they are not supplied by
-this helper. No wire action or version change has been introduced yet.
+this helper. The protocol233 commit contract above supplies the transport boundary.
 
 Protected151609 on2026-11-15 verifies current-source creation and cancellation
 of two hauling jobs, stale receipt rejection after both transitions, and
@@ -209,7 +249,7 @@ single-item and delivered-release checks pass. Owned DF44636 closes unsaved with
 source preservation, native30FPS and sampled GPU50C. Bridge build and all19 core
 checks pass; depot wire clients have no diagnostics. Evidence:
 `completed_sheet_discovery_reference.depot_goods_revision_commit_reference`.
-Public commit transport and viewer draft/close integration remain unfinished.
+Viewer draft/close integration remains unfinished; commit transport is described above.
 
 ## Depot transport migration
 

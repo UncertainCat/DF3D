@@ -190,8 +190,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 232;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v232";
+inline constexpr uint32_t kManagementVersion = 233;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v233";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -490,7 +490,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::DepotGoodsRead &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::DepotGoodsCommit &&
       action != ManagementAction::Alert &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -579,7 +579,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::DepotGoodsRead)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::DepotGoodsCommit)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -809,6 +809,10 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
         (q->expected_state()<0 || q->expected_state()>1):q->expected_state()!=-1) ||
       (q->operation()==TasksOperation::RemoveWorker && q->worker_id()<0))return "invalid tasks edit";
   }else if(r.tasks())return "unexpected tasks request";
+  if(r.action()==ManagementAction::DepotGoodsCommit){
+    const auto* q=r.depot_commit();if(!q || q->depot_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX || !q->changes() || !q->changes()->size() || q->changes()->size()>65536)return "invalid depot commit request";
+    std::unordered_set<int32_t> ids;for(const auto* row:*q->changes())if(!row || row->id()<0 || row->desired()>1 || !ids.insert(row->id()).second)return "invalid depot commit target";
+  }else if(r.depot_commit())return "unexpected depot commit request";
   if(r.action()==ManagementAction::DepotGoodsRead){
     const auto* q=r.depot_goods();if(!q || q->depot_id()<0 || q->category()<-1 || q->category()>=93 || !q->query() || q->query()->size()>2048 || !q->item_ids() || q->item_ids()->size()>64)return "invalid depot goods request";
     std::unordered_set<int32_t> ids;for(auto id:*q->item_ids())if(id<0 || !ids.insert(id).second)return "invalid depot goods item identity";
@@ -1460,7 +1464,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::DepotGoodsRead ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::DepotGoodsCommit ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1873,6 +1877,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(bytes>384*1024)return "tasks page payload exceeded";
     }
   }else if(s.status()==ManagementStatus::Ok && (s.action()==ManagementAction::TasksRead || s.action()==ManagementAction::TasksApply))return "missing tasks result";
+  if(const auto* r=s.depot_commit()) {
+    if(s.action()!=ManagementAction::DepotGoodsCommit || s.status()!=ManagementStatus::Ok || r->depot_id()<0 || !r->expected_revision() || r->expected_revision()>INT64_MAX || r->observed_revision()>INT64_MAX || r->outcome()<DepotGoodsCommitOutcome::Rejected || r->outcome()>DepotGoodsCommitOutcome::Unknown)return "invalid depot commit result";
+    if(r->outcome()==DepotGoodsCommitOutcome::Stale ? (!r->observed_revision() || r->observed_revision()==r->expected_revision()) : (r->outcome()!=DepotGoodsCommitOutcome::Rejected && r->observed_revision()!=r->expected_revision()))return "invalid depot commit receipt";
+  }else if(s.status()==ManagementStatus::Ok && s.action()==ManagementAction::DepotGoodsCommit)return "missing depot commit result";
   if(const auto* r=s.depot_goods()) {
     if(s.action()!=ManagementAction::DepotGoodsRead || s.status()!=ManagementStatus::Ok || r->depot_id()<0 || !r->revision() || r->revision()>INT64_MAX || r->category()<-1 || r->category()>=93 || !r->categories() || !r->groups() || !r->items() || r->categories()->size()>93 || r->groups()->size()>65536 || r->items()->size()>64)return "invalid depot goods result";
     std::unordered_set<int16_t> types;

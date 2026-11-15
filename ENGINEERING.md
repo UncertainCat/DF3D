@@ -9692,6 +9692,17 @@ text and portrait caches remain prohibited inputs. The Vermin destination,
 portrait transport and side-tab artwork are still missing; this discovery
 does not establish viewer acceptance or authorize public map routing.
 
+The semantic Vermin description provider now resolves combined caste IDs,
+calls the pinned native title formatter/capitalizer with an owned string,
+and copies the caste description into the existing selection reply. It rejects
+invalid IDs, missing raws and oversized text. Protected201237 verifies both
+lizard castes938/939 against native raw identities/descriptions and the active
+visible heading. No native sheet cache is a runtime input. Owned DF38472 exits
+unsaved; the protected lane passes. Native graphics are capped30FPS, sampled
+58C/24%. MSVC and core19 pass. This validates the provider; typed transport,
+portrait resolution and rendered Vermin destination remain unqualified.
+Evidence: vermin_selection_reference.description_provider_reference.
+
 selection_art_state.gd reuses local artwork navigation state with a selected-tile
 receipt, never a proxy job. work_order_details_view.gd has an engraving context
 for the native frame, cell-aligned heading, root-button backing, normal subject

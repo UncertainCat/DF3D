@@ -12810,6 +12810,18 @@
   },
   "selection_reference": {
     "vermin_selection_reference": {
+      "description_provider_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-201237",
+        "status": "passed",
+        "scope": "Native title formatter and raw description provider; both combined castes resolve correctly. Active native heading matches. Does not qualify typed transport or viewer rendering.",
+        "combined_ids": [938, 939],
+        "race": 479,
+        "castes": [0, 1],
+        "title": "Lizard",
+        "description": "A small reptile.",
+        "owned_df_pid": 38472,
+        "gpu_sample": "58C,24%, native graphics capped30FPS"
+      },
       "caste": 0,
       "lines": [
         {

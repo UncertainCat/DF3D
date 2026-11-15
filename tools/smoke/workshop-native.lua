@@ -167,6 +167,20 @@ local ok,err=xpcall(function()
    assert(code==0,output)
    assert(json.encode(observe())==json.encode(json.decode(output)),'Native vermin selection differs from provider')
    result.tile_selection_reference.vermin={tile={p.x,p.y,p.z},race=target.race,caste=target.caste,native=observe(),provider=json.decode(output),lines=lines()}
+   local descriptions={}
+   for _,combined in ipairs(sheet.viewing_vermin_combined_id)do
+    local text,status=dfhack.run_command_silent('df3d','vermin-description-read',tostring(combined))
+    assert(status==0,text);local semantic=json.decode(text);assert(semantic.valid,'Vermin description rejected')
+    local raws=df.global.world.raws.creatures
+    assert(semantic.race==raws.list_creature[combined] and semantic.caste==raws.list_caste[combined],'Combined caste resolution differs')
+    assert(semantic.description==dfhack.df2utf(raws.all[semantic.race].caste[semantic.caste].description),'Vermin raw description differs')
+    if combined==sheet.active_id then
+     local found=false;for _,row in ipairs(lines())do if row.text:find(semantic.title,1,true)then found=true;break end end
+     assert(found,'Native vermin title differs')
+    end
+    descriptions[#descriptions+1]={id=combined,semantic=semantic}
+   end
+   result.tile_selection_reference.vermin.descriptions=descriptions
    shot('selection-vermin');return
   end
   if os.getenv('DF3D_TILE_SELECTION_ENGRAVING')=='1' then

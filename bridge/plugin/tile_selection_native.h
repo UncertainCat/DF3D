@@ -7,6 +7,33 @@
 #include "df/view_sheet_type.h"
 
 namespace df3d_selection {
+struct VerminDescription {int32_t race=-1,caste=-1;std::string title,description;};
+// Native153273 resolves combined caste IDs; its name leaves accept scalar IDs
+// and an owned string. Native1a2009 reads raw description, not generated prose.
+inline std::optional<VerminDescription> verminDescription(int32_t id) {
+    if(!df::global::world || id<0)return std::nullopt;
+    const auto& raws=df::global::world->raws.creatures;
+    if(size_t(id)>=raws.list_creature.size() || size_t(id)>=raws.list_caste.size())return std::nullopt;
+    VerminDescription result;result.race=raws.list_creature[id];result.caste=raws.list_caste[id];
+    if(result.race<0 || size_t(result.race)>=raws.all.size() || result.caste<0 || result.race>32767 || result.caste>32767)return std::nullopt;
+    const auto* raw=raws.all[result.race];
+    if(!raw || size_t(result.caste)>=raw->caste.size() || !raw->caste[result.caste])return std::nullopt;
+    const auto* caste=raw->caste[result.caste];
+    static_assert(offsetof(df::caste_raw,description)==0x220);
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool ready=[base] {
+        const auto hash=[base](size_t rva,size_t length){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<length;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;};
+        return hash(0xaa3bd0,0x1c3)==UINT64_C(0x0f9cd818efc6bad8) &&
+               hash(0x52d650,0x2b4)==UINT64_C(0x9e8023d09def7af9);
+    }();
+    if(!ready)return std::nullopt;
+    std::string title;
+    reinterpret_cast<void(*)(int16_t,std::string*,bool,int16_t)>(base+0xaa3bd0)(int16_t(result.race),&title,false,int16_t(result.caste));
+    reinterpret_cast<void(*)(std::string*)>(base+0x52d650)(&title);
+    result.title=DF2UTF(title);result.description=DF2UTF(caste->description);
+    if(result.title.size()>512 || result.description.size()>16384 || result.title.find('\0')!=std::string::npos || result.description.find('\0')!=std::string::npos)return std::nullopt;
+    return result;
+}
 struct Target {df::view_sheet_type kind=df::view_sheet_type::NONE;int32_t id=-1;friend bool operator==(const Target&,const Target&)=default;};
 struct Selection {
     std::vector<int32_t> units,items,vermin;

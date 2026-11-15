@@ -4027,6 +4027,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           else value["failure"]=failure;
           out.print("{}",Json::FastWriter().write(value));return CR_OK;
         }
+        if(parameters[0]=="vermin-description-read") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& arg=parameters[1];
+          const auto parsed=std::from_chars(arg.data(),arg.data()+arg.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=arg.data()+arg.size())return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto text=df3d_selection::verminDescription(id);
+          Json::Value value(Json::objectValue);value["valid"]=text.has_value();
+          if(text){value["title"]=text->title;value["description"]=text->description;value["race"]=text->race;value["caste"]=text->caste;}
+          out.print("{}",Json::FastWriter().write(value));return CR_OK;
+        }
         if(parameters[0]=="tile-selection-read") {
           if(parameters.size()!=4)return CR_WRONG_USAGE;
           int32_t p[3]{};

@@ -650,6 +650,11 @@ ItemInspectionAppearance copyInspectionAppearance(const df3d_production::ItemIns
 bool prepareTileSelectionReply(TileSelectionSession& value) {
   value.memberNames.clear();value.memberTypes.clear();value.memberAppearances.clear();value.memberUnitAppearances.clear();
   value.title.clear();value.description.clear();
+  if(value.active.kind==df::view_sheet_type::VERMIN) {
+    const auto text=df3d_selection::verminDescription(value.active.id);
+    if(!text)return false;
+    value.title=text->title;value.description=text->description;return true;
+  }
   if(value.active.kind==df::view_sheet_type::ENGRAVING_PLANNED) {
     const auto terrain=df3d_hover::terrain(value.tile.x(),value.tile.y(),value.tile.z(),false);
     if(!terrain)return false;

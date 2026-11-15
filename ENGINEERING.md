@@ -9832,9 +9832,9 @@ from simply setting the flag or relying on the Tasks list's selected worker.
 Cancel at1b01ef..1b023d excludes building type29, calls native587d80 with three
 false arguments at stage0, and calls virtual queueDestroy at nonzero stage.
 These semantic leaves accept simulation objects and need no native menu state.
-Nonzero-stage cancellation and worker-release effects are statically audited
-but not yet qualified through this building sheet; transport and viewer controls
-remain unfinished. Do not promote the existing completed-building header
+Nonzero-stage cancellation and worker-release effects have the controlled
+live qualification below; transport and viewer controls remain unfinished.
+Do not promote the existing completed-building header
 transaction to unfinished buildings: its stage and postcondition rules differ.
 
 `pending_building_native.h` implements that owned semantic provider. Reads
@@ -9851,8 +9851,26 @@ The complete cancellation readback (building/job retirement, material flags,
 occupancy) equals native213930. DF27568 exits unsaved, source saves preserved;
 graphics capped30FPS, sampled GPU57C/24%. Bridge build and19 root checks pass.
 Provider evidence is nested under pending_construction_reference. This adds
-no public UI or wire contract; worker-owned and nonzero-stage paths remain
-static-audit only pending live qualification.
+no public UI or wire contract.
+
+Protected214918/215011 on2026-11-14 compare native pointer actions with the
+provider on a controlled FarmPlot1490. The clone has no revealed unstarted
+multi-stage building, so diagnostic setup provisions a1x1 farm via DFHack,
+sets stage1 of3, and attaches active citizen1017 with working=true while paused.
+Suspension changes flags4→2, clears current_job and UNIT_WORKER references,
+and resets path destination to(-30000,-30000,-30000) and goal to-1. Both paths
+match. Stage1 Remove building retains the farm/occupancy, retires ConstructBuilding
+job382796 and creates DestroyBuilding382797; both readbacks match exactly.
+Native stage0/1/2 captures show Waiting for construction..., Partially constructed.,
+and Construction nearly done. Stage0 uses Cancel construction; stages1/2 use
+Remove building. An assigned worker suppresses Construction inactive.; suspension
+shows Construction suspended. These captures establish controlled states, not
+natural construction progression. Owned DF39188/14944 exit unsaved with source
+preservation,30FPS caps and sampled GPU60–61C. All19 core checks pass.
+Evidence: pending_construction_reference.advanced_reference. Earlier214512/214622
+fixture discovery failures are not acceptance;214809 selected an inactive citizen
+and correctly did not release it. The accepted fixture selects an active citizen,
+matching the native predicate. No native defect or parity exception is claimed.
 
 The audited building-type dispatch maps Door8 to inline1af741..1af807.
 It rejects flags0x2c (invader/intruder/mechanism control), allows forbidding only

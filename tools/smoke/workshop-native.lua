@@ -143,6 +143,24 @@ local ok,err=xpcall(function()
    end
   end
   assert(targets.door,'Basic building reference needs a completed door')
+  if os.getenv('DF3D_PENDING_ADVANCED')=='1'then
+   local staged
+   for _,candidate in ipairs(df.global.world.buildings.all)do
+    local tile=dfhack.maps.getTileFlags{x=candidate.centerx,y=candidate.centery,z=candidate.z}
+    if tile and not tile.hidden and candidate:getBuildStage()==0 and candidate:getMaxBuildStage()>1 and #candidate.jobs==1 and candidate.jobs[0].job_type==df.job_type.ConstructBuilding then staged=candidate;break end
+   end
+   if not staged then
+    for y=60,140 do for x=80,160 do
+     local pos={x=x,y=y,z=165};local tile=dfhack.maps.getTileFlags(pos)
+     if tile and not tile.hidden and not dfhack.buildings.findAtTile(pos)then
+      local ok,created=pcall(dfhack.buildings.constructBuilding,{type=df.building_type.FarmPlot,pos=pos,width=1,height=1,full_rectangle=true})
+      if ok and created then staged=created;break end
+     end
+    end;if staged then break end end
+   end
+   assert(staged and staged:getMaxBuildStage()>1 and #staged.jobs==1,'Could not provision controlled multi-stage building')
+   staged:setBuildStage(1);staged.jobs[0].flags.suspend=true;targets.pending=staged
+  end
   result.basic_building_reference={}
   for _,name in ipairs{'door','pending'}do local b=targets[name];if b then
    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
@@ -273,6 +291,15 @@ local ok,err=xpcall(function()
     end
    end
    if name=='pending' then
+    if os.getenv('DF3D_PENDING_ADVANCED')=='1'then
+     local stage=b:getBuildStage();local progress={}
+     for current=0,b:getMaxBuildStage()-1 do
+      b:setBuildStage(current);view:render(dfhack.getTickCount())
+      progress[#progress+1]={stage=current,lines=lines()};shot('pending-stage-'..current)
+     end
+     b:setBuildStage(stage);view:render(dfhack.getTickCount())
+     result.basic_building_reference.pending.progress=progress
+    end
     local before=b.jobs[0].flags.whole;local effects={}
     for _,label in ipairs{'Resume construction','Suspend construction'}do
      assert(click_label(label),'Pending construction control missing: '..label)
@@ -281,11 +308,36 @@ local ok,err=xpcall(function()
     result.basic_building_reference.pending.effects=effects
     assert(b.jobs[0].flags.whole==before,'Pending fixture did not restore suspension')
     local pending_request
-    if os.getenv('DF3D_PENDING_PROVIDER')=='1'then
-     pending_request=function(revision,operation)
-      local text,code=dfhack.run_command_silent('df3d','pending-building',tostring(b.id),revision,operation)
-      assert(code==0,text);return json.decode(text)
+    local function request(revision,operation)
+     local text,code=dfhack.run_command_silent('df3d','pending-building',tostring(b.id),revision,operation)
+     assert(code==0,text);return json.decode(text)
+    end
+    if os.getenv('DF3D_PENDING_ADVANCED')=='1'then
+     local job=b.jobs[0];local worker
+     for _,unit in ipairs(df.global.world.units.active)do
+      if dfhack.units.isCitizen(unit) and not dfhack.units.isDead(unit) and not unit.flags1.inactive and not unit.job.current_job then worker=unit;break end
      end
+     assert(worker and dfhack.job.addWorker(job,worker),'Could not attach controlled construction worker')
+     job.flags.suspend=false;job.flags.working=true
+     local function observe_worker()
+      local refs={};for _,ref in ipairs(job.general_refs)do if ref:getType()==df.general_ref_type.UNIT_WORKER then refs[#refs+1]=ref:getUnit().id end end
+      return{worker_id=worker.id,current_job=worker.job.current_job and worker.job.current_job.id or -1,flags=job.flags.whole,refs=refs,
+       destination={worker.path.dest.x,worker.path.dest.y,worker.path.dest.z},path_goal=worker.path.goal,job_counter=worker.counters.job_counter}
+     end
+     local assignment={setup='Paused multi-stage building, provisioned with DFHack if absent, stage1 and addWorker with working=true; no AI ticks.',before=observe_worker()}
+     view:render(dfhack.getTickCount());shot('pending-worker-assigned')
+     if os.getenv('DF3D_PENDING_PROVIDER')=='1'then
+      local current=request('0','read');assert(current.workers[1]==worker.id,'Provider omitted construction worker')
+      assignment.receipt=request(current.revision,'suspend');assert(assignment.receipt.outcome==1,'Worker suspension provider failed')
+     else assert(click_label('Suspend construction'),'Missing assigned construction suspend button')end
+     assignment.after=observe_worker()
+     result.basic_building_reference.pending.worker=assignment
+     shot('pending-worker-effect')
+     assert(assignment.after.current_job==-1 and #assignment.after.refs==0,'Suspension retained worker')
+     job.flags.whole=before;view:render(dfhack.getTickCount());shot('pending-worker-released')
+    end
+    if os.getenv('DF3D_PENDING_PROVIDER')=='1'then
+     pending_request=request
      local initial=pending_request('0','read');assert(initial.outcome==1,'Pending provider read rejected')
      local resume=pending_request(initial.revision,'resume');assert(resume.outcome==1 and resume.flags==effects[1].flags,'Pending resume differs')
      local noop=pending_request(resume.revision,'resume');assert(noop.outcome==1 and not noop.mutated and noop.revision==resume.revision,'Pending resume no-op differs')
@@ -294,7 +346,7 @@ local ok,err=xpcall(function()
      result.basic_building_reference.pending.provider={initial=initial,resume=resume,noop=noop,suspend=suspend,stale=stale}
     end
     if os.getenv('DF3D_PENDING_CANCEL_REFERENCE')=='1'then
-     assert(b:getBuildStage()==0,'Cancellation reference requires an unstarted building')
+     local stage=b:getBuildStage()
      local id=b.id;local job_ids={};local item_ids={}
      for _,job in ipairs(b.jobs)do
       job_ids[#job_ids+1]=job.id
@@ -314,10 +366,10 @@ local ok,err=xpcall(function()
      if pending_request then
       local current=pending_request('0','read')
       local receipt=pending_request(current.revision,'cancel')
-      assert(receipt.outcome==1 and receipt.removed and not receipt.removing,'Pending provider cancel failed')
+      assert(receipt.outcome==1 and receipt.removed==(stage==0) and receipt.removing==(stage>0),'Pending provider cancel failed')
       result.basic_building_reference.pending.provider.cancel=receipt
       view:render(dfhack.getTickCount())
-     else assert(click_label('Cancel construction'),'Native Cancel construction control missing')end
+     else assert(click_label(stage==0 and 'Cancel construction' or 'Remove building'),'Native construction cancellation control missing')end
      cancelled.building_exists=df.building.find(id)~=nil;cancelled.jobs_remaining={}
      local link=df.global.world.jobs.list.next
      while link do
@@ -325,7 +377,11 @@ local ok,err=xpcall(function()
       link=link.next
      end
      cancelled.materials_after=materials();cancelled.occupancy_after=occupancy()
-     assert(not cancelled.building_exists and #cancelled.jobs_remaining==0,'Native cancel retained unstarted building/jobs')
+     cancelled.remaining_jobs={}
+     local remaining=df.building.find(id)
+     if remaining then for _,job in ipairs(remaining.jobs)do cancelled.remaining_jobs[#cancelled.remaining_jobs+1]={id=job.id,type=df.job_type[job.job_type],flags=job.flags.whole}end end
+     if stage==0 then assert(not cancelled.building_exists and #cancelled.jobs_remaining==0,'Native cancel retained unstarted building/jobs')
+     else assert(cancelled.building_exists and #cancelled.remaining_jobs==1 and cancelled.remaining_jobs[1].type=='DestroyBuilding','Native started cancellation did not queue removal')end
      result.basic_building_reference.pending.cancellation=cancelled;shot('basic-building-pending-cancel')
     end
    end

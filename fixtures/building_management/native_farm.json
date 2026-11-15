@@ -13048,6 +13048,490 @@
           "result.json": "c178f5d969f4ee3e4d36d311d48318574e98b5ec65500213f948347f216ae242",
           "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "advanced_reference": {
+        "scope": "Controlled FarmPlot1490 provisioned through DFHack, stage set to1, active citizen1017 attached with addWorker and working=true while paused. Native pointer and owned provider worker-release effects and nonzero-stage cancellation readbacks match. Native stage0/1/2 captions captured. No natural construction progression or viewer acceptance claimed.",
+        "lanes": [
+          "build/stockpile-storage-native-farm-discovery-20261114-214918",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011"
+        ],
+        "owned_df_pids": [
+          39188,
+          14944
+        ],
+        "source_saves_preserved": true,
+        "closed_unsaved": true,
+        "native": {
+          "cancellation": {
+            "building_exists": true,
+            "frame": 0,
+            "id": 1490,
+            "job_ids": [
+              382796
+            ],
+            "jobs_remaining": [],
+            "materials_after": [],
+            "materials_before": [],
+            "occupancy_after": 1,
+            "occupancy_before": 1,
+            "remaining_jobs": [
+              {
+                "flags": 0,
+                "id": 382797,
+                "type": "DestroyBuilding"
+              }
+            ]
+          },
+          "effects": [
+            {
+              "action": "Resume construction",
+              "flags": 0,
+              "lines": [
+                {
+                  "text": "                                                            Farm Plot",
+                  "y": 6
+                },
+                {
+                  "text": "                                                      Partially constructed.",
+                  "y": 11
+                },
+                {
+                  "text": "                                                      Construction inactive.",
+                  "y": 13
+                },
+                {
+                  "text": "                                                        Suspend construction                                                        Elevation 36",
+                  "y": 16
+                },
+                {
+                  "text": "                                                        Remove building",
+                  "y": 19
+                }
+              ]
+            },
+            {
+              "action": "Suspend construction",
+              "flags": 2,
+              "lines": [
+                {
+                  "text": "                                                            Farm Plot",
+                  "y": 6
+                },
+                {
+                  "text": "                                                      Partially constructed.",
+                  "y": 11
+                },
+                {
+                  "text": "                                                      Construction suspended.",
+                  "y": 13
+                },
+                {
+                  "text": "                                                        Resume construction                                                         Elevation 36",
+                  "y": 16
+                },
+                {
+                  "text": "                                                        Remove building",
+                  "y": 19
+                }
+              ]
+            }
+          ],
+          "id": 1490,
+          "jobs": [
+            {
+              "flags": 2,
+              "id": 382796,
+              "type": "ConstructBuilding"
+            }
+          ],
+          "lines": [
+            {
+              "text": "                                                            Farm Plot",
+              "y": 6
+            },
+            {
+              "text": "                                                      Partially constructed.",
+              "y": 11
+            },
+            {
+              "text": "                                                      Construction suspended.",
+              "y": 13
+            },
+            {
+              "text": "                                                        Resume construction                                                         Elevation 36",
+              "y": 16
+            },
+            {
+              "text": "                                                        Remove building",
+              "y": 19
+            }
+          ],
+          "max_stage": 3,
+          "stage": 1,
+          "tile": [
+            151,
+            60,
+            165
+          ],
+          "type": "FarmPlot",
+          "worker": {
+            "after": {
+              "current_job": -1,
+              "destination": [
+                -30000,
+                -30000,
+                -30000
+              ],
+              "flags": 2,
+              "job_counter": 0,
+              "path_goal": -1,
+              "refs": [],
+              "worker_id": 1017
+            },
+            "before": {
+              "current_job": 382796,
+              "destination": [
+                138,
+                87,
+                164
+              ],
+              "flags": 4,
+              "job_counter": 0,
+              "path_goal": 136,
+              "refs": [
+                1017
+              ],
+              "worker_id": 1017
+            },
+            "setup": "Paused multi-stage building, provisioned with DFHack if absent, stage1 and addWorker with working=true; no AI ticks."
+          }
+        },
+        "provider": {
+          "cancellation": {
+            "building_exists": true,
+            "frame": 0,
+            "id": 1490,
+            "job_ids": [
+              382796
+            ],
+            "jobs_remaining": [],
+            "materials_after": [],
+            "materials_before": [],
+            "occupancy_after": 1,
+            "occupancy_before": 1,
+            "remaining_jobs": [
+              {
+                "flags": 0,
+                "id": 382797,
+                "type": "DestroyBuilding"
+              }
+            ]
+          },
+          "effects": [
+            {
+              "action": "Resume construction",
+              "flags": 0,
+              "lines": [
+                {
+                  "text": "                                                            Farm Plot",
+                  "y": 6
+                },
+                {
+                  "text": "                                                      Partially constructed.",
+                  "y": 11
+                },
+                {
+                  "text": "                                                      Construction inactive.",
+                  "y": 13
+                },
+                {
+                  "text": "                                                        Suspend construction                                                        Elevation 36",
+                  "y": 16
+                },
+                {
+                  "text": "                                                        Remove building",
+                  "y": 19
+                }
+              ]
+            },
+            {
+              "action": "Suspend construction",
+              "flags": 2,
+              "lines": [
+                {
+                  "text": "                                                            Farm Plot",
+                  "y": 6
+                },
+                {
+                  "text": "                                                      Partially constructed.",
+                  "y": 11
+                },
+                {
+                  "text": "                                                      Construction suspended.",
+                  "y": 13
+                },
+                {
+                  "text": "                                                        Resume construction                                                         Elevation 36",
+                  "y": 16
+                },
+                {
+                  "text": "                                                        Remove building",
+                  "y": 19
+                }
+              ]
+            }
+          ],
+          "id": 1490,
+          "jobs": [
+            {
+              "flags": 2,
+              "id": 382796,
+              "type": "ConstructBuilding"
+            }
+          ],
+          "lines": [
+            {
+              "text": "                                                            Farm Plot",
+              "y": 6
+            },
+            {
+              "text": "                                                      Partially constructed.",
+              "y": 11
+            },
+            {
+              "text": "                                                      Construction suspended.",
+              "y": 13
+            },
+            {
+              "text": "                                                        Resume construction                                                         Elevation 36",
+              "y": 16
+            },
+            {
+              "text": "                                                        Remove building",
+              "y": 19
+            }
+          ],
+          "max_stage": 3,
+          "progress": [
+            {
+              "lines": [
+                {
+                  "text": "                                                            Farm Plot",
+                  "y": 6
+                },
+                {
+                  "text": "                                                      Waiting for construction...",
+                  "y": 11
+                },
+                {
+                  "text": "                                                      Construction suspended.",
+                  "y": 13
+                },
+                {
+                  "text": "                                                        Resume construction                                                         Elevation 36",
+                  "y": 16
+                },
+                {
+                  "text": "                                                        Cancel construction",
+                  "y": 19
+                }
+              ],
+              "stage": 0
+            },
+            {
+              "lines": [
+                {
+                  "text": "                                                            Farm Plot",
+                  "y": 6
+                },
+                {
+                  "text": "                                                      Partially constructed.",
+                  "y": 11
+                },
+                {
+                  "text": "                                                      Construction suspended.",
+                  "y": 13
+                },
+                {
+                  "text": "                                                        Resume construction                                                         Elevation 36",
+                  "y": 16
+                },
+                {
+                  "text": "                                                        Remove building",
+                  "y": 19
+                }
+              ],
+              "stage": 1
+            },
+            {
+              "lines": [
+                {
+                  "text": "                                                            Farm Plot",
+                  "y": 6
+                },
+                {
+                  "text": "                                                      Construction nearly done.",
+                  "y": 11
+                },
+                {
+                  "text": "                                                      Construction suspended.",
+                  "y": 13
+                },
+                {
+                  "text": "                                                        Resume construction                                                         Elevation 36",
+                  "y": 16
+                },
+                {
+                  "text": "                                                        Remove building",
+                  "y": 19
+                }
+              ],
+              "stage": 2
+            }
+          ],
+          "provider": {
+            "cancel": {
+              "mutated": true,
+              "outcome": 1,
+              "removed": false,
+              "removing": true
+            },
+            "initial": {
+              "flags": 2,
+              "id": 1490,
+              "job_id": 382796,
+              "max_stage": 3,
+              "mutated": false,
+              "outcome": 1,
+              "removed": false,
+              "removing": false,
+              "revision": "6254148789396981349",
+              "stage": 1,
+              "workers": []
+            },
+            "noop": {
+              "flags": 0,
+              "id": 1490,
+              "job_id": 382796,
+              "max_stage": 3,
+              "mutated": false,
+              "outcome": 1,
+              "removed": false,
+              "removing": false,
+              "revision": "8414798608743560935",
+              "stage": 1,
+              "workers": []
+            },
+            "resume": {
+              "flags": 0,
+              "id": 1490,
+              "job_id": 382796,
+              "max_stage": 3,
+              "mutated": true,
+              "outcome": 1,
+              "removed": false,
+              "removing": false,
+              "revision": "8414798608743560935",
+              "stage": 1,
+              "workers": []
+            },
+            "stale": {
+              "mutated": false,
+              "outcome": 2,
+              "removed": false,
+              "removing": false
+            },
+            "suspend": {
+              "flags": 2,
+              "id": 1490,
+              "job_id": 382796,
+              "max_stage": 3,
+              "mutated": true,
+              "outcome": 1,
+              "removed": false,
+              "removing": false,
+              "revision": "6254148789396981349",
+              "stage": 1,
+              "workers": []
+            }
+          },
+          "stage": 1,
+          "tile": [
+            151,
+            60,
+            165
+          ],
+          "type": "FarmPlot",
+          "worker": {
+            "after": {
+              "current_job": -1,
+              "destination": [
+                -30000,
+                -30000,
+                -30000
+              ],
+              "flags": 2,
+              "job_counter": 0,
+              "path_goal": -1,
+              "refs": [],
+              "worker_id": 1017
+            },
+            "before": {
+              "current_job": 382796,
+              "destination": [
+                138,
+                87,
+                164
+              ],
+              "flags": 4,
+              "job_counter": 0,
+              "path_goal": 136,
+              "refs": [
+                1017
+              ],
+              "worker_id": 1017
+            },
+            "receipt": {
+              "flags": 2,
+              "id": 1490,
+              "job_id": 382796,
+              "max_stage": 3,
+              "mutated": true,
+              "outcome": 1,
+              "removed": false,
+              "removing": false,
+              "revision": "6254148789396981349",
+              "stage": 1,
+              "workers": []
+            },
+            "setup": "Paused multi-stage building, provisioned with DFHack if absent, stage1 and addWorker with working=true; no AI ticks."
+          }
+        },
+        "hashes": {
+          "build/stockpile-storage-native-farm-discovery-20261114-214918/workshop-pending-worker-assigned.png": "2037f6aaef63ba0398d7da716b426bc1e4202502662869dffa5f34e37b00603d",
+          "build/stockpile-storage-native-farm-discovery-20261114-214918/workshop-pending-worker-effect.png": "bb565542b183b511af4eb536804c954285ad3931a1ac271fe0eb995a15889f83",
+          "build/stockpile-storage-native-farm-discovery-20261114-214918/workshop-pending-worker-released.png": "bb565542b183b511af4eb536804c954285ad3931a1ac271fe0eb995a15889f83",
+          "build/stockpile-storage-native-farm-discovery-20261114-214918/workshop-basic-building-pending-1.png": "786a5f08a2d9a5d748bc7f5f16571e0ba5c4b5f355f566b00bb0a2ad0668fc10",
+          "build/stockpile-storage-native-farm-discovery-20261114-214918/workshop-basic-building-pending-2.png": "2a4902d766aab70d0d1237b2d27045cb04e02378dd75c049b7e7fc46c8548ad8",
+          "build/stockpile-storage-native-farm-discovery-20261114-214918/workshop-basic-building-pending-cancel.png": "ced29162be5c7441df190964e7302625fb9fb9088ff19a1cbc6127d2cf30420d",
+          "build/stockpile-storage-native-farm-discovery-20261114-214918/workshop-basic-building-pending.png": "2a4902d766aab70d0d1237b2d27045cb04e02378dd75c049b7e7fc46c8548ad8",
+          "build/stockpile-storage-native-farm-discovery-20261114-214918/workshop-native.json": "11358f8f7882c65c1880f3b601295ac494589a962e0347429ba363eb5c116a1c",
+          "build/stockpile-storage-native-farm-discovery-20261114-214918/result.json": "fb914ceced2ab428340b883e2a54cbd9287ff6e27e631e05707e4ff18ea71d7f",
+          "build/stockpile-storage-native-farm-discovery-20261114-214918/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011/workshop-pending-stage-0.png": "225d476adba358deab3b5c49229a0339a480a1473095017da88b1d0222affc1f",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011/workshop-pending-stage-1.png": "2a4902d766aab70d0d1237b2d27045cb04e02378dd75c049b7e7fc46c8548ad8",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011/workshop-pending-stage-2.png": "87ffb3149282504acfd8d54e9c53d0894f575d8021544e69dee0d995ca1a0b8f",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011/workshop-pending-worker-assigned.png": "1c4bf5280e84581c7d3083b6bac8df3ff29cf56536e320b0478fce9d99157b45",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011/workshop-pending-worker-effect.png": "2a4902d766aab70d0d1237b2d27045cb04e02378dd75c049b7e7fc46c8548ad8",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011/workshop-pending-worker-released.png": "2a4902d766aab70d0d1237b2d27045cb04e02378dd75c049b7e7fc46c8548ad8",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011/workshop-basic-building-pending-1.png": "786a5f08a2d9a5d748bc7f5f16571e0ba5c4b5f355f566b00bb0a2ad0668fc10",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011/workshop-basic-building-pending-2.png": "2a4902d766aab70d0d1237b2d27045cb04e02378dd75c049b7e7fc46c8548ad8",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011/workshop-basic-building-pending-cancel.png": "e745eb68ccfc3cbe36c84ad0b844697660fda8d9f973ccaec127283922d6786e",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011/workshop-basic-building-pending.png": "2a4902d766aab70d0d1237b2d27045cb04e02378dd75c049b7e7fc46c8548ad8",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011/workshop-native.json": "e29a7c611b76a17fbdb598f4a4250202fadff152c044de763e180fe3d8d15e85",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011/result.json": "50e98625fae6b975762c02e41d65c3cff8f3c0c9e76d34df460bf89bee43d331",
+          "build/stockpile-storage-native-farm-discovery-20261114-215011/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

@@ -104,6 +104,11 @@ local ok,err=xpcall(function()
  end
  assert(click_label('Work orders'));sample('work-orders')
  if os.getenv('DF3D_LEVER_WORKERS_PROVIDER')=='1'then
+  local profile=lever:getWorkshopProfile();local before=profile.max_general_orders
+  assert(before<99);click(840,478);assert(profile.max_general_orders==before+1);sample('order-limit-plus')
+  click(872,478);assert(profile.max_general_orders==before);sample('order-limit-restored')
+ end
+ if os.getenv('DF3D_LEVER_WORKERS_PROVIDER')=='1'then
   local text,code=dfhack.run_command_silent('df3d','workshop-orders-probe',tostring(lever.id));assert(code==0,text)
   result.order_profile=json.decode(text)
   assert(result.order_profile.general_order_limit==lever:getWorkshopProfile().max_general_orders)

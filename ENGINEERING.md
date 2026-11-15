@@ -159,6 +159,18 @@ The owner retains it across ordinary reads/Pull and clears it on successful
 Link lookup, matching native1adb1f/1adb2c. Composed unavailable-stock input,
 remaining mutations and actual map targeting still need acceptance.
 
+Protected084825 on2026-11-15 qualifies composed lever worker assignment and
+removal through actual pointer input. Assignment closes the picker; reselecting
+the assigned worker removes the restriction and keeps the picker open until
+Escape. Work-order limit increment and decrement restore the original value.
+All four resulting488x708 panel crops match native exactly, and the inherited
+task gestures and header/lever wire checks pass. The reference still has no
+manager; order creation and projected map targeting remain unqualified.
+Owned DF33592 closes unsaved with source preservation; graphics are capped30FPS.
+The run is passed_with_known_issues for the established render-thread/finalize/
+two ObjectDB diagnostics. All19 core checks pass. Evidence is
+`completed_sheet_discovery_reference.lever_worker_order_gestures_reference`.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

@@ -24169,6 +24169,32 @@
             "build/stockpile-storage-native-farm-discovery-20261115-082933/lever-tasks-link-open-viewer.png": "2b43710be142bf387d432d96300d495653ac0be4c7de96fe35c7c6e51e48d159"
           }
         }
+      },
+      "lever_worker_order_gestures_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-084825",
+        "scope": "Composed lever owner pointer assignment of the native first candidate closes the picker; reselecting removes restriction and retains the picker until Escape. General work-order limit increases and restores. Four complete panel crops match native; inherited task gestures and wire checks pass. No manager/order creation, projected map targeting or public exposure claimed.",
+        "source_preserved": true,
+        "owned_df_pid": 33592,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-084825/lever-worker-assigned.png": "c8673b38a9a45ba238a26bc106f098ddbc7cb58e441f270178246a819e71ec3f",
+          "build/stockpile-storage-native-farm-discovery-20261115-084825/lever-panel-worker-assigned-viewer.png": "fa03613034c97d1f2611dcbefd637e2a566f612c4fdb6c5b044ca569b8e089d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-084825/lever-workers-restored.png": "6d71d167d7a218ece099096ae7d9785ea8a97826ffa3af3afc6243c542ce6953",
+          "build/stockpile-storage-native-farm-discovery-20261115-084825/lever-panel-workers-restored-viewer.png": "ed690ddddf10279419a205c2610a2a4f72a86b0722cd9293eab555373ce7cdd1",
+          "build/stockpile-storage-native-farm-discovery-20261115-084825/lever-order-limit-plus.png": "f8c86b2a0ae074da4e22c69b8197b2ccc9ce09cd314222bebc3f0ebd46c87cda",
+          "build/stockpile-storage-native-farm-discovery-20261115-084825/lever-panel-order-limit-plus-viewer.png": "27b089ee4fdc83058140b33ca8116e6eb03ed6294e9b6e1acf9490a5bce76213",
+          "build/stockpile-storage-native-farm-discovery-20261115-084825/lever-order-limit-restored.png": "55baa58607f97ae95abeaa48b230df671d976184d7a15f4bf0cbaf929418b04b",
+          "build/stockpile-storage-native-farm-discovery-20261115-084825/lever-panel-order-limit-restored-viewer.png": "d71c85f9cc376e48843d04ced39a07bebc26bc790e169bf5c2bc523c5be19998",
+          "build/stockpile-storage-native-farm-discovery-20261115-084825/workshop-wire-result.json": "3b078c7ec4b54ea34541b4b15eaff601984e9027a1f4a471d370ecf1203fb059",
+          "build/stockpile-storage-native-farm-discovery-20261115-084825/result.json": "eb4b9d55557de3a4481e31df8149b7099b642c327bea802db97f6e9aca41f5f1",
+          "build/stockpile-storage-native-farm-discovery-20261115-084825/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

@@ -23,6 +23,35 @@ func compare(label: String) -> void:
 	var rect:=Rect2i(416,52,488,708)
 	image.get_region(rect).save_png(directory+"/lever-panel-"+label+"-viewer.png")
 	check(image.get_region(rect).get_data()==native.get_region(rect).get_data(),"Composed lever pixels differ: "+label)
+func model_ready(model) -> bool:
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();await process_frame
+		if model.phase==model.Phase.Ready:return true
+	check(false,"Lever subpanel did not become ready: "+str(model.phase));return false
+func worker_gestures(owner) -> void:
+	var native: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/lever-native.json"))
+	var expected: int=int(native.assigned_worker.assigned.id)
+	click(Vector2(448,154));await process_frame
+	if not check(owner.selector.visible,"Lever worker picker did not open"):return
+	click(Vector2(80,106));if not await model_ready(owner.workers):return
+	check(owner.workers.permitted_workers==[expected] and not owner.selector.visible,"Lever worker assignment differs from native")
+	if not await settle(owner,0):return
+	await create_timer(0.3).timeout;await compare("worker-assigned")
+	click(Vector2(448,190));await process_frame
+	if not check(owner.selector.visible,"Assigned lever picker did not open"):return
+	click(Vector2(80,106));if not await model_ready(owner.workers):return
+	check(owner.workers.permitted_workers.is_empty() and owner.selector.visible,"Removing worker must retain picker")
+	owner.handle_escape();if not await settle(owner,0):return
+	await compare("workers-restored")
+func order_limit_gestures(owner) -> void:
+	var before: int=owner.orders.snapshot.general_order_limit
+	click(Vector2(840,478));if not await model_ready(owner.orders):return
+	check(owner.orders.snapshot.general_order_limit==before+1,"Lever general order increment failed")
+	await compare("order-limit-plus")
+	click(Vector2(872,478));if not await model_ready(owner.orders):return
+	check(owner.orders.snapshot.general_order_limit==before,"Lever general order limit not restored")
+	await compare("order-limit-restored")
 func gestures(owner) -> void:
 	for count in [1,2]:
 		click(Vector2(840,154+(count-1)*36))
@@ -51,6 +80,9 @@ func gestures(owner) -> void:
 		while Time.get_ticks_msec()<deadline and model.phase!=model.Phase.Ready:world.poll();await process_frame
 		check(model.phase==model.Phase.Ready,"Lever tab did not load")
 		await compare("workers" if index==1 else "work-orders")
+		if OS.get_environment("DF3D_LEVER_WORKERS_PROVIDER")=="1":
+			if index==1:await worker_gestures(owner)
+			else:await order_limit_gestures(owner)
 	click(owner.panel.global_position+owner.panel.tab_rect(0).get_center());await process_frame
 func inspect_prompt(_snapshot: Dictionary,_expected: Dictionary) -> void:
 	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Lever panel assets unavailable"):return

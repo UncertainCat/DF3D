@@ -129,6 +129,9 @@ func open_building_holder(kind: int,id: int) -> void:
 		var target: Dictionary=world.inspect_entity(3,id)
 		if target.get("building_kind",-1)==24 and target.get("subtype",-1)==0 and target.get("complete",false):
 			controller("lever").open_target(id)
+		elif target.get("building_kind",-1)==24 and target.get("subtype",-1)==1 and target.get("complete",false) and controllers.has("pressure_plate") and host.active==controllers.pressure_plate.item_owner:
+			# Staged plate holder return; ordinary source map entry remains gated.
+			controller("pressure_plate").open_target(id)
 	elif kind in [5,13]:
 		# The item receipt supplies native type/ID; resident semantics supply the
 		# subtype artwork. The opened header still obtains fresh action authority.

@@ -407,6 +407,17 @@ areas adapter and core19 pass; only the documented render-thread/finalize/two
 ObjectDB graphics diagnostics remain. Evidence:
 `completed_sheet_discovery_reference.pressure_plate_connections_reference`.
 
+The staged plate's installed-item holder action returns to its panel after
+fresh resident type/subtype/completion checks. This admission is confined to
+the plate owner's item sheet; ordinary source map selection remains gated.
+Protected095902 verifies actual main-scene mechanism View and holder View,
+exact complete item/returned-panel pixels, item and holder identity, restored
+input ownership and subsequent projected Link effects. Owned DF44764 closes
+unsaved with source preservation, graphics capped30FPS, sampled GPU60C.
+Core19 passes; only the documented render-thread/finalize/two ObjectDB graphics
+diagnostics remain. Evidence:
+`completed_sheet_discovery_reference.pressure_plate_item_navigation_reference`.
+
 ## Native bug register
 
 Maintainer-requested register of confirmed native defects and narrowly scoped

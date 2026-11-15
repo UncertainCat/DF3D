@@ -26231,6 +26231,29 @@
           "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-unlinked-give-viewer.png": "2ef5da65c0af38bdd79afcdb17ba2bfd483ff0dffea69211e606c2d307a3d59a",
           "build/stockpile-storage-native-farm-discovery-20261115-095632/pressure-plate-connections-unlinked-take-viewer.png": "2ef5da65c0af38bdd79afcdb17ba2bfd483ff0dffea69211e606c2d307a3d59a"
         }
+      },
+      "pressure_plate_item_navigation_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-095902",
+        "scope": "Native and actual main-scene installed mechanism View -> holder View -> pressure plate61. Exact full488x708 item and returned panel crops, item/holder identity and input ownership; following projected mechanical Link matches native job. Holder return limited to staged plate item owner; ordinary source map entry not qualified.",
+        "owned_df_pid": 44764,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "classification": "passed_with_known_issues",
+        "known_diagnostics": [
+          "separate render thread notice",
+          "render-thread finalize",
+          "two ObjectDB shutdown instances"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-095902/pressure-plate-native.json": "1cd084f8a977c7aaf91f3b29eb2a73841ebb0b8e10f1397d527a886a12faee61",
+          "build/stockpile-storage-native-farm-discovery-20261115-095902/workshop-wire-result.json": "1e40c101467529fa30925441b6797421895cbab7d7bc9d84b20637a757fa88e2",
+          "build/stockpile-storage-native-farm-discovery-20261115-095902/result.json": "6928873a06cb6b30a02e71353aca95e22f38e957607a09cb24b6308dbe9e3521",
+          "build/stockpile-storage-native-farm-discovery-20261115-095902/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-095902/pressure-plate-item-view.png": "3317f1b4147598d453421d5f9ba596aa4bd63fefe7195415cd773451449e22b4",
+          "build/stockpile-storage-native-farm-discovery-20261115-095902/pressure-plate-item-returned.png": "f0eaf01c49bf507136063085c68ec1d325494863eaadd013d24663ab2f2dfd36",
+          "build/stockpile-storage-native-farm-discovery-20261115-095902/pressure-plate-navigation-item-view-viewer.png": "487555ad67d94e4a2543676ccf7ba281a36df9caeaa3ab0ad26af5d16af2a2d6",
+          "build/stockpile-storage-native-farm-discovery-20261115-095902/pressure-plate-navigation-item-returned-viewer.png": "5ffa8f3e5afbdaecd876b90524cc65a5e068dcde1c8342730ec3f2f80aec0ad0"
+        }
       }
     },
     "pending_construction_reference": {

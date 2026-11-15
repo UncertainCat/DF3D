@@ -55,6 +55,11 @@ local ok,err=xpcall(function()
  if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
  view:render(dfhack.getTickCount());select_map(plate)
  assert(sheet.open and sheet.active_id==plate.id);sample('initial')
+ if os.getenv('DF3D_PRESSURE_PLATE_ITEM_NAV')=='1'then
+  local item=assert(plate.contained_items[0].item)
+  click(772,562);assert(sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==item.id);sample('item-view')
+  click(816,250);assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==plate.id);sample('item-returned')
+ end
  if os.getenv('DF3D_PRESSURE_PLATE_EDITS')=='1'then
   local name=plate.name
   click(800,82);gui.simulateInput(view,'STRING_A120');gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
@@ -156,7 +161,7 @@ local ok,err=xpcall(function()
   assert(plate.id==61)
   local target=assert(df.building.find(16))
   local f=assert(io.open(out..'/pressure-plate-wire-expected.json','w'))
-  f:write(json.encode{source_mechanism=selected[1],target_mechanism=selected[2],target_id=target.id,x=target.centerx,y=target.centery,z=target.z});f:close()
+  f:write(json.encode{source_tile={plate.centerx,plate.centery,plate.z},source_mechanism=selected[1],target_mechanism=selected[2],target_id=target.id,x=target.centerx,y=target.centery,z=target.z});f:close()
   local menu=json.encode{sheet.open,sheet.active_id,sheet.linking_lever,sheet.linking_lever_mech_lever_id,sheet.linking_lever_mech_target_id}
   capture('workshop-wire')
   f=assert(io.open(out..'/workshop-wire-result.json'));result.wire=json.decode(f:read('*a'));f:close()

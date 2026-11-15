@@ -16,9 +16,12 @@ func run() -> void:
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("pressure_plate")
 	owner.lever.applied.connect(func(operation,id):applied_jobs[operation]=id)
+	var source_tile:=Vector3i(expected.source_tile[0],expected.source_tile[1],expected.source_tile[2])
+	scene._ui.focus_tile(source_tile)
 	owner.open_target(61)
 	if not await ready_jobs(0):return
-	await connection_gestures()
+	if OS.get_environment("DF3D_PRESSURE_PLATE_ITEM_NAV")=="1":await item_navigation()
+	if OS.get_environment("DF3D_PRESSURE_PLATE_CONNECTIONS")=="1":await connection_gestures()
 	if failed:return
 	var tile:=Vector3i(expected.x,expected.y,expected.z)
 	scene._ui.focus_tile(tile)
@@ -85,3 +88,23 @@ func connection_gestures() -> void:
 		await connection_capture("unlinked-"+entry[0],420)
 	await pointer(Vector2(328,82));await process_frame
 	check(not owner.connections_view.visible and owner.panel.visible and not owner.modal_input,"Connections Done retained modal input")
+
+func item_navigation() -> void:
+	var item_id: int=owner.contents.rows()[0].id
+	await pointer(owner.panel.contents.get_global_transform_with_canvas()*owner.panel.contents.control_rect(0,1).get_center())
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline and owner.item_owner.state.phase!=owner.item_owner.state.Phase.Ready:await process_frame
+	if not check(owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready and scene._ui.host.active==owner.item_owner,"Plate item did not open"):return
+	check(owner.item_owner.state.item_id==item_id and owner.item_owner.state.snapshot.get("holder",{}).get("id",-1)==61,"Plate item holder differs")
+	await lever_capture("item-view")
+	await pointer(owner.item_owner.panel.get_global_transform_with_canvas()*owner.item_owner.panel.holder_rect().get_center())
+	if not await ready_jobs(0):return
+	check(scene._ui.host.active==owner and not owner.item_owner.panel.visible and owner.state.building_id==61,"Item holder did not return to plate")
+	await lever_capture("item-returned")
+func lever_capture(label: String) -> void:
+	var motion:=InputEventMouseMotion.new();motion.position=Vector2(300,400);root.push_input(motion,true)
+	await process_frame;await RenderingServer.frame_post_draw
+	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	var native:=Image.load_from_file(directory+"/pressure-plate-"+label+".png");native.convert(Image.FORMAT_RGB8)
+	var crop:=image.get_region(Rect2i(416,52,488,708));crop.save_png(directory+"/pressure-plate-navigation-"+label+"-viewer.png")
+	check(crop.get_data()==native.get_region(Rect2i(416,52,488,708)).get_data(),"Plate navigation pixels differ: "+label)

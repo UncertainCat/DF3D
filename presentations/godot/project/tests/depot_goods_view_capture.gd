@@ -21,10 +21,12 @@ func run() -> void:
 	if not world.load_assets(OS.get_environment("DF3D_DF_PATH")):quit(1);return
 	var label:=OS.get_environment("DF3D_DEPOT_CAPTURE_CASE")
 	if label.is_empty():label="anvils"
-	var value: Dictionary=integers(JSON.parse_string(FileAccess.get_file_as_string(directory+"/depot-goods-wire-"+label+"-result.json"))).snapshot
+	var recorded: Dictionary=integers(JSON.parse_string(FileAccess.get_file_as_string(directory+"/depot-goods-wire-"+label+"-result.json")))
+	var value: Dictionary=recorded.snapshot
 	var model=Model.new();model.depot_id=value.depot_id;model.category=value.category;model.revision=value.revision
 	model.categories=value.categories;model.groups=value.groups
 	for row in value.items:model.items[row.id]=row
+	for id in recorded.get("appearances",{}):model.appearances[int(id)]=recorded.appearances[id]
 	model.phase=Model.Phase.Ready
 	var view=View.new();root.add_child(view);view.configure_goods(world,model);view.layout(Vector2(1200,800))
 	for i in 8:
@@ -40,5 +42,9 @@ func run() -> void:
 		for rect in [Rect2i(920,112,24,36),Rect2i(872,148,72,72),Rect2i(808,76,136,36),Rect2i(416,160,432,12)]:
 			if native.get_region(rect).get_data()!=rendered.get_region(rect).get_data():
 				push_error("Depot status/caption pixels differ: "+str(rect));quit(1);return
+		if not model.appearances.is_empty():
+			var rect:=Rect2i(360,148,40,72)
+			if native.get_region(rect).get_data()!=rendered.get_region(rect).get_data():
+				push_error("Depot artwork pixels differ");quit(1);return
 	view.queue_free();await process_frame;model.dispose();world.queue_free();await process_frame
 	print("DEPOT_GOODS_VIEW_CAPTURE_PASS");quit()

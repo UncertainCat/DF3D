@@ -123,6 +123,29 @@ the native screenshots exactly; the capture checks these regions automatically.
 Sampled GPU53–55C; all four serial processes exit. This is display evidence only,
 not live hauling edits, tooltip acceptance or a complete picker.
 
+Depot artwork now reuses the existing independent-item inspection API and its
+owned native selector, also called by depot38b783. The controller queues only
+requested, loaded goods IDs, caches absent artwork after rejection without
+retrying, and retires inspections on close or goods-source replacement. The
+view uses the shared item/ammunition icon resolver and native picture frame.
+There is no protocol change, reconstructed sprite selection or native menu input.
+Protected150124 on2026-11-15 passes all nine controller cases and obtains
+appearance data for the first two requested IDs in each nonempty case. Owned
+DF36704 closes unsaved with source preservation; native30FPS, sampled GPU52C.
+The standalone safe-thread Vulkan Anvils capture then matches both native
+32x32 icons and their surrounding frames exactly, alongside existing caption/
+status checks, without diagnostics; sampled GPU54C. Evidence:
+`completed_sheet_discovery_reference.depot_goods_artwork_reference`.
+The controller test covers rejected artwork without retry and late inspection
+retirement. All19 core checks pass. This does not establish all-family artwork,
+container-expanded rows or live main-scene interaction. Selection drafts,
+hauling commit and full trade remain unfinished; public depot routes stay hidden.
+Initial145843 reported success but its IRON client logged an unexpected
+rendering-storage `!F` diagnostic, so it is excluded from nine-case acceptance.
+The depot-only headless clients now use `--render-thread safe`; all nine150124
+client logs are free of diagnostics. No engine fix or product setting change
+is claimed.
+
 ## Depot transport migration
 
 Management protocol231 adds an optional `DepotBodySnapshot` to completed building

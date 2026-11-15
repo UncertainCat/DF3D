@@ -23,14 +23,45 @@ var generation:=0
 var last_result: Dictionary={}
 var _active_query: String=""
 var _queries: Array[String]=[]
+var appearances: Dictionary={}
+var _inspection
+var _appearance_queue: Array=[]
+var _appearance_id: int=-1
 func configure(source) -> void:
 	dispose();service=source
-	if service!=null:service.session_changed.connect(_session_changed)
+	if service!=null:
+		service.session_changed.connect(_session_changed)
+		_inspection=preload("res://scripts/item_sheet_state.gd").new();_inspection.configure(service)
+		_inspection.changed.connect(_inspection_changed)
 func dispose() -> void:
 	close()
+	if _inspection!=null:_inspection.dispose();_inspection=null
 	if service!=null and service.session_changed.is_connected(_session_changed):service.session_changed.disconnect(_session_changed)
 	service=null
-func _clear() -> void:revision=0;categories=[];groups=[];items={}
+func _clear() -> void:
+	revision=0;categories=[];groups=[];items={};appearances={};_appearance_queue=[];_appearance_id=-1
+	if _inspection!=null:_inspection.close()
+func request_appearances(ids: Array) -> void:
+	if phase!=Phase.Ready or _inspection==null or ids.size()>64:return
+	for id in ids:
+		if typeof(id)!=TYPE_INT or not items.has(id):return
+	for id in ids:
+		if not appearances.has(id) and id!=_appearance_id and not _appearance_queue.has(id):_appearance_queue.append(id)
+	_next_appearance()
+func _next_appearance() -> void:
+	if phase!=Phase.Ready or _appearance_id>=0 or _appearance_queue.is_empty():return
+	_appearance_id=_appearance_queue.pop_front();_inspection.open(_appearance_id)
+func appearance_pending() -> bool:return _appearance_id>=0 or not _appearance_queue.is_empty()
+func _inspection_changed() -> void:
+	if _appearance_id<0 or phase!=Phase.Ready or _inspection.phase in [_inspection.Phase.Closed,_inspection.Phase.Reading]:return
+	var id:=_appearance_id;_appearance_id=-1
+	# This is the existing owned inspection API, whose selector is also called
+	# by native depot38b783. A rejected read leaves absent artwork, never a retry.
+	appearances[id]={}
+	if _inspection.phase==_inspection.Phase.Ready:
+		var value: Dictionary=_inspection.snapshot
+		if value.id==id and value.item_type==category and value.has("appearance"):appearances[id]=value.appearance.duplicate(true)
+	changed.emit();_next_appearance()
 func close() -> void:
 	generation+=1;var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)

@@ -456,7 +456,7 @@ try {
      if($name -eq 'barrier-scene'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/barrier_scene_live.gd')}
      if($name -eq 'depot-scene'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/depot_scene_live.gd')}
      if($name -eq 'depot-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/depot_wire_live.gd')}
-     if($name -like 'depot-goods-wire-*'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/depot_goods_wire_live.gd')}
+     if($name -like 'depot-goods-wire-*'){$clientArgs=@('--headless','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/depot_goods_wire_live.gd')}
      if($name -eq 'barrier-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/barrier_wire_live.gd')}
      if($name -eq 'machinery-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/machinery_wire_live.gd')}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"

@@ -11,8 +11,11 @@ var item_scrollbar
 var search
 var page: Array=[]
 var requested:=false
+var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
+var icons: Dictionary={}
 func configure_goods(source,model) -> void:
 	configure(source);state=model;colors=art.installed_palette(source.assets_root())
+	picture.configure(source)
 	mouse_filter=Control.MOUSE_FILTER_STOP
 	category_canvas=Control.new();add_child(category_canvas);category_canvas.mouse_filter=Control.MOUSE_FILTER_IGNORE;category_canvas.clip_contents=true
 	category_canvas.draw.connect(_draw_categories)
@@ -49,8 +52,18 @@ func refresh() -> void:
 	item_scrollbar.page=maxi(0,int(item_canvas.size.y/12));item_scrollbar.set_rows(state.row_count()*3,state.first_item)
 	item_canvas.size.x=maxf(0,size.x-category_width()-88)+(0 if item_scrollbar.visible else 16)
 	page=state.page(int(item_scrollbar.first/3),ceili(item_canvas.size.y/36.0)+1)
+	var retained: Dictionary={}
+	for entry in page:
+		if not entry.has("id"):continue
+		var appearance: Dictionary=state.appearances.get(entry.id,{})
+		if appearance.is_empty():continue
+		var cached: Dictionary=icons.get(entry.id,{})
+		if cached.get("appearance")!=appearance:
+			cached={"appearance":appearance.duplicate(true),"texture":world.ammunition_icon(appearance,entry.id) if state.category==39 else world.item_sheet_icon(state.category,appearance,entry.id)}
+		retained[entry.id]=cached
+	icons=retained
 	category_canvas.queue_redraw();item_canvas.queue_redraw();queue_redraw()
-	if ready() and not requested and page.any(func(row):return row.has("id") and not state.items.has(row.id)):
+	if ready() and not requested and page.any(func(row):return row.has("id") and (not state.items.has(row.id) or not state.appearances.has(row.id))):
 		requested=true;_fetch.call_deferred()
 func _fetch() -> void:
 	requested=false
@@ -58,7 +71,9 @@ func _fetch() -> void:
 	var ids: Array=[]
 	for row in page:
 		if row.has("id"):ids.append(row.id)
-	state.request_items(ids.slice(0,64))
+	ids=ids.slice(0,64)
+	if ids.any(func(id):return not state.items.has(id)):state.request_items(ids)
+	else:state.request_appearances(ids)
 func _patch(canvas: Control,token: String,origin: Vector2,columns: int) -> void:
 	var texture: Texture2D=art.texture(token)
 	if texture==null:return
@@ -87,6 +102,12 @@ func _draw_items() -> void:
 		else:
 			var row: Dictionary=state.items.get(entry.id,{})
 			if row.is_empty():continue
+			var frame: Texture2D=picture.texture(false)
+			if frame!=null:
+				for fy in 3:
+					for fx in 5:item_canvas.draw_texture_rect_region(frame,Rect2(fx*8,y+fy*12,8,12),Rect2(0 if fx==0 else 16 if fx==4 else 8,fy*12,8,12))
+			var icon: Texture2D=icons.get(entry.id,{}).get("texture")
+			if icon!=null and y>=0 and y+36<=item_canvas.size.y:item_canvas.draw_texture_rect(icon,Rect2(2,y+2,32,32),false)
 			_text(item_canvas,row.caption,Vector2(56,y+24))
 			_text(item_canvas,"Distance: "+str(row.distance),Vector2(item_canvas.size.x-208,y+24),10)
 			# Native38bd9d..38bdf6: prohibition, resting haul state, selection.

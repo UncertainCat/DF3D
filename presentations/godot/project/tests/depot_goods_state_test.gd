@@ -36,6 +36,11 @@ func run() -> void:
 	check(state.items.has(11),"Requested native detail is published")
 	var count: int=service.next;state.request_items([11]);state.request_items([999]);state.request_items([12,12])
 	check(service.next==count,"Cached, foreign and duplicate detail requests do not submit")
+	state.request_appearances([11]);var artwork_ticket: int=service.next
+	check(service.calls[artwork_ticket].domain=="production" and service.calls[artwork_ticket].intent.independent_item and service.calls[artwork_ticket].intent.item_id==11,"Artwork reuses owned item inspection")
+	service.reply(artwork_ticket,{})
+	check(state.appearances.has(11) and state.appearances[11].is_empty() and not state.appearance_pending(),"Rejected artwork remains absent")
+	state.request_appearances([11]);check(service.next==artwork_ticket,"Absent artwork does not loop on rejected reads")
 	state.set_query("I");state.set_query("IR");state.set_query("IRON")
 	for query in ["I","IR","IRON"]:
 		check(service.calls[state.ticket].intent.query==query,"Queued query preserves input order")
@@ -54,6 +59,11 @@ func run() -> void:
 	state.open(7);ready(service,state);state.set_query("bad");value=snapshot(45);value.groups[0].item_ids=[11,11]
 	service.reply(state.ticket,value)
 	check(state.phase==State.Phase.Rejected,"Duplicate membership rejects")
+	state.open(7);ready(service,state);state.request_items([11]);value=snapshot(45)
+	value.items=[{"id":11,"caption":"Synthetic item","distance":8,"value":20,"tag":2,"prohibited":false}]
+	service.reply(state.ticket,value);state.request_appearances([11]);artwork_ticket=service.next
+	state.close();service.reply(artwork_ticket,{})
+	check(service.detached.has(artwork_ticket) and state.appearances.is_empty() and not state.appearance_pending(),"Closing retires artwork ownership and late callbacks")
 	state.dispose();service.queue_free()
 	if failures==0:print("PASS depot goods state")
 	quit(1 if failures else 0)

@@ -88,6 +88,7 @@
 #include "pending_building_native.h"
 #include "pending_building_duration_native.h"
 #include "building_item_native.h"
+#include "funerary_native.h"
 #include "creature_office_native.h"
 #include "creature_header_native.h"
 #include "creature_quote_native.h"
@@ -3535,6 +3536,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["general_order_limit"]=profile->generalOrderLimit;
           result["order_ids"]=Json::Value(Json::arrayValue);
           for(const auto order:profile->orderIds)result["order_ids"].append(order);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="funerary-body-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          const auto body=df3d_production::funeraryBody(df::building::find(id));
+          if(!body)return CR_FAILURE;
+          Json::Value result;result["building_id"]=body->buildingId;result["unit_id"]=body->unitId;
+          result["historical_figure_id"]=body->historicalFigureId;
+          result["introduction"]=DF2UTF(body->introduction);result["name"]=DF2UTF(body->name);
+          result["zones"]=Json::Value(Json::arrayValue);for(const auto id:body->relevantZones)result["zones"].append(id);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="workshop-workers-probe") {

@@ -161,6 +161,18 @@ local ok,err=xpcall(function()
     assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==target.id,'Funerary capture selected another entity')
     local row=result.completed_buildings[#result.completed_buildings]
     row.funeral={zones={},items={},links={}}
+    if os.getenv('DF3D_FUNERARY_PROVIDER')=='1'then
+     local text,code=dfhack.run_command_silent('df3d','funerary-body-probe',tostring(target.id))
+     assert(code==0,text)
+     local body=json.decode(text)
+     local visible={};for _,line in ipairs(row.lines)do visible[#visible+1]=line.text end
+     visible=table.concat(visible,'\n')
+     assert(body.building_id==target.id and #body.introduction>0 and #body.name>0,'Missing funerary provider body')
+     assert(visible:find(body.introduction,1,true) and visible:find(body.name,1,true),'Owned funerary caption differs from native panel')
+     local again,again_code=dfhack.run_command_silent('df3d','funerary-body-probe',tostring(target.id))
+     assert(again_code==0 and text==again,'Repeated funerary read changed its output')
+     row.funeral.provider=body
+    end
     for _,zone in ipairs(target.relations)do row.funeral.zones[#row.funeral.zones+1]={id=zone.id,type=zone.type,assigned_unit_id=zone.assigned_unit_id}end
     for _,held in ipairs(target.contained_items)do
      local item=held.item

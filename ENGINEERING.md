@@ -9793,6 +9793,20 @@ These are provider entry-point findings, not runtime acceptance. The specialized
 wire/UI body, empty/unassigned/multiple-zone variants and complete input behavior
 remain unfinished; do not admit these types to the plain-furniture provider.
 
+funerary_native.h now exposes the semantic introduction/name and relevant zone
+IDs through the diagnostic funerary-body-probe. It calls native54bb10 including
+its pinned jump tables, and native name formatters using an owned unit context
+or copied language_name. Name formatting preserves random streams; no native
+viewscreen, selection vector or zone owner-index cache is borrowed. The unnamed
+memorial branch uses nativeaa3bd0 for its race/caste caption but remains untested.
+Protected035938 matches both introduction/name pairs against the native panel,
+repeats each provider read with identical output, and retains the shared action
+checks. Coffin resolves unit5577/zone228; slab resolves historical figure9636.
+MSVC bridge and core19 pass. Source saves remain unchanged and owned DF31456
+exits unsaved, native30FPS and sampled GPU49C. provider_reference retains the
+bridge hash and native observations. This staged provider does not yet publish
+a management snapshot or qualify owner-card rendering and input behavior.
+
 Protected native023324 and023607 on2026-11-15 qualify ordinary furniture
 with nonempty zone relations: Chair65, Bed9, Table62 and Statue493 still show no
 membership rows (the statue also belongs to location1). The membership-caption

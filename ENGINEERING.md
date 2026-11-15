@@ -9815,6 +9815,28 @@ were inspected. Native lock, repeated lock and passable clicks yield door flags
 values are restored. DF39032 exits unsaved with source preservation, graphics
 capped30FPS. Evidence: selection_reference.basic_building_reference.
 
+Unfinished-building actions: protected213930 on2026-11-14 independently clicks
+Resume, Suspend and Cancel on unstarted Statue965 while paused at frame0.
+Resume/suspend changes construction job68196 flags2→0→2. Cancel removes both
+the building and that job; material22339 survives with flags2→1, and tile
+occupancy changes134217729→134217728. Owned DF844 exits unsaved with source
+preservation, capped30FPS; sampled GPU59C/28%. The initial213836 diagnostic
+failed after cancellation because jobs have no Lua `find` method; the final
+run checks retirement through the simulation job chain. It is the accepted
+reference. Evidence: selection_reference.pending_construction_reference.
+
+The building-sheet input at1b00db..1b01d7 toggles the first job's suspend bit.
+When suspending, it scans simulation units, skips inactive ones, and calls
+worker-release1325080 for every unit whose current job matches. This is distinct
+from simply setting the flag or relying on the Tasks list's selected worker.
+Cancel at1b01ef..1b023d excludes building type29, calls native587d80 with three
+false arguments at stage0, and calls virtual queueDestroy at nonzero stage.
+These semantic leaves accept simulation objects and need no native menu state.
+Nonzero-stage cancellation and worker-release effects are statically audited
+but not yet qualified through this building sheet; transport and viewer controls
+remain unfinished. Do not promote the existing completed-building header
+transaction to unfinished buildings: its stage and postcondition rules differ.
+
 The audited building-type dispatch maps Door8 to inline1af741..1af807.
 It rejects flags0x2c (invader/intruder/mechanism control), allows forbidding only
 when closed(bit0x10), and treats repeated desired state as a no-op. Actual changes

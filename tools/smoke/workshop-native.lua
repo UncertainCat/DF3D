@@ -280,6 +280,35 @@ local ok,err=xpcall(function()
     end
     result.basic_building_reference.pending.effects=effects
     assert(b.jobs[0].flags.whole==before,'Pending fixture did not restore suspension')
+    if os.getenv('DF3D_PENDING_CANCEL_REFERENCE')=='1'then
+     assert(b:getBuildStage()==0,'Cancellation reference requires an unstarted building')
+     local id=b.id;local job_ids={};local item_ids={}
+     for _,job in ipairs(b.jobs)do
+      job_ids[#job_ids+1]=job.id
+      for _,ref in ipairs(job.items)do if ref.item then item_ids[ref.item.id]=true end end
+     end
+     for _,ref in ipairs(b.contained_items)do item_ids[ref.item.id]=true end
+     local function materials()
+      local rows={}
+      for item_id in pairs(item_ids)do local item=df.item.find(item_id)
+       rows[#rows+1]={id=item_id,exists=item~=nil,flags=item and item.flags.whole or 0}
+      end
+      table.sort(rows,function(a,c)return a.id<c.id end);return rows
+     end
+     local pos={x=b.centerx,y=b.centery,z=b.z}
+     local function occupancy()return dfhack.maps.getTileBlock(pos).occupancy[pos.x%16][pos.y%16].whole end
+     local cancelled={id=id,job_ids=job_ids,materials_before=materials(),occupancy_before=occupancy(),frame=df.global.world.frame_counter}
+     assert(click_label('Cancel construction'),'Native Cancel construction control missing')
+     cancelled.building_exists=df.building.find(id)~=nil;cancelled.jobs_remaining={}
+     local link=df.global.world.jobs.list.next
+     while link do
+      for _,job_id in ipairs(job_ids)do if link.item.id==job_id then cancelled.jobs_remaining[#cancelled.jobs_remaining+1]=job_id end end
+      link=link.next
+     end
+     cancelled.materials_after=materials();cancelled.occupancy_after=occupancy()
+     assert(not cancelled.building_exists and #cancelled.jobs_remaining==0,'Native cancel retained unstarted building/jobs')
+     result.basic_building_reference.pending.cancellation=cancelled;shot('basic-building-pending-cancel')
+    end
    end
   end end
   shot('basic-building-final')

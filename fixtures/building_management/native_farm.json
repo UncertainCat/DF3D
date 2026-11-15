@@ -12809,6 +12809,144 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "pending_construction_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-213930",
+      "owned_df_pid": 844,
+      "source_save_preserved": true,
+      "closed_unsaved": true,
+      "scope": "Native building-sheet pointer actions on paused unstarted Statue965: resume, suspend, cancel; job retirement, material flags and tile occupancy read back. No viewer acceptance, worker release or nonzero-stage cancellation gameplay claim.",
+      "native_suspend_inline": "1b00db..1b01d7",
+      "native_cancel_inline": "1b01ef..1b023d",
+      "suspend_hash": "0c880dc02930d496",
+      "cancel_hash": "b616d79c06ae2817",
+      "observation": {
+        "cancellation": {
+          "building_exists": false,
+          "frame": 0,
+          "id": 965,
+          "job_ids": [
+            68196
+          ],
+          "jobs_remaining": [],
+          "materials_after": [
+            {
+              "exists": true,
+              "flags": 1,
+              "id": 22339
+            }
+          ],
+          "materials_before": [
+            {
+              "exists": true,
+              "flags": 2,
+              "id": 22339
+            }
+          ],
+          "occupancy_after": 134217728,
+          "occupancy_before": 134217729
+        },
+        "effects": [
+          {
+            "action": "Resume construction",
+            "flags": 0,
+            "lines": [
+              {
+                "text": "                                                            Platinum Statue",
+                "y": 6
+              },
+              {
+                "text": "                                                      Construction nearly done.",
+                "y": 11
+              },
+              {
+                "text": "                                                      Construction inactive.",
+                "y": 13
+              },
+              {
+                "text": "                                                        Suspend construction                                                        Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "                                                        Cancel construction",
+                "y": 19
+              }
+            ]
+          },
+          {
+            "action": "Suspend construction",
+            "flags": 2,
+            "lines": [
+              {
+                "text": "                                                            Platinum Statue",
+                "y": 6
+              },
+              {
+                "text": "                                                      Construction nearly done.",
+                "y": 11
+              },
+              {
+                "text": "                                                      Construction suspended.",
+                "y": 13
+              },
+              {
+                "text": "                                                        Resume construction                                                         Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "                                                        Cancel construction",
+                "y": 19
+              }
+            ]
+          }
+        ],
+        "id": 965,
+        "jobs": [
+          {
+            "flags": 2,
+            "id": 68196,
+            "type": "ConstructBuilding"
+          }
+        ],
+        "lines": [
+          {
+            "text": "                                                            Platinum Statue",
+            "y": 6
+          },
+          {
+            "text": "                                                      Construction nearly done.",
+            "y": 11
+          },
+          {
+            "text": "                                                      Construction suspended.",
+            "y": 13
+          },
+          {
+            "text": "                                                        Resume construction                                                         Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "                                                        Cancel construction",
+            "y": 19
+          }
+        ],
+        "max_stage": 1,
+        "stage": 0,
+        "tile": [
+          130,
+          96,
+          165
+        ],
+        "type": "Statue"
+      },
+      "hashes": {
+        "workshop-basic-building-pending-1.png": "a2ed95a12c839f7792e0b299ad10c350737437a5fc601556dd1a468f81788bbe",
+        "workshop-basic-building-pending-2.png": "534d73a81c98a01e25693cb6e9a5efc3bb369a3838f0474594ceafe05945e9e6",
+        "workshop-basic-building-pending-cancel.png": "b0896fa48e4ebdaba6c0396d7ab37b7a41ffaee59227270ae03e27221adb6bbf",
+        "workshop-basic-building-pending.png": "534d73a81c98a01e25693cb6e9a5efc3bb369a3838f0474594ceafe05945e9e6",
+        "workshop-native.json": "99dda99c679ce39c125aa59350eae813f505fa108b9a8d54a3397438c51863b8",
+        "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+      }
+    },
     "door_header_reference": {
       "hover": [
         {

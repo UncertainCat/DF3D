@@ -122,6 +122,7 @@ func open_building_holder(kind: int,id: int) -> void:
 	if kind==4:controller("farm").open_target(id)
 	elif kind==8:controller("door").open_target(id)
 	elif kind==10:controller("chest").open_target(id)
+	elif kind in [0,1,2,15]:controller("furniture").open_target(id)
 	elif kind in [5,13]:
 		# The item receipt supplies native type/ID; resident semantics supply the
 		# subtype artwork. The opened header still obtains fresh action authority.
@@ -214,7 +215,7 @@ func controller(id: String):
 		panel.inspect_requested.connect(func(tile,unit_id):
 			if host.allows_panel_input(panel) and controller("inspector").open_target(tile,1,unit_id,true):focus_tile(tile))
 		controllers[id]=panel;return panel
-	if id in ["farm","chest","workshop","door","pending_building"]:
+	if id in ["farm","chest","furniture","workshop","door","pending_building"]:
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		ensure_follow()
 		panel.holder_requested.connect(open_building_holder)

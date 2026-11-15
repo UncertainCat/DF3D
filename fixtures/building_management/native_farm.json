@@ -13196,7 +13196,7 @@
             },
             {
               "y": 43,
-              "text": "       (+Â«-kumquat wood chest-Â»+)"
+              "text": "       (+\u00c2\u00ab-kumquat wood chest-\u00c2\u00bb+)"
             },
             {
               "y": 46,
@@ -13492,7 +13492,7 @@
             },
             {
               "y": 61,
-              "text": "VabÃ´k Copperlauded's dead body."
+              "text": "Vab\u00c3\u00b4k Copperlauded's dead body."
             }
           ],
           "image_sha256": "e33ff050cf675289b9f1a2bc140d9272faf14be17f411f200435911974027e7b"
@@ -13860,7 +13860,7 @@
             },
             {
               "y": 43,
-              "text": "       Â«â‰¡bitter orange wood traction..."
+              "text": "       \u00c2\u00ab\u00e2\u2030\u00a1bitter orange wood traction..."
             }
           ],
           "image_sha256": "76a3972e2067c9c837bdb9897e18f6aeebdc80bd735b890c1e857fd1a53676ff"
@@ -13912,11 +13912,11 @@
           "panel_text": [
             {
               "y": 6,
-              "text": "       (copper rÃ­t)"
+              "text": "       (copper r\u00c3\u00adt)"
             },
             {
               "y": 43,
-              "text": "       (copper rÃ­t)"
+              "text": "       (copper r\u00c3\u00adt)"
             }
           ],
           "image_sha256": "64acd7c549194aac735a04ca710f5be491e74888d7b76f0d362206727a9772c6"
@@ -13974,6 +13974,1506 @@
         "workshop-native.json": "0b614d0f6142473020869ef5bfa631f97b6355f3b081d0640f9669e9cd136c0c",
         "result.json": "6485e807c2c19539b5c686040279fa76c093a1485da517382fbf48af8e6b7916",
         "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+      },
+      "ordinary_furniture_actions_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-023607",
+        "scope": "Native pointer rename/restore, component forbid/restore, remove/cancel for four completed furniture types with populated zone relations. Native-only; viewer and component edits during removal remain unqualified.",
+        "source_preserved": true,
+        "buildings": [
+          {
+            "id": 65,
+            "type": 0,
+            "type_name": "Chair",
+            "relations": [
+              {
+                "id": 76,
+                "location_id": -1,
+                "name": "",
+                "type": 80
+              }
+            ],
+            "actions": [
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 2193,
+                "jobs": [],
+                "label": "initial",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 2193,
+                "jobs": [],
+                "label": "renamed",
+                "name": "Furniture reference"
+              },
+              {
+                "forbidden": true,
+                "item_flags": 524320,
+                "item_id": 2193,
+                "jobs": [],
+                "label": "forbidden",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 2193,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "label": "removing",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 2193,
+                "jobs": [],
+                "label": "restored",
+                "name": ""
+              }
+            ],
+            "screenshots": {
+              "workshop-furniture-0-forbidden.png": "82d1cc027b6223615b8fc6f8e1150cc3113e2e9fc3e7f56166259390ab6bd160",
+              "workshop-furniture-0-initial.png": "41f1af0a100f2d62b54a08160da7d875de0091bda7407662dad8a8936a509b22",
+              "workshop-furniture-0-removing.png": "84e220ea5861666453674474319eb26cbd6768160698bec0efc2bd098d443632",
+              "workshop-furniture-0-renamed.png": "03b29681a630cc8d1306039427a105384a987d826f056cff8b97293d633a9382",
+              "workshop-furniture-0-restored.png": "41f1af0a100f2d62b54a08160da7d875de0091bda7407662dad8a8936a509b22"
+            }
+          },
+          {
+            "id": 9,
+            "type": 1,
+            "type_name": "Bed",
+            "relations": [
+              {
+                "id": 23,
+                "location_id": -1,
+                "name": "",
+                "type": 92
+              }
+            ],
+            "actions": [
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 1146,
+                "jobs": [],
+                "label": "initial",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 1146,
+                "jobs": [],
+                "label": "renamed",
+                "name": "Furniture reference"
+              },
+              {
+                "forbidden": true,
+                "item_flags": 524320,
+                "item_id": 1146,
+                "jobs": [],
+                "label": "forbidden",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 1146,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382797,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "label": "removing",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 1146,
+                "jobs": [],
+                "label": "restored",
+                "name": ""
+              }
+            ],
+            "screenshots": {
+              "workshop-furniture-1-forbidden.png": "880053b44b355c2b459ac669da481c920de7847c0d1f5116107b94f53b10400c",
+              "workshop-furniture-1-initial.png": "7656daf5b0fe5fa37512bb903700f96ec865bb25438bce5eb46632f0e4ea7989",
+              "workshop-furniture-1-removing.png": "a66ada621943ec3d82ffc571d7e75aa6516af7c814af9925c3684b7154d16e69",
+              "workshop-furniture-1-renamed.png": "81276e25440e1bcf16b53d473ede0a5c26d6664f2ca247c300fb59c6ad4d5e40",
+              "workshop-furniture-1-restored.png": "9fd9918f4b5e99c24b708df9455a4dc4bbe383297ec7eabf663155c642e0c6d9"
+            }
+          },
+          {
+            "id": 62,
+            "type": 2,
+            "type_name": "Table",
+            "relations": [
+              {
+                "id": 76,
+                "location_id": -1,
+                "name": "",
+                "type": 80
+              }
+            ],
+            "actions": [
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 2168,
+                "jobs": [],
+                "label": "initial",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 2168,
+                "jobs": [],
+                "label": "renamed",
+                "name": "Furniture reference"
+              },
+              {
+                "forbidden": true,
+                "item_flags": 524320,
+                "item_id": 2168,
+                "jobs": [],
+                "label": "forbidden",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 2168,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382798,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "label": "removing",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 2168,
+                "jobs": [],
+                "label": "restored",
+                "name": ""
+              }
+            ],
+            "screenshots": {
+              "workshop-furniture-2-forbidden.png": "819df4926a07938420658994a1649c0918e807df3df74d6a400af6ecc60b560c",
+              "workshop-furniture-2-initial.png": "b36f13f49d5bbc885442d0e330a01b9b421d982e451f229ad2183b8c49b5efa4",
+              "workshop-furniture-2-removing.png": "ec03b5d65595e9ea8973e92134e58a3fd85568bdd32e7276b315faaed92a27ca",
+              "workshop-furniture-2-renamed.png": "32c6a3452965c279c90c10fb2e0e902ee058c34ac30fcbadbe0cb8c1830b54c3",
+              "workshop-furniture-2-restored.png": "b36f13f49d5bbc885442d0e330a01b9b421d982e451f229ad2183b8c49b5efa4"
+            }
+          },
+          {
+            "id": 493,
+            "type": 15,
+            "type_name": "Statue",
+            "relations": [
+              {
+                "id": 408,
+                "location_id": 1,
+                "name": "",
+                "type": 80
+              }
+            ],
+            "actions": [
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 16961,
+                "jobs": [],
+                "label": "initial",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 16961,
+                "jobs": [],
+                "label": "renamed",
+                "name": "Furniture reference"
+              },
+              {
+                "forbidden": true,
+                "item_flags": 524320,
+                "item_id": 16961,
+                "jobs": [],
+                "label": "forbidden",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 16961,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382799,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "label": "removing",
+                "name": ""
+              },
+              {
+                "forbidden": false,
+                "item_flags": 32,
+                "item_id": 16961,
+                "jobs": [],
+                "label": "restored",
+                "name": ""
+              }
+            ],
+            "screenshots": {
+              "workshop-furniture-15-forbidden.png": "bb805f742ac81d264de8dae9cc49b7ef6ee48a28f90b6034f15735e7f60efbd3",
+              "workshop-furniture-15-initial.png": "b8e3d6dd07c0a9b051c7aaf367c6c904c2bfb42a25cfba51df4b399dcf7c9c70",
+              "workshop-furniture-15-removing.png": "c1644662a017eae2d943bb77a3eb3fa24615e508f486121a323fd28f69c360b0",
+              "workshop-furniture-15-renamed.png": "8c8ed0f070b9927c9b3a69cdc008cac63019a6bc681e6d6773c9c4d45db7bb3f",
+              "workshop-furniture-15-restored.png": "912d9df16a47261576c7eaa9556fedeb50094fab8eb51e3831f118db7618ac4a"
+            }
+          }
+        ],
+        "viewer_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-030100",
+          "status": "passed_with_known_issues",
+          "scope": "Main-scene Chair, Bed, Table and Statue header/contents: rename/restore, Forbid/restore, Remove/Cancel, component View and holder return, Escape. Native post-check matches names, jobs and all component flags. No acceptance for component edits during removal, map entry, resize or worker-owned demolition.",
+          "panel_comparisons": [
+            {
+              "id": 65,
+              "state": "initial",
+              "viewer_sha256": "19ab9a3490cb590d2ef97d658f563c8a299f40e804c01b4b83d28a84569f25fd",
+              "native_sha256": "1c00bacc4be54858d56788104527500080fc74a9a57397e091d6d1e975da4d7d",
+              "different_pixels": 0
+            },
+            {
+              "id": 65,
+              "state": "renamed",
+              "viewer_sha256": "7eb967bcf386e1c39a54e8ddd5a2dac512cd82b6c9221586e26e72b47c23f1d4",
+              "native_sha256": "03b29681a630cc8d1306039427a105384a987d826f056cff8b97293d633a9382",
+              "different_pixels": 0
+            },
+            {
+              "id": 65,
+              "state": "forbidden",
+              "viewer_sha256": "e5147d225a082341931bcdc406f1fbbbd945648814ca4387b70ca1336cabfeac",
+              "native_sha256": "82d1cc027b6223615b8fc6f8e1150cc3113e2e9fc3e7f56166259390ab6bd160",
+              "different_pixels": 0
+            },
+            {
+              "id": 65,
+              "state": "removing",
+              "viewer_sha256": "88dc845a5867c389c7a80e6c646c1bc822a58a907a105571805bef99d7d36dc8",
+              "native_sha256": "84e220ea5861666453674474319eb26cbd6768160698bec0efc2bd098d443632",
+              "different_pixels": 0
+            },
+            {
+              "id": 65,
+              "state": "restored",
+              "viewer_sha256": "19ab9a3490cb590d2ef97d658f563c8a299f40e804c01b4b83d28a84569f25fd",
+              "native_sha256": "41f1af0a100f2d62b54a08160da7d875de0091bda7407662dad8a8936a509b22",
+              "different_pixels": 0
+            },
+            {
+              "id": 65,
+              "state": "holder-return",
+              "viewer_sha256": "19ab9a3490cb590d2ef97d658f563c8a299f40e804c01b4b83d28a84569f25fd",
+              "native_sha256": "41f1af0a100f2d62b54a08160da7d875de0091bda7407662dad8a8936a509b22",
+              "different_pixels": 0
+            },
+            {
+              "id": 9,
+              "state": "initial",
+              "viewer_sha256": "4588b41d5121714fe0b723436bc2d62b4cdad2ac19566f40cb491203e4e0e3c0",
+              "native_sha256": "f0dc952b66ec24a2d2b1b0b58ef31be228bcf4b5c4d29ab98040eb2abd2393a0",
+              "different_pixels": 0
+            },
+            {
+              "id": 9,
+              "state": "renamed",
+              "viewer_sha256": "7b3181b55ba7269940434ca3779f968e51b28b94474052c82dcccea10e225246",
+              "native_sha256": "5f149a158276b2874f7bd46e9a34302cfaeedb5ad80e6261e9a8054a2618434a",
+              "different_pixels": 0
+            },
+            {
+              "id": 9,
+              "state": "forbidden",
+              "viewer_sha256": "a4d54586a6b16903c293f02cf742184a4d030d7e8d758ededeaf56e1a34dc805",
+              "native_sha256": "defdf75cc7cf11f27248631e619b082a3018397c02cbba54b554fdc3928e158f",
+              "different_pixels": 0
+            },
+            {
+              "id": 9,
+              "state": "removing",
+              "viewer_sha256": "62b8b6c4e03b05d02ec637d811ba0ce17f0e14fff6dbc8d405d96c0a408235d4",
+              "native_sha256": "07c0e5f066f547e08b55f46b515aa70656271e643307b4e95d9ea39dd325e044",
+              "different_pixels": 0
+            },
+            {
+              "id": 9,
+              "state": "restored",
+              "viewer_sha256": "4588b41d5121714fe0b723436bc2d62b4cdad2ac19566f40cb491203e4e0e3c0",
+              "native_sha256": "7656daf5b0fe5fa37512bb903700f96ec865bb25438bce5eb46632f0e4ea7989",
+              "different_pixels": 0
+            },
+            {
+              "id": 9,
+              "state": "holder-return",
+              "viewer_sha256": "4588b41d5121714fe0b723436bc2d62b4cdad2ac19566f40cb491203e4e0e3c0",
+              "native_sha256": "7656daf5b0fe5fa37512bb903700f96ec865bb25438bce5eb46632f0e4ea7989",
+              "different_pixels": 0
+            },
+            {
+              "id": 62,
+              "state": "initial",
+              "viewer_sha256": "5f5fca3d6cdac76b73456794e0231e43c4b7dd220d4060d1b88948c9b2322c3e",
+              "native_sha256": "a78d81fb4a5903146f87d584cb18b1aad1cd176617364abad9dbeb169b318728",
+              "different_pixels": 0
+            },
+            {
+              "id": 62,
+              "state": "renamed",
+              "viewer_sha256": "a6597ad1d54effe9784b076e28a7eb1475b4bf20822e100a655f2a1e575f7a0e",
+              "native_sha256": "9f71ea3bcde39e1e903da30e08d9ca1ddd55d67ffe922bdd820f796a6276b1c5",
+              "different_pixels": 0
+            },
+            {
+              "id": 62,
+              "state": "forbidden",
+              "viewer_sha256": "8df45bb7439bf5a8ff6e2d48eb7c6f8ac9d041fd74764bda09f5025b1ce8bf12",
+              "native_sha256": "89e08bb0d8c77e64c48e277de2fd31e0d9fe949aa177987845cd4eb2210aee16",
+              "different_pixels": 0
+            },
+            {
+              "id": 62,
+              "state": "removing",
+              "viewer_sha256": "fadb33a5fa4e0e371875d38175e96f0ba969cbd88a343177dc71a234406ab102",
+              "native_sha256": "f39b958364ae86335e8c380f6682d69c0871aee0e2a965543663b6b9a533f6b6",
+              "different_pixels": 0
+            },
+            {
+              "id": 62,
+              "state": "restored",
+              "viewer_sha256": "5f5fca3d6cdac76b73456794e0231e43c4b7dd220d4060d1b88948c9b2322c3e",
+              "native_sha256": "a78d81fb4a5903146f87d584cb18b1aad1cd176617364abad9dbeb169b318728",
+              "different_pixels": 0
+            },
+            {
+              "id": 62,
+              "state": "holder-return",
+              "viewer_sha256": "5f5fca3d6cdac76b73456794e0231e43c4b7dd220d4060d1b88948c9b2322c3e",
+              "native_sha256": "a78d81fb4a5903146f87d584cb18b1aad1cd176617364abad9dbeb169b318728",
+              "different_pixels": 0
+            },
+            {
+              "id": 493,
+              "state": "initial",
+              "viewer_sha256": "d4ab40efeb41ac8bc3446333a34e9c26b1ebb43d2160667e3b60fe63f3996239",
+              "native_sha256": "7e05dbf0443e695ece8581e74cadd3a763e2080a1f23dd667721db93db733e10",
+              "different_pixels": 0
+            },
+            {
+              "id": 493,
+              "state": "renamed",
+              "viewer_sha256": "f61b14c05fcccf535475b07511e86db2ee0091690475ca09cd311fb7a90e5ba1",
+              "native_sha256": "54024c9cef1468391bfa13c9e7fca0464557ef6bb230ca64e345a4701305570e",
+              "different_pixels": 0
+            },
+            {
+              "id": 493,
+              "state": "forbidden",
+              "viewer_sha256": "0ab4c95ed5c576ecc3a0cf37499062b68c4fe0ea91458fc668580a99979792a6",
+              "native_sha256": "7048a9b097a516c6b19315d578540499a337fb06def42deb7bdcb88f36813710",
+              "different_pixels": 0
+            },
+            {
+              "id": 493,
+              "state": "removing",
+              "viewer_sha256": "e9838a7e7587d71cce4a6fc65ee85e2c926f499ff6fa296110778a6ac2390a3e",
+              "native_sha256": "bd6541acb852b7437a2e61be1fc4be17a914f77bd7725cc1601616167f415055",
+              "different_pixels": 0
+            },
+            {
+              "id": 493,
+              "state": "restored",
+              "viewer_sha256": "d4ab40efeb41ac8bc3446333a34e9c26b1ebb43d2160667e3b60fe63f3996239",
+              "native_sha256": "7e05dbf0443e695ece8581e74cadd3a763e2080a1f23dd667721db93db733e10",
+              "different_pixels": 0
+            },
+            {
+              "id": 493,
+              "state": "holder-return",
+              "viewer_sha256": "d4ab40efeb41ac8bc3446333a34e9c26b1ebb43d2160667e3b60fe63f3996239",
+              "native_sha256": "7e05dbf0443e695ece8581e74cadd3a763e2080a1f23dd667721db93db733e10",
+              "different_pixels": 0
+            }
+          ],
+          "native_post": [
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 65
+            },
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 9
+            },
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 62
+            },
+            {
+              "actual_flags": 536870944,
+              "expected_flags": 536870944,
+              "id": 493
+            }
+          ],
+          "native_view_effect": [
+            {
+              "id": 65,
+              "before": 32,
+              "after_native_view": 536870944
+            },
+            {
+              "id": 9,
+              "before": 32,
+              "after_native_view": 536870944
+            },
+            {
+              "id": 62,
+              "before": 32,
+              "after_native_view": 536870944
+            },
+            {
+              "id": 493,
+              "before": 32,
+              "after_native_view": 536870944
+            }
+          ],
+          "source_preserved": true,
+          "owned_df_closed": 40540
+        },
+        "shared_header_regression": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-030227",
+          "status": "passed_with_known_issues",
+          "scope": "Existing unfinished-building main-scene headers and full panels after sharing header artwork/forbidden rendering; trigger facts and Escape cleanup.",
+          "source_preserved": true,
+          "owned_df_closed": 38996,
+          "screenshots": {
+            "pending-art-full-13.png": "1ee3f86751c01b487e2216eacb9ced7c31f4213e537c07a7d0016f1c9886b312",
+            "pending-art-full-15.png": "956be4d76af87d300ee05b8e16cbb397d1dae321a27fc30f240d259599943350",
+            "pending-art-full-23.png": "df16f5ea2489588bf86057c30bfdd3916cff0f8bda92bea92df8037ec49130f8",
+            "pending-art-full-5.png": "af29473dd907de3ed29644d200099e89cf2e1dc7996053e4ab2a8e4f08cc6eed",
+            "pending-art-full-8.png": "7e58e86d9c6de603bd8bc3e5338d65072c5d9ea070ab2f16b9c91bc91bf67517"
+          }
+        },
+        "removal_controls_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-030728",
+          "scope": "Native pointer Forbid/Dump/Melt/Hide twice while DestroyBuilding remains queued for Chair/Bed/Table/Statue. Forbid/Dump/Hide toggle; Melt stays inactive. All flags restored and demolition job identity preserved. Native-only until viewer qualification.",
+          "source_preserved": true,
+          "buildings": [
+            {
+              "id": 65,
+              "type": 0,
+              "actions": [
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 2193,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382796,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing",
+                  "name": ""
+                },
+                {
+                  "forbidden": true,
+                  "item_flags": 524320,
+                  "item_id": 2193,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382796,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-forbid-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 2193,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382796,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-forbid-2",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 2097184,
+                  "item_id": 2193,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382796,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-dump-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 2193,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382796,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-dump-2",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 2193,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382796,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-melt-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 2193,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382796,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-melt-2",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 16777248,
+                  "item_id": 2193,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382796,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-hidden-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 2193,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382796,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-hidden-2",
+                  "name": ""
+                }
+              ]
+            },
+            {
+              "id": 9,
+              "type": 1,
+              "actions": [
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 1146,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382797,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing",
+                  "name": ""
+                },
+                {
+                  "forbidden": true,
+                  "item_flags": 524320,
+                  "item_id": 1146,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382797,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-forbid-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 1146,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382797,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-forbid-2",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 2097184,
+                  "item_id": 1146,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382797,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-dump-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 1146,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382797,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-dump-2",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 1146,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382797,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-melt-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 1146,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382797,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-melt-2",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 16777248,
+                  "item_id": 1146,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382797,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-hidden-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 1146,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382797,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-hidden-2",
+                  "name": ""
+                }
+              ]
+            },
+            {
+              "id": 62,
+              "type": 2,
+              "actions": [
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 2168,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382798,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing",
+                  "name": ""
+                },
+                {
+                  "forbidden": true,
+                  "item_flags": 524320,
+                  "item_id": 2168,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382798,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-forbid-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 2168,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382798,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-forbid-2",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 2097184,
+                  "item_id": 2168,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382798,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-dump-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 2168,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382798,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-dump-2",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 2168,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382798,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-melt-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 2168,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382798,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-melt-2",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 16777248,
+                  "item_id": 2168,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382798,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-hidden-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 2168,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382798,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-hidden-2",
+                  "name": ""
+                }
+              ]
+            },
+            {
+              "id": 493,
+              "type": 15,
+              "actions": [
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 16961,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382799,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing",
+                  "name": ""
+                },
+                {
+                  "forbidden": true,
+                  "item_flags": 524320,
+                  "item_id": 16961,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382799,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-forbid-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 16961,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382799,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-forbid-2",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 2097184,
+                  "item_id": 16961,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382799,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-dump-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 16961,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382799,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-dump-2",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 16961,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382799,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-melt-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 16961,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382799,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-melt-2",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 16777248,
+                  "item_id": 16961,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382799,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-hidden-1",
+                  "name": ""
+                },
+                {
+                  "forbidden": false,
+                  "item_flags": 32,
+                  "item_id": 16961,
+                  "jobs": [
+                    {
+                      "flags": 0,
+                      "id": 382799,
+                      "type": "DestroyBuilding"
+                    }
+                  ],
+                  "label": "removing-hidden-2",
+                  "name": ""
+                }
+              ]
+            }
+          ],
+          "viewer_reference": {
+            "lane": "build/stockpile-storage-native-farm-discovery-20261115-031326",
+            "status": "passed_with_known_issues",
+            "scope": "All four furniture families: initial/rename/Forbid/removal/Cancel, eight queued-demolition component flag clicks (Melt inactive), item View/holder return, Escape. Bed also resized through960x600/1200x720/1600x900/1200x800. Native names/jobs/all component flags restored. Map entry and worker-owned demolition not covered.",
+            "comparisons": [
+              {
+                "viewer": "chest-scene-65-initial.png",
+                "viewer_sha256": "19ab9a3490cb590d2ef97d658f563c8a299f40e804c01b4b83d28a84569f25fd",
+                "native": "workshop-furniture-0-initial.png",
+                "native_sha256": "41f1af0a100f2d62b54a08160da7d875de0091bda7407662dad8a8936a509b22",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-65-renamed.png",
+                "viewer_sha256": "7eb967bcf386e1c39a54e8ddd5a2dac512cd82b6c9221586e26e72b47c23f1d4",
+                "native": "workshop-furniture-0-renamed.png",
+                "native_sha256": "03b29681a630cc8d1306039427a105384a987d826f056cff8b97293d633a9382",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-65-forbidden.png",
+                "viewer_sha256": "e5147d225a082341931bcdc406f1fbbbd945648814ca4387b70ca1336cabfeac",
+                "native": "workshop-furniture-0-forbidden.png",
+                "native_sha256": "82d1cc027b6223615b8fc6f8e1150cc3113e2e9fc3e7f56166259390ab6bd160",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-65-removing.png",
+                "viewer_sha256": "88dc845a5867c389c7a80e6c646c1bc822a58a907a105571805bef99d7d36dc8",
+                "native": "workshop-furniture-0-removing.png",
+                "native_sha256": "84e220ea5861666453674474319eb26cbd6768160698bec0efc2bd098d443632",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-65-restored.png",
+                "viewer_sha256": "19ab9a3490cb590d2ef97d658f563c8a299f40e804c01b4b83d28a84569f25fd",
+                "native": "workshop-furniture-0-restored.png",
+                "native_sha256": "1c00bacc4be54858d56788104527500080fc74a9a57397e091d6d1e975da4d7d",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-65-holder-return.png",
+                "viewer_sha256": "19ab9a3490cb590d2ef97d658f563c8a299f40e804c01b4b83d28a84569f25fd",
+                "native": "workshop-furniture-0-restored.png",
+                "native_sha256": "1c00bacc4be54858d56788104527500080fc74a9a57397e091d6d1e975da4d7d",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-65-removing-forbid-1.png",
+                "viewer_sha256": "92b889c2124684cffa5b56db732d9cead8f850839bc3539871b708211d37492f",
+                "native": "workshop-furniture-0-removing-forbid-1.png",
+                "native_sha256": "c38629528cef0f7b451061b619443d8b2235e3e2beeaa27c41e8c24e6fe2c6dd",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-65-removing-forbid-2.png",
+                "viewer_sha256": "88dc845a5867c389c7a80e6c646c1bc822a58a907a105571805bef99d7d36dc8",
+                "native": "workshop-furniture-0-removing-forbid-2.png",
+                "native_sha256": "84e220ea5861666453674474319eb26cbd6768160698bec0efc2bd098d443632",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-65-removing-dump-1.png",
+                "viewer_sha256": "917b0d4150ffa0974fa81e78e7715c762bf2bed3605a2bbb76deae0cf79c2df0",
+                "native": "workshop-furniture-0-removing-dump-1.png",
+                "native_sha256": "237c85a2889ff199926ce206acabb5a907d0c3c209379456ff5809b37cfbdc15",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-65-removing-dump-2.png",
+                "viewer_sha256": "88dc845a5867c389c7a80e6c646c1bc822a58a907a105571805bef99d7d36dc8",
+                "native": "workshop-furniture-0-removing-dump-2.png",
+                "native_sha256": "84e220ea5861666453674474319eb26cbd6768160698bec0efc2bd098d443632",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-65-removing-melt-1.png",
+                "viewer_sha256": "88dc845a5867c389c7a80e6c646c1bc822a58a907a105571805bef99d7d36dc8",
+                "native": "workshop-furniture-0-removing-melt-1.png",
+                "native_sha256": "84e220ea5861666453674474319eb26cbd6768160698bec0efc2bd098d443632",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-65-removing-melt-2.png",
+                "viewer_sha256": "88dc845a5867c389c7a80e6c646c1bc822a58a907a105571805bef99d7d36dc8",
+                "native": "workshop-furniture-0-removing-melt-2.png",
+                "native_sha256": "c9719de0439d2e035585774c70646ae456a7c00df8e77a149b26543df6b81d69",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-65-removing-hidden-1.png",
+                "viewer_sha256": "8db9bdee66fb212ed962008b3f3655b9a364194d857a774a964d7311806bcb34",
+                "native": "workshop-furniture-0-removing-hidden-1.png",
+                "native_sha256": "bd56931c02ca4a7b7dc5360e578f2dbff523956e25f1688c4f3c2635ff01e758",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-65-removing-hidden-2.png",
+                "viewer_sha256": "88dc845a5867c389c7a80e6c646c1bc822a58a907a105571805bef99d7d36dc8",
+                "native": "workshop-furniture-0-removing-hidden-2.png",
+                "native_sha256": "c9719de0439d2e035585774c70646ae456a7c00df8e77a149b26543df6b81d69",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-initial.png",
+                "viewer_sha256": "4588b41d5121714fe0b723436bc2d62b4cdad2ac19566f40cb491203e4e0e3c0",
+                "native": "workshop-furniture-1-initial.png",
+                "native_sha256": "9fd9918f4b5e99c24b708df9455a4dc4bbe383297ec7eabf663155c642e0c6d9",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-renamed.png",
+                "viewer_sha256": "7b3181b55ba7269940434ca3779f968e51b28b94474052c82dcccea10e225246",
+                "native": "workshop-furniture-1-renamed.png",
+                "native_sha256": "a09db66ec64f41cbea1374795c79cc7d672c00847d625fc9a7769de82ee23258",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-forbidden.png",
+                "viewer_sha256": "a4d54586a6b16903c293f02cf742184a4d030d7e8d758ededeaf56e1a34dc805",
+                "native": "workshop-furniture-1-forbidden.png",
+                "native_sha256": "45d1eeb8912a1e3d34bceb3ddc7e5585cd4f1fe45009ab1901be9405860af37d",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-removing.png",
+                "viewer_sha256": "62b8b6c4e03b05d02ec637d811ba0ce17f0e14fff6dbc8d405d96c0a408235d4",
+                "native": "workshop-furniture-1-removing.png",
+                "native_sha256": "5f17d7dfe6f7786054d3a314e870c9bd6b0ad85a8b5811e6fccd3949878adfcd",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-restored.png",
+                "viewer_sha256": "4588b41d5121714fe0b723436bc2d62b4cdad2ac19566f40cb491203e4e0e3c0",
+                "native": "workshop-furniture-1-restored.png",
+                "native_sha256": "f0dc952b66ec24a2d2b1b0b58ef31be228bcf4b5c4d29ab98040eb2abd2393a0",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-holder-return.png",
+                "viewer_sha256": "4588b41d5121714fe0b723436bc2d62b4cdad2ac19566f40cb491203e4e0e3c0",
+                "native": "workshop-furniture-1-restored.png",
+                "native_sha256": "f0dc952b66ec24a2d2b1b0b58ef31be228bcf4b5c4d29ab98040eb2abd2393a0",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-removing-forbid-1.png",
+                "viewer_sha256": "4637b7ca5a6a3df366efa0041ba60a73d9573e6b71f149523ffcb30bb23f8f13",
+                "native": "workshop-furniture-1-removing-forbid-1.png",
+                "native_sha256": "a9e2f0c516c2d97c325f8a1f05e334a7094dfe6eadf4b85fb5756009c8969525",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-removing-forbid-2.png",
+                "viewer_sha256": "62b8b6c4e03b05d02ec637d811ba0ce17f0e14fff6dbc8d405d96c0a408235d4",
+                "native": "workshop-furniture-1-removing-forbid-2.png",
+                "native_sha256": "2d77f4250a8e02288ad830549ea3d59b47fe52712c88e8ab4743ff709a224bbf",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-removing-dump-1.png",
+                "viewer_sha256": "25541248579070a005d6c4880c03ae24ce8fa0d017e1dfde9e1405b30b6d2b27",
+                "native": "workshop-furniture-1-removing-dump-1.png",
+                "native_sha256": "8a4b4851f81c54d99347da21ea73e18b52f77127dbedf57b55a57a608bfa9087",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-removing-dump-2.png",
+                "viewer_sha256": "62b8b6c4e03b05d02ec637d811ba0ce17f0e14fff6dbc8d405d96c0a408235d4",
+                "native": "workshop-furniture-1-removing-dump-2.png",
+                "native_sha256": "2d77f4250a8e02288ad830549ea3d59b47fe52712c88e8ab4743ff709a224bbf",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-removing-melt-1.png",
+                "viewer_sha256": "62b8b6c4e03b05d02ec637d811ba0ce17f0e14fff6dbc8d405d96c0a408235d4",
+                "native": "workshop-furniture-1-removing-melt-1.png",
+                "native_sha256": "2d77f4250a8e02288ad830549ea3d59b47fe52712c88e8ab4743ff709a224bbf",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-removing-melt-2.png",
+                "viewer_sha256": "62b8b6c4e03b05d02ec637d811ba0ce17f0e14fff6dbc8d405d96c0a408235d4",
+                "native": "workshop-furniture-1-removing-melt-2.png",
+                "native_sha256": "2d77f4250a8e02288ad830549ea3d59b47fe52712c88e8ab4743ff709a224bbf",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-removing-hidden-1.png",
+                "viewer_sha256": "c161b91f8cc2f812ffec82b8fe030fa6d4536c27e982f94ebddda3a479d737d2",
+                "native": "workshop-furniture-1-removing-hidden-1.png",
+                "native_sha256": "af4daf6c8f077bf8b2343c1d56b8cbe22cab0965170c51ffcc757916023de5fc",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-9-removing-hidden-2.png",
+                "viewer_sha256": "62b8b6c4e03b05d02ec637d811ba0ce17f0e14fff6dbc8d405d96c0a408235d4",
+                "native": "workshop-furniture-1-removing-hidden-2.png",
+                "native_sha256": "2d77f4250a8e02288ad830549ea3d59b47fe52712c88e8ab4743ff709a224bbf",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-initial.png",
+                "viewer_sha256": "5f5fca3d6cdac76b73456794e0231e43c4b7dd220d4060d1b88948c9b2322c3e",
+                "native": "workshop-furniture-2-initial.png",
+                "native_sha256": "a78d81fb4a5903146f87d584cb18b1aad1cd176617364abad9dbeb169b318728",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-renamed.png",
+                "viewer_sha256": "a6597ad1d54effe9784b076e28a7eb1475b4bf20822e100a655f2a1e575f7a0e",
+                "native": "workshop-furniture-2-renamed.png",
+                "native_sha256": "9f71ea3bcde39e1e903da30e08d9ca1ddd55d67ffe922bdd820f796a6276b1c5",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-forbidden.png",
+                "viewer_sha256": "8df45bb7439bf5a8ff6e2d48eb7c6f8ac9d041fd74764bda09f5025b1ce8bf12",
+                "native": "workshop-furniture-2-forbidden.png",
+                "native_sha256": "89e08bb0d8c77e64c48e277de2fd31e0d9fe949aa177987845cd4eb2210aee16",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-removing.png",
+                "viewer_sha256": "fadb33a5fa4e0e371875d38175e96f0ba969cbd88a343177dc71a234406ab102",
+                "native": "workshop-furniture-2-removing.png",
+                "native_sha256": "f39b958364ae86335e8c380f6682d69c0871aee0e2a965543663b6b9a533f6b6",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-restored.png",
+                "viewer_sha256": "5f5fca3d6cdac76b73456794e0231e43c4b7dd220d4060d1b88948c9b2322c3e",
+                "native": "workshop-furniture-2-restored.png",
+                "native_sha256": "b36f13f49d5bbc885442d0e330a01b9b421d982e451f229ad2183b8c49b5efa4",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-holder-return.png",
+                "viewer_sha256": "5f5fca3d6cdac76b73456794e0231e43c4b7dd220d4060d1b88948c9b2322c3e",
+                "native": "workshop-furniture-2-restored.png",
+                "native_sha256": "b36f13f49d5bbc885442d0e330a01b9b421d982e451f229ad2183b8c49b5efa4",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-removing-forbid-1.png",
+                "viewer_sha256": "abdb969d52f5813c04e6b7c895754c21d907c4ac28c5b9b1de12128d9e6401be",
+                "native": "workshop-furniture-2-removing-forbid-1.png",
+                "native_sha256": "626a2f888569aeff52c28218e60de8c6db050194d5857cede3bff6f356abbe92",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-removing-forbid-2.png",
+                "viewer_sha256": "fadb33a5fa4e0e371875d38175e96f0ba969cbd88a343177dc71a234406ab102",
+                "native": "workshop-furniture-2-removing-forbid-2.png",
+                "native_sha256": "f39b958364ae86335e8c380f6682d69c0871aee0e2a965543663b6b9a533f6b6",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-removing-dump-1.png",
+                "viewer_sha256": "6ce34ff077b08611e07c4e0a61ae4670176d8db1b2ba2b3521ed2bdd63787f94",
+                "native": "workshop-furniture-2-removing-dump-1.png",
+                "native_sha256": "ae25b26570918c703526458509d1a2a534e981159818d169d2e5bc00c95956fd",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-removing-dump-2.png",
+                "viewer_sha256": "fadb33a5fa4e0e371875d38175e96f0ba969cbd88a343177dc71a234406ab102",
+                "native": "workshop-furniture-2-removing-dump-2.png",
+                "native_sha256": "ec03b5d65595e9ea8973e92134e58a3fd85568bdd32e7276b315faaed92a27ca",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-removing-melt-1.png",
+                "viewer_sha256": "fadb33a5fa4e0e371875d38175e96f0ba969cbd88a343177dc71a234406ab102",
+                "native": "workshop-furniture-2-removing-melt-1.png",
+                "native_sha256": "ec03b5d65595e9ea8973e92134e58a3fd85568bdd32e7276b315faaed92a27ca",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-removing-melt-2.png",
+                "viewer_sha256": "fadb33a5fa4e0e371875d38175e96f0ba969cbd88a343177dc71a234406ab102",
+                "native": "workshop-furniture-2-removing-melt-2.png",
+                "native_sha256": "ec03b5d65595e9ea8973e92134e58a3fd85568bdd32e7276b315faaed92a27ca",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-removing-hidden-1.png",
+                "viewer_sha256": "3ad3cfaa13eafe36a934fe35446ad24285172747b5e917ba89c2419c90992e64",
+                "native": "workshop-furniture-2-removing-hidden-1.png",
+                "native_sha256": "f5d69d5dee135701aafccce95e253a080bea03bad36dfa6aaa0e1a5d04916e07",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-62-removing-hidden-2.png",
+                "viewer_sha256": "fadb33a5fa4e0e371875d38175e96f0ba969cbd88a343177dc71a234406ab102",
+                "native": "workshop-furniture-2-removing-hidden-2.png",
+                "native_sha256": "ec03b5d65595e9ea8973e92134e58a3fd85568bdd32e7276b315faaed92a27ca",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-initial.png",
+                "viewer_sha256": "d4ab40efeb41ac8bc3446333a34e9c26b1ebb43d2160667e3b60fe63f3996239",
+                "native": "workshop-furniture-15-initial.png",
+                "native_sha256": "6a4bcf79ea1991973ec7f91b0040aacdc1d54a164b745a1bad8c00ebcfaa1fc5",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-renamed.png",
+                "viewer_sha256": "f61b14c05fcccf535475b07511e86db2ee0091690475ca09cd311fb7a90e5ba1",
+                "native": "workshop-furniture-15-renamed.png",
+                "native_sha256": "b288934308b92214525b2b2bfe4f857eb9cba88f54ad135337c2fc464ff67471",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-forbidden.png",
+                "viewer_sha256": "0ab4c95ed5c576ecc3a0cf37499062b68c4fe0ea91458fc668580a99979792a6",
+                "native": "workshop-furniture-15-forbidden.png",
+                "native_sha256": "7d226a27ffab288f0482646b35df1290567d2bd69fecb420fd580b39fce67c3a",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-removing.png",
+                "viewer_sha256": "e9838a7e7587d71cce4a6fc65ee85e2c926f499ff6fa296110778a6ac2390a3e",
+                "native": "workshop-furniture-15-removing.png",
+                "native_sha256": "b4d085633b295209f17b437ce6ea8672f9bef15cf7856e86c093b54c3453350e",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-restored.png",
+                "viewer_sha256": "d4ab40efeb41ac8bc3446333a34e9c26b1ebb43d2160667e3b60fe63f3996239",
+                "native": "workshop-furniture-15-restored.png",
+                "native_sha256": "d641b6d8122ef95a17ca4ff0fe9ab88592a39fb0533bd49b00ec6cf755a7788c",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-holder-return.png",
+                "viewer_sha256": "d4ab40efeb41ac8bc3446333a34e9c26b1ebb43d2160667e3b60fe63f3996239",
+                "native": "workshop-furniture-15-restored.png",
+                "native_sha256": "d641b6d8122ef95a17ca4ff0fe9ab88592a39fb0533bd49b00ec6cf755a7788c",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-removing-forbid-1.png",
+                "viewer_sha256": "53e47a8f61c9f6195a3eb0c9cd053ea35af7221979886a47e3f833438b21f4d4",
+                "native": "workshop-furniture-15-removing-forbid-1.png",
+                "native_sha256": "2f07b4d8c8e6c65204a9c0273d4b32f9b19b86e778d47cca8934df2960904f6d",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-removing-forbid-2.png",
+                "viewer_sha256": "e9838a7e7587d71cce4a6fc65ee85e2c926f499ff6fa296110778a6ac2390a3e",
+                "native": "workshop-furniture-15-removing-forbid-2.png",
+                "native_sha256": "b4d085633b295209f17b437ce6ea8672f9bef15cf7856e86c093b54c3453350e",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-removing-dump-1.png",
+                "viewer_sha256": "9126451c04f2aee04f0b962205c8f7af2a065c12f5663e4a01864787b6fc3903",
+                "native": "workshop-furniture-15-removing-dump-1.png",
+                "native_sha256": "b27e5becf07d3df97ea135e2078d88b499650d4ff920ea3011c9af14d56b60ea",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-removing-dump-2.png",
+                "viewer_sha256": "e9838a7e7587d71cce4a6fc65ee85e2c926f499ff6fa296110778a6ac2390a3e",
+                "native": "workshop-furniture-15-removing-dump-2.png",
+                "native_sha256": "b4d085633b295209f17b437ce6ea8672f9bef15cf7856e86c093b54c3453350e",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-removing-melt-1.png",
+                "viewer_sha256": "e9838a7e7587d71cce4a6fc65ee85e2c926f499ff6fa296110778a6ac2390a3e",
+                "native": "workshop-furniture-15-removing-melt-1.png",
+                "native_sha256": "b4d085633b295209f17b437ce6ea8672f9bef15cf7856e86c093b54c3453350e",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-removing-melt-2.png",
+                "viewer_sha256": "e9838a7e7587d71cce4a6fc65ee85e2c926f499ff6fa296110778a6ac2390a3e",
+                "native": "workshop-furniture-15-removing-melt-2.png",
+                "native_sha256": "b4d085633b295209f17b437ce6ea8672f9bef15cf7856e86c093b54c3453350e",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-removing-hidden-1.png",
+                "viewer_sha256": "45a5a933a75428fbe7c1773c93bdd46e70d761f78fce99dc2cc318afb102632b",
+                "native": "workshop-furniture-15-removing-hidden-1.png",
+                "native_sha256": "e11add4178d2417b766d822376ee57b2608aca5b55ee7a10749a8f43fccc6cad",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "chest-scene-493-removing-hidden-2.png",
+                "viewer_sha256": "e9838a7e7587d71cce4a6fc65ee85e2c926f499ff6fa296110778a6ac2390a3e",
+                "native": "workshop-furniture-15-removing-hidden-2.png",
+                "native_sha256": "b4d085633b295209f17b437ce6ea8672f9bef15cf7856e86c093b54c3453350e",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "furniture-resize-small.png",
+                "viewer_sha256": "d2049d1922549328930b02391845c64d72241633b421a10eb465e30e836cb6bf",
+                "native": "workshop-furniture-1-resize-small.png",
+                "native_sha256": "6dabdcf6cff9a4e2ccb1dc48d05aa7266bc0a02d491611349a76dd850f3c221f",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "furniture-resize-medium.png",
+                "viewer_sha256": "77a2581b8e1c24aac668464177c8cdffaf310766273bd8208895f734eef27d9a",
+                "native": "workshop-furniture-1-resize-medium.png",
+                "native_sha256": "210ddfcb620cd7857fc2b25d0610fc0058675427e38ef05ae099f2d05a00a052",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "furniture-resize-wide.png",
+                "viewer_sha256": "76c4dc48f23bde282821623db5cc5595f8544ab5f6f6a9b0f5609ed019166de6",
+                "native": "workshop-furniture-1-resize-wide.png",
+                "native_sha256": "a8e40e0a354b4a2d68b36af92439d6b6a9167c8a8e9cedf779c77d095b9e647e",
+                "different_pixels": 0
+              },
+              {
+                "viewer": "furniture-resize-default.png",
+                "viewer_sha256": "4588b41d5121714fe0b723436bc2d62b4cdad2ac19566f40cb491203e4e0e3c0",
+                "native": "workshop-furniture-1-resize-default.png",
+                "native_sha256": "7656daf5b0fe5fa37512bb903700f96ec865bb25438bce5eb46632f0e4ea7989",
+                "different_pixels": 0
+              }
+            ],
+            "native_post": [
+              {
+                "actual_flags": 536870944,
+                "expected_flags": 536870944,
+                "id": 65
+              },
+              {
+                "actual_flags": 536870944,
+                "expected_flags": 536870944,
+                "id": 9
+              },
+              {
+                "actual_flags": 536870944,
+                "expected_flags": 536870944,
+                "id": 62
+              },
+              {
+                "actual_flags": 536870944,
+                "expected_flags": 536870944,
+                "id": 493
+              }
+            ],
+            "source_preserved": true,
+            "owned_df_closed": 38336
+          }
+        }
       }
     },
     "pending_construction_reference": {

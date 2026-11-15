@@ -1,29 +1,13 @@
 extends "res://scripts/chest_sheet_view.gd"
 # Native unfinished-building body. No completed-building rename/remove icons.
-var artwork_source
-var header_recipe: Dictionary={}
-var header_texture: Texture2D
-func configure(source,model,help=null,contents_model=null) -> void:
-	artwork_source=source
-	super.configure(source,model,help,contents_model)
 func contents_extra_height() -> int:
 	return 36 if state.snapshot.get("trigger_kind",0)>0 or state.snapshot.get("trigger_links",0)>0 else 0
 func refresh() -> void:
 	super.refresh()
 	_layout_contents()
-	var recipe: Dictionary=state.snapshot.get("appearance",{})
-	if recipe!=header_recipe:
-		header_recipe=recipe.duplicate(true)
-		header_texture=null if recipe.is_empty() else artwork_source.candidate_icon(recipe)
 func header_art() -> Array:
 	return []
 func _process(_delta: float) -> void:pass
-func header_color() -> Color:
-	return colors[12] if state.snapshot.get("forbidden",false) and colors.size()==16 else Color.WHITE
-func draw_header_warnings() -> void:
-	# Native180422..180679 uses building::isForbidden for title and warnings.
-	if not state.snapshot.get("forbidden",false) or colors.size()!=16 or theme.default_font==null:return
-	for y in [24,48]:theme.default_font.draw_string(get_canvas_item(),Vector2(64,y),"*** Forbidden ***",HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[4])
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or state.phase!=state.Phase.Ready or state.ticket!=0 or state.snapshot.is_empty():return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
@@ -35,7 +19,6 @@ func _gui_input(event: InputEvent) -> void:
 		elif Rect2(16,168,192,36).has_point(event.position):state.edit(state.Operation.Cancel);accept_event()
 func _draw() -> void:
 	super._draw()
-	if not state.snapshot.is_empty() and header_texture!=null:draw_texture_rect(header_texture,Rect2(10,14,32,32),false)
 	if state.snapshot.is_empty() or removing or colors.size()!=16 or theme.default_font==null:return
 	var value: Dictionary=state.snapshot
 	var font: Font=theme.default_font

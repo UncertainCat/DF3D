@@ -20,7 +20,7 @@ func exercise(expected: Dictionary) -> void:
 		owner.open_target(int(sample.id))
 		if not await pending_ready():return
 		check(not owner.state.snapshot.get("appearance",{}).is_empty(),"Native header recipe missing")
-		check(owner.panel.header_texture!=null,"Native header recipe did not resolve installed artwork")
+		check(owner.panel.native_header_texture!=null,"Native header recipe did not resolve installed artwork")
 		check(owner.state.snapshot.trigger_kind==int(sample.trigger_kind) and owner.state.snapshot.trigger_links==int(sample.trigger_links),"Trigger facts differ from independent native readback")
 		await capture_header(int(sample.type))
 		await key(KEY_ESCAPE);await process_frame

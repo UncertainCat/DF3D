@@ -133,12 +133,13 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
- if os.getenv('DF3D_COMPLETED_BUILDING_DISCOVERY')=='1'then
+ if os.getenv('DF3D_COMPLETED_BUILDING_DISCOVERY')=='1' or os.getenv('DF3D_FURNITURE_RELATIONS_DISCOVERY')=='1'then
   result.completed_buildings={}
+  local memberships=os.getenv('DF3D_FURNITURE_RELATIONS_DISCOVERY')=='1'
   local chosen={}
   for _,candidate in ipairs(df.global.world.buildings.all)do
    local kind=candidate:getType()
-   if not chosen[kind] and kind>=0 and kind<=54 and kind~=29 and kind~=30 and candidate:getBuildStage()==candidate:getMaxBuildStage() then
+   if not chosen[kind] and kind>=0 and kind<=54 and kind~=29 and kind~=30 and candidate:getBuildStage()==candidate:getMaxBuildStage() and (not memberships or ((kind==0 or kind==1 or kind==2 or kind==15) and #candidate.relations>0)) then
     local tile=dfhack.maps.getTileFlags(candidate.centerx,candidate.centery,candidate.z)
     if tile and not tile.hidden then chosen[kind]=candidate end
    end
@@ -146,9 +147,72 @@ local ok,err=xpcall(function()
   for kind=0,54 do local target=chosen[kind];if target then
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(target)
    local jobs={};for _,job in ipairs(target.jobs)do jobs[#jobs+1]={id=job.id,type=df.job_type[job.job_type],flags=job.flags.whole}end
-   result.completed_buildings[#result.completed_buildings+1]={id=target.id,type=kind,type_name=df.building_type[kind],tile={target.centerx,target.centery,target.z},stage=target:getBuildStage(),max_stage=target:getMaxBuildStage(),jobs=jobs,lines=lines()}
+   local relations={};for _,zone in ipairs(target.relations)do relations[#relations+1]={id=zone.id,type=zone.type,name=zone.name,location_id=zone.location_id}end
+   result.completed_buildings[#result.completed_buildings+1]={id=target.id,type=kind,type_name=df.building_type[kind],tile={target.centerx,target.centery,target.z},stage=target:getBuildStage(),max_stage=target:getMaxBuildStage(),jobs=jobs,relations=relations,lines=lines()}
    shot('completed-building-'..kind)
+   if memberships and os.getenv('DF3D_FURNITURE_ACTIONS')=='1'then
+    assert(#target.jobs==0 and #target.contained_items==1,'Furniture action fixture needs one component and no job')
+    local item=target.contained_items[0].item
+    local initial_name=target.name;local initial_flags=item.flags.whole
+    local row=result.completed_buildings[#result.completed_buildings];row.actions={}
+    local function click(x,y)
+     g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+     df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+     gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+     df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+    end
+    local function observe(label)
+     local jobs={};for _,job in ipairs(target.jobs)do jobs[#jobs+1]={id=job.id,type=df.job_type[job.job_type],flags=job.flags.whole}end
+     row.actions[#row.actions+1]={label=label,name=target.name,item_id=item.id,item_flags=item.flags.whole,forbidden=target:isForbidden(),jobs=jobs}
+     shot('furniture-'..kind..'-'..label)
+    end
+    observe('initial')
+    click(800,82);for i=1,100 do gui.simulateInput(view,'STRING_A000')end
+    for c in ('Furniture reference'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(c:byte()))end
+    gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount());assert(target.name=='Furniture reference');observe('renamed')
+    click(800,82);for i=1,100 do gui.simulateInput(view,'STRING_A000')end
+    for c in initial_name:gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(c:byte()))end
+    gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount());assert(target.name==initial_name)
+    click(796,526);observe('forbidden');click(796,526);assert(item.flags.whole==initial_flags,'Furniture Forbid did not restore flags')
+    click(832,82);assert(#target.jobs==1 and target.jobs[0].job_type==df.job_type.DestroyBuilding);observe('removing')
+    if os.getenv('DF3D_FURNITURE_REMOVAL_CONTROLS')=='1'then
+     local removal_id=target.jobs[0].id
+     for _,control in ipairs{{'forbid',796},{'dump',820},{'melt',844},{'hidden',868}}do
+      for attempt=1,2 do
+       click(control[2],526);observe('removing-'..control[1]..'-'..attempt)
+       assert(#target.jobs==1 and target.jobs[0].id==removal_id,'Native component edit changed demolition job')
+      end
+      assert(item.flags.whole==initial_flags,'Native component edit did not restore flags')
+     end
+    end
+    click(500,202);assert(#target.jobs==0);observe('restored')
+    click(772,526);assert(sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==item.id,'Native furniture View missed its component')
+    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(target);observe('view-return')
+    if kind==1 and os.getenv('DF3D_FURNITURE_RESIZE')=='1'then
+     for _,size in ipairs{'small','medium','wide','default'}do resize_worker(size);shot('furniture-1-resize-'..size)end
+    end
+   end
   end end
+  assert(#result.completed_buildings>0,'No matching completed buildings for discovery')
+  if os.getenv('DF3D_FURNITURE_RUNTIME')=='1'then
+   local file=assert(io.open(out..'/furniture-expected.json','w'));file:write(json.encode({buildings=result.completed_buildings}));file:close()
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   capture('workshop-wire')
+   file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
+   assert(receipt.success,'Furniture viewer workflow failed');result.furniture_viewer=receipt
+   result.furniture_post={}
+   for _,row in ipairs(result.completed_buildings)do
+    local target=df.building.find(row.id);local initial=row.actions[#row.actions]
+    local item=df.item.find(initial.item_id)
+    result.furniture_post[#result.furniture_post+1]={id=row.id,expected_flags=initial.item_flags,actual_flags=item.flags.whole}
+   end
+   file=assert(io.open(out..'/furniture-post.json','w'));file:write(json.encode(result.furniture_post));file:close()
+   for _,row in ipairs(result.completed_buildings)do
+    local target=df.building.find(row.id);local initial=row.actions[#row.actions]
+    assert(target.name==initial.name and #target.jobs==0,'Furniture viewer failed to restore name/jobs')
+    assert(df.item.find(initial.item_id).flags.whole==initial.item_flags,'Furniture viewer failed to restore component flags')
+   end
+  end
   return
  end
  if os.getenv('DF3D_PENDING_HEADER_ART')=='1'then

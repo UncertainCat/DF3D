@@ -4281,6 +4281,8 @@ void run(color_ostream& out) {
       const auto before=observe();
       if(before) {
         const bool unfinished=bool(df3d_production::observePendingBuilding(contentsBuilding(q->building_id(),true)));
+        const auto contentsType=contentsBuilding(q->building_id())->getType();
+        const bool editRemoving=unfinished || contentsType==df::building_type::Box || contentsType==df::building_type::Chair || contentsType==df::building_type::Bed || contentsType==df::building_type::Table || contentsType==df::building_type::Statue;
         auto edit=df3d_production::finishBuildingItemEdit(*before,q->expected_revision(),q->item_id(),action,q->item_value()!=0,[&] {
           auto* building=contentsBuilding(q->building_id(),true);
           if(!building)return false;
@@ -4288,7 +4290,7 @@ void run(color_ostream& out) {
             entered=true;return df3d_production::setBuildingItemFlag(held->item,action,q->item_value()!=0);
           }
           return false;
-        },observe,unfinished || contentsBuilding(q->building_id())->getType()==df::building_type::Box,unfinished);
+        },observe,editRemoving,unfinished);
         mutated=edit.mutated;
         using O=df3d_production::FarmEditOutcome;
         if(edit.outcome==O::Completed) {

@@ -431,6 +431,7 @@ try {
      if($env:DF3D_PENDING_MAP -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/pending_map_scene_live.gd')}
      if($env:DF3D_PENDING_PROGRESS_RUNTIME -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/pending_progress_scene_live.gd')}
      if($env:DF3D_DOOR_HEADER_RUNTIME -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/door_scene_live.gd')}
+     if($env:DF3D_FURNITURE_RUNTIME -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/furniture_scene_live.gd')}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
      $null=$client.Handle
      if(-not $client.WaitForExit(45000)){$client.Kill();$client.WaitForExit();throw 'Workshop client timed out; no replay'}

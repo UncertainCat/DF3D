@@ -9738,7 +9738,7 @@ DestroyBuilding job and cancellation leaves none. Source saves are unchanged;
 the owned game exits unsaved. This is native action evidence, not viewer
 acceptance or evidence for component edits during removal.
 
-Management protocol223 (implementation in progress) adds native forbidden state
+Management protocol223 adds native forbidden state
 and optional artwork to the independent header, and admits Chair, Bed, Table
 and Statue. Shared item appearance also carries optional native bedding facts
 (sheet, pillow and colors) for bed contents and inspection. These use the existing
@@ -9759,8 +9759,16 @@ completed_sheet_discovery_reference.ordinary_furniture_actions_reference.viewer_
 Protected030227 also verifies the shared header against five unfinished-building
 full panels, trigger facts and Escape cleanup; source preserved, DF38996 closed,
 only the same known diagnostics.
-Component edits during removal, normal map entry, resize and worker-owned
-demolition remain unqualified; ordinary furniture map exposure stays gated.
+Protected native030728 verifies Forbid/Dump/Hide toggles during queued demolition
+for all four families; Melt remains inactive. Paired main-scene031326 verifies
+those actions plus the earlier header/item workflow and Bed resizing through
+960x600,1200x720,1600x900 and1200x800: all60 panel comparisons are exact. Native
+post-checks match names, job queues and all component flags. Source preserved;
+DF38336 exits unsaved, only known Godot diagnostics remain, core19 passes.
+The earlier031100 UI checks passed but its native acknowledgement wait expired;
+the furniture-specific wait now covers the existing45-second client budget.
+Evidence is in removal_controls_reference.viewer_reference. Normal map entry
+and worker-owned demolition remain unqualified; map exposure stays gated.
 
 Basic building discovery: protected203229 and203340 on2026-11-14 capture
 completed Door16 and unfinished Statue965.

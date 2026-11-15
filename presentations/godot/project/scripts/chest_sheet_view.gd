@@ -19,16 +19,24 @@ var name_entry
 var hover_help
 var pointer_known:=false
 var pointer_position:=Vector2.ZERO
+var native_header_source
+var native_header_recipe: Dictionary={}
+var native_header_texture: Texture2D
 var building_icon:="BUILDING_ICON_BOX"
 
 func show_contents_separator() -> bool:return true
-func header_color() -> Color:return Color.WHITE
-func draw_header_warnings() -> void:pass
+func header_color() -> Color:
+	return colors[12] if state.snapshot.get("forbidden",false) and colors.size()==16 else Color.WHITE
+func draw_header_warnings() -> void:
+	if native_header_texture!=null:draw_texture_rect(native_header_texture,Rect2(10,14,32,32),false)
+	if not state.snapshot.get("forbidden",false) or colors.size()!=16 or theme.default_font==null:return
+	for y in [24,48]:theme.default_font.draw_string(get_canvas_item(),Vector2(64,y),"*** Forbidden ***",HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[4])
 
 func header_art() -> Array:
-	return [[building_icon,Vector2(10,14),Vector2(32,32)],["UNIT_SHEET_CUSTOMIZE",Vector2(368,12),Vector2(32,36)],["BUILDING_SHEET_REMOVE",Vector2(400,12),Vector2(32,36)]]
+	return ([] if native_header_texture!=null else [[building_icon,Vector2(10,14),Vector2(32,32)]])+[["UNIT_SHEET_CUSTOMIZE",Vector2(368,12),Vector2(32,36)],["BUILDING_SHEET_REMOVE",Vector2(400,12),Vector2(32,36)]]
 
 func configure(source,model,help=null,contents_model=null) -> void:
+	native_header_source=source
 	state=model;hover_help=help;art.configure(source);theme=art.theme
 	mouse_exited.connect(_leave_hover)
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
@@ -65,6 +73,10 @@ func _layout_contents() -> void:
 		contents.visible=contents.page>0
 
 func refresh() -> void:
+	var recipe: Dictionary=state.snapshot.get("appearance",{})
+	if recipe!=native_header_recipe:
+		native_header_recipe=recipe.duplicate(true)
+		native_header_texture=null if recipe.is_empty() else native_header_source.candidate_icon(recipe)
 	if target!=state.building_id:
 		finish_rename();target=state.building_id
 	visible=target>=0

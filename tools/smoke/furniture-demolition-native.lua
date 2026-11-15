@@ -1,0 +1,54 @@
+-- Protected disposable-clone probe: native clicks queue jobs; DF executes them.
+local out,view,records,buildings,select_map=...
+local gui=require('gui');local script=require('gui.script');local json=require('json')
+local g=df.global.gps;local sheet=df.global.game.main_interface.view_sheets
+local result={scope='Native Remove clicks followed by bounded simulation; no forced job completion.',buildings={}}
+local function persist()
+ local f=assert(io.open(out..'/furniture-demolition.json','w'));f:write(json.encode(result));f:close()
+end
+local function capture(label,row)
+ df.global.pause_state=true
+ g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0
+ for i=1,3 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
+ row.open=sheet.open;row.active_id=sheet.active_id;row.active_sheet=df.view_sheet_type[sheet.active_sheet]
+ row.frame=df.global.world.frame_counter
+ persist()
+ local f=assert(io.open(out..'/shot.tmp','w'));f:write(label);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
+ local deadline=dfhack.getTickCount()+30000
+ while true do local ack=io.open(out..'/ack-'..label);if ack then ack:close();break end
+  assert(dfhack.getTickCount()<deadline,'demolition capture timeout');script.sleep(1,'frames')end
+end
+local ok,err=xpcall(function()
+ for _,entry in ipairs(buildings)do
+  local target=assert(df.building.find(entry.id));local id=target.id
+  local row={id=id,type=target:getType(),start_frame=df.global.world.frame_counter,items={},samples={}}
+  for _,held in ipairs(target.contained_items)do row.items[#row.items+1]=held.item.id end
+  result.buildings[#result.buildings+1]=row
+  if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
+  view:render(dfhack.getTickCount());select_map(target)
+  assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==id)
+  g.precise_mouse_x=832;g.precise_mouse_y=82;g.mouse_x=104;g.mouse_y=6
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  assert(#target.jobs==1 and target.jobs[0].job_type==df.job_type.DestroyBuilding)
+  row.job_id=target.jobs[0].id;row.before={};capture('demolition-'..id..'-before',row.before)
+  local deadline=dfhack.getTickCount()+90000;local last=-1
+  while df.building.find(id) and dfhack.getTickCount()<deadline do
+   local b=df.building.find(id);local job=b.jobs[0];local worker=job and dfhack.job.getWorker(job)
+   local frame=df.global.world.frame_counter
+   if last<0 or frame-last>=100 then
+    row.samples[#row.samples+1]={frame=frame,job_id=job and job.id or -1,worker_id=worker and worker.id or -1,working=job and job.flags.working or false,counter=worker and worker.counters.job_counter or -1}
+    last=frame;persist()
+   end
+   df.global.pause_state=false;script.sleep(1,'frames')
+  end
+  df.global.pause_state=true;row.removed=df.building.find(id)==nil;row.after={}
+  capture('demolition-'..id..'-after',row.after)
+  assert(row.removed,'Native demolition did not complete within probe deadline')
+  assert(not row.after.open,'Native panel remained open after completed demolition')
+ end
+end,debug.traceback)
+df.global.pause_state=true;result.success=ok;result.error=ok and '' or tostring(err);persist()
+records[#records+1]={name='furniture-demolition',result=result}
+assert(ok,err)

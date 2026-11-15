@@ -20218,6 +20218,393 @@
             "build/stockpile-storage-native-farm-discovery-20261115-051859/workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
             "build/stockpile-storage-native-farm-discovery-20261115-051859/workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
           }
+        },
+        "native_demolition_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-052446",
+          "scope": "Native Remove clicks; unforced DF simulation completes both jobs and closes each selected panel. No DF3D missing-target or item-release acceptance.",
+          "result": {
+            "buildings": [
+              {
+                "after": {
+                  "active_id": 220,
+                  "active_sheet": "BUILDING",
+                  "frame": 2278,
+                  "open": false
+                },
+                "before": {
+                  "active_id": 220,
+                  "active_sheet": "BUILDING",
+                  "frame": 0,
+                  "open": true
+                },
+                "id": 220,
+                "items": [
+                  5260,
+                  5170
+                ],
+                "job_id": 382798,
+                "removed": true,
+                "samples": [
+                  {
+                    "counter": -1,
+                    "frame": 0,
+                    "job_id": 382798,
+                    "worker_id": -1,
+                    "working": false
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 100,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 200,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 300,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 400,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 500,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 600,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 700,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 800,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 900,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1000,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1100,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1200,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1300,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1400,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1500,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1600,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1700,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1800,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 1900,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2000,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2100,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2200,
+                    "job_id": 382798,
+                    "worker_id": 1017,
+                    "working": true
+                  }
+                ],
+                "start_frame": 0,
+                "type": 3
+              },
+              {
+                "after": {
+                  "active_id": 280,
+                  "active_sheet": "BUILDING",
+                  "frame": 4422,
+                  "open": false
+                },
+                "before": {
+                  "active_id": 280,
+                  "active_sheet": "BUILDING",
+                  "frame": 2278,
+                  "open": true
+                },
+                "id": 280,
+                "items": [
+                  8699
+                ],
+                "job_id": 382901,
+                "removed": true,
+                "samples": [
+                  {
+                    "counter": -1,
+                    "frame": 2278,
+                    "job_id": 382901,
+                    "worker_id": -1,
+                    "working": false
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2378,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2478,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2578,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2678,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2778,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2878,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 2978,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 3078,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 3178,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 3278,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 3378,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 3478,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 3578,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 3678,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 3778,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 3878,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 3978,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 4078,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 4178,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 4278,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  },
+                  {
+                    "counter": 0,
+                    "frame": 4378,
+                    "job_id": 382901,
+                    "worker_id": 1017,
+                    "working": true
+                  }
+                ],
+                "start_frame": 2278,
+                "type": 46
+              }
+            ],
+            "error": "",
+            "scope": "Native Remove clicks followed by bounded simulation; no forced job completion.",
+            "success": true
+          },
+          "owned_df_pid": 7556,
+          "closed_unsaved": true,
+          "source_preserved": true,
+          "sha256": {
+            "build/stockpile-storage-native-farm-discovery-20261115-052446/furniture-demolition.json": "716d7cee6deca88f5db2930109531256df70f9de585fd0297e7641ff5723743a",
+            "build/stockpile-storage-native-farm-discovery-20261115-052446/result.json": "fefd7f025015592ca072258fe0813ddd754f8e18455952c20d2c456a2c44ecb8",
+            "build/stockpile-storage-native-farm-discovery-20261115-052446/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "build/stockpile-storage-native-farm-discovery-20261115-052446/demolition-220-after.png": "e34d44087842f702836870c1192ec169cc83df36572030f065bab85a43f9a171",
+            "build/stockpile-storage-native-farm-discovery-20261115-052446/demolition-220-before.png": "e28e2f39f86304a1094ca13d1cfa72fc812512938b3d6ebe9f468a52f6cf6081",
+            "build/stockpile-storage-native-farm-discovery-20261115-052446/demolition-280-after.png": "8d342274d1a7f354ee36a233de8c7e83a333e0593b3f66d6502baf63f450d844",
+            "build/stockpile-storage-native-farm-discovery-20261115-052446/demolition-280-before.png": "3c052e3315690bca0d3f3b524be566172ca3e89e97045b2fc2fc6419687eb747"
+          }
         }
       }
     },

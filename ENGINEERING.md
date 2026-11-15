@@ -9931,8 +9931,23 @@ the evidence hashes. Headless contents ownership and composition checks plus
 core19 pass. Scrolled/shrinking-list handling is headless-qualified; this live
 run does not change list membership or advance AI demolition.
 
-Public map access remains gated. Remaining funerary work includes completed
-demolition, changing contents membership and normal map entry. Existing
+Protected052446 on2026-11-15 establishes completed native demolition behavior.
+Actual Remove clicks queue both jobs; ordinary DF simulation chooses workers
+and completes them without injected worker assignments or forced completion.
+Coffin220 disappears at frame2278 and slab280 at4422. Each native panel closes
+(`open=false`), although its inactive sheet ID remains the deleted building ID.
+Before/after screenshots and sampled jobs/workers are retained in
+native_demolition_reference. DF7556 exits unsaved, source saves unchanged,
+graphics capped30FPS and sampled GPU60C. Earlier052329 completes the coffin but
+fails the slab selection because an unconditional Escape after native closure
+opens the pause menu; it is not whole-lane acceptance. The probe now checks
+whether a sheet is open before leaving it. Only this explicit diagnostic mode
+permits simulation advancement; ordinary reference lanes remain paused.
+
+Public map access remains gated. Remaining funerary work includes DF3D panel
+retirement after confirmed deletion, changing contents membership and normal map entry.
+The current rejected header read cannot distinguish deletion from provider
+failure; it is not sufficient evidence to close a panel. Existing
 native portrait/Tomb-icon click probes retain the coffin selection; no new
 navigation is inferred.
 

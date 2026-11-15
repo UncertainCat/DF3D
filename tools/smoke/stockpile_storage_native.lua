@@ -82,7 +82,11 @@ require('gui.script').start(function()
    local source=debug.getinfo(1,'S').source:sub(2):gsub('stockpile_storage_native.lua$','farm-native.lua')
    assert(loadfile(source))(out,view,records)
    local progress=io.open(out..'/farm-fertilization-progress')
-   if progress then progress:close();assert(df.global.pause_state,'progress scope did not pause')
+   if os.getenv('DF3D_FURNITURE_DEMOLITION')=='1'then
+    local completed=false
+    for _,record in ipairs(records)do if record.name=='furniture-demolition' then completed=record.result.success end end
+    assert(completed and df.global.pause_state,'demolition scope did not finish paused')
+   elseif progress then progress:close();assert(df.global.pause_state,'progress scope did not pause')
    else assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')end
    return
   end

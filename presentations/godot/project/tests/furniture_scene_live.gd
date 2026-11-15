@@ -9,11 +9,13 @@ func rename_to(value: String) -> bool:
 	key(KEY_ENTER)
 	if not await chest_ready():return false
 	return check(owner.state.snapshot.custom_name==value,"Furniture name differs")
+func open_furniture(entry: Dictionary) -> bool:
+	owner.open_target(int(entry.id))
+	return await chest_ready()
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("furniture")
 	for entry in expected.buildings:
-		owner.open_target(int(entry.id))
-		if not await chest_ready():return
+		if not await open_furniture(entry):return
 		var prefix: String="workshop-furniture-"+str(int(entry.type))+"-"
 		check(owner.state.snapshot.type==int(entry.type) and owner.state.snapshot.has("appearance"),"Furniture header lacks native type/artwork")
 		await panel_capture(str(int(entry.id))+"-initial",prefix+"initial")

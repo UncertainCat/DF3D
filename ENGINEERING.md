@@ -9707,12 +9707,12 @@ the protocol214 rebuild. Contract tests cover both artwork fields through
 the client, clearing on closure, wrong target kinds, invalid page references
 and simultaneous portrait/fallback rejection.
 
-Completed-building map selection remains gated beyond the qualified Door route.
-The selection destination can route completed farms, containers, workshops and
-furnaces to staged controllers; other completed types still use the legacy
-inspector. Unfinished buildings now have their own native sheet and qualified
-map entry, described below. Those additions do not qualify completed furniture
-or specialized building controls.
+Completed Door, Chair, Bed, Table and Statue map picks use native tile selection
+and their qualified native sheets. The selection destination can also route
+completed farms, containers, workshops and furnaces to staged controllers;
+other completed types retain the legacy inspector. Unfinished buildings have
+their own native sheet and qualified map entry, described below. These routes
+do not qualify the remaining specialized building controls.
 
 Protected native022800 on2026-11-15 captures29 naturally completed, revealed
 building types in the paused fortress. `completed_sheet_discovery_reference` in
@@ -9767,8 +9767,17 @@ post-checks match names, job queues and all component flags. Source preserved;
 DF38336 exits unsaved, only known Godot diagnostics remain, core19 passes.
 The earlier031100 UI checks passed but its native acknowledgement wait expired;
 the furniture-specific wait now covers the existing45-second client budget.
-Evidence is in removal_controls_reference.viewer_reference. Normal map entry
-and worker-owned demolition remain unqualified; map exposure stays gated.
+Evidence is in removal_controls_reference.viewer_reference. Worker-owned
+demolition is not directly exercised for these four furniture families.
+
+Protected031703 verifies ordinary rendered-map pointer entry for Chair65, Bed9,
+Table62 and Statue493, Escape during the selection request and reopening, then
+the full header/item workflow and final Escape. All24 panels match native and
+post-checks match names/jobs/component flags. The map picker reports the exact
+building identities; source preserved, DF34256 closed, only known Godot
+diagnostics. `map_entry_reference` records this acceptance. Item/terrain hits
+over these supported buildings also delegate to DF's tile selector; that entry
+variant is not separately exercised here. Unit picks retain their own route.
 
 Basic building discovery: protected203229 and203340 on2026-11-14 capture
 completed Door16 and unfinished Statue965.

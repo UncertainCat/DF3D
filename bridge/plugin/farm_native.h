@@ -1,4 +1,5 @@
 #pragma once
+#include "machinery_native.h"
 #include <array>
 #include <cstdint>
 #include <algorithm>
@@ -125,7 +126,7 @@ inline bool productionProfileBuilding(df::building* building) {
 inline bool cancelBuildingRemoval(df::building* building) {
     const auto& native=farmFunctions();
     if(!native || !building ||
-       (!ordinaryTrapBuilding(building) && !plainFurnitureType(building->getType()) && !funeraryFurnitureType(building->getType()) && !linkedFurnitureType(building->getType()) && building->getType()!=df::building_type::Door && building->getType()!=df::building_type::FarmPlot && building->getType()!=df::building_type::Box && !productionProfileBuilding(building)) || building->getBuildStage()!=building->getMaxBuildStage() ||
+       (!machineryBuildingType(building->getType()) && !ordinaryTrapBuilding(building) && !plainFurnitureType(building->getType()) && !funeraryFurnitureType(building->getType()) && !linkedFurnitureType(building->getType()) && building->getType()!=df::building_type::Door && building->getType()!=df::building_type::FarmPlot && building->getType()!=df::building_type::Box && !productionProfileBuilding(building)) || building->getBuildStage()!=building->getMaxBuildStage() ||
        building->jobs.size()>size_t(INT16_MAX))return false;
     bool removing=false;
     for(const auto* job:building->jobs) {
@@ -144,7 +145,7 @@ inline std::optional<BuildingHeader> buildingHeader(df::building* farm,bool allo
     const auto& native=farmFunctions();
     if(!native || !farm || farm->name.size()>512 || farm->jobs.size()>size_t(INT32_MAX))return {};
     const auto type=farm->getType();
-    if(!ordinaryTrapBuilding(farm) && !(allowLever && type==df::building_type::Trap && (farm->getSubtype()==0 || farm->getSubtype()==1)) && !plainFurnitureType(type) && !funeraryFurnitureType(type) && !linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return {};
+    if(!machineryBuildingType(type) && !ordinaryTrapBuilding(farm) && !(allowLever && type==df::building_type::Trap && (farm->getSubtype()==0 || farm->getSubtype()==1)) && !plainFurnitureType(type) && !funeraryFurnitureType(type) && !linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box && type!=df::building_type::Workshop && type!=df::building_type::Furnace)return {};
     BuildingHeader value;value.customNameCp437=farm->name;farm->getName(&value.nativeNameCp437);
     if(value.nativeNameCp437.size()>512)return {};
     value.headerNameCp437=value.nativeNameCp437;native.formatName(&value.headerNameCp437);
@@ -170,6 +171,7 @@ inline std::optional<BuildingHeaderObservation> observeBuildingHeader(df::buildi
         if(!job)return {};
         value.jobs.push_back({job->id,int32_t(job->job_type),job->flags.whole});
     }
+    if(machineryBuildingType(building->getType())){value.machinery=machineryBody(building);if(!value.machinery)return {};}
     value.revision=buildingHeaderRevision(value);
     if(!validBuildingHeader(value))return {};
     return value;

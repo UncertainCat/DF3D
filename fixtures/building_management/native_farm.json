@@ -28316,6 +28316,424 @@
           "build/stockpile-storage-native-farm-discovery-20261115-104740/result.json": "deeea7fb54287a7083bc3645f360249826f18734e0718ad49991204b6a61f744",
           "build/stockpile-storage-native-farm-discovery-20261115-104740/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "machinery_wire_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-105732",
+        "protocol": 228,
+        "scope": "Seven typed machinery headers equal native semantic facts. Actual headless Godot extension applies pump on/off and restores all header facts. Stale/duplicate revisions reject; already-set desired value leaves authority unchanged; lever rejects pump intent. Native selected sheet unchanged, final pump flag false and jobs empty. No rendered UI or pumping simulation claim.",
+        "native": {
+          "buildings": [
+            {
+              "id": 233,
+              "lines": [
+                {
+                  "text": "        Millstone",
+                  "y": 6
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 8
+                },
+                {
+                  "text": "   Tasks    Workers    Work orders",
+                  "y": 9
+                },
+                {
+                  "text": "                                    Add new task",
+                  "y": 12
+                },
+                {
+                  "text": "        -dolomite mechanisms-",
+                  "y": 43
+                },
+                {
+                  "text": "        jet millstone",
+                  "y": 46
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": 1,
+              "name": "",
+              "network": {
+                "flags": 1,
+                "produced": 100,
+                "required": 20
+              },
+              "power": {
+                "consumed": 10,
+                "produced": 0
+              },
+              "tile": [
+                121,
+                107,
+                165
+              ],
+              "type": 13
+            },
+            {
+              "fixture": "DFHack construction completed by diagnostic; no construction simulation, contents or network.",
+              "id": 1494,
+              "lines": [
+                {
+                  "text": "        Screw Pump",
+                  "y": 6
+                },
+                {
+                  "text": "  Stable Foundation",
+                  "y": 11
+                },
+                {
+                  "text": "      Start Pump Manually",
+                  "y": 13
+                },
+                {
+                  "text": "  Pumps from the north",
+                  "y": 15
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": -1,
+              "manual_toggle": {
+                "frame_unchanged": true,
+                "initial": false,
+                "jobs": 0,
+                "restored": false
+              },
+              "name": "",
+              "power": {
+                "consumed": 10,
+                "produced": 0
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": -1,
+                "produced": 0,
+                "pump_direction": 0,
+                "pump_manual": 0,
+                "required": 0,
+                "stable_foundation": true,
+                "status": 0
+              },
+              "tile": [
+                152,
+                84,
+                165
+              ],
+              "type": 33
+            },
+            {
+              "fixture": "DFHack construction completed by diagnostic; no construction simulation, contents or network.",
+              "id": 1490,
+              "lines": [
+                {
+                  "text": "        Unknown material Gear Assembly",
+                  "y": 6
+                },
+                {
+                  "text": "  Stable Foundation",
+                  "y": 11
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": -1,
+              "name": "",
+              "power": {
+                "consumed": 5,
+                "produced": 0
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": -1,
+                "produced": 0,
+                "pump_direction": -1,
+                "pump_manual": -1,
+                "required": 0,
+                "stable_foundation": true,
+                "status": 0
+              },
+              "tile": [
+                136,
+                84,
+                165
+              ],
+              "type": 40
+            },
+            {
+              "fixture": "DFHack construction completed by diagnostic; no construction simulation, contents or network.",
+              "id": 1491,
+              "lines": [
+                {
+                  "text": "        Horizontal unknown material Axle",
+                  "y": 6
+                },
+                {
+                  "text": "  Stable Foundation",
+                  "y": 11
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": -1,
+              "name": "",
+              "power": {
+                "consumed": 1,
+                "produced": 0
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": -1,
+                "produced": 0,
+                "pump_direction": -1,
+                "pump_manual": -1,
+                "required": 0,
+                "stable_foundation": true,
+                "status": 0
+              },
+              "tile": [
+                140,
+                84,
+                165
+              ],
+              "type": 41
+            },
+            {
+              "fixture": "DFHack construction completed by diagnostic; no construction simulation, contents or network.",
+              "id": 1492,
+              "lines": [
+                {
+                  "text": "        Vertical unknown material Axle",
+                  "y": 6
+                },
+                {
+                  "text": "  Stable Foundation",
+                  "y": 11
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": -1,
+              "name": "",
+              "power": {
+                "consumed": 1,
+                "produced": 0
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": -1,
+                "produced": 0,
+                "pump_direction": -1,
+                "pump_manual": -1,
+                "required": 0,
+                "stable_foundation": true,
+                "status": 0
+              },
+              "tile": [
+                144,
+                84,
+                165
+              ],
+              "type": 42
+            },
+            {
+              "id": 234,
+              "lines": [
+                {
+                  "text": "        Water Wheel",
+                  "y": 6
+                },
+                {
+                  "text": "  Active",
+                  "y": 11
+                },
+                {
+                  "text": "  Total Power: 100",
+                  "y": 12
+                },
+                {
+                  "text": "  Total Power Needed: 20",
+                  "y": 13
+                },
+                {
+                  "text": "  Hanging",
+                  "y": 14
+                },
+                {
+                  "text": "        citron wood",
+                  "y": 43
+                },
+                {
+                  "text": "        citron wood",
+                  "y": 46
+                },
+                {
+                  "text": "        citron wood",
+                  "y": 49
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": 1,
+              "name": "",
+              "network": {
+                "flags": 1,
+                "produced": 100,
+                "required": 20
+              },
+              "power": {
+                "consumed": 10,
+                "produced": 100
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": 1,
+                "produced": 100,
+                "pump_direction": -1,
+                "pump_manual": -1,
+                "required": 20,
+                "stable_foundation": false,
+                "status": 1
+              },
+              "tile": [
+                121,
+                106,
+                165
+              ],
+              "type": 43
+            },
+            {
+              "fixture": "DFHack construction completed by diagnostic; no construction simulation, contents or network.",
+              "id": 1495,
+              "lines": [
+                {
+                  "text": "        Windmill",
+                  "y": 6
+                },
+                {
+                  "text": "  Stable Foundation",
+                  "y": 11
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": -1,
+              "name": "",
+              "power": {
+                "consumed": 0,
+                "produced": 0
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": -1,
+                "produced": 0,
+                "pump_direction": -1,
+                "pump_manual": -1,
+                "required": 0,
+                "stable_foundation": true,
+                "status": 0
+              },
+              "tile": [
+                113,
+                101,
+                165
+              ],
+              "type": 44
+            },
+            {
+              "fixture": "DFHack construction completed by diagnostic; no construction simulation, contents or network.",
+              "id": 1493,
+              "lines": [
+                {
+                  "text": "        Unknown material Rollers",
+                  "y": 6
+                },
+                {
+                  "text": "  Stable Foundation",
+                  "y": 11
+                }
+              ],
+              "machine_flags": 0,
+              "machine_id": -1,
+              "name": "",
+              "power": {
+                "consumed": 2,
+                "produced": 0
+              },
+              "semantic": {
+                "disengaged": false,
+                "machine_id": -1,
+                "produced": 0,
+                "pump_direction": -1,
+                "pump_manual": -1,
+                "required": 0,
+                "stable_foundation": true,
+                "status": 0
+              },
+              "tile": [
+                148,
+                84,
+                165
+              ],
+              "type": 50
+            }
+          ],
+          "frame": 0,
+          "inventory": [
+            {
+              "complete": true,
+              "id": 233,
+              "revealed": true,
+              "type": 13
+            },
+            {
+              "complete": true,
+              "id": 234,
+              "revealed": true,
+              "type": 43
+            },
+            {
+              "complete": true,
+              "id": 409,
+              "revealed": true,
+              "type": 13
+            },
+            {
+              "complete": true,
+              "id": 410,
+              "revealed": true,
+              "type": 43
+            },
+            {
+              "complete": true,
+              "id": 411,
+              "revealed": true,
+              "type": 13
+            },
+            {
+              "complete": true,
+              "id": 412,
+              "revealed": true,
+              "type": 43
+            }
+          ],
+          "success": true,
+          "wire": {
+            "observed": 7,
+            "pump_restored": true,
+            "success": true
+          }
+        },
+        "result": {
+          "observed": 7,
+          "pump_restored": true,
+          "success": true
+        },
+        "owned_df_pid": 43096,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "bridge_sha256": "187943E5B674957CAD8192E1B0F5A7D8EC74C8999BC6E2BDC0E2BD8C808AC971",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-105732/machinery-wire-result.json": "0ef1ac30a888a4b76e5bea116c721ac0e0f64cf69e1464a4a08df86fe9408749",
+          "build/stockpile-storage-native-farm-discovery-20261115-105732/machinery-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "build/stockpile-storage-native-farm-discovery-20261115-105732/machinery-sheets-native.json": "afab41e307185f7eb2b9a9719b2f0cab38a2a949fc77ca440d75d6e96f4f9866",
+          "build/stockpile-storage-native-farm-discovery-20261115-105732/result.json": "279ea66bcc4a5f4cfb9f4bab31bfd4009748818e138e2cdd23e3b7bb4b6fb7f4",
+          "build/stockpile-storage-native-farm-discovery-20261115-105732/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

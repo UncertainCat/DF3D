@@ -11,9 +11,10 @@ totals; only pumps carry manual/direction fields, and only gears may be disengag
 PumpManual uses a building-header FarmEdit request, a current nonzero header
 revision and explicit desired0/1 in `item_value`. It is an on/off setting, not a
 toggle to replay. Other item/worker fields remain invalid. A completed receipt must
-be a non-removing completed ScrewPump header. The producer currently rejects this
-new intent pending native guarded-mutation integration; it must never fall through
-to the legacy removal dispatch. Public machinery routes remain hidden.
+be a non-removing completed ScrewPump header. The producer applies it only after
+validating current type, completion, removal state and revision, and confirms that
+only the requested pump flag changed. Already-set intents return the current
+receipt without mutation. Public machinery routes remain hidden pending UI acceptance.
 
 Both management defaults and the mailbox are228. Rebuild bridge and viewer
 together. Older recordings imply no machinery body and must not synthesize network
@@ -28,8 +29,8 @@ with source preservation. Bridge/extension/root builds pass; the headless live
 client has only the known rendering-thread notice (passed_with_known_issues),
 native graphics capped30FPS, sampled GPU60C. Evidence:
 `completed_sheet_discovery_reference.machinery_contract_reference`.
-This establishes protocol compatibility and rejection safety, not a successful
-machinery mutation or machinery snapshot from the live producer.
+That contract-only run establishes compatibility and rejection safety; subsequent
+machinery wire acceptance is recorded in the completed machinery section below.
 
 ## Lever transport migration
 
@@ -563,7 +564,7 @@ that input handler. Protected103300 clicks the visible checkbox twice, verifies
 the flag changes/restores, and confirms no job or frame change while paused.
 This does not qualify subsequent pumping simulation. The captured native labels
 are Start Pump Manually and Stop Pumping Manually. Runtime machinery management
-still needs a typed snapshot, guarded mutation and rendered/main-scene acceptance;
+still needs rendered/main-scene acceptance;
 these types remain on inspector routes.
 
 Evidence: `completed_sheet_discovery_reference.machinery_sheets_reference` contains
@@ -581,7 +582,26 @@ frozen, disengaged and other pump directions still need live comparison. The
 read-only `machinery-body-probe` diagnostic leaves native selection unchanged.
 MSVC/core19 pass; owned DF30304 closes unsaved with source preservation,30FPS and
 sampled GPU61C. Evidence: `completed_sheet_discovery_reference.machinery_provider_reference`.
-No management-wire exposure or public machinery panel is implied by this provider.
+Provider-only checks do not establish a public machinery panel.
+
+Protected105732 on2026-11-15 qualifies all seven typed headers through the actual
+headless Godot extension, comparing every machinery field against native semantic
+observations. It applies pump on/off, confirms restoration of the complete header,
+rejects stale and duplicate revisions, accepts an already-set value without changing
+authority, and rejects a lever as a pump target. Native selection stays unchanged;
+the final pump flag and job list are restored. Initial105618 exercised these actions
+but failed dictionary comparisons because JSON numeric values were floats; the
+fixture comparison now normalizes its integer fields explicitly.
+
+Machinery facts participate in header revisions; non-machinery revision encoding
+is unchanged. The guarded transaction verifies postconditions and returns Unknown
+after uncertain effects without replay. The Godot state owner accepts an explicit
+desired flag, excludes overlapping edits, and requires that flag in the receipt.
+MSVC/core19 and building_header_state_test pass. Owned DF43096 closes unsaved with
+source preservation; graphics capped30FPS, sampled GPU59..61C. The live client has
+only the known rendering-thread notice (passed_with_known_issues). Evidence:
+`completed_sheet_discovery_reference.machinery_wire_reference`. Rendering, map
+entry, frozen/disengaged variants and subsequent pumping simulation are not claimed.
 
 ## Native bug register
 

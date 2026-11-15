@@ -1,4 +1,5 @@
 #pragma once
+#include "machinery_body.h"
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -14,6 +15,7 @@ struct BuildingHeaderObservation {
     struct Job {int32_t id,type;uint32_t flags;};
     std::vector<Job> jobs;
     uint64_t revision=0;
+    std::optional<MachineryBody> machinery;
 };
 inline uint64_t buildingHeaderRevision(const BuildingHeaderObservation& value) {
     uint64_t hash=UINT64_C(14695981039346656037);
@@ -25,6 +27,10 @@ inline uint64_t buildingHeaderRevision(const BuildingHeaderObservation& value) {
     }
     byte(value.removing);byte(value.suspended);byte(value.hasWorker);byte(value.forbidden);
     number(value.jobs.size());for(const auto& job:value.jobs){number(job.id);number(job.type);number(job.flags);}
+    // Preserve revisions for existing non-machinery observations.
+    if(value.machinery){const auto& v=*value.machinery;
+        number(v.machineId);number(v.produced);number(v.required);byte(uint8_t(v.status));
+        byte(v.stableFoundation);byte(v.disengaged);byte(v.pumpManual);byte(v.pumpDirection);}
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;
 }
 inline bool validBuildingHeader(const BuildingHeaderObservation& value) {
@@ -32,9 +38,10 @@ inline bool validBuildingHeader(const BuildingHeaderObservation& value) {
         value.customName.size()<=512 && !value.nativeName.empty() && value.nativeName.size()<=512 &&
         !value.headerName.empty() && value.headerName.size()<=512 &&
         (value.removing || (!value.suspended && !value.hasWorker)) &&
-        value.revision==buildingHeaderRevision(value);
+        machineryType(value.type)==bool(value.machinery) &&
+        (!value.machinery || validMachineryBody(*value.machinery,value.type)) && value.revision==buildingHeaderRevision(value);
 }
-enum class BuildingHeaderOperation : uint8_t { Rename, Remove, CancelRemoval };
+enum class BuildingHeaderOperation : uint8_t { Rename, Remove, CancelRemoval, PumpManual };
 enum class BuildingHeaderOutcome : uint8_t { Rejected, Completed, Stale, Unknown };
 struct BuildingHeaderEdit {
     BuildingHeaderOutcome outcome=BuildingHeaderOutcome::Rejected;
@@ -47,15 +54,18 @@ struct BuildingHeaderEdit {
 template<class Apply,class Observe>
 BuildingHeaderEdit finishBuildingHeaderEdit(const BuildingHeaderObservation& before,
         uint64_t expected,BuildingHeaderOperation operation,const std::string& name,
-        Apply apply,Observe observe) {
+        Apply apply,Observe observe,int pumpValue=-1) {
     BuildingHeaderEdit result;
     if(!expected || !validBuildingHeader(before) || before.stage!=before.maxStage)return result;
     if(operation!=BuildingHeaderOperation::Rename && operation!=BuildingHeaderOperation::Remove &&
-       operation!=BuildingHeaderOperation::CancelRemoval)return result;
+       operation!=BuildingHeaderOperation::CancelRemoval && operation!=BuildingHeaderOperation::PumpManual)return result;
+    const bool pump=operation==BuildingHeaderOperation::PumpManual;
+    if(pump ? (before.type!=33 || pumpValue<0 || pumpValue>1) : pumpValue!=-1)return result;
     const bool rename=operation==BuildingHeaderOperation::Rename;
     if((rename && (name.size()>30 || name.find('\0')!=std::string::npos)) || (!rename && !name.empty()))return result;
     if(expected!=before.revision){result.outcome=BuildingHeaderOutcome::Stale;return result;}
-    if(rename ? before.removing : before.removing==(operation==BuildingHeaderOperation::Remove))return result;
+    if((rename || pump) ? before.removing : before.removing==(operation==BuildingHeaderOperation::Remove))return result;
+    if(pump && before.machinery->pumpManual==pumpValue){result.receipt=before;result.outcome=BuildingHeaderOutcome::Completed;return result;}
     if(rename && name==before.customName){result.receipt=before;result.outcome=BuildingHeaderOutcome::Completed;return result;}
     result.mutated=true;result.outcome=BuildingHeaderOutcome::Unknown;
     try {
@@ -63,7 +73,10 @@ BuildingHeaderEdit finishBuildingHeaderEdit(const BuildingHeaderObservation& bef
         auto after=observe();
         if(!after || !validBuildingHeader(*after))return result;
         auto unchanged=*after;
-        if(rename) {
+        if(pump) {
+            if(!after->machinery || after->machinery->pumpManual!=pumpValue)return result;
+            unchanged.machinery->pumpManual=before.machinery->pumpManual;
+        } else if(rename) {
             if(after->customName!=name)return result;
             unchanged.customName=before.customName;unchanged.nativeName=before.nativeName;unchanged.headerName=before.headerName;
         } else {

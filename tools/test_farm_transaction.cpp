@@ -434,6 +434,26 @@ TEST_CASE("contents appearance changes revision and rejects missing instrument f
     value.rows[0].appearance->instrumentFamily=-1;value.revision=buildingContentsRevision(value);CHECK_FALSE(validBuildingContents(value));
 }
 
+TEST_CASE("pump setting guards revision and confirms only the intended effect") {
+    using namespace df3d_production;
+    for(int fault=0;fault<8;++fault) {
+        BuildingHeaderObservation before;before.id=42;before.type=33;before.stage=before.maxStage=1;
+        before.nativeName=before.headerName="Screw Pump";before.machinery.emplace();
+        before.machinery->pumpManual=0;before.machinery->pumpDirection=0;
+        if(fault==2)before.removing=true;
+        before.revision=buildingHeaderRevision(before);auto after=before;int calls=0;
+        const auto result=finishBuildingHeaderEdit(before,before.revision+(fault==1),BuildingHeaderOperation::PumpManual,"",[&]{
+            ++calls;if(fault==3)return false;if(fault==4)throw 1;
+            after.machinery->pumpManual=fault==5?0:1;
+            if(fault==6)after.jobs.push_back({1,2,0});
+            after.revision=buildingHeaderRevision(after);return true;
+        },[&]{return std::optional<BuildingHeaderObservation>(after);},fault==7?0:1);
+        const auto expected=fault==0 || fault==7?BuildingHeaderOutcome::Completed:
+            fault==1?BuildingHeaderOutcome::Stale:fault==2 || fault==3?BuildingHeaderOutcome::Rejected:BuildingHeaderOutcome::Unknown;
+        CAPTURE(fault);CHECK(result.outcome==expected);CHECK(calls==((fault==1 || fault==2 || fault==7)?0:1));
+    }
+}
+
 TEST_CASE("building header actions reject stale authority and uncertain effects") {
     using namespace df3d_production;
     for(auto operation:{BuildingHeaderOperation::Rename,BuildingHeaderOperation::Remove,BuildingHeaderOperation::CancelRemoval}) {

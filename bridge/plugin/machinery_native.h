@@ -1,4 +1,5 @@
 #pragma once
+#include "machinery_body.h"
 #include "df/building.h"
 #include "df/building_gear_assemblyst.h"
 #include "df/building_screw_pumpst.h"
@@ -9,13 +10,6 @@
 #include <optional>
 
 namespace df3d_production {
-enum class MachineryStatus : uint8_t { NoNetwork, Active, Inactive, FrozenHere, FrozenElsewhere };
-struct MachineryBody {
-    int32_t machineId=-1,produced=0,required=0;
-    MachineryStatus status=MachineryStatus::NoNetwork;
-    bool stableFoundation=false,disengaged=false;
-    int8_t pumpManual=-1,pumpDirection=-1;
-};
 inline bool machineryBuildingType(df::building_type type) {
     return type==df::building_type::ScrewPump || type==df::building_type::GearAssembly ||
         type==df::building_type::AxleHorizontal || type==df::building_type::AxleVertical ||
@@ -53,6 +47,21 @@ inline std::optional<MachineryBody> machineryBody(df::building* building) {
         value.pumpManual=pump->pump_manually?1:0;value.pumpDirection=int8_t(pump->direction);
         if(value.pumpDirection<0 || value.pumpDirection>3)return {};
     }
+    if(!validMachineryBody(value,int(building->getType())))return {};
     return value;
+}
+inline bool setPumpManual(df::building* building,bool desired) {
+    if(!building || building->getType()!=df::building_type::ScrewPump)return false;
+    static const bool ready=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x11;++i){hash^=base[0x1add7d+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x49fc89bdd98d30c0);
+    }();
+    if(!ready)return false;
+    // Native inline checkbox only changes this simulation flag. The caller
+    // validates identity, revision and lifecycle before entering the mutation.
+    static_cast<df::building_screw_pumpst*>(building)->pump_manually=desired;
+    return true;
 }
 }

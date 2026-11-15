@@ -38,6 +38,16 @@ func ready() -> void:
 	setup();model.open(278);service.poll();reply(snapshot())
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
+	for wrong_receipt in [false,true]:
+		setup();model.open(278);service.poll()
+		var pump:=snapshot();pump.type=33
+		pump.machinery={"machine_id":-1,"produced":0,"required":0,"status":0,"stable_foundation":true,"disengaged":false,"pump_manual":0,"pump_direction":0}
+		reply(pump);model.set_pump_manual(true);service.poll()
+		var count: int=world.calls.size();model.set_pump_manual(false);service.poll()
+		check(world.calls.size()==count and world.calls[-1].request.item_value==1,"pending pump input cannot change submitted intent")
+		pump.revision+=1;pump.machinery.pump_manual=0 if wrong_receipt else 1
+		reply(pump,C.FarmEditOutcome.Completed,C.FarmOperation.PumpManual)
+		check(model.phase==(Model.Phase.Unknown if wrong_receipt else Model.Phase.Ready),"pump receipt must confirm explicit setting")
 	for kind in [33,40,41,42,43,44,50]:
 		var machine:=snapshot();machine.type=kind
 		check(not Model.valid_snapshot(machine,278),"machinery requires body")

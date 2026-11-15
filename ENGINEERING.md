@@ -9821,6 +9821,16 @@ flags1 mask; name clipping belongs to presentation. Source saves are unchanged,
 DF41876 exits unsaved, capped30FPS with sampled GPU49C. Bridge build and core19
 pass. funerary_reference.card_reference retains outputs and screenshot hashes.
 
+Management225 appends missing_building_id to BuildingHeaderState. Its default-1
+means no deletion fact. A nonnegative identity is valid only for an Ok
+ProductionInspect read without a snapshot, with outcomeNone/operationCrop;
+mutations cannot report deletion through this field. The consumer must match
+the missing identity to its requested building before retiring local ownership.
+Both schema defaults and the mailbox are225 (`Local\df3d_management_v225`);
+bridge, client and extension must be rebuilt together. Earlier recordings
+contain no missing-target authority. This contract does not itself implement
+the producer or panel retirement; native demolition evidence is recorded below.
+
 Management224 appends optional FuneraryBodySnapshot to the shared building
 header. It carries native resting-place/memorial captions, Tomb identity/name,
 native notices, deceased text and owned owner appearance. Coffin3 and Slab46

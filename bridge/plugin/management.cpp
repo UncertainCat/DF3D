@@ -1270,7 +1270,7 @@ void publish() {
       snapshot=m::CreateBuildingHeaderSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,
         b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance),funerary);
     }
-    buildingHeader=m::CreateBuildingHeaderState(b,snapshot,state.outcome,state.operation);
+    buildingHeader=m::CreateBuildingHeaderState(b,snapshot,state.outcome,state.operation,state.missingBuildingId);
   }
   flatbuffers::Offset<m::WorkshopOrdersState> workshopOrders;
   if(production.workshopOrders) {

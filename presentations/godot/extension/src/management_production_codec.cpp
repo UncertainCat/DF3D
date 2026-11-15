@@ -252,6 +252,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   }
   if(p.buildingHeader) {
     const auto& state=*p.buildingHeader;Dictionary headerState;headerState["outcome"]=int(state.outcome);headerState["operation"]=int(state.operation);
+    headerState["missing_building_id"]=state.missingBuildingId;
     if(state.snapshot) {
       const auto& f=*state.snapshot;Dictionary value;
       value["id"]=f.id;value["type"]=f.type;value["revision"]=int64_t(f.revision);value["stage"]=f.stage;value["max_stage"]=f.maxStage;

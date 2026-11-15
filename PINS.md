@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management225 adds explicit missing-building identity to header reads. A confirmed
+missing target is an Ok read with no snapshot; failed reads and edit outcomes
+remain distinct. Rebuild bridge and client together; the defaults and mailbox
+are225 (`Local\df3d_management_v225`). Earlier recordings imply no deletion fact.
+
 Management224 adds optional native funerary body facts to building headers:
 coffin owner/Tomb captions, notices, memorial subject and owner artwork. Rebuild
 bridge and client together; `Local\df3d_management_v224` isolates223. Earlier

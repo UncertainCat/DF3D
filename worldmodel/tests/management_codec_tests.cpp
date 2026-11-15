@@ -4456,6 +4456,26 @@ TEST_CASE("building header receipts preserve authority and reject malformed stat
   }
 }
 
+TEST_CASE("missing building identity is confirmed read authority only") {
+  for(int id:{0,220})for(int fault=0;fault<8;++fault) {
+    CAPTURE(id);CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
+    auto snapshot=wire::CreateBuildingHeaderSnapshot(b,220,10,1,1,1,
+      b.CreateString(""),b.CreateString("native"),b.CreateString("Native"),false,false,false,0);
+    auto header=wire::CreateBuildingHeaderState(b,fault==1?snapshot:0,
+      fault==2?wire::FarmEditOutcome::Rejected:wire::FarmEditOutcome::None,
+      fault==3?wire::FarmOperation::Remove:wire::FarmOperation::Crop,fault==4?-2:id);
+    wire::ProductionStateBuilder prod(b);prod.add_building_header(header);auto payload=prod.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);
+    state.add_action(fault==5?wire::ManagementAction::FarmEdit:wire::ManagementAction::ProductionInspect);
+    state.add_status(fault==6?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);
+    if(fault==7)state.add_schema_version(224);
+    b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){const auto decoded=codec::decodeProduction(value->production());REQUIRE(decoded.buildingHeader);
+      CHECK(decoded.buildingHeader->missingBuildingId==id);CHECK_FALSE(decoded.buildingHeader->snapshot);}
+  }
+}
+
 TEST_CASE("funerary bodies retain native facts and reject mixed identities") {
   for(int type:{3,46})for(int fault=0;fault<10;++fault) {
     flatbuffers::FlatBufferBuilder b;

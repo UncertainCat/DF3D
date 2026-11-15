@@ -183,6 +183,7 @@ struct BuildingHeaderSnapshot {
 };
 struct BuildingHeaderState {
   std::optional<BuildingHeaderSnapshot> snapshot;
+  int32_t missingBuildingId=-1;
   df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
   df3d::mirror::FarmOperation operation=df3d::mirror::FarmOperation::Crop;
 };

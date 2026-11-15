@@ -188,8 +188,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 224;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v224";
+inline constexpr uint32_t kManagementVersion = 225;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v225";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -2839,6 +2839,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
          (p->jobs() && p->jobs()->size()) || (p->crops() && p->crops()->size()) ||
          (p->seasonal_crops() && p->seasonal_crops()->size()) || (p->detail() && p->detail()->size()))return "mixed building header response";
       const auto* f=state->snapshot();const auto outcome=state->outcome();const auto op=state->operation();
+      const bool missing=state->missing_building_id()>=0;
+      if(state->missing_building_id()<-1 || (missing && (f || s.action()!=ManagementAction::ProductionInspect)))return "invalid missing building authority";
       if(static_cast<uint8_t>(outcome)>4)return "invalid building header outcome";
       if(f) {
         const auto text=[](const flatbuffers::String* t,bool empty){return t && t->size()<=1536 && (empty || t->size()>0) && t->str().find('\0')==std::string::npos;};
@@ -2867,7 +2869,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         }
       }
       if(s.action()==ManagementAction::ProductionInspect) {
-        if(outcome!=FarmEditOutcome::None || op!=FarmOperation::Crop || ((s.status()==ManagementStatus::Ok)!=(f!=nullptr)))return "invalid building header read";
+        if(outcome!=FarmEditOutcome::None || op!=FarmOperation::Crop || ((s.status()==ManagementStatus::Ok)!=(f!=nullptr || missing)))return "invalid building header read";
       } else if(s.action()==ManagementAction::FarmEdit) {
         if(f && f->type()!=0 && f->type()!=1 && f->type()!=2 && f->type()!=3 && f->type()!=46 && f->type()!=11 && f->type()!=12 && f->type()!=14 && f->type()!=15 && f->type()!=51 && f->type()!=52 && f->type()!=54 && f->type()!=8 && f->type()!=10 && f->type()!=13 && f->type()!=5)return "unsupported building header edit target";
         if(outcome==FarmEditOutcome::None)return "missing building header outcome";

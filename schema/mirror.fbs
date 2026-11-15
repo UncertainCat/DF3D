@@ -1701,6 +1701,7 @@ table BuildingHeaderState {
   snapshot:BuildingHeaderSnapshot;
   outcome:FarmEditOutcome;
   operation:FarmOperation;
+  missing_building_id:int32 = -1;
 }
 table WorkshopAssignedWorker {
   id:int32 = -1; caption:string; specialization_visible:bool;
@@ -2558,7 +2559,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 224;
+  schema_version:uint32 = 225;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2631,7 +2632,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 224;
+  schema_version:uint32 = 225;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

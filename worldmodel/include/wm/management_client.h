@@ -426,6 +426,7 @@ struct BuildingHeaderSnapshot {
 };
 struct BuildingHeaderState {
   std::optional<BuildingHeaderSnapshot> snapshot;
+  int32_t missingBuildingId=-1;
   FarmEditOutcome outcome=FarmEditOutcome::None;
   FarmOperation operation=FarmOperation::Crop;
 };

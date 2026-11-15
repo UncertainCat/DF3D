@@ -9,6 +9,7 @@ var phase:=Phase.Closed
 var depot_id: int=-1
 var category: int=-1
 var revision: int=0
+var appraisal: int=-1
 var query: String=""
 var sort_by_distance:=true
 var pending_on_top:=true
@@ -79,7 +80,7 @@ func dispose() -> void:
 	if service!=null and service.session_changed.is_connected(_session_changed):service.session_changed.disconnect(_session_changed)
 	service=null
 func _clear() -> void:
-	revision=0;categories=[];groups=[];items={};appearances={};_appearance_queue=[];_appearance_id=-1
+	revision=0;appraisal=-1;categories=[];groups=[];items={};appearances={};_appearance_queue=[];_appearance_id=-1
 	if _inspection!=null:_inspection.close()
 func request_appearances(ids: Array) -> void:
 	if phase!=Phase.Ready or _inspection==null or ids.size()>64:return
@@ -196,6 +197,7 @@ func _text(value: Variant) -> bool:return typeof(value)==TYPE_STRING and not val
 func _valid(value: Dictionary,intent: Dictionary) -> bool:
 	if value.get("depot_id")!=intent.depot_id or value.get("category")!=intent.category or not _integer(value.get("revision"),1,9223372036854775807):return false
 	if intent.expected_revision!=0 and value.revision!=intent.expected_revision:return false
+	if not _integer(value.get("appraisal"),0,2147483647):return false
 	for field in ["categories","groups","items"]:
 		if typeof(value.get(field))!=TYPE_ARRAY:return false
 	if value.categories.size()>93 or value.groups.size()>65536 or value.items.size()>64:return false
@@ -220,6 +222,7 @@ func _valid(value: Dictionary,intent: Dictionary) -> bool:
 		ids[row.id]=true
 		if not _integer(row.get("distance"),-2147483648,2147483647) or not _integer(row.get("value"),-2147483648,2147483647) or not _integer(row.get("tag"),-2,3) or typeof(row.get("prohibited"))!=TYPE_BOOL:return false
 		if intent.expected_revision==0 and row.tag not in [0,2,3]:return false
+		if typeof(row.get("value_caption"))!=TYPE_STRING or row.value_caption.to_utf8_buffer().size()>256 or (row.value_caption.is_empty()!=(value.appraisal==0)):return false
 	if intent.category==-1 and (not value.groups.is_empty() or not value.items.is_empty()):return false
 	return ids.size()==intent.item_ids.size() and intent.item_ids.all(func(id):return ids.has(id))
 func _read(ids: Array=[]) -> void:
@@ -234,7 +237,7 @@ func _read(ids: Array=[]) -> void:
 		var value: Variant=result.get("depot_goods",{})
 		if typeof(value)!=TYPE_DICTIONARY or result.get("outcome")=="unknown" or result.get("status")!=C.ManagementStatus.Ok or result.get("action")!=intent.action or not _valid(value,intent):
 			_clear();last_result=result.duplicate(true);phase=Phase.Unknown if result.get("outcome")=="unknown" else Phase.Rejected;changed.emit();return
-		revision=value.revision;categories=value.categories.duplicate(true);groups=value.groups.duplicate(true);items={}
+		revision=value.revision;appraisal=value.appraisal;categories=value.categories.duplicate(true);groups=value.groups.duplicate(true);items={}
 		# Native group-label clicks change only current_type_a_expanded.
 		# Search/detail/draft projections retain it; category/options rebuild it.
 		for row in groups:

@@ -1,5 +1,5 @@
 -- Diagnostic-only broker/skill fixture in a paused disposable save.
-local out,view,b,capture,click=...
+local out,view,b,capture,click,compare_selection=...
 local gui=require('gui');local json=require('json');local g=df.global.gps
 local menu=df.global.game.main_interface.assign_trade
 local assignments=df.global.plotinfo.main.fortress_entity.assignments_by_type[df.entity_position_responsibility.TRADE]
@@ -50,6 +50,7 @@ local function sample(label,known)
  if known then assert(visible>0,'No value rows observed')end
  assert(menu.open and #b.jobs==0 and df.global.world.frame_counter==frame)
  capture('depot-valuation-'..label)
+ if os.getenv('DF3D_DEPOT_GOODS_WIRE')=='1' then compare_selection('valuation-'..label,facts)end
  result.cases[#result.cases+1]={label=label,category=menu.current_type,appraisal=facts.appraisal,sort_by_distance=menu.sort_by_distance,ids=facts.ids,value_captions=facts.value_captions,visible_values=visible,groups=facts.groups}
 end
 local ok,err=xpcall(function()

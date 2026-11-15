@@ -23,7 +23,7 @@ func run() -> void:
 	if label.is_empty():label="anvils"
 	var recorded: Dictionary=integers(JSON.parse_string(FileAccess.get_file_as_string(directory+"/depot-goods-wire-"+label+"-result.json")))
 	var value: Dictionary=recorded.snapshot
-	var model=Model.new();model.depot_id=value.depot_id;model.category=value.category;model.revision=value.revision
+	var model=Model.new();model.depot_id=value.depot_id;model.category=value.category;model.revision=value.revision;model.appraisal=value.get("appraisal",-1)
 	model.categories=value.categories;model.groups=value.groups
 	for row in value.items:model.items[row.id]=row
 	for id in recorded.get("appearances",{}):model.appearances[int(id)]=recorded.appearances[id]

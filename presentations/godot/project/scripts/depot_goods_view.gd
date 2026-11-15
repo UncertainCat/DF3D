@@ -54,6 +54,7 @@ func refresh() -> void:
 	category_canvas.size.x=category_width()+(0 if scrollbar.visible else 16)
 	item_scrollbar.page=maxi(0,int(item_canvas.size.y/12));item_scrollbar.set_rows(state.row_count()*3,state.first_item)
 	state.first_item=item_scrollbar.first
+	search.size.x=maxf(0,size.x-category_width()-232-header_shift())
 	item_canvas.size.x=maxf(0,size.x-category_width()-88)+(0 if item_scrollbar.visible else 16)
 	page=state.page(int(item_scrollbar.first/3),ceili(item_canvas.size.y/36.0)+1)
 	var retained: Dictionary={}
@@ -89,6 +90,9 @@ func _icon(canvas: Control,token: String,rect: Rect2) -> void:
 	var texture: Texture2D=art.texture(token)
 	if texture!=null:canvas.draw_texture_rect(texture,rect,false)
 func exclusion_rect() -> Rect2:return Rect2(search.position+Vector2(search.size.x+8,0),Vector2(32,36))
+func header_shift() -> int:return 16 if item_scrollbar!=null and item_scrollbar.visible else 0
+func sort_rect(distance: bool) -> Rect2:return Rect2(exclusion_rect().position+Vector2(32 if distance else 64,0),Vector2(32,36))
+func select_all_rect() -> Rect2:return Rect2(size.x-64-header_shift(),24,32,36)
 func _draw_categories() -> void:
 	for index in range(scrollbar.first,mini(state.categories.size(),scrollbar.first+scrollbar.page)):
 		var row: Dictionary=state.categories[index];var y: int=(index-scrollbar.first)*36
@@ -114,6 +118,7 @@ func _draw_items() -> void:
 			if icon!=null and y>=0 and y+36<=item_canvas.size.y:item_canvas.draw_texture_rect(icon,Rect2(2,y+2,32,32),false)
 			_text(item_canvas,row.caption,Vector2(56,y+24))
 			_text(item_canvas,"Distance: "+str(row.distance),Vector2(item_canvas.size.x-208,y+24),10)
+			if state.appraisal>0:_text(item_canvas,"Value: "+row.value_caption,Vector2(item_canvas.size.x-208,y+36),14)
 			# Native38bdc8..38bde0 includes staged1 in the hauling indicator.
 			if row.prohibited:_icon(item_canvas,"ASSIGN_TRADE_PROHIBITED",Rect2(item_canvas.size.x-88,y,24,36))
 			if row.tag in [1,2,3]:_icon(item_canvas,"ASSIGN_TRADE_IN_DEPOT" if row.tag==3 else "ASSIGN_TRADE_BEING_BROUGHT",Rect2(item_canvas.size.x-64,y,24,36))
@@ -124,7 +129,10 @@ func _draw() -> void:
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
 	if search!=null:
 		_icon(self,"ASSIGN_TRADE_CULLING_MANDATES_ON" if state.exclude_prohibited else "ASSIGN_TRADE_CULLING_MANDATES_OFF",exclusion_rect())
-		_icon(self,"SELECT_ALL",Rect2(size.x-64,24,32,36))
+		if state.appraisal>0:
+			_icon(self,"ASSIGN_TRADE_SORT_BY_DISTANCE_ON" if state.sort_by_distance else "ASSIGN_TRADE_SORT_BY_DISTANCE_OFF",sort_rect(true))
+			_icon(self,"ASSIGN_TRADE_SORT_BY_VALUE_OFF" if state.sort_by_distance else "ASSIGN_TRADE_SORT_BY_VALUE_ON",sort_rect(false))
+		_icon(self,"SELECT_ALL",select_all_rect())
 func _input(event: InputEvent) -> void:
 	if not allowed():return
 	if event is InputEventKey and event.pressed:
@@ -144,7 +152,10 @@ func _gui_input(event: InputEvent) -> void:
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	search.release_focus()
 	if exclusion_rect().has_point(event.position):state.set_options(state.sort_by_distance,state.pending_on_top,not state.exclude_prohibited);return
-	if Rect2(size.x-64,24,32,36).has_point(event.position):state.toggle_all();return
+	if select_all_rect().has_point(event.position):state.toggle_all();return
+	if state.appraisal>0:
+		if sort_rect(true).has_point(event.position):state.set_options(true,state.pending_on_top,state.exclude_prohibited);return
+		if sort_rect(false).has_point(event.position):state.set_options(false,state.pending_on_top,state.exclude_prohibited);return
 	var local: Vector2=event.position-item_canvas.position
 	if Rect2(Vector2.ZERO,item_canvas.size).has_point(local) and local.x>=item_canvas.size.x-40 and local.x<item_canvas.size.x-16:
 		var index: int=int((local.y+(item_scrollbar.first%3)*12)/36)

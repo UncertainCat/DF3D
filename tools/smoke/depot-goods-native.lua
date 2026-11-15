@@ -57,6 +57,7 @@ local function compare_selection(label,projection,draft,sort_draft)
  assert(projected_cells==menu.i_height,'Group projection differs from native height: '..label)
  if os.getenv('DF3D_DEPOT_GOODS_WIRE')=='1' then
   local expected={label=label,request={depot_id=b.id,category=menu.current_type,query=menu.item_filter,sort_by_distance=menu.sort_by_distance,pending_on_top=menu.pending_on_top,exclude_prohibited=menu.exclude_prohib,item_ids={}},categories={},groups={},items={}}
+  expected.appraisal=facts.appraisal
   if draft then
    local function choices(text)local rows={};for id,wanted in text:gmatch('(%d+):([01])')do rows[#rows+1]={id=tonumber(id),desired=wanted=='1'}end;return rows end
    expected.request.expected_revision=facts.revision -- decimal string preserves all64 bits through JSON
@@ -64,10 +65,13 @@ local function compare_selection(label,projection,draft,sort_draft)
   end
   for i,kind in ipairs(facts.categories)do expected.categories[#expected.categories+1]={type=kind,caption=facts.category_captions[i]}end
   for _,group in ipairs(facts.groups)do local row={};for k,v in pairs(group)do row[k=='ids' and 'item_ids' or k]=v end;expected.groups[#expected.groups+1]=row end
-  for i,entry in ipairs(menu.current_type_tgi)do if i>=64 then break end
+  local wanted={};local count=0
+  for _,group in ipairs(facts.groups)do if group.matches and group.expanded then for _,id in ipairs(group.ids)do if count<64 then wanted[id]=true;count=count+1 end end end end
+  for i,entry in ipairs(menu.current_type_tgi)do if wanted[entry.it.id] then
    expected.request.item_ids[#expected.request.item_ids+1]=entry.it.id
-   expected.items[#expected.items+1]={id=entry.it.id,caption=facts.item_captions[i+1],distance=entry.dist,value=entry.value,tag=entry.tag,prohibited=entry.prohibited}
-  end
+   local bytes={};for _,ch in ipairs(facts.value_captions[i+1])do bytes[#bytes+1]=string.char(ch)end
+   expected.items[#expected.items+1]={id=entry.it.id,caption=facts.item_captions[i+1],distance=entry.dist,value=entry.value,tag=entry.tag,prohibited=entry.prohibited,value_caption=dfhack.df2utf(table.concat(bytes))}
+  end end
   local file=assert(io.open(out..'/depot-goods-wire-expected.json','w'));file:write(json.encode(expected));file:close()
   local before_flags={};for _,entry in ipairs(menu.master_i_list.tgi)do before_flags[entry.it.id]=entry.it.flags.whole end
   capture('depot-goods-wire-'..label)
@@ -159,7 +163,7 @@ local ok,err=xpcall(function()
  compare_selection('anvils')
  if os.getenv('DF3D_DEPOT_VALUATION_NATIVE')=='1' then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-goods%-native.lua$','depot-valuation-native.lua')
-  result.valuation=assert(loadfile(source))(out,view,b,capture,click)
+  result.valuation=assert(loadfile(source))(out,view,b,capture,click,compare_selection)
  end
  if os.getenv('DF3D_DEPOT_SELECTION_PROVIDER')=='1' then
   click(150,130);compare_selection('bags');capture('depot-selection-bags')

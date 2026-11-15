@@ -30,7 +30,7 @@ func run() -> void:
 	var world=Df3dWorld.new();root.add_child(world)
 	if not world.load_assets(OS.get_environment("DF3D_DF_PATH")):quit(1);return
 	var service:=Service.new();var model=Model.new();model.service=service
-	var value:=snapshot("anvils");model.depot_id=value.depot_id;model.category=value.category;model.revision=value.revision
+	var value:=snapshot("anvils");model.depot_id=value.depot_id;model.category=value.category;model.revision=value.revision;model.appraisal=value.get("appraisal",-1)
 	model.categories=value.categories;model.groups=value.groups
 	for row in value.items:model.items[row.id]=row
 	model.phase=Model.Phase.Ready

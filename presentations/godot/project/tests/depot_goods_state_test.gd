@@ -16,7 +16,7 @@ var failures:=0
 func check(ok: bool,message: String) -> void:
 	if not ok:failures+=1;push_error(message)
 func snapshot(category: int=-1) -> Dictionary:
-	return {"depot_id":7,"revision":9007199254740993,"category":category,"categories":[{"type":45,"caption":"Synthetic anvils"}],"groups":[] if category==-1 else [{"subtype":-1,"subcat1":0,"subcat2":1,"amount":2,"caption":"Synthetic group","matches":true,"expanded":true,"flags":0,"item_ids":[11,12]}],"items":[]}
+	return {"depot_id":7,"revision":9007199254740993,"appraisal":0,"category":category,"categories":[{"type":45,"caption":"Synthetic anvils"}],"groups":[] if category==-1 else [{"subtype":-1,"subcat1":0,"subcat2":1,"amount":2,"caption":"Synthetic group","matches":true,"expanded":true,"flags":0,"item_ids":[11,12]}],"items":[]}
 func ready(service,state) -> void:
 	service.reply(state.ticket,snapshot())
 	service.reply(state.ticket,snapshot(45))
@@ -29,7 +29,7 @@ func commit_reply(service,ticket: int,outcome: int,patch: Dictionary={}) -> void
 func drafts(service,state) -> void:
 	state.open(7);ready(service,state);state.request_items([11,12])
 	var value:=snapshot(45);value.groups[0].flags=2
-	value.items=[{"id":11,"caption":"Synthetic first","distance":8,"value":20,"tag":0,"prohibited":false},{"id":12,"caption":"Synthetic second","distance":9,"value":20,"tag":0,"prohibited":false}]
+	value.items=[{"id":11,"caption":"Synthetic first","distance":8,"value":20,"tag":0,"prohibited":false,"value_caption":""},{"id":12,"caption":"Synthetic second","distance":9,"value":20,"tag":0,"prohibited":false,"value_caption":""}]
 	service.reply(state.ticket,value)
 	state.toggle_item(12)
 	var intent: Dictionary=service.calls[state.ticket].intent
@@ -111,7 +111,7 @@ func run() -> void:
 	check(state.page(2,1)==[{"id":12}] and state.page(3,2).is_empty(),"Viewport bounds omit preceding and trailing rows")
 	state.request_items([11]);var intent: Dictionary=service.calls[state.ticket].intent
 	check(intent.item_ids==[11] and state.groups.is_empty(),"Detail read retires old source")
-	var value:=snapshot(45);value.items=[{"id":11,"caption":"Synthetic item","distance":8,"value":20,"tag":2,"prohibited":false}]
+	var value:=snapshot(45);value.items=[{"id":11,"caption":"Synthetic item","distance":8,"value":20,"tag":2,"prohibited":false,"value_caption":""}]
 	service.reply(state.ticket,value)
 	check(state.items.has(11),"Requested native detail is published")
 	var count: int=service.next;state.request_items([11]);state.request_items([999]);state.request_items([12,12])
@@ -140,7 +140,7 @@ func run() -> void:
 	service.reply(state.ticket,value)
 	check(state.phase==State.Phase.Rejected,"Duplicate membership rejects")
 	state.open(7);ready(service,state);state.request_items([11]);value=snapshot(45)
-	value.items=[{"id":11,"caption":"Synthetic item","distance":8,"value":20,"tag":2,"prohibited":false}]
+	value.items=[{"id":11,"caption":"Synthetic item","distance":8,"value":20,"tag":2,"prohibited":false,"value_caption":""}]
 	service.reply(state.ticket,value);state.request_appearances([11]);artwork_ticket=service.next
 	state.close();service.reply(artwork_ticket,{})
 	check(service.detached.has(artwork_ticket) and state.appearances.is_empty() and not state.appearance_pending(),"Closing retires artwork ownership and late callbacks")

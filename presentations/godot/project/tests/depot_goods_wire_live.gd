@@ -93,7 +93,7 @@ func verify_controller(intent: Dictionary,snapshot: Dictionary) -> Dictionary:
 				if await settle_goods(model,service):
 					model.request_items(intent.item_ids)
 					if await settle_goods(model,service):
-						check(model.category==snapshot.category and model.revision==snapshot.revision,"Controller source identity differs")
+						check(model.category==snapshot.category and model.revision==snapshot.revision and model.appraisal==snapshot.appraisal,"Controller source identity/knowledge differs")
 						check(model.categories==snapshot.categories and model.groups==snapshot.groups,"Controller projection differs from native")
 						check(model.items.size()==snapshot.items.size(),"Controller detail count differs")
 						for row in snapshot.items:check(model.items.get(row.id)==row,"Controller detail differs")
@@ -145,7 +145,7 @@ func run() -> void:
 	var appearances: Dictionary={}
 	var commits: Array=[]
 	if check(response.get("status")==C.ManagementStatus.Ok and not snapshot.is_empty(),"Depot goods snapshot unavailable: "+str(response)):
-		check(snapshot.depot_id==intent.depot_id and snapshot.category==intent.category and snapshot.revision>0,"Depot goods identity differs")
+		check(snapshot.depot_id==intent.depot_id and snapshot.category==intent.category and snapshot.revision>0 and snapshot.appraisal==expected.appraisal,"Depot goods identity/knowledge differs")
 		for key in ["categories","groups","items"]:check(snapshot[key]==expected[key],"Depot goods "+key+" differs: "+str(snapshot[key]))
 		var again:=await request("depot_goods",intent)
 		check(again.get("depot_goods",{})==snapshot,"Repeated paused read changed source revision")

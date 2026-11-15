@@ -67,7 +67,7 @@ indicator for tags1/2, and DF3D now does too. The final pixel comparisons pass.
 Evidence: `completed_sheet_discovery_reference.depot_goods_draft_view_reference`.
 This combines live controller/effect evidence with recorded-snapshot render/input
 evidence; it is not live main-scene acceptance. Container expansion, option
-tooltips/sorting controls, large-list transport, ordinary hauling and full trade
+tooltips, large-list transport, ordinary hauling and full trade
 remain unfinished. Public depot routes stay hidden.
 
 Group-label clicks now collapse/expand local member rows, independently of the
@@ -96,8 +96,8 @@ and units; it is distinct from the depot header's first-assignment broker lookup
 `depotAppraisal` calls this native leaf, and `depotValueCaption` calls77f920 with
 the raw native value and effective skill. The formatter owns approximation,
 uncertainty marks and the CP437 currency glyph; DF3D must not reconstruct them.
-The owned read producer retains appraisal and per-item value captions internally;
-protocol234 does not expose them yet. There is no native menu input or mutation.
+Protocol235 exposes the owned producer's appraisal and per-item value captions
+to the viewer. There is no native menu input or mutation.
 
 Protected161400 on2026-11-15 verifies absent/missing/restored brokers and effective
 skills0/5/15 with a temporary, fully restored broker/skill fixture. Native clicks
@@ -110,8 +110,26 @@ is excluded from acceptance. Corrected hitboxes derive that offset from native
 list height. Owned DF44520 closes unsaved with source preservation, native30FPS
 and sampled GPU49C. Bridge build and all19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_goods_valuation_reference`.
-This qualifies the semantic leaves and native controls, not their still-pending
-Godot transport, value rendering, header layout or tooltip integration.
+This qualifies the semantic leaves and native controls. Protocol235 transport
+acceptance is documented above; tooltip integration remains unfinished.
+
+The staged Godot picker now renders native value captions and distance/value
+sorting buttons only when appraisal knowledge is available. Button clicks ask
+the native provider to reorder goods; the viewer does not reproduce valuation
+or sorting rules. Scrollable item lists shift the header controls16 pixels left
+and reduce the search width accordingly.
+
+The standalone rendered check against protected162250 snapshots dispatches real
+pointer clicks for both sorting modes at effective skills0/5/15, and verifies
+that absent-broker buttons are inert. Header and visible value-row pixel regions
+match native, including approximation, uncertainty and currency glyphs. Existing
+checkbox/close interaction checks also pass. Both graphical checks ran serially
+at30FPS without diagnostics and exited afterward. Evidence:
+`completed_sheet_discovery_reference.depot_goods_value_view_reference`.
+These recorded-snapshot rendering/input checks complement the live controller
+and effect checks; they do not establish live main-scene acceptance. Contained
+rows, option tooltips, large-list transport, complete artwork/resize acceptance,
+ordinary hauling and full trade remain unfinished. Public depot routes stay hidden.
 
 ## Depot goods commit transport migration
 
@@ -270,7 +288,7 @@ This establishes controller/transport behavior, not rendered picker acceptance.
 
 `depot_goods_view.gd` stages the two-column frame, category navigation, search,
 scrolling and native group/item captions with distance values. It has no public
-owner or route. Full item-artwork coverage, contained rows, sorting controls,
+owner or route. Full item-artwork coverage, contained rows,
 tooltips and interactive resize acceptance remain unfinished.
 `depot_goods_view_capture.gd` loads the recorded Anvils reply from protected144747
 and the installed assets. At1200x800 its headless geometry check passes; the

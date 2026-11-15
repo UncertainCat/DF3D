@@ -3435,7 +3435,8 @@ df::building_actual* contentsBuilding(int32_t id,bool editing=false) {
   if(!building)return nullptr;
   const auto type=building->getType();
   if(type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
-     (editing || (type!=df::building_type::Workshop && type!=df::building_type::Furnace)))return nullptr;
+     (editing || (type!=df::building_type::Workshop && type!=df::building_type::Furnace)) &&
+     !df3d_production::observePendingBuilding(building))return nullptr;
   auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
   return tile&&!tile->bits.hidden?building:nullptr;
 }

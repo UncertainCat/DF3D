@@ -13707,6 +13707,91 @@
             }
           }
         ]
+      },
+      "presentation_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-220919",
+        "owned_df_pid": 21072,
+        "status": "passed_with_known_issues: rendering-thread/finalize/two-ObjectDB diagnostics",
+        "source_save_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Actual main-scene unfinished Statue965 sheet: three full-panel crops match native, including component artwork. Pointer resume/suspend/cancel and retirement pass. Contents editing, other building artwork, nonzero-stage removal handoff and ordinary map entry remain unfinished.",
+        "hashes": {
+          "chest-scene-pending-initial.png": "2ac468cc66c890dc11ba9880fa869518888afb4e6655504da48abec06457b4eb",
+          "chest-scene-pending-suspended-false.png": "472897cb5d1ba05e346efa4fb86810e7cbccfb8fa9ba716a7c0b41a3edcc0179",
+          "chest-scene-pending-suspended-true.png": "2ac468cc66c890dc11ba9880fa869518888afb4e6655504da48abec06457b4eb",
+          "workshop-basic-building-pending-1.png": "d691cf94fb3c46fa3fc5f34cfd3fbf7bbf8d27696642d2e766172f21dead4f45",
+          "workshop-basic-building-pending-2.png": "584b5e8e3086ac4cb5c76305330167a91449e1fdf6e7ddf9a76a8b82af4a52d5",
+          "workshop-basic-building-pending-cancel.png": "11af5dab99f0add091ad12264f4cb9a355a8af355ae20e7f3d691ae82e626693",
+          "workshop-basic-building-pending.png": "584b5e8e3086ac4cb5c76305330167a91449e1fdf6e7ddf9a76a8b82af4a52d5",
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
+      },
+      "removal_return_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-221104",
+        "owned_df_pid": 42196,
+        "source_save_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Native Remove building then Cancel removal on the controlled stage1 farm leaves stage1 with no jobs. The suspend control has no first job to toggle. Native54c130 removes jobs without restoring ConstructBuilding. No correction authorized or implemented.",
+        "observation": {
+          "after": {
+            "jobs": [],
+            "lines": [
+              {
+                "text": "                                                            Farm Plot",
+                "y": 6
+              },
+              {
+                "text": "                                                      Partially constructed.",
+                "y": 11
+              },
+              {
+                "text": "                                                      Construction inactive.",
+                "y": 13
+              },
+              {
+                "text": "                                                        Suspend construction                                                        Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "                                                        Remove building",
+                "y": 19
+              }
+            ],
+            "max_stage": 3,
+            "occupancy": 1,
+            "stage": 1
+          },
+          "before": {
+            "lines": [
+              {
+                "text": "                                                            Farm Plot",
+                "y": 6
+              },
+              {
+                "text": "                                                      Slated for removal",
+                "y": 11
+              },
+              {
+                "text": "                                                      Removal inactive.",
+                "y": 13
+              },
+              {
+                "text": "                                                        Cancel removal                                                              Elevation 36",
+                "y": 16
+              }
+            ],
+            "max_stage": 3,
+            "stage": 1
+          }
+        },
+        "hashes": {
+          "workshop-pending-removal-cancelled.png": "786a5f08a2d9a5d748bc7f5f16571e0ba5c4b5f355f566b00bb0a2ad0668fc10",
+          "workshop-basic-building-pending-cancel.png": "e745eb68ccfc3cbe36c84ad0b844697660fda8d9f973ccaec127283922d6786e",
+          "workshop-native.json": "4a61e460cb13576b8e4a4d599d0cef0082fd506df5cda69b7d522375bbe15f3e",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

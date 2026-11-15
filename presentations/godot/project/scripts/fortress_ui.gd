@@ -208,7 +208,7 @@ func controller(id: String):
 		panel.inspect_requested.connect(func(tile,unit_id):
 			if host.allows_panel_input(panel) and controller("inspector").open_target(tile,1,unit_id,true):focus_tile(tile))
 		controllers[id]=panel;return panel
-	if id in ["farm","chest","workshop","door"]:
+	if id in ["farm","chest","workshop","door","pending_building"]:
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		ensure_follow()
 		panel.holder_requested.connect(open_building_holder)

@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Cancelling demolition of a controlled partly constructed farm leaves it unfinished with no construction job. | No correction authorized or implemented; represent the native idle state when completing this panel. | Protected221104 on2026-11-14: stage1 FarmPlot1490, Remove building, then Cancel removal. Stage remains1/3 and jobs becomes empty. Native54c130 deletes jobs without recreating ConstructBuilding. Repro and limits below in pending_construction_reference.removal_return_reference. |
 | Craftsdwarf's Bone page creates wood jobs for qualifying bone tools. | No correction approved; preserve native's wood category and input requirement. | Controlled native223829 on2026-11-12 temporarily enables BONE_MAT on civilization tool10 ITEM_TOOL_NEST_BOX. Bone page shows Make wooden nest box; clicking creates job216/category2 with WOOD5 input. Native8c9061 writes2 after testing BONE_MAT16. Viewer224539 matches. Flag and queues restored, source saves preserved. `native_workshop.json.craft_runtime_reference`. |
 | Workshop Connections collapses at narrow widths, overlapping Done/Cancel with Add controls and spilling captions outside the panel. | No correction approved; preserve native layout and Add-button input priority. | Protected143039/143417 on2026-11-14: panel widths112 at960x600 and64 at912x552, versus328 at1200x800/1600x900. Resize a workshop's open Connections list, then click the Add Give position under Done: the native picker opens. Renderer33579a..3357de limits width to the space left of the workshop sheet. `native_workshop.json.workshop_connections_reference.responsive_reference`; eight viewer crops match. |
 | Zone Active toggles OR both low bits into the settings union regardless of zone type, changing unrelated options. | Implemented approved correction: change only Active, preserve zone settings, and omit the unrelated DFHack membership rebuild. | Independently reproduced through native clicks in protected170600 on2026-11-12: Tomb permissions both enabled to disabled, archery dir_x1 to3; re-enabling retains the corruption. Viewer171315 passes10 clicks across5 types and stale-edit rejection. `native_zone_defaults.json.active_toggle_reference`; reproduction below. |
@@ -9896,6 +9897,35 @@ sampled GPU60C/22–33%; clients emit only the known rendering-thread notice.
 Core, bridge and extension builds and all19 root checks pass. Evidence lives
 in pending_construction_reference.transport_reference. Rendered controls,
 component contents, removal-sheet handoff and ordinary map entry remain pending.
+
+Staged pending_building_panel now renders the captured construction controls
+within the shared native building frame and reads component contents through
+the owned contents provider. Unfinished targets are admitted only through the
+pending-building observer; completed-building admission is unchanged. Statue
+components now use the existing native statue appearance provider. Protected
+220919 on2026-11-14 compares three complete main-scene Statue965 panels against
+native (initial suspended, resumed, suspended again), including the component
+picture. Pointer Resume, Suspend and Cancel reach native effects and retire
+the panel. Bridge build and19 root checks pass. DF21072 exits unsaved with
+source preservation,30FPS and sampled GPU61C/24%. Known Godot rendering-thread,
+finalize and two-ObjectDB diagnostics remain. Evidence:
+pending_construction_reference.presentation_reference. This is not public
+map-entry acceptance: contents editing and the removal handoff remain unfinished;
+only farm/statue header artwork is mapped in the staged view.
+
+Removal return discovery221104: use the same controlled stage1 farm setup as
+advanced_reference, click Remove building, then Cancel removal. The first
+screen is Slated for removal / Removal inactive.; the second is Partially
+constructed. / Construction inactive. Stage stays1/3 but all jobs are gone.
+Native54c130 deletes every building job and restores occupancy only for complete
+buildings; it does not recreate ConstructBuilding. The suspend handler's empty
+job check then makes its button a no-op. This is a controlled-state native
+defect, not evidence of natural construction progression. No correction is
+authorized. The pending observer currently requires a construction job and
+must be extended to represent removal and idle/no-job states before promotion.
+DF42196 exits unsaved with source preservation. The native-bug register tracks
+this separately; pending_construction_reference.removal_return_reference retains
+the before/after captions, stage, jobs and screenshots.
 
 The audited building-type dispatch maps Door8 to inline1af741..1af807.
 It rejects flags0x2c (invader/intruder/mechanism control), allows forbidding only

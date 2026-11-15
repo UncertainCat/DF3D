@@ -389,6 +389,14 @@ local ok,err=xpcall(function()
      if stage==0 then assert(not cancelled.building_exists and #cancelled.jobs_remaining==0,'Native cancel retained unstarted building/jobs')
      else assert(cancelled.building_exists and #cancelled.remaining_jobs==1 and cancelled.remaining_jobs[1].type=='DestroyBuilding','Native started cancellation did not queue removal')end
      result.basic_building_reference.pending.cancellation=cancelled;shot('basic-building-pending-cancel')
+     if stage>0 and os.getenv('DF3D_PENDING_REMOVAL_REFERENCE')=='1'then
+      local removal={before={stage=remaining:getBuildStage(),max_stage=remaining:getMaxBuildStage(),lines=lines()}}
+      assert(click_label('Cancel removal'),'Missing native cancellation of queued removal')
+      local current=assert(df.building.find(id),'Cancelling removal deleted the building')
+      local jobs={};for _,job in ipairs(current.jobs)do jobs[#jobs+1]={id=job.id,type=df.job_type[job.job_type],flags=job.flags.whole}end
+      removal.after={stage=current:getBuildStage(),max_stage=current:getMaxBuildStage(),jobs=jobs,lines=lines(),occupancy=occupancy()}
+      result.basic_building_reference.pending.removal=removal;shot('pending-removal-cancelled')
+     end
     end
    end
   end end

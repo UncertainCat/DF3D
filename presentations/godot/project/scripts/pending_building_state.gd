@@ -36,6 +36,8 @@ func edit(operation: Operation) -> void:
 	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or operation not in [Operation.Resume,Operation.Suspend,Operation.Cancel]:return
 	phase=Phase.Applying
 	_send({"action":C.ManagementAction.FarmEdit,"pending_building":true,"building_id":building_id,"expected_revision":snapshot.revision,"pending_operation":operation})
+func refresh() -> void:
+	if building_id>=0 and ticket==0:open(building_id)
 func _send(intent: Dictionary) -> void:
 	var owner:=generation
 	ticket=service.submit("production",intent,func(received,result,sent):

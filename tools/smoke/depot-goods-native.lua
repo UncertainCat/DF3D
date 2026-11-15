@@ -192,6 +192,29 @@ local ok,err=xpcall(function()
    assert(apply(0,0)==1 and #b.jobs==0 and apply(0,0)==1)
    assert(df.item.find(ids[1]).flags.whole==flags[1] and df.item.find(ids[2]).flags.whole==flags[2])
    result.batch_hauling={ids=ids,native=native,provider=created,rejected_before_mutation=3,stale_cancel_preserved=true,duplicate_preserved=true,cancel_restored=true}
+   if os.getenv('DF3D_DEPOT_COMMIT_NATIVE')=='1' then
+    local function revision()
+     local output,code=dfhack.run_command_silent('df3d','depot-commit-probe',tostring(b.id));assert(code==0,output)
+     local value=json.decode(output).revision;assert(type(value)=='string' and value~='0');return value
+    end
+    local function commit(token,wanted,first,second)
+     local output,code=dfhack.run_command_silent('df3d','depot-commit-probe',tostring(b.id),token,tostring(wanted),tostring(first or ids[1]),tostring(second or ids[2]))
+     assert(code==0,output)
+     assert(not menu.open and df.global.world.frame_counter==frame and df.global.game.main_interface.view_sheets.active_id==selected)
+     return json.decode(output)
+    end
+    local initial=revision()
+    local stale=commit('1',1);assert(stale.stale and stale.outcome==0 and stale.revision==initial and #b.jobs==0)
+    for _,last in ipairs{ids[1],2147483647}do local bad=commit(initial,1,ids[1],last);assert(not bad.stale and bad.outcome==0 and #b.jobs==0)end
+    local applied=commit(initial,1);assert(applied.outcome==1 and not applied.stale and applied.revision==initial and #b.jobs==2)
+    local jobs=json.encode(job_facts());local repeat_reply=commit(initial,1)
+    assert(repeat_reply.stale and repeat_reply.outcome==0 and json.encode(job_facts())==jobs,'Stale source replay changed jobs')
+    local pending=revision();assert(pending~=initial and pending==repeat_reply.revision)
+    local cancelled=commit(pending,0);assert(cancelled.outcome==1 and not cancelled.stale and #b.jobs==0)
+    local late=commit(pending,0);assert(late.stale and late.outcome==0 and #b.jobs==0)
+    assert(df.item.find(ids[1]).flags.whole==flags[1] and df.item.find(ids[2]).flags.whole==flags[2])
+    result.revision_commit={initial=initial,pending=pending,applied=applied,cancelled=cancelled,stale_replay=repeat_reply,stale_cancel=late,foreign_rejected=true,duplicate_rejected=true}
+   end
    select_map(b);click(520,166);assert(menu.open and menu.current_type==df.item_type.ANVIL)
   end
   result.hauling={}

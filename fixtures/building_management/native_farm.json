@@ -59265,6 +59265,47 @@
           "bridge/plugin/df3d.cpp": "655bc1d8270de42873654b0a5bf806aa65745cfcf310aa82fd81156d4ae320a4",
           "tools/smoke/depot-goods-native.lua": "cd20bb9a1361e2fd5aa3ba36fe0bfa8bca762553806f9bb1513c4b7eb6fd6e8c"
         }
+      },
+      "depot_goods_revision_commit_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-151609",
+        "owned_df_pid": 44636,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Revision-bound native batch endpoint: current receipts create/cancel two hauls; outdated receipts reject before mutation; duplicate/foreign IDs reject. Existing native batch and single delivered checks pass. Diagnostic endpoint only, not public transport or viewer commit acceptance.",
+        "receipts": {
+          "applied": {
+            "outcome": 1,
+            "revision": "1450669731484137911",
+            "stale": false
+          },
+          "cancelled": {
+            "outcome": 1,
+            "revision": "4582822193590633207",
+            "stale": false
+          },
+          "duplicate_rejected": true,
+          "foreign_rejected": true,
+          "initial": "1450669731484137911",
+          "pending": "4582822193590633207",
+          "stale_cancel": {
+            "outcome": 0,
+            "revision": "1450669731484137911",
+            "stale": true
+          },
+          "stale_replay": {
+            "outcome": 0,
+            "revision": "4582822193590633207",
+            "stale": true
+          }
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-151609/depot-goods-native.json": "ed2ba975e6efed239329a9ff76374f133dcf71270ce163265e3220493cb67cfb",
+          "build/stockpile-storage-native-farm-discovery-20261115-151609/result.json": "a9d8cb4ce4a3077af5c3b1e817d15aed9f51fb8da73f565d5d7e25820fb4bda0",
+          "build/stockpile-storage-native-farm-discovery-20261115-151609/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/depot_goods_read.h": "69dc5209991dd7d88530afab297ae6ac500727c412c02235827c186fd4d0b237",
+          "bridge/plugin/df3d.cpp": "51c08fcba8ac1c9aa055b34b8f22614a4abcecfbc73240749327e829c3fad16e",
+          "tools/smoke/depot-goods-native.lua": "20d812b4f49225c83821a9d2013d105c8be1262bba368d00484aa4c1f092e6cc"
+        }
       }
     },
     "pending_construction_reference": {

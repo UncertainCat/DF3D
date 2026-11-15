@@ -191,6 +191,26 @@ Evidence: `completed_sheet_discovery_reference.depot_goods_batch_reference`.
 Public epoch/revision-bound batch transport, viewer drafts, mixed desired-state
 batch acceptance, large lists and ordinary hauling execution remain unfinished.
 
+`commitDepotGoods` binds explicit desired hauling states to the same source hash
+used by `readDepotGoods`. At a safe point it checks revealed depot availability,
+recomputes native goods and their revision, rejects a mismatch as stale, and
+requires every requested ID to belong to that source. Only then does it derive
+current flags and call the validated native batch implementation. The returned
+observed revision identifies the preflight source, not a post-edit snapshot.
+This hash is a state identity, not a one-use nonce. Transport epoch/save gating
+and sequence retirement remain separate requirements; they are not supplied by
+this helper. No wire action or version change has been introduced yet.
+
+Protected151609 on2026-11-15 verifies current-source creation and cancellation
+of two hauling jobs, stale receipt rejection after both transitions, and
+duplicate/foreign-ID rejection without partial application. Revision strings
+retain all64-bit precision through the diagnostic Lua boundary. Existing batch,
+single-item and delivered-release checks pass. Owned DF44636 closes unsaved with
+source preservation, native30FPS and sampled GPU50C. Bridge build and all19 core
+checks pass; depot wire clients have no diagnostics. Evidence:
+`completed_sheet_discovery_reference.depot_goods_revision_commit_reference`.
+Public commit transport and viewer draft/close integration remain unfinished.
+
 ## Depot transport migration
 
 Management protocol231 adds an optional `DepotBodySnapshot` to completed building

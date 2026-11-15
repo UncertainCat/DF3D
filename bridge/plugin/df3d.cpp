@@ -94,6 +94,7 @@
 #include "depot_native.h"
 #include "depot_goods_native.h"
 #include "depot_selection_native.h"
+#include "depot_goods_read.h"
 #include "building_links_native.h"
 #include "lever_native.h"
 #include "creature_office_native.h"
@@ -4972,6 +4973,25 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         Json::Value output;output["rows"]=Json::arrayValue;output["groups"]=Json::arrayValue;
         for(const auto& row:facts->rows){Json::Value r;r["id"]=row.id;r["distance"]=row.distance;r["tag"]=row.tag;r["value"]=row.value;r["prohibited"]=row.prohibited;output["rows"].append(r);}
         for(const auto& group:facts->groups){Json::Value g;g["type"]=group.type;g["subtype"]=group.subtype;g["subcat1"]=group.subcat1;g["subcat2"]=group.subcat2;g["amount"]=group.amount;g["expanded"]=group.expanded;output["groups"].append(g);}
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
+      if(parameters[0]=="depot-commit-probe") {
+        if(parameters.size()!=2 && (parameters.size()<5 || parameters.size()>68))return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        int32_t id=-1;const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+        Json::Value output;
+        if(parameters.size()==2){
+          const auto value=df3d_production::readDepotGoods(df::building::find(id),-1,"",true,true,false,{});if(!value)return CR_FAILURE;
+          output["revision"]=std::to_string(value->revision);
+        }else{
+          uint64_t revision=0;const auto& token=parameters[2];const auto parsedRevision=std::from_chars(token.data(),token.data()+token.size(),revision);
+          if(parsedRevision.ec!=std::errc{} || parsedRevision.ptr!=token.data()+token.size() || parameters[3]!="0" && parameters[3]!="1")return CR_WRONG_USAGE;
+          std::vector<df3d_production::DepotGoodsChange> changes;
+          for(size_t i=4;i<parameters.size();++i){int32_t target=-1;const auto& text=parameters[i];const auto converted=std::from_chars(text.data(),text.data()+text.size(),target);if(converted.ec!=std::errc{} || converted.ptr!=text.data()+text.size() || target<0)return CR_WRONG_USAGE;changes.push_back({target,parameters[3]=="1"});}
+          const auto value=df3d_production::commitDepotGoods(df::building::find(id),revision,changes);
+          output["outcome"]=int(value.outcome);output["stale"]=value.stale;output["revision"]=std::to_string(value.observedRevision);
+        }
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="depot-haul-batch-probe") {

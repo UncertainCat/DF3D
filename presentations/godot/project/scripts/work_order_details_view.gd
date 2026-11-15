@@ -247,6 +247,7 @@ func draw_draft() -> void:
 		text("Warning!",Vector2(16,44),12)
 		text("Any image data you've changed will be lost.",Vector2(16,56),14)
 		for entry in [["Leave editor and discard data",7,"BUTTON_CATEGORY_RECTANGLE_OFF"],["Keep working",11,"BUTTON_CATEGORY_RECTANGLE_ON"]]:
+			if engraving_context:draw_rect(Rect2(16,entry[1]*12,8,36),Color.BLACK)
 			patch(entry[2],Vector2i(2,entry[1]),43,3)
 			text(entry[0],Vector2(24,entry[1]*12+20))
 		return

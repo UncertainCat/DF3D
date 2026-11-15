@@ -9617,8 +9617,18 @@ it.193425 separately confirms the intermediate site assignment as type1/id320.
 Owned DF6764/34832 exit unsaved with source preservation;30FPS and GPU53C/5-7%.
 Both lanes pass_with_known_issues for the documented Godot exit diagnostics.
 Evidence: selection_reference.planned_engraving_scene_reference. Full button
-boundaries, other draft families/relationships/name edits, dirty-draft cancellation
-and ordinary map-click exposure remain unqualified.
+boundaries, other draft families/relationships/name edits and ordinary map-click
+exposure remain unqualified.
+
+Protected193957 on2026-11-14 verifies the dirty-draft warning through native and
+composed main-scene right-clicks. Its complete editor crop matches after drawing
+the native black backing beneath the transparent left edge of Keep working.
+Keep working preserves the element; discard returns to root with no elements or
+new artwork registration. Reopening and Done still registers exactly one image.
+The earlier193820 failed only that one-pixel backing comparison and is superseded.
+Owned DF4728 exits unsaved with source preservation; GPU54C/6% at30FPS. The final
+lane passes_with_known_issues for the documented Godot exit diagnostics.
+Evidence: selection_reference.engraving_discard_reference.
 
 selection_art_state.gd reuses local artwork navigation state with a selected-tile
 receipt, never a proxy job. work_order_details_view.gd has an engraving context

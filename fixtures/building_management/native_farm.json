@@ -12809,6 +12809,24 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "engraving_discard_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-193957",
+      "status": "passed_with_known_issues",
+      "scope": "Native and main-scene dirty right-click warning; exact warning crop; Keep working preserves element; discard returns empty draft/root; reopen and Done adds exactly one artwork row. Naming and remaining element families are separate unfinished coverage.",
+      "native_discard": {
+        "elements": 0,
+        "option": -1,
+        "type": -1,
+        "unchanged_images": true
+      },
+      "owned_df_pid": 4728,
+      "hashes": {
+        "workshop-native.json": "16a2b97343e49aa0ca9c52afb03d8404956b10cc32a5760a75d302c94bdd9dca",
+        "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+        "planned-art-discard-live.png": "13e8ef98438d57214463f5fc2092a2150d73ec7c80aac7c31a1e6d634aadf08d",
+        "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+      }
+    },
     "planned_engraving_scene_reference": {
       "lane": "build/stockpile-storage-native-farm-discovery-20261114-193615",
       "status": "passed_with_known_issues",

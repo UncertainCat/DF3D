@@ -58,6 +58,25 @@ func planned_exercise(expected: Dictionary) -> void:
 	await pointer(Vector2(320,202))
 	if not await settle(selection.artwork_state):return
 	check(selection.artwork_state.art_page()==6 and selection.artwork_state.snapshot.art.draft_description==sample.image.draft.description,"Composed draft description differs from native")
+	await pointer(Vector2(400,200),MOUSE_BUTTON_RIGHT)
+	check(selection.artwork_state.draft_discard,"Dirty draft did not ask to discard")
+	await process_frame;await RenderingServer.frame_post_draw
+	image=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	native=Image.load_from_file(directory+"/workshop-selection-engraving-draft-discard.png");native.convert(Image.FORMAT_RGB8)
+	image.get_region(region).save_png(directory+"/planned-art-discard-live.png")
+	check(image.get_region(region).get_data()==native.get_region(region).get_data(),"Composed discard warning differs")
+	await pointer(Vector2(150,202))
+	check(not selection.artwork_state.draft_discard and selection.artwork_state.draft_value.elements.size()==1,"Keep working lost engraving draft")
+	await pointer(Vector2(400,200),MOUSE_BUTTON_RIGHT)
+	await pointer(Vector2(150,154))
+	if not await settle(selection.artwork_state):return
+	check(selection.artwork_state.art_page()==-1 and selection.artwork_state.draft_value.elements.is_empty(),"Discard did not return empty draft to root")
+	await pointer(Vector2(100,310))
+	if not await settle(selection.artwork_state):return
+	await pointer(Vector2(110,166))
+	if not await settle(selection.artwork_state):return
+	await pointer(Vector2(320,202))
+	if not await settle(selection.artwork_state):return
 	await pointer(Vector2(168,430));await drain()
 	check(not selection.artwork.visible and ui.host.active==selection,"Draft Done did not return to sheet")
 	key(KEY_ESCAPE);await process_frame

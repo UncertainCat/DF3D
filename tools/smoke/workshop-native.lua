@@ -402,6 +402,19 @@ local ok,err=xpcall(function()
      draft.description={};for _,line in ipairs(art.art_box.text)do draft.description[#draft.description+1]=dfhack.df2utf(line.value)end
      assert(json.encode(owned.description)==json.encode(draft.description),'Owned engraving draft prose differs')
      shot('selection-engraving-draft-populated')
+     local unchanged=json.encode(effect())
+     gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
+     draft.discard_lines=lines();shot('selection-engraving-draft-discard')
+     assert(click_label('Keep working'),'Engraving discard keep choice missing')
+     assert(art.current_option==6 and #art.new_image.elements==1 and #resources.art_image_ids==count and json.encode(effect())==unchanged,'Keeping engraving draft changed semantic state')
+     gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
+     assert(click_label('Leave editor and discard data'),'Engraving discard leave choice missing')
+     assert(art.open and art.current_option==-1 and #art.new_image.elements==0 and #resources.art_image_ids==count and detail.art_specifier==-1,'Discard registered or assigned engraving artwork')
+     draft.discarded={option=art.current_option,elements=#art.new_image.elements,unchanged_images=true,type=detail.art_specifier}
+     assert(click_label('Specify a new image') and click_label('Creature'),'Could not reopen discarded draft')
+     g.precise_mouse_x=320;g.precise_mouse_y=202;g.mouse_x=40;g.mouse_y=16
+     df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());df.global.enabler.mouse_lbut_lift=1
+     assert(art.current_option==6 and #art.new_image.elements==1,'Reopened draft creature missing')
      assert(click_label('Done'),'Engraving draft Done missing')
      assert(not art.open and detail.art_specifier==3 and #resources.art_image_ids==count+1,'Native engraving draft did not register one image')
      assert(resources.art_image_ids[#resources.art_image_ids-1]==detail.art_spec_id1 and resources.art_image_subids[#resources.art_image_subids-1]==detail.art_spec_id2,'Native engraving image registration differs')

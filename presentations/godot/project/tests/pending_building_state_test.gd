@@ -16,7 +16,7 @@ var failed:=false
 func check(value: bool,message: String) -> void:
 	if not value:failed=true;push_error(message)
 func observation(stage: int) -> Dictionary:
-	return {"id":965,"type":15,"revision":9007199254740993,"stage":stage,"max_stage":3,"job_id":68196,"suspended":true,"has_worker":false,"header_name":"Platinum Statue"}
+	return {"id":965,"type":15,"revision":9007199254740993,"stage":stage,"max_stage":3,"job_id":68196,"suspended":true,"has_worker":false,"header_name":"Platinum Statue","removing":false}
 func run_case(stage: int) -> void:
 	var source=Source.new();var model=Model.new();model.configure(source)
 	model.open(965);var late: Callable=source.callbacks[model.ticket];var ticket: int=model.ticket;var intent: Dictionary=source.requests[ticket]
@@ -38,5 +38,24 @@ func run_case(stage: int) -> void:
 	model.dispose()
 func _initialize() -> void:
 	for stage in [0,1]:run_case(stage)
+	var source=Source.new();var model=Model.new();model.configure(source)
+	var removal:=observation(1);removal.removing=true;removal.suspended=false
+	model.open(965);source.reply(model.ticket,{"snapshot":removal,"outcome":C.FarmEditOutcome.None,"removed":false,"removing":false})
+	var sent: int=source.sequence
+	model.edit(Model.Operation.Suspend);model.edit(Model.Operation.Cancel)
+	check(source.sequence==sent,"Removal snapshot accepted construction actions")
+	model.edit(Model.Operation.CancelRemoval)
+	check(source.requests[model.ticket].pending_operation==3,"Cancel removal sent wrong operation")
+	var idle:=removal.duplicate();idle.removing=false;idle.job_id=-1;idle.revision+=1
+	source.reply(model.ticket,{"snapshot":idle,"outcome":C.FarmEditOutcome.Completed,"removed":false,"removing":false})
+	check(model.phase==Model.Phase.Ready and model.snapshot==idle,"Cancel removal lost idle authority")
+	sent=source.sequence;model.edit(Model.Operation.Suspend);model.edit(Model.Operation.Resume);model.edit(Model.Operation.CancelRemoval)
+	check(source.sequence==sent,"Idle controls sent unsupported actions")
+	for field in ["removing","suspended","has_worker"]:
+		var malformed:=idle.duplicate();malformed[field]=true
+		check(not Model.valid_snapshot(malformed,965),"Idle snapshot accepted false authority: "+field)
+	model.edit(Model.Operation.Cancel)
+	check(source.sequence==sent+1,"Idle building cannot queue removal")
+	model.dispose()
 	if not failed:print("PENDING_BUILDING_STATE_PASS")
 	quit(1 if failed else 0)

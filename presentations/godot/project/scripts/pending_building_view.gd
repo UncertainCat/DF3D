@@ -2,17 +2,21 @@ extends "res://scripts/chest_sheet_view.gd"
 # Native unfinished-building body. No completed-building rename/remove icons.
 func header_art() -> Array:
 	var token: String={4:"BUILDING_ICON_FARM_PLOT",15:"BUILDING_ICON_STATUE"}.get(state.snapshot.get("type",-1),"")
+	building_icon=token
 	return [] if token.is_empty() else [[token,Vector2(10,14),Vector2(32,32)]]
 func _process(_delta: float) -> void:pass
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or state.phase!=state.Phase.Ready or state.ticket!=0 or state.snapshot.is_empty():return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
+		if state.snapshot.removing:
+			if cancel_rect().has_point(event.position):state.edit(state.Operation.CancelRemoval);accept_event()
+			return
 		if Rect2(16,132,192,36).has_point(event.position):
 			state.edit(state.Operation.Resume if state.snapshot.suspended else state.Operation.Suspend);accept_event()
 		elif Rect2(16,168,192,36).has_point(event.position):state.edit(state.Operation.Cancel);accept_event()
 func _draw() -> void:
 	super._draw()
-	if state.snapshot.is_empty() or colors.size()!=16 or theme.default_font==null:return
+	if state.snapshot.is_empty() or removing or colors.size()!=16 or theme.default_font==null:return
 	var value: Dictionary=state.snapshot
 	var font: Font=theme.default_font
 	var progress: String="Construction nearly done." if value.stage==value.max_stage-1 else "Waiting for construction..." if value.stage==0 else "Partially constructed."

@@ -14031,6 +14031,59 @@
           "workshop-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
           "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "removal_scene_reference": {
+        "protocol": 217,
+        "lane": "build/stockpile-storage-native-farm-discovery-20261114-234907",
+        "owned_df_pid": 41312,
+        "status": "passed_with_known_issues: separate-render-thread/finalize/two-ObjectDB diagnostics",
+        "source_save_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Actual main scene, controlled stage1 FarmPlot1490. Pointer resume/suspend/remove, automatic same-target removal handoff, Cancel removal into native idle state, idle Suspend no-op, Escape, reopen and repeat removal. Five full488x708 panel crops match independent native221104. Contents edits, other building artwork and public map routing remain unfinished.",
+        "comparisons": [
+          {
+            "viewer": "chest-scene-pending-initial.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-221104/workshop-basic-building-pending.png",
+            "viewer_sha256": "d4b7ad8e97b9f1654b26097bbcb688e293d899e3b19fb39350704bdb043b8ac3",
+            "native_sha256": "2a4902d766aab70d0d1237b2d27045cb04e02378dd75c049b7e7fc46c8548ad8",
+            "pixels_equal": true
+          },
+          {
+            "viewer": "chest-scene-pending-suspended-false.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-221104/workshop-basic-building-pending-1.png",
+            "viewer_sha256": "b383d5ec4adc108a35b142ead48597a59156b0cb31b40289f815079128ee76be",
+            "native_sha256": "786a5f08a2d9a5d748bc7f5f16571e0ba5c4b5f355f566b00bb0a2ad0668fc10",
+            "pixels_equal": true
+          },
+          {
+            "viewer": "chest-scene-pending-suspended-true.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-221104/workshop-basic-building-pending-2.png",
+            "viewer_sha256": "d4b7ad8e97b9f1654b26097bbcb688e293d899e3b19fb39350704bdb043b8ac3",
+            "native_sha256": "2a4902d766aab70d0d1237b2d27045cb04e02378dd75c049b7e7fc46c8548ad8",
+            "pixels_equal": true
+          },
+          {
+            "viewer": "chest-scene-pending-removing.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-221104/workshop-basic-building-pending-cancel.png",
+            "viewer_sha256": "7ed959db4dc41d1e98af97aa2e9424d0948555ec8828dee3ea1dcab32d672f42",
+            "native_sha256": "e745eb68ccfc3cbe36c84ad0b844697660fda8d9f973ccaec127283922d6786e",
+            "pixels_equal": true
+          },
+          {
+            "viewer": "chest-scene-pending-idle.png",
+            "native": "build/stockpile-storage-native-farm-discovery-20261114-221104/workshop-pending-removal-cancelled.png",
+            "viewer_sha256": "b383d5ec4adc108a35b142ead48597a59156b0cb31b40289f815079128ee76be",
+            "native_sha256": "786a5f08a2d9a5d748bc7f5f16571e0ba5c4b5f355f566b00bb0a2ad0668fc10",
+            "pixels_equal": true
+          }
+        ],
+        "discarded_reference": "Run223015 failed one image comparison because its native resume screenshot contains map redraw over the panel. The corresponding viewer crop matches native215011/221104/221907/222912 exactly. Final verifier uses independent native221104 for all advanced-state panel comparisons; no product code changed to accommodate the corrupted image.",
+        "hashes": {
+          "workshop-native.json": "cdc71a0f93c99545ecf649cc035792c9a714936be6e1b547c9fea455a190167c",
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

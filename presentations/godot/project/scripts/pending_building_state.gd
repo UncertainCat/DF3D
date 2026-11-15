@@ -4,7 +4,7 @@ signal applied
 signal retired(id: int,removing: bool)
 const C=preload("res://scripts/management_contract.gd")
 enum Phase { Closed, Reading, Ready, Applying, Rejected, Stale, Unknown, Unavailable }
-enum Operation { Resume, Suspend, Cancel }
+enum Operation { Resume, Suspend, Cancel, CancelRemoval }
 var service
 var phase:=Phase.Closed
 var building_id: int=-1
@@ -33,7 +33,9 @@ func open(id: int) -> void:
 	building_id=id;phase=Phase.Reading
 	_send({"action":C.ManagementAction.ProductionInspect,"pending_building":true,"building_id":id})
 func edit(operation: Operation) -> void:
-	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or operation not in [Operation.Resume,Operation.Suspend,Operation.Cancel]:return
+	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or operation not in [Operation.Resume,Operation.Suspend,Operation.Cancel,Operation.CancelRemoval]:return
+	if snapshot.removing!=(operation==Operation.CancelRemoval):return
+	if operation in [Operation.Resume,Operation.Suspend] and snapshot.job_id<0:return
 	phase=Phase.Applying
 	_send({"action":C.ManagementAction.FarmEdit,"pending_building":true,"building_id":building_id,"expected_revision":snapshot.revision,"pending_operation":operation})
 func refresh() -> void:
@@ -49,9 +51,10 @@ func _fail(next: Phase) -> void:
 static func valid_snapshot(value: Dictionary,id: int) -> bool:
 	for field in ["id","type","revision","stage","max_stage","job_id"]:
 		if typeof(value.get(field))!=TYPE_INT:return false
-	for field in ["suspended","has_worker"]:
+	for field in ["suspended","has_worker","removing"]:
 		if typeof(value.get(field))!=TYPE_BOOL:return false
-	return value.id==id and value.type>=0 and value.type<=54 and value.type not in [29,30] and value.revision>0 and value.stage>=0 and value.stage<value.max_stage and value.job_id>=0 and typeof(value.get("header_name"))==TYPE_STRING and not value.header_name.is_empty()
+	if value.job_id== -1 and (value.removing or value.suspended or value.has_worker):return false
+	return value.id==id and value.type>=0 and value.type<=54 and value.type not in [29,30] and value.revision>0 and value.stage>=0 and value.stage<value.max_stage and value.job_id>=-1 and typeof(value.get("header_name"))==TYPE_STRING and not value.header_name.is_empty()
 func _receive(result: Dictionary,sent: Dictionary) -> void:
 	ticket=0
 	var editing: bool=sent.action==C.ManagementAction.FarmEdit
@@ -69,6 +72,10 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 		close();retired.emit(id,removing);return
 	var observed: Dictionary=state.get("snapshot",{})
 	if state.removed or state.removing or not valid_snapshot(observed,building_id):_fail(Phase.Unknown if editing else Phase.Rejected);return
-	if editing and observed.suspended!=bool(sent.pending_operation==Operation.Suspend):_fail(Phase.Unknown);return
+	if editing:
+		if observed.stage!=snapshot.stage or observed.max_stage!=snapshot.max_stage or observed.removing:_fail(Phase.Unknown);return
+		if sent.pending_operation==Operation.CancelRemoval:
+			if observed.job_id!=-1:_fail(Phase.Unknown);return
+		elif observed.job_id!=snapshot.job_id or observed.suspended!=bool(sent.pending_operation==Operation.Suspend):_fail(Phase.Unknown);return
 	snapshot=observed.duplicate(true);phase=Phase.Ready;changed.emit()
 	if editing:applied.emit()

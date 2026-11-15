@@ -9905,8 +9905,9 @@ retry; focused state and semantic-service headless checks pass. Owned DF36424/
 21804 exit unsaved with source preservation. Graphics remain capped30FPS,
 sampled GPU60C/22–33%; clients emit only the known rendering-thread notice.
 Core, bridge and extension builds and all19 root checks pass. Evidence lives
-in pending_construction_reference.transport_reference. Rendered controls,
-component contents, removal-sheet handoff and ordinary map entry remain pending.
+in pending_construction_reference.transport_reference. Rendered controls and
+removal-sheet handoff are qualified below; component edits and ordinary map
+entry remain pending.
 
 Staged pending_building_panel now renders the captured construction controls
 within the shared native building frame and reads component contents through
@@ -9920,8 +9921,22 @@ the panel. Bridge build and19 root checks pass. DF21072 exits unsaved with
 source preservation,30FPS and sampled GPU61C/24%. Known Godot rendering-thread,
 finalize and two-ObjectDB diagnostics remain. Evidence:
 pending_construction_reference.presentation_reference. This is not public
-map-entry acceptance: contents editing and the removal handoff remain unfinished;
+map-entry acceptance: contents editing remains unfinished;
 only farm/statue header artwork is mapped in the staged view.
+
+Protected234907 qualifies the stage1 farm removal flow in the actual main scene.
+Pointer Remove building retires the construction authority, then reopens the same
+ID with a fresh removal snapshot. Cancel removal returns the native idle state;
+Suspend is a local no-op without a job. Escape closes the idle panel, reopening
+reads the same idle target, and Remove building works again. Five complete488x708
+panel crops (initial, resume, suspend, removal, idle) match independent native221104.
+Run223015's native resume screenshot was corrupted by a map redraw over the panel;
+its viewer crop matches four independent native captures. The final verifier uses
+the intact221104 reference; no runtime workaround was added for capture corruption.
+Headless state checks and19 root tests pass. DF41312 exits unsaved with source
+preservation; only documented rendering-thread/finalize/two-ObjectDB diagnostics
+remain. Runs are capped30FPS; sampled GPU61C/13–22% during the final run, not peak
+measurements. Evidence: pending_construction_reference.removal_scene_reference.
 
 Removal return discovery221104: use the same controlled stage1 farm setup as
 advanced_reference, click Remove building, then Cancel removal. The first
@@ -9932,8 +9947,8 @@ buildings; it does not recreate ConstructBuilding. The suspend handler's empty
 job check then makes its button a no-op. This is a controlled-state native
 defect, not evidence of natural construction progression. No correction is
 authorized. The pending observer represents construction, removal and idle/no-job
-states; protocol217 adds transport for removal and idle snapshots. Presentation
-must support the other states before promotion.
+states; protocol217 and the staged presentation carry removal and idle snapshots.
+The remaining contents/artwork/public-entry gaps above still prevent promotion.
 DF42196 exits unsaved with source preservation. The native-bug register tracks
 this separately; pending_construction_reference.removal_return_reference retains
 the before/after captions, stage, jobs and screenshots.

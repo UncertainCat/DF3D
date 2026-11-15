@@ -3,6 +3,11 @@ local out,view,records,select_map,capture=...
 local gui=require('gui');local json=require('json');local g=df.global.gps
 local sheet=df.global.game.main_interface.view_sheets
 local result={buildings={}}
+local provider=os.getenv('DF3D_BUILDING_LINKS_PROVIDER')=='1'
+local function probe(id)
+ local text,code=dfhack.run_command_silent('df3d','building-links-probe',tostring(id))
+ assert(code==0,text);return json.decode(text)
+end
 local function click(x,y)
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
@@ -23,6 +28,14 @@ for _,id in ipairs{39,55}do
  end end
  result.buildings[#result.buildings+1]=row
  if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
+ if provider then
+  row.provider=probe(id)
+  assert(row.provider.building_id==id and row.provider.tabs and #row.provider.rows==#row.refs,'Provider identity/count mismatch')
+  for i,link in ipairs(row.provider.rows)do local ref=row.refs[i]
+   assert(link.id==ref.target_id and link.type==ref.target_type and link.item_id==ref.item_id and link.reference_type==df.general_ref_type[ref.ref_type],'Provider reference order mismatch')
+   assert(link.x==ref.target_position.x and link.y==ref.target_position.y and link.z==ref.target_position.z,'Provider target position mismatch')
+  end
+ end
  view:render(dfhack.getTickCount());select_map(b)
  assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==id)
  local function sample(label)
@@ -32,6 +45,16 @@ for _,id in ipairs{39,55}do
    local text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','');if text:find('%S')then state.lines[#state.lines+1]={y=y,text=text}end
   end
   row.states[#row.states+1]=state;persist();capture('building-links-'..id..'-'..label)
+  if provider then
+   local observed=probe(id)
+   assert(observed.revision==row.provider.revision and json.encode(observed.rows)==json.encode(row.provider.rows),'Native UI changed owned provider output')
+   if label=='left-tab' then
+    for i,link in ipairs(observed.rows)do
+     local found=false;for _,line in ipairs(state.lines)do if line.y==46+(i-1)*3 and line.text:find(link.name,1,true)then found=true end end
+     assert(found,'Provider name differs from native rendered row')
+    end
+   end
+  end
  end
  sample('initial');click(540,520);sample('left-tab')
  click(540,562);sample('row-body')
@@ -42,5 +65,10 @@ for _,id in ipairs{39,55}do
  assert(df.global.window_z==target.z,'Linked row recenter missed target level')
  view:render(dfhack.getTickCount());select_map(b)
  sample('reopened');click(720,520);sample('right-tab')
+end
+if provider then
+ result.unlinked=probe(65)
+ assert(not result.unlinked.tabs and #result.unlinked.rows==0,'Unlinked chair acquired link tabs')
+ persist()
 end
 records[#records+1]={name='building-links-native',result=result}

@@ -21516,6 +21516,71 @@
           "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-native.json": "e65a5f3c0fbd3e53157dc19d6421c96b26d1bcaf019d35e5bcc805a658f71f4d",
           "build/stockpile-storage-native-farm-discovery-20261115-060153/result.json": "79bc34d0125f4e39a2e1acb60a701d9a2490a1f852ea3a4f8aa8d977d4106f2b",
           "build/stockpile-storage-native-farm-discovery-20261115-060153/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        },
+        "provider_reference": {
+          "lane": "build/stockpile-storage-native-farm-discovery-20261115-060630",
+          "scope": "Owned semantic provider versus native populated link rows and all six panel states; unlinked chair. No wire/viewer acceptance.",
+          "observations": [
+            {
+              "building_id": 39,
+              "revision": "1369251273925892210",
+              "rows": [
+                {
+                  "id": 55,
+                  "item_id": 1617,
+                  "name": "Main Water Control",
+                  "reference_type": 32,
+                  "type": 23,
+                  "x": 97,
+                  "y": 103,
+                  "z": 165
+                }
+              ],
+              "tabs": true
+            },
+            {
+              "building_id": 55,
+              "revision": "1864019604045275833",
+              "rows": [
+                {
+                  "id": 40,
+                  "item_id": 1588,
+                  "name": "dolomite Floodgate",
+                  "reference_type": 33,
+                  "type": 9,
+                  "x": 97,
+                  "y": 105,
+                  "z": 164
+                },
+                {
+                  "id": 39,
+                  "item_id": 1607,
+                  "name": "dolomite Floodgate",
+                  "reference_type": 33,
+                  "type": 9,
+                  "x": 97,
+                  "y": 106,
+                  "z": 164
+                }
+              ],
+              "tabs": true
+            },
+            {
+              "building_id": 65,
+              "revision": "6725588633147200868",
+              "rows": [],
+              "tabs": false
+            }
+          ],
+          "owned_df_pid": 36272,
+          "closed_unsaved": true,
+          "source_preserved": true,
+          "bridge_sha256": "680590452074B5F94096A975ECF9F2C7E4AFC523A12C420B34B5165EA5AE3FE6",
+          "sha256": {
+            "build/stockpile-storage-native-farm-discovery-20261115-060630/result.json": "8182dba58fa60e357415a797a7f490dda94ee9ada2ac9f813d3e7842b7fc0ab7",
+            "build/stockpile-storage-native-farm-discovery-20261115-060630/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+            "build/stockpile-storage-native-farm-discovery-20261115-060630/building-links-native.json": "d1d272c56cfda297ba7a971e860e4525011f54a62d2fcd6ce823bc617d8569d2"
+          }
         }
       }
     },

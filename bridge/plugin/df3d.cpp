@@ -89,6 +89,7 @@
 #include "pending_building_duration_native.h"
 #include "building_item_native.h"
 #include "funerary_native.h"
+#include "building_links_native.h"
 #include "creature_office_native.h"
 #include "creature_header_native.h"
 #include "creature_quote_native.h"
@@ -3536,6 +3537,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["general_order_limit"]=profile->generalOrderLimit;
           result["order_ids"]=Json::Value(Json::arrayValue);
           for(const auto order:profile->orderIds)result["order_ids"].append(order);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="building-links-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          const auto snapshot=df3d_production::buildingLinks(df::building::find(id));
+          if(!snapshot)return CR_FAILURE;
+          Json::Value result;result["building_id"]=snapshot->buildingId;result["revision"]=std::to_string(snapshot->revision);
+          result["tabs"]=snapshot->tabs;result["rows"]=Json::Value(Json::arrayValue);
+          for(const auto& row:snapshot->rows) {
+            Json::Value value;value["item_id"]=row.itemId;value["reference_type"]=row.referenceType;
+            value["id"]=row.id;value["type"]=row.type;value["name"]=DF2UTF(row.name);
+            value["x"]=row.x;value["y"]=row.y;value["z"]=row.z;result["rows"].append(value);
+          }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="funerary-body-probe") {

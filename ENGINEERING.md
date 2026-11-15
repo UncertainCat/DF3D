@@ -9742,6 +9742,20 @@ sampled GPU59–63C is not a continuous peak. All19 core checks pass. Fixture
 and hashes. Earlier055934/060029 stopped on incorrect diagnostic expectations
 of target-sheet navigation/global cursor updates; neither is full acceptance.
 
+`building_links_native.h` supplies an owned semantic snapshot with native
+reference order, target names/coordinates and a revision covering all row
+facts. It preserves duplicate resolved references and omits unresolved ones,
+as the native traversal does. Lever/pressure-plate types retain tab availability
+even with no links. It never consumes selection, camera or native menu state.
+Protected060630 compares `df3d building-links-probe` with both native panels:
+targets, positions and displayed names match; all six tab/navigation states
+retain the same snapshot revision, and unlinked Chair65 reports no tabs.
+Owned DF36272 exits unsaved with source preservation. MSVC and all19 core tests
+pass; protocol225 remains unchanged. This qualifies the provider's populated
+read path only; artwork, paging, changing-link refresh and viewer integration
+remain unfinished. The fixture's `linked_buildings_reference.provider_reference`
+retains the deployed DLL hash and observations.
+
 Protected native022800 on2026-11-15 attempts selection of29 naturally completed,
 revealed building types in the paused fortress. `completed_sheet_discovery_reference` in
 native_farm.json records identities, panel text and screenshot hashes. Chair65,

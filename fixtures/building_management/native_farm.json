@@ -21038,6 +21038,485 @@
             "build/stockpile-storage-native-farm-discovery-20261115-055030/workshop-furniture-46-restored.png": "b7df910331d2e275a031e7b29b00a2e33127f2ce1bbedc098ab138e927903893"
           }
         }
+      },
+      "linked_buildings_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-060153",
+        "scope": "Native-only floodgate and lever tab, row-body, recenter and reopen discovery. No runtime or lever-action acceptance.",
+        "observations": {
+          "buildings": [
+            {
+              "id": 39,
+              "refs": [
+                {
+                  "item_id": 1617,
+                  "ref_type": "BUILDING_TRIGGER",
+                  "target_id": 55,
+                  "target_position": {
+                    "x": 97,
+                    "y": 103,
+                    "z": 165
+                  },
+                  "target_type": 23
+                }
+              ],
+              "states": [
+                {
+                  "cursor": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "label": "initial",
+                  "lines": [
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 42
+                    },
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 43
+                    },
+                    {
+                      "text": "        dolomite floodgate",
+                      "y": 46
+                    },
+                    {
+                      "text": "        -dolomite mechanisms-",
+                      "y": 49
+                    }
+                  ],
+                  "open": true,
+                  "scroll": 0,
+                  "selected_id": 39,
+                  "show_linked": false,
+                  "window": {
+                    "x": 89,
+                    "y": 96,
+                    "z": 164
+                  }
+                },
+                {
+                  "cursor": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "label": "left-tab",
+                  "lines": [
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 42
+                    },
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 43
+                    },
+                    {
+                      "text": "        Main Water Control",
+                      "y": 46
+                    }
+                  ],
+                  "open": true,
+                  "scroll": 0,
+                  "selected_id": 39,
+                  "show_linked": true,
+                  "window": {
+                    "x": 89,
+                    "y": 96,
+                    "z": 164
+                  }
+                },
+                {
+                  "cursor": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "label": "row-body",
+                  "lines": [
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 42
+                    },
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 43
+                    },
+                    {
+                      "text": "        Main Water Control",
+                      "y": 46
+                    }
+                  ],
+                  "open": true,
+                  "scroll": 0,
+                  "selected_id": 39,
+                  "show_linked": true,
+                  "window": {
+                    "x": 89,
+                    "y": 96,
+                    "z": 164
+                  }
+                },
+                {
+                  "cursor": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "label": "navigate-first",
+                  "lines": [],
+                  "open": false,
+                  "scroll": 0,
+                  "selected_id": 39,
+                  "show_linked": true,
+                  "window": {
+                    "x": 85,
+                    "y": 95,
+                    "z": 165
+                  }
+                },
+                {
+                  "cursor": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "label": "reopened",
+                  "lines": [
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 42
+                    },
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 43
+                    },
+                    {
+                      "text": "        dolomite floodgate",
+                      "y": 46
+                    },
+                    {
+                      "text": "        -dolomite mechanisms-",
+                      "y": 49
+                    }
+                  ],
+                  "open": true,
+                  "scroll": 0,
+                  "selected_id": 39,
+                  "show_linked": false,
+                  "window": {
+                    "x": 89,
+                    "y": 96,
+                    "z": 164
+                  }
+                },
+                {
+                  "cursor": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "label": "right-tab",
+                  "lines": [
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 42
+                    },
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 43
+                    },
+                    {
+                      "text": "        dolomite floodgate",
+                      "y": 46
+                    },
+                    {
+                      "text": "        -dolomite mechanisms-",
+                      "y": 49
+                    }
+                  ],
+                  "open": true,
+                  "scroll": 0,
+                  "selected_id": 39,
+                  "show_linked": false,
+                  "window": {
+                    "x": 89,
+                    "y": 96,
+                    "z": 164
+                  }
+                }
+              ],
+              "type": 9
+            },
+            {
+              "id": 55,
+              "refs": [
+                {
+                  "item_id": 1588,
+                  "ref_type": "BUILDING_TRIGGERTARGET",
+                  "target_id": 40,
+                  "target_position": {
+                    "x": 97,
+                    "y": 105,
+                    "z": 164
+                  },
+                  "target_type": 9
+                },
+                {
+                  "item_id": 1607,
+                  "ref_type": "BUILDING_TRIGGERTARGET",
+                  "target_id": 39,
+                  "target_position": {
+                    "x": 97,
+                    "y": 106,
+                    "z": 164
+                  },
+                  "target_type": 9
+                }
+              ],
+              "states": [
+                {
+                  "cursor": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "label": "initial",
+                  "lines": [
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 42
+                    },
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 43
+                    },
+                    {
+                      "text": "        -petrified wood mechanisms-",
+                      "y": 46
+                    },
+                    {
+                      "text": "        dolomite mechanisms",
+                      "y": 49
+                    },
+                    {
+                      "text": "        -dolomite mechanisms-",
+                      "y": 52
+                    }
+                  ],
+                  "open": true,
+                  "scroll": 0,
+                  "selected_id": 55,
+                  "show_linked": false,
+                  "window": {
+                    "x": 89,
+                    "y": 93,
+                    "z": 165
+                  }
+                },
+                {
+                  "cursor": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "label": "left-tab",
+                  "lines": [
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 42
+                    },
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 43
+                    },
+                    {
+                      "text": "        dolomite Floodgate",
+                      "y": 46
+                    },
+                    {
+                      "text": "        dolomite Floodgate",
+                      "y": 49
+                    }
+                  ],
+                  "open": true,
+                  "scroll": 0,
+                  "selected_id": 55,
+                  "show_linked": true,
+                  "window": {
+                    "x": 89,
+                    "y": 93,
+                    "z": 165
+                  }
+                },
+                {
+                  "cursor": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "label": "row-body",
+                  "lines": [
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 42
+                    },
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 43
+                    },
+                    {
+                      "text": "        dolomite Floodgate",
+                      "y": 46
+                    },
+                    {
+                      "text": "        dolomite Floodgate",
+                      "y": 49
+                    }
+                  ],
+                  "open": true,
+                  "scroll": 0,
+                  "selected_id": 55,
+                  "show_linked": true,
+                  "window": {
+                    "x": 89,
+                    "y": 93,
+                    "z": 165
+                  }
+                },
+                {
+                  "cursor": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "label": "navigate-first",
+                  "lines": [],
+                  "open": false,
+                  "scroll": 0,
+                  "selected_id": 55,
+                  "show_linked": true,
+                  "window": {
+                    "x": 85,
+                    "y": 97,
+                    "z": 164
+                  }
+                },
+                {
+                  "cursor": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "label": "reopened",
+                  "lines": [
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 42
+                    },
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 43
+                    },
+                    {
+                      "text": "        -petrified wood mechanisms-",
+                      "y": 46
+                    },
+                    {
+                      "text": "        dolomite mechanisms",
+                      "y": 49
+                    },
+                    {
+                      "text": "        -dolomite mechanisms-",
+                      "y": 52
+                    }
+                  ],
+                  "open": true,
+                  "scroll": 0,
+                  "selected_id": 55,
+                  "show_linked": false,
+                  "window": {
+                    "x": 89,
+                    "y": 93,
+                    "z": 165
+                  }
+                },
+                {
+                  "cursor": {
+                    "x": -30000,
+                    "y": -30000,
+                    "z": -30000
+                  },
+                  "label": "right-tab",
+                  "lines": [
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 42
+                    },
+                    {
+                      "text": "   Show linked buildings         Show items",
+                      "y": 43
+                    },
+                    {
+                      "text": "        -petrified wood mechanisms-",
+                      "y": 46
+                    },
+                    {
+                      "text": "        dolomite mechanisms",
+                      "y": 49
+                    },
+                    {
+                      "text": "        -dolomite mechanisms-",
+                      "y": 52
+                    }
+                  ],
+                  "open": true,
+                  "scroll": 0,
+                  "selected_id": 55,
+                  "show_linked": false,
+                  "window": {
+                    "x": 89,
+                    "y": 93,
+                    "z": 165
+                  }
+                }
+              ],
+              "type": 23
+            }
+          ]
+        },
+        "renderer_rva": [
+          "19ba20",
+          "19cd9c"
+        ],
+        "input_rva": [
+          "1b0278",
+          "1b0548"
+        ],
+        "owned_df_pid": 11232,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "limitations": [
+          "Two naturally populated link lists only; scrolling, duplicates and unresolved references not exercised live.",
+          "Earlier055934 incorrectly expected target-sheet navigation;060029 incorrectly expected global cursor coordinates. Both stopped on diagnostic assertions and are excluded as whole-lane acceptance."
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-39-initial.png": "f9216db770b20f47d252bb637a6001dd6be9bfb116030960c9ffaa87b8c8f992",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-39-left-tab.png": "f672fa532d5298f7feef4e20899cca2907645835797cd2ee1781b146c1d59898",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-39-navigate-first.png": "8d1cfdc19819a09635a2368f6be04c14ee68afdf8e6c331683548e3a39b9799b",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-39-reopened.png": "f9216db770b20f47d252bb637a6001dd6be9bfb116030960c9ffaa87b8c8f992",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-39-right-tab.png": "f9216db770b20f47d252bb637a6001dd6be9bfb116030960c9ffaa87b8c8f992",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-39-row-body.png": "f672fa532d5298f7feef4e20899cca2907645835797cd2ee1781b146c1d59898",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-55-initial.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-55-left-tab.png": "286ff5bf722e6769c9c4615d1d725d7eb73c546b20ffcf97d108f2491ef65313",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-55-navigate-first.png": "2bddf9fd15186c14898575e8fc86f852146550cf24823e32c047d70be78f9cfc",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-55-reopened.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-55-right-tab.png": "6657c417403c3887b2e892e2ab9cf096465f017ca365a098aea636bdd4e758d1",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-55-row-body.png": "286ff5bf722e6769c9c4615d1d725d7eb73c546b20ffcf97d108f2491ef65313",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/building-links-native.json": "e65a5f3c0fbd3e53157dc19d6421c96b26d1bcaf019d35e5bcc805a658f71f4d",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/result.json": "79bc34d0125f4e39a2e1acb60a701d9a2490a1f852ea3a4f8aa8d977d4106f2b",
+          "build/stockpile-storage-native-farm-discovery-20261115-060153/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

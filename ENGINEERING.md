@@ -9714,6 +9714,34 @@ other completed types retain the legacy inspector. Unfinished buildings have
 their own native sheet and qualified map entry, described below. These routes
 do not qualify the remaining specialized building controls.
 
+Linked-building discovery uses `DF3D_BUILDING_LINKS_DISCOVERY=1` with the
+protected workshop-native lane. The diagnostic helper reads native menu fields
+only as an oracle; they must not become runtime inputs. On DF53.16, both the
+floodgate and lever have Show linked buildings / Show items tabs. Native
+renderer19ba20..19bc86 traverses contained items, then their general references,
+retaining resolved BUILDING_TRIGGER and BUILDING_TRIGGERTARGET references in
+that order. It does not sort or deduplicate targets. Names call the target's
+virtual getName into an owned string (19cab9..19cae5). This is the semantic
+source for a future bridge provider, not a reason to copy native menu lists.
+
+Native input1b0278..1b0548 uses the same traversal. Row bodies are inactive;
+the right-hand button recenters the map and closes the sheet rather than
+opening the target sheet. Native cursor remains invalid after this action;
+the camera and separate native highlight carry its effect. The renderer uses
+three-cell rows, a building icon dispatch at19bff9..19ca32, native name clipping
+at19caed..19cbc3 and hover instruction315 at19cc6c. This discovery does not yet
+qualify the runtime provider, viewer rows, scrolling, Link lever or Pull lever.
+
+Protected060153 on2026-11-15 records both tab states, inactive row-body clicks,
+first-link recentering and reopening (which resets to Show items). Floodgate39
+links to lever55; lever55 lists floodgates40 then39. Recenter closes each sheet,
+changes the camera to the target level and highlights the destination. Owned
+DF11232 exits unsaved and source saves remain unchanged. Native is capped30FPS;
+sampled GPU59–63C is not a continuous peak. All19 core checks pass. Fixture
+`completed_sheet_discovery_reference.linked_buildings_reference` retains facts
+and hashes. Earlier055934/060029 stopped on incorrect diagnostic expectations
+of target-sheet navigation/global cursor updates; neither is full acceptance.
+
 Protected native022800 on2026-11-15 attempts selection of29 naturally completed,
 revealed building types in the paused fortress. `completed_sheet_discovery_reference` in
 native_farm.json records identities, panel text and screenshot hashes. Chair65,

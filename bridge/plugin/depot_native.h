@@ -2,6 +2,9 @@
 #include "farm_native.h"
 #include "df/building_tradedepotst.h"
 #include "df/unit.h"
+#include "df/historical_entity.h"
+#include "df/historical_figure.h"
+#include "df/entity_position_assignment.h"
 
 namespace df3d_production {
 // Native depot input1af983..1afac8. Owned setting intents call semantic leaves;
@@ -25,6 +28,60 @@ inline bool depotNativeReady() {
     }();return ready;
 }
 struct DepotFacts {uint32_t flags=0;bool goods=false,trade=false;int32_t worker=-1;};
+struct DepotBrokerFacts {
+    int32_t id=-1;std::string name,activity;
+    int16_t foreground=7,background=0;bool bright=false,accessible=false;
+};
+inline std::optional<DepotBrokerFacts> depotBrokerFacts(df::building* building) {
+    auto* depot=virtual_cast<df::building_tradedepotst>(building);
+    if(!depotNativeReady() || !df::global::plotinfo || !depot ||
+       depot->getBuildStage()!=depot->getMaxBuildStage())return {};
+    static const bool ready=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin {size_t rva,length;uint64_t expected;};
+        constexpr Pin pins[]={
+            {0x19799d,0xd9,UINT64_C(0x6f39c91775782bf3)},
+            {0x13a4910,0x254,UINT64_C(0x24e41e31661f3ca6)},
+            {0x1330c30,0x688,UINT64_C(0x0e165ee31decf426)},
+            {0x138ffd0,0xd20,UINT64_C(0x904926737b452832)},
+            {0xd03170,0x12b,UINT64_C(0x90da46373e49508e)},
+            {0xd032b0,0x5024,UINT64_C(0xba755d2dfd15322d)},
+        };
+        for(const auto& pin:pins) {
+            uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){h^=base[pin.rva+i];h*=UINT64_C(1099511628211);}
+            if(h!=pin.expected)return false;
+        }return true;
+    }();
+    if(!ready)return {};
+    static_assert(offsetof(df::historical_entity,assignments_by_type)==0x1798);
+    DepotBrokerFacts result;
+    const auto* entity=df::global::plotinfo->main.fortress_entity;
+    if(!entity)return {};
+    const auto& assignments=entity->assignments_by_type[df::entity_position_responsibility::TRADE];
+    // Native19799d resolves only the first assignment, not the last valid broker.
+    if(assignments.empty())return result;
+    if(!assignments.front())return {};
+    auto* figure=df::historical_figure::find(assignments.front()->histfig);
+    auto* unit=figure?df::unit::find(figure->unit_id):nullptr;
+    if(!unit)return result;
+    const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+    result.id=unit->id;
+    reinterpret_cast<void (*)(df::unit*,std::string*,bool)>(base+0x1330c30)(unit,&result.name,false);
+    if(unit->job.current_job && !unit->job.current_job->flags.bits.on_break) {
+        reinterpret_cast<void (*)(df::job*,std::string*)>(base+0xd03170)(unit->job.current_job,&result.activity);
+        result.foreground=3;result.bright=true;
+    } else {
+        // Semantic formatter underlying renderer1390cf0; never call the renderer.
+        reinterpret_cast<void (*)(df::unit*,bool,bool,std::string*,int16_t*,int16_t*,bool*)>(base+0x138ffd0)
+            (unit,true,false,&result.activity,&result.foreground,&result.background,&result.bright);
+    }
+    result.accessible=reinterpret_cast<bool (*)(df::unit*,int16_t,int16_t,int16_t,bool)>(base+0x13a4910)
+        (unit,int16_t(depot->centerx),int16_t(depot->centery),int16_t(depot->z),true);
+    if(result.name.size()>512 || result.activity.size()>512 || result.foreground<0 || result.foreground>7 ||
+       result.background<0 || result.background>7)return {};
+    return result;
+}
 inline std::optional<DepotFacts> depotFacts(df::building* building) {
     auto* depot=virtual_cast<df::building_tradedepotst>(building);
     if(!depotNativeReady() || !df::global::plotinfo || !depot ||

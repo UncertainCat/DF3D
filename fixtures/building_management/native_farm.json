@@ -31675,6 +31675,84 @@
           "build/stockpile-storage-native-farm-discovery-20261115-124422/result.json": "108ae363343839ad9cd562c9ca0d9cd0aec189387b866f2417b3d700dbc52b51",
           "build/stockpile-storage-native-farm-discovery-20261115-124422/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "depot_broker_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-124903",
+        "owned_df_pid": 48684,
+        "broker": {
+          "cases": [
+            {
+              "accessible": true,
+              "activity": "Drink",
+              "background": 0,
+              "bright": true,
+              "broker_id": 988,
+              "broker_name": "Ã®ton Unibmamot, Dwarven Child",
+              "flags": 2,
+              "foreground": 3,
+              "goods": false,
+              "label": "assigned",
+              "trade": false,
+              "worker": -1
+            },
+            {
+              "accessible": true,
+              "activity": "Play Make Believe",
+              "background": 0,
+              "bright": true,
+              "broker_id": 988,
+              "broker_name": "Ã®ton Unibmamot, Dwarven Child",
+              "flags": 2,
+              "foreground": 2,
+              "goods": false,
+              "label": "activity",
+              "trade": false,
+              "worker": -1
+            },
+            {
+              "accessible": false,
+              "activity": "",
+              "background": 0,
+              "bright": false,
+              "broker_id": -1,
+              "broker_name": "",
+              "flags": 2,
+              "foreground": 7,
+              "goods": false,
+              "label": "missing-figure",
+              "trade": false,
+              "worker": -1
+            }
+          ],
+          "restored": {
+            "accessible": false,
+            "activity": "",
+            "background": 0,
+            "bright": false,
+            "broker_id": -1,
+            "broker_name": "",
+            "flags": 2,
+            "foreground": 7,
+            "goods": false,
+            "label": "restored",
+            "trade": false,
+            "worker": -1
+          },
+          "success": true
+        },
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Temporary diagnostic Trade assignment to existing unit988; job and fallback activity, reachable access, missing figure and absent broker text. Not office eligibility, unreachable access or public panel acceptance.",
+        "bridge_sha256": "8856ff5adfa7dea3ab7d0235899a17fff1e92df1b45788376faf1f6f5f49459b",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-124903/depot-settings-native.json": "44878290c0f9ac05e9678f13f2361fdeb1f1532a2514446fd997c72a93c29500",
+          "build/stockpile-storage-native-farm-discovery-20261115-124903/result.json": "976fd2b59719e98339d93c5d9f9e2c5af0d45e5c085ea6cac293aaf6507f9b75",
+          "build/stockpile-storage-native-farm-discovery-20261115-124903/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-124903/depot-broker-activity.png": "91aad6ec52c86f98917928cf0c48187e82a041c5e527f8f6d5c2b11a0c42b191",
+          "build/stockpile-storage-native-farm-discovery-20261115-124903/depot-broker-assigned.png": "a664cce500ddfa17d283f838fb0b373bf127c041c4b2b7e93230e4b40cb1e21f",
+          "build/stockpile-storage-native-farm-discovery-20261115-124903/depot-broker-missing-figure.png": "63f54d60768f83f5d115fd4c3389dc15aec61dfc1dd5fdf0905bd7ce64758c65",
+          "build/stockpile-storage-native-farm-discovery-20261115-124903/depot-broker-restored.png": "63f54d60768f83f5d115fd4c3389dc15aec61dfc1dd5fdf0905bd7ce64758c65"
+        }
       }
     },
     "pending_construction_reference": {

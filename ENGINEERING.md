@@ -792,6 +792,25 @@ native30FPS, sampled GPU59C. Bridge build and core19 pass. Evidence:
 `completed_sheet_discovery_reference.depot_provider_reference`. Production
 transport, unknown-outcome UI handling and public depot controls remain pending.
 
+`depotBrokerFacts` follows renderer19799d's first TRADE assignment through its
+historical figure and unit. Unlike location appraisal, it does not search backward
+for a valid holder. The name comes from1330c30(false); a non-break current job
+uses d03170 with bright cyan, otherwise semantic138ffd0(true,false) supplies
+activity text/colors. It never calls the graphics writer1390cf0. Native13a4910
+checks access to the depot center, including unit movement, burrow and other
+native restrictions; no viewer pathfinding substitute is used.
+
+Protected124903 on2026-11-15 temporarily supplies a diagnostic TRADE assignment
+for existing unit988, then restores the original assignment vector/current job.
+This artificial holder is a child; the test does not establish office eligibility.
+The provider name, Drink job caption, Play Make Believe fallback activity and
+reachable-depot result match native panel text. Missing-figure and restored absent
+broker states also match. Unreachable access, broker portrait rendering and
+navigation remain outstanding. The earlier settings/duplicate/stale checks pass
+in the same run. Owned DF48684 closes unsaved with source preservation, paused
+simulation, graphics30FPS and sampled GPU59C. Bridge build and core19 pass.
+Evidence: `completed_sheet_discovery_reference.depot_broker_reference`.
+
 ## Completed bridge, wagon and traction-bench sheets
 
 Completed Bridge19, Wagon32 and TractionBench45 use the shared native header,

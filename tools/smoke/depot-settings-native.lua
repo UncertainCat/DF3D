@@ -66,6 +66,43 @@ local ok,err=xpcall(function()
   end
   result.provider.success=true
  end
+ if os.getenv('DF3D_DEPOT_BROKER')=='1' then
+  local assignments=df.global.plotinfo.main.fortress_entity.assignments_by_type[df.entity_position_responsibility.TRADE]
+  assert(#assignments==0,'Broker fixture requires no existing trade assignments')
+  local unit
+  for _,u in ipairs(df.global.world.units.active)do if dfhack.units.isCitizen(u) and u.hist_figure_id>=0 then unit=u;break end end
+  assert(unit);local old_job=unit.job.current_job
+  local assignment=df.entity_position_assignment:new();assignment.histfig=unit.hist_figure_id
+  assignments:insert('#',assignment)
+  local function read(label,has_broker)
+   view:render(dfhack.getTickCount());capture('depot-broker-'..label)
+   local output,code=dfhack.run_command_silent('df3d','depot-settings-probe',tostring(b.id));assert(code==0,output)
+   local facts=json.decode(output);assert(facts.broker_id==(has_broker and unit.id or -1))
+   local lines={}
+   for y=4,g.dimy-1 do
+    local chars={};for x=52,112 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
+    lines[#lines+1]=dfhack.df2utf(table.concat(chars))
+   end
+   local text=table.concat(lines,'\n')
+   if has_broker then
+    assert(text:find('Broker:',1,true),'Missing broker label')
+    assert(text:find(facts.broker_name:sub(1,12),1,true),'Missing broker name: '..facts.broker_name)
+    assert(text:find(facts.activity,1,true),'Missing activity: '..facts.activity)
+    assert(text:find(facts.accessible and 'Broker can access depot' or 'Broker cannot access depot',1,true),'Access differs')
+   else assert(text:find('You do not have a broker.',1,true))end
+   facts.label=label;return facts
+  end
+  local broker_ok,broker_err=xpcall(function()
+   result.broker={cases={read('assigned',true)}}
+   unit.job.current_job=nil
+   result.broker.cases[#result.broker.cases+1]=read('activity',true)
+   assignment.histfig=-1
+   result.broker.cases[#result.broker.cases+1]=read('missing-figure',false)
+  end,debug.traceback)
+  unit.job.current_job=old_job;assignments:erase(0);assignment:delete()
+  if not broker_ok then error(broker_err)end
+  result.broker.restored=read('restored',false);result.broker.success=true
+ end
 end,debug.traceback)
 if b.trade_flags.trader_requested then click(298)end
 b.trade_flags.whole=original

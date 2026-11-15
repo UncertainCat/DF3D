@@ -4952,6 +4952,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if(parameters.size()==4)output["outcome"]=int(df3d_production::setDepotMode(target,uint32_t(values[1]),values[2]));
         const auto facts=df3d_production::depotFacts(target);if(!facts)return CR_FAILURE;
         output["flags"]=facts->flags;output["goods"]=facts->goods;output["trade"]=facts->trade;output["worker"]=facts->worker;
+        const auto broker=df3d_production::depotBrokerFacts(target);if(!broker)return CR_FAILURE;
+        output["broker_id"]=broker->id;output["broker_name"]=DF2UTF(broker->name);output["activity"]=DF2UTF(broker->activity);
+        output["foreground"]=broker->foreground;output["background"]=broker->background;output["bright"]=broker->bright;output["accessible"]=broker->accessible;
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="well-status-probe") {

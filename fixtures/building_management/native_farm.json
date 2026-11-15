@@ -12809,6 +12809,583 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "door_presentation_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-210405",
+      "status": "passed_with_known_issues",
+      "owned_df_pid": 30540,
+      "source_save_preserved": true,
+      "protocol": 215,
+      "scope": "Controlled native rendering and read-only transport for ten flag states. Not natural takeover/mechanism gameplay, combined-control precedence or viewer rendering.",
+      "states": [
+        {
+          "colors": [
+            {
+              "bold": true,
+              "fg": 2,
+              "y": 11
+            },
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 13
+            },
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 15
+            }
+          ],
+          "flags": 0,
+          "lines": [
+            {
+              "text": "                                                      Passable",
+              "y": 11
+            },
+            {
+              "text": "",
+              "y": 13
+            },
+            {
+              "text": "",
+              "y": 15
+            }
+          ],
+          "wire": {
+            "late_retired": false,
+            "receipts": [
+              {
+                "closed": false,
+                "controlled": false,
+                "forbidden": false,
+                "id": 16,
+                "operated_by_mechanisms": false,
+                "revision": 2226124579598016429,
+                "taken_by_invaders": false,
+                "used_by_intruder": false
+              }
+            ],
+            "stale_checked": false,
+            "success": true
+          }
+        },
+        {
+          "colors": [
+            {
+              "bold": true,
+              "fg": 4,
+              "y": 11
+            },
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 13
+            },
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 15
+            }
+          ],
+          "flags": 1,
+          "lines": [
+            {
+              "text": "                                                      Forbidden",
+              "y": 11
+            },
+            {
+              "text": "",
+              "y": 13
+            },
+            {
+              "text": "",
+              "y": 15
+            }
+          ],
+          "wire": {
+            "late_retired": false,
+            "receipts": [
+              {
+                "closed": false,
+                "controlled": false,
+                "forbidden": true,
+                "id": 16,
+                "operated_by_mechanisms": false,
+                "revision": 3453504693763515308,
+                "taken_by_invaders": false,
+                "used_by_intruder": false
+              }
+            ],
+            "stale_checked": false,
+            "success": true
+          }
+        },
+        {
+          "colors": [
+            {
+              "bold": true,
+              "fg": 2,
+              "y": 11
+            },
+            {
+              "bold": true,
+              "fg": 4,
+              "y": 13
+            },
+            {
+              "bold": false,
+              "fg": 4,
+              "y": 15
+            }
+          ],
+          "flags": 4,
+          "lines": [
+            {
+              "text": "                                                      Passable",
+              "y": 11
+            },
+            {
+              "text": "                                                      DOOR TAKEN BY INVADERS",
+              "y": 13
+            },
+            {
+              "text": "                                                      Retake door to forbid it.",
+              "y": 15
+            }
+          ],
+          "wire": {
+            "late_retired": false,
+            "receipts": [
+              {
+                "closed": false,
+                "controlled": true,
+                "forbidden": false,
+                "id": 16,
+                "operated_by_mechanisms": false,
+                "revision": 7135645036260011945,
+                "taken_by_invaders": true,
+                "used_by_intruder": false
+              }
+            ],
+            "stale_checked": false,
+            "success": true
+          }
+        },
+        {
+          "colors": [
+            {
+              "bold": true,
+              "fg": 2,
+              "y": 11
+            },
+            {
+              "bold": true,
+              "fg": 6,
+              "y": 13
+            },
+            {
+              "bold": false,
+              "fg": 6,
+              "y": 15
+            }
+          ],
+          "flags": 8,
+          "lines": [
+            {
+              "text": "                                                      Passable",
+              "y": 11
+            },
+            {
+              "text": "                                                      DOOR USED BY INTRUDER",
+              "y": 13
+            },
+            {
+              "text": "                                                      Retake door to forbid it.",
+              "y": 15
+            }
+          ],
+          "wire": {
+            "late_retired": false,
+            "receipts": [
+              {
+                "closed": false,
+                "controlled": true,
+                "forbidden": false,
+                "id": 16,
+                "operated_by_mechanisms": false,
+                "revision": 2806897339066473893,
+                "taken_by_invaders": false,
+                "used_by_intruder": true
+              }
+            ],
+            "stale_checked": false,
+            "success": true
+          }
+        },
+        {
+          "colors": [
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 11
+            },
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 13
+            },
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 15
+            }
+          ],
+          "flags": 32,
+          "lines": [
+            {
+              "text": "                                                      Operated by Mechanisms",
+              "y": 11
+            },
+            {
+              "text": "",
+              "y": 13
+            },
+            {
+              "text": "",
+              "y": 15
+            }
+          ],
+          "wire": {
+            "late_retired": false,
+            "receipts": [
+              {
+                "closed": false,
+                "controlled": true,
+                "forbidden": false,
+                "id": 16,
+                "operated_by_mechanisms": true,
+                "revision": 9126405578578962381,
+                "taken_by_invaders": false,
+                "used_by_intruder": false
+              }
+            ],
+            "stale_checked": false,
+            "success": true
+          }
+        },
+        {
+          "colors": [
+            {
+              "bold": true,
+              "fg": 2,
+              "y": 11
+            },
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 13
+            },
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 15
+            }
+          ],
+          "flags": 16,
+          "lines": [
+            {
+              "text": "                                                      Passable",
+              "y": 11
+            },
+            {
+              "text": "",
+              "y": 13
+            },
+            {
+              "text": "",
+              "y": 15
+            }
+          ],
+          "wire": {
+            "late_retired": false,
+            "receipts": [
+              {
+                "closed": true,
+                "controlled": false,
+                "forbidden": false,
+                "id": 16,
+                "operated_by_mechanisms": false,
+                "revision": 1064579060661101501,
+                "taken_by_invaders": false,
+                "used_by_intruder": false
+              }
+            ],
+            "stale_checked": false,
+            "success": true
+          }
+        },
+        {
+          "colors": [
+            {
+              "bold": true,
+              "fg": 4,
+              "y": 11
+            },
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 13
+            },
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 15
+            }
+          ],
+          "flags": 17,
+          "lines": [
+            {
+              "text": "                                                      Forbidden",
+              "y": 11
+            },
+            {
+              "text": "",
+              "y": 13
+            },
+            {
+              "text": "",
+              "y": 15
+            }
+          ],
+          "wire": {
+            "late_retired": false,
+            "receipts": [
+              {
+                "closed": true,
+                "controlled": false,
+                "forbidden": true,
+                "id": 16,
+                "operated_by_mechanisms": false,
+                "revision": 2291959174826600380,
+                "taken_by_invaders": false,
+                "used_by_intruder": false
+              }
+            ],
+            "stale_checked": false,
+            "success": true
+          }
+        },
+        {
+          "colors": [
+            {
+              "bold": true,
+              "fg": 2,
+              "y": 11
+            },
+            {
+              "bold": true,
+              "fg": 4,
+              "y": 13
+            },
+            {
+              "bold": false,
+              "fg": 4,
+              "y": 15
+            }
+          ],
+          "flags": 20,
+          "lines": [
+            {
+              "text": "                                                      Passable",
+              "y": 11
+            },
+            {
+              "text": "                                                      DOOR TAKEN BY INVADERS",
+              "y": 13
+            },
+            {
+              "text": "                                                      Retake door to forbid it.",
+              "y": 15
+            }
+          ],
+          "wire": {
+            "late_retired": false,
+            "receipts": [
+              {
+                "closed": true,
+                "controlled": true,
+                "forbidden": false,
+                "id": 16,
+                "operated_by_mechanisms": false,
+                "revision": 5974099517323097017,
+                "taken_by_invaders": true,
+                "used_by_intruder": false
+              }
+            ],
+            "stale_checked": false,
+            "success": true
+          }
+        },
+        {
+          "colors": [
+            {
+              "bold": true,
+              "fg": 2,
+              "y": 11
+            },
+            {
+              "bold": true,
+              "fg": 6,
+              "y": 13
+            },
+            {
+              "bold": false,
+              "fg": 6,
+              "y": 15
+            }
+          ],
+          "flags": 24,
+          "lines": [
+            {
+              "text": "                                                      Passable",
+              "y": 11
+            },
+            {
+              "text": "                                                      DOOR USED BY INTRUDER",
+              "y": 13
+            },
+            {
+              "text": "                                                      Retake door to forbid it.",
+              "y": 15
+            }
+          ],
+          "wire": {
+            "late_retired": false,
+            "receipts": [
+              {
+                "closed": true,
+                "controlled": true,
+                "forbidden": false,
+                "id": 16,
+                "operated_by_mechanisms": false,
+                "revision": 1645351820129558965,
+                "taken_by_invaders": false,
+                "used_by_intruder": true
+              }
+            ],
+            "stale_checked": false,
+            "success": true
+          }
+        },
+        {
+          "colors": [
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 11
+            },
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 13
+            },
+            {
+              "bold": true,
+              "fg": 7,
+              "y": 15
+            }
+          ],
+          "flags": 48,
+          "lines": [
+            {
+              "text": "                                                      Operated by Mechanisms",
+              "y": 11
+            },
+            {
+              "text": "",
+              "y": 13
+            },
+            {
+              "text": "",
+              "y": 15
+            }
+          ],
+          "wire": {
+            "late_retired": false,
+            "receipts": [
+              {
+                "closed": true,
+                "controlled": true,
+                "forbidden": false,
+                "id": 16,
+                "operated_by_mechanisms": true,
+                "revision": 7964860059642047453,
+                "taken_by_invaders": false,
+                "used_by_intruder": false
+              }
+            ],
+            "stale_checked": false,
+            "success": true
+          }
+        }
+      ],
+      "hashes": {
+        "workshop-door-state-0.png": "1544d95e337c8e53826df23bc2c9a8d70c45dc667a98aeef9f607da38fa53f75",
+        "workshop-door-state-1.png": "7ecef8be011716999159ca8af5f5b6888a86717aaac9a01ac40db3a1dda47cce",
+        "workshop-door-state-16.png": "5c17621f87daf500c66647eb3bf9416193542ee537887b91ad280b5d56b4ea76",
+        "workshop-door-state-17.png": "7ecef8be011716999159ca8af5f5b6888a86717aaac9a01ac40db3a1dda47cce",
+        "workshop-door-state-20.png": "ffcbe0107069dc48550d09656347bf28847f7d521a78c3f6092396985dbea78d",
+        "workshop-door-state-24.png": "d8c063f9205e7d7eb8008d590c15d5a3f41270bc47072194203db4522499ef0e",
+        "workshop-door-state-32.png": "9ab78c2bcde95cbaf1a073fddc6b24f699a98e29741e8a681a9ebf02ab735521",
+        "workshop-door-state-4.png": "ffcbe0107069dc48550d09656347bf28847f7d521a78c3f6092396985dbea78d",
+        "workshop-door-state-48.png": "5316139564ab45406fbccee28d82837baf0e5c2c6f0813e7b8b91345b49f0d28",
+        "workshop-door-state-8.png": "d8c063f9205e7d7eb8008d590c15d5a3f41270bc47072194203db4522499ef0e"
+      }
+    },
+    "door_controls_transport_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-210405",
+      "status": "passed_with_known_issues",
+      "owned_df_pid": 30540,
+      "source_save_preserved": true,
+      "protocol": 215,
+      "scope": "Headless Godot controller and typed transport. Lock/repeated lock/unlock, stale rejection, late-read retirement, ten control-reason observations. Native readback confirms restored flags/occupancy. No rendered panel qualification.",
+      "receipt": {
+        "late_retired": true,
+        "receipts": [
+          {
+            "forbidden": true,
+            "revision": "4524274581794189789"
+          },
+          {
+            "forbidden": true,
+            "revision": "4524274581794189789"
+          },
+          {
+            "forbidden": false,
+            "revision": "1064579060661101501"
+          }
+        ],
+        "stale_checked": true,
+        "success": true
+      },
+      "initial": {
+        "flags": 16,
+        "id": 16,
+        "mutated": false,
+        "occupancy": 7,
+        "outcome": 1,
+        "revision": "1064579060661101501"
+      },
+      "known_issues": [
+        "Godot separate-rendering-thread experimental notice"
+      ],
+      "hashes": {
+        "workshop-native.json": "22c0131c56b628b9d028d3dfae545330c5b478d1d52c7bb519adff0caf27ec01",
+        "workshop-wire-result.json": "5f595aa426ceaff354b61aa04f5893928a083b1c1a2c7d873f0b5867d9a50828",
+        "workshop-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+        "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+      }
+    },
     "door_control_provider_reference": {
       "lane": "build/stockpile-storage-native-farm-discovery-20261114-204217",
       "status": "passed",

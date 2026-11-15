@@ -186,8 +186,35 @@ local ok,err=xpcall(function()
      end
      local stale=request('1','forbid');assert(stale.outcome==2 and not stale.mutated and b.door_flags.whole==before,'Stale door edit changed target')
      result.basic_building_reference.door.provider={initial=initial,effects=provider,stale_rejected=true}
+     if os.getenv('DF3D_DOOR_CONTROL_RUNTIME')=='1' then
+      local f=assert(io.open(out..'/door-expected.json','w'));f:write(json.encode(request('0','read')));f:close()
+      capture('workshop-wire')
+      f=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(f:read('*a'));f:close()
+      assert(receipt.success,'Door transport client failed')
+      assert(b.door_flags.whole==before and occupancy()==initial.occupancy,'Door transport did not restore native state')
+      result.basic_building_reference.door.wire=receipt
+     end
     end
     df.global.world.reindex_pathfinding=reindex
+    if os.getenv('DF3D_DOOR_CONTROL_PRESENTATION')=='1' then
+     local states={}
+     for _,flags in ipairs{0,1,4,8,32,16,17,20,24,48}do
+      b.door_flags.whole=flags;view:render(dfhack.getTickCount())
+      local colors={};for _,y in ipairs{11,13,15}do local pen=dfhack.screen.readTile(g.dimx-96,y);colors[#colors+1]={y=y,fg=pen.fg,bold=pen.bold}end
+      states[#states+1]={flags=flags,lines=lines(),colors=colors};shot('door-state-'..flags)
+      if os.getenv('DF3D_DOOR_CONTROL_RUNTIME')=='1' then
+       local text,code=dfhack.run_command_silent('df3d','door-control',tostring(b.id),'0','read');assert(code==0,text)
+       local expected=json.decode(text);expected.read_only=true
+       local f=assert(io.open(out..'/door-expected.json','w'));f:write(json.encode(expected));f:close()
+       local capture_name='door-mode-wire-'..flags;capture(capture_name)
+       f=assert(io.open(out..'/'..capture_name..'-result.json'));local receipt=json.decode(f:read('*a'));f:close()
+       assert(receipt.success and b.door_flags.whole==flags,'Door mode transport changed fixture')
+       states[#states].wire=receipt
+      end
+     end
+     b.door_flags.whole=before;view:render(dfhack.getTickCount())
+     result.basic_building_reference.door.presentation=states
+    end
    end
    if name=='pending' then
     local before=b.jobs[0].flags.whole;local effects={}

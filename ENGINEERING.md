@@ -9714,6 +9714,9 @@ buildings are rejected by the staged destination. These paths do not establish
 native building-sheet coverage. The next routing work must supply the missing
 building controls and pending-construction destination before promotion.
 
+Basic building discovery: protected203229 and203340 on2026-11-14 capture
+completed Door16 and unfinished Statue965.
+
 Management protocol215 adds optional DoorControlsState and exclusive
 door_controls requests to production inspection/edit transport. Observations
 carry a stable building ID, exact revision, forbidden/closed state and separate
@@ -9724,7 +9727,48 @@ observation. Both schema defaults and mailbox are215
 (`Local\\df3d_management_v215`); rebuild bridge and client together.
 This transport change alone does not expose a door panel.
 
-Basic building discovery: protected203229 and203340 on2026-11-14 capture
+Protected210405 verifies protocol215 through the headless Godot door controller:
+lock, repeated lock and unlock retain exact revisions and return confirmed
+states; stale edits carry no snapshot, and closing retires a late read. Native
+Lua independently checks restored door flags and occupancy. Ten controlled
+open/closed/invader/intruder/mechanism observations retain each distinct fact
+across the wire. DF30540 exits
+unsaved with source preservation. The client retains only the known Godot
+rendering-thread notice; graphics are capped30FPS, sampled GPU59–61C.
+The semantic service classifies door Unknown outcomes without replay; its
+headless regression passes. Earlier205105/205217 failed because the extension
+required a farm season for door edits; neither is acceptance. The required-field
+dispatch now distinguishes door intents and bounds the desired state before
+narrowing it. Evidence: selection_reference.door_controls_transport_reference.
+Rendered controls and complete door-sheet integration remain pending.
+
+Native presentation210405 on2026-11-14 temporarily varies door flags in the
+paused, unsaved diagnostic clone. Open/closed doors retain Passable/Forbidden
+captions. Invader/intruder flags add DOOR TAKEN BY INVADERS or DOOR USED BY
+INTRUDER followed by Retake door to forbid it.; mechanisms replace the status
+with Operated by Mechanisms. Controlled doors omit lock/passable buttons.
+These captures establish display states, not natural takeover or mechanism
+gameplay. Native text cells establish palette10 for Passable,12 for Forbidden,
+12/4 for invader heading/help and14/6 for intruder heading/help; mechanisms use15.
+Original flags are restored; DF30540 exits unsaved with source
+preservation, graphics capped30FPS. Mechanism and invader screenshots were
+inspected. Evidence: selection_reference.door_presentation_reference.
+
+The staged door_controls_view renders the recorded control region
+(424,124,472,84) pixel-identically for all ten states in
+`build/qa/door-controls-render`. The intruder crop was inspected. This is a
+component rendering check using recorded semantic snapshots, not full-sheet
+integration or live pointer-edit acceptance. The serial30FPS run sampled63C/9%
+afterward. Godot emits the documented rendering-thread/finalize/two-ObjectDB
+diagnostics and the expected screenshot-readback synchronization warning;
+pixel assertions pass, but this is not a clean engine-diagnostics pass.
+Fresh root, bridge and extension builds pass; all19 root CTest checks pass.
+The staged door panel owner reuses the shared header/contents lifecycle and
+retires door state on close/removal. Its script check passes, but header-provider
+support for Door, complete-sheet routing, hover and live pointer input remain
+unqualified. These staged owner/view files do not expose the feature publicly.
+
+The native discovery captures
 completed Door16 and unfinished Statue965. The door has native Passable text,
 Forbid/Passable controls, rename/removal, and the existing component-item area.
 The statue shows Construction nearly done., Construction suspended., Resume

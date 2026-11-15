@@ -630,11 +630,18 @@ func test_header_payload_delivery() -> void:
 	service.free()
 
 func test_independent_item_unknown() -> void:
+	for domain_state in ["independent_item","door_controls"]:
+		test_production_unknown(domain_state)
+
+func test_production_unknown(domain_state: String) -> void:
 	var world:=FakeWorld.new();var service:=Service.new();service.configure(world)
-	var ticket:=service.submit("production",{"action":Contract.ManagementAction.FarmEdit,"independent_item":true,"item_id":45,"farm_operation":Contract.FarmOperation.ItemHidden,"item_value":1,"expected_revision":7},Callable())
+	var intent={"action":Contract.ManagementAction.FarmEdit,"independent_item":true,"item_id":45,"farm_operation":Contract.FarmOperation.ItemHidden,"item_value":1,"expected_revision":7}
+	if domain_state=="door_controls":intent={"action":Contract.ManagementAction.FarmEdit,"door_controls":true,"building_id":16,"door_forbidden":1,"expected_revision":7}
+	var ticket:=service.submit("production",intent,Callable())
 	service.poll()
-	world.state={"world_epoch":5,"revision":2,"request_seq":1,"status":3,"action":Contract.ManagementAction.FarmEdit,"production":{"independent_item":{"outcome":Contract.FarmEditOutcome.Unknown}}}
-	service.poll();check(service.result(ticket).outcome=="unknown","independent item uncertainty classified as ordinary rejection")
+	var production={};production[domain_state]={"outcome":Contract.FarmEditOutcome.Unknown}
+	world.state={"world_epoch":5,"revision":2,"request_seq":1,"status":3,"action":Contract.ManagementAction.FarmEdit,"production":production}
+	service.poll();check(service.result(ticket).outcome=="unknown",domain_state+" uncertainty classified as ordinary rejection")
 	for i in 5:service.poll()
 	check(world.calls.size()==1,"uncertain independent item edit replayed")
 	service.free()

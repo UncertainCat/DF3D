@@ -76,6 +76,7 @@
 #include "area_geometry.h"
 #include "room_mutation_native.h"
 #include "farm_native.h"
+#include "door_native.h"
 #include "building_item_native.h"
 #include "creature_overview_native.h"
 #include "creature_office_native.h"
@@ -4104,6 +4105,33 @@ void run(color_ostream& out) {
       response={};response.buildingId=q->building_id();
       response.outcome=editing?(mutated?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected):m::FarmEditOutcome::None;
       status=m::ManagementStatus::Rejected;workers.invalidate();
+    }
+    publish();return;
+  }
+  if(r->production() && r->production()->door_controls()) {
+    const auto* q=r->production();message.clear();status=m::ManagementStatus::Rejected;production={};
+    auto& response=production.doorControls.emplace();const bool editing=r->action()==m::ManagementAction::FarmEdit;
+    response.outcome=editing?m::FarmEditOutcome::Rejected:m::FarmEditOutcome::None;
+    const auto convert=[](const df3d_production::DoorObservation& f) {
+      return DoorControlsSnapshot{f.id,f.revision,bool(f.flags&1),bool(f.flags&0x10),bool(f.flags&4),bool(f.flags&8),bool(f.flags&32)};
+    };
+    try {
+      auto* building=df::building::find(q->building_id());
+      if(!editing) {
+        if(const auto value=df3d_production::observeDoor(building)){response.snapshot=convert(*value);status=m::ManagementStatus::Ok;}
+      } else {
+        const auto result=df3d_production::setDoorForbidden(building,q->expected_revision(),q->door_forbidden()!=0);
+        mutated=result.mutated;
+        using O=df3d_production::BuildingHeaderOutcome;
+        if(result.outcome==O::Completed && result.receipt) {
+          response.outcome=m::FarmEditOutcome::Unknown;response.snapshot=convert(*result.receipt);
+          response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;
+        } else if(result.outcome==O::Stale)response.outcome=m::FarmEditOutcome::Stale;
+        else if(result.outcome==O::Unknown)response.outcome=m::FarmEditOutcome::Unknown;
+      }
+    } catch(...) {
+      response.snapshot.reset();status=m::ManagementStatus::Rejected;
+      if(editing && mutated)response.outcome=m::FarmEditOutcome::Unknown;
     }
     publish();return;
   }

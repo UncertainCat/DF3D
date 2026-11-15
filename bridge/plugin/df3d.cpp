@@ -84,6 +84,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #include "farm_native.h"
+#include "door_native.h"
 #include "building_item_native.h"
 #include "creature_office_native.h"
 #include "creature_header_native.h"
@@ -3760,6 +3761,23 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             for(const auto& row:edit.receipt->rows)if(row.id==itemId)result["after_flags"]=Json::UInt(row.flags);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="door-control") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t id=-1;uint64_t revision=0;
+          const auto parse=[](const std::string& raw,auto& value){const auto p=std::from_chars(raw.data(),raw.data()+raw.size(),value);return p.ec==std::errc{} && p.ptr==raw.data()+raw.size();};
+          if(!parse(parameters[1],id) || !parse(parameters[2],revision) ||
+             (parameters[3]!="read" && parameters[3]!="forbid" && parameters[3]!="passable"))return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          auto* target=df::building::find(id);df3d_production::DoorEdit edit;
+          if(parameters[3]=="read") {
+            if(revision)return CR_WRONG_USAGE;
+            edit.receipt=df3d_production::observeDoor(target);
+            if(edit.receipt)edit.outcome=df3d_production::BuildingHeaderOutcome::Completed;
+          } else edit=df3d_production::setDoorForbidden(target,revision,parameters[3]=="forbid");
+          Json::Value value(Json::objectValue);value["outcome"]=int(edit.outcome);value["mutated"]=edit.mutated;
+          if(edit.receipt){const auto& r=*edit.receipt;value["id"]=r.id;value["flags"]=r.flags;value["occupancy"]=r.occupancy;value["revision"]=std::to_string(r.revision);}
+          out.print("{}",Json::FastWriter().write(value));return CR_OK;
         }
         if(parameters[0]=="building-header-action") {
           if(parameters.size()<4 || parameters.size()>5)return CR_WRONG_USAGE;

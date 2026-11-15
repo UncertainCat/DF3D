@@ -9729,8 +9729,17 @@ It rejects flags0x2c (invader/intruder/mechanism control), allows forbidding onl
 when closed(bit0x10), and treats repeated desired state as a no-op. Actual changes
 call virtual getImpassableOccupancy/getPassableOccupancy, then native143c9a0 with
 the building coordinates, and request pathfinding reindex. A direct flag-only
-bridge edit would omit these effects. These additional branches and occupancy
-effects have static evidence only so far. Existing building-header transactions
+bridge edit would omit these effects. Protected204217 compares native clicks
+with the owned semantic provider: forbid/passable produces occupancy6/7 and
+requests reindexing; repeated forbid changes nothing and does not request it.
+All flags, occupancy words and reindex effects match. A stale revision is
+rejected without mutation. The provider calls native143c9a0 with the world
+object; its neighbor invalidation uses native pathfinding helpers, never menu
+scratch. Function hashes gate execution. DF30624 exits unsaved with source
+preservation; graphics are capped30FPS, sampled GPU59–62C. Bridge build and
+all19 core checks pass. Evidence: selection_reference.door_control_provider_reference.
+Open, invader/intruder and mechanism eligibility remains static-audit only.
+Existing building-header transactions
 are restricted to completed FarmPlot/Box/Workshop/Furnace; they do not authorize
 Door actions or unfinished construction. Construction cancellation and active
 worker behavior remain unqualified. No new product route is exposed by this

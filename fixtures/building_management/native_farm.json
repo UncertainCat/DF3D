@@ -12809,6 +12809,87 @@
     "limitations": "Boundary edges, header hover during name entry and minimum-window tooltip layout are not independently probed here."
   },
   "selection_reference": {
+    "door_control_provider_reference": {
+      "lane": "build/stockpile-storage-native-farm-discovery-20261114-204217",
+      "status": "passed",
+      "owned_df_pid": 30624,
+      "source_save_preserved": true,
+      "scope": "Native pointer-click and semantic-provider comparison for closed Door16: forbid, repeated forbid, passable, stale rejection. No viewer route qualification.",
+      "native_effects": [
+        {
+          "action": "lock",
+          "flags": 17,
+          "occupancy": 6,
+          "reindex": true
+        },
+        {
+          "action": "lock-again",
+          "flags": 17,
+          "occupancy": 6,
+          "reindex": false
+        },
+        {
+          "action": "passable",
+          "flags": 16,
+          "occupancy": 7,
+          "reindex": true
+        }
+      ],
+      "provider": {
+        "effects": [
+          {
+            "operation": "forbid",
+            "receipt": {
+              "flags": 17,
+              "id": 16,
+              "mutated": true,
+              "occupancy": 6,
+              "outcome": 1,
+              "revision": "4524274581794189789"
+            },
+            "reindex": true
+          },
+          {
+            "operation": "forbid",
+            "receipt": {
+              "flags": 17,
+              "id": 16,
+              "mutated": false,
+              "occupancy": 6,
+              "outcome": 1,
+              "revision": "4524274581794189789"
+            },
+            "reindex": false
+          },
+          {
+            "operation": "passable",
+            "receipt": {
+              "flags": 16,
+              "id": 16,
+              "mutated": true,
+              "occupancy": 7,
+              "outcome": 1,
+              "revision": "1064579060661101501"
+            },
+            "reindex": true
+          }
+        ],
+        "initial": {
+          "flags": 16,
+          "id": 16,
+          "mutated": false,
+          "occupancy": 7,
+          "outcome": 1,
+          "revision": "1064579060661101501"
+        },
+        "stale_rejected": true
+      },
+      "hashes": {
+        "workshop-native.json": "d103acad77f072f74f29ae1cb87fc293b8e4a30d2f3837518c84933e236a45ae",
+        "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+        "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+      }
+    },
     "basic_building_reference": {
       "door": {
         "door_flags": 16,

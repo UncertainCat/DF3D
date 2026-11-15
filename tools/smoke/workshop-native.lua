@@ -159,15 +159,35 @@ local ok,err=xpcall(function()
    if df.building_doorst:is_instance(b)then result.basic_building_reference[name].door_flags=b.door_flags.whole end
    shot('basic-building-'..name)
    if name=='door' then
-    local before=b.door_flags.whole;local effects={}
+    local before=b.door_flags.whole;local effects={};local reindex=df.global.world.reindex_pathfinding
+    local function occupancy()return dfhack.maps.getTileBlock(b.x1,b.y1,b.z).occupancy[b.x1%16][b.y1%16].whole end
     for _,step in ipairs{{'lock',852,154},{'lock-again',852,154},{'passable',876,154}}do
+     df.global.world.reindex_pathfinding=false
      g.precise_mouse_x=step[2];g.precise_mouse_y=step[3];g.mouse_x=step[2]//8;g.mouse_y=(step[3]-4)//12
      df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
      gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
-     effects[#effects+1]={action=step[1],flags=b.door_flags.whole,lines=lines()};shot('basic-building-door-'..step[1])
+     effects[#effects+1]={action=step[1],flags=b.door_flags.whole,occupancy=occupancy(),reindex=df.global.world.reindex_pathfinding,lines=lines()};shot('basic-building-door-'..step[1])
     end
     result.basic_building_reference.door.effects=effects
     assert(b.door_flags.whole==before,'Door fixture did not restore original flags')
+    if os.getenv('DF3D_DOOR_CONTROL_PROVIDER')=='1' then
+     local function request(revision,operation)
+      local text,code=dfhack.run_command_silent('df3d','door-control',tostring(b.id),revision,operation)
+      assert(code==0,text);return json.decode(text)
+     end
+     local initial=request('0','read');assert(initial.outcome==1,'Door semantic read rejected')
+     local current=initial;local provider={}
+     for i,operation in ipairs{'forbid','forbid','passable'}do
+      df.global.world.reindex_pathfinding=false
+      current=request(current.revision,operation)
+      assert(current.outcome==1,'Door semantic edit rejected or uncertain')
+      assert(current.flags==effects[i].flags and current.occupancy==effects[i].occupancy and df.global.world.reindex_pathfinding==effects[i].reindex,'Door semantic effects differ from native')
+      provider[#provider+1]={operation=operation,receipt=current,reindex=df.global.world.reindex_pathfinding}
+     end
+     local stale=request('1','forbid');assert(stale.outcome==2 and not stale.mutated and b.door_flags.whole==before,'Stale door edit changed target')
+     result.basic_building_reference.door.provider={initial=initial,effects=provider,stale_rejected=true}
+    end
+    df.global.world.reindex_pathfinding=reindex
    end
    if name=='pending' then
     local before=b.jobs[0].flags.whole;local effects={}

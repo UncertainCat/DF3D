@@ -15220,8 +15220,287 @@
             "token": "BUILDING_ICON_TRACK_STOP"
           }
         ],
-        "matched_existing_selector": "tasks_artwork_native.h destinationArtwork: all47 fixed type slots,24 fixed workshop slots,7 fixed furnace slots and6 trap slots match the building-sheet header dispatch.",
-        "limits": "Static evidence only. Custom-raw fallback paths, siege/construction subtype dispatch and complete rendered coverage remain to qualify. No broader header mapping is enabled by this evidence."
+        "constructions": [
+          {
+            "value": 0,
+            "branch": "0x17fe32",
+            "slot": "0x264b108",
+            "token": "BUILDING_ICON_FORTIFICATION"
+          },
+          {
+            "value": 1,
+            "branch": "0x17fe41",
+            "slot": "0x264b0e8",
+            "token": "BUILDING_ICON_WALL"
+          },
+          {
+            "value": 2,
+            "branch": "0x17fe5f",
+            "slot": "0x264b0f0",
+            "token": "BUILDING_ICON_FLOOR"
+          },
+          {
+            "value": 3,
+            "branch": "0x17fe6e",
+            "slot": "0x264b0f8",
+            "token": "BUILDING_ICON_STAIRS"
+          },
+          {
+            "value": 4,
+            "branch": "0x17fe6e",
+            "slot": "0x264b0f8",
+            "token": "BUILDING_ICON_STAIRS"
+          },
+          {
+            "value": 5,
+            "branch": "0x17fe6e",
+            "slot": "0x264b0f8",
+            "token": "BUILDING_ICON_STAIRS"
+          },
+          {
+            "value": 6,
+            "branch": "0x17fe7d",
+            "slot": "0x264b0f4",
+            "token": "BUILDING_ICON_RAMP"
+          },
+          {
+            "value": 7,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 8,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 9,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 10,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 11,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 12,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 13,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 14,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 15,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 16,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 17,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 18,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 19,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 20,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 21,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 22,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 23,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 24,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 25,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 26,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 27,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 28,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 29,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 30,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 31,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 32,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 33,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 34,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 35,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 36,
+            "branch": "0x17fe8c",
+            "slot": "0x264b128",
+            "token": "BUILDING_ICON_TRACK"
+          },
+          {
+            "value": 37,
+            "branch": "0x17fe50",
+            "slot": "0x264b0ec",
+            "token": "BUILDING_ICON_REINFORCED_WALL"
+          }
+        ],
+        "siege": [
+          {
+            "value": 0,
+            "branch": "0x17fd11",
+            "slot": "0x264b18c",
+            "token": "BUILDING_ICON_CATAPULT"
+          },
+          {
+            "value": 1,
+            "branch": "0x17fd20",
+            "slot": "0x264b188",
+            "token": "BUILDING_ICON_BALLISTA"
+          },
+          {
+            "value": 2,
+            "branch": "0x17fd2f",
+            "slot": "0x264b190",
+            "token": "BUILDING_ICON_BOLT_THROWER"
+          }
+        ],
+        "custom_raw": {
+          "workshop_branch": "17fab8..17fb36",
+          "furnace_branch": "17fbff..17fc6e",
+          "lookup_rvas": [
+            "14dc70",
+            "14dd10"
+          ],
+          "raw_id_offset": "0x28",
+          "list_icon_texpos_offset": "0xbcb8",
+          "fallback_slots": [
+            "0x264b00c",
+            "0x264b03c"
+          ],
+          "behavior": "Use getCustomType and matching raw id; nonzero raw list_icon_texpos precedes installed fallback. Native lookup searches sorted raw vectors; existing selector scans the same identity set."
+        },
+        "branch_hashes": {
+          "0x17f8d7": {
+            "length": 2801,
+            "sha256": "a23ed953d5ea7259420051f4c8768e19442021bb113fffde7db9e51928bfbb4d"
+          },
+          "0x14dc70": {
+            "length": 160,
+            "sha256": "99bc3cca5cff3b43adc98f7f8cbf0fa964c896557eb22ce6e43febbb26256694"
+          },
+          "0x14dd10": {
+            "length": 160,
+            "sha256": "89ceada6f3b8873bba63489528f69530a78ee400380429654d751f9faa6d1ca6"
+          }
+        },
+        "matched_existing_selector": "tasks_artwork_native.h destinationArtwork: all47 fixed type slots,24 fixed workshop slots,7 fixed furnace slots 6 trap slots,38 construction slots and3 siege slots match the building-sheet header dispatch.",
+        "limits": "Static evidence only. Custom raw id lookup, nonzero icon precedence and fallback slots also match by disassembly. Complete rendered coverage remains to qualify. No broader header mapping is enabled by this evidence."
       },
       "contents_viewer_reference": {
         "protocol": 218,

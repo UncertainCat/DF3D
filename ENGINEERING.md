@@ -9928,7 +9928,7 @@ the panel. Bridge build and19 root checks pass. DF21072 exits unsaved with
 source preservation,30FPS and sampled GPU61C/24%. Known Godot rendering-thread,
 finalize and two-ObjectDB diagnostics remain. Evidence:
 pending_construction_reference.presentation_reference. This is not public
-map-entry acceptance: component View/hover and removal contents remain unqualified;
+map-entry acceptance: component hover and removal contents remain unqualified;
 only farm/statue header artwork is mapped in the staged view.
 
 Protected234907 qualifies the stage1 farm removal flow in the actual main scene.
@@ -9972,7 +9972,7 @@ unsaved with the source save preserved. The run is passed_with_known_issues
 for the documented rendering-thread, finalize and two-ObjectDB diagnostics;
 graphics are capped30FPS, with a sampled GPU60C/18% (not a peak measurement).
 Evidence: pending_construction_reference.contents_viewer_reference. This
-qualifies Statue965 component22339; component View/hover, removal contents,
+qualifies Statue965 component22339; component hover, removal contents,
 other header artwork and ordinary map entry remain outside this acceptance.
 Matching218 core, bridge and extension builds and all19 root checks pass.
 Native002629 on2026-11-15 extends the component workflow: View opens item22339,
@@ -9998,10 +9998,16 @@ hover, removal contents and broader artwork/map-entry coverage remain pending.
 Static header artwork dispatch17f8d7 (type table19f7d8), workshop table19f8b4,
 furnace table19f918 and trap table19f938 matches the existing Tasks destination
 artwork selector for47 fixed types,24 fixed workshop subtypes,7 fixed furnace
-subtypes and6 trap subtypes. Token bindings are resolved from the supported
+subtypes,6 trap subtypes,38 construction subtypes (table19f950) and3 siege
+subtypes (branches17fd11/17fd20/17fd2f). Token bindings are resolved from the supported
 executable's installed-graphics parser. This is reuse evidence, not rendered
-acceptance; custom-raw fallback, siege/construction branches and broader live
-coverage remain to qualify. See pending_construction_reference.header_dispatch_reference.
+acceptance. Custom branches17fab8/17fbff resolve getCustomType through raw-id
+lookups14dc70/14dd10 (id at0x28), prefer nonzero list_icon_texpos at0xbcb8,
+then fall back to workshop slot264b00c or furnace slot264b03c. This matches the
+existing selector's raw-id scan and fallback. Broader live coverage and carrying
+the bridge-selected recipe to the pending panel remain unfinished; Godot still
+maps only Farm/Statue headers. Dispatch and lookup hashes are recorded in
+pending_construction_reference.header_dispatch_reference.
 
 Removal return discovery221104: use the same controlled stage1 farm setup as
 advanced_reference, click Remove building, then Cancel removal. The first

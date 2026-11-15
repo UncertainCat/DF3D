@@ -10102,6 +10102,31 @@ preservation; only documented rendering-thread/finalize/two-ObjectDB diagnostics
 remain. Runs are capped30FPS; sampled GPU61C/13–22% during the final run, not peak
 measurements. Evidence: pending_construction_reference.removal_scene_reference.
 
+Unfinished removal now admits component edits through the existing native item
+action leaves. Admission still requires a valid unfinished-building observation,
+current contents revision, current item membership and native eligibility; the
+transaction rejects changed completion/removal state. Completed-building admission
+is unchanged. The pending owner opts into removal edits instead of displaying
+working-looking controls that silently refuse every action.
+
+Protected native020612 on2026-11-15 selects controlled Workshop3 at stage2,
+clicks Remove building, then Forbid/Dump/Hide twice on wood1060. Each requested
+flag changes and returns; DestroyBuilding382796 remains flags0. Melt is absent
+and clicking its position does nothing. Component View sets only the lazy weight
+bit; holder View returns to the removal sheet. Cancel removal retires the job.
+Protected main-scene020842 repeats the controls and item/holder navigation through
+DF3D: all eleven full488x708 panels match native, including Forbidden styling.
+The live Lua guards verify unchanged stage and demolition job identity/type/flags,
+and matching final item flags. The stored native JSON is the pre-viewer oracle;
+post-viewer guards are established by successful lane completion, not a separate
+readback file. Escape clears panel authority. Both owned sessions41352/10372 close
+unsaved with source saves unchanged;30FPS and sampled GPU48–49C, not peak readings.
+The viewer retains only known rendering-thread/finalize/two-ObjectDB diagnostics.
+Bridge/core builds, core19 and scene parsing pass. Fixture
+`pending_construction_reference.removal_component_reference` records observations
+and image hashes. This qualifies the controlled wooden component; metal Melt,
+worker-owned demolition and every unfinished type are not claimed.
+
 Native unfinished contents235233: select Statue965 (stage0/max1), then click
 Forbid, Dump, Melt and Hide twice each on its component22339 while paused.
 All four controls change the requested flag. Forbid additionally clears in_job

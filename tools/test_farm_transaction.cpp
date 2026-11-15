@@ -499,8 +499,8 @@ TEST_CASE("building header rename bounds and repeated name are effect free") {
 
 TEST_CASE("pending chest contents edits require opt-in and stable removal state") {
     using namespace df3d_production;
-    for(bool allow:{false,true}) for(bool stable:{false,true}) for(bool stale:{false,true}) {
-        BuildingContentsSnapshot before;before.buildingId=278;before.completed=true;before.removing=true;
+    for(bool completed:{false,true}) for(bool allow:{false,true}) for(bool stable:{false,true}) for(bool stale:{false,true}) {
+        BuildingContentsSnapshot before;before.buildingId=278;before.completed=completed;before.removing=true;
         BuildingContentsRow row;row.itemType=30;row.id=5834;row.role=2;row.canDump=true;
         row.materialToken="WOOD:KUMQUAT";row.appearance=ItemInspectionAppearance{};row.appearance->materialToken=row.materialToken;before.rows={row};
         before.revision=buildingContentsRevision(before);int calls=0;
@@ -508,7 +508,7 @@ TEST_CASE("pending chest contents edits require opt-in and stable removal state"
             [&]{++calls;return true;},[&]()->std::optional<BuildingContentsSnapshot>{
                 auto after=before;after.rows[0].dump=true;after.removing=stable;
                 after.revision=buildingContentsRevision(after);return after;
-            },allow);
+            },allow,!completed);
         CHECK(calls==(allow&&!stale?1:0));
         CHECK(result.outcome==(!allow?FarmEditOutcome::Rejected:stale?FarmEditOutcome::Stale:stable?FarmEditOutcome::Completed:FarmEditOutcome::Unknown));
         CHECK(bool(result.receipt)==(allow&&!stale&&stable));

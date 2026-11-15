@@ -4279,6 +4279,7 @@ void run(color_ostream& out) {
       const auto observe=[&]{return observeBuildingContents(q->building_id(),true);};
       const auto before=observe();
       if(before) {
+        const bool unfinished=bool(df3d_production::observePendingBuilding(contentsBuilding(q->building_id(),true)));
         auto edit=df3d_production::finishBuildingItemEdit(*before,q->expected_revision(),q->item_id(),action,q->item_value()!=0,[&] {
           auto* building=contentsBuilding(q->building_id(),true);
           if(!building)return false;
@@ -4286,8 +4287,7 @@ void run(color_ostream& out) {
             entered=true;return df3d_production::setBuildingItemFlag(held->item,action,q->item_value()!=0);
           }
           return false;
-        },observe,contentsBuilding(q->building_id())->getType()==df::building_type::Box,
-          bool(df3d_production::observePendingBuilding(contentsBuilding(q->building_id(),true))));
+        },observe,unfinished || contentsBuilding(q->building_id())->getType()==df::building_type::Box,unfinished);
         mutated=edit.mutated;
         using O=df3d_production::FarmEditOutcome;
         if(edit.outcome==O::Completed) {

@@ -15,6 +15,16 @@ func exercise(expected: Dictionary) -> void:
 	check(ui.host.active==owner and owner.state.building_id==int(sample.building_id),"Component selection opened wrong building")
 	check(selection.tabs.alternatives.size()==sample.before.tabs.size(),"Initial native tab count differs")
 	await panel_capture("selection-component-before","workshop-pending-selection-component-before")
+	if sample.get("removal",false):
+		check(owner.state.snapshot.removing,"Missing queued removal state")
+		for entry in [["forbid",2],["dump",3],["melt",4],["hidden",5]]:
+			for attempt in [1,2]:
+				await pointer(owner.panel.contents.get_global_transform_with_canvas()*owner.panel.contents.control_rect(0,entry[1]).get_center())
+				await drain()
+				if not await pending_ready():return
+				var row: Dictionary=owner.contents.rows()[0]
+				check(row[entry[0]]==(bool(attempt==1) if entry[0]!="melt" else false),"Removal component flag differs: "+entry[0])
+				await panel_capture("removal-component-"+entry[0]+"-"+str(attempt),"workshop-pending-removal-component-"+entry[0]+"-"+str(attempt))
 	await pointer(owner.panel.contents.get_global_transform_with_canvas()*owner.panel.contents.control_rect(0,1).get_center())
 	if not await settle(owner.item_owner.state):return
 	check(ui.host.active==owner.item_owner and owner.item_owner.state.item_id==int(sample.item_id),"Component inspection opened wrong item")

@@ -17979,6 +17979,430 @@
           "chest-scene-component-melt-2.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
           "chest-scene-component-return.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899"
         }
+      },
+      "removal_component_reference": {
+        "protocol": 222,
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-020842",
+        "owned_df_pid": 10372,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "status": "passed_with_known_issues",
+        "scope": "Controlled unfinished Workshop3 stage2 with native queued DestroyBuilding job. Native and actual main-scene Forbid/Dump/Hide twice, unavailable wooden-component Melt clicks, component View and holder return, Escape. Eleven full488x708 panels equal. Native job identity/type/flags and stage remain unchanged after viewer actions; only lazy item weight bit remains set. Native-only020612 independently confirms these effects. This does not qualify metal Melt, worker-owned removal or every building type.",
+        "native": {
+          "before": {
+            "id": 3,
+            "item_flags": 32,
+            "jobs": [
+              {
+                "flags": 0,
+                "id": 382796,
+                "type": "DestroyBuilding"
+              }
+            ],
+            "kind": 2,
+            "open": true,
+            "stage": 2,
+            "tabs": []
+          },
+          "building_id": 3,
+          "flags": [
+            {
+              "action": "forbid",
+              "after": {
+                "id": 3,
+                "item_flags": 524320,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              },
+              "attempt": 1,
+              "before": {
+                "id": 3,
+                "item_flags": 32,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              }
+            },
+            {
+              "action": "forbid",
+              "after": {
+                "id": 3,
+                "item_flags": 32,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              },
+              "attempt": 2,
+              "before": {
+                "id": 3,
+                "item_flags": 524320,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              }
+            },
+            {
+              "action": "dump",
+              "after": {
+                "id": 3,
+                "item_flags": 2097184,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              },
+              "attempt": 1,
+              "before": {
+                "id": 3,
+                "item_flags": 32,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              }
+            },
+            {
+              "action": "dump",
+              "after": {
+                "id": 3,
+                "item_flags": 32,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              },
+              "attempt": 2,
+              "before": {
+                "id": 3,
+                "item_flags": 2097184,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              }
+            },
+            {
+              "action": "melt",
+              "after": {
+                "id": 3,
+                "item_flags": 32,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              },
+              "attempt": 1,
+              "before": {
+                "id": 3,
+                "item_flags": 32,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              }
+            },
+            {
+              "action": "melt",
+              "after": {
+                "id": 3,
+                "item_flags": 32,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              },
+              "attempt": 2,
+              "before": {
+                "id": 3,
+                "item_flags": 32,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              }
+            },
+            {
+              "action": "hidden",
+              "after": {
+                "id": 3,
+                "item_flags": 16777248,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              },
+              "attempt": 1,
+              "before": {
+                "id": 3,
+                "item_flags": 32,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              }
+            },
+            {
+              "action": "hidden",
+              "after": {
+                "id": 3,
+                "item_flags": 32,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              },
+              "attempt": 2,
+              "before": {
+                "id": 3,
+                "item_flags": 16777248,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382796,
+                    "type": "DestroyBuilding"
+                  }
+                ],
+                "kind": 2,
+                "open": true,
+                "stage": 2,
+                "tabs": []
+              }
+            }
+          ],
+          "item": {
+            "id": 1060,
+            "item_flags": 536870944,
+            "jobs": [
+              {
+                "flags": 0,
+                "id": 382796,
+                "type": "DestroyBuilding"
+              }
+            ],
+            "kind": 1,
+            "open": true,
+            "stage": 2,
+            "tabs": []
+          },
+          "item_id": 1060,
+          "removal": true,
+          "returned": {
+            "id": 3,
+            "item_flags": 536870944,
+            "jobs": [
+              {
+                "flags": 0,
+                "id": 382796,
+                "type": "DestroyBuilding"
+              }
+            ],
+            "kind": 2,
+            "open": true,
+            "stage": 2,
+            "tabs": []
+          },
+          "tile": [
+            106,
+            95,
+            165
+          ]
+        },
+        "comparisons": [
+          {
+            "viewer": "chest-scene-selection-component-before.png",
+            "native": "workshop-pending-selection-component-before.png",
+            "full_panel_equal": true,
+            "viewer_sha256": "69cef501c2a1793f73b0eff049793805c0cf6d7e6dd8343c72da85e4547bccf7",
+            "native_sha256": "177d01623f810cdc0ffa6ba0d910298a61e550a59e97b83bea4c5637d72913cf"
+          },
+          {
+            "viewer": "chest-scene-selection-component-item.png",
+            "native": "workshop-pending-selection-component-item.png",
+            "full_panel_equal": true,
+            "viewer_sha256": "195f336ea9a86b277fbeb51d964f8e7ec10568e04af0694285f646fc6134f495",
+            "native_sha256": "46c46d0ba0fcdf440a6b47c656c190a0ef5ee1acc45e5da192fa06418673f485"
+          },
+          {
+            "viewer": "chest-scene-selection-component-return.png",
+            "native": "workshop-pending-selection-component-return.png",
+            "full_panel_equal": true,
+            "viewer_sha256": "69cef501c2a1793f73b0eff049793805c0cf6d7e6dd8343c72da85e4547bccf7",
+            "native_sha256": "177d01623f810cdc0ffa6ba0d910298a61e550a59e97b83bea4c5637d72913cf"
+          },
+          {
+            "viewer": "chest-scene-removal-component-forbid-1.png",
+            "native": "workshop-pending-removal-component-forbid-1.png",
+            "full_panel_equal": true,
+            "viewer_sha256": "8854e64950058f8311d64e6bf81dc0a0c6705a66b81c8c45e1673ac6e519b427",
+            "native_sha256": "ad899367ac058d81091ba15a585fa3a1c42dcbcb36b0391694d03178fbdeff8f"
+          },
+          {
+            "viewer": "chest-scene-removal-component-forbid-2.png",
+            "native": "workshop-pending-removal-component-forbid-2.png",
+            "full_panel_equal": true,
+            "viewer_sha256": "69cef501c2a1793f73b0eff049793805c0cf6d7e6dd8343c72da85e4547bccf7",
+            "native_sha256": "177d01623f810cdc0ffa6ba0d910298a61e550a59e97b83bea4c5637d72913cf"
+          },
+          {
+            "viewer": "chest-scene-removal-component-dump-1.png",
+            "native": "workshop-pending-removal-component-dump-1.png",
+            "full_panel_equal": true,
+            "viewer_sha256": "cc3fa4833d9470d29235efb94d00b7f290c37399626d9f248abce933a78deb25",
+            "native_sha256": "c3a73e9093b392f21c9f03bfc4ed38226c96c2b49c04abb3fdf3092fcb82dd4f"
+          },
+          {
+            "viewer": "chest-scene-removal-component-dump-2.png",
+            "native": "workshop-pending-removal-component-dump-2.png",
+            "full_panel_equal": true,
+            "viewer_sha256": "69cef501c2a1793f73b0eff049793805c0cf6d7e6dd8343c72da85e4547bccf7",
+            "native_sha256": "177d01623f810cdc0ffa6ba0d910298a61e550a59e97b83bea4c5637d72913cf"
+          },
+          {
+            "viewer": "chest-scene-removal-component-melt-1.png",
+            "native": "workshop-pending-removal-component-melt-1.png",
+            "full_panel_equal": true,
+            "viewer_sha256": "69cef501c2a1793f73b0eff049793805c0cf6d7e6dd8343c72da85e4547bccf7",
+            "native_sha256": "177d01623f810cdc0ffa6ba0d910298a61e550a59e97b83bea4c5637d72913cf"
+          },
+          {
+            "viewer": "chest-scene-removal-component-melt-2.png",
+            "native": "workshop-pending-removal-component-melt-2.png",
+            "full_panel_equal": true,
+            "viewer_sha256": "69cef501c2a1793f73b0eff049793805c0cf6d7e6dd8343c72da85e4547bccf7",
+            "native_sha256": "177d01623f810cdc0ffa6ba0d910298a61e550a59e97b83bea4c5637d72913cf"
+          },
+          {
+            "viewer": "chest-scene-removal-component-hidden-1.png",
+            "native": "workshop-pending-removal-component-hidden-1.png",
+            "full_panel_equal": true,
+            "viewer_sha256": "d90da9b774368212b8d395fedfb72cd53c0a829165b41843c9bf2a22b2f963b8",
+            "native_sha256": "b0a0f9e820c8f307e1b4c2a046a2d098ec88228bd4ef263fc7e7af8237d1bb3f"
+          },
+          {
+            "viewer": "chest-scene-removal-component-hidden-2.png",
+            "native": "workshop-pending-removal-component-hidden-2.png",
+            "full_panel_equal": true,
+            "viewer_sha256": "69cef501c2a1793f73b0eff049793805c0cf6d7e6dd8343c72da85e4547bccf7",
+            "native_sha256": "177d01623f810cdc0ffa6ba0d910298a61e550a59e97b83bea4c5637d72913cf"
+          }
+        ],
+        "hashes": {
+          "workshop-native.json": "c288dc66ec9e7ff57ee5458a07596acd7c45b82f19c73216c155fe36c7ed7ae9",
+          "workshop-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "result.json": "03cf939a0f6578f3d6c244eba9ee65bcfcc99dbd8d40b7ec50bfe4ec7eae5f45",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

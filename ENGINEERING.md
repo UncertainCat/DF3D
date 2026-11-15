@@ -9909,6 +9909,23 @@ reference filenames, and continuing the general workshop exercise reused the
 artwork client at an unrelated capture. The corrected dedicated lane exits
 after stage restoration. Evidence: header_artwork_presentation_reference.
 
+The owned duration provider calls pinned native slot37 leaves28b9d0 (general),
+548db0 (bridge),54a590 (farm),54b370 (road) and54a330 (well). All are read-only
+and stage-independent. It copies only design flags, material type and required
+material quantity into local ABI buffers, then calls the verified native leaf;
+no live stage or native menu storage is modified. Diagnostic pending-building
+reads expose build_duration; progress text transport is still unfinished.
+Protected005235 compares16 direct/native-owned results across eight building
+types and every unfinished stage: generic10, farm116, bridge220 and well50.
+Stage and job-list guards hold, controlled stages are restored, and DF3668 exits
+unsaved with the source preserved. Roads were absent, so their leaf has static
+evidence only; rough-design variation is not qualified. Bridge build and19 core
+checks pass; native-only graphical capture capped30FPS, GPU sampled52C/2%.
+Evidence: duration_provider_reference. Earlier005038 reached matching duration
+values but failed a separate farm-header border comparison: native selection
+tabs change the rightmost six pixels over the top36 pixels. That selection-frame
+integration remains unfinished; it is not a duration defect or accepted parity.
+
 Management protocol218 introduced exclusive pending_building requests and an
 optional PendingBuildingState response. ProductionInspect reads use operation-1
 and no revision; FarmEdit requires an exact positive revision and operation0

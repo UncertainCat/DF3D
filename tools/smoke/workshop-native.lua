@@ -135,25 +135,43 @@ local ok,err=xpcall(function()
  shot('jobs')
  if os.getenv('DF3D_PENDING_HEADER_ART')=='1'then
   local chosen={};local rows={};local originals={}
+  local duration_probe=os.getenv('DF3D_PENDING_DURATION')=='1'
+  local kinds=duration_probe and {5,13,8,15,23,4,19,20,21,18} or {5,13,8,15,23}
+  local wanted={};for _,kind in ipairs(kinds)do wanted[kind]=true end
   for _,candidate in ipairs(df.global.world.buildings.all)do
    local kind=candidate:getType();local tile=dfhack.maps.getTileFlags{x=candidate.centerx,y=candidate.centery,z=candidate.z}
-   if (kind==5 or kind==13 or kind==8 or kind==15 or kind==23) and not chosen[kind] and tile and not tile.hidden and candidate:getBuildStage()==candidate:getMaxBuildStage() and #candidate.jobs==0 then
+   if wanted[kind] and not chosen[kind] and tile and not tile.hidden and candidate:getBuildStage()==candidate:getMaxBuildStage() and #candidate.jobs==0 then
     chosen[kind]=candidate
    end
   end
   assert(chosen[5] and chosen[13],'Header artwork reference needs idle furnace and workshop')
   result.pending_header_art=rows
-  for _,kind in ipairs{5,13,8,15,23}do local candidate=chosen[kind];if candidate then
+  for _,kind in ipairs(kinds)do local candidate=chosen[kind];if candidate then
    originals[#originals+1]={building=candidate,stage=candidate:getBuildStage()}
    candidate:setBuildStage(candidate:getMaxBuildStage()-1)
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(candidate)
    assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==candidate.id,'Header artwork target selection missed')
    rows[#rows+1]={id=candidate.id,type=kind,stage=candidate:getBuildStage(),tile={candidate.centerx,candidate.centery,candidate.z}}
+   if duration_probe then
+    local stages={};rows[#rows].duration=stages
+    for stage=0,candidate:getMaxBuildStage()-1 do
+     candidate:setBuildStage(stage)
+     local native=candidate:getBuildDuration()
+     local text,code=dfhack.run_command_silent('df3d','pending-building',tostring(candidate.id),'0','read');assert(code==0,text)
+     local owned=json.decode(text)
+     assert(owned.build_duration==native,'Owned native duration differs from live native leaf')
+     assert(candidate:getBuildStage()==stage and #candidate.jobs==0,'Duration read changed building state')
+     stages[#stages+1]={stage=stage,native=native,owned=owned.build_duration}
+    end
+    candidate:setBuildStage(candidate:getMaxBuildStage()-1);view:render(dfhack.getTickCount())
+   end
    shot('pending-header-art-'..kind)
   end end
-  capture('workshop-wire')
-  local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
-  assert(receipt.success,'Pending header artwork viewer failed')
+  if not duration_probe then
+   capture('workshop-wire')
+   local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close()
+   assert(receipt.success,'Pending header artwork viewer failed')
+  end
   for _,entry in ipairs(originals)do entry.building:setBuildStage(entry.stage)end
   result.pending_header_art_restored=true
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)

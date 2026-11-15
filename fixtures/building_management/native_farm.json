@@ -16350,6 +16350,297 @@
           "chest-scene-component-return.png": "f3091abd881e4fb4875a5c94236b6f1c9099ea3d8561fc3c61d854faa9d63899",
           "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "duration_provider_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-005235",
+        "owned_df_pid": 3668,
+        "closed_unsaved": true,
+        "source_save_preserved": true,
+        "status": "passed",
+        "scope": "Owned native slot37 duration calls match direct native calls for every unfinished stage of eight available building types. Each read checks unchanged stage and empty job list. Controlled stages restored afterward. Roads absent in this save; their leaf is statically audited only. Rough-design variation and progress text transport are not accepted by this run.",
+        "rows": [
+          {
+            "duration": [
+              {
+                "native": 10,
+                "owned": 10,
+                "stage": 0
+              },
+              {
+                "native": 10,
+                "owned": 10,
+                "stage": 1
+              },
+              {
+                "native": 10,
+                "owned": 10,
+                "stage": 2
+              }
+            ],
+            "id": 56,
+            "stage": 2,
+            "tile": [
+              116,
+              101,
+              165
+            ],
+            "type": 5
+          },
+          {
+            "duration": [
+              {
+                "native": 10,
+                "owned": 10,
+                "stage": 0
+              },
+              {
+                "native": 10,
+                "owned": 10,
+                "stage": 1
+              },
+              {
+                "native": 10,
+                "owned": 10,
+                "stage": 2
+              }
+            ],
+            "id": 3,
+            "stage": 2,
+            "tile": [
+              106,
+              95,
+              165
+            ],
+            "type": 13
+          },
+          {
+            "duration": [
+              {
+                "native": 10,
+                "owned": 10,
+                "stage": 0
+              }
+            ],
+            "id": 16,
+            "stage": 0,
+            "tile": [
+              121,
+              99,
+              165
+            ],
+            "type": 8
+          },
+          {
+            "duration": [
+              {
+                "native": 10,
+                "owned": 10,
+                "stage": 0
+              }
+            ],
+            "id": 493,
+            "stage": 0,
+            "tile": [
+              126,
+              46,
+              165
+            ],
+            "type": 15
+          },
+          {
+            "duration": [
+              {
+                "native": 10,
+                "owned": 10,
+                "stage": 0
+              }
+            ],
+            "id": 55,
+            "stage": 0,
+            "tile": [
+              97,
+              103,
+              165
+            ],
+            "type": 23
+          },
+          {
+            "duration": [
+              {
+                "native": 116,
+                "owned": 116,
+                "stage": 0
+              },
+              {
+                "native": 116,
+                "owned": 116,
+                "stage": 1
+              },
+              {
+                "native": 116,
+                "owned": 116,
+                "stage": 2
+              }
+            ],
+            "id": 227,
+            "stage": 2,
+            "tile": [
+              137,
+              111,
+              165
+            ],
+            "type": 4
+          },
+          {
+            "duration": [
+              {
+                "native": 220,
+                "owned": 220,
+                "stage": 0
+              },
+              {
+                "native": 220,
+                "owned": 220,
+                "stage": 1
+              },
+              {
+                "native": 220,
+                "owned": 220,
+                "stage": 2
+              }
+            ],
+            "id": 1378,
+            "stage": 2,
+            "tile": [
+              105,
+              78,
+              165
+            ],
+            "type": 19
+          },
+          {
+            "duration": [
+              {
+                "native": 50,
+                "owned": 50,
+                "stage": 0
+              }
+            ],
+            "id": 161,
+            "stage": 0,
+            "tile": [
+              111,
+              105,
+              165
+            ],
+            "type": 18
+          }
+        ],
+        "native_leaf_audit": [
+          {
+            "rva": "0x28b9d0",
+            "length": 30,
+            "classes": [
+              "building_actualst",
+              "building_animaltrapst",
+              "building_archerytargetst",
+              "building_armorstandst",
+              "building_axle_horizontalst",
+              "building_axle_verticalst",
+              "building_bars_floorst",
+              "building_bars_verticalst",
+              "building_bedst",
+              "building_bookcasest",
+              "building_boxst",
+              "building_cabinetst",
+              "building_cagest",
+              "building_chainst",
+              "building_chairst",
+              "building_coffinst",
+              "building_constructionst",
+              "building_display_furniturest",
+              "building_doorst",
+              "building_floodgatest",
+              "building_furnacest",
+              "building_gear_assemblyst",
+              "building_grate_floorst",
+              "building_grate_wallst",
+              "building_hatchst",
+              "building_hivest",
+              "building_instrumentst",
+              "building_nest_boxst",
+              "building_nestst",
+              "building_offering_placest",
+              "building_rollersst",
+              "building_screw_pumpst",
+              "building_shopst",
+              "building_siegeenginest",
+              "building_slabst",
+              "building_statuest",
+              "building_supportst",
+              "building_tablest",
+              "building_traction_benchst",
+              "building_tradedepotst",
+              "building_trapst",
+              "building_wagonst",
+              "building_water_wheelst",
+              "building_weaponrackst",
+              "building_weaponst",
+              "building_windmillst",
+              "building_window_gemst",
+              "building_window_glassst",
+              "building_workshopst"
+            ],
+            "sha256": "4dc6da4770031238ef428df5e692f4c27f0b8050516cd5969481ae16d116ba00"
+          },
+          {
+            "rva": "0x548db0",
+            "length": 33,
+            "classes": [
+              "building_bridgest"
+            ],
+            "sha256": "500a684251562b62317db5441d11002fe64453f18d86683a67746d3be15f4c1a"
+          },
+          {
+            "rva": "0x671f0",
+            "length": 6,
+            "classes": [
+              "building_civzonest",
+              "building_stockpilest"
+            ],
+            "sha256": "07297dca94be1b975a5dc696b5976f205b84057995fa3d3fbb157101b1ae8098"
+          },
+          {
+            "rva": "0x54a590",
+            "length": 31,
+            "classes": [
+              "building_farmplotst"
+            ],
+            "sha256": "05a28250ff14b3281c3b548b3f8950ae30baf6b32e3be74a5b7abca5abce1439"
+          },
+          {
+            "rva": "0x54b370",
+            "length": 47,
+            "classes": [
+              "building_road_dirtst",
+              "building_road_pavedst"
+            ],
+            "sha256": "a88c214658a1eb404ed5d1d1c1cbdaaf93f34f15d9cf8a9a025db0ec8e81b47a"
+          },
+          {
+            "rva": "0x54a330",
+            "length": 30,
+            "classes": [
+              "building_wellst"
+            ],
+            "sha256": "793cb356af2cd2c91c26aed32f8af9e04bec1c57bb90a92c5c6386c1e5ec507f"
+          }
+        ],
+        "hashes": {
+          "workshop-native.json": "ffe48a21b0ba19ade3903d50ffb79875a2754ad4b010709b5d785775335b344e",
+          "result.json": "302561310beacc9276f43aee422e86b57b0db848f8e6fbbaa9752651fd8b146d",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "door_header_reference": {

@@ -86,6 +86,7 @@
 #include "farm_native.h"
 #include "door_native.h"
 #include "pending_building_native.h"
+#include "pending_building_duration_native.h"
 #include "building_item_native.h"
 #include "creature_office_native.h"
 #include "creature_header_native.h"
@@ -3781,6 +3782,8 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           Json::Value value(Json::objectValue);value["outcome"]=int(edit.outcome);value["mutated"]=edit.mutated;value["removed"]=edit.removed;value["removing"]=edit.removing;
           if(edit.receipt){const auto& r=*edit.receipt;value["id"]=r.id;value["stage"]=r.stage;value["max_stage"]=r.maxStage;value["job_id"]=r.jobId;value["flags"]=r.jobFlags;value["is_removing"]=r.removing;value["revision"]=std::to_string(r.revision);value["workers"]=Json::arrayValue;for(auto worker:r.workers)value["workers"].append(worker);}
+          if(op=="read" && edit.receipt){const auto duration=df3d_production::pendingBuildDuration(target);
+            if(duration)value["build_duration"]=*duration;}
           out.print("{}",Json::FastWriter().write(value));return CR_OK;
         }
         if(parameters[0]=="door-control") {

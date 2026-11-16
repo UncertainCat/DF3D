@@ -35,6 +35,23 @@ func capture_state(label: String) -> void:
 	var native:=Image.load_from_file(reference);native.convert(Image.FORMAT_RGBA8)
 	var rect:=Rect2i(32,52,944,708)
 	check(rendered.get_region(rect).get_data()==native.get_region(rect).get_data(),"Main-scene Trade pixels differ: "+label)
+	if label=="counter" and OS.get_environment("DF3D_DEPOT_TRADE_RESIZE")=="1":
+		for label_size in ["minimum","small","wide","default"]:
+			var reference_image:=Image.load_from_file(directory+"/depot-trade-resize-"+label_size+".png")
+			var extent:=reference_image.get_size()
+			var sample: Array=[label_size,extent,int(extent.x/8)-48]
+			root.size=extent;await process_frame;await process_frame
+			var deadline:=Time.get_ticks_msec()+10000
+			while Time.get_ticks_msec()<deadline:
+				world.poll();scene._ui.actions.poll(0.01)
+				if owner.trade.goods_ready() and owner.trade.header.get("columns",0)==sample[2] and not owner.trade.appearance_pending():break
+				await create_timer(0.01).timeout
+			check(owner.trade.goods_ready() and owner.trade.header.get("columns",0)==sample[2],"Trade resize did not settle: "+sample[0])
+			await RenderingServer.frame_post_draw
+			rendered=root.get_texture().get_image();rendered.convert(Image.FORMAT_RGBA8);rendered.save_png(directory+"/trade-main-resize-"+sample[0]+".png")
+			native=Image.load_from_file(directory+"/depot-trade-resize-"+sample[0]+".png");native.convert(Image.FORMAT_RGBA8)
+			rect=Rect2i(Vector2i(view.frame.position),Vector2i(view.frame.size))
+			check(rendered.get_region(rect).get_data()==native.get_region(rect).get_data(),"Main-scene Trade resize pixels differ: "+sample[0])
 func retire_view() -> void:pass
 func close_model(_model) -> void:
 	var event:=InputEventKey.new();event.keycode=KEY_ESCAPE;event.pressed=true;root.push_input(event,true)

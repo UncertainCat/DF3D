@@ -26,8 +26,16 @@ func _patch(texture: Texture2D,origin: Vector2,columns: int) -> void:
 func _draw() -> void:
 	if colors.size()!=16 or page.is_empty():return
 	draw_rect(Rect2(Vector2.ZERO,size),Color8(28,28,28))
-	for i in mini(2,page.heading.size()):_text(page.heading[i],Vector2(0,(i+1)*12),15)
 	_patch(art.texture("HORIZONTAL_OPTION_CONFIRM"),button.position,8)
+	for i in mini(2,page.heading.size()):
+		var heading: String=page.heading[i]
+		# Native glyph cells survive button artwork; its caption replaces cells.
+		if i==1:
+			var start: int=int((button.position.x+16)/8)
+			var end: int=start+String(page.dismiss).length()
+			_text(heading.substr(0,maxi(0,start)),Vector2(0,24),15)
+			if heading.length()>end:_text(heading.substr(end),Vector2(end*8,24),15)
+		else:_text(heading,Vector2(0,12),15)
 	_text(page.dismiss,button.position+Vector2(16,24),15)
 	for i in page.rows.size():
 		var row: Dictionary=page.rows[i];var y: int=36+(int(page.offset)+i)*36

@@ -499,6 +499,38 @@ completed_sheet_discovery_reference.depot_trade_main_exchange_reference.
 Public depot selection remains gated while minimum dimensions, long counteroffer
 lists and foreign-caravan accounting are unfinished.
 
+### Trade resizing
+
+The view derives native dialogue width from its owned panel width
+(panel_cells-16). Resizing an active session requests fresh DF wrapping. While
+reads are pending, later widths replace the requested target without parallel
+reads. A summary is validated against the width in its request; if obsolete,
+the controller keeps staged goods and rereads the summary before publishing.
+Closing retires these requests, so late replies cannot reopen the panel.
+
+Native goods occupy panel_height-192 before their search inset and whole-row
+clipping. The former-204 left one row unused at600px height and incorrectly
+introduced a scrollbar. Footer/button layering preserves native glyph cells
+above artwork, including narrow overlaps. The counteroffer Okay caption replaces
+only its own glyph cells. Capacity text can draw over action artwork, while its
+footer Control ends before the action row so those buttons keep their hitboxes.
+
+Protected084015 on2026-11-16 (DF35624) captures native and actual main-scene
+counteroffers at912x552,960x600,1600x900 and1200x800; all full panels match pixels.
+DF clamps the640x480 request to912x552 in this installation, so this evidence does
+not claim640x480 native parity. Native text-cell comparisons independently verify
+wrapping widths66/72/152/102. The scene resizes back, accepts and dismisses the
+counteroffer, then closes; all tracked transfer/people/caravan/RNG effects still
+match224201. Source is preserved and DF closes unsaved. Graphics run serially
+at30FPS, final logs are clean, and GPU samples are61C, not peak readings.
+The controller's queued-width/late-reply checks and all19 core checks pass.
+Ordinary full-panel rendering and a click at the top of the Trade button also
+pass after footer layering changes. Initial083522 exposed the actual native
+window clamp, row-capacity error and text layering differences; it is not visual
+acceptance. Evidence: completed_sheet_discovery_reference.depot_trade_resize_reference.
+This qualification covers the five-item counteroffer layout. Long announcements
+and long counteroffer lists at small dimensions remain separate work.
+
 Protocol246 adds TradeSessionGift and TradeSessionSeize with the same
 session/expected-revision-only request and action receipt as Trade. The bridge
 dispatches these to the owned session transaction; the controller's offer_gift

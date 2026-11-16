@@ -104,6 +104,26 @@ local ok,err=xpcall(function()
  result.native={dialogue=trade.talkline,items={},people=people(),caravan=caravan_state()}
  for _,item in ipairs(trade.counter_offer_item)do result.native.items[#result.native.items+1]=item.id end
  local native_rng=rng();capture('depot-trade-counteroffer')
+ if os.getenv('DF3D_DEPOT_TRADE_RESIZE')=='1' then
+  result.resize={};local script=require('gui.script');local g=df.global.gps
+  for _,size in ipairs{'minimum','small','wide','default'}do
+   local request=assert(io.open(out..'/owner-input-request.tmp','w'));request:write('name-resize-'..size);request:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+   local limit=dfhack.getTickCount()+30000
+   while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
+    assert(dfhack.getTickCount()<limit,'Trade resize timeout');script.sleep(1,'frames')end
+   assert(os.remove(out..'/owner-input-ack'))
+   g.precise_mouse_x=0;g.precise_mouse_y=0;g.mouse_x=0;g.mouse_y=0;view:render(dfhack.getTickCount())
+   capture('depot-trade-resize-'..size)
+   local columns=g.dimx-48
+   local output,code=dfhack.run_command_silent('df3d','trade-header-probe',tostring(trade.bld.id),'0',tostring(trade.talkline),tostring(columns));assert(code==0,output)
+   local header=json.decode(output);assert(header.available)
+   for i,text in ipairs(header.lines)do
+    local chars={};for x=17,17+columns-1 do local tile=dfhack.screen.readTile(x,6+i);chars[#chars+1]=tile.ch>=32 and tile.ch<=255 and string.char(tile.ch)or' 'end
+    local bytes=dfhack.utf2df(text);assert(bytes..string.rep(' ',columns-#bytes)==table.concat(chars),'Native resize wrapping differs: '..size)
+   end
+   result.resize[#result.resize+1]={size=size,columns=columns,lines=header.lines}
+  end
+ end
  if accept_mode then
   result.accept_before=transfers();result.counter_goods=goods()
   if accept_mode=='native' then

@@ -76,6 +76,20 @@ func run() -> void:
 	state.close();check(state.phase==Goods.Phase.Closed and state.conversation.is_empty(),"Uncertain exchange could not close")
 	open_goods(service,state)
 	service.session_changed.emit();check(state.phase==Goods.Phase.Unavailable and state.pages==[{},{}],"Epoch replacement retained goods")
+	state.close();state.header_columns=102;open_goods(service,state)
+	state.set_header_columns(72);pending=state.ticket
+	state.set_header_columns(32);check(state.ticket==pending,"Resize submitted parallel goods reads")
+	draft_reply(service,state,page_value(0));draft_reply(service,state,page_value(1),-1,{},false)
+	var narrow_header:=header_value();narrow_header.columns=32
+	state.set_header_columns(152);pending=state.ticket
+	session_reply(service,pending,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":state.revision,"footer":footer_value(),"header":narrow_header,"actions":actions_value(),"conversation":conversation_value()})
+	check(state.phase==Goods.Phase.GoodsReading and state.header.columns==102 and state.ticket!=pending and service.calls[state.ticket].intent.columns==152,"Stale-width response rejected or published instead of refreshing")
+	var wide_header:=header_value();wide_header.columns=152
+	session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":state.revision,"footer":footer_value(),"header":wide_header,"actions":actions_value(),"conversation":conversation_value()})
+	check(state.goods_ready() and state.header.columns==152,"Latest resize did not publish")
+	state.set_header_columns(72);pending=state.ticket;old=service.calls[pending];state.close()
+	old.observer.call(pending,{"status":C.ManagementStatus.Ok,"action":C.ManagementAction.TradeDraftRead,"trade_draft":{"outcome":C.TradeSessionOutcome.Available,"session":9007199254740995,"revision":1,"page":page_value(0)}},old.intent)
+	check(state.phase==Goods.Phase.Closed and state.ticket==0,"Closed resize revived the panel")
 	state.dispose();service.queue_free();await process_frame
 	if not failed:print("TRADE_GOODS_STATE_PASS")
 	quit(1 if failed else 0)

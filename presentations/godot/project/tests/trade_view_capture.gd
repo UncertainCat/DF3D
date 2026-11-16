@@ -22,7 +22,7 @@ func run() -> void:
 		for rect in regions:
 			check(rendered.get_region(rect).get_data()==native.get_region(rect).get_data(),"Native Trade chrome differs: "+str(rect))
 	if not after_reference.is_empty() and data.header.lines.size()>8:
-		check(view.goods.position.y==156 and view.goods.size.y==444,"Announcement did not move and shorten goods area")
+		check(view.goods.position.y==156 and view.goods.size.y==456,"Announcement did not move and shorten goods area")
 		var reference_dir:=after_reference.get_base_dir()
 		await click(Vector2(700,178));check(view.header.scrollbar.first==5,"Announcement track did not page to the end")
 		await announcement_capture(reference_dir+"/depot-trade-announcement-down.png","down")
@@ -31,7 +31,7 @@ func run() -> void:
 		await click(Vector2(700,190));check(view.header.scrollbar.first==1,"Announcement arrow did not move one line")
 		await announcement_capture(reference_dir+"/depot-trade-announcement-arrow.png","arrow")
 		await click(Vector2(700,82));check(view.header.scrollbar.first==0,"Announcement arrow did not return to the start")
-	await click(Vector2(508,730));check(service.calls[service.next].intent.action==C.ManagementAction.TradeSessionExchange,"Composite Trade button missed")
+	await click(Vector2(508,714));check(service.calls[service.next].intent.action==C.ManagementAction.TradeSessionExchange,"Composite Trade button missed")
 	model.phase=Goods.Phase.Active;model.ticket=0
 	await click(Vector2(100,166),MOUSE_BUTTON_RIGHT);check(model.phase==Goods.Phase.Closed,"Composite Trade did not close")
 	check(view.goods.position.y==96 and not view.header.scrollbar.visible and view.header.scrollbar.first==0,"Closing retained announcement layout or scrolling")

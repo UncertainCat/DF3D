@@ -60,6 +60,10 @@ func _inspection_changed() -> void:
 	changed.emit();_next_appearance()
 func goods_ready() -> bool:
 	return phase==Phase.Active and not pages[0].is_empty() and not pages[1].is_empty()
+func set_header_columns(columns: int) -> void:
+	if columns<1 or columns>512 or columns==header_columns:return
+	header_columns=columns
+	if goods_ready():_load_goods()
 func refresh_session() -> void:
 	_load_goods()
 func read_counter_page(offset: int,limit: int) -> void:
@@ -99,7 +103,7 @@ func _read_summary() -> void:
 		if owner!=generation or received!=ticket:return
 		ticket=0
 		var value: Variant=result.get("trade_session")
-		if not _receipt(result,value,intent.action,revision) or not _valid_footer(value.get("footer")) or not _valid_header(value.get("header"),header_columns) or not _valid_conversation(value.get("conversation")) or not _valid_actions(value.get("actions")):
+		if not _receipt(result,value,intent.action,revision) or not _valid_footer(value.get("footer")) or not _valid_header(value.get("header"),intent.columns) or not _valid_conversation(value.get("conversation")) or not _valid_actions(value.get("actions")):
 			_fail_goods(result);return
 		if value.conversation.requested_items.is_empty():_publish_goods(value,{})
 		else:_read_counter(value.duplicate(true)))
@@ -117,6 +121,10 @@ func _read_counter(summary: Dictionary) -> void:
 		_publish_goods(summary,value.page))
 	if ticket==0:phase=Phase.Unavailable;changed.emit()
 func _publish_goods(summary: Dictionary,counter: Dictionary) -> void:
+	# A resize can arrive during any page/summary read. Keep the staged pages,
+	# validate replies against their request, and publish only the latest width.
+	if summary.header.columns!=header_columns:
+		_read_summary();return
 	footer=summary.footer.duplicate(true);header=summary.header.duplicate(true);conversation=summary.conversation.duplicate(true);actions=summary.actions.duplicate(true)
 	counter_page=counter.duplicate(true);pages=_pending_pages;_pending_pages=[{},{}]
 	if counter_page.is_empty():counter_offset=0

@@ -101876,6 +101876,82 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_resize_reference": {
+        "df_version": "53.16",
+        "steam_build": "24557528",
+        "capture": "build/stockpile-storage-native-farm-discovery-20261116-084015",
+        "df_pid": 35624,
+        "native_wrap": [
+          {
+            "columns": 66,
+            "lines": [
+              "\"Please understand the journey must be profitable.  Perhaps you'd ",
+              "consider tossing in a little extra?\""
+            ],
+            "size": "minimum"
+          },
+          {
+            "columns": 72,
+            "lines": [
+              "\"Please understand the journey must be profitable.  Perhaps you'd ",
+              "consider tossing in a little extra?\""
+            ],
+            "size": "small"
+          },
+          {
+            "columns": 152,
+            "lines": [
+              "\"Please understand the journey must be profitable.  Perhaps you'd consider tossing in a little extra?\""
+            ],
+            "size": "wide"
+          },
+          {
+            "columns": 102,
+            "lines": [
+              "\"Please understand the journey must be profitable.  Perhaps you'd consider tossing in a little extra?\""
+            ],
+            "size": "default"
+          }
+        ],
+        "viewports": [
+          [
+            912,
+            552
+          ],
+          [
+            960,
+            600
+          ],
+          [
+            1600,
+            900
+          ],
+          [
+            1200,
+            800
+          ]
+        ],
+        "native_minimum_clamped_request": [
+          640,
+          480
+        ],
+        "full_panel_pixel_equal": true,
+        "main_scene_exchange_after_resize": true,
+        "effects_equal_native_224201": true,
+        "queued_resize_check": "Old-width summary validated against its request, not published; latest width reread; close ignores late replies.",
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "fps_cap": 30,
+        "sampled_gpu_celsius": [
+          61,
+          61
+        ],
+        "limits": [
+          "counteroffer state at four viewport sizes",
+          "native installation clamps minimum to912x552; no640x480 parity claim",
+          "long announcements and long counteroffer lists at smaller sizes not qualified"
+        ]
+      },
       "depot_trade_main_exchange_reference": {
         "df_version": "53.16",
         "steam_build": "24557528",

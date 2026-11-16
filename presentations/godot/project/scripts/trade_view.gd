@@ -21,8 +21,8 @@ func configure_trade(source,model) -> void:
 	frame.add_child(header);header.configure_header(source);header.input_allowed=allowed
 	frame.add_child(goods);goods.configure_goods(source,model);goods.input_allowed=allowed
 	goods.cancelled.connect(func():cancelled.emit())
-	frame.add_child(footer);footer.configure_footer(source,model);footer.input_allowed=allowed
 	frame.add_child(actions);actions.configure_actions(source,model);actions.input_allowed=allowed
+	frame.add_child(footer);footer.configure_footer(source,model);footer.input_allowed=allowed
 	state.changed.connect(refresh);layout(viewport_size)
 func allowed() -> bool:return is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call())
 func layout(view: Vector2) -> void:
@@ -30,6 +30,7 @@ func layout(view: Vector2) -> void:
 	catalog.layout(view)
 	frame.position=Vector2(32,48+floorf(fposmod(view.y,12)*0.5))
 	frame.size=Vector2((floori(view.x/8)-32)*8,maxi(13,floori(view.y/12)-7)*12)
+	if state!=null:state.set_header_columns(clampi(floori(frame.size.x/8)-16,1,512))
 	_layout_contents()
 	refresh()
 func _layout_contents() -> void:

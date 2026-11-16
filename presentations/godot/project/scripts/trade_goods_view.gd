@@ -30,7 +30,7 @@ func configure_goods(source,model) -> void:
 func allowed() -> bool:return is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call())
 func ready() -> bool:return allowed() and state!=null and state.goods_ready()
 func layout(panel_size: Vector2) -> void:
-	size=Vector2(panel_size.x-32,maxf(0,panel_size.y-204))
+	size=Vector2(panel_size.x-32,maxf(0,panel_size.y-192))
 	var left: int=floori(panel_size.x/16)*8-24
 	for side in range(2):
 		var x: int=0 if side==0 else left+24

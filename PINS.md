@@ -22,14 +22,17 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Current management protocol236 adds required depot container counts and optional
+Current management protocol237 adds native caravan catalogs with scoped opaque
+choice tokens, native caption spans and explicit depot identity. Successful
+catalog replies require unique positive tokens and complete bounded strings;
+old recordings must not invent catalog choices. Protocol236 added required depot container counts and optional
 source-bound child pages. Protocol235 added native appraisal knowledge and formatted
 depot item values. Protocol234 added revision-bound checkbox drafts and retained
 sorting choices to goods reads. Protocol233 introduced whole-batch
 commits and explicit outcomes;232 introduced owned goods reads.
-Both peers use `Local\df3d_management_v236`; rebuild bridge and viewer together.
+Both peers use `Local\df3d_management_v237`; rebuild bridge and viewer together.
 Older recordings must not synthesize goods snapshots or commit receipts.
-Migration guidance is in ENGINEERING.md's depot goods transport sections.
+Migration guidance is in ENGINEERING.md's caravan catalog and depot goods transport sections.
 
 Management231 added depot body facts and the explicit DepotMode
 building-header intent. Older recordings contain no depot body and must not

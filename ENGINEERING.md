@@ -1,3 +1,35 @@
+## Caravan catalog transport migration
+
+Management protocol237 adds `TradeCatalogRead`, a depot-ID request and required
+catalog reply containing native header/joining text plus ordered entity IDs,
+race/name captions and scoped opaque choice tokens. Tokens remain64-bit integers
+through the mirror, engine-independent model and Godot dictionary adapter;
+duplicate entities are valid, duplicate/zero/out-of-range tokens are not.
+Replies reject missing payloads, invalid depot/entity IDs, excess rows/strings
+and payload budgets. Oversized encoded replies reject explicitly rather than
+timing out at the mailbox. No choices or tokens are synthesized for old records.
+Both peers/mailboxes use237 and must be rebuilt together; DF53.16 pins stay fixed.
+
+The native management handler owns a catalog separate from diagnostic probes,
+resolves a revealed depot, and refreshes it through the qualified native catalog
+provider. World/transport teardown and a different mailbox client retire its
+binding. Public request conversion accepts only the action and depot ID; no
+native index enters the model API. This migration transports catalog reads only:
+choice consumption, appraisal/session transitions and the trade viewer remain
+unwired, and the gameplay route stays hidden.
+
+Protected191555 on2026-11-15 passes actual bridge/mailbox/model/Godot catalog
+reads. Two same-civilization choices retain native order, header, race/name
+captions and entity IDs; two reads produce distinct integer token pairs1/2 and
+3/4. Malformed dictionary shapes reject before sending, and an unavailable depot
+rejects without a catalog payload. Native chooser state and paused frame remain
+unchanged. Owned DF47252 closes unsaved/source-preserved, native30FPS and sampled
+GPU47C. The headless adapter log is diagnostic-free. Root, bridge and Godot
+extension builds pass, as do all19 core checks. Evidence:
+`completed_sheet_discovery_reference.depot_trade_catalog_transport_reference`.
+This verifies catalog transport, not rendered chooser input, token consumption,
+appraisal/session transitions, disconnection behavior or merchant exchange.
+
 ## Depot goods container transport migration
 
 Management protocol236 adds required direct-child counts parallel to each depot
@@ -7,7 +39,7 @@ expected goods revision; pages carry at most64 children. Replies identify the
 parent, offset and total, and retain native child IDs/types, nested counts,
 descriptions, values, appraisal text and prohibition facts. A page total must
 agree with its parent's group count. Child IDs do not authorize hauling actions.
-Both peers/mailbox use236 and must be rebuilt together; DF53.16 pins are unchanged.
+That migration used236; current peers use237 as described above. DF53.16 pins are unchanged.
 Older recordings cannot invent container counts or pages. Staged viewer
 integration and its remaining acceptance limits are documented below.
 

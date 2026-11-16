@@ -10,6 +10,7 @@ ENUMS = ("DepotGoodsCommitOutcome", "WellStatus", "MachineryStatus", "JusticeGra
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
+    "trade_catalog": ("TradeCatalogRead", "TradeCatalogRead"),
     "depot_goods": ("DepotGoodsRead", "DepotGoodsCommit"),
     "selection_art": ("SelectionArtRead", "SelectionArtApply"),
     "selection": ("Selection", "Selection"),

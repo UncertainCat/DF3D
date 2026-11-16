@@ -388,6 +388,16 @@ local ok,err=xpcall(function()
  unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z
  click(480,190);assert(trade.open and trade.choosing_merchant)
  local multiple=record('merchants');assert(multiple.merchants==2)
+ if os.getenv('DF3D_DEPOT_TRADE_CATALOG_WIRE')=='1' then
+  local output,code=dfhack.run_command_silent('df3d','trade-catalog-probe','read',tostring(b.id));assert(code==0,output)
+  local expected=json.decode(output);assert(expected.available and #expected.choices==#trade.merlist);expected.depot_id=b.id
+  local file=assert(io.open(out..'/trade-catalog-wire-expected.json','w'));file:write(json.encode(expected));file:close()
+  local active=main.view_sheets.active_id;local title=trade.title
+  capture('trade-catalog-wire')
+  file=assert(io.open(out..'/trade-catalog-wire-result.json'));local observed=json.decode(file:read('*a'));file:close();assert(observed.success)
+  assert(trade.open and trade.choosing_merchant and #trade.merlist==2 and trade.title==title and main.view_sheets.active_id==active and df.global.world.frame_counter==frame)
+  result.catalog_wire=observed
+ end
  if os.getenv('DF3D_DEPOT_TRADE_CATALOG')=='1' then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-catalog-native.lua')
   result.catalog=assert(loadfile(source))(view,b,unit,position,trade,added,click,select_map)

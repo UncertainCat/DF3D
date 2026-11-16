@@ -126,6 +126,7 @@
 #include "stone_use_native.h"
 #include "stocks_native.h"
 #include "depot_goods_read.h"
+#include "trade_catalog_native.h"
 #include "tasks_action_native.h"
 #include "places_action_native.h"
 #include "objects_native.h"
@@ -598,6 +599,10 @@ struct StocksResult {
 };
 std::optional<StocksResult> stocks;
 std::optional<df3d_production::DepotGoodsRead> depotGoodsReply;
+std::optional<df3d_production::TradeCaravanCatalog> tradeCatalogReply;
+int32_t tradeCatalogDepot=-1;
+uint64_t tradeCatalogClient=0;
+df3d_production::TradeCatalogOwner tradeCatalogOwner;
 struct DepotCommitReply {int32_t depotId=-1;uint64_t expected=0,observed=0;m::DepotGoodsCommitOutcome outcome=m::DepotGoodsCommitOutcome::Rejected;};
 std::optional<DepotCommitReply> depotCommitReply;
 df3d::stocks_pages::Store pagedReplies;
@@ -773,7 +778,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();depotGoodsReply.reset();depotCommitReply.reset();tasks.reset();objects.reset();justice.reset();places.reset();nobles.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();depotGoodsReply.reset();depotCommitReply.reset();tradeCatalogReply.reset();tradeCatalogDepot=-1;tasks.reset();objects.reset();justice.reset();places.reset();nobles.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1654,6 +1659,11 @@ void publish() {
   }
   flatbuffers::Offset<m::DepotGoodsCommitResult> depotCommitResult;
   if(depotCommitReply){const auto& v=*depotCommitReply;depotCommitResult=m::CreateDepotGoodsCommitResult(b,v.depotId,v.expected,v.observed,v.outcome);}
+  flatbuffers::Offset<m::TradeCatalogState> tradeCatalogResult;
+  if(tradeCatalogReply){const auto& v=*tradeCatalogReply;std::vector<flatbuffers::Offset<m::TradeCatalogChoice>> choices;
+    for(const auto& row:v.choices)choices.push_back(m::CreateTradeCatalogChoice(b,row.token,row.entity,b.CreateString(DF2UTF(row.race)),b.CreateString(DF2UTF(row.name))));
+    tradeCatalogResult=m::CreateTradeCatalogState(b,tradeCatalogDepot,b.CreateString(DF2UTF(v.title)),b.CreateString(DF2UTF(v.from)),b.CreateVector(choices));
+  }
   flatbuffers::Offset<m::DepotGoodsState> depotGoodsResult;
   if(depotGoodsReply){const auto& v=*depotGoodsReply;
     std::vector<flatbuffers::Offset<m::DepotGoodsCategory>> categories;
@@ -1739,7 +1749,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult,depotGoodsResult,depotCommitResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult,depotGoodsResult,depotCommitResult,tradeCatalogResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
@@ -1747,6 +1757,8 @@ void publish() {
   // explicitly instead of letting a failed mailbox write look like a timeout.
   if(depotGoodsReply && !validationError && b.GetSize()>m::kManagementCapacity)
     validationError="depot goods response exceeds mailbox capacity";
+  if(tradeCatalogReply && !validationError && b.GetSize()>m::kManagementCapacity)
+    validationError="trade catalog response exceeds mailbox capacity";
   const bool productionReply=action==m::ManagementAction::ProductionInspect ||
       action==m::ManagementAction::ProductionQueue || action==m::ManagementAction::ProductionJobEdit;
   if((stocks || productionReply) && !validationError && b.GetSize()>m::kManagementCapacity) {
@@ -5281,6 +5293,17 @@ void run(color_ostream& out) {
     }catch(...){reply.outcome=m::DepotGoodsCommitOutcome::Rejected;}
     publish();return;
   }
+  if(r->action()==m::ManagementAction::TradeCatalogRead){
+    status=m::ManagementStatus::Rejected;message.clear();
+    try {
+      tradeCatalogDepot=r->trade_catalog()->depot_id();
+      auto* building=df::building::find(tradeCatalogDepot);
+      const auto* tile=building?DFHack::Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
+      if(tile && !tile->bits.hidden){tradeCatalogReply=tradeCatalogOwner.refresh(epoch,building);tradeCatalogClient=client;}
+      if(tradeCatalogReply)status=m::ManagementStatus::Ok;
+    }catch(...){tradeCatalogReply.reset();tradeCatalogOwner.reset();tradeCatalogClient=0;}
+    publish();return;
+  }
   if(r->action()==m::ManagementAction::DepotGoodsRead){
     status=m::ManagementStatus::Rejected;message.clear();
     try {const auto& q=*r->depot_goods();const std::vector<int32_t> ids(q.item_ids()->begin(),q.item_ids()->end());
@@ -7379,6 +7402,7 @@ bool printTrackMaterialCandidates(color_ostream& out,const std::array<int32_t,6>
   lua_settop(L,top);return ok;
 }
 void stop() {
+  tradeCatalogOwner.reset();tradeCatalogClient=0;
   tileSelectionOwner.reset();tileSelectionReply.reset();
   noblesSymbolOwner.reset();
   roomUndo.clear();
@@ -7459,6 +7483,7 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
     startBackoff.reset();
   }
   if (epoch != worldEpoch) {
+    tradeCatalogOwner.reset();tradeCatalogClient=0;
     tileSelectionOwner.reset();tileSelectionReply.reset();
     noblesSymbolOwner.reset();
     roomUndo.clear();
@@ -7517,6 +7542,7 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
     }
     reply=std::move(nextReply);
     client=r->client_id();
+    if(tradeCatalogClient && tradeCatalogClient!=client){tradeCatalogOwner.reset();tradeCatalogClient=0;}
     seq = r->seq();
     ++executionSerial;
     requestStarted = std::chrono::steady_clock::now();

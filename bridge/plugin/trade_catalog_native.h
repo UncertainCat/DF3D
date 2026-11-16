@@ -64,7 +64,7 @@ public:
     void reset(){current.reset();}
     std::optional<TradeCaravanCatalog> refresh(uint64_t epoch,df::building* building) {
         reset();if(!epoch)return {};
-        auto source=read(building);if(!source || source->catalog.choices.size()>std::numeric_limits<uint64_t>::max()-serial)return {};
+        auto source=read(building);if(!source || source->catalog.choices.size()>uint64_t(INT64_MAX)-serial)return {};
         for(auto& choice:source->catalog.choices)choice.token=++serial;
         current=Binding{epoch,building->id,std::move(*source)};return current->source.catalog;
     }

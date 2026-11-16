@@ -383,6 +383,7 @@ enum class ManagementAction : uint8_t {
   SelectionArtApply = 132,
   DepotGoodsRead = 133,
   DepotGoodsCommit = 134,
+  TradeCatalogRead = 135,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -730,11 +731,13 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::SelectionArtApply: return true;
   case ManagementAction::DepotGoodsRead: return true;
   case ManagementAction::DepotGoodsCommit: return true;
+  case ManagementAction::TradeCatalogRead: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::TradeCatalogRead: return "trade_catalog";
   case ManagementAction::DepotGoodsRead: return "depot_goods";
   case ManagementAction::DepotGoodsCommit: return "depot_goods";
   case ManagementAction::SelectionArtRead: return "selection_art";

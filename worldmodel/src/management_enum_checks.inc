@@ -343,7 +343,8 @@ static_assert(static_cast<int>(wm::ManagementAction::SelectionArtRead) == static
 static_assert(static_cast<int>(wm::ManagementAction::SelectionArtApply) == static_cast<int>(df3d::mirror::ManagementAction::SelectionArtApply));
 static_assert(static_cast<int>(wm::ManagementAction::DepotGoodsRead) == static_cast<int>(df3d::mirror::ManagementAction::DepotGoodsRead));
 static_assert(static_cast<int>(wm::ManagementAction::DepotGoodsCommit) == static_cast<int>(df3d::mirror::ManagementAction::DepotGoodsCommit));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 135);
+static_assert(static_cast<int>(wm::ManagementAction::TradeCatalogRead) == static_cast<int>(df3d::mirror::ManagementAction::TradeCatalogRead));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 136);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -686,3 +687,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::SelectionArtRead) == df3
 static_assert(wm::isRuntimeAction(wm::ManagementAction::SelectionArtApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::SelectionArtApply));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::DepotGoodsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DepotGoodsRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::DepotGoodsCommit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DepotGoodsCommit));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeCatalogRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeCatalogRead));

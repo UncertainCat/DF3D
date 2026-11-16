@@ -351,6 +351,11 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         value["rows"]=rows;result["tasks"]=value;if(v.outcome==wm::TasksOutcome::Unknown)result["outcome"]="unknown";
     }
     if(s.depotCommit){const auto& v=*s.depotCommit;Dictionary value;value["depot_id"]=v.depotId;value["expected_revision"]=int64_t(v.expectedRevision);value["observed_revision"]=int64_t(v.observedRevision);value["outcome"]=int(v.outcome);result["depot_commit"]=value;if(v.outcome==wm::DepotGoodsCommitOutcome::Unknown)result["outcome"]="unknown";}
+    if(s.tradeCatalog){const auto& v=*s.tradeCatalog;Dictionary value;Array choices;
+        value["depot_id"]=v.depotId;value["title"]=String::utf8(v.title.c_str());value["from_text"]=String::utf8(v.from.c_str());
+        for(const auto& row:v.choices){Dictionary item;item["token"]=int64_t(row.token);item["entity_id"]=row.entityId;item["race"]=String::utf8(row.race.c_str());item["name"]=String::utf8(row.name.c_str());choices.append(item);}
+        value["choices"]=choices;result["trade_catalog"]=value;
+    }
     if(s.depotGoods){const auto& v=*s.depotGoods;Dictionary value;Array categories,groups,items;
         for(const auto& row:v.categories){Dictionary d;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());categories.append(d);}
         for(const auto& row:v.groups){Dictionary d;d["subtype"]=row.subtype;d["subcat1"]=row.subcat1;d["subcat2"]=row.subcat2;d["amount"]=row.amount;d["caption"]=String::utf8(row.caption.c_str());d["matches"]=row.matches;d["expanded"]=row.expanded;d["flags"]=row.flags;Array ids;for(auto id:row.itemIds)ids.append(id);d["item_ids"]=ids;Array counts;for(auto count:row.containerCounts)counts.append(count);d["container_counts"]=counts;groups.append(d);}
@@ -882,6 +887,14 @@ bool readTasks(const Dictionary& data,wm::ManagementRequest& request,String&) {
     else {q.jobId=int32_t(int64_t(data["job_id"]));q.workerId=int32_t(int64_t(data["worker_id"]));q.buildingId=int32_t(int64_t(data["building_id"]));q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.operation=wm::TasksOperation(int64_t(data["operation"]));q.expectedState=int8_t(int64_t(data["expected_state"]));}
     return true;
 }
+bool validateTradeCatalog(const Dictionary& data,String& error) {
+    error="Invalid trade catalog request";
+    if(data.size()!=2 || !data.has("depot_id") || data["depot_id"].get_type()!=Variant::INT || int64_t(data["depot_id"])<0 || int64_t(data["depot_id"])>INT32_MAX)return false;
+    error=String();return true;
+}
+bool readTradeCatalog(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::TradeCatalogRead;request.tradeCatalog.depotId=int32_t(int64_t(data["depot_id"]));return true;
+}
 bool validateDepotGoods(const Dictionary& data,String& error) {
     error="Invalid depot goods request";
     const auto integer=[](const Dictionary& d,const char* key,int64_t lo,int64_t hi){return d.has(key) && d[key].get_type()==Variant::INT && int64_t(d[key])>=lo && int64_t(d[key])<=hi;};
@@ -1283,6 +1296,7 @@ const ManagementCodec managementCodecs[] = {
     {"work_detail_settings",validateWorkDetailSettings,readWorkDetailSettings},
     {"hunter_ammunition",validateHunterAmmunition,readHunterAmmunition},
     {"depot_goods",validateDepotGoods,readDepotGoods},
+    {"trade_catalog",validateTradeCatalog,readTradeCatalog},
     {"stocks_menu",validateStocksMenu,readStocksMenu},
     {"nobles",validateNobles,readNobles},
     {"places",validatePlaces,readPlaces},
@@ -1308,7 +1322,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::DepotGoodsCommit)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::TradeCatalogRead)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

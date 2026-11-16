@@ -9,6 +9,25 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Trade catalog transport preserves opaque tokens and rejects ambiguous choices") {
+  constexpr uint64_t token=UINT64_C(9007199254740993);
+  for(int fault=0;fault<8;++fault){
+    flatbuffers::FlatBufferBuilder b;
+    const auto make=[&](uint64_t id,int32_t entity){return wire::CreateTradeCatalogChoice(b,id,entity,b.CreateString("Race"),b.CreateString("Synthetic polity"));};
+    std::vector<flatbuffers::Offset<wire::TradeCatalogChoice>> rows{make(fault==1?0:fault==2?UINT64_MAX:token,fault==3?-1:7),make(fault==4?token:token+1,7)};
+    if(fault==7)rows.assign(4097,rows.front());
+    const auto catalog=wire::CreateTradeCatalogState(b,54,b.CreateString("Synthetic title"),b.CreateString(" from "),b.CreateVector(rows));
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(fault==5?wire::ManagementAction::DepotGoodsRead:wire::ManagementAction::TradeCatalogRead);state.add_status(wire::ManagementStatus::Ok);if(fault!=6)state.add_trade_catalog(catalog);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){const auto result=codec::decodeState(value);REQUIRE(result.tradeCatalog);CHECK(result.tradeCatalog->depotId==54);REQUIRE(result.tradeCatalog->choices.size()==2);CHECK(result.tradeCatalog->choices[0].token==token);CHECK(result.tradeCatalog->choices[1].entityId==7);}
+  }
+  for(int id:{-1,54}){
+    wm::ManagementRequest request;request.action=wm::ManagementAction::TradeCatalogRead;request.tradeCatalog.depotId=id;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(id<0));if(id>=0){REQUIRE(value->trade_catalog());CHECK(value->trade_catalog()->depot_id()==id);}
+  }
+}
+
 TEST_CASE("depot body authority survives decode and rejects contradictions") {
   for(int fault=0;fault<9;++fault) {
     flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");

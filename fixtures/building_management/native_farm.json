@@ -74465,6 +74465,71 @@
           "bridge/plugin/trade_catalog_native.h": "9a1f70842575f498859ff07d04b50af0d1d7ddac195ae194e6407607e4b72e2f",
           "bridge/plugin/df3d.cpp": "6eb400f9bf8ce063c748bb5e45fc1170ec564be2caf41f4a163d13f3f783ee4d"
         }
+      },
+      "depot_trade_catalog_transport_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-191555",
+        "owned_df_pid": 47252,
+        "protocol": 237,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Actual bridge/mailbox/model/Godot adapter reads two same-civ caravan choices twice. Native header/caption/order/entity facts match; tokens typed as integers and refreshed uniquely; malformed Godot request shapes rejected; missing depot rejected. Native chooser and paused frame unchanged. Headless adapter log diagnostic-free. Not token consumption transport, entry appraisal/session integration, rendering, disconnect or negotiation.",
+        "wire": {
+          "responses": [
+            {
+              "choices": [
+                {
+                  "entity_id": 865,
+                  "name": "Dumatzas",
+                  "race": "Dwarves",
+                  "token": 1
+                },
+                {
+                  "entity_id": 865,
+                  "name": "Dumatzas",
+                  "race": "Dwarves",
+                  "token": 2
+                }
+              ],
+              "depot_id": 54,
+              "from_text": " from ",
+              "title": "Select a merchant group to trade with:"
+            },
+            {
+              "choices": [
+                {
+                  "entity_id": 865,
+                  "name": "Dumatzas",
+                  "race": "Dwarves",
+                  "token": 3
+                },
+                {
+                  "entity_id": 865,
+                  "name": "Dumatzas",
+                  "race": "Dwarves",
+                  "token": 4
+                }
+              ],
+              "depot_id": 54,
+              "from_text": " from ",
+              "title": "Select a merchant group to trade with:"
+            }
+          ],
+          "success": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-191555/depot-trade-native.json": "78254260d26f01a218e209c0e80153f137a5c1810a514c9ac0d458980ebd1d35",
+          "build/stockpile-storage-native-farm-discovery-20261115-191555/trade-catalog-wire-expected.json": "fbb3e46f57db21fa50bf00cea202ad49de1b63ef0d7fda2c876128e196c9e218",
+          "build/stockpile-storage-native-farm-discovery-20261115-191555/trade-catalog-wire-result.json": "cf0624e930f3d054e1773b654a1bf70568616925e375aa9c4d7df1f52557940b",
+          "build/stockpile-storage-native-farm-discovery-20261115-191555/trade-catalog-wire.stdout.log": "0fb41bb7cc71b68a335c01d8f84a806304e1cc6bb173f34ca02cb913d0f62013",
+          "build/stockpile-storage-native-farm-discovery-20261115-191555/trade-catalog-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261115-191555/result.json": "d6f2419334409085cb0fc6ea1346ea5c8b960aca46d7b3fdc769582ced918b97",
+          "build/stockpile-storage-native-farm-discovery-20261115-191555/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-191555/capture-inputs.json": "db316dc0cfb6acb951ae8efa2d415871ee4bfddaef33eb59432192b459c43398",
+          "tools/smoke/depot-trade-native.lua": "cc764b113c5f5f6216befcdb6bcdd495ca7b621067bd840c154e0321ab7aaee0",
+          "presentations/godot/project/tests/trade_catalog_wire_live.gd": "59d63a5a137f4d3832322a2898796cd3b1c7f11834f602fa785938c7369d2e6f",
+          "schema/mirror.fbs": "51f4d9f59ba8a1845a38081a7f6007ae93eca13a5ff990b9cf5c5d5daddd4a56",
+          "schema/cpp/management_util.h": "7a8fda35eb81c795bd01d5d9429c18371ea99909c1e4f4e344d59360d17fb14a"
+        }
       }
     },
     "pending_construction_reference": {

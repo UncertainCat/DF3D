@@ -659,6 +659,9 @@ struct TasksState {
 struct DepotGoodsChange {int32_t id=-1;bool desired=false;};
 struct DepotGoodsCommitRequest {int32_t depotId=-1;uint64_t expectedRevision=0;std::vector<DepotGoodsChange> changes;};
 struct DepotGoodsCommitResult {int32_t depotId=-1;uint64_t expectedRevision=0,observedRevision=0;DepotGoodsCommitOutcome outcome=DepotGoodsCommitOutcome::Rejected;};
+struct TradeCatalogRequest {int32_t depotId=-1;};
+struct TradeCatalogChoice {uint64_t token=0;int32_t entityId=-1;std::string race,name;};
+struct TradeCatalogState {int32_t depotId=-1;std::string title,from;std::vector<TradeCatalogChoice> choices;};
 struct DepotGoodsRequest {int32_t depotId=-1;int16_t category=-1;std::string query;bool sortByDistance=true,pendingOnTop=true,excludeProhibited=false;std::vector<int32_t> itemIds;uint64_t expectedRevision=0;std::vector<DepotGoodsChange> draft,sortDraft;int32_t containerId=-1,containerOffset=0,containerLimit=0;};
 struct DepotGoodsCategory {int16_t type=-1;std::string caption;};
 struct DepotGoodsGroup {int16_t subtype=-1,subcat1=-1,subcat2=-1;int32_t amount=0;std::string caption;bool matches=false,expanded=false;uint8_t flags=0;std::vector<int32_t> itemIds,containerCounts;};
@@ -1113,6 +1116,7 @@ struct ManagementRequest {
   StoneUseRequest stoneUse;
   StocksMenuRequest stocksMenu;
   DepotGoodsRequest depotGoods;
+  TradeCatalogRequest tradeCatalog;
   DepotGoodsCommitRequest depotCommit;
   TasksRequest tasks;
   PlacesRequest places;
@@ -1188,6 +1192,7 @@ struct ManagementState {
   std::optional<StoneUseState> stoneUse;
   std::optional<StocksMenuState> stocksMenu;
   std::optional<DepotGoodsState> depotGoods;
+  std::optional<TradeCatalogState> tradeCatalog;
   std::optional<DepotGoodsCommitResult> depotCommit;
   std::optional<TasksState> tasks;
   std::optional<PlacesState> places;

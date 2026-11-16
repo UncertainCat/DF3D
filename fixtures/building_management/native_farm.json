@@ -90082,6 +90082,53 @@
           "tools/smoke/depot-trade-appraisal-native.lua": "d615e3dcb61aee844b81835df3fb8effda4f3e8ca73e9a0ef5d335192f6fcd4c",
           "presentations/godot/project/tests/trade_session_wire_live.gd": "20de73d477d9124082f291d2f36d5eb22d8650fb5274e5e5c8eb1c768e718d6f"
         }
+      },
+      "depot_trade_goods_view_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-204339",
+        "protocol": 241,
+        "owned_df_pid": 47280,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "artwork_items": 20,
+        "pixel_rectangles_xyxy": [
+          [
+            48,
+            148,
+            496,
+            652
+          ],
+          [
+            520,
+            148,
+            960,
+            652
+          ]
+        ],
+        "native_web_facts": {
+          "407": {
+            "pattern": 3,
+            "thick": true
+          },
+          "408": {
+            "pattern": 3,
+            "thick": true
+          }
+        },
+        "scope": "Staged goods body matches both native columns exactly at 1200x800. Pointer item/group selection, group/container expansion, rapid filter typing and cancellation pass using fake semantic receipts; no exchange occurs. Artwork reads use the real transport/controller. Dialogue/footer, partial-row scroll rendering, alternate sizes, quantity selection, integrated main-scene route and negotiation/exchange remain unqualified.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-204339/depot-trade-native.json": "f0f7e58439bdc0f9a99f37c09b881ff55a91be629e3c3fb1af222fb864e3ec8d",
+          "build/stockpile-storage-native-farm-discovery-20261115-204339/trade-goods-art-wire-result.json": "c6dc68c4c7d0b1fb914e272ab53e848bf0f1b80fe0e43311bfde10d762bf1307",
+          "build/stockpile-storage-native-farm-discovery-20261115-204339/trade-goods-art-wire.png": "4ef4dff1dee11ab1bf60810d4a12e515b02324b5a68f1fdb73898781b23703de",
+          "build/stockpile-storage-native-farm-discovery-20261115-204339/trade-goods-view.png": "aa7fff141b6dca4cf21c2de3e91ce10b0edf579501ac7613e3f1f40aeab99cd0",
+          "build/stockpile-storage-native-farm-discovery-20261115-204339/trade-goods-art-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261115-204339/result.json": "484477a60048f7fb667127e801ddbbb5f5eeb3a801d5d238d357a5411087c65c",
+          "build/stockpile-storage-native-farm-discovery-20261115-204339/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/item_web_native.h": "94873d91e99c97daac5b3fb033c40e949344bd8629b1fb74c435dec1d14d0d01",
+          "presentations/godot/project/scripts/trade_goods_view.gd": "57060744a1d6d0d97f8d36f713d8172efc23f669f4e1aaacd74aa524dbd57147",
+          "presentations/godot/project/tests/trade_goods_view_capture.gd": "effc10a00353947cc04be3191af99168a1dd55975e6b480124d4bba2fd45259d",
+          "build/notes/pm/trade-goods-view.stdout.log": "1ec32b706b37c63f643a04bdd72c40567f45460eca0436495266cb652ee290f9",
+          "build/notes/pm/trade-goods-view.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
       }
     },
     "pending_construction_reference": {

@@ -1,3 +1,27 @@
+## Staged native trade goods body
+
+The goods body renders owned native pages, disposition colors, captions,
+checkboxes, filters and container indentation. Bounded current-page item reads
+provide installed artwork. Native web inspection supplies the position-selected
+pattern and thickness; the viewer uses the original untinted tile. Scroll
+offsets use native twelve-pixel cells and request a bounded visible window.
+
+Protected204339 on2026-11-15 supplies20 item appearances via the actual transport
+and goods controller. A subsequent serial30FPS render matches both full goods
+columns pixel-for-pixel at1200x800 against that native capture. Actual pointer
+events dispatch the expected item/group selections and group/bin expansion;
+rapid filter typing and cancellation pass. Those pointer checks use a fake
+semantic service; they do not prove native action effects. Earlier protocol240
+live evidence qualifies the controller effects separately. Owned DF47280 closes
+unsaved/source-preserved; sampled GPU60C during native and62C during rendering.
+Logs are clean. All19 core checks and item-sheet/goods/catalog headless checks
+pass. Evidence: `completed_sheet_discovery_reference.depot_trade_goods_view_reference`.
+
+This is a staged body, not a complete trade screen. Dialogue/footer, quantity
+selection, negotiation/exchange and the integrated main-scene route remain
+unfinished. Alternate sizes and partial-row scrolling still need rendered
+acceptance. Public trade remains hidden.
+
 ## Web item appearance transport migration
 
 Management protocol241 adds paired optional web pattern/thickness facts to item

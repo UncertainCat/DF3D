@@ -150,8 +150,11 @@ static func valid_cage(value: Dictionary) -> bool:
 		if typeof(body.get(field))!=TYPE_BOOL:return false
 	if typeof(body.get("room"))!=TYPE_DICTIONARY:return false
 	var room: Dictionary=body.room
-	for field in ["room_id","room_type"]:
+	for field in ["room_id","room_type","location_type","location_tier"]:
 		if typeof(room.get(field))!=TYPE_INT:return false
+	if typeof(room.get("location_has_contents"))!=TYPE_BOOL:return false
+	if room.location_type< -1 or room.location_type>255 or room.location_tier< -2147483648 or room.location_tier>2147483647:return false
+	if (room.room_id<0 and room.location_type!=-1) or (room.location_type==-1 and room.location_has_contents) or (not room.location_has_contents and room.location_tier!=-1):return false
 	if room.room_id< -1 or room.room_id>2147483647:return false
 	for field in ["introduction","name"]:
 		if typeof(room.get(field))!=TYPE_STRING or room[field].to_utf8_buffer().size()>1536 or room[field].to_utf8_buffer().has(0):return false

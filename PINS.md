@@ -22,9 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Current management protocol249 adds typed cage parent-body room membership,
+Current management protocol250 adds cage-room location kind, tier and contents
+presence. Both peers must use250; older room facts cannot select location artwork.
+Protocol249 adds typed cage parent-body room membership,
 justice/glass/aquarium facts and a revision-bound CageAquarium setting intent.
-Both peers must use249. Old recordings cannot infer the new parent facts;
+That migration required249 on both peers. Old recordings cannot infer the parent facts;
 the staged cage picker remains distinct from public workflow readiness.
 Protocol248 adds an independently owned cage picker request,
 bounded animal-row pages and revision-bound assignment receipts. Both peers must

@@ -118,6 +118,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
       v.justiceRestraint=f->justice_restraint();v.glass=f->glass();v.aquarium=f->aquarium();
       const auto* room=f->room();v.room.roomId=room->room_id();v.room.roomType=room->room_type();
       v.room.introduction=str(room->introduction());v.room.name=str(room->name());
+      v.room.locationType=room->location_type();v.room.locationTier=room->location_tier();v.room.locationHasContents=room->location_has_contents();
       for(const auto* notice:*room->notices())v.room.notices.push_back(str(notice));
     }
     if(source->snapshot() && source->snapshot()->depot()) {

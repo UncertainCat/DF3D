@@ -305,6 +305,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
         const auto& v=*f.cage;Dictionary body,room;Array notices;
         body["justice_restraint"]=v.justiceRestraint;body["glass"]=v.glass;body["aquarium"]=v.aquarium;
         room["room_id"]=v.room.roomId;room["room_type"]=v.room.roomType;
+        room["location_type"]=v.room.locationType;room["location_tier"]=v.room.locationTier;room["location_has_contents"]=v.room.locationHasContents;
         room["introduction"]=String::utf8(v.room.introduction.c_str());room["name"]=String::utf8(v.room.name.c_str());
         for(const auto& notice:v.room.notices)notices.push_back(String::utf8(notice.c_str()));
         room["notices"]=notices;body["room"]=room;value["cage"]=body;

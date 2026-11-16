@@ -451,7 +451,8 @@ struct DepotBodySnapshot {
   std::optional<SelectionAppearance> brokerAppearance;
 };
 struct BuildingRoomBody {
-  int32_t roomId=-1,roomType=-1;
+  int32_t roomId=-1,roomType=-1,locationType=-1,locationTier=-1;
+  bool locationHasContents=false;
   std::string introduction,name;
   std::vector<std::string> notices;
 };

@@ -192,8 +192,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 249;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v249";
+inline constexpr uint32_t kManagementVersion = 250;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v250";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -3128,6 +3128,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           const auto* room=v->room();
           if(!room || room->room_id()<-1 || !text(room->introduction(),true) || !text(room->name(),true) || !room->notices() || room->notices()->size()>3)return "invalid cage room body";
           const bool single=room->room_id()>=0;
+          if(room->location_type()<-1 || room->location_type()>255 ||
+             (!single && room->location_type()!=-1) ||
+             (room->location_type()==-1 && room->location_has_contents()) ||
+             (!room->location_has_contents() && room->location_tier()!=-1))return "invalid cage room location";
           if(single!=(room->introduction()->size()>0) || single!=(room->name()->size()>0) ||
              (single ? (room->room_type()<79 || room->room_type()>97 || room->notices()->size()) : room->room_type()!=-1))return "inconsistent cage room body";
           for(const auto* notice:*room->notices())if(!text(notice,false))return "invalid cage room notice";

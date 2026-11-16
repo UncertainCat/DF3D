@@ -41,7 +41,7 @@ func run() -> void:
 	for wrong_receipt in [false,true]:
 		setup();model.open(278);service.poll()
 		var cage:=snapshot();cage.type=28
-		cage.cage={"justice_restraint":false,"glass":true,"aquarium":false,"room":{"room_id":-1,"room_type":-1,"introduction":"","name":"","notices":[]}}
+		cage.cage={"justice_restraint":false,"glass":true,"aquarium":false,"room":{"room_id":-1,"room_type":-1,"introduction":"","name":"","notices":[],"location_type":-1,"location_tier":-1,"location_has_contents":false}}
 		reply(cage);model.set_cage_aquarium(true);service.poll()
 		check(world.calls[-1].request.get("farm_operation")==C.FarmOperation.CageAquarium,"cage sends typed setting")
 		cage.revision+=1;cage.cage.aquarium=not wrong_receipt

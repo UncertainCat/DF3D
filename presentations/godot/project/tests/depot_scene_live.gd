@@ -15,8 +15,25 @@ func exercise(expected: Dictionary) -> void:
 		owner.panel.trade_requested.connect(func():trade_clicks+=1)
 		await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(64,144))
 		check(trade_clicks==(1 if expected.trade_worker>=0 else 0),"Trade click did not respect native trader presence")
+		if expected.trade_worker>=0:
+			if not await trade_ready(int(expected.trade_choices)):return
+			if int(expected.trade_choices)>1:
+				await pointer(owner.trade_view.catalog.rows.get_global_transform_with_canvas()*Vector2(100,18))
+				if not await trade_ready(1):return
 		key(KEY_ESCAPE);await drain()
-		check(scene._ui.host.active==null,"Trade gate test retained panel ownership")
+		check(scene._ui.host.active==null and owner.trade.session==0 and not owner.trade_mode and not owner.trade_view.visible,"Trade close retained panel/session ownership")
+		if expected.trade_worker>=0:
+			# Retire an outstanding catalog read through the actual panel close path.
+			owner.open_target(int(expected.id))
+			if not await chest_ready():return
+			owner._open_trade();owner.close_panel();await drain()
+			check(owner.trade.phase==owner.trade.Phase.Closed and owner.trade.session==0 and not owner.trade_mode,"Late catalog reply revived closed Trade")
+			owner.open_target(int(expected.id))
+			if not await chest_ready():return
+			await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(64,144))
+			if not await trade_ready(int(expected.trade_choices)):return
+			owner.set_play_enabled(false);await drain()
+			check(scene._ui.host.active==null and owner.trade.session==0 and not owner.trade_view.visible,"Play disable retained Trade")
 		exercised=true;return
 	if expected.has("reference"):
 		check(owner.state.snapshot.depot.broker_id==int(expected.broker_id),"Depot broker identity differs")
@@ -34,3 +51,13 @@ func exercise(expected: Dictionary) -> void:
 	key(KEY_ESCAPE);await drain()
 	check(scene._ui.host.active==null,"Depot retained ownership")
 	exercised=true
+
+func trade_ready(choices: int) -> bool:
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();actions.poll(0.01)
+		if (choices>1 and owner.trade.phase==owner.trade.Phase.Ready) or (choices==1 and owner.trade.goods_ready()):
+			return check(owner.trade_mode and owner.trade_view.visible and not owner.panel.visible and scene._ui.host.active==owner,"Trade lost exclusive panel ownership")
+		if owner.trade.phase in [owner.trade.Phase.Rejected,owner.trade.Phase.Unknown,owner.trade.Phase.Unavailable]:break
+		await create_timer(0.01).timeout
+	return check(false,"Trade did not settle: "+str(owner.trade.phase))

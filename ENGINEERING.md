@@ -341,8 +341,8 @@ Evidence: `completed_sheet_discovery_reference.depot_trade_action_buttons_refere
 The fortress entity used by older synthetic caravan fixtures is distinct from
 the parent civilization in plotinfo.civ_id. Those fixtures did not qualify the
 same-civilization king restriction; the local case above uses that actual
-parent entity. Action facts use the summary transport below; main-screen
-routing remains unfinished. Minimum dimensions and absent-civilization rendering remain
+parent entity. Action facts use the summary transport below; staged main-screen
+routing is qualified below. Minimum dimensions and absent-civilization rendering remain
 unqualified. Trade stays hidden.
 
 ### Action transport
@@ -369,8 +369,30 @@ Rendered Trade pointer dispatch and right-click closure pass. Render checks
 run serially at30FPS and exit; the post-run GPU sample is60C. Evidence:
 `completed_sheet_discovery_reference.depot_trade_composite_reference`.
 This qualifies one full-panel visual state and the two transfer click workflows,
-not main furniture-panel routing, chooser transitions, the composite counteroffer
-workflow, minimum sizes or real announcements. Trade remains hidden.
+not the composite counteroffer workflow, minimum sizes or real announcements.
+Trade remains hidden.
+
+### Main-scene Trade ownership
+
+The furniture owner connects the native-enabled Trade button to its owned goods
+session and composite view. Goods and Trade are mutually exclusive. Closing,
+opening another target and disabling play retire that session and hide its view;
+late responses cannot restore the retired owner. Native Escape clears depot
+selection from both the single-merchant screen and chooser (active_id=-1), so
+Trade cancellation closes the parent panel rather than returning to it.
+
+Protected080127 on2026-11-16 (DF53632) verifies actual main-scene pointer entry,
+single-caravan auto-entry, two-caravan chooser selection, Escape, closing a
+pending catalog read and disabling play. Both enabled/disabled depot panels
+match native pixels. Native selection, jobs and paused frame stay unchanged
+by the clients. All three clients pass with clean stderr; source is preserved
+and DF closes unsaved. Graphics run serially at30FPS, sampled57–60C. All19 core
+checks pass. Native closing observations also agree with protected075630.
+Evidence: completed_sheet_discovery_reference.depot_trade_main_route_reference.
+These fixtures use synthetic caravans without a merchant speaker or goods;
+they qualify navigation/ownership, not full main-scene exchange effects or
+announcement/resize behavior. Public depot selection remains gated in
+fortress_ui until the remaining Trade workflows are complete.
 
 Protocol246 adds TradeSessionGift and TradeSessionSeize with the same
 session/expected-revision-only request and action receipt as Trade. The bridge
@@ -1052,9 +1074,9 @@ and paused frame stay unchanged after each client. Owned DF41656 closes unsaved,
 source-preserved. Graphics are serial30FPS, sampled GPU54C; both client stderr
 logs are empty. All19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_trade_gate_scene_reference`.
-Native merchant choice, list initialization, prices, quantity selection,
-negotiation and committed exchange still need owned semantic providers and
-rendered/live acceptance. Public depot routes remain hidden.
+Owned merchant choice, goods and exchange providers have separate evidence in
+the Trade sections above, including staged main-scene navigation. Public depot
+routes remain hidden until the remaining complete-workflow gaps are resolved.
 
 Native trade rendering384850..38a518 contains list construction inline at
 384d53..3855ef, rather than calling a standalone enumeration routine. It clears

@@ -101876,6 +101876,74 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_main_route_reference": {
+        "df_version": "53.16",
+        "steam_build": "24557528",
+        "exe_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+        "capture": "build/stockpile-storage-native-farm-discovery-20261116-080127",
+        "native_df_pid": 53632,
+        "native_close_selection": {
+          "chooser": -1,
+          "single": -1
+        },
+        "depot": 54,
+        "synthetic_prerequisites": true,
+        "cases": [
+          {
+            "label": "absent",
+            "success": true,
+            "worker": -1
+          },
+          {
+            "label": "present",
+            "success": true,
+            "worker": 988
+          },
+          {
+            "label": "chooser",
+            "success": true,
+            "worker": 988
+          }
+        ],
+        "main_scene_results": {
+          "absent": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          },
+          "present": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          },
+          "chooser": {
+            "roundtrip": true,
+            "success": true,
+            "surface": "actual main scene"
+          }
+        },
+        "checks": [
+          "native worker gating and exact depot panel pixels",
+          "single merchant direct entry",
+          "two merchant chooser and pointer selection",
+          "Escape retires session and depot selection",
+          "close pending catalog read and drain late reply",
+          "disable play retires session and view",
+          "native selection/jobs/frame unchanged"
+        ],
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "fps_cap": 30,
+        "sampled_gpu_celsius": [
+          57,
+          60
+        ],
+        "limitations": [
+          "synthetic caravans with no merchant speaker or goods",
+          "no main-scene exchange effects",
+          "no minimum-size or announcement qualification"
+        ]
+      },
       "depot_trade_composite_reference": {
         "supported_df": "53.16 Steam24557528",
         "protocol": 247,

@@ -171,7 +171,7 @@ local function gate_scene(label,worker)
  if os.getenv('DF3D_DEPOT_TRADE_SCENE')~='1' then return end
  view:render(dfhack.getTickCount());capture('depot-trade-gate-'..label)
  local selected=main.view_sheets.active_id;local jobs=#b.jobs
- local file=assert(io.open(out..'/depot-wire-expected.json','w'));file:write(json.encode{id=b.id,trade_worker=worker,reference='depot-trade-gate-'..label});file:close()
+ local file=assert(io.open(out..'/depot-wire-expected.json','w'));file:write(json.encode{id=b.id,trade_worker=worker,trade_choices=#added,reference='depot-trade-gate-'..label});file:close()
  capture('depot-scene-gate-'..label)
  file=assert(io.open(out..'/depot-scene-gate-'..label..'-result.json'));local observed=json.decode(file:read('*a'));file:close()
  assert(observed.success and main.view_sheets.active_id==selected and not trade.open and #b.jobs==jobs and df.global.world.frame_counter==frame)
@@ -270,6 +270,7 @@ local ok,err=xpcall(function()
   view:render(dfhack.getTickCount());view:render(dfhack.getTickCount());assert(#added[1].goods==1)
  end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)
+ result.close_selection={single=main.view_sheets.active_id}
  if restore_item then
   unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z;select_map(b)
   unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z;click(480,190)
@@ -454,6 +455,7 @@ local ok,err=xpcall(function()
  caravan();unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z
  select_map(b);assert(main.view_sheets.active_id==b.id)
  unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z
+ gate_scene('chooser',unit.id)
  click(480,190);assert(trade.open and trade.choosing_merchant)
  local multiple=record('merchants');assert(multiple.merchants==2)
  if os.getenv('DF3D_DEPOT_TRADE_CATALOG_WIRE')=='1' then
@@ -471,6 +473,7 @@ local ok,err=xpcall(function()
   result.catalog=assert(loadfile(source))(view,b,unit,position,trade,added,click,select_map)
  end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)
+ result.close_selection.chooser=main.view_sheets.active_id
 end,debug.traceback)
 if not ok then local file=assert(io.open(out..'/depot-trade-failure.txt','w'));file:write(tostring(err));file:close()end
 if trade.open then gui.simulateInput(view,'LEAVESCREEN')end

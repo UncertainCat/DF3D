@@ -1,7 +1,7 @@
 -- Disposable paused foreign-caravan Seize comparison; never save this session.
 local view,trade,click,capture,out=...
 local json=require('json')
-local mode=os.getenv('DF3D_DEPOT_TRADE_SEIZE');assert(mode=='native' or mode=='owned')
+local mode=os.getenv('DF3D_DEPOT_TRADE_SEIZE');assert(mode=='native' or mode=='owned' or mode=='session')
 local tracked={}
 for side=0,1 do for _,item in ipairs(trade.good[side])do tracked[item.id]=item end end
 local function snapshot()
@@ -59,6 +59,29 @@ local ok,err=xpcall(function()
   result.dialogue=trade.talkline;result.counter_offer=trade.counter_offer;result.announcement={}
   for _,text in ipairs(trade.big_announce.text)do result.announcement[#result.announcement+1]=dfhack.df2utf(text.value)end
   capture('depot-trade-seize-after')
+ elseif mode=='session' then
+  local function probe(action,...)
+   local args={...};for i,value in ipairs(args)do args[i]=tostring(value)end
+   local output,code=dfhack.run_command_silent('df3d','trade-session-probe',action,table.unpack(args));assert(code==0,output);return json.decode(output)
+  end
+  local state=probe('open',trade.bld.id,0);assert(state.status==0,json.encode(state))
+  local id=state.session
+  state=probe('item',id,state.revision,0,selected.id);assert(state.status==0)
+  local selected_revision=state.revision
+  state=probe('seize',id,selected_revision);assert(state.status==0 and state.exchange_status==0,json.encode(state))
+  assert(state.revision==selected_revision+1)
+  local refreshed=probe('read',id,state.revision)
+  assert(refreshed.status==0 and refreshed.dialogue==9 and not refreshed.counter_offer and json.encode(refreshed.sides)==json.encode(state.sides),'Seize session did not survive refresh')
+  for _,item in ipairs(refreshed.sides[1].items)do assert(item~=selected.id,'Seized item remained merchant goods')end
+  local after=snapshot()
+  assert(probe('seize',id,selected_revision).exchange_status==1,'Stale Seize replayed')
+  assert(json.encode(snapshot())==json.encode(after),'Stale Seize changed simulation')
+  assert(probe('close',id).status==3)
+  assert(probe('seize',id,state.revision).exchange_status==1,'Closed Seize replayed')
+  assert(json.encode(snapshot())==json.encode(after),'Closed Seize changed simulation')
+  result.dialogue=state.dialogue;result.counter_offer=state.counter_offer;result.announcement=state.announcement
+  result.session={revision=state.revision,refreshed=true,stale_rejected=true,closed_rejected=true,sides=refreshed.sides}
+  assert(trade.talkline==line,'Session Seize changed native conversation')
  else
   local output,code=dfhack.run_command_silent('df3d','trade-seize-probe',tostring(trade.bld.id),'0','','',json.encode{{side=0,item=selected.id}})
   assert(code==0,output);local response=json.decode(output)

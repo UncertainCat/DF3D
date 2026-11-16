@@ -207,7 +207,8 @@ The complete c90540 range includes branches outside its first unwind entry;
 its cb1510 and1396ad0 callees delete matching item/unit references and compact
 their vectors, without reading menu state.
 
-This executor is available only through the paused trade-seize-probe diagnostic.
+The paused trade-seize-probe diagnostic exercises the executor directly;
+trade-session-probe seize exercises the persistent session transaction.
 Protected071850 (native DF44092) and071949 (owned DF42392) on2026-11-16
 compare one merchant item992 using a synthetic caravan assigned to existing
 foreign civilization0. Native pointer input finds the visible Seize button at
@@ -219,9 +220,18 @@ suppression match after equivalent native row-value reads. The owned action
 leaves the native conversation untouched. Both lanes close unsaved with source
 preserved at30FPS; GPU samples37–42C. Bridge build and19 core checks pass.
 Evidence: `completed_sheet_discovery_reference.depot_trade_seize_effect_reference`.
-Container detachment, contained units, empty refusal, artifact announcements,
-session ownership after caravan state changes and public action integration
-remain unqualified. Trade remains hidden.
+Protected072344 (session DF15144) also matches071850's tracked native effects.
+The shared transaction boundary binds the changed caravan/goods source,
+advances revision2 to3 and preserves dialogue9 through a separate refresh.
+The seized item is absent from merchant goods. Old-revision and closed-session
+Seize requests reject without changing simulation state. The native conversation
+is untouched. The lane closes unsaved/source-preserved at30FPS, sampled48C;
+bridge build and19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_seize_session_reference`.
+This qualifies paused session commands, not advancing simulation or injected
+post-effect failures. Container detachment, contained units, empty refusal,
+artifact announcements and public action integration remain unqualified.
+Trade remains hidden.
 
 ## Owned Trade refusal checks
 

@@ -89274,6 +89274,59 @@
             "session": 0
           }
         ]
+      },
+      "depot_trade_goods_controller_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-200751",
+        "protocol": 239,
+        "owned_df_pid": 44584,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "controller": {
+          "closes": [
+            {
+              "outcome": 3,
+              "revision": 0,
+              "session": 4
+            },
+            {
+              "outcome": 3,
+              "revision": 0,
+              "session": 5
+            }
+          ],
+          "goods_states": 9,
+          "initial_session": 4,
+          "late_open": {
+            "entry": {
+              "dialogue": 0,
+              "entity_id": 865,
+              "fortress": "Your fortress of Roderònul",
+              "fortress_trader": 988,
+              "has_speaker": false,
+              "merchant_trader": -1,
+              "place": "Dumatzas",
+              "speaker": "",
+              "title": "Merchants from Dumatzas",
+              "unloading": false
+            },
+            "outcome": 0,
+            "revision": 1,
+            "session": 5
+          }
+        },
+        "scope": "Actual catalog/session/goods controller and semantic service. Both pages match native-qualified provider across nine states, retained pagination and rapid I/IR/IRON filters. Native appraisal snapshot unchanged by goods operations; close/late-open cleanup passes. Not rendered goods UI, container interaction, quantity selection, negotiation or exchange.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-200751/depot-trade-native.json": "e44957bbf39cbf27a0207234bbe32206de6081f8d69de4568ad484024b74a0bf",
+          "build/stockpile-storage-native-farm-discovery-20261115-200751/trade-session-wire-expected.json": "ad5c99545aa005c550e0cfd02ece0368f3d2b68c4f6f1a09aa68252d10665240",
+          "build/stockpile-storage-native-farm-discovery-20261115-200751/trade-session-wire-result.json": "11037a25c5ef38b13729c8cd7984046dd74f509495f274bac763a4d52b8d974a",
+          "build/stockpile-storage-native-farm-discovery-20261115-200751/trade-session-wire.stdout.log": "0fb41bb7cc71b68a335c01d8f84a806304e1cc6bb173f34ca02cb913d0f62013",
+          "build/stockpile-storage-native-farm-discovery-20261115-200751/trade-session-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261115-200751/result.json": "eb21bc713d879c9adb9e4867275ee1211144e190aeb86608507b3c93a711f216",
+          "build/stockpile-storage-native-farm-discovery-20261115-200751/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "presentations/godot/project/scripts/trade_goods_state.gd": "1043cd1045655b712cc19f4e38e234270e884bcbeeaaf1bb282b848e3a2d96ee",
+          "presentations/godot/project/tests/trade_goods_state_test.gd": "2e349e9816ff42c22ef709d2d98c52a4d791c370eda3b0d1b0a836cd6d370d20",
+          "presentations/godot/project/tests/trade_session_wire_live.gd": "6c4095d477ed51eca651259793cf10cd76718e615c9738e3c4fdd061b66dcf0e"
+        }
       }
     },
     "pending_construction_reference": {

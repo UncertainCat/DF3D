@@ -26,6 +26,25 @@ This qualifies transport against the owned provider, not rendered trade UI,
 successful container expansion through transport, quantity selection, advancing
 simulation, source retirement/reconnect, negotiation or exchange.
 
+The staged `trade_goods_state.gd` extends the chooser/session owner, so a single
+owner controls both sides and the selection revision. Reads publish both pages
+atomically. Selection blocks duplicate actions until its receipt and refreshed
+pages arrive; unknown/rejected results retain disabled content and allow close.
+Late results cannot replace a reopened session. Rapid explicit filter edits keep
+the latest pending text, without retrying unknown actions. Pagination probes the
+current size before requesting a retained offset, so list contraction can clamp
+safely without showing intermediate pages.
+
+Protected200751 on2026-11-15 checks that controller through the real semantic
+service and transport: nine native-provider states, pagination, rapid I/IR/IRON
+filter edits and clearing, plus session refresh/close and disposed late-open
+cleanup. The complete appraisal snapshot still matches one native open. Owned
+DF44584 closes unsaved/source-preserved at30FPS, sampled61C; headless logs are
+clean. Controller/catalog headless checks and all19 root core checks pass.
+Evidence: `completed_sheet_discovery_reference.depot_trade_goods_controller_reference`.
+This is staged controller acceptance; rendered goods rows, container interactions,
+quantity selection, negotiation and exchange remain unfinished.
+
 ## Trade-session transport migration
 
 Management protocol238 adds `TradeSessionOpen`, `TradeSessionRead` and

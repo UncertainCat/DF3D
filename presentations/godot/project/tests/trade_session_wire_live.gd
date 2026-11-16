@@ -1,12 +1,42 @@
 extends "res://tests/machinery_wire_live.gd"
 var receipts: Array=[]
-const Model=preload("res://scripts/trade_catalog_state.gd")
+const Model=preload("res://scripts/trade_goods_state.gd")
 func poll_controller(service,model,terminal: int) -> bool:
 	var deadline:=Time.get_ticks_msec()+5000
-	while model.phase in [Model.Phase.Reading,Model.Phase.Choosing,Model.Phase.Checking] and Time.get_ticks_msec()<deadline:
+	while model.phase in [Model.Phase.Reading,Model.Phase.Choosing,Model.Phase.Checking,Model.Phase.GoodsReading,Model.Phase.Applying] and Time.get_ticks_msec()<deadline:
 		world.poll();service.poll(0.01);await create_timer(0.01).timeout
 	return check(model.phase==terminal,"Trade controller did not reach expected phase: "+str(model.phase))
-func controller_workflow(depot: int) -> Dictionary:
+func compare_goods(model,state: Dictionary) -> void:
+	check(model.goods_ready(),"Controller goods are not ready")
+	for side in range(2):
+		var page: Dictionary=model.pages[side]
+		var expected: Dictionary=state.display[side]
+		if not check(page.get("total")==expected.total,"Controller total differs"):return
+		for index in range(page.rows.size()):
+			var row: Dictionary=expected.rows[int(page.offset)+index]
+			for key in row:check(page.rows[index].get(key)==row[key],"Controller native row differs: "+str([side,index,key]))
+func controller_goods(service,model,states: Array) -> void:
+	for state in states:
+		if state.has("intent") and state.intent!=null:
+			var intent: Dictionary=state.intent;var side:=int(intent.side)
+			if intent.action=="filter":model.set_filter(side,intent.query)
+			elif intent.action in ["mark_all","unmark_all"]:model.mark_all(side,intent.action=="mark_all")
+			else:
+				var found:=-1
+				for index in range(model.pages[side].rows.size()):
+					var row: Dictionary=model.pages[side].rows[index]
+					if intent.action=="item" and row.id==int(intent.item):found=index;break
+					if intent.action in ["group","expand_group"] and row.group and row.type==int(intent.type) and row.subtype==int(intent.subtype):found=index;break
+				if not check(found>=0,"Controller action target absent"):return
+				model.toggle_row(side,found,intent.action=="expand_group")
+			if not await poll_controller(service,model,Model.Phase.Active):return
+		compare_goods(model,state)
+	model.read_page(0,2,2);await poll_controller(service,model,Model.Phase.Active);compare_goods(model,states.back())
+	model.read_page(0,0,16);await poll_controller(service,model,Model.Phase.Active)
+	model.set_filter(0,"I");model.set_filter(0,"IR");model.set_filter(0,"IRON")
+	await poll_controller(service,model,Model.Phase.Active);compare_goods(model,states[states.size()-2])
+	model.set_filter(0,"");await poll_controller(service,model,Model.Phase.Active);compare_goods(model,states.back())
+func controller_workflow(depot: int,states: Array=[]) -> Dictionary:
 	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true);service.set_process(false)
 	var model=Model.new();model.configure(service)
 	var closed: Array=[];service.completed.connect(func(_ticket,result):
@@ -14,6 +44,7 @@ func controller_workflow(depot: int) -> Dictionary:
 	model.open(depot)
 	if not await poll_controller(service,model,Model.Phase.Active):model.dispose();service.queue_free();return {}
 	var initial: int=model.session
+	if not states.is_empty():await controller_goods(service,model,states)
 	model.refresh_session();await poll_controller(service,model,Model.Phase.Active)
 	check(model.session==initial,"Controller read replaced session")
 	model.close()
@@ -35,7 +66,7 @@ func controller_workflow(depot: int) -> Dictionary:
 	var late: Dictionary=service.result(opening).get("trade_session",{})
 	check(late.get("outcome")==C.TradeSessionOutcome.Available and closed.size()==2 and closed[1].get("session")==late.get("session") and closed[1].get("outcome")==C.TradeSessionOutcome.Closed,"Disposed panel's late session was not retired")
 	check(model.phase==Model.Phase.Closed and model.session==0,"Late open revived disposed panel")
-	var result: Dictionary={"initial_session":initial,"late_open":late,"closes":closed}
+	var result: Dictionary={"initial_session":initial,"late_open":late,"closes":closed,"goods_states":states.size()}
 	service.queue_free();await process_frame
 	return result
 func session_request(intent: Dictionary,outcome: int) -> Dictionary:
@@ -122,7 +153,7 @@ func run() -> void:
 			var closed:=await session_request({"action":C.ManagementAction.TradeSessionClose,"session":opened.session},C.TradeSessionOutcome.Closed)
 			check(closed.get("session")==opened.session,"Close receipt lost session identity")
 		await session_request(read,C.TradeSessionOutcome.Rejected)
-	var controller:=await controller_workflow(depot)
+	var controller:=await controller_workflow(depot,expected.get("draft",[]))
 	var file:=FileAccess.open(directory+"/trade-session-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"receipts":receipts,"sessions":sessions,"controller":controller,"draft_receipts":draft_receipts}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)

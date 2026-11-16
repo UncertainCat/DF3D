@@ -5,7 +5,7 @@ signal changed
 signal choice_requested(depot_id: int, token: int)
 signal session_opened
 const C=preload("res://scripts/management_contract.gd")
-enum Phase {Closed,Reading,Ready,Choosing,Rejected,Unknown,Unavailable,Active,Checking}
+enum Phase {Closed,Reading,Ready,Choosing,Rejected,Unknown,Unavailable,Active,Checking,GoodsReading,Applying}
 var service
 var phase:=Phase.Closed
 var depot_id: int=-1

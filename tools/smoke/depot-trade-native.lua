@@ -200,6 +200,16 @@ local ok,err=xpcall(function()
    end
   end
   assert(#candidates==12,'Need twelve safe source items')
+  if os.getenv('DF3D_DEPOT_TRADE_QUANTITY')=='1' then
+   local found
+   for _,item in ipairs(df.global.world.items.all)do
+    if item:getStackSize()>1 and item.flags.on_ground and not item.flags.in_inventory and not item.flags.in_building and not item.flags.trader and not item.flags.in_job and #item.general_refs==0 then
+     local duplicate=false;for _,candidate in ipairs(candidates)do if candidate==item then duplicate=true end end
+     if not duplicate then found=item;break end
+    end
+   end
+   assert(found,'No safe ground stack');candidates[7]=found;result.quantity_item=found.id
+  end
   if os.getenv('DF3D_DEPOT_TRADE_CONTAINER')=='1' then
    for _,item in ipairs(df.global.world.items.all)do
     if item:getType()==df.item_type.BIN and item.flags.on_ground and not item.flags.in_inventory and not item.flags.in_building and not item.flags.trader and not item.flags.in_job then
@@ -276,6 +286,10 @@ local ok,err=xpcall(function()
    unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z;select_map(b);assert(main.view_sheets.active_id==b.id)
    unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z;click(480,190);assert(trade.open)
    local row=record(label);assert(row.merchant_trader==speaker.id and row.havetalker==1 and row.stillunloading==unloading)
+   if label=='speaker' and os.getenv('DF3D_DEPOT_TRADE_QUANTITY')=='1' then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-quantity-native.lua')
+    result.quantity=assert(loadfile(source))(view,trade,click,capture,result.quantity_item)
+   end
    if label=='speaker' and os.getenv('DF3D_DEPOT_TRADE_DIALOGUE')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-dialogue-native.lua')
     result.dialogue=assert(loadfile(source))(view,trade,b)

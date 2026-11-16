@@ -1,3 +1,27 @@
+## Trade stack selection and exchange boundary
+
+Native DF53.16's seven direct callers of selection helper36a840 all pass
+amount0. Protected215603 on2026-11-15 exercises a real two-item raw-fish stack
+(item4558): checkbox, row, and controlled Shift/Ctrl-modifier clicks toggle the
+whole stack, keep good_amount0 and never enter amount editing. The captured
+screen shows the stack caption and ordinary selection controls. DF3D retains
+whole-stack selection; the legacy amount field alone does not justify adding a
+partial-quantity picker. This evidence covers these controls, not every possible
+input path. No native partial-stack UI has been located.
+
+Owned DF41896 closes unsaved/source-preserved at30FPS, sampled60C. The first
+attempt215436 selected a one-item block and stopped at its prerequisite; it
+supplies no stack acceptance. Evidence:
+`completed_sheet_discovery_reference.depot_trade_whole_stack_reference`.
+
+Exchange remains unfinished. Native input31b60f invokes negotiation369490 with
+trade context, both actual value totals and remaining mass. It owns counteroffer
+and successful trade effects; it must be audited with its callees before use.
+The native Seize/gift paths also perform inline item ownership and caravan
+changes, so invoking the global input handler is not an acceptable shortcut.
+The next implementation must retain an independently owned negotiation context,
+revalidate its session/source and carry native outcome/counteroffer state.
+
 ## Trade header transport migration
 
 Management protocol243 requires TradeSessionRead columns1..512 and a native
@@ -16,7 +40,8 @@ unsaved/source-preserved at30FPS, sampled60C. Both peers build, all19 core tests
 and catalog/goods headless checks pass. Four existing staged header captures
 remain pixel-exact after the name-color dictionary adaptation, with clean logs.
 Evidence: `completed_sheet_discovery_reference.depot_trade_header_transport_reference`.
-Trade remains hidden pending partial quantities, exchange and full integration.
+Trade remains hidden pending exchange and full integration. Stack-selection
+evidence is described above; no partial-quantity control is added.
 
 ## Revision-bound trade header summary
 

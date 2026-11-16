@@ -95263,6 +95263,174 @@
           "build/stockpile-storage-native-farm-discovery-20261115-215023/result.json": "adc178c310e03888100a0e12f75b5b15198310d81c5c6c971dfc4c3581ca3656",
           "build/stockpile-storage-native-farm-discovery-20261115-215023/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "depot_trade_whole_stack_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-215603",
+        "owned_df_pid": 41896,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "quantity": {
+          "cases": [
+            {
+              "amount": 0,
+              "entering_amount": 0,
+              "label": "checkbox",
+              "selected": true,
+              "stack": 2
+            },
+            {
+              "amount": 0,
+              "entering_amount": 0,
+              "label": "row",
+              "selected": false,
+              "stack": 2
+            },
+            {
+              "amount": 0,
+              "entering_amount": 0,
+              "label": "shift-checkbox",
+              "selected": true,
+              "stack": 2
+            },
+            {
+              "amount": 0,
+              "entering_amount": 0,
+              "label": "control-checkbox",
+              "selected": false,
+              "stack": 2
+            }
+          ],
+          "item": 4558,
+          "stack": 2
+        },
+        "selection_callers": [
+          {
+            "call": "0x316d37",
+            "context": [
+              "316d0b call 0x6ee10",
+              "316d10 mov eax, dword ptr [rax]",
+              "316d12 and eax, 1",
+              "316d15 test eax, eax",
+              "316d17 je 0x316d3f",
+              "316d19 mov byte ptr [rsp + 0x20], 0",
+              "316d1e xor r9d, r9d",
+              "316d21 mov r8d, dword ptr [rsp + 0x103c]",
+              "316d29 mov edx, dword ptr [rsp + 0xb8]",
+              "316d30 lea rcx, [rip + 0x158b479]",
+              "316d37 call 0x36a840",
+              "316d3c nop "
+            ]
+          },
+          {
+            "call": "0x316d8a",
+            "context": [
+              "316d5d call 0x6ee10",
+              "316d62 movzx eax, byte ptr [rax]",
+              "316d65 and eax, 1",
+              "316d68 test eax, eax",
+              "316d6a jne 0x316d90",
+              "316d6c mov byte ptr [rsp + 0x20], 0",
+              "316d71 xor r9d, r9d",
+              "316d74 mov r8d, dword ptr [rsp + 0x103c]",
+              "316d7c mov edx, dword ptr [rsp + 0xb8]",
+              "316d83 lea rcx, [rip + 0x158b426]",
+              "316d8a call 0x36a840",
+              "316d8f nop "
+            ]
+          },
+          {
+            "call": "0x3173df",
+            "context": [
+              "3173a7 mov eax, dword ptr [rsp + 0x984]",
+              "3173ae mov dword ptr [rsp + 0x2eac], eax",
+              "3173b5 cmp dword ptr [rsp + 0x2eac], 2",
+              "3173bd je 0x3173c1",
+              "3173bf jmp 0x3173f8",
+              "3173c1 mov byte ptr [rsp + 0x20], 0",
+              "3173c6 xor r9d, r9d",
+              "3173c9 mov r8d, dword ptr [rsp + 0x1404]",
+              "3173d1 mov edx, dword ptr [rsp + 0xb8]",
+              "3173d8 lea rcx, [rip + 0x158add1]",
+              "3173df call 0x36a840",
+              "3173e4 mov edx, dword ptr [rsp + 0xb8]"
+            ]
+          },
+          {
+            "call": "0x317758",
+            "context": [
+              "317730 call 0x6ee10",
+              "317735 movzx eax, byte ptr [rax]",
+              "317738 and eax, 1",
+              "31773b test eax, eax",
+              "31773d jne 0x31775e",
+              "31773f mov byte ptr [rsp + 0x20], 0",
+              "317744 xor r9d, r9d",
+              "317747 mov r8d, dword ptr [rsp + 0x1408]",
+              "31774f xor edx, edx",
+              "317751 lea rcx, [rip + 0x158aa58]",
+              "317758 call 0x36a840",
+              "31775d nop "
+            ]
+          },
+          {
+            "call": "0x317956",
+            "context": [
+              "31792e call 0x6ee10",
+              "317933 movzx eax, byte ptr [rax]",
+              "317936 and eax, 1",
+              "317939 test eax, eax",
+              "31793b je 0x31795c",
+              "31793d mov byte ptr [rsp + 0x20], 0",
+              "317942 xor r9d, r9d",
+              "317945 mov r8d, dword ptr [rsp + 0x140c]",
+              "31794d xor edx, edx",
+              "31794f lea rcx, [rip + 0x158a85a]",
+              "317956 call 0x36a840",
+              "31795b nop "
+            ]
+          },
+          {
+            "call": "0x317b49",
+            "context": [
+              "317b1e call 0x6ee10",
+              "317b23 movzx eax, byte ptr [rax]",
+              "317b26 and eax, 1",
+              "317b29 test eax, eax",
+              "317b2b jne 0x317b4f",
+              "317b2d mov byte ptr [rsp + 0x20], 0",
+              "317b32 xor r9d, r9d",
+              "317b35 mov r8d, dword ptr [rsp + 0x1414]",
+              "317b3d mov edx, 1",
+              "317b42 lea rcx, [rip + 0x158a667]",
+              "317b49 call 0x36a840",
+              "317b4e nop "
+            ]
+          },
+          {
+            "call": "0x317d3f",
+            "context": [
+              "317d14 call 0x6ee10",
+              "317d19 movzx eax, byte ptr [rax]",
+              "317d1c and eax, 1",
+              "317d1f test eax, eax",
+              "317d21 je 0x317d45",
+              "317d23 mov byte ptr [rsp + 0x20], 0",
+              "317d28 xor r9d, r9d",
+              "317d2b mov r8d, dword ptr [rsp + 0x141c]",
+              "317d33 mov edx, 1",
+              "317d38 lea rcx, [rip + 0x158a471]",
+              "317d3f call 0x36a840",
+              "317d44 nop "
+            ]
+          }
+        ],
+        "scope": "Native row, checkbox and controlled Shift/Ctrl-modifier clicks select the whole two-item raw-fish stack; no quantity entry opens. All seven direct native selection-helper callers pass amount zero. No partial-stack control is exposed or invented. This does not prove every possible input path absent, nor qualify trade exchange.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-215603/depot-trade-native.json": "512a4a0eff46eac11166d17272bc3e666ae42e0e5e328a4a495ebddc8ce7d8fc",
+          "build/stockpile-storage-native-farm-discovery-20261115-215603/result.json": "3bc0c1bf6494701b9a78964ab50b5573aadcaac24f7099aaf19b1b5e8344f59a",
+          "build/stockpile-storage-native-farm-discovery-20261115-215603/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "tools/smoke/depot-trade-quantity-native.lua": "6c622a34d628cc1a6fef204abfc409b57f934916b718bd5b37ac4c97d1d9c30a"
+        }
       }
     },
     "pending_construction_reference": {

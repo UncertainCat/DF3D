@@ -13,6 +13,7 @@ if os.getenv("DF3D_CAGE_NATIVE")=="1" then kinds={28}end
 local wanted={};for _,kind in ipairs(kinds)do wanted[kind]=true end
 local result={frame=df.global.world.frame_counter,inventory={},buildings={},missing={}}
 local selected={}
+local scene_claim=nil
 for _,b in ipairs(df.global.world.buildings.all)do
  local kind=b:getType()
  if wanted[kind]then
@@ -74,6 +75,7 @@ for _,kind in ipairs(kinds)do
  local b=selected[kind]
  if b then
   if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
+  if kind==48 and os.getenv('DF3D_SPECIAL_BUILDINGS_SCENE')=='1' then scene_claim={building=b,claimed_by=b.claimed_by};b.claimed_by=6960 end
   view:render(dfhack.getTickCount());select_map(b)
   assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==b.id,'Native building selection missed '..kind)
   local row={id=b.id,type=kind,subtype=b:getSubtype(),tile={b.centerx,b.centery,b.z},native_type=df.building_type[kind],custom_name=dfhack.df2utf(b.name),selected_sheet=sheet.active_sheet,selected_id=sheet.active_id,lines={}}
@@ -167,7 +169,7 @@ for _,kind in ipairs(kinds)do
    local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','well-status-native.lua')
    result.well_status=assert(loadfile(source))(out,view,b,capture)
   end
-  if os.getenv('DF3D_SIMPLE_BUILDING_SCENE')=='1' or default_families then
+  if os.getenv('DF3D_SIMPLE_BUILDING_SCENE')=='1' or default_families or (os.getenv('DF3D_SPECIAL_BUILDINGS_SCENE')=='1' and (kind==24 or kind==48 or kind==49))then
    local original=b.name;assert(#b.jobs==0)
    local function click(x,y)
     g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
@@ -184,14 +186,14 @@ for _,kind in ipairs(kinds)do
   result.buildings[#result.buildings+1]=row
  else result.missing[#result.missing+1]=kind end
 end
-if os.getenv('DF3D_SPECIAL_BUILDINGS_WIRE')=='1' then
+if os.getenv('DF3D_SPECIAL_BUILDINGS_WIRE')=='1' or os.getenv('DF3D_SPECIAL_BUILDINGS_SCENE')=='1' then
  local expected={buildings={}};local nest,claim
  for _,row in ipairs(result.buildings)do
   if row.type==24 or row.type==48 or row.type==49 then
    local b=assert(df.building.find(row.id))
    if row.type==48 then nest=b;claim=b.claimed_by;b.claimed_by=6960 end
    local text,code=dfhack.run_command_silent('df3d','special-building-read',tostring(b.id));assert(code==0,text)
-   expected.buildings[#expected.buildings+1]={id=b.id,type=row.type,body=json.decode(text)}
+   expected.buildings[#expected.buildings+1]={id=b.id,type=row.type,tile=row.tile,custom_name=row.custom_name,body=json.decode(text)}
   end
  end
  local f=assert(io.open(out..'/special-building-expected.json','w'));f:write(json.encode(expected));f:close()
@@ -213,6 +215,7 @@ if os.getenv('DF3D_SIMPLE_BUILDING_SCENE')=='1' or os.getenv('DF3D_DEFAULT_BUILD
  for _,row in ipairs(result.buildings)do local b=assert(df.building.find(row.id));assert(#b.jobs==0 and dfhack.df2utf(b.name)==row.custom_name)end
 end
 end,debug.traceback)
+if scene_claim then scene_claim.building.claimed_by=scene_claim.claimed_by end
 if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
 for _,item in ipairs(fixture_items)do item.flags.in_building=false;assert(dfhack.items.remove(item))end
 for _,b in ipairs(fixtures)do b:setBuildStage(0);b.flags.exists=false;assert(dfhack.buildings.deconstruct(b))end

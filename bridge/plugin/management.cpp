@@ -4707,7 +4707,7 @@ void run(color_ostream& out) {
         const auto contentsType=contentsBuilding(q->building_id())->getType();
         const bool editRemoving=df3d_production::ordinaryTrapBuilding(contentsBuilding(q->building_id())) || unfinished || contentsType==df::building_type::Box ||
           (contentsType==df::building_type::Trap && (contentsBuilding(q->building_id())->getSubtype()==0 || contentsBuilding(q->building_id())->getSubtype()==1)) ||
-          contentsType==df::building_type::Cage || contentsType==df::building_type::TradeDepot || contentsType==df::building_type::Well || df3d_production::machineryBuildingType(contentsType) || df3d_production::plainFurnitureType(contentsType) || df3d_production::funeraryFurnitureType(contentsType) || df3d_production::linkedFurnitureType(contentsType);
+          df3d_production::specialFurnitureType(contentsType) || contentsType==df::building_type::Cage || contentsType==df::building_type::TradeDepot || contentsType==df::building_type::Well || df3d_production::machineryBuildingType(contentsType) || df3d_production::plainFurnitureType(contentsType) || df3d_production::funeraryFurnitureType(contentsType) || df3d_production::linkedFurnitureType(contentsType);
         auto edit=df3d_production::finishBuildingItemEdit(*before,q->expected_revision(),q->item_id(),action,q->item_value()!=0,[&] {
           auto* building=contentsBuilding(q->building_id(),true);
           if(!building)return false;

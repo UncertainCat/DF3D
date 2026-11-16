@@ -114964,6 +114964,30 @@
           "presentations/godot/project/tests/special_building_wire_live.gd": "3c594422987060072278773ae2a00616061c2845f6bd5909040c69b0c3cca905",
           "presentations/godot/project/scripts/building_header_state.gd": "abc6b4e26dc9a3800128ddb506e59d4ff320f6678aa79710448c164f210a83b4"
         }
+      },
+      "special_building_workflow_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-144901",
+        "owned_df_pid": 70360,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "native_types": [
+          24,
+          48,
+          49
+        ],
+        "scope": "Actual main-scene map and holder entry; four trap bait choices, four hive install/gather combinations, controlled claimed nest with native name color; all three rename/restore/remove/cancel/close. Twenty-three full488x708 panels match native. Original component artwork and shared contents owner. Controlled fixtures removed and paused frame preserved. Root19 and holder routing pass, bridge installed. Serial30FPS GPU59-61C, clean graphical stderr. Occupied/baited trap and hive crowding branches remain static-only; natural nesting and colony production not qualified. Earlier144327 reader guard failed without byte diagnostics;144512 and144901 guards pass with diagnostic recording enabled.144512 viewer failed because native fixture capture timed out before startup; rendered timeout now aligned.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-144901/remaining-buildings-native.json": "bbbd6a85f2278e867dae8778b7bc01f885a505969df7fd388a0a290b0a9d20f0",
+          "build/stockpile-storage-native-farm-discovery-20261116-144901/special-building-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261116-144901/special-building-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261116-144901/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "presentations/godot/project/scripts/special_building_sheet_view.gd": "02545fd6d7a57ac54011d3f2d1b02239deeea9a645a8fd70ac60ef5feaf8f93d",
+          "presentations/godot/project/scripts/fortress_ui.gd": "c8e16f4aa9c5194e4fe157f069cb7c0ec98d29415e82701d84d794f189e6670b",
+          "presentations/godot/project/tests/special_building_scene_live.gd": "f5336b3c06dc01ab65a74581d17e29299c921f6c35b6e5b76a170d60b719c053",
+          "tools/smoke/remaining-buildings-native.lua": "01a5ddfdae3c951a9de1eba8407c7ad0cd1f6af3e80cb941da56576c29b8eaa6",
+          "tools/smoke/special-building-controls-native.lua": "6dea6edf4a27e22fb8146b287f70d4dd6ede82f78120ca7398288a523765dda0",
+          "tools/smoke/farm-header-native.lua": "8429974c50adfd3bd668b8c376f57188c9214516a33ed3cc6c5d541393ab21f4"
+        }
       }
     },
     "pending_construction_reference": {

@@ -3097,6 +3097,30 @@ render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
 
 ### Nest box, animal trap and hive observations
 
+Public map/holder routes for AnimalTrap24, NestBox48 and Hive49 use the shared
+furniture controller and specialized body view. Bait and hive setting clicks use
+the typed semantic header owner; installed component artwork and item actions
+reuse the shared contents pipeline, including while removal is queued. Claimed
+nest names preserve native colors/effects without an invented portrait. Hive
+restricted/no-output warning colors follow the pinned native renderer.
+
+Protected144901 on2026-11-16 (DF70360) exercises actual map selection, all four
+bait choices and hive setting combinations, controlled claimed nest display,
+rename/restore/removal/cancellation, public holder entry and closure. All23 full
+488x708 panels match native exactly. Source saves remain unchanged, temporary
+fixtures are removed, and owned DF closes unsaved. Serial graphics are capped30FPS,
+sampled59-61C; graphical stderr is clean. Bridge build, all19 root checks and
+holder-routing engine check pass. This qualifies the normal empty-trap/indoor-hive
+workflow; occupied/baited trap and colony crowding remain static-only branches.
+Natural nesting and colony production are not established by these controlled
+fixtures. Evidence: completed_sheet_discovery_reference.special_building_workflow_reference.
+
+The graphical harness shares the existing95-second native capture budget and
+90-second client budget. Earlier144512 removed its fixtures at the old30-second
+native timeout before viewer startup; it is not acceptance evidence. Earlier
+144327 stopped on a UI-storage reader guard without byte detail. Subsequent
+144512/144901 reader guards pass; failures now record byte offsets for diagnosis.
+
 Protocol252 adds typed nest/trap/hive bodies to the shared building header and
 TrapBait/HiveInstall/HiveGather operations. A header revision incorporates the
 specialized control revision (contents and jobs included); the safe-point handler
@@ -3114,8 +3138,8 @@ edit/restore with stale rejection, and rename/restore/removal/cancellation for
 all three types. Original complete snapshots are restored. Source saves remain
 unchanged and owned DF closes unsaved at30FPS, sampled59-60C. Headless transport
 stderr is clean; shared state checks include typed edits and late-reply retirement.
-Bridge/core/extension builds and all19 root checks pass. Public routes and
-new visual body views remain unfinished. Evidence:
+Bridge/core/extension builds and all19 root checks pass. Public visual workflow
+acceptance is recorded below. Evidence:
 `completed_sheet_discovery_reference.special_building_transport_reference`.
 
 `special_building_native.cpp` supplies owned semantic bodies for NestBox48,
@@ -3139,8 +3163,7 @@ Evidence: `completed_sheet_discovery_reference.special_building_readers_referenc
 
 The controlled claim establishes display behavior, not natural nesting eligibility.
 Occupied/baited trap bodies and hive crowding branches have static native evidence
-but no live acceptance yet. Transport, viewer bodies and public admission remain
-unfinished. Siege22,
+but no live acceptance yet. Siege22,
 Chain27 and DisplayFurniture53 still need their workflows; Archery26 uses shared
 native footer controls. Shop7 and natural Nest47 require fortress-route assessment.
 Earlier135024's siege capture selected a dwarf inside the footprint and is invalid;

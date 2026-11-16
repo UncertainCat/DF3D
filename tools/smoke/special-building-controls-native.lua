@@ -10,8 +10,14 @@ local function read_owned()
   dfhack.internal.memmove(copy,address,size);guards[#guards+1]={size=size,address=address,copy=copy}
  end
  local text,code=dfhack.run_command_silent('df3d','special-building-read',tostring(b.id))
- for _,guard in ipairs(guards)do
-  assert(dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0,'Owned reader changed native UI storage')
+ for index,guard in ipairs(guards)do
+  if dfhack.internal.memcmp(guard.copy,guard.address,guard.size)~=0 then
+   local current=df.new('uint8_t',guard.size);dfhack.internal.memmove(current,guard.address,guard.size)
+   local changes={};for offset=0,guard.size-1 do if current[offset]~=guard.copy[offset]then changes[#changes+1]={offset=offset,before=guard.copy[offset],after=current[offset]}end end
+   df.delete(current)
+   local f=assert(io.open(out..'/special-reader-guard.json','w'));f:write(json.encode({guard=index,changes=changes}));f:close()
+   error('Owned reader changed native UI storage; see special-reader-guard.json')
+  end
   df.delete(guard.copy)
  end
  assert(code==0,text);local body=json.decode(text);assert(body.building_id==b.id and body.type==kind)

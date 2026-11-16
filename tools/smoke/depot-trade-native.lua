@@ -57,6 +57,25 @@ local function record(label)
    assert(json.encode(ids())==before and trade.handle_appraisal==appraisal and trade.buildlists==lists and #added[1].goods==0)
    row.source_provider=facts
   end
+  if os.getenv('DF3D_DEPOT_TRADE_PROJECTION')=='1' then
+   for iteration=1,2 do
+    local output,code=dfhack.run_command_silent('df3d','trade-projection-probe',tostring(b.id),'0',trade.item_filter[0],trade.item_filter[1]);assert(code==0,output)
+    local facts=json.decode(output);assert(facts.available,output)
+    for side=0,1 do
+     local actual=facts.sides[side+1]
+     assert(json.encode(actual.items)==json.encode(expected[side+1]) and actual.height==trade.i_height[side],'Trade row order/height differs')
+     assert(#actual.groups==#trade.current_type_a_type[side])
+     for i,group in ipairs(actual.groups)do
+      local j=i-1
+      assert(group.type==trade.current_type_a_type[side][j] and group.subtype==trade.current_type_a_subtype[side][j] and group.expanded==trade.current_type_a_expanded[side][j] and group.on==trade.current_type_a_on[side][j] and group.flags==trade.current_type_a_flag[side][j].whole,'Trade group differs')
+     end
+     for i,flag in ipairs(actual.flags)do assert(flag==trade.goodflag[side][i-1].whole and actual.amounts[i]==trade.good_amount[side][i-1],'Trade item flags/amount differs')end
+    end
+    assert(json.encode(ids())==before and trade.handle_appraisal==appraisal and trade.buildlists==lists and #added[1].goods==0)
+    row.projection_provider=facts
+    row.filters={trade.item_filter[0],trade.item_filter[1]}
+   end
+  end
  end
  assert(df.global.world.frame_counter==frame and unit.flags1.whole==unit_flags and unit.job.current_job==old_job and b.trade_flags.whole==flags)
  return row
@@ -131,7 +150,6 @@ local ok,err=xpcall(function()
   view:render(dfhack.getTickCount());view:render(dfhack.getTickCount());assert(#added[1].goods==1)
  end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)
- if restore_sources then restore_sources()end
  if restore_item then
   unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z;select_map(b)
   unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z;click(480,190)
@@ -160,6 +178,19 @@ local ok,err=xpcall(function()
    unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z;select_map(b);assert(main.view_sheets.active_id==b.id)
    unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z;click(480,190);assert(trade.open)
    local row=record(label);assert(row.merchant_trader==speaker.id and row.havetalker==1 and row.stillunloading==unloading)
+   if label=='speaker' and source_probe and os.getenv('DF3D_DEPOT_TRADE_PROJECTION')=='1' then
+    for _,test in ipairs{{0,'iron'},{0,'boulders'},{0,'zznomatch'},{1,'blocks'}}do
+     local side,query=test[1],test[2]
+     click(side==0 and 100 or 570,166)
+     for byte in query:gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(byte:byte()))end
+     view:render(dfhack.getTickCount());assert(trade.item_filter[side]~='','Trade search did not receive text')
+     record('search-'..side..'-'..query)
+     for i=1,#query do gui.simulateInput(view,'STRING_A000')end
+     view:render(dfhack.getTickCount());assert(trade.item_filter[side]=='')
+     click(side==0 and 100 or 570,166)
+    end
+    record('search-cleared')
+   end
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)
   end
   result.speaker_id=speaker.id
@@ -170,6 +201,7 @@ local ok,err=xpcall(function()
   reopen('speaker-unloading',1)
   restore_speaker()
  end
+ if restore_sources then restore_sources()end
  caravan();unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z
  select_map(b);assert(main.view_sheets.active_id==b.id)
  unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z

@@ -174,10 +174,13 @@ owner resolution cb1790(item,45), and sorts each side with comparator384790.
 That comparator orders type/subtype and returns equality without an item-ID
 tie-breaker; replacing it with an independently chosen tie-breaker is unqualified.
 The renderer initializes parallel selection/quantity/group storage, then calls
-37c780(context,side) and37acc0(context,side) for both sides. Their description/
-filter and group/height projection paths require further ownership auditing;
-37acc0 also spans split unwind entries. Calling the full renderer is prohibited:
-it writes global graphics state and performs gameplay effects.
+37c780(context,side) and37acc0(context,side) for both sides. The former normalizes
+the query, checks native item/contained-item/category descriptions and updates
+owned group visibility, then calls37d750 to derive group selection flags. The
+latter derives height from visible/expanded groups and item flags. Both height
+and selection routines span split unwind entries; their full branch ranges
+operate on the supplied context and item getters. Calling the full renderer is
+prohibited: it writes global graphics state and performs gameplay effects.
 
 Appraisal385603..3857bd is a separate one-shot phase. It searches caravan.goods
 before recording IDs. For newly inspected merchant-side goods, it calls native
@@ -266,8 +269,34 @@ all19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_trade_goods_source_reference`.
 The earlier175634 attempt failed on a diagnostic integer-field assignment and
 is excluded from acceptance; its owned session also closed source-preserved.
-Group/filter projection, selection quantities, appraisal effects, prices,
-negotiation and public exchange integration remain unfinished.
+The source provider alone does not qualify projection, selection quantities,
+appraisal effects, prices, negotiation or public exchange integration.
+
+`trade_projection_native.h` constructs initial owned group storage from the
+native-sorted source vectors, using the pinned inline initialization contract.
+It inserts bin contents in native reference-reversed order, then calls native
+37c780 (filter and group selection flags) and37acc0 (height). These calls use
+only owned vectors/strings and simulation item getters/descriptions. Item IDs,
+flags, amounts, group type/subtype/expansion/visibility/selection flags and
+height leave the context as values. This currently models the initial expanded,
+unselected draft; viewer-owned edits and public transport are not integrated.
+
+Protected180336 on2026-11-15 compares all those fields against native, twice
+per state, on the twelve-item source fixture. Native pointer/keyboard input
+exercises merchant-side item-name IRON, category-name BOULDERS, unmatched
+ZZNOMATCH, fortress-side BLOCKS and clearing search. Initial no-speaker, speaker,
+long-name speaker and unloading states also pass (nine projected states total).
+Populated native and filtered PNGs were inspected as layout references, not
+DF3D pixel acceptance. Native appraisal is explicitly suppressed by this
+diagnostic before rendering; its unchanged history is not skill-effect coverage.
+Fixture prerequisites restore, simulation frame remains unchanged, and owned
+DF34052 closes unsaved/source-preserved at30FPS, sampled GPU50C. MSVC bridge and
+all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_projection_reference`.
+The earlier180108/180203 runs also passed initial/populated comparisons;180336
+is the expanded acceptance reference. Bin-child projection, nonempty subtype
+groups, collapsed groups, selection/quantity drafts, appraisal, prices,
+negotiation and rendered/public exchange integration remain unfinished.
 
 ## Depot goods value transport migration
 

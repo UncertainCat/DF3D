@@ -5,7 +5,7 @@ local sheet=df.global.game.main_interface.view_sheets
 local kinds={6,7,16,17,18,19,20,21,22,24,25,26,27,28,31,32,45,47,48,49,53}
 if os.getenv("DF3D_SIMPLE_BUILDING_SCENE")=="1" then kinds={19,32,45}end
 local default_families=os.getenv('DF3D_DEFAULT_BUILDINGS_NATIVE')=='1'
-if default_families then kinds={16,17,20,21,25,31}end
+if default_families then kinds={16,17,20,21,25,31};if os.getenv('DF3D_ARCHERY_TARGET_SCENE')=='1' then kinds={26}end end
 local specialized_families=os.getenv('DF3D_SPECIAL_BUILDINGS_NATIVE')=='1'
 if specialized_families then kinds={22,24,26,27,48,49,53}end
 if os.getenv("DF3D_DEPOT_NATIVE")=="1" then kinds={6}end

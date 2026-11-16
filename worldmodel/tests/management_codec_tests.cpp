@@ -4706,7 +4706,7 @@ TEST_CASE("building header requests preserve revisions and exclude unrelated int
   }
 }
 TEST_CASE("building header receipts preserve authority and reject malformed state") {
-  for(int type:{0,1,2,5,8,10,11,12,13,14,15,16,17,20,21,25,31,51,52,54})for(bool edit:{false,true})for(int fault=0;fault<15;++fault) {
+  for(int type:{0,1,2,5,8,10,11,12,13,14,15,16,17,20,21,25,26,31,51,52,54})for(bool edit:{false,true})for(int fault=0;fault<15;++fault) {
     CAPTURE(edit);CAPTURE(fault);flatbuffers::FlatBufferBuilder b;
     auto snapshot=wire::CreateBuildingHeaderSnapshot(b,fault==1?-1:278,fault==2?4:type,fault==3?0:9007199254740993ULL,
       fault==4?-1:1,1,b.CreateString("name"),b.CreateString("name"),fault==5?0:b.CreateString("Name"),false,fault==6,false,fault==13?-1:fault==14?2:1);

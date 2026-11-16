@@ -114988,6 +114988,28 @@
           "tools/smoke/special-building-controls-native.lua": "6dea6edf4a27e22fb8146b287f70d4dd6ede82f78120ca7398288a523765dda0",
           "tools/smoke/farm-header-native.lua": "8429974c50adfd3bd668b8c376f57188c9214516a33ed3cc6c5d541393ab21f4"
         }
+      },
+      "archery_target_workflow_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-150711",
+        "owned_df_pid": 47648,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "native_types": [
+          26
+        ],
+        "scope": "Temporary completed granite ArcheryTarget26 with installed blocks. Native renderer dispatch18a8b0 jumps to shared footer19b21f; input1af6cf shared footer. Actual main-scene map/holder entry, rename/restore/removal/cancel/close, five full488x708 panels exact. Shared header/contents controller, additive supported-type validation without schema format change. Both peers rebuilt, root19 and header/holder checks pass. Source preserved, owned DF closed unsaved30FPS; no natural archery practice qualification.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-150711/remaining-buildings-native.json": "67b910b041204ea61e14664a782acc560e33994cb49049a620768eede6cdf8f7",
+          "build/stockpile-storage-native-farm-discovery-20261116-150711/simple-building-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261116-150711/simple-building-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261116-150711/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "tools/smoke/remaining-buildings-native.lua": "36949c53d00cb119bbc0e873fce48513621750f66bd9d95fe163c3a3f6f2935c",
+          "bridge/plugin/farm_native.h": "507043e969a5fe23d2a323111665b3f17a5423b6fdf9530ade37399374cb9863",
+          "schema/cpp/management_util.h": "b9cae854bb2d233fbea406e361600757023eb200569af76bd86315d58d5f42a0",
+          "presentations/godot/project/scripts/building_header_state.gd": "f8ca51fe229825c87f72f867959f70af8d431b46147e05c8f9e80387bd4a1fa6",
+          "presentations/godot/project/scripts/fortress_ui.gd": "2a2568f6fe9de0a3d0e4b228d23b44ec893fbc5b569bbe0272670bb17638ea11",
+          "presentations/godot/project/tests/simple_building_scene_live.gd": "e9afa32b2e6ef1dd9600160142a30e0097b27189830a4c1ddcfb3522f84faa8b"
+        }
       }
     },
     "pending_construction_reference": {

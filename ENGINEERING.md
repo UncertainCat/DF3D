@@ -3095,6 +3095,25 @@ render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
 
 ## Remaining completed-building native providers
 
+### Archery target shared workflow
+
+Completed ArcheryTarget26 uses the shared header/contents controller and public
+map/holder routes. Native renderer dispatch18a8b0 jumps directly to footer19b21f;
+input dispatch1af6cf uses the shared footer. No target-specific body or gameplay
+rules are added. Bridge and wire header admission and the presentation's supported
+types agree. This is additive supported-type validation, with no schema-format or
+management-version change; both peers must be rebuilt to use the new admission.
+
+Protected150711 on2026-11-16 (DF47648) verifies map and holder entry, rename/restore,
+removal/cancellation and closure on a temporary completed granite target with
+installed blocks. All five full488x708 panel crops match native. The fixture is
+removed, the source save is unchanged, and owned DF closes unsaved. Graphics are
+serial at30FPS, sampled59-62C; graphical stderr is clean. Core, bridge and extension
+builds, all19 root checks, header-state and holder-routing engine checks pass.
+Import retains only documented UID-cache warnings. This qualifies target panel
+management, not natural archery training. Evidence:
+completed_sheet_discovery_reference.archery_target_workflow_reference.
+
 ### Nest box, animal trap and hive observations
 
 Public map/holder routes for AnimalTrap24, NestBox48 and Hive49 use the shared
@@ -3164,8 +3183,8 @@ Evidence: `completed_sheet_discovery_reference.special_building_readers_referenc
 The controlled claim establishes display behavior, not natural nesting eligibility.
 Occupied/baited trap bodies and hive crowding branches have static native evidence
 but no live acceptance yet. Siege22,
-Chain27 and DisplayFurniture53 still need their workflows; Archery26 uses shared
-native footer controls. Shop7 and natural Nest47 require fortress-route assessment.
+Chain27 and DisplayFurniture53 still need their workflows; Archery26 shared
+controls are qualified above. Shop7 and natural Nest47 require fortress-route assessment.
 Earlier135024's siege capture selected a dwarf inside the footprint and is invalid;
 135309 and140937 use full-footprint clearance and explicit selected-building checks.
 

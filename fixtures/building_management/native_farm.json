@@ -98674,6 +98674,301 @@
           "tools/smoke/depot-trade-native.lua": "fce776212de7ec7aa802eb355a4adac999c6b9087c4fa970121ac4d7f56db0a3",
           "tools/smoke/depot-trade-negotiate-native.lua": "c45d3992052c5d7e7d6f4be9748522ac53047691d157a3e4d536b7a37b413aef"
         }
+      },
+      "depot_trade_session_exchange_reference": {
+        "native_lane": "build/stockpile-storage-native-farm-discovery-20261115-224201",
+        "session_lane": "build/stockpile-storage-native-farm-discovery-20261115-224045",
+        "owned_df_pids": [
+          42588,
+          46956
+        ],
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Separate paused command calls persist first counteroffer and accepted trade; repeated reads preserve conversation and goods. Old revisions before/after acceptance and closed sessions reject without replay. Full native goods IDs/flags/amounts/groups/heights, ownership changes, people, caravan, dialogue and active RNG match. Public action transport, advancing simulation, injected post-effect failure, foreign accounting, real announcements and full UI remain unqualified.",
+        "compared_fields": [
+          "accept_before",
+          "accept_after",
+          "accept_conversation",
+          "accept_people",
+          "accept_caravan",
+          "accept_rng",
+          "counter_goods",
+          "accept_goods"
+        ],
+        "counter_goods": [
+          {
+            "amounts": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              1,
+              0,
+              1,
+              0,
+              0
+            ],
+            "groups": [
+              {
+                "expanded": true,
+                "flags": 2,
+                "on": true,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "expanded": true,
+                "flags": 1,
+                "on": true,
+                "subtype": -1,
+                "type": 45
+              },
+              {
+                "expanded": true,
+                "flags": 2,
+                "on": true,
+                "subtype": -1,
+                "type": 57
+              }
+            ],
+            "height": 24,
+            "items": [
+              992,
+              991,
+              296,
+              408,
+              407
+            ]
+          },
+          {
+            "amounts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              1,
+              1,
+              0,
+              3,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              3,
+              1,
+              1
+            ],
+            "groups": [
+              {
+                "expanded": true,
+                "flags": 2,
+                "on": true,
+                "subtype": -1,
+                "type": 2
+              },
+              {
+                "expanded": true,
+                "flags": 2,
+                "on": true,
+                "subtype": -1,
+                "type": 23
+              },
+              {
+                "expanded": true,
+                "flags": 2,
+                "on": true,
+                "subtype": -1,
+                "type": 32
+              },
+              {
+                "expanded": true,
+                "flags": 2,
+                "on": true,
+                "subtype": -1,
+                "type": 46
+              }
+            ],
+            "height": 57,
+            "items": [
+              1180,
+              1494,
+              3148,
+              28694,
+              28650,
+              27311,
+              27274,
+              25085,
+              25161,
+              25157,
+              25156,
+              25113,
+              25112,
+              1736,
+              1735
+            ]
+          }
+        ],
+        "accepted_goods": [
+          {
+            "amounts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "groups": [
+              {
+                "expanded": true,
+                "flags": 2,
+                "on": true,
+                "subtype": -1,
+                "type": 0
+              },
+              {
+                "expanded": true,
+                "flags": 2,
+                "on": true,
+                "subtype": -1,
+                "type": 2
+              },
+              {
+                "expanded": true,
+                "flags": 2,
+                "on": true,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "expanded": true,
+                "flags": 2,
+                "on": true,
+                "subtype": -1,
+                "type": 23
+              },
+              {
+                "expanded": true,
+                "flags": 2,
+                "on": true,
+                "subtype": -1,
+                "type": 46
+              },
+              {
+                "expanded": true,
+                "flags": 2,
+                "on": true,
+                "subtype": -1,
+                "type": 57
+              }
+            ],
+            "height": 45,
+            "items": [
+              28694,
+              25112,
+              1180,
+              991,
+              1494,
+              1736,
+              1735,
+              407,
+              408
+            ]
+          },
+          {
+            "amounts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              0,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ],
+            "groups": [
+              {
+                "expanded": true,
+                "flags": 2,
+                "on": true,
+                "subtype": -1,
+                "type": 32
+              }
+            ],
+            "height": 30,
+            "items": [
+              3148,
+              28650,
+              27311,
+              27274,
+              25085,
+              25161,
+              25157,
+              25156,
+              25113
+            ]
+          }
+        ],
+        "session_verified": true,
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-224201/depot-trade-native.json": "46cc5e4bbbd17617b20e768fa6a6d3663e4e3c6adb8e4daf28e5c8f144fae26f",
+          "build/stockpile-storage-native-farm-discovery-20261115-224201/result.json": "7883fd826fd1c7079bb99d68ca04cb1f5ee41a2e252ba7b14a59a6801e00d2c7",
+          "build/stockpile-storage-native-farm-discovery-20261115-224201/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-224045/depot-trade-native.json": "6e54a13e7ae9470203cb3d474458a43ae6b1abebb0e5800a4f2f9bc9c9b72c82",
+          "build/stockpile-storage-native-farm-discovery-20261115-224045/result.json": "be306cdb95c8fb2dd080f5353f466d84901ad19ac6699f47289711019eae791f",
+          "build/stockpile-storage-native-farm-discovery-20261115-224045/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/trade_session_native.h": "a41d097935eac3ea86ad2f743b688fea59f0b086755286833e84095554e6f408",
+          "bridge/plugin/trade_negotiation_native.h": "d9f1381ddc2cf63fa58a5680594fa9325e2731374d853b6c9b2a9a4886422a1d",
+          "bridge/plugin/trade_owner_native.h": "19d4b1f15ea6452c2284901da761a247d3b079b597a6e6e2b6c7b0b19e3f67bd",
+          "bridge/plugin/df3d.cpp": "095e0ac21b56bc161f24d2e6ddf95e2fe4204cd8b431ad6a4883b54f6a36274f",
+          "tools/smoke/depot-trade-negotiate-native.lua": "7c085824ea872ffb9454e67ecce3e91354aaf055fcd2e77636f5eb7a31c39b59"
+        }
       }
     },
     "pending_construction_reference": {

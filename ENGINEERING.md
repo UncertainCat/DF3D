@@ -1,8 +1,11 @@
 ## Trade conversation reconstruction
 
 The owned negotiation context restores pointer-free conversation checkpoints
-only into freshly resolved storage. Requested IDs must be present in the new
-fortress-side goods vector. All conversation bounds and IDs are checked before
+only into freshly resolved storage. While a counteroffer is active, requested
+IDs must be present in the new fortress-side goods vector. After acceptance,
+native retains the visible requested-items list even though those items have
+changed sides; resolve these retained IDs from either fresh goods vector.
+All conversation bounds and IDs are checked before
 changing the draft; missing goods reject. Announcement strings are copied into
 independently owned allocations and released through the text-box cleanup.
 Session/epoch/source validation remains the enclosing owner's responsibility.
@@ -16,9 +19,9 @@ synthetic announcement copying/cleanup. The original native effect and active
 RNG comparison still passes. Owned DF34820 closes unsaved/source-preserved,
 30FPS, sampled60C. Bridge build and all19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_trade_conversation_restore_reference`.
-This verifies reconstruction within one safe point. Asynchronous session
-rebinding, real announcement content and Okay input remain unfinished. Accepted
-transfers are qualified below for one controlled counteroffer. Protocol243 and public Trade exposure are unchanged.
+This evidence covers reconstruction within one safe point. Persistent session
+rebinding and accepted transfers are qualified below. Real announcement content
+and Okay input remain unfinished. Protocol243 and public exposure are unchanged.
 
 ## Owned native negotiation execution
 
@@ -27,9 +30,33 @@ and remaining mass through the existing providers, then invokes native369490
 with the owned context. It marks effects started before the call: callers must
 handle post-effect failure as uncertainty and must not retry it automatically.
 The routine consumes normal DF RNG, trains both traders and can mutate caravan
-state, counteroffers or item ownership. This is staged behind a paused diagnostic;
-public session source rebinding remains unfinished; context restoration is
-qualified separately above.
+state, counteroffers or item ownership. TradeSelectionSession retains its
+pointer-free conversation alongside the selection; TradeOwner forwards explicit
+exchange actions. Public transport/controller integration remains unfinished.
+
+Session exchange validates the existing epoch/session/source/revision before
+reconstructing an owned context. Refusal and negotiation are explicit actions;
+reads never execute either. A completed action advances revision and rebinds
+its source after native effects. A native goods-rebuild request resets selection
+and groups over fresh goods while retaining search strings, matching renderer
+385007..3855ef. Selection edits on retained conversations use native helpers so
+counteroffer changes remain DF-owned. Summary reads use retained dialogue.
+Post-effect failure retires the session as Unknown; no automatic replay is
+permitted. Available means the action was processed, including native refusal,
+not necessarily that goods were exchanged.
+
+Protected224045 (session DF46956) and224201 (native DF42588) on2026-11-15 match
+counteroffer and post-acceptance goods IDs/flags/amounts/groups/heights, eight
+ownership changes, dialogue, trader skills/attributes, caravan and active RNG.
+Separate paused commands refresh after each exchange; old revisions before and
+after acceptance and closed-session submissions reject without effects. Both
+sessions close unsaved/source-preserved at30FPS, sampled58–61C. Bridge build and
+19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_session_exchange_reference`.
+This qualifies persistent ownership across paused commands, not advancing
+simulation, injected post-effect failures or the public UI. Real announcements,
+foreign-caravan accounting, Okay interaction and remaining exchange actions
+still need qualification. Trade stays hidden until the complete workflow works.
 
 Protected222057 on2026-11-15 compares a first counteroffer from values103/150.
 The owned call matches native dialogue24 and five requested item IDs, caravan
@@ -90,8 +117,8 @@ draw is not rewound/replayed. A balanced offer returns Ready and is not submitte
 to native exchange. Owned DF47920 closes unsaved/source-preserved at30FPS,
 sampled60C. Bridge build and all19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_trade_refusal_reference`.
-Ethical consequences, loss branches, counteroffers and accepted exchanges still
-need live qualification. Protocol243 and public Trade exposure are unchanged.
+Ethical consequences and loss branches still need live qualification; the
+controlled counteroffer and acceptance cases are qualified above. Protocol243 and public Trade exposure are unchanged.
 
 ## Owned trade negotiation context
 

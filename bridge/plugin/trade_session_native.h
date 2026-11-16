@@ -5,7 +5,9 @@
 #include "trade_capacity_native.h"
 #include "trade_dialogue_native.h"
 #include "trade_header_native.h"
+#include "trade_negotiation_native.h"
 #include <limits>
+#include <stdexcept>
 
 namespace df3d_production {
 // Selection-session source only, not exchange authorization. Pointer identities
@@ -44,7 +46,10 @@ struct TradeSessionRead {
     TradeSessionStatus status=TradeSessionStatus::Rejected;
     uint64_t session=0,revision=0;
     std::optional<TradeDraftCheckpoint> draft;
+    std::optional<TradeConversation> conversation;
 };
+enum class TradeExchangeStatus {Available,Rejected,Retired,Unknown};
+struct TradeExchangeResult {TradeExchangeStatus status=TradeExchangeStatus::Rejected;TradeSessionRead selection;};
 struct TradeSessionDisplay {TradeSessionStatus status=TradeSessionStatus::Rejected;uint64_t session=0,revision=0;std::string query;std::optional<TradeDisplayPage> page;};
 struct TradeSessionSummary {
     TradeSessionStatus status=TradeSessionStatus::Rejected;
@@ -61,13 +66,14 @@ class TradeSelectionSession {
         uint64_t session=0,revision=1,epoch=0,source=0;
         int32_t depot=-1;size_t caravan=0;
         TradeDraftCheckpoint draft;
+        std::optional<TradeConversation> conversation;
     };
     std::optional<Binding> current;
     uint64_t serial=0;
     TradeSessionRead reply(TradeSessionStatus status) const {
         TradeSessionRead result;result.status=status;
         if(current){result.session=current->session;result.revision=current->revision;
-            if(status==TradeSessionStatus::Available)result.draft=current->draft;}
+            if(status==TradeSessionStatus::Available){result.draft=current->draft;result.conversation=current->conversation;}}
         return result;
     }
 public:
@@ -93,6 +99,7 @@ public:
         auto values=tradeValueTotals(building,current->caravan,read.draft->sides);
         auto capacity=tradeCapacity(building,current->caravan,read.draft->sides);
         if(!entry || !values || !capacity){result.status=TradeSessionStatus::Rejected;return result;}
+        if(current->conversation)entry->dialogue=current->conversation->dialogue;
         auto header=tradeHeader(building,current->caravan,entry->dialogue);
         const auto lines=header?tradeDialogueLines(header->dialogue,columns):std::nullopt;
         if(!header || !lines){result.status=TradeSessionStatus::Rejected;return result;}
@@ -114,6 +121,42 @@ public:
         if(!result.page){result.status=TradeSessionStatus::Rejected;return result;}
         result.session=read.session;result.revision=read.revision;result.query=read.draft->filters[side];return result;
     }
+    // Explicit semantic Trade/Accept Counteroffer action. The same revision
+    // cannot execute twice. Post-effect failures retire ownership as Unknown;
+    // never rebuild a retryable request from an uncertain outcome.
+    TradeExchangeResult exchange(uint64_t epoch,uint64_t session,uint64_t revision){
+        TradeExchangeResult result;bool started=false;
+        try{
+            const auto read=access(epoch,session,revision);
+            if(read.status==TradeSessionStatus::Retired){result.status=TradeExchangeStatus::Retired;return result;}
+            if(read.status!=TradeSessionStatus::Available || !current || current->revision==uint64_t(INT64_MAX))return result;
+            auto* building=df::building::find(current->depot);
+            TradeNegotiationNative context(building,current->caravan,current->draft);
+            if(!context || (current->conversation && !context.restore({current->draft,*current->conversation})))return result;
+            const auto check=context.checkOffer();if(check.disposition==TradeOfferDisposition::Unavailable)return result;
+            if(check.disposition==TradeOfferDisposition::Refused)context.refuseOffer(&started);
+            else if(!context.negotiate(&started))return result;
+            auto outcome=context.checkpoint();if(!outcome)throw std::runtime_error("Trade outcome unavailable");
+            TradeDraftNative fresh(building,current->caravan);
+            const auto initial=fresh.checkpoint();
+            const auto source=initial?tradeSelectionSource(building,current->caravan,*initial):std::nullopt;
+            if(!source)throw std::runtime_error("Trade source unavailable");
+            if(context.goodsNeedRebuild()){
+                // Renderer385007..3855ef resets selections/groups, retaining
+                // each search string and projecting it over the new goods.
+                for(int side=0;side<2;++side)if(!fresh.setFilter(side,outcome->draft.filters[side]))throw std::runtime_error("Trade filter unavailable");
+                const auto rebuilt=fresh.checkpoint();if(!rebuilt)throw std::runtime_error("Trade goods unavailable");
+                outcome->draft=*rebuilt;
+            }
+            TradeNegotiationNative verified(building,current->caravan,outcome->draft);
+            if(!verified.restore(*outcome))throw std::runtime_error("Trade conversation unavailable");
+            auto next=*current;next.source=*source;next.draft=std::move(outcome->draft);next.conversation=std::move(outcome->conversation);++next.revision;
+            current=std::move(next);result.selection=reply(TradeSessionStatus::Available);result.status=TradeExchangeStatus::Available;return result;
+        }catch(...){
+            if(started){reset();result.status=TradeExchangeStatus::Unknown;}
+            return result;
+        }
+    }
     // Caller owns connection/epoch retirement and saving gates. Read validates
     // the live source but never appraises, changes simulation, or advances revision.
     TradeSessionRead access(uint64_t epoch,uint64_t session,uint64_t expectedRevision,
@@ -128,9 +171,18 @@ public:
         }
         if(expectedRevision!=current->revision)return reply(TradeSessionStatus::Rejected);
         if(intent) {
-            if(current->revision==uint64_t(INT64_MAX) || !native.apply(*intent))return reply(TradeSessionStatus::Rejected);
-            const auto updated=native.checkpoint();if(!updated)return reply(TradeSessionStatus::Rejected);
-            current->draft=*updated;++current->revision;
+            if(current->revision==uint64_t(INT64_MAX))return reply(TradeSessionStatus::Rejected);
+            if(current->conversation){
+                TradeNegotiationNative context(building,current->caravan,current->draft);
+                if(!context.restore({current->draft,*current->conversation}) || !context.apply(*intent))return reply(TradeSessionStatus::Rejected);
+                auto updated=context.checkpoint();if(!updated)return reply(TradeSessionStatus::Rejected);
+                current->draft=std::move(updated->draft);current->conversation=std::move(updated->conversation);
+            }else{
+                if(!native.apply(*intent))return reply(TradeSessionStatus::Rejected);
+                const auto updated=native.checkpoint();if(!updated)return reply(TradeSessionStatus::Rejected);
+                current->draft=*updated;
+            }
+            ++current->revision;
         }
         return reply(TradeSessionStatus::Available);
     }

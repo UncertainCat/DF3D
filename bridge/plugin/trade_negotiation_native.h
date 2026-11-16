@@ -49,7 +49,7 @@ inline bool tradeNegotiationNativeReady(){
     }();return ready;
 }
 // Safe-point lifetime only. Entry metadata and goods are independently owned;
-// no active native trade menu is read or borrowed. This context does not yet
+// no active native trade menu is read or borrowed.
 // Refusal checks retain DF's inline branch order;
 // semantic item/ethics queries, random choice and ethical consequences call DF.
 class TradeNegotiationNative {
@@ -68,6 +68,7 @@ public:
         const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
         reinterpret_cast<void(*)(df::trade_interfacest*,df::caravan_state*)>(base+0x36b590)(&owned,caravan);
         valid=owned.mer==caravan && owned.civ && owned.fortress_trader;
+        owned.buildlists=0; // Draft goods have already been constructed independently.
     }
     TradeNegotiationNative(const TradeNegotiationNative&)=delete;
     TradeNegotiationNative& operator=(const TradeNegotiationNative&)=delete;
@@ -82,7 +83,8 @@ public:
     explicit operator bool() const{return valid;}
     // Rehydrate only into a freshly constructed context after the owner has
     // validated epoch/session/source. Resolve requested goods from this fresh
-    // fortress-side vector, never from a retained pointer or arbitrary ID.
+    // goods vectors, never from a retained pointer or arbitrary ID. Accepted
+    // counteroffer rows remain visible after their items change sides.
     bool restore(const TradeNegotiationCheckpoint& saved){
         if(!valid)return false;
         const auto& c=saved.conversation;
@@ -93,9 +95,14 @@ public:
         auto& owned=draft.owned;
         std::vector<df::item*> requested;requested.reserve(c.requestedItems.size());
         for(auto id:c.requestedItems){
-            const auto found=std::find_if(owned.good[1].begin(),owned.good[1].end(),[id](const auto* item){return item && item->id==id;});
-            if(id<0 || found==owned.good[1].end())return false;
-            requested.push_back(*found);
+            df::item* resolved=nullptr;
+            for(int side=1;side>=0;--side){
+                if(side==0 && c.counterOffer)break;
+                const auto found=std::find_if(owned.good[side].begin(),owned.good[side].end(),[id](const auto* item){return item && item->id==id;});
+                if(found!=owned.good[side].end()){resolved=*found;break;}
+            }
+            if(id<0 || !resolved)return false;
+            requested.push_back(resolved);
         }
         std::vector<std::string*> text;text.reserve(lines.size());for(const auto& line:lines)text.push_back(line.get());
         if(!draft.restore(saved.draft))return false;
@@ -105,6 +112,8 @@ public:
         owned.counter_offer_item.swap(requested);owned.counter_offer=c.counterOffer;owned.talkline=df::talk_line_type(c.dialogue);
         return true;
     }
+    bool apply(const TradeSelectionIntent& intent){return valid && draft.apply(intent);}
+    bool goodsNeedRebuild() const {return valid && draft.owned.buildlists!=0;}
     TradeOfferCheck checkOffer() const {
         if(!valid || !tradeRefusalNativeReady())return {};
         const auto& owned=draft.owned;

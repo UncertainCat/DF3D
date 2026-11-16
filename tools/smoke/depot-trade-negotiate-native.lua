@@ -21,8 +21,21 @@ local units={trade.merchant_trader,trade.fortress_trader}
 local function people()
  local result={}
 local accept_mode=os.getenv('DF3D_DEPOT_TRADE_ACCEPT')
-assert(not accept_mode or accept_mode=='native' or accept_mode=='owned')
+assert(not accept_mode or accept_mode=='native' or accept_mode=='owned' or accept_mode=='session')
 local tracked={};for side=0,1 do for _,item in ipairs(trade.good[side])do tracked[item.id]=item end end
+local function goods()
+ local sides={}
+ for side=0,1 do local r={items={},flags={},amounts={},groups={},height=trade.i_height[side]}
+  for i,item in ipairs(trade.good[side])do r.items[#r.items+1]=item.id;r.flags[#r.flags+1]=trade.goodflag[side][i].whole;r.amounts[#r.amounts+1]=trade.good_amount[side][i]end
+  for i,kind in ipairs(trade.current_type_a_type[side])do r.groups[#r.groups+1]={type=kind,subtype=trade.current_type_a_subtype[side][i],expanded=trade.current_type_a_expanded[side][i],on=trade.current_type_a_on[side][i],flags=trade.current_type_a_flag[side][i].whole}end
+  sides[#sides+1]=r
+ end
+ return sides
+end
+local function session_probe(action,...)
+ local args={...};for i,v in ipairs(args)do args[i]=tostring(v)end
+ local text,code=dfhack.run_command_silent('df3d','trade-session-probe',action,table.unpack(args));assert(code==0,text);return json.decode(text)
+end
 local function transfers()
  local rows={};for id,item in pairs(tracked)do
   local owners={};for _,ref in ipairs(item.general_refs)do if ref:getType()==df.general_ref_type.ENTITY_ITEMOWNER then owners[#owners+1]=ref.entity_id end end
@@ -57,8 +70,21 @@ local original_rng=rng();local original_people=people();local original_caravan=c
 local mass={whole=caravan.total_capacity.whole,fraction=caravan.total_capacity.fraction};local line=trade.talkline
 local result={}
 local accept_mode=os.getenv('DF3D_DEPOT_TRADE_ACCEPT')
-assert(not accept_mode or accept_mode=='native' or accept_mode=='owned')
+assert(not accept_mode or accept_mode=='native' or accept_mode=='owned' or accept_mode=='session')
 local tracked={};for side=0,1 do for _,item in ipairs(trade.good[side])do tracked[item.id]=item end end
+local function goods()
+ local sides={}
+ for side=0,1 do local r={items={},flags={},amounts={},groups={},height=trade.i_height[side]}
+  for i,item in ipairs(trade.good[side])do r.items[#r.items+1]=item.id;r.flags[#r.flags+1]=trade.goodflag[side][i].whole;r.amounts[#r.amounts+1]=trade.good_amount[side][i]end
+  for i,kind in ipairs(trade.current_type_a_type[side])do r.groups[#r.groups+1]={type=kind,subtype=trade.current_type_a_subtype[side][i],expanded=trade.current_type_a_expanded[side][i],on=trade.current_type_a_on[side][i],flags=trade.current_type_a_flag[side][i].whole}end
+  sides[#sides+1]=r
+ end
+ return sides
+end
+local function session_probe(action,...)
+ local args={...};for i,v in ipairs(args)do args[i]=tostring(v)end
+ local text,code=dfhack.run_command_silent('df3d','trade-session-probe',action,table.unpack(args));assert(code==0,text);return json.decode(text)
+end
 local function transfers()
  local rows={};for id,item in pairs(tracked)do
   local owners={};for _,ref in ipairs(item.general_refs)do if ref:getType()==df.general_ref_type.ENTITY_ITEMOWNER then owners[#owners+1]=ref.entity_id end end
@@ -95,19 +121,42 @@ local ok,err=xpcall(function()
  for _,item in ipairs(trade.counter_offer_item)do result.native.items[#result.native.items+1]=item.id end
  local native_rng=rng();capture('depot-trade-counteroffer')
  if accept_mode then
-  result.accept_before=transfers()
+  result.accept_before=transfers();result.counter_goods=goods()
   if accept_mode=='native' then
    click(508,730)
    result.accept_conversation={dialogue=trade.talkline,counter_offer=trade.counter_offer,announcement={}}
    for _,text in ipairs(trade.big_announce.text)do result.accept_conversation.announcement[#result.accept_conversation.announcement+1]=dfhack.df2utf(text.value)end
+   result.accept_goods=goods()
    capture('depot-trade-accepted')
   else
    restore_people(initial_people);restore_caravan(initial_caravan);trade.counter_offer=false;trade.counter_offer_item:resize(0);trade.talkline=line
    set_rng(controlled)
+   if accept_mode=='session' then
+    local state=session_probe('open',trade.bld.id,0);assert(state.status==0)
+    local id=state.session
+    for _,intent in ipairs(intents)do state=session_probe('item',id,state.revision,intent.side,intent.item);assert(state.status==0)end
+    local previous=state.revision
+    state=session_probe('exchange',id,previous);assert(state.status==0 and state.exchange_status==0 and state.counter_offer,json.encode(state))
+    assert(json.encode(state.sides)==json.encode(result.counter_goods),'Persistent counteroffer goods differ')
+    local first=state
+    state=session_probe('read',id,first.revision);assert(state.status==0 and state.counter_offer and state.dialogue==24 and json.encode(state.requested_items)==json.encode(first.requested_items))
+    local before_rng=rng();local before_people=people()
+    assert(session_probe('exchange',id,previous).exchange_status==1,'Stale negotiation replayed')
+    assert(json.encode(rng())==json.encode(before_rng) and json.encode(people())==json.encode(before_people),'Rejected replay changed simulation')
+    state=session_probe('exchange',id,first.revision);assert(state.status==0 and state.exchange_status==0 and not state.counter_offer,json.encode(state))
+    result.accept_conversation={dialogue=state.dialogue,counter_offer=state.counter_offer,announcement=state.announcement};result.accept_goods=state.sides
+    local final=session_probe('read',id,state.revision);assert(final.status==0 and json.encode(final.sides)==json.encode(state.sides) and final.dialogue==state.dialogue and json.encode(final.requested_items)==json.encode(state.requested_items),'Accepted session did not survive refresh')
+    local before_transfers=transfers();before_rng=rng()
+    assert(session_probe('exchange',id,first.revision).exchange_status==1,'Accepted exchange replayed')
+    assert(json.encode(transfers())==json.encode(before_transfers) and json.encode(rng())==json.encode(before_rng))
+    assert(session_probe('close',id).status==3);assert(session_probe('exchange',id,state.revision).exchange_status==1)
+    result.session_verified=true
+   else
    local output,code=dfhack.run_command_silent('df3d','trade-accept-probe',tostring(trade.bld.id),'0','','',json.encode(intents))
    assert(code==0,output);local accepted=json.decode(output)
    assert(accepted.accepted_executed and accepted.accept_effects_started and not accepted.unknown,output)
    result.accept_conversation={dialogue=accepted.dialogue,counter_offer=accepted.counter_offer,announcement=accepted.announcement}
+   end
    assert(not trade.counter_offer and trade.talkline==line,'Owned acceptance changed native menu')
   end
   result.accept_after=transfers();result.accept_people=people();result.accept_caravan=caravan_state();result.accept_rng=rng();result.accept_mode=accept_mode

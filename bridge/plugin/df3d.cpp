@@ -5154,6 +5154,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         uint64_t a=0,b=0,c=0,d=0;if(!number(2,a))return CR_WRONG_USAGE;
         const auto& action=parameters[1];auto& session=df3d_production::tradeDiagnosticSession();
         df3d_production::TradeSessionRead result;
+        std::optional<df3d_production::TradeExchangeStatus> exchangeStatus;
         if(action=="open") {
           if(parameters.size()!=4 || !number(3,b) || a>INT32_MAX || b>INT32_MAX)return CR_WRONG_USAGE;
           result=session.open(state.terrain.epoch(),df::building::find(int32_t(a)),size_t(b));
@@ -5161,7 +5162,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(parameters.size()!=3)return CR_WRONG_USAGE;result=session.close(a);
         }else {
           if(!number(3,b))return CR_WRONG_USAGE;
-          if(action=="read" || action=="epoch") {
+          if(action=="exchange"){
+            if(parameters.size()!=4)return CR_WRONG_USAGE;
+            const auto exchanged=session.exchange(state.terrain.epoch(),a,b);exchangeStatus=exchanged.status;result=exchanged.selection;
+          }else if(action=="read" || action=="epoch") {
             if(parameters.size()!=4)return CR_WRONG_USAGE;
             result=session.access(state.terrain.epoch()+(action=="epoch"?1:0),a,b);
           }else if(action=="item" || action=="filter") {
@@ -5173,6 +5177,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }else return CR_WRONG_USAGE;
         }
         Json::Value output;output["status"]=int(result.status);output["session"]=Json::UInt64(result.session);output["revision"]=Json::UInt64(result.revision);
+        if(exchangeStatus)output["exchange_status"]=int(*exchangeStatus);
+        if(result.conversation){const auto& c=*result.conversation;output["dialogue"]=c.dialogue;output["counter_offer"]=c.counterOffer;
+          output["requested_items"]=Json::arrayValue;output["announcement"]=Json::arrayValue;
+          for(auto id:c.requestedItems)output["requested_items"].append(id);
+          for(const auto& line:c.announcement)output["announcement"].append(DF2UTF(line));}
         if(action=="read" && result.status==df3d_production::TradeSessionStatus::Available){
           for(int32_t side=0;side<2;++side){const auto page=session.display(state.terrain.epoch(),a,b,side,0,64);if(!page || !result.draft || page->total*3!=size_t(result.draft->sides[side].height))return CR_FAILURE;}
           output["display_verified"]=true;

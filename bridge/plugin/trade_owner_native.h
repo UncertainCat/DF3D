@@ -13,7 +13,7 @@ struct TradeOpenResult {
 };
 // One connection owns this object. All calls run at a DF safe point; the caller
 // retires it on connection/world replacement and excludes saving. Only the
-// explicit open operation may train the trader or append appraisal history.
+// explicit open appraises goods; explicit exchange negotiates or transfers them.
 class TradeOwner {
     TradeCatalogOwner catalog;
     TradeSelectionSession selection;
@@ -47,6 +47,7 @@ public:
     TradeSessionDisplay displayRead(uint64_t epoch,uint64_t session,uint64_t revision,int32_t side,size_t offset,size_t limit) {
         return selection.displayRead(epoch,session,revision,side,offset,limit);
     }
+    TradeExchangeResult exchange(uint64_t epoch,uint64_t session,uint64_t revision){return selection.exchange(epoch,session,revision);}
     TradeSessionRead close(uint64_t session){return selection.close(session);}
     TradeSessionSummary summary(uint64_t epoch,uint64_t session,uint64_t revision,uint16_t columns=102) {
         return selection.summary(epoch,session,revision,columns);

@@ -1,5 +1,6 @@
 #pragma once
 #include "trade_projection_native.h"
+#include "trade_display_native.h"
 #include <limits>
 
 namespace df3d_production {
@@ -66,6 +67,12 @@ public:
     TradeSessionRead close(uint64_t session) {
         if(!current || current->session!=session)return reply(TradeSessionStatus::Rejected);
         reset();return reply(TradeSessionStatus::Closed);
+    }
+    std::optional<TradeDisplayPage> display(uint64_t epoch,uint64_t session,uint64_t revision,int32_t side,size_t offset,size_t limit) {
+        if(side<0 || side>1 || !limit || limit>64)return {};
+        const auto read=access(epoch,session,revision);
+        if(read.status!=TradeSessionStatus::Available || !read.draft || !current)return {};
+        return tradeDisplayPage(df::building::find(current->depot),current->caravan,read.draft->sides[side],offset,limit);
     }
     // Caller owns connection/epoch retirement and saving gates. Read validates
     // the live source but never appraises, changes simulation, or advances revision.

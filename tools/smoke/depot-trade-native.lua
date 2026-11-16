@@ -98,6 +98,7 @@ local function record(label)
   if os.getenv('DF3D_DEPOT_TRADE_PROJECTION')=='1' then
    for iteration=1,2 do
     local command=os.getenv('DF3D_DEPOT_TRADE_DRAFT')=='1' and 'trade-draft-probe' or 'trade-projection-probe'
+    if os.getenv('DF3D_DEPOT_TRADE_DISPLAY')=='1' then command='trade-display-probe'end
     local output,code=dfhack.run_command_silent('df3d',command,tostring(b.id),'0',trade.item_filter[0],trade.item_filter[1],#selection_intents==0 and '[]' or json.encode(selection_intents));assert(code==0,output)
     local facts=json.decode(output);assert(facts.available,output)
     for side=0,1 do
@@ -112,6 +113,10 @@ local function record(label)
     end
     assert(json.encode(ids())==before and trade.handle_appraisal==appraisal and trade.buildlists==lists and #added[1].goods==0)
     row.projection_provider=facts
+    if os.getenv('DF3D_DEPOT_TRADE_DISPLAY')=='1' then
+     local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-display-native.lua')
+     row.display=assert(loadfile(source))(trade,facts.display)
+    end
     if os.getenv('DF3D_DEPOT_TRADE_CAPACITY')=='1' and trade.havetalker==1 and trade.stillunloading==0 then
      local capacity=assert(facts.capacity);local bytes={};local expected={}
      for i,ch in ipairs(capacity.caption)do expected[#expected+1]=string.char(ch);bytes[#bytes+1]=string.char(dfhack.screen.readTile(5+i,59).ch)end

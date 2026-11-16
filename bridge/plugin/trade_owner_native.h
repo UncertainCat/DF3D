@@ -45,6 +45,9 @@ public:
         return selection.access(epoch,session,revision,intent);
     }
     TradeSessionRead close(uint64_t session){return selection.close(session);}
+    std::optional<TradeDisplayPage> display(uint64_t epoch,uint64_t session,uint64_t revision,int32_t side,size_t offset,size_t limit) {
+        return selection.display(epoch,session,revision,side,offset,limit);
+    }
 };
 inline TradeOwner& tradeDiagnosticOwner(){static TradeOwner value;return value;}
 }

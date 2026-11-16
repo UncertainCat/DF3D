@@ -475,6 +475,33 @@ native derived flags exactly, including expansion's intentional lack of a
 group-selection refresh. The stateless `tradeProjection` adapter uses the same
 implementation. No native renderer or appraisal phase runs during draft work.
 
+`trade_display_native.h` projects bounded pages of at most64 logical rows from
+the server-owned draft. Group order/on/expansion and item/container flags come
+from the native projection; visibility follows pinned37acc0 and is checked
+against its row-cell height. Search does not independently remove items within
+a visible group. Rows carry group or item identity, parent indentation identity,
+native flags/amounts, descriptions and native value/weight captions. Group
+descriptions reuse the native a82c10/52d650 argument contract at387518; items
+use c65450. Valuation now accepts only the owned page's bounded item IDs rather
+than rebuilding an unrelated initial projection. The legacy row-value adapter
+uses the same helper. Session page reads validate epoch, session, revision and
+live source before resolving pointers; no pointers persist after the safe point.
+
+Protected194952 on2026-11-15 compares35 native states twice, covering initial
+goods, search, selection, group/all actions and bin collapse/expansion. The pages
+contain879 logical rows across those states, matching native order, membership,
+type/subtype, flags, expansion and parent relationships. Offset3/limit4 pages
+match their full-page slices, and invalid offset/limit requests reject. Native
+screen cells match639 caption prefixes (up to12 visible characters); this is not
+full-name truncation or pixel acceptance. Existing native value/weight caption
+checks pass through the refactored helper, and session-read diagnostics exercise
+the source-validated page API. Appraisal remains suppressed, native menu state
+and frame remain unchanged, and owned DF40364 closes unsaved/source-preserved.
+Native30FPS, sampled GPU60C; bridge build and all19 root checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_display_reference`.
+Goods-page transport, row colors/artwork, viewport truncation/scroll rendering,
+selection intents in the public session and exchange remain unfinished.
+
 Checkpoints are server-owned selection state, not client action authority or a
 complete trade session. Public session integration must additionally validate
 caravan/trader/depot identity, epoch and source revision, and retire obsolete

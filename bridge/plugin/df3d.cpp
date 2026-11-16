@@ -5172,6 +5172,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }else return CR_WRONG_USAGE;
         }
         Json::Value output;output["status"]=int(result.status);output["session"]=Json::UInt64(result.session);output["revision"]=Json::UInt64(result.revision);
+        if(action=="read" && result.status==df3d_production::TradeSessionStatus::Available){
+          for(int32_t side=0;side<2;++side){const auto page=session.display(state.terrain.epoch(),a,b,side,0,64);if(!page || !result.draft || page->total*3!=size_t(result.draft->sides[side].height))return CR_FAILURE;}
+          output["display_verified"]=true;
+        }
         output["sides"]=Json::arrayValue;output["filters"]=Json::arrayValue;
         if(result.draft)for(size_t side=0;side<2;++side){const auto& value=result.draft->sides[side];Json::Value row;
           row["height"]=value.height;row["items"]=row["flags"]=row["amounts"]=row["groups"]=Json::arrayValue;
@@ -5198,7 +5202,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if(rows)for(const auto& row:*rows){Json::Value value;value["id"]=row.id;value["value"]=row.value;value["appraisal"]=row.appraisal;value["value_caption"]=DF2UTF(row.valueCaption);value["weight_caption"]=DF2UTF(row.weightCaption);output["rows"].append(value);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
-      if(parameters[0]=="trade-projection-probe" || parameters[0]=="trade-draft-probe") {
+      if(parameters[0]=="trade-projection-probe" || parameters[0]=="trade-draft-probe" || parameters[0]=="trade-display-probe") {
         if(parameters.size()!=3 && parameters.size()!=5 && parameters.size()!=6)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
         int32_t values[2]={-1,-1};
@@ -5235,6 +5239,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           projection=draft->snapshot();
         }
         Json::Value output;output["available"]=bool(projection);output["sides"]=Json::arrayValue;
+        if(projection && parameters[0]=="trade-display-probe"){
+          output["display"]=Json::arrayValue;
+          for(int32_t side=0;side<2;++side){
+            const auto page=df3d_production::tradeDisplayPage(df::building::find(values[0]),size_t(values[1]),(*projection)[side],0,64);if(!page)return CR_FAILURE;
+            Json::Value result;result["total"]=Json::UInt64(page->total);result["rows"]=Json::arrayValue;
+            for(const auto& row:page->rows){Json::Value value;value["group"]=row.group;value["expanded"]=row.expanded;value["id"]=row.id;value["parent"]=row.parent;value["type"]=row.type;value["subtype"]=row.subtype;value["flags"]=row.flags;value["amount"]=row.amount;value["caption"]=DF2UTF(row.caption);
+              if(row.valuation){value["value_caption"]=DF2UTF(row.valuation->valueCaption);value["weight_caption"]=DF2UTF(row.valuation->weightCaption);value["value"]=row.valuation->value;value["appraisal"]=row.valuation->appraisal;}
+              result["rows"].append(value);
+            }
+            const auto offset=std::min(size_t(3),page->total);const auto partial=df3d_production::tradeDisplayPage(df::building::find(values[0]),size_t(values[1]),(*projection)[side],offset,4);
+            if(!partial || partial->offset!=offset || partial->total!=page->total || partial->rows.size()!=std::min(size_t(4),page->total-offset))return CR_FAILURE;
+            for(size_t i=0;i<partial->rows.size();++i)if(partial->rows[i].id!=page->rows[offset+i].id || partial->rows[i].caption!=page->rows[offset+i].caption)return CR_FAILURE;
+            if(df3d_production::tradeDisplayPage(df::building::find(values[0]),size_t(values[1]),(*projection)[side],page->total+1,4) || df3d_production::tradeDisplayPage(df::building::find(values[0]),size_t(values[1]),(*projection)[side],0,65))return CR_FAILURE;
+            result["bounded_page_verified"]=true;output["display"].append(result);
+          }
+        }
         if(projection){const auto totals=df3d_production::tradeValueTotals(df::building::find(values[0]),size_t(values[1]),*projection);
           if(!totals)return CR_FAILURE;
           auto& value=output["value_totals"];value["broker_appraisal"]=totals->brokerAppraisal;value["actual"]=value["estimated"]=Json::arrayValue;

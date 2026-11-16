@@ -1,0 +1,59 @@
+#pragma once
+#include "trade_row_values_native.h"
+
+namespace df3d_production {
+struct TradeDisplayRow {
+    bool group=false,expanded=false;
+    int32_t id=-1,parent=-1,type=-1,subtype=-1,amount=0;
+    uint32_t flags=0;
+    std::string caption;
+    std::optional<TradeRowValue> valuation;
+};
+struct TradeDisplayPage {size_t offset=0,total=0;std::vector<TradeDisplayRow> rows;};
+// Server-owned projection only. The session owner validates source and revision
+// before calling this at the same safe point. Native37acc0 supplies visibility:
+// visible group, its expansion, then matching top-level items and open children.
+// filtered_off affects row appearance, not membership within a visible group.
+inline std::optional<TradeDisplayPage> tradeDisplayPage(df::building* building,size_t caravanIndex,
+    const TradeProjectedSide& projected,size_t offset,size_t limit) {
+    if(!limit || limit>64 || !tradeProjectionNativeReady() || projected.items.size()!=projected.flags.size() || projected.items.size()!=projected.amounts.size())return {};
+    const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+    static const bool ready=[&] {
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={{0x387518,0x75,UINT64_C(0xc10acc2ca7f61bd7)},
+            {0x387b3c,0x18,UINT64_C(0xd6864fd3eaa8dc42)},
+            {0x37acc0,0x1ea,UINT64_C(0x02b0383285e5f9ff)}};
+        for(const auto& pin:pins){uint64_t h=UINT64_C(14695981039346656037);const auto* bytes=reinterpret_cast<const uint8_t*>(base+pin.rva);for(size_t i=0;i<pin.length;++i){h^=bytes[i];h*=UINT64_C(1099511628211);}if(h!=pin.hash)return false;}
+        return true;
+    }();if(!ready)return {};
+    TradeDisplayPage result;result.offset=offset;
+    std::vector<df::item*> items;items.reserve(projected.items.size());
+    for(auto id:projected.items){auto* item=df::item::find(id);if(!item)return {};items.push_back(item);}
+    const auto wanted=[&] {const auto index=result.total++;return index>=offset && result.rows.size()<limit;};
+    if(!items.empty())for(const auto& group:projected.groups) {
+        if(!group.on)continue;
+        if(wanted()) {
+            if(group.type<0 || group.type>=93 || group.subtype<-1 || group.subtype>INT16_MAX)return {};
+            auto caption=depotGroupCaption(int16_t(group.type),int16_t(group.subtype));if(!caption || caption->size()>16384)return {};
+            TradeDisplayRow row;row.group=true;row.type=group.type;row.subtype=group.subtype;row.flags=group.flags;row.expanded=group.expanded;row.caption=std::move(*caption);result.rows.push_back(std::move(row));
+        }
+        if(!group.expanded)continue;
+        bool children=true;int32_t parent=-1;
+        for(size_t i=0;i<items.size();++i) {
+            const auto flag=projected.flags[i];auto* item=items[i];bool visible;
+            if(flag&2)visible=children;
+            else {visible=int(item->getType())==group.type && item->getSubtype()==group.subtype;children=visible && !(flag&4);parent=visible?item->id:-1;}
+            if(!visible || !wanted())continue;
+            TradeDisplayRow row;row.id=item->id;row.parent=(flag&2)?parent:-1;row.type=int(item->getType());row.subtype=item->getSubtype();row.flags=flag;row.amount=projected.amounts[i];row.expanded=!(flag&4);
+            reinterpret_cast<void(*)(df::item*,std::string*,bool,int32_t)>(base+0xc65450)(item,&row.caption,false,-1);
+            if(row.caption.size()>16384)return {};
+            result.rows.push_back(std::move(row));
+        }
+    }
+    if(offset>result.total || projected.height<0 || size_t(projected.height)!=result.total*3)return {};
+    std::vector<int32_t> ids;for(const auto& row:result.rows)if(!row.group)ids.push_back(row.id);
+    const auto values=tradeRowValuesForItems(building,caravanIndex,ids);if(!values)return {};
+    size_t index=0;for(auto& row:result.rows)if(!row.group)row.valuation=(*values)[index++];
+    return result;
+}
+}

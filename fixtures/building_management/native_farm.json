@@ -114684,6 +114684,286 @@
           "bridge/plugin/special_building_native.h": "25adb5d40d93cf48f56865105cd39556a0a1a48c76b7969e5a045ce26f4a40ef",
           "tools/smoke/special-building-edits-native.lua": "80ae3e3095410bd01cfd0860d422a8fed0c1ff107f70b8e469c50fb6799f1c97"
         }
+      },
+      "special_building_transport_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-142907",
+        "owned_df_pid": 51396,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "protocol": 252,
+        "receipts": [
+          {
+            "appearance": {
+              "layers": [
+                [
+                  0,
+                  5,
+                  10,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "BUILDING_ICONS"
+              ]
+            },
+            "custom_name": "",
+            "forbidden": false,
+            "has_worker": false,
+            "header_name": "Iron Animal Trap",
+            "id": 1491,
+            "max_stage": 1,
+            "native_name": "iron Animal Trap",
+            "removing": false,
+            "revision": 100501814651998954,
+            "stage": 1,
+            "suspended": false,
+            "trap": {
+              "bait_type": 48,
+              "item_id": -1,
+              "name": "",
+              "state": 1,
+              "status": "Desired bait: Meat"
+            },
+            "type": 24
+          },
+          {
+            "appearance": {
+              "layers": [
+                [
+                  0,
+                  5,
+                  10,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "BUILDING_ICONS"
+              ]
+            },
+            "custom_name": "",
+            "forbidden": false,
+            "has_worker": false,
+            "header_name": "Iron Animal Trap",
+            "id": 1491,
+            "max_stage": 1,
+            "native_name": "iron Animal Trap",
+            "removing": false,
+            "revision": 5408141336889814045,
+            "stage": 1,
+            "suspended": false,
+            "trap": {
+              "bait_type": -1,
+              "item_id": -1,
+              "name": "",
+              "state": 1,
+              "status": "Desired bait: Nothing"
+            },
+            "type": 24
+          },
+          {
+            "appearance": {
+              "layers": [
+                [
+                  0,
+                  6,
+                  4,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "BUILDING_ICONS"
+              ]
+            },
+            "custom_name": "",
+            "forbidden": false,
+            "has_worker": false,
+            "header_name": "Nest Box",
+            "id": 1494,
+            "max_stage": 1,
+            "native_name": "Nest Box",
+            "nest": {
+              "claimant_id": 6960,
+              "name": "Stray Drake (Tame)",
+              "name_color": {
+                "alternate": [
+                  2,
+                  0,
+                  0
+                ],
+                "color": [
+                  2,
+                  0,
+                  0
+                ],
+                "effect": 0
+              },
+              "status": "Nest box claimed by"
+            },
+            "removing": false,
+            "revision": 1093851885888688437,
+            "stage": 1,
+            "suspended": false,
+            "type": 48
+          },
+          {
+            "appearance": {
+              "layers": [
+                [
+                  0,
+                  7,
+                  4,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "BUILDING_ICONS"
+              ]
+            },
+            "custom_name": "",
+            "forbidden": false,
+            "has_worker": false,
+            "header_name": "Hive",
+            "hive": {
+              "colony_race": -1,
+              "crowding": 0,
+              "flags": 1,
+              "matching_colonies": 0,
+              "outdoor_access": false
+            },
+            "id": 1495,
+            "max_stage": 1,
+            "native_name": "Hive",
+            "removing": false,
+            "revision": 2143752905256139600,
+            "stage": 1,
+            "suspended": false,
+            "type": 49
+          },
+          {
+            "appearance": {
+              "layers": [
+                [
+                  0,
+                  7,
+                  4,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "BUILDING_ICONS"
+              ]
+            },
+            "custom_name": "",
+            "forbidden": false,
+            "has_worker": false,
+            "header_name": "Hive",
+            "hive": {
+              "colony_race": -1,
+              "crowding": 0,
+              "flags": 2,
+              "matching_colonies": 0,
+              "outdoor_access": false
+            },
+            "id": 1495,
+            "max_stage": 1,
+            "native_name": "Hive",
+            "removing": false,
+            "revision": 8671201473261688238,
+            "stage": 1,
+            "suspended": false,
+            "type": 49
+          },
+          {
+            "appearance": {
+              "layers": [
+                [
+                  0,
+                  7,
+                  4,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "BUILDING_ICONS"
+              ]
+            },
+            "custom_name": "",
+            "forbidden": false,
+            "has_worker": false,
+            "header_name": "Hive",
+            "hive": {
+              "colony_race": -1,
+              "crowding": 0,
+              "flags": 0,
+              "matching_colonies": 0,
+              "outdoor_access": false
+            },
+            "id": 1495,
+            "max_stage": 1,
+            "native_name": "Hive",
+            "removing": false,
+            "revision": 8173441568618210102,
+            "stage": 1,
+            "suspended": false,
+            "type": 49
+          }
+        ],
+        "scope": "All nest/trap/hive body fields match owned native observations through actual bridge/model/extension. Trap bait and both hive toggles edit/restore with stale rejection. Each type rename/restore/removal/cancel returns original full snapshot. Shared state owner headless checks include typed edits and late reply retirement. Clean headless stderr; native30FPS sampled59-60C. No new viewer body or public-route acceptance.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-142907/remaining-buildings-native.json": "fef03c40f4c676e116bfb847be528e706eed389422bd4cebdb46cb0c8c883e28",
+          "build/stockpile-storage-native-farm-discovery-20261116-142907/special-building-expected.json": "833c01f4489938a87fcaf5c8a3405750e3ee15cbc8b0cf69594bb96cd5d37fb8",
+          "build/stockpile-storage-native-farm-discovery-20261116-142907/special-building-wire-result.json": "a905632234477271fe2e5e462b0e72e6934585a777e1020a25058e25e6df4f53",
+          "build/stockpile-storage-native-farm-discovery-20261116-142907/special-building-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261116-142907/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "schema/mirror.fbs": "02480dc5d8efff8ab7408372fdacdd05db63ebc4623fe6136c2a2a9f540e363c",
+          "schema/cpp/management_util.h": "2f893055b4dae762a67867546a6a391ab4e8f2cbbc1daeafd37d16cc342f43e6",
+          "bridge/plugin/management.cpp": "cc7de889ad9fef4ba740cde952edafc1798d5bc734665802f1d9a78423465681",
+          "bridge/plugin/building_header_transaction.h": "5aac0181cc89e1cc9e57566e2a6103384212122632a3ac5e03215753e7bbc179",
+          "presentations/godot/project/tests/special_building_wire_live.gd": "3c594422987060072278773ae2a00616061c2845f6bd5909040c69b0c3cca905",
+          "presentations/godot/project/scripts/building_header_state.gd": "abc6b4e26dc9a3800128ddb506e59d4ff320f6678aa79710448c164f210a83b4"
+        }
       }
     },
     "pending_construction_reference": {

@@ -184,6 +184,27 @@ for _,kind in ipairs(kinds)do
   result.buildings[#result.buildings+1]=row
  else result.missing[#result.missing+1]=kind end
 end
+if os.getenv('DF3D_SPECIAL_BUILDINGS_WIRE')=='1' then
+ local expected={buildings={}};local nest,claim
+ for _,row in ipairs(result.buildings)do
+  if row.type==24 or row.type==48 or row.type==49 then
+   local b=assert(df.building.find(row.id))
+   if row.type==48 then nest=b;claim=b.claimed_by;b.claimed_by=6960 end
+   local text,code=dfhack.run_command_silent('df3d','special-building-read',tostring(b.id));assert(code==0,text)
+   expected.buildings[#expected.buildings+1]={id=b.id,type=row.type,body=json.decode(text)}
+  end
+ end
+ local f=assert(io.open(out..'/special-building-expected.json','w'));f:write(json.encode(expected));f:close()
+ local active=sheet.active_id;capture('special-building-wire')
+ f=assert(io.open(out..'/special-building-wire-result.json'));result.viewer=json.decode(f:read('*a'));f:close()
+ assert(result.viewer.success and sheet.active_id==active)
+ for _,row in ipairs(expected.buildings)do
+  local b=assert(df.building.find(row.id));assert(#b.jobs==0)
+  if row.type==24 then assert(b.bait_type==row.body.bait_type)end
+  if row.type==49 then assert(b.hive_flags.whole==row.body.flags)end
+ end
+ if nest then nest.claimed_by=claim end
+end
 if os.getenv('DF3D_SIMPLE_BUILDING_SCENE')=='1' or os.getenv('DF3D_DEFAULT_BUILDINGS_SCENE')=='1' then
  local f=assert(io.open(out..'/simple-building-expected.json','w'));f:write(json.encode(result));f:close()
  local active=sheet.active_id;capture('simple-building-wire')

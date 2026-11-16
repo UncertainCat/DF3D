@@ -48,6 +48,7 @@ public:
         return selection.displayRead(epoch,session,revision,side,offset,limit);
     }
     TradeExchangeResult exchange(uint64_t epoch,uint64_t session,uint64_t revision){return selection.exchange(epoch,session,revision);}
+    TradeExchangeResult gift(uint64_t epoch,uint64_t session,uint64_t revision){return selection.gift(epoch,session,revision);}
     std::optional<TradeCounterPage> counterPage(uint64_t epoch,uint64_t session,uint64_t revision,size_t offset,size_t limit){
         return selection.counterPage(epoch,session,revision,offset,limit);
     }

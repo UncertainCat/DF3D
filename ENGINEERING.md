@@ -135,7 +135,9 @@ branch order over its owned TradeNegotiationNative context. It checks the
 king-arrived/same-civilization restriction, ordinary trade prerequisites,
 ethical refusal, capacity and offered value. It does not call the global input
 handler or borrow the active menu. Whole-stack selection remains the supported
-native interface; nonzero draft amounts reject before effects.
+native interface; nonzero draft amounts reject before effects. Native31a684
+also disables Gift when a selected fortress item has the foreign flag. The
+owned executor rejects that request without starting effects.
 
 Actual ownership uses nativec90690 with its exclude-bin-contents argument.
 Nativec88300 detaches items whose container has the opposite trader state;
@@ -165,9 +167,26 @@ oracle retains that pre-refresh snapshot and compares both paths after the same
 native semantic reads; runtime code does not force cache flags to match. This
 evidence covers one whole-stack ordinary item, not every Gift branch.
 
-The implementation is reachable only through the paused trade-gift-probe
-diagnostic. Persistent session rebinding, public transport, Gift refusal
-effects, cages, artifact announcements and foreign-caravan behavior still need
+TradeSelectionSession and TradeOwner now expose Gift through the same validated
+transaction boundary as Trade. The action restores the server-owned conversation,
+executes the native effects, rebuilds goods when requested and binds the new
+source before advancing revision. Source/epoch/revision checks precede effects;
+post-effect failure retires ownership as Unknown. No client can supply a
+conversation or an item list for the action. Paused trade-session-probe gift
+exercises this boundary; trade-gift-probe remains the direct executor diagnostic.
+
+Protected234515 (native DF49316) and234644 (session DF28340) on2026-11-15
+match the tracked Gift effects after equivalent row-value reads. The session
+advances to revision3, refreshes with the gift on the merchant side and absent
+from fortress goods, and rejects stale and closed-session requests without
+simulation changes. The native conversation remains unchanged by the session.
+Both paths also reject a selected imported item without effects; that guard is
+checked through the direct executor diagnostic rather than session transport.
+Both protected lanes close unsaved/source-preserved at30FPS. Bridge build and
+all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_gift_session_reference`.
+
+Public transport, other Gift refusal effects, cages, artifact announcements and foreign-caravan behavior still need
 qualification. Seize remains separate unfinished work: its inline path begins
 31a7be, usesc90540 for ownership removal and ENTITY_STOLEN references, and changes
 caravan flags, mood and departure time. The Gift method must not substitute

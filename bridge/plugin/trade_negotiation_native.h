@@ -54,6 +54,7 @@ inline bool tradeGiftNativeReady(){
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
         struct Pin{size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={{0x31b61c,0xc75,UINT64_C(0xf26de1911580f308)},
+            {0x31a684,0x4f,UINT64_C(0x6a2b6cc1ea1df08b)},
             {0xc90690,0x191,UINT64_C(0xcdaf6397bb0e22cd)},
             {0xc88300,0xdd,UINT64_C(0xe270d2ba3f4072a3)},
             {0x54bdc0,0x134,UINT64_C(0x4fb33b5d7f53a49a)},
@@ -221,7 +222,11 @@ public:
         if(!values || !capacity || !df::global::world || df::global::world->artifact_history_suppression_count==INT32_MAX)return false;
         // Native exposed selection uses whole stacks; reject a foreign draft
         // rather than introducing a partial-stack interface that DF does not use.
-        for(auto amount:owned.good_amount[1])if(amount)return false;
+        for(size_t i=0;i<owned.good[1].size();++i){
+            if(owned.good_amount[1][i])return false;
+            // Native31a684..31a6ce disables Gift for selected imported goods.
+            if(owned.goodflag[1][i].bits.selected && owned.good[1][i]->flags.bits.foreign)return false;
+        }
         const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
         if(effectsStarted)*effectsStarted=true;
         if(check.ethical)refuseOffer();

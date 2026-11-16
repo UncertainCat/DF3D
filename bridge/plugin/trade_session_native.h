@@ -139,10 +139,13 @@ public:
         current->conversation=std::move(next->conversation);++current->revision;
         return reply(TradeSessionStatus::Available);
     }
-    // Explicit semantic Trade/Accept Counteroffer action. The same revision
+    TradeExchangeResult exchange(uint64_t epoch,uint64_t session,uint64_t revision){return transact(epoch,session,revision,false);}
+    TradeExchangeResult gift(uint64_t epoch,uint64_t session,uint64_t revision){return transact(epoch,session,revision,true);}
+private:
+    // Explicit semantic Trade/Accept Counteroffer or Gift. The same revision
     // cannot execute twice. Post-effect failures retire ownership as Unknown;
     // never rebuild a retryable request from an uncertain outcome.
-    TradeExchangeResult exchange(uint64_t epoch,uint64_t session,uint64_t revision){
+    TradeExchangeResult transact(uint64_t epoch,uint64_t session,uint64_t revision,bool gift){
         TradeExchangeResult result;bool started=false;
         try{
             const auto read=access(epoch,session,revision);
@@ -151,9 +154,12 @@ public:
             auto* building=df::building::find(current->depot);
             TradeNegotiationNative context(building,current->caravan,current->draft);
             if(!context || (current->conversation && !context.restore({current->draft,*current->conversation})))return result;
-            const auto check=context.checkOffer();if(check.disposition==TradeOfferDisposition::Unavailable)return result;
-            if(check.disposition==TradeOfferDisposition::Refused)context.refuseOffer(&started);
-            else if(!context.negotiate(&started))return result;
+            if(gift){if(!context.offerGift(&started))return result;}
+            else{
+                const auto check=context.checkOffer();if(check.disposition==TradeOfferDisposition::Unavailable)return result;
+                if(check.disposition==TradeOfferDisposition::Refused)context.refuseOffer(&started);
+                else if(!context.negotiate(&started))return result;
+            }
             auto outcome=context.checkpoint();if(!outcome)throw std::runtime_error("Trade outcome unavailable");
             TradeDraftNative fresh(building,current->caravan);
             const auto initial=fresh.checkpoint();
@@ -175,6 +181,7 @@ public:
             return result;
         }
     }
+public:
     // Caller owns connection/epoch retirement and saving gates. Read validates
     // the live source but never appraises, changes simulation, or advances revision.
     TradeSessionRead access(uint64_t epoch,uint64_t session,uint64_t expectedRevision,

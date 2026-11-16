@@ -5162,9 +5162,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(parameters.size()!=3)return CR_WRONG_USAGE;result=session.close(a);
         }else {
           if(!number(3,b))return CR_WRONG_USAGE;
-          if(action=="exchange"){
+          if(action=="exchange" || action=="gift"){
             if(parameters.size()!=4)return CR_WRONG_USAGE;
-            const auto exchanged=session.exchange(state.terrain.epoch(),a,b);exchangeStatus=exchanged.status;result=exchanged.selection;
+            const auto exchanged=action=="gift"?session.gift(state.terrain.epoch(),a,b):session.exchange(state.terrain.epoch(),a,b);exchangeStatus=exchanged.status;result=exchanged.selection;
           }else if(action=="okay") {
             if(parameters.size()!=4)return CR_WRONG_USAGE;
             result=session.dismissCounteroffer(state.terrain.epoch(),a,b);

@@ -2,7 +2,7 @@
 -- protected sessions; neither session is saved.
 local view,trade,click,capture,out=...
 local json=require('json')
-local mode=os.getenv('DF3D_DEPOT_TRADE_GIFT');assert(mode=='native' or mode=='owned')
+local mode=os.getenv('DF3D_DEPOT_TRADE_GIFT');assert(mode=='native' or mode=='owned' or mode=='session')
 local tracked={}
 for side=0,1 do for _,item in ipairs(trade.good[side])do tracked[item.id]=item end end
 local function snapshot()
@@ -36,7 +36,20 @@ local whole,fraction=trade.mer.total_capacity.whole,trade.mer.total_capacity.fra
 trade.mer.total_capacity.whole=100000;trade.mer.total_capacity.fraction=0
 view:render(dfhack.getTickCount())
 local line=trade.talkline
+local imported=bar.flags.foreign;bar.flags.foreign=true
+view:render(dfhack.getTickCount())
+local imported_before=snapshot()
+if mode=='native' then
+ click(735,730)
+else
+ local output,code=dfhack.run_command_silent('df3d','trade-gift-probe',tostring(trade.bld.id),'0','','',json.encode{{side=1,item=bar.id}})
+ assert(code==0,output);local refusal=json.decode(output)
+ assert(not refusal.executed and not refusal.effects_started and not refusal.unknown,output)
+end
+assert(trade.talkline==line and json.encode(snapshot())==json.encode(imported_before),'Imported Gift changed state')
+bar.flags.foreign=imported;view:render(dfhack.getTickCount())
 local result={mode=mode,item=bar.id,before=snapshot()}
+result.imported_gift_rejected=true
 for _,row in ipairs(result.before.items)do for _,ref in ipairs(row.refs)do assert(ref.kind~=df.general_ref_type.ENTITY_OFFERED,'Gift cleanup needs an unoffered fixture')end end
 local ok,err=xpcall(function()
  if mode=='native' then
@@ -44,6 +57,32 @@ local ok,err=xpcall(function()
   result.dialogue=trade.talkline;result.counter_offer=trade.counter_offer;result.announcement={}
   for _,text in ipairs(trade.big_announce.text)do result.announcement[#result.announcement+1]=dfhack.df2utf(text.value)end
   capture('depot-trade-gift')
+ elseif mode=='session' then
+  local function probe(action,...)
+   local args={...};for i,value in ipairs(args)do args[i]=tostring(value)end
+   local output,code=dfhack.run_command_silent('df3d','trade-session-probe',action,table.unpack(args));assert(code==0,output);return json.decode(output)
+  end
+  local state=probe('open',trade.bld.id,0);assert(state.status==0)
+  local id=state.session
+  state=probe('item',id,state.revision,1,bar.id);assert(state.status==0)
+  local selected_revision=state.revision
+  state=probe('gift',id,selected_revision);assert(state.status==0 and state.exchange_status==0,json.encode(state))
+  assert(state.revision==selected_revision+1)
+  local refreshed=probe('read',id,state.revision)
+  assert(refreshed.status==0 and refreshed.dialogue==8 and not refreshed.counter_offer and json.encode(refreshed.sides)==json.encode(state.sides),'Gift session did not survive refresh')
+  local found=false
+  for _,item in ipairs(refreshed.sides[1].items)do if item==bar.id then found=true end end
+  assert(found,'Gift did not rebuild merchant goods')
+  for _,item in ipairs(refreshed.sides[2].items)do assert(item~=bar.id,'Gift remained in fortress goods')end
+  local after=snapshot()
+  assert(probe('gift',id,selected_revision).exchange_status==1,'Stale Gift replayed')
+  assert(json.encode(snapshot())==json.encode(after),'Stale Gift changed simulation')
+  assert(probe('close',id).status==3)
+  assert(probe('gift',id,state.revision).exchange_status==1,'Closed Gift replayed')
+  assert(json.encode(snapshot())==json.encode(after),'Closed Gift changed simulation')
+  result.dialogue=state.dialogue;result.counter_offer=state.counter_offer;result.announcement=state.announcement
+  result.session={revision=state.revision,refreshed=true,stale_rejected=true,closed_rejected=true,sides=refreshed.sides}
+  assert(trade.talkline==line and not trade.counter_offer,'Session Gift changed the native conversation')
  else
   local output,code=dfhack.run_command_silent('df3d','trade-gift-probe',tostring(trade.bld.id),'0','','',json.encode{{side=1,item=bar.id}})
   assert(code==0,output);local response=json.decode(output)

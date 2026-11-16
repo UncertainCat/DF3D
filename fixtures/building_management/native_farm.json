@@ -101876,6 +101876,112 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_counter_input_reference": {
+        "supported_df": "53.16 Steam24557528",
+        "protected_run": "build/stockpile-storage-native-farm-discovery-20261116-090124",
+        "owned_df_pid": 50940,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "fps_cap": 30,
+        "gpu_sample_celsius": 61,
+        "native_inputs": {
+          "count": 15,
+          "goods_height": 57,
+          "inputs": [
+            {
+              "label": "body-wheel",
+              "offset": 0
+            },
+            {
+              "label": "bar-wheel",
+              "offset": 0
+            },
+            {
+              "label": "heading-wheel",
+              "offset": 0
+            },
+            {
+              "label": "outside-wheel",
+              "offset": 0
+            },
+            {
+              "label": "body-page",
+              "offset": 0
+            },
+            {
+              "label": "standard",
+              "offset": 0
+            },
+            {
+              "held": true,
+              "label": "drag-190",
+              "offset": 0,
+              "released": true
+            },
+            {
+              "held": true,
+              "label": "drag-202",
+              "offset": 0,
+              "released": true
+            },
+            {
+              "held": true,
+              "label": "drag-214",
+              "offset": 0,
+              "released": true
+            },
+            {
+              "held": true,
+              "label": "drag-300",
+              "offset": 1,
+              "released": true
+            },
+            {
+              "held": true,
+              "label": "drag-490",
+              "offset": 3,
+              "released": true
+            },
+            {
+              "held": true,
+              "label": "drag-622",
+              "offset": 5,
+              "released": true
+            },
+            {
+              "held": true,
+              "label": "drag-646",
+              "offset": 6,
+              "released": true
+            }
+          ],
+          "steps": [
+            {
+              "label": "initial",
+              "offset": 0
+            },
+            {
+              "label": "down",
+              "offset": 1
+            },
+            {
+              "label": "up",
+              "offset": 0
+            },
+            {
+              "label": "track",
+              "offset": 6
+            }
+          ]
+        },
+        "godot_input_headless_pass": true,
+        "runtime_change_required": false,
+        "limits": [
+          "Synthetic requested-items list.",
+          "Wheel probes use native context-scroll bindings; no change to native wheel policy.",
+          "No new rendering change; four visual states remain qualified by long_counter_reference."
+        ]
+      },
       "depot_trade_long_counter_reference": {
         "supported_df": "53.16 Steam24557528",
         "protected_run": "build/stockpile-storage-native-farm-discovery-20261116-085429",

@@ -119,6 +119,23 @@ local ok,err=xpcall(function()
   record_long('initial');click(952,646);record_long('down');click(952,190);record_long('up')
   click(952,610);record_long('track')
   assert(result.long_counter.count==15 and result.long_counter.steps[2].offset==1 and result.long_counter.steps[3].offset==0 and result.long_counter.steps[4].offset==6,'Native counteroffer scroll behavior changed')
+  local function point(x,y)
+   local g=df.global.gps;g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+  end
+  result.long_counter.inputs={}
+  for _,probe in ipairs{{'body-wheel','CONTEXT_SCROLL_DOWN',600,300},{'bar-wheel','CONTEXT_SCROLL_DOWN',952,300},{'heading-wheel','CONTEXT_SCROLL_DOWN',600,160},{'outside-wheel','CONTEXT_SCROLL_DOWN',0,0},{'body-page','CONTEXT_SCROLL_PAGEDOWN',600,300},{'standard','STANDARDSCROLL_DOWN',600,300}}do
+   trade.scroll_position_counter_offer=0;trade.scrolling_counter_offer=false;point(probe[3],probe[4]);view:render(dfhack.getTickCount())
+   require('gui').simulateInput(view,probe[2]);view:render(dfhack.getTickCount())
+   result.long_counter.inputs[#result.long_counter.inputs+1]={label=probe[1],offset=trade.scroll_position_counter_offer}
+  end
+  for _,y in ipairs{190,202,214,300,490,622,646}do
+   trade.scroll_position_counter_offer=0;trade.scrolling_counter_offer=false;point(0,0);view:render(dfhack.getTickCount())
+   point(952,220);df.global.enabler.mouse_lbut_lift=0;require('gui').simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+   point(952,y);require('gui').simulateInput(view,{'_MOUSE_L_DOWN'})
+   result.long_counter.inputs[#result.long_counter.inputs+1]={label='drag-'..y,offset=trade.scroll_position_counter_offer,held=trade.scrolling_counter_offer}
+   df.global.enabler.mouse_lbut_lift=1;require('gui').simulateInput(view,{})
+   result.long_counter.inputs[#result.long_counter.inputs].released=not trade.scrolling_counter_offer
+  end
   trade.counter_offer_item:resize(0);for _,item in ipairs(saved)do trade.counter_offer_item:insert('#',item)end
   trade.scroll_position_counter_offer=offset;trade.scrolling_counter_offer=false
   view:render(dfhack.getTickCount())

@@ -33,6 +33,28 @@ func run() -> void:
 		view.input_allowed=func():return false
 		await click(Vector2(952,190));check(view.scrollbar.first==6,"Disabled counteroffer scrolled")
 		view.input_allowed=Callable()
+		var native: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/depot-trade-native.json"))
+		var probes: Array=native.exchange.negotiation.long_counter.get("inputs",[])
+		for probe in probes:
+			view.scrollbar.move_to(0)
+			var label: String=probe.label
+			if label.begins_with("drag-"):
+				var move:=InputEventMouseMotion.new();move.position=Vector2(952,220);root.push_input(move,true);await process_frame
+				var press:=InputEventMouseButton.new();press.position=move.position;press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;root.push_input(press,true);await process_frame
+				move=InputEventMouseMotion.new();move.position=Vector2(952,int(label.trim_prefix("drag-")));move.button_mask=MOUSE_BUTTON_MASK_LEFT;root.push_input(move,true);await process_frame
+				check(view.scrollbar.dragging==probe.held,"Native drag ownership differs: "+label)
+				press=InputEventMouseButton.new();press.position=move.position;press.button_index=MOUSE_BUTTON_LEFT;press.pressed=false;root.push_input(press,true);await process_frame
+				check(not view.scrollbar.dragging and probe.released,"Counteroffer drag did not release")
+			else:
+				var point: Vector2={"body-wheel":Vector2(600,300),"bar-wheel":Vector2(952,300),"heading-wheel":Vector2(600,160),"outside-wheel":Vector2.ZERO,"body-page":Vector2(600,300),"standard":Vector2(600,300)}[label]
+				if label=="standard":
+					var key:=InputEventKey.new();key.keycode=KEY_DOWN;key.pressed=true;root.push_input(key,true);await process_frame
+					key=key.duplicate();key.pressed=false;root.push_input(key,true);await process_frame
+				else:
+					var move:=InputEventMouseMotion.new();move.position=point;root.push_input(move,true);await process_frame
+					var wheel:=InputEventMouseButton.new();wheel.position=point;wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true;wheel.shift_pressed=label=="body-page";root.push_input(wheel,true);await process_frame
+					wheel=wheel.duplicate();wheel.pressed=false;root.push_input(wheel,true);await process_frame
+			check(view.scrollbar.first==int(probe.offset),"Native counteroffer input differs: "+label)
 	await click(Vector2(920,166));check(dismiss_count==1,"Okay did not dispatch once")
 	view.input_allowed=func():return false
 	await click(Vector2(920,166));check(dismiss_count==1,"Disabled Okay dispatched")

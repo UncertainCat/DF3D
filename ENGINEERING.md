@@ -76,9 +76,16 @@ Native38702e..387056 sizes the drawn thumb using ordinary fortress-goods
 height, while the counteroffer input path315766..3157eb uses requested-item
 height. DF3D preserves this distinction: it affects thumb artwork, not the
 counteroffer's scroll bounds. In this fixture those heights are57 and45 cells.
-Wheel and drag behavior have not been independently qualified. Large-list
-integration is headless; a natural long counteroffer through the complete live
-Trade route remains unqualified.
+Protected090124 (DF50940) independently verifies input: wheel over the body,
+bar, heading and outside, context page-down and standard down all leave the
+offset unchanged. Seven held drags to y190/202/214/300/490/622/646 yield
+offsets0/0/0/1/3/5/6 and release scrolling on mouse-up. The same event sequence
+passes through Godot input in the headless pane check. Wheel remains disabled
+to preserve native behavior; no product exception is needed. Source saves are
+preserved and the owned native session closes unsaved at30FPS (GPU sample61C).
+Evidence: completed_sheet_discovery_reference.depot_trade_counter_input_reference.
+Large-list integration is headless; a natural long counteroffer through the
+complete live Trade route remains unqualified.
 
 The ordinary foreign-caravan composite counteroffer/accepted views remain
 pixel-exact against084928/084828 after this change. Graphics run serially at

@@ -28,6 +28,7 @@ func run() -> void:
 	var counter: Dictionary=model.conversation.duplicate(true)
 	var wanted: Array=[];for id in expected.counter_items:wanted.append(int(id))
 	check(counter.dialogue==24 and counter.counter_offer and counter.requested_items==wanted,"Native counteroffer changed across transport")
+	check(model.counter_page.total==wanted.size() and model.counter_page.rows.size()==wanted.size(),"Counteroffer page missing")
 	var counter_revision: int=model.revision
 	await session_request({"action":C.ManagementAction.TradeSessionExchange,"session":model.session,"expected_revision":first_revision},C.TradeSessionOutcome.Rejected)
 	model.refresh_session();await poll_controller(service,model,Model.Phase.Active)
@@ -38,6 +39,22 @@ func run() -> void:
 	check(final.dialogue==7 and not final.counter_offer and final.requested_items==wanted,"Accepted native conversation changed")
 	await session_request({"action":C.ManagementAction.TradeSessionExchange,"session":model.session,"expected_revision":counter_revision},C.TradeSessionOutcome.Rejected)
 	var result: Dictionary={"success":not failed,"counter":counter,"final":final,"pages":model.pages.duplicate(true),"revision":model.revision}
+	var accepted_revision: int=model.revision
+	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Counteroffer UI assets missing"):quit(1);return
+	var view=preload("res://scripts/trade_goods_view.gd").new();root.add_child(view);view.configure_goods(world,model);view.position=Vector2(48,148);view.layout(Vector2(944,708))
+	for i in 3:await process_frame
+	check(view.counter.visible and not view.searches[1].visible,"Counteroffer pane did not replace fortress goods")
+	for pressed in [true,false]:
+		var click:=InputEventMouseButton.new();click.position=Vector2(920,166);click.button_index=MOUSE_BUTTON_LEFT;click.pressed=pressed;root.push_input(click,true);await process_frame
+	pending=model.ticket;model.dismiss_counteroffer()
+	check(model.ticket==pending,"Duplicate Okay submitted")
+	if not await poll_controller(service,model,Model.Phase.Active):quit(1);return
+	check(model.counter_page.is_empty() and model.conversation.requested_items.is_empty() and not model.conversation.counter_offer and model.conversation.dialogue==final.dialogue and model.revision==accepted_revision+1,"Okay altered negotiation or failed to clear the pane")
+	await session_request({"action":C.ManagementAction.TradeSessionDismiss,"session":model.session,"expected_revision":accepted_revision},C.TradeSessionOutcome.Rejected)
+	await session_request({"action":C.ManagementAction.TradeSessionDismiss,"session":model.session,"expected_revision":model.revision},C.TradeSessionOutcome.Rejected)
+	check(not view.counter.visible and view.searches[1].visible,"Okay did not restore the fortress goods pane")
+	view.queue_free();await process_frame
+	result.dismiss_verified=true;result.dismissed=model.conversation.duplicate(true);result.dismissed_revision=model.revision
 	var closed: Array=[]
 	service.completed.connect(func(_ticket,response):
 		if response.get("action")==C.ManagementAction.TradeSessionClose:closed.append(response))

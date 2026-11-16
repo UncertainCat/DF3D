@@ -2,6 +2,9 @@ extends "res://scripts/trade_catalog_state.gd"
 # The catalog/session owner also owns the draft revision. Both visible sides are
 # published together; selection and filtering remain native semantic intents.
 var pages: Array=[{},{}]
+var counter_page: Dictionary={}
+var counter_offset:=0
+var counter_limit:=16
 var offsets: Array[int]=[0,0]
 var limits: Array[int]=[16,16]
 var _pending_pages: Array=[{},{}]
@@ -20,14 +23,14 @@ func dispose() -> void:
 	super.dispose()
 	if _inspection!=null:_inspection.dispose();_inspection=null
 func close() -> void:
-	pages=[{},{}];_pending_pages=[{},{}];offsets=[0,0];_queued_filters={}
+	pages=[{},{}];counter_page={};counter_offset=0;_pending_pages=[{},{}];offsets=[0,0];_queued_filters={}
 	appearances={};_retire_appearance()
 	super.close()
 func _retire_appearance() -> void:
 	_appearance_queue=[];_appearance_id=-1
 	if _inspection!=null:_inspection.close()
 func item_type(id: int) -> int:
-	for page in pages:
+	for page in pages+[counter_page]:
 		for row in page.get("rows",[]):
 			if not row.group and row.id==id:return row.type
 	return -1
@@ -57,6 +60,11 @@ func _inspection_changed() -> void:
 	changed.emit();_next_appearance()
 func goods_ready() -> bool:
 	return phase==Phase.Active and not pages[0].is_empty() and not pages[1].is_empty()
+func refresh_session() -> void:
+	_load_goods()
+func read_counter_page(offset: int,limit: int) -> void:
+	if not goods_ready() or counter_page.is_empty() or offset<0 or offset>=counter_page.total or limit<1 or limit>64:return
+	counter_offset=offset;counter_limit=limit;_load_goods()
 func read_page(side: int,offset: int,limit: int) -> void:
 	if not goods_ready() or side<0 or side>1 or offset<0 or limit<1 or limit>64:return
 	offsets[side]=mini(offset,maxi(0,int(pages[side].total)-1));limits[side]=limit
@@ -93,14 +101,45 @@ func _read_summary() -> void:
 		var value: Variant=result.get("trade_session")
 		if not _receipt(result,value,intent.action,revision) or not _valid_footer(value.get("footer")) or not _valid_header(value.get("header"),header_columns) or not _valid_conversation(value.get("conversation")):
 			_fail_goods(result);return
-		footer=value.footer.duplicate(true);header=value.header.duplicate(true);conversation=value.conversation.duplicate(true);pages=_pending_pages;_pending_pages=[{},{}]
-		phase=Phase.Active;changed.emit();_drain_filter())
+		if value.conversation.requested_items.is_empty():_publish_goods(value,{})
+		else:_read_counter(value.duplicate(true)))
 	if ticket==0:phase=Phase.Unavailable;changed.emit()
+func _read_counter(summary: Dictionary) -> void:
+	var owner:=generation
+	counter_offset=mini(counter_offset,maxi(0,summary.conversation.requested_items.size()-1))
+	var intent: Dictionary={"action":C.ManagementAction.TradeDraftRead,"session":session,"expected_revision":revision,"side":2,"offset":counter_offset,"limit":counter_limit}
+	ticket=service.submit("trade_draft",intent,func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0
+		var value: Variant=result.get("trade_draft")
+		if not _receipt(result,value,intent.action,revision) or not _valid_counter(value.get("page"),summary.conversation.requested_items,intent.offset,intent.limit):
+			_fail_goods(result);return
+		_publish_goods(summary,value.page))
+	if ticket==0:phase=Phase.Unavailable;changed.emit()
+func _publish_goods(summary: Dictionary,counter: Dictionary) -> void:
+	footer=summary.footer.duplicate(true);header=summary.header.duplicate(true);conversation=summary.conversation.duplicate(true)
+	counter_page=counter.duplicate(true);pages=_pending_pages;_pending_pages=[{},{}]
+	if counter_page.is_empty():counter_offset=0
+	phase=Phase.Active;changed.emit();_drain_filter()
+func _valid_counter(value: Variant,ids: Array,offset: int,limit: int) -> bool:
+	if not _valid_page(value,2,offset,limit) or value.total!=ids.size() or value.query!="":return false
+	if typeof(value.get("heading"))!=TYPE_ARRAY or value.heading.size()!=2 or typeof(value.get("dismiss"))!=TYPE_STRING or value.dismiss.is_empty() or value.dismiss.to_utf8_buffer().size()>128:return false
+	for line in value.heading:
+		if typeof(line)!=TYPE_STRING or line.is_empty() or line.to_utf8_buffer().size()>512:return false
+	for i in value.rows.size():
+		var row: Dictionary=value.rows[i]
+		if row.id!=ids[offset+i] or row.group or row.parent!=-1 or row.flags!=0 or row.expanded or row.expandable:return false
+	return true
 func exchange() -> void:
+	_session_action(C.ManagementAction.TradeSessionExchange)
+func dismiss_counteroffer() -> void:
+	if counter_page.is_empty() or counter_page.total==0:return
+	_session_action(C.ManagementAction.TradeSessionDismiss)
+func _session_action(action: int) -> void:
 	if not goods_ready() or service==null or not _queued_filters.is_empty() or revision==9223372036854775807:return
 	var owner:=generation
 	var expected:=revision+1
-	var intent: Dictionary={"action":C.ManagementAction.TradeSessionExchange,"session":session,"expected_revision":revision}
+	var intent: Dictionary={"action":action,"session":session,"expected_revision":revision}
 	phase=Phase.Exchanging;_retire_appearance();changed.emit()
 	if owner!=generation or phase!=Phase.Exchanging:return
 	ticket=service.submit("trade_session",intent,func(received,result,_sent):

@@ -47,9 +47,10 @@ native glyph-cell replacement where caption/value columns meet. Enabled and
 disabled Okay clicks pass in headless and rendered checks. Godot runs serially
 at30FPS and exits; the post-render GPU sample is61C, not a peak measurement.
 Evidence: completed_sheet_discovery_reference.depot_trade_counter_view_reference.
-This does not qualify active-counter dismissal, long lists, narrow widths,
-public transport or full-screen integration. Protocol244 remains unchanged and
-Trade remains hidden until its complete workflow is ready.
+This render evidence does not qualify active-counter dismissal, long lists or
+narrow widths. Protocol245 transport and pane integration are qualified in the
+session transport section below. Trade remains hidden until its complete
+workflow is ready.
 
 ## Owned native negotiation execution
 
@@ -209,20 +210,32 @@ Trade/gift/Seize effects remain unfinished.
 
 ## Trade session transport
 
-Management protocol244 adds TradeSessionExchange with session and expected
+Management protocol245 adds TradeSessionDismiss with session and expected
+revision only. Counteroffer pages use TradeDraftRead side2; side2 cannot accept
+draft edits. The page carries two bounded native heading lines, Okay text and
+up to64 ordinary item-row facts in requested-item order. Normal goods pages
+cannot carry those captions. No checkpoint or conversation comes from clients.
+Old recordings must not synthesize counteroffer pages or dismissal receipts.
+
+Protocol244 added TradeSessionExchange with session and expected
 revision only. It returns a processed-action receipt, never optimistic goods.
 Available advances the revision; Rejected/Retired are definite refusals; Unknown
 must not be replayed. Post-effect serialization failure retains uncertainty.
 Successful TradeSessionRead now requires a bounded pointer-free conversation:
 dialogue, independent counteroffer flag, ordered requested IDs and announcement
 lines. Open/exchange/close receipts cannot carry that read payload. Both peers
-use Local\df3d_management_v244; rebuild together. Old recordings must not
+use Local\df3d_management_v245; rebuild together. Old recordings must not
 synthesize conversation or exchange receipts. Existing header/footer requirements
 remain in force.
 
 The goods controller serializes exchange with draft changes, disables controls
-while pending and refreshes both pages plus header/footer/conversation at the
-new revision before re-enabling. Uncertainty keeps content disabled and permits
+while pending and refreshes both pages plus header/footer/conversation and any
+counteroffer page at the new revision before re-enabling. Counteroffer rows are
+checked against the conversation's exact ordered IDs. The goods view replaces
+the fortress list with the counteroffer pane while requested items remain;
+Okay submits one revision-bound dismissal and restores the goods view after
+the successful refresh. Counteroffer items participate in owned artwork reads
+even when they are absent from the current normal-goods pages. Uncertainty keeps content disabled and permits
 closing; there is no retry. Closing/epoch replacement retires callback ownership.
 Headless controller checks cover duplicate clicks, atomic conversation publication
 and unknown-outcome closing; malformed conversation/receipt tests cover the codec.
@@ -241,7 +254,24 @@ logs are clean. Evidence:
 The first225401 attempt stopped in diagnostic setup before exchange.225548 reached
 a pending request at the new action boundary; a forced dispatcher/adapter
 rebuild resolved it, consistent with an enum-range edit made during compilation. Neither failed run supplies acceptance evidence.
-Full Trade rendering/input, Okay, gift/Seize, foreign-caravan accounting, real
+Protected232333 on2026-11-15 qualifies protocol245 through the actual headless
+Godot controller and goods view: select, counteroffer, refresh, accept, pointer
+click Okay, restore fortress goods, reject stale/empty dismissal and close.
+The counteroffer list clears at revision7 while dialogue7 and the completed
+trade remain unchanged. Eight ownership changes, trader skills/attributes,
+caravan and active RNG match native224201. As in225954, entry appraisal history
+is pre-recorded to isolate negotiation. DF46116 closes unsaved/source-preserved
+at30FPS; live GPU samples51–52C. Godot logs are clean. The ordinary goods pane's
+rendered comparison and input regression also pass after adding the overlay;
+that serial30FPS run has a post-run54C GPU sample. Evidence:
+`completed_sheet_discovery_reference.depot_trade_counter_transport_reference`.
+The catalog/goods controller tests cover atomic page publication and duplicate
+Okay requests. Both peers build and all19 core checks pass. The request-domain
+test now rejects side3 for reads and side2 for edits, while the counteroffer
+codec test covers valid side2 reads and malformed page captions/rows.
+
+Full Trade rendering/input, active-counter Okay, long-list/narrow counteroffer
+layout, gift/Seize, foreign-caravan accounting, real
 announcements and destructive transport-failure injection remain unfinished.
 Trade stays hidden pending the complete workflow.
 

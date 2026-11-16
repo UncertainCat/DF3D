@@ -98970,6 +98970,62 @@
           "tools/smoke/depot-trade-negotiate-native.lua": "7c085824ea872ffb9454e67ecce3e91354aaf055fcd2e77636f5eb7a31c39b59"
         }
       },
+      "depot_trade_counter_transport_reference": {
+        "supported_df": "53.16 Steam24557528",
+        "protocol": 245,
+        "core_checks_passed": 19,
+        "protected_run": "build/stockpile-storage-native-farm-discovery-20261115-232333",
+        "owned_df_pid": 46116,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "df_fps_cap": 30,
+        "viewer": "headless actual controller and goods view pointer input",
+        "gpu_sample_celsius": [
+          51,
+          52
+        ],
+        "counter": {
+          "announcement": [],
+          "counter_offer": true,
+          "dialogue": 24,
+          "requested_items": [
+            1180,
+            1735,
+            1736,
+            1494,
+            25112
+          ]
+        },
+        "accepted": {
+          "announcement": [],
+          "counter_offer": false,
+          "dialogue": 7,
+          "requested_items": [
+            1180,
+            1735,
+            1736,
+            1494,
+            25112
+          ]
+        },
+        "accepted_revision": 6,
+        "dismissed": {
+          "announcement": [],
+          "counter_offer": false,
+          "dialogue": 7,
+          "requested_items": []
+        },
+        "dismissed_revision": 7,
+        "stale_and_empty_dismiss_rejected": true,
+        "fortress_pane_restored": true,
+        "accepted_effects_match_native_run": "20261115-224201",
+        "normal_goods_render_and_input_regression": true,
+        "limits": [
+          "Full public Trade route remains hidden",
+          "Active-counter dismissal, long lists and narrow widths need qualification",
+          "Entry appraisal history pre-recorded to isolate negotiation"
+        ]
+      },
       "depot_trade_counter_view_reference": {
         "supported_df": "53.16 Steam24557528",
         "protected_run": "build/stockpile-storage-native-farm-discovery-20261115-231214",

@@ -662,7 +662,7 @@ struct DepotGoodsCommitResult {int32_t depotId=-1;uint64_t expectedRevision=0,ob
 struct TradeCatalogRequest {int32_t depotId=-1;};
 struct TradeDraftRequest {uint64_t session=0,expectedRevision=0;int8_t side=-1;uint32_t offset=0;uint16_t limit=0;TradeDraftOperation operation=TradeDraftOperation::Item;int32_t item=-1,type=-1,subtype=-1;std::string query;};
 struct TradeDraftRow {bool group=false,expanded=false;int32_t id=-1,parent=-1,type=-1,subtype=-1,amount=0;uint32_t flags=0;std::string caption;int32_t value=0,appraisal=0;std::string valueCaption,weightCaption;TradeItemDisposition disposition=TradeItemDisposition::Local;int32_t containedCount=0;bool expandable=false;std::string contentsCaption;};
-struct TradeDraftPage {int8_t side=-1;uint32_t offset=0,total=0;std::string query;std::vector<TradeDraftRow> rows;};
+struct TradeDraftPage {int8_t side=-1;uint32_t offset=0,total=0;std::string query;std::vector<TradeDraftRow> rows;std::vector<std::string> heading;std::string dismiss;};
 struct TradeDraftState {TradeSessionOutcome outcome=TradeSessionOutcome::Rejected;uint64_t session=0,revision=0;std::optional<TradeDraftPage> page;};
 struct TradeSessionRequest {int32_t depotId=-1;uint64_t choiceToken=0,session=0,expectedRevision=0;uint16_t columns=0;};
 struct TradeSessionEntry {int32_t entityId=-1,fortressTrader=-1,merchantTrader=-1;int16_t dialogue=-1;bool unloading=false,hasSpeaker=false;std::string title,speaker,fortress,place;};

@@ -11,6 +11,7 @@ var colors: Array[Color]=[]
 var canvases: Array[Control]=[]
 var bars: Array=[]
 var searches: Array=[]
+var counter=preload("res://scripts/trade_counter_view.gd").new()
 var icons: Dictionary={}
 var _requested:=false
 func configure_goods(source,model) -> void:
@@ -24,6 +25,7 @@ func configure_goods(source,model) -> void:
 		for edge in [SIDE_TOP,SIDE_BOTTOM]:inset.set_texture_margin(edge,12)
 		var search=preload("res://scripts/stocks_filter.gd").new();add_child(search);search.theme=theme;search.byte_limit=256;search.configure(inset,colors);search.placeholder_ink=Color8(160,160,160)
 		search.edited.connect(func(bytes):state.set_filter(side,bytes.get_string_from_utf8()));searches.append(search)
+	add_child(counter);counter.configure_counter(source);counter.input_allowed=ready;counter.dismissed.connect(state.dismiss_counteroffer)
 	state.changed.connect(refresh)
 func allowed() -> bool:return is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call())
 func ready() -> bool:return allowed() and state!=null and state.goods_ready()
@@ -36,6 +38,7 @@ func layout(panel_size: Vector2) -> void:
 		searches[side].position=Vector2(x,0);searches[side].size=Vector2(width,36)
 		canvases[side].position=Vector2(x,36);canvases[side].size=Vector2(width,maxi(0,floori((size.y-36)/36)*36))
 		bars[side].position=Vector2(x+width-16,36);bars[side].size=Vector2(16,canvases[side].size.y);bars[side].page=int(canvases[side].size.y/12)
+	counter.position=Vector2(left+24,0);counter.layout(Vector2(size.x-left-24,size.y))
 	refresh()
 func refresh() -> void:
 	if state==null or canvases.is_empty():return
@@ -54,19 +57,30 @@ func refresh() -> void:
 		var cached: Dictionary=icons.get(id,{})
 		if cached.get("appearance")!=appearance:cached={"appearance":appearance.duplicate(true),"texture":world.ammunition_icon(appearance,id) if state.item_type(id)==39 else world.item_sheet_icon(state.item_type(id),appearance,id)}
 		retained[id]=cached
-	icons=retained;queue_redraw()
+	icons=retained
+	counter.visible=not state.counter_page.is_empty()
+	if counter.visible:
+		searches[1].release_focus();searches[1].hide();canvases[1].hide();bars[1].hide()
+		var counter_icons: Dictionary={}
+		for row in state.counter_page.rows:counter_icons[row.id]=icons.get(row.id,{}).get("texture")
+		counter.set_page(state.counter_page,counter_icons)
+	else:searches[1].show();canvases[1].show()
+	queue_redraw()
 	if ready() and not _requested:_requested=true;_fetch.call_deferred()
 func _fetch() -> void:
 	_requested=false
 	if not ready():return
 	var ids: Array=[]
 	for side in range(2):
+		if side==1 and counter.visible:continue
 		var page: Dictionary=state.pages[side]
 		var first: int=int(bars[side].first/3)
 		var count: int=ceili((canvases[side].size.y+(bars[side].first%3)*12)/36)
 		if first<int(page.offset) or mini(first+count,int(page.total))>int(page.offset)+page.rows.size():state.read_page(side,first,mini(64,maxi(1,count)));return
-		for row in page.rows:
+		for row in page.rows.slice(maxi(0,first-int(page.offset)),maxi(0,first-int(page.offset))+count):
 			if not row.group and not ids.has(row.id):ids.append(row.id)
+	for row in state.counter_page.get("rows",[]).slice(0,maxi(0,ceili((counter.size.y-36)/36))):
+		if not ids.has(row.id):ids.append(row.id)
 	state.request_appearances(ids.slice(0,64))
 func _patch(canvas: Control,token: String,origin: Vector2,columns: int) -> void:
 	var texture: Texture2D=art.texture(token)
@@ -116,7 +130,7 @@ func _gui_input(event: InputEvent) -> void:
 	if not ready():return
 	for side in range(2):
 		var canvas: Control=canvases[side];var local: Vector2=event.position-canvas.position
-		if not Rect2(Vector2.ZERO,canvas.size).has_point(local):continue
+		if not canvas.visible or not Rect2(Vector2.ZERO,canvas.size).has_point(local):continue
 		if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:bars[side].move_to(bars[side].first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));return
 		if event.button_index!=MOUSE_BUTTON_LEFT:return
 		for search in searches:search.release_focus()

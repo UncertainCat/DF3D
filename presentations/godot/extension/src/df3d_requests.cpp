@@ -357,7 +357,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         value["choices"]=choices;result["trade_catalog"]=value;
     }
     if(s.tradeDraft){const auto& v=*s.tradeDraft;Dictionary value;value["outcome"]=int(v.outcome);value["session"]=int64_t(v.session);value["revision"]=int64_t(v.revision);
-        if(v.page){const auto& p=*v.page;Dictionary page;page["side"]=p.side;page["offset"]=p.offset;page["total"]=p.total;page["query"]=String::utf8(p.query.c_str());Array rows;
+        if(v.page){const auto& p=*v.page;Dictionary page;page["side"]=p.side;page["offset"]=p.offset;page["total"]=p.total;page["query"]=String::utf8(p.query.c_str());if(p.side==2){Array heading;for(const auto& line:p.heading)heading.push_back(String::utf8(line.c_str()));page["heading"]=heading;page["dismiss"]=String::utf8(p.dismiss.c_str());}Array rows;
             for(const auto& r:p.rows){Dictionary row;row["group"]=r.group;row["expanded"]=r.expanded;row["id"]=r.id;row["parent"]=r.parent;row["type"]=r.type;row["subtype"]=r.subtype;row["amount"]=r.amount;row["flags"]=r.flags;row["caption"]=String::utf8(r.caption.c_str());row["value"]=r.value;row["appraisal"]=r.appraisal;row["value_caption"]=String::utf8(r.valueCaption.c_str());row["weight_caption"]=String::utf8(r.weightCaption.c_str());row["disposition"]=int(r.disposition);row["contained_count"]=r.containedCount;row["expandable"]=r.expandable;row["contents_caption"]=String::utf8(r.contentsCaption.c_str());rows.push_back(row);}page["rows"]=rows;value["page"]=page;}
         result["trade_draft"]=value;if(v.outcome==wm::TradeSessionOutcome::Unknown)result["outcome"]="unknown";
     }
@@ -905,7 +905,7 @@ bool readTasks(const Dictionary& data,wm::ManagementRequest& request,String&) {
 bool validateTradeDraft(const Dictionary& data,String& error) {
     error="Invalid trade draft request";
     const auto integer=[](const Dictionary& d,const char* key,int64_t lo,int64_t hi){return d.has(key) && d[key].get_type()==Variant::INT && int64_t(d[key])>=lo && int64_t(d[key])<=hi;};
-    if(!integer(data,"session",1,INT64_MAX) || !integer(data,"expected_revision",1,INT64_MAX) || !integer(data,"side",0,1))return false;
+    if(!integer(data,"session",1,INT64_MAX) || !integer(data,"expected_revision",1,INT64_MAX) || !integer(data,"side",0,int64_t(data["action"])==int64_t(wm::ManagementAction::TradeDraftRead)?2:1))return false;
     const auto action=wm::ManagementAction(int64_t(data["action"]));
     if(action==wm::ManagementAction::TradeDraftRead){if(data.size()!=6 || !integer(data,"offset",0,UINT32_MAX) || !integer(data,"limit",1,64))return false;}
     else {
@@ -934,14 +934,14 @@ bool validateTradeSession(const Dictionary& data,String& error) {
     const auto integer=[](const Dictionary& d,const char* key,int64_t lo,int64_t hi){return d.has(key) && d[key].get_type()==Variant::INT && int64_t(d[key])>=lo && int64_t(d[key])<=hi;};
     const auto action=wm::ManagementAction(int64_t(data["action"]));
     if(action==wm::ManagementAction::TradeSessionOpen){if(data.size()!=3 || !integer(data,"depot_id",0,INT32_MAX) || !integer(data,"choice_token",1,INT64_MAX))return false;}
-    else if(action==wm::ManagementAction::TradeSessionExchange){if(data.size()!=3 || !integer(data,"session",1,INT64_MAX) || !integer(data,"expected_revision",1,INT64_MAX))return false;}
+    else if((action==wm::ManagementAction::TradeSessionExchange || action==wm::ManagementAction::TradeSessionDismiss)){if(data.size()!=3 || !integer(data,"session",1,INT64_MAX) || !integer(data,"expected_revision",1,INT64_MAX))return false;}
     else if(!integer(data,"session",1,INT64_MAX) || (action==wm::ManagementAction::TradeSessionRead ? (data.size()!=4 || !integer(data,"expected_revision",1,INT64_MAX) || !integer(data,"columns",1,512)):data.size()!=2))return false;
     error=String();return true;
 }
 bool readTradeSession(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.tradeSession;
     if(request.action==wm::ManagementAction::TradeSessionOpen){q.depotId=int32_t(int64_t(data["depot_id"]));q.choiceToken=uint64_t(int64_t(data["choice_token"]));}
-    else {q.session=uint64_t(int64_t(data["session"]));if(request.action==wm::ManagementAction::TradeSessionExchange)q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));if(request.action==wm::ManagementAction::TradeSessionRead){q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.columns=uint16_t(int64_t(data["columns"]));}}
+    else {q.session=uint64_t(int64_t(data["session"]));if((request.action==wm::ManagementAction::TradeSessionExchange || request.action==wm::ManagementAction::TradeSessionDismiss))q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));if(request.action==wm::ManagementAction::TradeSessionRead){q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.columns=uint16_t(int64_t(data["columns"]));}}
     return true;
 }
 bool readTradeCatalog(const Dictionary& data,wm::ManagementRequest& request,String&) {
@@ -1376,7 +1376,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::TradeSessionExchange)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::TradeSessionDismiss)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

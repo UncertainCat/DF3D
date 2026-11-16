@@ -370,7 +370,8 @@ static_assert(static_cast<int>(wm::ManagementAction::TradeSessionClose) == stati
 static_assert(static_cast<int>(wm::ManagementAction::TradeDraftRead) == static_cast<int>(df3d::mirror::ManagementAction::TradeDraftRead));
 static_assert(static_cast<int>(wm::ManagementAction::TradeDraftApply) == static_cast<int>(df3d::mirror::ManagementAction::TradeDraftApply));
 static_assert(static_cast<int>(wm::ManagementAction::TradeSessionExchange) == static_cast<int>(df3d::mirror::ManagementAction::TradeSessionExchange));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 142);
+static_assert(static_cast<int>(wm::ManagementAction::TradeSessionDismiss) == static_cast<int>(df3d::mirror::ManagementAction::TradeSessionDismiss));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 143);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -720,3 +721,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionClose) == df
 static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeDraftRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeDraftRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeDraftApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeDraftApply));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionExchange) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeSessionExchange));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionDismiss) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeSessionDismiss));

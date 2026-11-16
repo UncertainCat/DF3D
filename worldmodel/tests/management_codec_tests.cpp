@@ -50,7 +50,7 @@ TEST_CASE("Trade draft requests reject mixed authority and preserve wide identit
     wm::ManagementRequest r;r.action=operation<0?wm::ManagementAction::TradeDraftRead:wm::ManagementAction::TradeDraftApply;
     auto& q=r.tradeDraft;q.session=UINT64_C(9007199254740993);q.expectedRevision=9;q.side=0;
     if(operation<0){q.offset=3;q.limit=4;}else{q.operation=wm::TradeDraftOperation(operation);if(operation==0 || operation==5)q.item=992;if(operation==1 || operation==4){q.type=1;q.subtype=-1;}if(operation==6)q.query="IRON";}
-    if(fault==1)q.session=0;if(fault==2)q.expectedRevision=0;if(fault==3)q.side=2;if(fault==4){if(operation<0)q.limit=65;else q.limit=1;}if(fault==5)q.session=UINT64_MAX;if(fault==6){if(operation<0)q.query="mixed";else q.offset=1;}
+    if(fault==1)q.session=0;if(fault==2)q.expectedRevision=0;if(fault==3)q.side=operation<0?3:2;if(fault==4){if(operation<0)q.limit=65;else q.limit=1;}if(fault==5)q.session=UINT64_MAX;if(fault==6){if(operation<0)q.query="mixed";else q.offset=1;}
     flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
     CAPTURE(operation);CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
     if(!fault){REQUIRE(value->trade_draft());CHECK(value->trade_draft()->session()==q.session);}
@@ -6073,5 +6073,27 @@ TEST_CASE("Trade exchange receipts carry authority only and conversation reads a
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);state.add_action(wire::ManagementAction::TradeSessionRead);state.add_trade_session(result);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
     if(!fault){auto decoded=codec::decodeState(value);REQUIRE(decoded.tradeSession->conversation);CHECK(decoded.tradeSession->conversation->requestedItems==ids);CHECK(decoded.tradeSession->conversation->counterOffer);}
+  }
+}
+
+TEST_CASE("Counteroffer pages are read-only and Okay is revision-bound") {
+  for(auto action:{wm::ManagementAction::TradeDraftRead,wm::ManagementAction::TradeDraftApply}){
+    wm::ManagementRequest r;r.action=action;r.tradeDraft.session=91;r.tradeDraft.expectedRevision=4;r.tradeDraft.side=2;
+    if(action==wm::ManagementAction::TradeDraftRead)r.tradeDraft.limit=16;else r.tradeDraft.item=10;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* wireRequest=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*wireRequest))==(action==wm::ManagementAction::TradeDraftApply));
+  }
+  for(int fault=0;fault<5;++fault){
+    flatbuffers::FlatBufferBuilder b;auto empty=b.CreateString("");auto text=b.CreateString("synthetic");
+    std::vector<flatbuffers::Offset<wire::TradeDraftRow>> rows;
+    rows.push_back(wire::CreateTradeDraftRow(b,false,false,10,-1,2,-1,0,0,text,10,1,text,text,wire::TradeItemDisposition::Local,0,fault==3,empty));
+    auto heading=b.CreateVectorOfStrings(std::vector<std::string>(fault==2?3:2,"synthetic"));
+    auto page=wire::CreateTradeDraftPage(b,fault==1?0:2,0,1,empty,b.CreateVector(rows),heading,fault==4?0:text);
+    auto draft=wire::CreateTradeDraftState(b,wire::TradeSessionOutcome::Available,91,4,page);
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_status(wire::ManagementStatus::Ok);root.add_action(wire::ManagementAction::TradeDraftRead);root.add_trade_draft(draft);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*state))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeState(state);b.Clear();REQUIRE(decoded.tradeDraft->page);CHECK(decoded.tradeDraft->page->heading.size()==2);CHECK(decoded.tradeDraft->page->dismiss=="synthetic");}
   }
 }

@@ -82,7 +82,7 @@ def outputs():
         checks += "".join(f"static_assert(static_cast<int>(wm::{name}::{n}) == static_cast<int>(df3d::mirror::{name}::{n}));\n" for n,v in rows)
         checks += f"static_assert(sizeof(df3d::mirror::EnumValues{name}()) / sizeof(df3d::mirror::{name}) == {len(rows)});\n"
     # Semantic mutation policy is centralized here and emitted with named values.
-    mutations=("TradeSessionExchange","TradeDraftApply","TradeSessionOpen","TradeSessionClose","DepotGoodsCommit","SelectionArtApply","JusticeInterrogate","JusticeConvict","NoblesSymbolsRetire","NoblesSymbolsApply","NoblesSymbolNameEdit","NoblesSymbolsContinue","NoblesAccounting","NoblesCommit","PlacesApply","TasksApply","StocksItemApply","StocksGroupApply","StoneUseApply","KitchenApply","ChoresApply","HunterAmmunitionApply","StandingOrdersSet","WorkDetailSettingsToggle","JobSettingsApply","ResidentsSpecialize","CreatureAnimalEdit","CreatureLocationRemove","CreatureWorkshopRemove","CreatureExpelApply","CreatureHeaderEdit","Place","Remove","RemoveConstruction","AreaCreate","AreaUpdate","AreaDelete","AreaLink",
+    mutations=("TradeSessionDismiss","TradeSessionExchange","TradeDraftApply","TradeSessionOpen","TradeSessionClose","DepotGoodsCommit","SelectionArtApply","JusticeInterrogate","JusticeConvict","NoblesSymbolsRetire","NoblesSymbolsApply","NoblesSymbolNameEdit","NoblesSymbolsContinue","NoblesAccounting","NoblesCommit","PlacesApply","TasksApply","StocksItemApply","StocksGroupApply","StoneUseApply","KitchenApply","ChoresApply","HunterAmmunitionApply","StandingOrdersSet","WorkDetailSettingsToggle","JobSettingsApply","ResidentsSpecialize","CreatureAnimalEdit","CreatureLocationRemove","CreatureWorkshopRemove","CreatureExpelApply","CreatureHeaderEdit","Place","Remove","RemoveConstruction","AreaCreate","AreaUpdate","AreaDelete","AreaLink",
         "ProductionQueue","ProductionJobEdit","FarmEdit","WorkOrderCreate","WorkOrderUpdate",
         "WorkOrderDelete","WorkOrderCondition","WorkDetailMembership","WorkDetailMode","WorkDetailCreate","WorkDetailDelete",
         "WorkDetailEdit","CitizenWorkScope","DismissAlert","TradeUpdate","TradeBring")
@@ -93,7 +93,7 @@ def outputs():
         return {domain: {n for n, v in actions.items() if actions[first] <= v <= actions[last]}
                 for domain, (first, last) in ranges.items()}
     domains, retired = members(DOMAINS), members(RETIRED)
-    domains["trade_session"].add("TradeSessionExchange")
+    domains["trade_session"].update(("TradeSessionExchange","TradeSessionDismiss"))
     domains["construction"].add("ConstructionMaterials")
     domains["citizens"].update({"WorkDetailCreate", "WorkDetailDelete", "WorkDetailEdit", "CitizenWorkScope"})
     domains["reports"].update({"PrepareAlertDismissal", "DismissAlert"})

@@ -22,7 +22,10 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Current management protocol244 adds the revision-bound TradeSessionExchange
+Current management protocol245 adds revision-bound TradeSessionDismiss and
+read-only counteroffer pages (TradeDraftRead side2), carrying native headings
+and Okay text. Side2 never accepts selection edits. Old recordings cannot
+synthesize counteroffer pages or dismissal receipts. Protocol244 adds the revision-bound TradeSessionExchange
 action and requires pointer-free conversation facts on successful session reads.
 Exchange outcomes are never automatically replayed; old recordings must not
 synthesize conversation state or exchange receipts. Protocol243 requires a bounded header width on TradeSessionRead
@@ -46,7 +49,7 @@ source-bound child pages. Protocol235 added native appraisal knowledge and forma
 depot item values. Protocol234 added revision-bound checkbox drafts and retained
 sorting choices to goods reads. Protocol233 introduced whole-batch
 commits and explicit outcomes;232 introduced owned goods reads.
-Both peers use `Local\df3d_management_v244`; rebuild bridge and viewer together.
+Both peers use `Local\df3d_management_v245`; rebuild bridge and viewer together.
 Older recordings must not synthesize goods snapshots or commit receipts.
 Migration guidance is in ENGINEERING.md's trade draft/session, caravan catalog and depot goods transport sections.
 

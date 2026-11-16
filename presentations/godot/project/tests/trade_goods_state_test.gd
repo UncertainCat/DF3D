@@ -60,7 +60,16 @@ func run() -> void:
 	draft_reply(service,state,page_value(0));draft_reply(service,state,page_value(1),-1,{},false)
 	var counter:=conversation_value();counter.counter_offer=true;counter.dialogue=24;counter.requested_items=[992]
 	session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":2,"footer":footer_value(),"header":header_value(),"conversation":counter})
-	check(state.goods_ready() and state.conversation==counter,"Exchange conversation was not published with refreshed goods")
+	check(not state.goods_ready() and state.conversation!=counter,"Counteroffer summary published before its page")
+	var counter_page:=page_value(2);counter_page.rows[0].id=992;counter_page.rows[0].expanded=false
+	counter_page.heading=["Synthetic heading","Synthetic second line"];counter_page.dismiss="Synthetic Okay"
+	draft_reply(service,state,counter_page)
+	check(state.goods_ready() and state.conversation==counter and state.counter_page==counter_page,"Exchange conversation was not published with refreshed goods")
+	state.dismiss_counteroffer();pending=state.ticket;state.dismiss_counteroffer()
+	check(service.calls[pending].intent.action==C.ManagementAction.TradeSessionDismiss and state.ticket==pending,"Duplicate Okay submitted")
+	session_reply(service,pending,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":3})
+	draft_reply(service,state,page_value(0));draft_reply(service,state,page_value(1))
+	check(state.goods_ready() and state.counter_page.is_empty() and state.revision==3,"Okay did not refresh and clear the pane")
 	state.exchange();pending=state.ticket
 	session_reply(service,pending,{"outcome":C.TradeSessionOutcome.Unknown,"session":0,"revision":0},{"outcome":"unknown"})
 	state.exchange();check(state.phase==Goods.Phase.Unknown and state.ticket==0 and service.next==pending,"Uncertain exchange was replayed")

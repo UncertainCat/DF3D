@@ -27,6 +27,12 @@ func completed(wrong_flag:=false) -> void:
 		"edit":{"item_id":1000,"farm_operation":C.FarmOperation.ItemHidden,"value":1}})
 
 func run() -> void:
+	var web_look: Dictionary={"material_token":"CREATURE:SPIDER_CAVE:SILK","subtype_raw":"","color_token":"","stack":1,"flags":64,"web":{"pattern":3,"thick":false}}
+	check(ItemModel._valid_appearance(web_look,57),"Native web appearance rejected")
+	web_look.web.pattern=4;check(not ItemModel._valid_appearance(web_look,57),"Invalid web pattern accepted")
+	web_look.web.pattern=0;check(not ItemModel._valid_appearance(web_look,7),"Web facts accepted for another item type")
+	web_look.flags=0;check(not ItemModel._valid_appearance(web_look,57),"Web facts accepted on ordinary thread")
+	web_look.erase("web");check(ItemModel._valid_appearance(web_look,57),"Legacy unknown web facts rejected")
 	setup();model.item_id=1000
 	var bed_look={"material_token":"PLANT:OLIVE:WOOD","subtype_raw":"","color_token":"BROWN","stack":1,"flags":0,"bedding":{"sheet":1,"pillow":2,"base_color":"BROWN","sheet_color":"RED"}}
 	check(model._valid_appearance(bed_look,8),"Native bedding facts rejected")

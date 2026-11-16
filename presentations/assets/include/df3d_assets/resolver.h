@@ -165,6 +165,7 @@ std::string buildingLayoutName(wm::BuildingKind kind, uint16_t subtype, std::str
 struct DoorItemFacts { bool open=false, forbidden=false;uint8_t wear=0; };
 
 struct ItemQuery {
+  int8_t webPattern=-1,webThick=-1; // Native position-selected web appearance; paired unknown for legacy callers.
   int8_t bucketLiquid=-1; // Unknown versus known absence/presence of the native-selected liquid.
   std::string_view bucketLiquidColor;
   int8_t coffinUnused=-1; // Native installed-coffin state; unknown retains legacy artwork.

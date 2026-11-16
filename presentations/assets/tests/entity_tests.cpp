@@ -878,7 +878,7 @@ TEST_CASE("items: corpse pieces, skeletons and webs resolve to DF's tiles") {
     CHECK(std::string(r.rule) == "creature.layered");
     CHECK(!r.bodyPart);
   }
-  SUBCASE("webs pick one of the four harmless tiles by id; plain thread is a spool") {
+  SUBCASE("legacy webs retain their fallback; owned native patterns override item ID") {
     ItemSprite r = resolveItem(idx, q(wm::ItemKind::Thread, "CREATURE:SPIDER_CAVE:SILK", 0, 4, wm::kItemWeb));
     CHECK(r.found);
     CHECK(std::string(r.rule) == "web.harmless");
@@ -887,6 +887,13 @@ TEST_CASE("items: corpse pieces, skeletons and webs resolve to DF's tiles") {
     CHECK(r.sprite == at(idx, "ITEM_WEBS", 3, 0));
     r = resolveItem(idx, q(wm::ItemKind::Thread, "CREATURE:SPIDER_CAVE:SILK", 0, 7, wm::kItemWeb | wm::kItemForbidden));
     CHECK(r.sprite == at(idx, "ITEM_WEBS", 3, 0));
+    for(int pattern=0;pattern<4;++pattern) {
+      auto owned=q(wm::ItemKind::Thread, "CREATURE:SPIDER_CAVE:SILK", 0, 7, wm::kItemWeb);
+      owned.webPattern=int8_t(pattern);owned.webThick=0;
+      r=resolveItem(idx,owned);CHECK(r.sprite==at(idx,"ITEM_WEBS",pattern,0));
+      owned.webThick=1;r=resolveItem(idx,owned);
+      CHECK(r.sprite==at(idx,"ITEM_WEBS",pattern,1));CHECK(std::string(r.rule)=="web.thick");
+    }
     r = resolveItem(idx, q(wm::ItemKind::Thread, "PLANT:ROPE_REED:THREAD", 0, 7));
     CHECK(std::string(r.rule) == "thread");
     CHECK(r.sprite == at(idx, "ITEM_CLOTH", 0, 0));

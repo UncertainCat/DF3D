@@ -166,6 +166,8 @@ inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t 
   if(a.cage_material_family() < -1 || a.cage_material_family()>2 || a.cage_occupant_entity() < -1 || a.cage_occupant_entity()>2 || a.cage_occupant_id() < -1 || (a.cage_solid_color() && a.cage_solid_color()->size()>128))return false;
   if(a.cage_material_family()==-1) {if(a.cage_occupant_entity()!=-1 || a.cage_occupant_id()!=-1 || (a.cage_solid_color() && a.cage_solid_color()->size()))return false;}
   else if(type!=16 || a.cage_occupant_entity()<0 || (a.cage_occupant_entity()==0 ? a.cage_occupant_id()!=-1 : a.cage_occupant_id()<0))return false;
+  const bool webUnknown=a.web_pattern()==-1 && a.web_thick()==-1;
+  if(!webUnknown && (type!=57 || !(a.flags()&64) || a.web_pattern()<0 || a.web_pattern()>3 || a.web_thick()<0 || a.web_thick()>1))return false;
   const bool grateUnknown=a.grate_wall()==-1 && a.grate_open()==-1;
   if(!grateUnknown && (type!=79 || a.grate_wall()<0 || a.grate_wall()>1 || a.grate_open()<0 || a.grate_open()>1))return false;
   if(a.floodgate_open() < -1 || a.floodgate_open()>1 || (type!=7 && a.floodgate_open()!=-1))return false;
@@ -190,8 +192,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 240;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v240";
+inline constexpr uint32_t kManagementVersion = 241;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v241";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;

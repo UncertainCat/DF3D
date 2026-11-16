@@ -8,6 +8,7 @@
 #include "item_uses_native.h"
 #include "item_legwear_native.h"
 #include "item_craft_native.h"
+#include "item_web_native.h"
 #include "df/building_stockpilest.h"
 #include "df/building_floodgatest.h"
 #include "df/building_grate_wallst.h"
@@ -396,6 +397,10 @@ inline std::optional<bool> itemCoffinUnused(df::item* item) {
 inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     if(!item)return std::nullopt;
     ItemInspectionAppearance appearance;
+    if(item->getType()==df::item_type::THREAD && item->flags.bits.spider_web) {
+        const auto web=itemWebAppearance(item);if(!web)return std::nullopt;
+        appearance.webPattern=web->pattern;appearance.webThick=web->thick;
+    }
     if(item->getType()==df::item_type::BED) {auto facts=df3d_bed::facts(item);if(facts.sheet<0)return std::nullopt;appearance.bedding=std::move(facts);}
     if(item->getType()==df::item_type::CORPSE) {
         df3d_appearance::Result recipe;

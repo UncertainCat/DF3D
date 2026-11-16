@@ -42,7 +42,7 @@ Ref<Texture2D> Df3dWorld::ammunition_icon(const Dictionary& appearance,int64_t i
 }
 Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,bool genericGroup,int64_t itemId,bool sheet,bool diagonalAmmo) {
     if(!assets_ || itemType<0 || itemType>=int(wm::ItemKind::BoltThrowerParts) ||
-       appearance.size()!=5+int(appearance.has("grate"))+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("coffin_unused"))+int(appearance.has("floodgate_open"))+int(appearance.has("door"))+int(appearance.has("bucket_liquid"))+int(appearance.has("cage"))+int(appearance.has("restraint"))+int(appearance.has("portrait"))+int(appearance.has("corpse_selector"))+int(appearance.has("legwear_selector"))+int(appearance.has("craft_gem_color"))+int(appearance.has("craft_soft_material")))return {};
+       appearance.size()!=5+int(appearance.has("web"))+int(appearance.has("grate"))+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("coffin_unused"))+int(appearance.has("floodgate_open"))+int(appearance.has("door"))+int(appearance.has("bucket_liquid"))+int(appearance.has("cage"))+int(appearance.has("restraint"))+int(appearance.has("portrait"))+int(appearance.has("corpse_selector"))+int(appearance.has("legwear_selector"))+int(appearance.has("craft_gem_color"))+int(appearance.has("craft_soft_material")))return {};
     if(itemId < -1 || itemId>INT32_MAX)return {};
     if(appearance.has("legwear_selector")) {
         if(itemType!=60 || appearance["legwear_selector"].get_type()!=Variant::DICTIONARY)return {};
@@ -55,6 +55,16 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     if(appearance.has("coffin_unused") && (itemType!=21 || appearance["coffin_unused"].get_type()!=Variant::BOOL))return {};
     if(appearance.has("artifact_mood") && (itemType!=24 || appearance["artifact_mood"].get_type()!=Variant::BOOL))return {};
     if(appearance.has("floodgate_open") && (itemType!=7 || appearance["floodgate_open"].get_type()!=Variant::BOOL))return {};
+    int8_t webPattern=-1,webThick=-1;
+    if(appearance.has("web")) {
+        if(itemType!=57 || appearance["web"].get_type()!=Variant::DICTIONARY ||
+           appearance["flags"].get_type()!=Variant::INT || !(int64_t(appearance["flags"])&64))return {};
+        const Dictionary value=appearance["web"];
+        if(value.size()!=2 || !value.has("pattern") || value["pattern"].get_type()!=Variant::INT ||
+           !value.has("thick") || value["thick"].get_type()!=Variant::BOOL)return {};
+        const int64_t pattern=value["pattern"];if(pattern<0 || pattern>3)return {};
+        webPattern=int8_t(pattern);webThick=bool(value["thick"])?1:0;
+    }
   int8_t grateWall=-1,grateOpen=-1;
     if(appearance.has("grate")) {
         if(itemType!=79 || appearance["grate"].get_type()!=Variant::DICTIONARY)return {};
@@ -268,6 +278,7 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     }
     df3d::assets::ItemQuery query;query.kind=wm::ItemKind(itemType+1);query.material=materialToken;
     if(appearance.has("coffin_unused"))query.coffinUnused=bool(appearance["coffin_unused"])?1:0;
+    query.webPattern=webPattern;query.webThick=webThick;
     query.grateWall=grateWall;query.grateOpen=grateOpen;
     query.diagonalAmmo=diagonalAmmo;query.door=door;query.bucketLiquid=bucketLiquid;query.bucketLiquidColor=bucketLiquidColor;query.craftGemColor=craftGemColor;query.craftSoftMaterial=craftSoftMaterial;
     if(appearance.has("floodgate_open"))query.floodgateOpen=bool(appearance["floodgate_open"])?1:0;
@@ -289,8 +300,10 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     // Native c83890 dispatch81 -> c87954 returns the installed millstone tile
     // directly, without the material-color compositor used by other items.
     const bool rawMillstone=query.kind==wm::ItemKind::Millstone;
-    const int palette=rawSlab || diagonalAmmo || rawMillstone ? -1 : (nativeBarrel || colorToken.empty() ? resolved.paletteRow : assets_->index.paletteRow(colorToken));
-    if(!colorToken.empty() && palette<0 && !rawSlab && !diagonalAmmo && !nativeBarrel && !rawMillstone)return {};
+    // c7e5e2/c7e5ef return the installed web tile directly via c8324e.
+    const bool rawWeb=query.kind==wm::ItemKind::Thread && webPattern>=0;
+    const int palette=rawSlab || diagonalAmmo || rawMillstone || rawWeb ? -1 : (nativeBarrel || colorToken.empty() ? resolved.paletteRow : assets_->index.paletteRow(colorToken));
+    if(!colorToken.empty() && palette<0 && !rawSlab && !diagonalAmmo && !nativeBarrel && !rawMillstone && !rawWeb)return {};
     const int slot=slotFor(resolved.sprite.page,palette,false);
     const TextureSlot* texture=slot>=0?spriteResources_.slots.find(slot):nullptr;
     if(!texture || texture->texture.is_null())return {};

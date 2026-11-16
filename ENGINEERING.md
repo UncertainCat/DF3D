@@ -1,3 +1,23 @@
+## Web item appearance transport migration
+
+Management protocol241 adds paired optional web pattern/thickness facts to item
+inspection. The pinned native c7e552..c7e5fb selector derives a seed from item
+position and world map region coordinates; native2471c0 consumes an owned local
+seed and writes only that seed. The provider never reads or writes the native
+renderer seed or graphics tables. The item thread's is_thick supplies thickness.
+Both peers must be rebuilt together. Old records retain unknown facts; map
+callers without inspection facts retain their existing artwork fallback.
+The transport rejects incomplete pairs, patterns outside0..3, nonboolean
+thickness and facts on non-web/non-thread items. DF53.16 pins are unchanged.
+Protected204339 on2026-11-15 reads20 item appearances through the actual
+transport and trade goods controller, including two thick webs with native
+pattern3. Owned DF47280 closes unsaved and the source save is unchanged; the
+headless log is clean. Root, bridge and extension builds, all19 root checks,
+and item-sheet/goods/catalog headless checks pass. Native routine hashes and
+world/item field offsets are pinned. The earlier204214 run caught a missing
+Godot appearance-validator update; the successful rerun includes that fix.
+This verifies the appearance transport, not a complete trade workflow.
+
 ## Trade row facts transport migration
 
 Management protocol240 requires native trade row disposition, contained-item
@@ -6,8 +26,8 @@ priority: offered, stolen, fortress-side export restriction, imported, local.
 Native cb2210 supplies the export restriction; container count follows resolved
 CONTAINS_ITEM references when the container flag is set, and native number/text
 routines supply the caption. No renderer/menu scratch is used. Godot maps these
-facts to native artwork/colors; it does not reconstruct restrictions. Both peers
-use240 and require rebuilding together. Older records cannot invent row facts.
+facts to native artwork/colors; it does not reconstruct restrictions. That migration used240; current peers use241 and require
+rebuilding together. Older records cannot invent row facts.
 DF53.16 compatibility remains unchanged.
 
 Protected202013 on2026-11-15 verifies87 draft receipts and11 states through the
@@ -38,7 +58,7 @@ expansion, item identities, captions, appraisal values and weight captions.
 Selection accepts only item/group/all/filter/expansion intents; native routines
 update the owned checkpoint and advance its revision. No exchange occurs.
 Stale requests reject without changing the draft; source changes retire it.
-Unknown apply outcomes must not be replayed. That migration used239; current peers use240 and require a
+Unknown apply outcomes must not be replayed. That migration used239; current peers use241 and require a
 bridge/viewer rebuild; DF53.16 pins remain unchanged. Older recordings cannot
 synthesize draft state. Public trade remains hidden pending complete integration.
 
@@ -85,7 +105,7 @@ close accepts only a session. Results distinguish Available, Rejected, Retired,
 Closed and Unknown. Successful open carries native entry captions and trader
 facts; reads validate ownership/source without repeating appraisal. Protocol239 above adds goods projections and selection; negotiation remains
 unimplemented. No native index/address
-enters the model API. That migration used238; current peers and schema defaults use240, requiring a bridge
+enters the model API. That migration used238; current peers and schema defaults use241, requiring a bridge
 and viewer rebuild together; DF53.16 compatibility pins are unchanged.
 
 The management connection owns the composed native catalog/session provider.
@@ -147,7 +167,7 @@ duplicate entities are valid, duplicate/zero/out-of-range tokens are not.
 Replies reject missing payloads, invalid depot/entity IDs, excess rows/strings
 and payload budgets. Oversized encoded replies reject explicitly rather than
 timing out at the mailbox. No choices or tokens are synthesized for old records.
-That migration used237; current peers use240 as described above. DF53.16 pins stay fixed.
+That migration used237; current peers use241 as described above. DF53.16 pins stay fixed.
 
 The native management handler owns a catalog separate from diagnostic probes,
 resolves a revealed depot, and refreshes it through the qualified native catalog
@@ -198,7 +218,7 @@ expected goods revision; pages carry at most64 children. Replies identify the
 parent, offset and total, and retain native child IDs/types, nested counts,
 descriptions, values, appraisal text and prohibition facts. A page total must
 agree with its parent's group count. Child IDs do not authorize hauling actions.
-That migration used236; current peers use240 as described above. DF53.16 pins are unchanged.
+That migration used236; current peers use241 as described above. DF53.16 pins are unchanged.
 Older recordings cannot invent container counts or pages. Staged viewer
 integration and its remaining acceptance limits are documented below.
 

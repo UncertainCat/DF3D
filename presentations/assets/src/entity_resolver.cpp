@@ -1472,13 +1472,13 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
       return single("ITEM_PLANT_GROWTH", "growth.generic");
     case ItemKind::SkinTanned: return single("ITEM_TANNED_SKIN", "leather");
     case ItemKind::Thread:
-      // A THREAD item lying as a spider's web (wm::kItemWeb) is one
-      // of DF's four harmless web tiles, picked by the item id so a web
-      // keeps its look; ITEM_WEB_THICK is not distinguishable from the
-      // flag.
+      // Owned item inspection supplies DF's position-selected pattern and
+      // thickness. Older map recordings retain their existing fallback.
       if (q.flags & wm::kItemWeb) {
-        if (const SpriteRef* w = idx.tile("ITEM_WEB_HARMLESS", static_cast<size_t>(q.id % 4)))
-          return done(w, "web.harmless");
+        const bool known=q.webPattern>=0 && q.webPattern<=3 && q.webThick>=0 && q.webThick<=1;
+        const bool thick=known && q.webThick==1;
+        if (const SpriteRef* w = idx.tile(thick?"ITEM_WEB_THICK":"ITEM_WEB_HARMLESS", known?size_t(q.webPattern):size_t(q.id%4)))
+          return done(w, thick?"web.thick":"web.harmless");
         return single("ITEM_THREAD", "web->thread");
       }
       return single("ITEM_THREAD", "thread");

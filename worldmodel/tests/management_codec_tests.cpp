@@ -5632,6 +5632,23 @@ TEST_CASE("carrier contents preserve absence and ordered complete facts") {
   }
 }
 
+TEST_CASE("web appearance preserves native pattern and thickness without fabricating old facts") {
+  for(int type:{57,7})for(int flags:{0,64})for(int wall:{-2,-1,0,1,2,3,4})for(int open:{-2,-1,0,1,2}) {
+    flatbuffers::FlatBufferBuilder b;const auto material=b.CreateString("INORGANIC:DOLOMITE"),empty=b.CreateString("");
+    wire::ItemInspectionAppearanceBuilder appearance(b);appearance.add_material_token(material);appearance.add_subtype_raw(empty);
+    appearance.add_color_token(empty);appearance.add_stack(1);appearance.add_flags(uint8_t(flags));appearance.add_web_pattern(int8_t(wall));appearance.add_web_thick(int8_t(open));
+    auto look=appearance.Finish();auto carrier=wire::CreateItemCarrier(b,1,7,type,b.CreateString("container"),look);
+    auto item=wire::CreateIndependentItemSnapshot(b,45,1,39,b.CreateString("item"),empty,empty,false,false,false,false,true,false,false,false,empty,empty,0,0,-1,carrier);
+    auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool valid=(wall==-1 && open==-1) || (type==57 && flags==64 && wall>=0 && wall<=3 && open>=0 && open<=1);
+    CHECK(bool(wire::validateManagementState(*value))==!valid);
+    if(valid){const auto a=codec::decodeProduction(value->production()).independentItem->snapshot->carrier->appearance;
+      CHECK(a->webPattern==wall);CHECK(a->webThick==open);}
+  }
+}
+
 TEST_CASE("grate appearance preserves paired native orientation and open facts") {
   for(int type:{79,7})for(int wall:{-1,0,1,2})for(int open:{-1,0,1,2}) {
     flatbuffers::FlatBufferBuilder b;const auto material=b.CreateString("INORGANIC:DOLOMITE"),empty=b.CreateString("");

@@ -138,6 +138,12 @@ local function record(label)
    end
   end
  end
+ if label=='speaker' and os.getenv('DF3D_DEPOT_TRADE_ART_WIRE')=='1' then
+  local file=assert(io.open(out..'/trade-goods-art-expected.json','w'));file:write(json.encode(row.projection_provider.display));file:close()
+  capture('trade-goods-art-wire')
+  file=assert(io.open(out..'/trade-goods-art-wire-result.json'));local observed=json.decode(file:read('*a'));file:close();assert(observed.success)
+  row.artwork_items=observed.count
+ end
  assert(df.global.world.frame_counter==frame and unit.flags1.whole==unit_flags and unit.job.current_job==old_job and b.trade_flags.whole==flags)
  return row
 end

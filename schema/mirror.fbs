@@ -1668,7 +1668,7 @@ table ItemContainerContentsFacts { container:bool; entries:[ItemContainerContent
 // craft_soft_material: -1 unknown; 0 non-soft; 1 THREAD_PLANT/LEATHER/SILK/YARN per native craft selector.
 // craft_gem_color: absent = unknown; empty = native selected no overlay; otherwise descriptor color token.
 // Valid only for craft types36-43 excluding ammunition39.
-table ItemInspectionAppearance { material_token:string; subtype_raw:string; color_token:string; stack:int32; flags:uint8; instrument_family:int8 = -1; instrument_placed:int8 = -1; contents:ItemContainerContentsFacts; floodgate_open:int8 = -1; door_open:int8 = -1; door_forbidden:int8 = -1; door_wear:int8 = -1; bucket_liquid:int8 = -1; bucket_liquid_color:string; cage_material_family:int8 = -1; cage_occupant_entity:int8 = -1; cage_occupant_id:int32 = -1; cage_solid_color:string; restraint_rope:int8 = -1; restraint_solid_color:string; portrait:SelectionAppearance; cage_occupant:SelectionAppearance; slab_engraving:int8 = -2; corpse_selector:SelectionAppearance; legwear_selector:SelectionAppearance; craft_gem_color:string; craft_soft_material:int8 = -1; artifact_mood:int8 = -1; coffin_unused:int8 = -1; bedding:BeddingFacts; grate_wall:int8 = -1; grate_open:int8 = -1; }
+table ItemInspectionAppearance { material_token:string; subtype_raw:string; color_token:string; stack:int32; flags:uint8; instrument_family:int8 = -1; instrument_placed:int8 = -1; contents:ItemContainerContentsFacts; floodgate_open:int8 = -1; door_open:int8 = -1; door_forbidden:int8 = -1; door_wear:int8 = -1; bucket_liquid:int8 = -1; bucket_liquid_color:string; cage_material_family:int8 = -1; cage_occupant_entity:int8 = -1; cage_occupant_id:int32 = -1; cage_solid_color:string; restraint_rope:int8 = -1; restraint_solid_color:string; portrait:SelectionAppearance; cage_occupant:SelectionAppearance; slab_engraving:int8 = -2; corpse_selector:SelectionAppearance; legwear_selector:SelectionAppearance; craft_gem_color:string; craft_soft_material:int8 = -1; artifact_mood:int8 = -1; coffin_unused:int8 = -1; bedding:BeddingFacts; grate_wall:int8 = -1; grate_open:int8 = -1; web_pattern:int8 = -1; web_thick:int8 = -1; }
 table ItemCarrier { kind:int8; id:int32 = -1; item_type:int32 = -1; name:string; appearance:ItemInspectionAppearance; }
 table ItemOwner { id:int32 = -1; name:string; }
 table ItemAmmunitionAssignment { kind:int8; squad_id:int32 = -1; caption:string (required); }
@@ -2634,7 +2634,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 240;
+  schema_version:uint32 = 241;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2712,7 +2712,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 240;
+  schema_version:uint32 = 241;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

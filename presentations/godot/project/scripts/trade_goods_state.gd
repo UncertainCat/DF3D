@@ -6,20 +6,64 @@ var offsets: Array[int]=[0,0]
 var limits: Array[int]=[16,16]
 var _pending_pages: Array=[{},{}]
 var _queued_filters: Dictionary={}
+var appearances: Dictionary={}
+var _inspection
+var _appearance_queue: Array=[]
+var _appearance_id: int=-1
 func configure(source) -> void:
 	super.configure(source)
 	if not session_opened.is_connected(_load_goods):session_opened.connect(_load_goods)
+	if service!=null:
+		_inspection=preload("res://scripts/item_sheet_state.gd").new();_inspection.configure(service)
+		_inspection.changed.connect(_inspection_changed)
+func dispose() -> void:
+	super.dispose()
+	if _inspection!=null:_inspection.dispose();_inspection=null
 func close() -> void:
 	pages=[{},{}];_pending_pages=[{},{}];offsets=[0,0];_queued_filters={}
+	appearances={};_retire_appearance()
 	super.close()
+func _retire_appearance() -> void:
+	_appearance_queue=[];_appearance_id=-1
+	if _inspection!=null:_inspection.close()
+func item_type(id: int) -> int:
+	for page in pages:
+		for row in page.get("rows",[]):
+			if not row.group and row.id==id:return row.type
+	return -1
+func request_appearances(ids: Array) -> void:
+	if not goods_ready() or _inspection==null or ids.size()>64:return
+	for id in ids:
+		if typeof(id)!=TYPE_INT or item_type(id)<0:return
+	for id in appearances.keys():
+		if item_type(id)<0:appearances.erase(id)
+	for id in ids:
+		if not appearances.has(id) and id!=_appearance_id and not _appearance_queue.has(id):_appearance_queue.append(id)
+	_next_appearance()
+func appearance_pending() -> bool:return _appearance_id>=0 or not _appearance_queue.is_empty()
+func _next_appearance() -> void:
+	if not goods_ready() or _inspection==null or _appearance_id>=0:return
+	while not _appearance_queue.is_empty() and item_type(_appearance_queue[0])<0:_appearance_queue.pop_front()
+	if _appearance_queue.is_empty():return
+	_appearance_id=_appearance_queue.pop_front();_inspection.open(_appearance_id)
+func _inspection_changed() -> void:
+	if _appearance_id<0 or not goods_ready() or _inspection.phase in [_inspection.Phase.Closed,_inspection.Phase.Reading]:return
+	var id:=_appearance_id;_appearance_id=-1
+	if item_type(id)>=0:
+		appearances[id]={}
+		if _inspection.phase==_inspection.Phase.Ready:
+			var value: Dictionary=_inspection.snapshot
+			if value.id==id and value.item_type==item_type(id) and value.has("appearance"):appearances[id]=value.appearance.duplicate(true)
+	changed.emit();_next_appearance()
 func goods_ready() -> bool:
 	return phase==Phase.Active and not pages[0].is_empty() and not pages[1].is_empty()
 func read_page(side: int,offset: int,limit: int) -> void:
 	if not goods_ready() or side<0 or side>1 or offset<0 or limit<1 or limit>64:return
-	offsets[side]=mini(offset,maxi(0,int(pages[side].total)-limit));limits[side]=limit
+	offsets[side]=mini(offset,maxi(0,int(pages[side].total)-1));limits[side]=limit
 	_load_goods()
 func _load_goods() -> void:
 	if phase!=Phase.Active or session<=0 or service==null:return
+	_retire_appearance()
 	phase=Phase.GoodsReading;_pending_pages=[{},{}];changed.emit()
 	if phase==Phase.GoodsReading:_read_side(0,0)
 func _read_side(side: int,offset: int) -> void:
@@ -34,7 +78,7 @@ func _read_side(side: int,offset: int) -> void:
 		var page: Dictionary=value.page
 		# A collapse/filter may reduce the list. Read its new size before asking
 		# for the retained offset, without exposing an intermediate page.
-		var target: int=mini(offsets[side],maxi(0,int(page.total)-limits[side]))
+		var target: int=mini(offsets[side],maxi(0,int(page.total)-1))
 		if offset!=target:offsets[side]=target;_read_side(side,target);return
 		offsets[side]=offset;_pending_pages[side]=page.duplicate(true)
 		if side==0:_read_side(1,0)
@@ -67,6 +111,7 @@ func _apply(side: int,operation: int,arguments: Dictionary) -> void:
 	var expected:=revision+1
 	var intent: Dictionary={"action":C.ManagementAction.TradeDraftApply,"session":session,"expected_revision":revision,"side":side,"operation":operation}
 	intent.merge(arguments);phase=Phase.Applying;changed.emit()
+	_retire_appearance()
 	if generation!=owner or phase!=Phase.Applying:return
 	ticket=service.submit("trade_draft",intent,func(received,result,_sent):
 		if owner!=generation or received!=ticket:return

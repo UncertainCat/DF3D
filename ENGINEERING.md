@@ -363,6 +363,28 @@ and owned sessions close unsaved. Native/render runs are serial30FPS, wire
 client headless, final stderr empty, GPU samples59–62C, and19 core checks pass.
 Evidence: completed_sheet_discovery_reference.depot_trade_artifact_seize_reference.
 
+### Gift of a populated container
+
+Protected092126 (native DF45828) and092249 (wire DF43448) on2026-11-16
+qualify offering the populated bin3148 as a gift. The oracle option
+`DF3D_DEPOT_TRADE_GIFT_CONTAINER=1` selects the native bin row and compares
+all native selection flags against the owned projection before acting.
+The bin and its ten steel bars receive identical ENTITY_ITEMOWNER and
+ENTITY_OFFERED references; all ten CONTAINED_IN_ITEM links remain3148.
+Complete tracked before/after snapshots match exactly, including item flags,
+stacks, positions, depot contents, caravan fields and history suppression.
+There are11 ownership transfers; the13 changed item snapshots additionally
+include two lazy weight-cache updates. Dialogue8 and the empty announcement
+match. The imported-item refusal check, actual composite Gift button, refresh,
+stale/closed rejection and session cleanup pass through the existing wire
+workflow. This extends ordinary-item Gift coverage to a populated container;
+it does not qualify caged creatures or every nested-container shape.
+
+Both owned sessions close unsaved with source preservation. Native graphics
+are serial30FPS and the wire client is headless; client stderr is empty,
+GPU samples58–60C, and19 core checks pass. Runtime/protocol247 are unchanged.
+Evidence: completed_sheet_discovery_reference.depot_trade_container_gift_reference.
+
 ## Owned Trade refusal checks
 
 The owned negotiation context evaluates DF's pinned31b252..31b615 branch order:

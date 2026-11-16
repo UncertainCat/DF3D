@@ -101876,6 +101876,32 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_container_gift_reference": {
+        "supported_df": "53.16 Steam24557528",
+        "native_run": "stockpile-storage-native-farm-discovery-20261116-092126",
+        "native_pid": 45828,
+        "wire_run": "stockpile-storage-native-farm-discovery-20261116-092249",
+        "wire_pid": 43448,
+        "container": 3148,
+        "ownership_transfer_count": 11,
+        "changed_item_snapshots": 13,
+        "contained_bars": 10,
+        "before_sha256": "7214182b4a01afd088eea6d7a3311c9b3e3affdd13dbd822e8a5f6f0afc0e4eb",
+        "after_sha256": "2942a10bbfcce37c7698723a9c4bf6c632a4e6d0bdc97c57910eda7392fd83ef",
+        "raw_snapshots_equal": true,
+        "dialogue": 8,
+        "announcement": [],
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "native_fps_cap": 30,
+        "wire_headless": true,
+        "client_stderr_empty": true,
+        "core_tests_passed": 19,
+        "limits": [
+          "Populated bin with ten bars; caged creatures and arbitrary nested containers not qualified by this fixture.",
+          "Paused controlled exchange; no departure simulation claim."
+        ]
+      },
       "depot_trade_refusal_effects_reference": {
         "supported_df": "53.16 Steam24557528",
         "native_run": "20261116-091507",

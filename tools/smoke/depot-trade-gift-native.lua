@@ -3,6 +3,7 @@
 local view,trade,click,capture,out=...
 local json=require('json')
 local artifact_case=os.getenv('DF3D_DEPOT_TRADE_ARTIFACT')=='1' or os.getenv('DF3D_DEPOT_TRADE_ARTIFACT')=='long'
+local container_case=os.getenv('DF3D_DEPOT_TRADE_GIFT_CONTAINER')=='1'
 local mode=os.getenv('DF3D_DEPOT_TRADE_GIFT');assert(mode=='native' or mode=='owned' or mode=='session' or mode=='wire')
 local history={};for _,id in ipairs(trade.mer.goods)do history[#history+1]=id end
 local tracked={}
@@ -29,41 +30,46 @@ local function snapshot()
   caravan={flags=c.flags.whole,mood=c.mood,haggle=c.haggle_fail_count,time=c.time_remaining,import_value=c.import_value,export_value_total=c.export_value_total,export_value_personal=c.export_value_personal,offer_value=c.offer_value}}
 end
 click(440,694);click(900,694)
-local bar
-for _,item in ipairs(trade.good[1])do if item:getType()==df.item_type.BAR then bar=item;break end end
-assert(bar,'Gift fixture needs the opened bin and a steel bar')
-click(932,418)
-for side=0,1 do for i,item in ipairs(trade.good[side])do assert(trade.goodflag[side][i].selected==(side==1 and item.id==bar.id),'Gift fixture selected the wrong item')end end
+local selected_item
+for _,item in ipairs(trade.good[1])do if item:getType()==(container_case and df.item_type.BIN or df.item_type.BAR)then selected_item=item;break end end
+assert(selected_item,'Gift fixture needs the opened bin and a steel bar')
+click(932,container_case and 382 or 418)
+local projected,projection_code=dfhack.run_command_silent('df3d','trade-projection-probe',tostring(trade.bld.id),'0','','',json.encode{{side=1,item=selected_item.id}})
+assert(projection_code==0,projected);local projection=json.decode(projected)
+for side=0,1 do for i,item in ipairs(trade.good[side])do
+ assert(projection.sides[side+1].items[i+1]==item.id and projection.sides[side+1].flags[i+1]==trade.goodflag[side][i].whole,'Gift selection differs from owned projection')
+ if not container_case then assert(trade.goodflag[side][i].selected==(side==1 and item.id==selected_item.id),'Gift fixture selected the wrong item')end
+end end
 local whole,fraction=trade.mer.total_capacity.whole,trade.mer.total_capacity.fraction
 trade.mer.total_capacity.whole=100000;trade.mer.total_capacity.fraction=0
 view:render(dfhack.getTickCount())
 local line=trade.talkline
-local imported=bar.flags.foreign;bar.flags.foreign=true
+local imported=selected_item.flags.foreign;selected_item.flags.foreign=true
 view:render(dfhack.getTickCount())
 local imported_before=snapshot()
 if mode=='native' then
  click(735,730)
 else
- local output,code=dfhack.run_command_silent('df3d','trade-gift-probe',tostring(trade.bld.id),'0','','',json.encode{{side=1,item=bar.id}})
+ local output,code=dfhack.run_command_silent('df3d','trade-gift-probe',tostring(trade.bld.id),'0','','',json.encode{{side=1,item=selected_item.id}})
  assert(code==0,output);local refusal=json.decode(output)
  assert(not refusal.executed and not refusal.effects_started and not refusal.unknown,output)
 end
 assert(trade.talkline==line and json.encode(snapshot())==json.encode(imported_before),'Imported Gift changed state')
-bar.flags.foreign=imported;view:render(dfhack.getTickCount())
+selected_item.flags.foreign=imported;view:render(dfhack.getTickCount())
 local artifact,artifact_ref,artifact_flag
 if artifact_case then
  assert(mode=='native' or mode=='wire','Artifact oracle qualifies native and wire modes')
  local artifacts=df.global.world.artifacts.all
- assert(#artifacts>0 and not bar.flags.artifact)
- artifact=df.artifact_record:new();artifact.id=artifacts[#artifacts-1].id+1;artifact.item=bar
+ assert(#artifacts>0 and not selected_item.flags.artifact)
+ artifact=df.artifact_record:new();artifact.id=artifacts[#artifacts-1].id+1;artifact.item=selected_item
  artifact.name:assign(artifacts[0].name)
  if os.getenv('DF3D_DEPOT_TRADE_ARTIFACT')=='long' then artifact.name.first_name=string.rep('Controlled artifact name for wrapping and scrolling ',14) end
  artifact.entity_claims:insert('#',trade.civ.id)
  artifacts:insert('#',artifact)
  artifact_ref=df.general_ref_is_artifactst:new();artifact_ref.artifact_id=artifact.id
- bar.general_refs:insert('#',artifact_ref);artifact_flag=bar.flags.artifact;bar.flags.artifact=true
+ selected_item.general_refs:insert('#',artifact_ref);artifact_flag=selected_item.flags.artifact;selected_item.flags.artifact=true
 end
-local result={mode=mode,item=bar.id,before=snapshot(),artifact_case=artifact_case}
+local result={mode=mode,item=selected_item.id,before=snapshot(),artifact_case=artifact_case,container_case=container_case}
 result.imported_gift_rejected=true
 for _,row in ipairs(result.before.items)do for _,ref in ipairs(row.refs)do assert(ref.kind~=df.general_ref_type.ENTITY_OFFERED,'Gift cleanup needs an unoffered fixture')end end
 local ok,err=xpcall(function()
@@ -82,7 +88,7 @@ local ok,err=xpcall(function()
 
   end
  elseif mode=='wire' then
-  local file=assert(io.open(out..'/trade-transfer-wire-expected.json','w'));file:write(json.encode({depot=trade.bld.id,side=1,intents={{side=1,item=bar.id}},dialogue=artifact_case and -1 or 8}));file:close()
+  local file=assert(io.open(out..'/trade-transfer-wire-expected.json','w'));file:write(json.encode({depot=trade.bld.id,side=1,intents={{side=1,item=selected_item.id}},dialogue=artifact_case and -1 or 8}));file:close()
   capture('trade-transfer-wire')
   file=assert(io.open(out..'/trade-transfer-wire-result.json'));local wire=json.decode(file:read('*a'));file:close();assert(wire.success,json.encode(wire))
   result.dialogue=wire.conversation.dialogue;result.counter_offer=wire.conversation.counter_offer;result.announcement=wire.conversation.announcement;result.wire=wire
@@ -94,16 +100,16 @@ local ok,err=xpcall(function()
   end
   local state=probe('open',trade.bld.id,0);assert(state.status==0)
   local id=state.session
-  state=probe('item',id,state.revision,1,bar.id);assert(state.status==0)
+  state=probe('item',id,state.revision,1,selected_item.id);assert(state.status==0)
   local selected_revision=state.revision
   state=probe('gift',id,selected_revision);assert(state.status==0 and state.exchange_status==0,json.encode(state))
   assert(state.revision==selected_revision+1)
   local refreshed=probe('read',id,state.revision)
   assert(refreshed.status==0 and refreshed.dialogue==8 and not refreshed.counter_offer and json.encode(refreshed.sides)==json.encode(state.sides),'Gift session did not survive refresh')
   local found=false
-  for _,item in ipairs(refreshed.sides[1].items)do if item==bar.id then found=true end end
+  for _,item in ipairs(refreshed.sides[1].items)do if item==selected_item.id then found=true end end
   assert(found,'Gift did not rebuild merchant goods')
-  for _,item in ipairs(refreshed.sides[2].items)do assert(item~=bar.id,'Gift remained in fortress goods')end
+  for _,item in ipairs(refreshed.sides[2].items)do assert(item~=selected_item.id,'Gift remained in fortress goods')end
   local after=snapshot()
   assert(probe('gift',id,selected_revision).exchange_status==1,'Stale Gift replayed')
   assert(json.encode(snapshot())==json.encode(after),'Stale Gift changed simulation')
@@ -114,7 +120,7 @@ local ok,err=xpcall(function()
   result.session={revision=state.revision,refreshed=true,stale_rejected=true,closed_rejected=true,sides=refreshed.sides}
   assert(trade.talkline==line and not trade.counter_offer,'Session Gift changed the native conversation')
  else
-  local output,code=dfhack.run_command_silent('df3d','trade-gift-probe',tostring(trade.bld.id),'0','','',json.encode{{side=1,item=bar.id}})
+  local output,code=dfhack.run_command_silent('df3d','trade-gift-probe',tostring(trade.bld.id),'0','','',json.encode{{side=1,item=selected_item.id}})
   assert(code==0,output);local response=json.decode(output)
   assert(response.available and response.executed and response.effects_started and response.rebuild and not response.unknown,output)
   result.dialogue=response.dialogue;result.counter_offer=response.counter_offer;result.announcement=response.announcement
@@ -132,7 +138,7 @@ local ok,err=xpcall(function()
  if artifact_case then assert(#result.announcement>0,'Artifact transfer produced no announcement');result.artifact_id=artifact.id end
  local changes=0
  for i,row in ipairs(result.after.items)do if json.encode(row)~=json.encode(result.before.items[i])then changes=changes+1 end end
- assert(changes>0 and bar.flags.trader,'Gift changed no ownership')
+ assert(changes>0 and selected_item.flags.trader,'Gift changed no ownership')
  result.changed_items=changes;result.success=true
 end,debug.traceback)
 -- Existing source cleanup restores ownership, positions and bin containment.
@@ -141,8 +147,8 @@ for _,item in pairs(tracked)do for i=#item.general_refs-1,0,-1 do local ref=item
  if ref:getType()==df.general_ref_type.ENTITY_OFFERED then item.general_refs:erase(i);ref:delete()end
 end end
 if artifact then
- for i=#bar.general_refs-1,0,-1 do if bar.general_refs[i]==artifact_ref then bar.general_refs:erase(i);break end end
- artifact_ref:delete();bar.flags.artifact=artifact_flag
+ for i=#selected_item.general_refs-1,0,-1 do if selected_item.general_refs[i]==artifact_ref then selected_item.general_refs:erase(i);break end end
+ artifact_ref:delete();selected_item.flags.artifact=artifact_flag
  local artifacts=df.global.world.artifacts.all;assert(artifacts[#artifacts-1]==artifact);artifacts:erase(#artifacts-1);artifact:delete()
 end
 trade.mer.total_capacity.whole=whole;trade.mer.total_capacity.fraction=fraction;trade.talkline=line

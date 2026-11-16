@@ -101876,6 +101876,75 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_announcement_scroll_reference": {
+        "df_version": "53.16",
+        "steam_build": "24557528",
+        "native_capture": "build/stockpile-storage-native-farm-discovery-20261116-081440",
+        "wire_capture": "build/stockpile-storage-native-farm-discovery-20261116-081541",
+        "native_df_pid": 41376,
+        "wire_df_pid": 45424,
+        "synthetic_prerequisites": "Artifact Gift fixture with a repeated first name to exercise native wrapping. Native supplies all announcement wording and line breaks.",
+        "announcement": [
+          "You honor The Rough Crystal with the presentation of Controlled ",
+          "Artifact Name For Wrapping And Scrolling Controlled Artifact Name ",
+          "For Wrapping And Scrolling Controlled Artifact Name For Wrapping ",
+          "And Scrolling Controlled Artifact Name For Wrapping And Scrolling ",
+          "Controlled Artifact Name For Wrapping And Scrolling Controlled ",
+          "Artifact Name For Wrapping And Scrolling Controlled Artifact Name ",
+          "For Wrapping And Scrolling Controlled Artifact Name For Wrapping ",
+          "And Scrolling Controlled Artifact Name For Wrapping And Scrolling ",
+          "Controlled Artifact Name For Wrapping And Scrolling Controlled ",
+          "Artifact Name For Wrapping And Scrolling Controlled Artifact Name ",
+          "For Wrapping And Scrolling Controlled Artifact Name For Wrapping ",
+          "And Scrolling Controlled Artifact Name For Wrapping And Scrolling  ",
+          "Searchedcall."
+        ],
+        "native_scroll": {
+          "above_thumb": 0,
+          "arrow_down": 1,
+          "arrow_up": 0,
+          "below_thumb": 5,
+          "initial": 0
+        },
+        "wire_effects_equal": true,
+        "wire_refresh_stale_closed_checks": true,
+        "header_pixel_equal": true,
+        "header_region": [
+          40,
+          64,
+          928,
+          132
+        ],
+        "divider_region": [
+          40,
+          196,
+          928,
+          12
+        ],
+        "scroll_capture_matches": [
+          "initial",
+          "below_thumb",
+          "above_thumb",
+          "arrow_down"
+        ],
+        "goods_local_y": 156,
+        "goods_height": 444,
+        "normal_composite_pixel_regression": true,
+        "close_resets_layout_and_scroll": true,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "fps_cap": 30,
+        "sampled_gpu_celsius": [
+          57,
+          63
+        ],
+        "limits": [
+          "1200x800 only",
+          "13 announcement lines with maximum five-row expansion",
+          "wheel and drag not independently observed",
+          "artifact Gift; other artifact transfer actions not qualified"
+        ]
+      },
       "depot_trade_announcement_reference": {
         "df_version": "53.16",
         "steam_build": "24557528",

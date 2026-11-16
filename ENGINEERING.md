@@ -385,8 +385,11 @@ Native36a9c0 creates the artifact-transfer text and wraps it at68 columns;
 renderer38628d..3863b8 reads these retained lines directly, without rewrapping
 for viewport width. Renderer3857c0..385804 expands the header by
 clamp(line_count-2,0,5) rows, and the announcement viewport holds3+extra rows.
-This expansion and its scrollbar remain unfinished in DF3D; do not expose Trade
-until long announcements and the remaining full-workflow gaps are addressed.
+DF3D applies that expansion to the header, mood line, divider and goods area.
+Its owned scrollbar preserves line position while the conversation remains
+active and resets when the announcement closes. Native arrows occupy the cells
+immediately outside the text viewport, at header-local656,12 with10 rows when
+expanded fully. Public Trade still awaits its remaining full-workflow gaps.
 
 Protected080653 (native DF44020) and080936 (wire DF4420) on2026-11-16 gift a
 controlled artifact261 attached to a steel bar. The fixture copies an existing
@@ -401,6 +404,24 @@ are serial30FPS, wire Godot is headless. Client/render stderr is clean. GPU
 samples59–61C include the post-render reading, not a measured peak. Bridge build
 and19 core checks pass. Evidence:
 completed_sheet_discovery_reference.depot_trade_announcement_reference.
+
+Protected081440 (native DF41376) and081541 (wire DF45424) on2026-11-16 extend
+the artifact Gift fixture with a long first name. Native supplies13 lines and
+expands the header by five rows. The owned transfer, refresh and stale/closed
+rejections pass; announcement and full tracked before/after effects equal the
+native reference. At1200x800 the complete928x132 header and shifted divider
+match native. Track clicks page0→5→0; arrow clicks step0→1→0; each captured
+scroll state matches the native header. These checks verify click paging and
+arrows, not wheel/drag or minimum dimensions. Ordinary Trade's full944x708
+panel remains pixel-exact against075110. Closing clears announcement scrolling
+and restores the ordinary layout in rendered/headless checks.
+
+Native sessions close unsaved/source-preserved, graphics run serially at30FPS,
+wire Godot is headless, and final client/render logs are clean. An initial render
+comparison differed only because its pointer still hovered over the scrollbar;
+matching the native capture's off-scrollbar pointer resolves those25/18 pixels.
+GPU samples are57–63C, including post-render readings. All19 core checks pass.
+Evidence: completed_sheet_discovery_reference.depot_trade_announcement_scroll_reference.
 
 ### Main-scene Trade ownership
 

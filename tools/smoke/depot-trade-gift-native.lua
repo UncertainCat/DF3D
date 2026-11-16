@@ -2,7 +2,7 @@
 -- protected sessions; neither session is saved.
 local view,trade,click,capture,out=...
 local json=require('json')
-local artifact_case=os.getenv('DF3D_DEPOT_TRADE_ARTIFACT')=='1'
+local artifact_case=os.getenv('DF3D_DEPOT_TRADE_ARTIFACT')=='1' or os.getenv('DF3D_DEPOT_TRADE_ARTIFACT')=='long'
 local mode=os.getenv('DF3D_DEPOT_TRADE_GIFT');assert(mode=='native' or mode=='owned' or mode=='session' or mode=='wire')
 local history={};for _,id in ipairs(trade.mer.goods)do history[#history+1]=id end
 local tracked={}
@@ -56,7 +56,9 @@ if artifact_case then
  local artifacts=df.global.world.artifacts.all
  assert(#artifacts>0 and not bar.flags.artifact)
  artifact=df.artifact_record:new();artifact.id=artifacts[#artifacts-1].id+1;artifact.item=bar
- artifact.name:assign(artifacts[0].name);artifact.entity_claims:insert('#',trade.civ.id)
+ artifact.name:assign(artifacts[0].name)
+ if os.getenv('DF3D_DEPOT_TRADE_ARTIFACT')=='long' then artifact.name.first_name=string.rep('Controlled artifact name for wrapping and scrolling ',14) end
+ artifact.entity_claims:insert('#',trade.civ.id)
  artifacts:insert('#',artifact)
  artifact_ref=df.general_ref_is_artifactst:new();artifact_ref.artifact_id=artifact.id
  bar.general_refs:insert('#',artifact_ref);artifact_flag=bar.flags.artifact;bar.flags.artifact=true
@@ -70,6 +72,15 @@ local ok,err=xpcall(function()
   result.dialogue=trade.talkline;result.counter_offer=trade.counter_offer;result.announcement={}
   for _,text in ipairs(trade.big_announce.text)do result.announcement[#result.announcement+1]=dfhack.df2utf(text.value)end
   capture('depot-trade-gift')
+  if os.getenv('DF3D_DEPOT_TRADE_ARTIFACT')=='long' then
+   assert(#result.announcement>8,'Long artifact name did not overflow the announcement viewport')
+   result.scroll={initial=trade.scroll_position_big_announce}
+   click(700,178);result.scroll.below_thumb=trade.scroll_position_big_announce;capture('depot-trade-announcement-down')
+   click(700,94);result.scroll.above_thumb=trade.scroll_position_big_announce;capture('depot-trade-announcement-up')
+   click(700,190);result.scroll.arrow_down=trade.scroll_position_big_announce;capture('depot-trade-announcement-arrow')
+   click(700,82);result.scroll.arrow_up=trade.scroll_position_big_announce
+
+  end
  elseif mode=='wire' then
   local file=assert(io.open(out..'/trade-transfer-wire-expected.json','w'));file:write(json.encode({depot=trade.bld.id,side=1,intents={{side=1,item=bar.id}},dialogue=artifact_case and -1 or 8}));file:close()
   capture('trade-transfer-wire')

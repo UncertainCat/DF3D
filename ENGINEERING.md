@@ -360,6 +360,41 @@ search text; native stores uppercase IRON. It is excluded from acceptance and
 its owned session also closed unsaved/source-preserved. No source-change,
 session retirement, negotiation or actual viewer workflow is qualified here.
 
+`trade_session_native.h` adds an internal selection-session owner around these
+checkpoints. Each open receives a monotonically increasing session token;
+accepted draft actions advance a revision, while reads do not. Wrong-session,
+outdated-revision and invalid-item requests cannot alter a current draft.
+Close only affects the matching session. Every access resolves the depot and
+goods afresh, checks the epoch and selection source, and restores owned native
+storage for that operation. A changed source or missing trader retires the
+binding. Native map/world teardown resets the diagnostic owner without rewinding
+its token counter. No native pointers survive in the stored session.
+
+The selection source binds ordered caravan pointer identities through a local
+hash, the diagnostic caravan index, trader/entity IDs, unloading/speaker state,
+caravan appraisal history, ordered item identity/type/subtype/containment,
+stack counts, semantic item flags and native search descriptions. Lazy weight
+cache validity is excluded. This fingerprint covers selection/filter freshness,
+not exchange prices, ownership transfer or a proof of anonymous caravan lifetime
+under allocator reuse. Public transport must provide an opaque caravan catalog
+identity and connection retirement; the diagnostic index must not become the
+public selector. Appraisal remains an explicit separate entry operation.
+
+Protected185111 on2026-11-15 verifies the persistent diagnostic owner across
+separate calls in one paused session. Ten native comparisons cover open,
+selection, search/clear, stable reads and reopening. Stale revision and invalid
+item actions reject without changing the draft; reopening issues a new token
+and rejects old close/action requests. Temporarily changing one merchant item's
+trader flag retires the old source; moving the fortress trader away retires the
+next binding; an injected epoch mismatch retires another. Reopening after each
+restored prerequisite matches native. Native menu metadata and appraisal history
+remain unchanged. This proves the explicit epoch gate, not actual reload or
+disconnect integration. Owned DF46924 closes unsaved/source-preserved at30FPS,
+sampled GPU48C. Bridge build and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_selection_session_reference`.
+Advancing-simulation behavior, anonymous caravan catalog/lifetime, transport,
+negotiation and the viewer remain unfinished; public trade routes stay hidden.
+
 Protected180336 on2026-11-15 compares all those fields against native, twice
 per state, on the twelve-item source fixture. Native pointer/keyboard input
 exercises merchant-side item-name IRON, category-name BOULDERS, unmatched

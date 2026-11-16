@@ -99,6 +99,7 @@
 #include "trade_value_totals_native.h"
 #include "trade_capacity_native.h"
 #include "trade_appraisal_native.h"
+#include "trade_session_native.h"
 #include "depot_goods_native.h"
 #include "depot_selection_native.h"
 #include "depot_goods_read.h"
@@ -5098,6 +5099,40 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         for(const auto& row:*rows){Json::Value value;value["id"]=row.id;value["distance"]=row.distance;output["rows"].append(value);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="trade-session-probe") {
+        if(parameters.size()<3)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        const auto number=[&](size_t i,uint64_t& value){if(i>=parameters.size())return false;const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),value);return parsed.ec==std::errc{} && parsed.ptr==raw.data()+raw.size();};
+        uint64_t a=0,b=0,c=0,d=0;if(!number(2,a))return CR_WRONG_USAGE;
+        const auto& action=parameters[1];auto& session=df3d_production::tradeDiagnosticSession();
+        df3d_production::TradeSessionRead result;
+        if(action=="open") {
+          if(parameters.size()!=4 || !number(3,b) || a>INT32_MAX || b>INT32_MAX)return CR_WRONG_USAGE;
+          result=session.open(state.terrain.epoch(),df::building::find(int32_t(a)),size_t(b));
+        }else if(action=="close") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;result=session.close(a);
+        }else {
+          if(!number(3,b))return CR_WRONG_USAGE;
+          if(action=="read" || action=="epoch") {
+            if(parameters.size()!=4)return CR_WRONG_USAGE;
+            result=session.access(state.terrain.epoch()+(action=="epoch"?1:0),a,b);
+          }else if(action=="item" || action=="filter") {
+            if(parameters.size()!=6 || !number(4,c) || c>1)return CR_WRONG_USAGE;
+            df3d_production::TradeSelectionIntent intent;intent.side=int32_t(c);
+            if(action=="item"){if(!number(5,d) || d>INT32_MAX)return CR_WRONG_USAGE;intent.item=int32_t(d);}
+            else {intent.action=df3d_production::TradeDraftAction::Filter;intent.query=UTF2DF(parameters[5]);}
+            result=session.access(state.terrain.epoch(),a,b,&intent);
+          }else return CR_WRONG_USAGE;
+        }
+        Json::Value output;output["status"]=int(result.status);output["session"]=Json::UInt64(result.session);output["revision"]=Json::UInt64(result.revision);
+        output["sides"]=Json::arrayValue;output["filters"]=Json::arrayValue;
+        if(result.draft)for(size_t side=0;side<2;++side){const auto& value=result.draft->sides[side];Json::Value row;
+          row["height"]=value.height;row["items"]=row["flags"]=row["amounts"]=row["groups"]=Json::arrayValue;
+          for(auto id:value.items)row["items"].append(id);for(auto flag:value.flags)row["flags"].append(flag);for(auto amount:value.amounts)row["amounts"].append(amount);
+          for(const auto& group:value.groups){Json::Value g;g["type"]=group.type;g["subtype"]=group.subtype;g["expanded"]=group.expanded;g["on"]=group.on;g["flags"]=group.flags;row["groups"].append(g);}
+          output["sides"].append(row);output["filters"].append(DF2UTF(result.draft->filters[side]));}
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="trade-appraisal-probe") {
         if(parameters.size()!=3)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
@@ -5862,6 +5897,7 @@ DFhackCExport command_result plugin_onstatechange(color_ostream& out,
         out.print("df3d: map loaded; mirroring every simulated frame\n");
         break;
     case SC_MAP_UNLOADED:
+        df3d_production::tradeDiagnosticSession().reset();
         df3d_contact::setEnabled(false);
         df3d_contact::reset();
         df3d_events::resetReports();
@@ -5877,6 +5913,7 @@ DFhackCExport command_result plugin_onstatechange(color_ostream& out,
         ent::reset();
         break;
     case SC_WORLD_UNLOADED:
+        df3d_production::tradeDiagnosticSession().reset();
         df3d_contact::setEnabled(false);
         stopRecording(out, true);
         state.mapLoaded = false;

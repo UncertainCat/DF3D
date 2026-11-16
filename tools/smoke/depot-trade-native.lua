@@ -258,6 +258,10 @@ local ok,err=xpcall(function()
      click(side==0 and 100 or 570,166)
     end
     record('search-cleared')
+    if os.getenv('DF3D_DEPOT_TRADE_SESSION')=='1' then
+     local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-session-native.lua')
+     result.session=assert(loadfile(source))(view,b,unit,trade,click)
+    end
     if os.getenv('DF3D_DEPOT_TRADE_CAPACITY')=='1' then
      local mass=added[1].total_capacity;local whole,fraction=mass.whole,mass.fraction
      mass.whole=1000;mass.fraction=750000;record('capacity-positive')

@@ -73174,6 +73174,1081 @@
           "bridge/plugin/trade_projection_native.h": "23d4b77dd08d7d7b24a83e8cc67074e100079c0f57ff3578eb229240073d48b8",
           "bridge/plugin/df3d.cpp": "6532c4bc8f419ffd2f210ccd123907cc8e4764ba6e8c654cbd704cbd4715007a"
         }
+      },
+      "depot_trade_selection_session_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-185111",
+        "owned_df_pid": 46924,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Persistent internal selection owner, ten native state comparisons across separate diagnostic calls. Pointer/keyboard selection/search match native; stale revision and invalid item reject unchanged; read stable; close/reopen new token rejects old close/actions; changed item trader flag, missing fortress trader and injected epoch mismatch retire. Appraisal suppressed. Not real map reload/disconnect, caravan catalog/lifetime reuse, advancing simulation, prices/exchange or viewer transport.",
+        "session": {
+          "cases": [
+            {
+              "label": "open",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 1,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "selected",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 2,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      1,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "stale-and-invalid-unchanged",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 2,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      1,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "filtered",
+              "state": {
+                "filters": [
+                  "IRON",
+                  ""
+                ],
+                "revision": 3,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      1,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 0,
+                        "on": false,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 0,
+                        "on": false,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 6,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "filter-cleared",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 4,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      1,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "selection-cleared",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 5,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "read-repeat",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 5,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "reopened",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 1,
+                "session": 2,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "after-source-retirement",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 1,
+                "session": 3,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "after-trader-retirement",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 1,
+                "session": 4,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            }
+          ],
+          "epoch_retired": true,
+          "source_retired": true,
+          "stale_rejected": true,
+          "trader_retired": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-185111/depot-trade-native.json": "a1bbe7e44d41be070f33d84217394807bd87f640a6e792f0b73b77f57b930038",
+          "build/stockpile-storage-native-farm-discovery-20261115-185111/result.json": "f68abc4a9146b48f3a65d5cc4e934c8a79afa1cd45af7ba1661cf0149611940b",
+          "build/stockpile-storage-native-farm-discovery-20261115-185111/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-185111/capture-inputs.json": "aaf0cf543a4afe41e524e23d37796cadc6f90b455f4b5e73642804af0b13ddc5",
+          "tools/smoke/depot-trade-native.lua": "4f37c7dce76630c055b18fb2cbb9cb634284a7055f8458eb569f8e3fe1eab19f",
+          "tools/smoke/depot-trade-session-native.lua": "ab5fbd28ff5c7435694120d46782c448304764b744df9dd1c1c2bccb5c1b9751",
+          "bridge/plugin/trade_session_native.h": "99fd154d54167c99c5cfc754a23eb0b3d4562416823894597b58403af729f09d",
+          "bridge/plugin/df3d.cpp": "29e71105511636b8bdb9c06d335cba013749ffad7298577926970b4afd8e8cda"
+        }
       }
     },
     "pending_construction_reference": {

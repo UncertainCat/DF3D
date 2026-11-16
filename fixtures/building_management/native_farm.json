@@ -74926,6 +74926,189 @@
           "bridge/plugin/trade_catalog_native.h": "460a04a0085c99ad7021aac303e9d9eb8565413e644eae9fc261f98b133c8936",
           "tools/smoke/depot-trade-appraisal-native.lua": "b5c9be1a908eecb262006751d3aac2322a9b640a0e1e979d5ed6be6e653e27a8"
         }
+      },
+      "depot_trade_session_transport_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-193659",
+        "protocol": 238,
+        "owned_df_pid": 37940,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Actual management open/read/close path through Godot adapter. 23 receipts, three unique sessions; native title/entity/trader preserved. Consumed-token/wrong-session/stale-revision rejection preserves active session; close/catalog refresh retire. Final complete skill/attribute/history snapshot equals one native open despite three transported opens. Native menu unchanged. Not rendered UI, advancing simulation, reconnect/epoch transport, level-up/RNG, post-effect fault injection, goods selection or exchange.",
+        "wire": {
+          "receipts": [
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "entry": {
+                "dialogue": 0,
+                "entity_id": 865,
+                "fortress": "Your fortress of RoderÃ²nul",
+                "fortress_trader": 988,
+                "has_speaker": false,
+                "merchant_trader": -1,
+                "place": "Dumatzas",
+                "speaker": "",
+                "title": "Merchants from Dumatzas",
+                "unloading": false
+              },
+              "outcome": 0,
+              "revision": 1,
+              "session": 1
+            },
+            {
+              "outcome": 0,
+              "revision": 1,
+              "session": 1
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 0,
+              "revision": 1,
+              "session": 1
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 3,
+              "revision": 0,
+              "session": 1
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "entry": {
+                "dialogue": 0,
+                "entity_id": 865,
+                "fortress": "Your fortress of RoderÃ²nul",
+                "fortress_trader": 988,
+                "has_speaker": false,
+                "merchant_trader": -1,
+                "place": "Dumatzas",
+                "speaker": "",
+                "title": "Merchants from Dumatzas",
+                "unloading": false
+              },
+              "outcome": 0,
+              "revision": 1,
+              "session": 2
+            },
+            {
+              "outcome": 0,
+              "revision": 1,
+              "session": 2
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 0,
+              "revision": 1,
+              "session": 2
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "entry": {
+                "dialogue": 0,
+                "entity_id": 865,
+                "fortress": "Your fortress of RoderÃ²nul",
+                "fortress_trader": 988,
+                "has_speaker": false,
+                "merchant_trader": -1,
+                "place": "Dumatzas",
+                "speaker": "",
+                "title": "Merchants from Dumatzas",
+                "unloading": false
+              },
+              "outcome": 0,
+              "revision": 1,
+              "session": 3
+            },
+            {
+              "outcome": 0,
+              "revision": 1,
+              "session": 3
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 0,
+              "revision": 1,
+              "session": 3
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 3,
+              "revision": 0,
+              "session": 3
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            }
+          ],
+          "sessions": [
+            1,
+            2,
+            3
+          ],
+          "success": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-193659/depot-trade-native.json": "980ef2bfb066070bf9551574ca1c50d779dc1752dd4ec796da6c3d832eb49037",
+          "build/stockpile-storage-native-farm-discovery-20261115-193659/trade-session-wire-expected.json": "55a8ae61547881d994d17623e429020057a57a454421df65657b09e14b61b3e8",
+          "build/stockpile-storage-native-farm-discovery-20261115-193659/trade-session-wire-result.json": "937494c2d0f53d58b910cffc2d3d5bcf17c491e29b452155c6e3e0a4b01172a9",
+          "build/stockpile-storage-native-farm-discovery-20261115-193659/trade-session-wire.stdout.log": "0fb41bb7cc71b68a335c01d8f84a806304e1cc6bb173f34ca02cb913d0f62013",
+          "build/stockpile-storage-native-farm-discovery-20261115-193659/trade-session-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261115-193659/result.json": "d93b572598d3dcfa257e5cba306600ab3f1e8792b2009ca4dc130c6c8ccf81be",
+          "build/stockpile-storage-native-farm-discovery-20261115-193659/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-193659/capture-inputs.json": "c53026e6223a5ad5a15a43aa8f437c7e2f0cb8cfdb91663d7ec38fccbb552e36",
+          "schema/mirror.fbs": "f12a4e170799ea6b9fa48a87b843a7f14cf76f5c8fd6d6f29ea9ff0f7f21191d",
+          "schema/cpp/management_util.h": "3c7eb564f5b9e8d1e969cf6ee44393b5bc7d2ce938e3d0840817dc9015b613d2",
+          "tools/smoke/depot-trade-appraisal-native.lua": "af8dfd6d7e12e93843a3c985f4d6ebc44a6db16fe2653b123485be30190a9228",
+          "presentations/godot/project/tests/trade_session_wire_live.gd": "7eccdfb09497ef5896b533bb4c0dbcb8b9493f23211ff6429b22c8b562c26a2b"
+        }
       }
     },
     "pending_construction_reference": {

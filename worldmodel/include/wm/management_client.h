@@ -660,6 +660,9 @@ struct DepotGoodsChange {int32_t id=-1;bool desired=false;};
 struct DepotGoodsCommitRequest {int32_t depotId=-1;uint64_t expectedRevision=0;std::vector<DepotGoodsChange> changes;};
 struct DepotGoodsCommitResult {int32_t depotId=-1;uint64_t expectedRevision=0,observedRevision=0;DepotGoodsCommitOutcome outcome=DepotGoodsCommitOutcome::Rejected;};
 struct TradeCatalogRequest {int32_t depotId=-1;};
+struct TradeSessionRequest {int32_t depotId=-1;uint64_t choiceToken=0,session=0,expectedRevision=0;};
+struct TradeSessionEntry {int32_t entityId=-1,fortressTrader=-1,merchantTrader=-1;int16_t dialogue=-1;bool unloading=false,hasSpeaker=false;std::string title,speaker,fortress,place;};
+struct TradeSessionState {TradeSessionOutcome outcome=TradeSessionOutcome::Rejected;uint64_t session=0,revision=0;std::optional<TradeSessionEntry> entry;};
 struct TradeCatalogChoice {uint64_t token=0;int32_t entityId=-1;std::string race,name;};
 struct TradeCatalogState {int32_t depotId=-1;std::string title,from;std::vector<TradeCatalogChoice> choices;};
 struct DepotGoodsRequest {int32_t depotId=-1;int16_t category=-1;std::string query;bool sortByDistance=true,pendingOnTop=true,excludeProhibited=false;std::vector<int32_t> itemIds;uint64_t expectedRevision=0;std::vector<DepotGoodsChange> draft,sortDraft;int32_t containerId=-1,containerOffset=0,containerLimit=0;};
@@ -1117,6 +1120,7 @@ struct ManagementRequest {
   StocksMenuRequest stocksMenu;
   DepotGoodsRequest depotGoods;
   TradeCatalogRequest tradeCatalog;
+  TradeSessionRequest tradeSession;
   DepotGoodsCommitRequest depotCommit;
   TasksRequest tasks;
   PlacesRequest places;
@@ -1193,6 +1197,7 @@ struct ManagementState {
   std::optional<StocksMenuState> stocksMenu;
   std::optional<DepotGoodsState> depotGoods;
   std::optional<TradeCatalogState> tradeCatalog;
+  std::optional<TradeSessionState> tradeSession;
   std::optional<DepotGoodsCommitResult> depotCommit;
   std::optional<TasksState> tasks;
   std::optional<PlacesState> places;

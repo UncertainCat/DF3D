@@ -1,4 +1,10 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::TradeSessionOutcome::Available) == static_cast<int>(df3d::mirror::TradeSessionOutcome::Available));
+static_assert(static_cast<int>(wm::TradeSessionOutcome::Rejected) == static_cast<int>(df3d::mirror::TradeSessionOutcome::Rejected));
+static_assert(static_cast<int>(wm::TradeSessionOutcome::Retired) == static_cast<int>(df3d::mirror::TradeSessionOutcome::Retired));
+static_assert(static_cast<int>(wm::TradeSessionOutcome::Closed) == static_cast<int>(df3d::mirror::TradeSessionOutcome::Closed));
+static_assert(static_cast<int>(wm::TradeSessionOutcome::Unknown) == static_cast<int>(df3d::mirror::TradeSessionOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesTradeSessionOutcome()) / sizeof(df3d::mirror::TradeSessionOutcome) == 5);
 static_assert(static_cast<int>(wm::DepotGoodsCommitOutcome::Rejected) == static_cast<int>(df3d::mirror::DepotGoodsCommitOutcome::Rejected));
 static_assert(static_cast<int>(wm::DepotGoodsCommitOutcome::Applied) == static_cast<int>(df3d::mirror::DepotGoodsCommitOutcome::Applied));
 static_assert(static_cast<int>(wm::DepotGoodsCommitOutcome::Stale) == static_cast<int>(df3d::mirror::DepotGoodsCommitOutcome::Stale));
@@ -344,7 +350,10 @@ static_assert(static_cast<int>(wm::ManagementAction::SelectionArtApply) == stati
 static_assert(static_cast<int>(wm::ManagementAction::DepotGoodsRead) == static_cast<int>(df3d::mirror::ManagementAction::DepotGoodsRead));
 static_assert(static_cast<int>(wm::ManagementAction::DepotGoodsCommit) == static_cast<int>(df3d::mirror::ManagementAction::DepotGoodsCommit));
 static_assert(static_cast<int>(wm::ManagementAction::TradeCatalogRead) == static_cast<int>(df3d::mirror::ManagementAction::TradeCatalogRead));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 136);
+static_assert(static_cast<int>(wm::ManagementAction::TradeSessionOpen) == static_cast<int>(df3d::mirror::ManagementAction::TradeSessionOpen));
+static_assert(static_cast<int>(wm::ManagementAction::TradeSessionRead) == static_cast<int>(df3d::mirror::ManagementAction::TradeSessionRead));
+static_assert(static_cast<int>(wm::ManagementAction::TradeSessionClose) == static_cast<int>(df3d::mirror::ManagementAction::TradeSessionClose));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 139);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -688,3 +697,6 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::SelectionArtApply) == df
 static_assert(wm::isRuntimeAction(wm::ManagementAction::DepotGoodsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DepotGoodsRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::DepotGoodsCommit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DepotGoodsCommit));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeCatalogRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeCatalogRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionOpen) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeSessionOpen));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeSessionRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionClose) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeSessionClose));

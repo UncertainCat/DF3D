@@ -1,6 +1,6 @@
 -- Disposable paused native oracle. Call with source isolation enabled and an
 -- open populated trade interface whose appraisal phase has not run yet.
-local view,unit,trade,caravan=...
+local view,unit,trade,caravan,out,capture=...
 local json=require('json')
 assert(trade.open and #trade.good[0]>0 and #trade.good[0]<=5 and #caravan.goods==0)
 local soul=assert(unit.status.current_soul)
@@ -53,6 +53,15 @@ local ok,err=xpcall(function()
   assert(json.encode(snapshot())==json.encode(result.before))
   local title=trade.title;local appraisal=trade.handle_appraisal;local lists=trade.buildlists
   local active=df.global.game.main_interface.view_sheets.active_id
+  if os.getenv('DF3D_DEPOT_TRADE_SESSION_WIRE')=='1' then
+   local expected={depot_id=trade.bld.id,entity_id=caravan.entity,fortress_trader=unit.id,title=dfhack.df2utf(trade.title)}
+   local file=assert(io.open(out..'/trade-session-wire-expected.json','w'));file:write(json.encode(expected));file:close()
+   capture('trade-session-wire')
+   file=assert(io.open(out..'/trade-session-wire-result.json'));result.wire=json.decode(file:read('*a'));file:close();assert(result.wire.success)
+   assert(json.encode(snapshot())==json.encode(result.after),'Transported opens differ from native appraisal or repeat effects')
+   assert(trade.title==title and trade.handle_appraisal==appraisal and trade.buildlists==lists and df.global.game.main_interface.view_sheets.active_id==active)
+   result.wire_native_effects_match=true
+  else
   local owner_mode=os.getenv('DF3D_DEPOT_TRADE_OWNER')=='1'
   local last_session
   local function owner(action,a,b)
@@ -89,6 +98,7 @@ local ok,err=xpcall(function()
    local final=probe(0);assert(final.available and final.recorded==0 and final.trained==0)
    assert(owner('close',final.session).status==3 and not owner('read',final.session,1).available)
    result.owner={post_appraisal_source_valid=true,token_consumed_once=true,reopen_deduplicated=true,catalog_retires_previous=true,epoch_retires=true,close_retires=true}
+  end
   end
  end
 end,debug.traceback)

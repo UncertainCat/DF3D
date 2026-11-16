@@ -209,6 +209,10 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.tradeCatalog.emplace();auto& out=*next.tradeCatalog;out.depotId=r->depot_id();out.title=r->title()->str();out.from=r->from_text()->str();
     for(const auto* row:*r->choices())out.choices.push_back({row->token(),row->entity_id(),row->race()->str(),row->name()->str()});
   }
+  if(const auto* r=s->trade_session()) {
+    next.tradeSession.emplace();auto& out=*next.tradeSession;out.outcome=TradeSessionOutcome(r->outcome());out.session=r->session();out.revision=r->revision();
+    if(const auto* e=r->entry())out.entry=TradeSessionEntry{e->entity_id(),e->fortress_trader(),e->merchant_trader(),e->dialogue(),e->unloading(),e->has_speaker(),e->title()->str(),e->speaker()->str(),e->fortress()->str(),e->place()->str()};
+  }
   if(const auto* r=s->depot_goods()) {
     next.depotGoods.emplace();auto& out=*next.depotGoods;out.depotId=r->depot_id();out.revision=r->revision();out.category=r->category();out.appraisal=r->appraisal();
     for(const auto* row:*r->categories())out.categories.push_back({row->type(),row->caption()->str()});
@@ -559,7 +563,8 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
         const auto changes=[&](const std::vector<DepotGoodsChange>& rows){std::vector<m::DepotGoodsChange> out;for(const auto& row:rows)out.emplace_back(row.id,uint8_t(row.desired));return b.CreateVectorOfStructs(out);};
         return m::CreateDepotGoodsRequest(b,q.depotId,q.category,b.CreateString(q.query),q.sortByDistance,q.pendingOnTop,q.excludeProhibited,b.CreateVector(q.itemIds),q.expectedRevision,changes(q.draft),changes(q.sortDraft),q.containerId,q.containerOffset,q.containerLimit);}():flatbuffers::Offset<m::DepotGoodsRequest>{},
       r.action==ManagementAction::DepotGoodsCommit?[&](){std::vector<m::DepotGoodsChange> changes;for(const auto& row:r.depotCommit.changes)changes.emplace_back(row.id,uint8_t(row.desired));return m::CreateDepotGoodsCommitRequest(b,r.depotCommit.depotId,r.depotCommit.expectedRevision,b.CreateVectorOfStructs(changes));}():flatbuffers::Offset<m::DepotGoodsCommitRequest>{},
-      r.action==ManagementAction::TradeCatalogRead?m::CreateTradeCatalogRequest(b,r.tradeCatalog.depotId):flatbuffers::Offset<m::TradeCatalogRequest>{});
+      r.action==ManagementAction::TradeCatalogRead?m::CreateTradeCatalogRequest(b,r.tradeCatalog.depotId):flatbuffers::Offset<m::TradeCatalogRequest>{},
+      r.action>=ManagementAction::TradeSessionOpen && r.action<=ManagementAction::TradeSessionClose?m::CreateTradeSessionRequest(b,r.tradeSession.depotId,r.tradeSession.choiceToken,r.tradeSession.session,r.tradeSession.expectedRevision):flatbuffers::Offset<m::TradeSessionRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

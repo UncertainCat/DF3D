@@ -57,7 +57,7 @@ class TradeSelectionSession {
 public:
     void reset(){current.reset();} // Never rewind serial: late replies/actions cannot alias a new owner.
     TradeSessionRead open(uint64_t epoch,df::building* building,size_t caravanIndex) {
-        reset();if(!epoch || serial==std::numeric_limits<uint64_t>::max())return reply(TradeSessionStatus::Rejected);
+        reset();if(!epoch || serial==uint64_t(INT64_MAX))return reply(TradeSessionStatus::Rejected);
         TradeDraftNative native(building,caravanIndex);const auto draft=native.checkpoint();if(!draft)return reply(TradeSessionStatus::Rejected);
         const auto source=tradeSelectionSource(building,caravanIndex,*draft);if(!source)return reply(TradeSessionStatus::Rejected);
         current=Binding{++serial,1,epoch,*source,building->id,caravanIndex,*draft};
@@ -81,7 +81,7 @@ public:
         }
         if(expectedRevision!=current->revision)return reply(TradeSessionStatus::Rejected);
         if(intent) {
-            if(current->revision==std::numeric_limits<uint64_t>::max() || !native.apply(*intent))return reply(TradeSessionStatus::Rejected);
+            if(current->revision==uint64_t(INT64_MAX) || !native.apply(*intent))return reply(TradeSessionStatus::Rejected);
             const auto updated=native.checkpoint();if(!updated)return reply(TradeSessionStatus::Rejected);
             current->draft=*updated;++current->revision;
         }

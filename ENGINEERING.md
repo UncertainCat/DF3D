@@ -1,3 +1,41 @@
+## Trade-session transport migration
+
+Management protocol238 adds `TradeSessionOpen`, `TradeSessionRead` and
+`TradeSessionClose` under the `trade_session` domain. Open accepts only a depot
+ID and opaque catalog choice token; read accepts a session and expected revision;
+close accepts only a session. Results distinguish Available, Rejected, Retired,
+Closed and Unknown. Successful open carries native entry captions and trader
+facts; reads validate ownership/source without repeating appraisal. This stage
+does not transport goods projections or negotiation. No native index/address
+enters the model API. Both peers and schema defaults use238, requiring a bridge
+and viewer rebuild together; DF53.16 compatibility pins are unchanged.
+
+The management connection owns the composed native catalog/session provider.
+Catalog refresh, world/connection replacement and teardown retire its session.
+Opening consumes the token, appraises through native routines and binds the
+post-effect selection source. It is classified as a mutation in the shared
+contract; Unknown is propagated to the semantic service without replay.
+Malformed post-effect replies retain uncertainty rather than reporting rejection.
+Old recordings cannot invent session IDs, revisions or entry facts. The existing
+chooser still requires session-controller integration, and public trade remains
+hidden until the full workflow is functional.
+
+Protected193659 on2026-11-15 verifies the actual bridge/mailbox/model/Godot
+open/read/close path with23 receipts. Three opens issue distinct integer session
+IDs; reused choice tokens, wrong session IDs and stale revisions reject without
+retiring the valid session. Close acknowledges the requested ID, and catalog
+replacement retires the prior session. Native title/entity/trader facts match.
+The final complete skill/attribute/history snapshot equals one native open,
+proving repeated opens do not repeat the controlled appraisal effects. Native
+menu flags/title/selection remain unchanged. Owned DF37940 closes unsaved with
+source save unchanged, native30FPS and sampled GPU59–60C; the headless adapter
+log is diagnostic-free. Root, bridge and Godot extension builds and all19 root
+core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_session_transport_reference`.
+This does not qualify rendered session UI, advancing simulation, reconnect/epoch
+transport behavior, level-up/RNG variants, post-effect fault injection, goods
+selection transport or exchange.
+
 ## Caravan catalog transport migration
 
 Management protocol237 adds `TradeCatalogRead`, a depot-ID request and required
@@ -8,7 +46,7 @@ duplicate entities are valid, duplicate/zero/out-of-range tokens are not.
 Replies reject missing payloads, invalid depot/entity IDs, excess rows/strings
 and payload budgets. Oversized encoded replies reject explicitly rather than
 timing out at the mailbox. No choices or tokens are synthesized for old records.
-Both peers/mailboxes use237 and must be rebuilt together; DF53.16 pins stay fixed.
+That migration used237; current peers use238 as described above. DF53.16 pins stay fixed.
 
 The native management handler owns a catalog separate from diagnostic probes,
 resolves a revealed depot, and refreshes it through the qualified native catalog
@@ -60,7 +98,7 @@ expected goods revision; pages carry at most64 children. Replies identify the
 parent, offset and total, and retain native child IDs/types, nested counts,
 descriptions, values, appraisal text and prohibition facts. A page total must
 agree with its parent's group count. Child IDs do not authorize hauling actions.
-That migration used236; current peers use237 as described above. DF53.16 pins are unchanged.
+That migration used236; current peers use238 as described above. DF53.16 pins are unchanged.
 Older recordings cannot invent container counts or pages. Staged viewer
 integration and its remaining acceptance limits are documented below.
 

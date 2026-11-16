@@ -379,7 +379,7 @@ local ok,err=xpcall(function()
   unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z;select_map(b)
   unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z;click(480,190)
   local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-appraisal-native.lua')
-  result.appraisal=assert(loadfile(source))(view,unit,trade,added[1])
+  result.appraisal=assert(loadfile(source))(view,unit,trade,added[1],out,capture)
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)
  end
  if restore_sources then restore_sources()end

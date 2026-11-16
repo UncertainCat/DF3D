@@ -356,6 +356,10 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& row:v.choices){Dictionary item;item["token"]=int64_t(row.token);item["entity_id"]=row.entityId;item["race"]=String::utf8(row.race.c_str());item["name"]=String::utf8(row.name.c_str());choices.append(item);}
         value["choices"]=choices;result["trade_catalog"]=value;
     }
+    if(s.tradeSession){const auto& v=*s.tradeSession;Dictionary value;value["outcome"]=int(v.outcome);value["session"]=int64_t(v.session);value["revision"]=int64_t(v.revision);
+        if(v.entry){const auto& e=*v.entry;Dictionary entry;entry["entity_id"]=e.entityId;entry["fortress_trader"]=e.fortressTrader;entry["merchant_trader"]=e.merchantTrader;entry["dialogue"]=e.dialogue;entry["unloading"]=e.unloading;entry["has_speaker"]=e.hasSpeaker;entry["title"]=String::utf8(e.title.c_str());entry["speaker"]=String::utf8(e.speaker.c_str());entry["fortress"]=String::utf8(e.fortress.c_str());entry["place"]=String::utf8(e.place.c_str());value["entry"]=entry;}
+        result["trade_session"]=value;if(v.outcome==wm::TradeSessionOutcome::Unknown)result["outcome"]="unknown";
+    }
     if(s.depotGoods){const auto& v=*s.depotGoods;Dictionary value;Array categories,groups,items;
         for(const auto& row:v.categories){Dictionary d;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());categories.append(d);}
         for(const auto& row:v.groups){Dictionary d;d["subtype"]=row.subtype;d["subcat1"]=row.subcat1;d["subcat2"]=row.subcat2;d["amount"]=row.amount;d["caption"]=String::utf8(row.caption.c_str());d["matches"]=row.matches;d["expanded"]=row.expanded;d["flags"]=row.flags;Array ids;for(auto id:row.itemIds)ids.append(id);d["item_ids"]=ids;Array counts;for(auto count:row.containerCounts)counts.append(count);d["container_counts"]=counts;groups.append(d);}
@@ -892,6 +896,20 @@ bool validateTradeCatalog(const Dictionary& data,String& error) {
     if(data.size()!=2 || !data.has("depot_id") || data["depot_id"].get_type()!=Variant::INT || int64_t(data["depot_id"])<0 || int64_t(data["depot_id"])>INT32_MAX)return false;
     error=String();return true;
 }
+bool validateTradeSession(const Dictionary& data,String& error) {
+    error="Invalid trade session request";
+    const auto integer=[](const Dictionary& d,const char* key,int64_t lo,int64_t hi){return d.has(key) && d[key].get_type()==Variant::INT && int64_t(d[key])>=lo && int64_t(d[key])<=hi;};
+    const auto action=wm::ManagementAction(int64_t(data["action"]));
+    if(action==wm::ManagementAction::TradeSessionOpen){if(data.size()!=3 || !integer(data,"depot_id",0,INT32_MAX) || !integer(data,"choice_token",1,INT64_MAX))return false;}
+    else if(!integer(data,"session",1,INT64_MAX) || (action==wm::ManagementAction::TradeSessionRead ? (data.size()!=3 || !integer(data,"expected_revision",1,INT64_MAX)):data.size()!=2))return false;
+    error=String();return true;
+}
+bool readTradeSession(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.tradeSession;
+    if(request.action==wm::ManagementAction::TradeSessionOpen){q.depotId=int32_t(int64_t(data["depot_id"]));q.choiceToken=uint64_t(int64_t(data["choice_token"]));}
+    else {q.session=uint64_t(int64_t(data["session"]));if(request.action==wm::ManagementAction::TradeSessionRead)q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));}
+    return true;
+}
 bool readTradeCatalog(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction::TradeCatalogRead;request.tradeCatalog.depotId=int32_t(int64_t(data["depot_id"]));return true;
 }
@@ -1297,6 +1315,7 @@ const ManagementCodec managementCodecs[] = {
     {"hunter_ammunition",validateHunterAmmunition,readHunterAmmunition},
     {"depot_goods",validateDepotGoods,readDepotGoods},
     {"trade_catalog",validateTradeCatalog,readTradeCatalog},
+    {"trade_session",validateTradeSession,readTradeSession},
     {"stocks_menu",validateStocksMenu,readStocksMenu},
     {"nobles",validateNobles,readNobles},
     {"places",validatePlaces,readPlaces},
@@ -1322,7 +1341,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::TradeCatalogRead)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::TradeSessionClose)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

@@ -9,6 +9,26 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Trade session transport binds explicit open read and close intents") {
+  constexpr uint64_t token=UINT64_C(9007199254740993);
+  for(auto action:{wm::ManagementAction::TradeSessionOpen,wm::ManagementAction::TradeSessionRead,wm::ManagementAction::TradeSessionClose})for(int fault=0;fault<4;++fault){
+    wm::ManagementRequest r;r.action=action;
+    if(action==wm::ManagementAction::TradeSessionOpen){r.tradeSession.depotId=54;r.tradeSession.choiceToken=token;if(fault==1)r.tradeSession.choiceToken=0;if(fault==2)r.tradeSession.session=1;if(fault==3)r.tradeSession.choiceToken=UINT64_MAX;}
+    else {r.tradeSession.session=token;if(action==wm::ManagementAction::TradeSessionRead)r.tradeSession.expectedRevision=1;if(fault==1)r.tradeSession.session=0;if(fault==2)r.tradeSession.depotId=54;if(fault==3)r.tradeSession.choiceToken=1;}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault)CHECK((action==wm::ManagementAction::TradeSessionOpen?value->trade_session()->choice_token():value->trade_session()->session())==token);
+  }
+  for(int fault=0;fault<6;++fault){
+    flatbuffers::FlatBufferBuilder b;const auto text=b.CreateString("Synthetic native caption");
+    const auto entry=wire::CreateTradeSessionEntry(b,7,988,-1,-1,false,false,text,text,text,text);
+    const auto result=wire::CreateTradeSessionState(b,wire::TradeSessionOutcome::Available,fault==1?0:token,fault==2?0:1,fault==3?0:entry);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(fault==4?wire::ManagementAction::TradeSessionClose:wire::ManagementAction::TradeSessionOpen);state.add_status(wire::ManagementStatus::Ok);if(fault!=5)state.add_trade_session(result);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeState(value);REQUIRE(decoded.tradeSession);CHECK(decoded.tradeSession->session==token);REQUIRE(decoded.tradeSession->entry);CHECK(decoded.tradeSession->entry->fortressTrader==988);}
+  }
+}
+
 TEST_CASE("Trade catalog transport preserves opaque tokens and rejects ambiguous choices") {
   constexpr uint64_t token=UINT64_C(9007199254740993);
   for(int fault=0;fault<8;++fault){

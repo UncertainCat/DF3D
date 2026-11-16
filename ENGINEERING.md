@@ -3229,12 +3229,11 @@ checkboxes, filter and frame. The final30FPS safe-render-thread capture has clea
 stderr; sampled GPU61C. Shared animal headless checks and root19 pass. Evidence:
 `completed_sheet_discovery_reference.cage_picker_render_reference`.
 
-The furniture owner now holds the independent cage state, visible portrait loading,
-Escape-to-parent handling and selection/session retirement. This wiring is staged,
-not live acceptance: the cage header admission and native room-membership body
-are still missing, so no public route is enabled. Next qualify the complete parent
-and map-entry/assignment/close workflow. Room membership is visible in the native
-parent and must not be omitted when exposing it.
+The furniture owner holds the independent cage picker state, visible portrait
+loading, Escape-to-parent handling and selection/session retirement. The typed
+parent header and room component are connected and qualified below. The occupant
+body and composed map-entry/assignment/close workflow still need completion;
+no public cage route is enabled.
 `building_room_native.h` shares the native54bb10 room predicate with the coffin
 provider. Cage renderer18edc1..18ee88 filters its semantic relations using this
 predicate; the owned reader copies only IDs, type and native name/copy. It never
@@ -3312,9 +3311,31 @@ and revision return to their baseline after restoration. Native parent checkbox
 removal changes only cage membership/check flag in this ordinary case, preserving
 unit flags, current job and general references. Its inline input branch differs
 from the picker callback's broader detach path; do not substitute picker effects
-for parent-row actions. Parent-edit provider qualification remains required.
+for parent-row actions.
 Bridge build and core19 pass; source unchanged, owned DF closed unsaved at30FPS,
 GPU60C. Evidence: `completed_sheet_discovery_reference.cage_occupant_provider_reference`.
+
+Parent assignment edits have independent occupant revision authority. They reject
+stale, unresolved, removing and justice targets before effects. Native inline
+unassignment removes only the first matching cage membership and, for items,
+its CAGE reference; it sets CHECKOCCUPANTS. Assignment uses the pinned cage/zone
+detach helpers and independently owned chain-job cleanup before adding the new
+membership. The picker callback is not reused. Once effects begin, failures return
+Unknown and cannot authorize replay. `cage-occupants-probe` is the paused diagnostic;
+the parent product transport remains pending.
+
+Protected122728 (DF60488) matches native and owned removal for unit6960 and item5969,
+including cage flags/membership/jobs, unit flags/job/references and item flags/references.
+The item comparison temporarily removes its containing-object reference to expose
+the native assigned-only row, then restores that exact reference allocation/order.
+The ordinary contained-item blank row also ignores its checkbox click. No display
+or input correction is authorized. Stale reversal rejects without effects and both
+owned edits leave gps/main_interface byte-identical. Original facts and paused frame
+restore; source unchanged, owned DF closes unsaved at30FPS, sampled GPU60C. Bridge
+build and all19 core checks pass. Earlier122548 stopped at the mistaken expectation
+that the blank row's checkbox worked and is not acceptance. This evidence qualifies
+removal, not contained-unit reassignment or item assignment through the parent.
+Reference: `completed_sheet_discovery_reference.cage_parent_effects_reference`.
 
 ### Other completed-building families
 

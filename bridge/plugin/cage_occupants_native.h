@@ -95,4 +95,73 @@ inline std::optional<CageOccupants> observeCageOccupants(df::building* building)
     }
     result.revision=(hash&INT64_MAX)?hash&INT64_MAX:1;return result;
 }
+inline bool cageOccupantAssignmentReady() {
+    if(!cageOccupantsReady() || !df3d_area::nativeZoneAnimalAssignmentReady())return false;
+    static const bool ready=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        const auto pin=[base](size_t at,size_t count,uint64_t expected) {
+            uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<count;++i){h^=base[at+i];h*=UINT64_C(1099511628211);}
+            return h==expected;
+        };
+        return pin(0x1aec18,0x370,UINT64_C(0x7fb5fc1a0927491e)) &&
+            pin(0x13adf80,0xbb,UINT64_C(0xa24dfa60a95195ec)) &&
+            pin(0x13969f0,0xde,UINT64_C(0xc1ab930415137e8f)) &&
+            pin(0xcb2150,0xc0,UINT64_C(0x273545fa74ef8d19)) &&
+            pin(0xcb1420,0xe2,UINT64_C(0x5d444e44fe3e3f89));
+    }();return ready;
+}
+struct CageOccupantEdit {
+    CageOutcome outcome=CageOutcome::Unavailable;
+    bool effectsStarted=false;
+    std::optional<CageOccupants> receipt;
+};
+inline CageOccupantEdit setCageOccupantAssignment(df::building* building,uint64_t expected,int32_t id,bool item,bool assigned) {
+    CageOccupantEdit result;
+    try {
+        if(!expected || expected>INT64_MAX || id<0 || !cageOccupantAssignmentReady())return result;
+        const auto before=observeCageOccupants(building);if(!before)return result;
+        if(expected!=before->revision){result.outcome=CageOutcome::Stale;return result;}
+        if(before->removing || before->justiceRestraint)return result;
+        const auto found=std::find_if(before->rows.begin(),before->rows.end(),[&](const auto& row){return row.id==id && row.entity==(item?2:1);});
+        if(found==before->rows.end() || !found->resolved)return result;
+        if(found->assigned==assigned){result.outcome=CageOutcome::Completed;result.receipt=before;return result;}
+        if(assigned && !found->contained)return result;
+        auto& cage=*static_cast<df::building_cagest*>(building);
+        auto& assignments=item?cage.assigned_items:cage.assigned_units;
+        auto* unit=item?nullptr:df::unit::find(id);auto* object=item?df::item::find(id):nullptr;
+        if(item?!object:!unit)return result;
+        const uint16_t flags=cage.cage_flags.whole;
+        const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+        result.effectsStarted=true;result.outcome=CageOutcome::Unknown;
+        if(assigned) {
+            if(item) {
+                reinterpret_cast<void(*)(df::item*)>(base+0x8bfbd0)(object);
+                reinterpret_cast<void(*)(df::item*)>(base+0xcb2150)(object);
+                assignments.push_back(id);
+                reinterpret_cast<void(*)(df::item*,int32_t,int32_t)>(base+0x72660)(object,35,cage.id);
+            } else {
+                // Extract the chain holder detach before native job deletion;
+                // no selected-building/cursor bookkeeping is borrowed.
+                if(!df3d_area::nativeDetachAnimalRestraints(*unit))return result;
+                reinterpret_cast<void(*)(df::unit*)>(base+0x8bfdf0)(unit);
+                reinterpret_cast<void(*)(df::unit*)>(base+0x13adf80)(unit);
+                assignments.push_back(id);
+            }
+        } else {
+            const auto at=std::find(assignments.begin(),assignments.end(),id);
+            if(at==assignments.end())return result;
+            // Native parent unassignment only removes this membership/ref.
+            // The picker callback also detaches other holders; do not call it.
+            if(item)reinterpret_cast<bool(*)(df::item*,int32_t,int32_t)>(base+0xcb1420)(object,35,cage.id);
+            assignments.erase(at);
+        }
+        cage.cage_flags.whole|=4;
+        const auto after=observeCageOccupants(building);if(!after)return result;
+        if(cage.cage_flags.whole!=uint16_t(flags|4) ||
+           (std::find(assignments.begin(),assignments.end(),id)!=assignments.end())!=assigned)return result;
+        result.receipt=after;result.outcome=CageOutcome::Completed;
+    }catch(...){}
+    return result;
+}
 }

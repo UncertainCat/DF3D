@@ -113992,6 +113992,267 @@
           "build/stockpile-storage-native-farm-discovery-20261116-121722/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
           "build/stockpile-storage-native-farm-discovery-20261116-121722/remaining-buildings-native.json": "204608e01e3de1aa0669f70cd2baa8225caec95f60555149b52b6d79882a67bc"
         }
+      },
+      "cage_parent_effects_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-122728",
+        "owned_df_pid": 60488,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Native/owned parent unit and assigned-only item removal effects match; stale reversals reject, gps/main_interface unchanged. Item containing-object ref temporarily removed to expose assigned-only row, exact allocation/order restored. Ordinary contained-item blank row checkbox does nothing. Reassignment and product transport/render not qualified. 30FPS, sampled60C.",
+        "effects": {
+          "before": {
+            "flags": 0,
+            "item": {
+              "flags": 16392,
+              "refs": [
+                {
+                  "id": 5968,
+                  "type": 11
+                },
+                {
+                  "id": 261,
+                  "type": 35
+                }
+              ]
+            },
+            "items": [
+              5969
+            ],
+            "jobs": 0,
+            "unit": {
+              "flags1": 109051904,
+              "flags2": 301989936,
+              "flags3": 258,
+              "flags4": 8,
+              "job": -1,
+              "refs": [
+                {
+                  "id": 28448,
+                  "type": 11
+                }
+              ]
+            },
+            "units": [
+              6960
+            ]
+          },
+          "blank_item_click": {
+            "flags": 4,
+            "item": {
+              "flags": 16392,
+              "refs": [
+                {
+                  "id": 5968,
+                  "type": 11
+                },
+                {
+                  "id": 261,
+                  "type": 35
+                }
+              ]
+            },
+            "items": [
+              5969
+            ],
+            "jobs": 0,
+            "unit": {
+              "flags1": 109051904,
+              "flags2": 301989936,
+              "flags3": 258,
+              "flags4": 8,
+              "job": -1,
+              "refs": [
+                {
+                  "id": 28448,
+                  "type": 11
+                }
+              ]
+            },
+            "units": []
+          },
+          "building_id": 261,
+          "item_id": 5969,
+          "native": {
+            "item_removed": {
+              "flags": 4,
+              "item": {
+                "flags": 16392,
+                "refs": [
+                  {
+                    "id": 5968,
+                    "type": 11
+                  }
+                ]
+              },
+              "items": [],
+              "jobs": 0,
+              "unit": {
+                "flags1": 109051904,
+                "flags2": 301989936,
+                "flags3": 258,
+                "flags4": 8,
+                "job": -1,
+                "refs": [
+                  {
+                    "id": 28448,
+                    "type": 11
+                  }
+                ]
+              },
+              "units": []
+            },
+            "unit_removed": {
+              "flags": 4,
+              "item": {
+                "flags": 16392,
+                "refs": [
+                  {
+                    "id": 5968,
+                    "type": 11
+                  },
+                  {
+                    "id": 261,
+                    "type": 35
+                  }
+                ]
+              },
+              "items": [
+                5969
+              ],
+              "jobs": 0,
+              "unit": {
+                "flags1": 109051904,
+                "flags2": 301989936,
+                "flags3": 258,
+                "flags4": 8,
+                "job": -1,
+                "refs": [
+                  {
+                    "id": 28448,
+                    "type": 11
+                  }
+                ]
+              },
+              "units": []
+            }
+          },
+          "owned": {
+            "item_removed": {
+              "receipt": {
+                "building_id": 261,
+                "effects_started": true,
+                "justice_restraint": false,
+                "outcome": 1,
+                "removing": false,
+                "revision": 6181135508080412356,
+                "rows": []
+              },
+              "stale": {
+                "effects_started": false,
+                "outcome": 2
+              },
+              "state": {
+                "flags": 4,
+                "item": {
+                  "flags": 16392,
+                  "refs": [
+                    {
+                      "id": 5968,
+                      "type": 11
+                    }
+                  ]
+                },
+                "items": [],
+                "jobs": 0,
+                "unit": {
+                  "flags1": 109051904,
+                  "flags2": 301989936,
+                  "flags3": 258,
+                  "flags4": 8,
+                  "job": -1,
+                  "refs": [
+                    {
+                      "id": 28448,
+                      "type": 11
+                    }
+                  ]
+                },
+                "units": []
+              }
+            },
+            "unit_removed": {
+              "receipt": {
+                "building_id": 261,
+                "effects_started": true,
+                "justice_restraint": false,
+                "outcome": 1,
+                "removing": false,
+                "revision": 8660900913410789246,
+                "rows": [
+                  {
+                    "assigned": true,
+                    "contained": false,
+                    "entity": 2,
+                    "id": 5969,
+                    "name": "(tame masked lovebird)",
+                    "resolved": true,
+                    "status": "Assigned",
+                    "status_color": 15
+                  }
+                ]
+              },
+              "stale": {
+                "effects_started": false,
+                "outcome": 2
+              },
+              "state": {
+                "flags": 4,
+                "item": {
+                  "flags": 16392,
+                  "refs": [
+                    {
+                      "id": 5968,
+                      "type": 11
+                    },
+                    {
+                      "id": 261,
+                      "type": 35
+                    }
+                  ]
+                },
+                "items": [
+                  5969
+                ],
+                "jobs": 0,
+                "unit": {
+                  "flags1": 109051904,
+                  "flags2": 301989936,
+                  "flags3": 258,
+                  "flags4": 8,
+                  "job": -1,
+                  "refs": [
+                    {
+                      "id": 28448,
+                      "type": 11
+                    }
+                  ]
+                },
+                "units": []
+              }
+            }
+          },
+          "restored": true,
+          "success": true,
+          "unit_id": 6960
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-122728/cage-occupant-effects-native.json": "9c0e967ab22bfc81801a561a45eebff1d21fe9853bb7348f7cb105484e88a0c1",
+          "build/stockpile-storage-native-farm-discovery-20261116-122728/cage-body-native.json": "c6ed04414f50baa620f3fcd46752470dda10b4532f5055991fbfadf3ea86f398",
+          "build/stockpile-storage-native-farm-discovery-20261116-122728/result.json": "2d40e40c298c99b36d829581f488fb474ccbe54b90e9c5133ccd14e4f4f79af3",
+          "build/stockpile-storage-native-farm-discovery-20261116-122728/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/cage_occupants_native.h": "a9dfcce9b1018d888814357c4bd3176494a54e68511de433dc714f9a94a5b641",
+          "tools/smoke/cage-occupant-effects-native.lua": "edafbfa090a3e557c65cdf33583f2cefbde9ca28d79b9cef416afac1c1335961"
+        }
       }
     },
     "pending_construction_reference": {

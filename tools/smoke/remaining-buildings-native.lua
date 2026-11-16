@@ -55,6 +55,10 @@ for _,kind in ipairs(kinds)do
    if os.getenv('DF3D_CAGE_BODY')=='1'then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','cage-body-native.lua')
     assert(loadfile(source))(out,view,b,capture)
+    if os.getenv('DF3D_CAGE_OCCUPANT_EFFECTS')=='1'then
+     source=source:gsub('cage%-body%-native.lua$','cage-occupant-effects-native.lua')
+     assert(loadfile(source))(out,view,b,capture)
+    end
    end
    if os.getenv('DF3D_CAGE_GLASS')=='1'then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','cage-glass-native.lua')

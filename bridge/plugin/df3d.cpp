@@ -5676,13 +5676,24 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         } else if(parameters.size()==2)return CR_FAILURE;
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
-      if(parameters[0]=="cage-occupants-read") {
-        if(parameters.size()!=2)return CR_WRONG_USAGE;
+      if(parameters[0]=="cage-occupants-read" || parameters[0]=="cage-occupants-probe") {
+        const bool edit=parameters[0]=="cage-occupants-probe";
+        if(parameters.size()!=(edit?6:2))return CR_WRONG_USAGE;
         int32_t id=-1;const auto& arg=parameters[1];
         const auto parsed=std::from_chars(arg.data(),arg.data()+arg.size(),id);
         if(parsed.ec!=std::errc{} || parsed.ptr!=arg.data()+arg.size())return CR_WRONG_USAGE;
-        const auto body=df3d_production::observeCageOccupants(df::building::find(id));if(!body)return CR_FAILURE;
-        Json::Value result;result["building_id"]=id;result["revision"]=Json::UInt64(body->revision);
+        std::optional<df3d_production::CageOccupants> body;Json::Value result;
+        if(edit) {
+          if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+          std::array<int64_t,4> values{};
+          for(size_t i=2;i<6;++i){const auto& value=parameters[i];const auto parsedValue=std::from_chars(value.data(),value.data()+value.size(),values[i-2]);if(parsedValue.ec!=std::errc{} || parsedValue.ptr!=value.data()+value.size())return CR_WRONG_USAGE;}
+          if(values[0]<=0 || values[1]<0 || values[1]>INT32_MAX || values[2]<0 || values[2]>1 || values[3]<0 || values[3]>1)return CR_WRONG_USAGE;
+          auto outcome=df3d_production::setCageOccupantAssignment(df::building::find(id),uint64_t(values[0]),int32_t(values[1]),values[2]!=0,values[3]!=0);
+          result["outcome"]=int(outcome.outcome);result["effects_started"]=outcome.effectsStarted;body=std::move(outcome.receipt);
+          if(!body){out.print("{}",Json::FastWriter().write(result));return CR_OK;}
+        } else body=df3d_production::observeCageOccupants(df::building::find(id));
+        if(!body)return CR_FAILURE;
+        result["building_id"]=id;result["revision"]=Json::UInt64(body->revision);
         result["removing"]=body->removing;result["justice_restraint"]=body->justiceRestraint;result["rows"]=Json::Value(Json::arrayValue);
         for(const auto& row:body->rows) {
           Json::Value r;r["id"]=row.id;r["entity"]=row.entity;r["contained"]=row.contained;r["assigned"]=row.assigned;r["resolved"]=row.resolved;

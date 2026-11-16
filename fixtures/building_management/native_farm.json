@@ -114312,6 +114312,33 @@
           "presentations/godot/project/scripts/furniture_panel.gd": "21e302f4c82ca3de1d30c1b75771a758389584ce03ded482bc6bdb675410cc81",
           "bridge/plugin/building_item_native.h": "f0923e3122ea5cc4dc52b59bb4388983fe810fe7f8c4226a66a6373faa41bbe2"
         }
+      },
+      "default_building_workflow_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-134056",
+        "owned_df_pid": 55452,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "native_types": [
+          16,
+          17,
+          20,
+          21,
+          25,
+          31
+        ],
+        "scope": "Temporary completed windows, roads, support and upright weapon. Controlled glass/ruby/granite/iron material and installed window/gem/block/spike facts. Actual main scene map and holder entry, rename/restore, removal/cancel and close; thirty full488x708 panels match native (10365120 pixels). Shared header/contents/controller, no new gameplay rules. Fixtures removed and original paused frame preserved. Root19 and holder routing pass; bridge installed. Safe-thread main-scene diagnostics clean; serial30FPS GPU56-61C. Does not qualify natural construction or mechanism activation.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-134056/remaining-buildings-native.json": "a79f28cc48b15fa274e4ef9e66db59283f8a0aceb8788247a756e9aa0c7891b3",
+          "build/stockpile-storage-native-farm-discovery-20261116-134056/simple-building-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261116-134056/simple-building-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261116-134056/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "tools/smoke/remaining-buildings-native.lua": "778a2bd7571f14a4c36b294bb97a679660fe8be0ec8e2642098cb4afba0247e4",
+          "bridge/plugin/farm_native.h": "0356d56f72faae54be67bc76247ef23b08a6f9fb61f3ad553e350a5f64ef207d",
+          "schema/cpp/management_util.h": "e7158291b514ab4382e7a66f5a0368f51e515448e714884a953f902cb9c06b5c",
+          "presentations/godot/project/scripts/building_header_state.gd": "ef04c34b6025c558d6689e20d7bda2ec55d0f86d82c0f93ef1ea76708248c88e",
+          "presentations/godot/project/scripts/fortress_ui.gd": "e14f5965ea1fb10d0ab00945b05e101f0b05443e0cec75185ae4a9563c9ef19a",
+          "presentations/godot/project/tests/simple_building_scene_live.gd": "e9afa32b2e6ef1dd9600160142a30e0097b27189830a4c1ddcfb3522f84faa8b"
+        }
       }
     },
     "pending_construction_reference": {

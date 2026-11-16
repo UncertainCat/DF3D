@@ -454,7 +454,7 @@ try {
      if($name -eq 'machinery-scene'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/machinery_scene_live.gd')}
      if($name -like 'barrier-variant-wire-*'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/barrier_variants_scene_live.gd')}
      if($name -like 'well-wire-*'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/well_scene_live.gd')}
-     if($name -eq 'simple-building-wire'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/simple_building_scene_live.gd')}
+     if($name -eq 'simple-building-wire'){$clientArgs=@('--max-fps','30','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/simple_building_scene_live.gd')}
      if($name -eq 'barrier-scene'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/barrier_scene_live.gd')}
      if($name -eq 'depot-goods-scene'){$clientArgs=@('--max-fps','30','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/depot_goods_scene_live.gd')}
      if($name -like 'depot-scene-gate-*'){
@@ -474,7 +474,7 @@ try {
      if($name -eq 'machinery-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/machinery_wire_live.gd')}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
      $null=$client.Handle
-     $workshopClientTimeout=if($env:DF3D_FURNITURE_GENERIC_DISCOVERY -eq '1' -or $name -eq 'cage-scene'){90000}else{45000}
+     $workshopClientTimeout=if($env:DF3D_FURNITURE_GENERIC_DISCOVERY -eq '1' -or $name -in @('cage-scene','simple-building-wire')){90000}else{45000}
      if(-not $client.WaitForExit($workshopClientTimeout)){$client.Kill();$client.WaitForExit();throw 'Workshop client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/$name-result.json")){throw 'Workshop client failed'}
     }

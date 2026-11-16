@@ -73,7 +73,7 @@ func _state_changed() -> void:
 		if state.building_id!=trade.depot_id or state.building_id<0:
 			_retire_trade()
 		else:panel.hide()
-	if state.snapshot.get("type",-1) in [9,19,23,33,35,36,37,38,39,40,41,42,43,44,50]:
+	if state.snapshot.get("type",-1) in [9,19,23,25,31,33,35,36,37,38,39,40,41,42,43,44,50]:
 		if links.building_id!=state.building_id:links.open(state.building_id)
 	elif links.building_id>=0:links.close()
 	if state.snapshot.get("type",-1)==35 and not state.snapshot.get("removing",true):

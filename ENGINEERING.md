@@ -3411,6 +3411,34 @@ body/input branches; this static result alone does not qualify their panels.
 Shop7 and natural Nest47 also reach those defaults, without establishing a
 fortress-mode product route. Missing examples are retained in the fixture.
 
+Protected131925 on2026-11-16 creates temporary completed examples for native
+WindowGlass16, WindowGem17, RoadDirt20, RoadPaved21, Support25 and Weapon31.
+Their native panels have the common header/contents layout. Rename/restore and
+removal/cancel pass for all six. These initial fixtures have no installed items;
+they establish control behavior, not populated contents or public viewer parity.
+All temporary buildings are removed, the paused frame is unchanged, source saves
+are preserved and owned DF13624 closes unsaved at30FPS (sampled GPU60C).
+
+These six types now use the shared completed-building header, contents and
+furniture controller through public map and holder entry. Presentation and wire
+validation each use one supported-type predicate for reads and edits; no new
+wire fields or gameplay rules are introduced. Supports and upright weapons also
+use the existing linked-building viewer. Installed contents request the shared
+native item appearance provider.
+
+Protected134056 (DF55452) qualifies the actual main-scene workflow for all six:
+map selection, rename/restore, removal/cancel, Escape and holder return. Thirty
+full488x708 panels match native exactly (10365120 pixels). Temporary fixtures
+include controlled green-glass, ruby, granite and iron materials and installed
+window, gem, block and spike items. All fixtures are removed and the paused frame
+is preserved. Source saves are unchanged; owned DF closes unsaved at30FPS,
+sampled GPU56–61C. Main-scene diagnostics are clean. Bridge and extension builds,
+headless header/holder checks and core19 pass. Evidence:
+`completed_sheet_discovery_reference.default_building_workflow_reference`.
+This qualifies panel operations, not natural construction or mechanism activation.
+Earlier132436/132802 fail header admission and are not public acceptance; their
+findings are resolved in the presentation and shared wire predicates.
+
 The well renderer189edf calls native560b60 directly. Its result is -1 for an
 operational well,84 for no bucket,85 for a full bucket and86 for a dry well.
 It reads installed contents, native remaining capacity (c8a580) and the water

@@ -4,6 +4,8 @@ local gui=require('gui');local json=require('json');local g=df.global.gps
 local sheet=df.global.game.main_interface.view_sheets
 local kinds={6,7,16,17,18,19,20,21,22,24,25,26,27,28,31,32,45,47,48,49,53}
 if os.getenv("DF3D_SIMPLE_BUILDING_SCENE")=="1" then kinds={19,32,45}end
+local default_families=os.getenv('DF3D_DEFAULT_BUILDINGS_NATIVE')=='1'
+if default_families then kinds={16,17,20,21,25,31}end
 if os.getenv("DF3D_DEPOT_NATIVE")=="1" then kinds={6}end
 if os.getenv("DF3D_CAGE_NATIVE")=="1" then kinds={28}end
 local wanted={};for _,kind in ipairs(kinds)do wanted[kind]=true end
@@ -18,12 +20,50 @@ for _,b in ipairs(df.global.world.buildings.all)do
   if complete and d and not d.hidden and not selected[kind]then selected[kind]=b end
  end
 end
+local fixtures={};local fixture_items={};local fixture_ids={}
+local ok,err=xpcall(function()
+if default_families then
+ for _,kind in ipairs(kinds)do
+  if not selected[kind]then
+   local b
+   for y=80,140,4 do for x=80,160,4 do
+    local pos={x=x,y=y,z=165};local d,o=dfhack.maps.getTileFlags(pos)
+    if d and not d.hidden and o and not o.item and not o.unit and not o.unit_grounded and not dfhack.buildings.findAtTile(pos)then
+     local success,placed=pcall(dfhack.buildings.constructBuilding,{type=kind,pos=pos,full_rectangle=true})
+     if success and placed then b=placed;break end
+    end
+   end;if b then break end end
+   assert(b,'No fixture site for '..df.building_type[kind])
+   fixtures[#fixtures+1]=b
+   fixture_ids[b.id]=true
+   while #b.jobs>0 do assert(dfhack.job.removeJob(b.jobs[0]))end
+   b:setBuildStage(b:getMaxBuildStage());b.flags.exists=true;b:updateOccupancy(b.centerx,b.centery)
+   local token=kind==16 and 'GLASS_GREEN' or kind==17 and 'INORGANIC:RUBY' or kind==31 and 'INORGANIC:IRON' or 'INORGANIC:GRANITE'
+   local material=assert(dfhack.matinfo.find(token));b.mat_type=material.type;b.mat_index=material.index
+   if kind~=20 then
+    local worker
+    for _,u in ipairs(df.global.world.units.active)do if dfhack.units.isCitizen(u)then worker=u;break end end
+    local item_type=kind==16 and df.item_type.WINDOW or kind==17 and df.item_type.SMALLGEM or kind==31 and df.item_type.TRAPCOMP or df.item_type.BLOCKS
+    local subtype=-1
+    if kind==31 then
+     for i,raw in ipairs(df.global.world.raws.itemdefs.trapcomps)do if raw.id=='ITEM_TRAPCOMP_MENACINGSPIKE'then subtype=i;break end end
+     assert(subtype>=0,'Missing spike definition')
+    end
+    local items=dfhack.items.createItem(assert(worker),item_type,subtype,material.type,material.index)
+    assert(#items==1);fixture_items[#fixture_items+1]=items[1]
+    assert(dfhack.items.moveToBuilding(items[1],b,2,true))
+   end
+   selected[kind]=b
+  end
+ end
+end
 for _,kind in ipairs(kinds)do
  local b=selected[kind]
  if b then
   if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
   view:render(dfhack.getTickCount());select_map(b)
   local row={id=b.id,type=kind,subtype=b:getSubtype(),tile={b.centerx,b.centery,b.z},native_type=df.building_type[kind],custom_name=dfhack.df2utf(b.name),selected_sheet=sheet.active_sheet,selected_id=sheet.active_id,lines={}}
+  row.temporary_fixture=fixture_ids[b.id] or false
   capture('remaining-building-'..kind)
   if kind==28 and os.getenv('DF3D_CAGE_NATIVE')=='1' then
    local function ids(v)local t={};for _,id in ipairs(v)do t[#t+1]=id end;return t end
@@ -105,7 +145,7 @@ for _,kind in ipairs(kinds)do
    local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','well-status-native.lua')
    result.well_status=assert(loadfile(source))(out,view,b,capture)
   end
-  if os.getenv('DF3D_SIMPLE_BUILDING_SCENE')=='1' then
+  if os.getenv('DF3D_SIMPLE_BUILDING_SCENE')=='1' or default_families then
    local original=b.name;assert(#b.jobs==0)
    local function click(x,y)
     g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
@@ -122,14 +162,18 @@ for _,kind in ipairs(kinds)do
   result.buildings[#result.buildings+1]=row
  else result.missing[#result.missing+1]=kind end
 end
-if os.getenv('DF3D_SIMPLE_BUILDING_SCENE')=='1' then
+if os.getenv('DF3D_SIMPLE_BUILDING_SCENE')=='1' or os.getenv('DF3D_DEFAULT_BUILDINGS_SCENE')=='1' then
  local f=assert(io.open(out..'/simple-building-expected.json','w'));f:write(json.encode(result));f:close()
  local active=sheet.active_id;capture('simple-building-wire')
  f=assert(io.open(out..'/simple-building-wire-result.json'));result.viewer=json.decode(f:read('*a'));f:close()
  assert(result.viewer.success and sheet.active_id==active)
  for _,row in ipairs(result.buildings)do local b=assert(df.building.find(row.id));assert(#b.jobs==0 and dfhack.df2utf(b.name)==row.custom_name)end
 end
+end,debug.traceback)
 if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
+for _,item in ipairs(fixture_items)do item.flags.in_building=false;assert(dfhack.items.remove(item))end
+for _,b in ipairs(fixtures)do b:setBuildStage(0);b.flags.exists=false;assert(dfhack.buildings.deconstruct(b))end
+assert(ok,err)
 assert(df.global.world.frame_counter==result.frame)
 result.success=true
 local f=assert(io.open(out..'/remaining-buildings-native.json','w'));f:write(json.encode(result));f:close()

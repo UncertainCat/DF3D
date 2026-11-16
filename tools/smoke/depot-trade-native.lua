@@ -97,7 +97,8 @@ local function record(label)
   end
   if os.getenv('DF3D_DEPOT_TRADE_PROJECTION')=='1' then
    for iteration=1,2 do
-    local output,code=dfhack.run_command_silent('df3d','trade-projection-probe',tostring(b.id),'0',trade.item_filter[0],trade.item_filter[1],#selection_intents==0 and '[]' or json.encode(selection_intents));assert(code==0,output)
+    local command=os.getenv('DF3D_DEPOT_TRADE_DRAFT')=='1' and 'trade-draft-probe' or 'trade-projection-probe'
+    local output,code=dfhack.run_command_silent('df3d',command,tostring(b.id),'0',trade.item_filter[0],trade.item_filter[1],#selection_intents==0 and '[]' or json.encode(selection_intents));assert(code==0,output)
     local facts=json.decode(output);assert(facts.available,output)
     for side=0,1 do
      local actual=facts.sides[side+1]
@@ -288,6 +289,19 @@ local ok,err=xpcall(function()
       selection_intents={}
      end
      restore_broker();record('totals-no-broker')
+    end
+    if os.getenv('DF3D_DEPOT_TRADE_DRAFT')=='1' then
+     selection_intents={{side=0,action='filter',query=''}, {side=0,item=trade.good[0][0].id}}
+     click(468,238);record('draft-selected')
+     click(100,166);for byte in ('iron'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(byte:byte()))end
+     view:render(dfhack.getTickCount());assert(trade.item_filter[0]=='IRON')
+     selection_intents[#selection_intents+1]={side=0,action='filter',query=trade.item_filter[0]};record('draft-filtered')
+     for i=1,4 do gui.simulateInput(view,'STRING_A000')end
+     view:render(dfhack.getTickCount());assert(trade.item_filter[0]=='')
+     if trade.entering_item_filter[0] then click(100,166)end
+     selection_intents[#selection_intents+1]={side=0,action='filter',query=''};record('draft-filter-cleared')
+     selection_intents[#selection_intents+1]={side=0,action='unmark_all'};click(440,694);record('draft-cleared')
+     selection_intents={}
     end
     if result.bin then
      local index;for i,item in ipairs(trade.good[1])do if item.id==result.bin.id then index=i;break end end

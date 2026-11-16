@@ -5116,7 +5116,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if(rows)for(const auto& row:*rows){Json::Value value;value["id"]=row.id;value["value"]=row.value;value["appraisal"]=row.appraisal;value["value_caption"]=DF2UTF(row.valueCaption);value["weight_caption"]=DF2UTF(row.weightCaption);output["rows"].append(value);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
-      if(parameters[0]=="trade-projection-probe") {
+      if(parameters[0]=="trade-projection-probe" || parameters[0]=="trade-draft-probe") {
         if(parameters.size()!=3 && parameters.size()!=5 && parameters.size()!=6)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
         int32_t values[2]={-1,-1};
@@ -5131,12 +5131,27 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(action=="item" || action=="expand_container"){if(!intent["item"].isInt())return CR_WRONG_USAGE;draft.item=intent["item"].asInt();if(action=="expand_container")draft.action=df3d_production::TradeDraftAction::ExpandContainer;}
             else if(action=="mark_all")draft.action=df3d_production::TradeDraftAction::MarkAll;
             else if(action=="unmark_all")draft.action=df3d_production::TradeDraftAction::UnmarkAll;
+            else if(action=="filter"){if(!intent["query"].isString())return CR_WRONG_USAGE;draft.action=df3d_production::TradeDraftAction::Filter;draft.query=UTF2DF(intent["query"].asString());}
             else if(action=="group" || action=="expand_group") {
               if(!intent["type"].isInt() || !intent["subtype"].isInt())return CR_WRONG_USAGE;
               draft.action=action=="group"?df3d_production::TradeDraftAction::Group:df3d_production::TradeDraftAction::ExpandGroup;draft.type=intent["type"].asInt();draft.subtype=intent["subtype"].asInt();
             }else return CR_WRONG_USAGE;
             selections.push_back(draft);}}
-        const auto projection=df3d_production::tradeProjection(df::building::find(values[0]),size_t(values[1]),filters,selections);
+        auto projection=df3d_production::tradeProjection(df::building::find(values[0]),size_t(values[1]),filters,selections);
+        if(parameters[0]=="trade-draft-probe") {
+          using Draft=df3d_production::TradeDraftNative;
+          auto draft=std::make_unique<Draft>(df::building::find(values[0]),size_t(values[1]));
+          const auto rebuild=[&] {
+            const auto checkpoint=draft->checkpoint();if(!checkpoint)return false;
+            auto next=std::make_unique<Draft>(df::building::find(values[0]),size_t(values[1]));
+            if(!next->restore(*checkpoint))return false;
+            draft=std::move(next);return true;
+          };
+          if(!*draft)return CR_FAILURE;
+          for(int32_t side=0;side<2;++side)if(!draft->setFilter(side,filters[side]) || !rebuild())return CR_FAILURE;
+          for(const auto& intent:selections)if(!draft->apply(intent) || !rebuild())return CR_FAILURE;
+          projection=draft->snapshot();
+        }
         Json::Value output;output["available"]=bool(projection);output["sides"]=Json::arrayValue;
         if(projection){const auto totals=df3d_production::tradeValueTotals(df::building::find(values[0]),size_t(values[1]),*projection);
           if(!totals)return CR_FAILURE;

@@ -66199,6 +66199,6981 @@
           "tools/smoke/depot-trade-appraisal-native.lua": "19ac87261883dedfedc2486baead3052a954929b03a59064605a8e3ec968233b",
           "bridge/plugin/trade_appraisal_native.h": "92bfc0b0c7ed7d84a282a8328d6e0ceb5f8d523f1956aef3938de16e86ac4c43"
         }
+      },
+      "depot_trade_draft_checkpoint_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-184515",
+        "owned_df_pid": 41428,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "35 native states twice compared using trade-draft-probe: fresh native storage and pointer-free checkpoint restoration after every query/action. Initial/search/speaker plus selection/group/bin actions; four added selected/search/clear states. Items/flags/amounts/groups/height match native. Appraisal suppressed. Not session identity/revision/epoch invalidation, source changes, nonzero quantities, negotiation/counteroffer, transport or viewer acceptance.",
+        "cases": [
+          {
+            "label": "single",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "speaker",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "search-0-iron",
+            "filters": [
+              "IRON",
+              ""
+            ],
+            "selection_intents": [],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 6,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "search-0-boulders",
+            "filters": [
+              "BOULDERS",
+              ""
+            ],
+            "selection_intents": [],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 9,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "search-0-zznomatch",
+            "filters": [
+              "ZZNOMATCH",
+              ""
+            ],
+            "selection_intents": [],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 0,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "search-1-blocks",
+            "filters": [
+              "",
+              "BLOCKS"
+            ],
+            "selection_intents": [],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 6,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "search-cleared",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "draft-selected",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "action": "filter",
+                "query": "",
+                "side": 0
+              },
+              {
+                "item": 992,
+                "side": 0
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  50,
+                  49,
+                  52,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 600000,
+                "whole": -214
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  3,
+                  0
+                ],
+                "actual_profit": -3,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 4
+              }
+            }
+          },
+          {
+            "label": "draft-filtered",
+            "filters": [
+              "IRON",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "action": "filter",
+                "query": "",
+                "side": 0
+              },
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "action": "filter",
+                "query": "IRON",
+                "side": 0
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  50,
+                  49,
+                  52,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 600000,
+                "whole": -214
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 6,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  3,
+                  0
+                ],
+                "actual_profit": -3,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 4
+              }
+            }
+          },
+          {
+            "label": "draft-filter-cleared",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "action": "filter",
+                "query": "",
+                "side": 0
+              },
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "action": "filter",
+                "query": "IRON",
+                "side": 0
+              },
+              {
+                "action": "filter",
+                "query": "",
+                "side": 0
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  50,
+                  49,
+                  52,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 600000,
+                "whole": -214
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  3,
+                  0
+                ],
+                "actual_profit": -3,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 4
+              }
+            }
+          },
+          {
+            "label": "draft-cleared",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "action": "filter",
+                "query": "",
+                "side": 0
+              },
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "action": "filter",
+                "query": "IRON",
+                "side": 0
+              },
+              {
+                "action": "filter",
+                "query": "",
+                "side": 0
+              },
+              {
+                "action": "unmark_all",
+                "side": 0
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "bin-action-1",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 3148,
+                "side": 1
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  56,
+                  50,
+                  55,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 200000,
+                "whole": -827
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    1,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  1518
+                ],
+                "actual_profit": 1518,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "bin-action-2",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 3148,
+                "side": 1
+              },
+              {
+                "item": 28694,
+                "side": 1
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  55,
+                  56,
+                  48,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 300000,
+                "whole": -780
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    1,
+                    2,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  1368
+                ],
+                "actual_profit": 1368,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "bin-action-3",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 3148,
+                "side": 1
+              },
+              {
+                "item": 28694,
+                "side": 1
+              },
+              {
+                "action": "expand_container",
+                "item": 3148,
+                "side": 1
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  55,
+                  56,
+                  48,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 300000,
+                "whole": -780
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    5,
+                    2,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 27,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  1368
+                ],
+                "actual_profit": 1368,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "bin-action-4",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 3148,
+                "side": 1
+              },
+              {
+                "item": 28694,
+                "side": 1
+              },
+              {
+                "action": "expand_container",
+                "item": 3148,
+                "side": 1
+              },
+              {
+                "action": "expand_container",
+                "item": 3148,
+                "side": 1
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  55,
+                  56,
+                  48,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 300000,
+                "whole": -780
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    1,
+                    2,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  1368
+                ],
+                "actual_profit": 1368,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "bin-action-5",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 3148,
+                "side": 1
+              },
+              {
+                "item": 28694,
+                "side": 1
+              },
+              {
+                "action": "expand_container",
+                "item": 3148,
+                "side": 1
+              },
+              {
+                "action": "expand_container",
+                "item": 3148,
+                "side": 1
+              },
+              {
+                "item": 3148,
+                "side": 1
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "selection-1",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  50,
+                  49,
+                  52,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 600000,
+                "whole": -214
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  3,
+                  0
+                ],
+                "actual_profit": -3,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 4
+              }
+            }
+          },
+          {
+            "label": "selection-2",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 991,
+                "side": 0
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  55,
+                  57,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 200000,
+                "whole": -79
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    1,
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  6,
+                  0
+                ],
+                "actual_profit": -6,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 4
+              }
+            }
+          },
+          {
+            "label": "selection-3",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 991,
+                "side": 0
+              },
+              {
+                "item": 992,
+                "side": 0
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  50,
+                  49,
+                  52,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 600000,
+                "whole": -214
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  3,
+                  0
+                ],
+                "actual_profit": -3,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 4
+              }
+            }
+          },
+          {
+            "label": "selection-4",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 991,
+                "side": 0
+              },
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 1180,
+                "side": 1
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  50,
+                  51,
+                  49,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 500000,
+                "whole": -231
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    1,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  3,
+                  10
+                ],
+                "actual_profit": 7,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 2
+              }
+            }
+          },
+          {
+            "label": "selection-5",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 991,
+                "side": 0
+              },
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 1180,
+                "side": 1
+              },
+              {
+                "item": 991,
+                "side": 0
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  54,
+                  54,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 900000,
+                "whole": -366
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    1,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  10
+                ],
+                "actual_profit": 10,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "selection-6",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 991,
+                "side": 0
+              },
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 1180,
+                "side": 1
+              },
+              {
+                "item": 991,
+                "side": 0
+              },
+              {
+                "item": 1180,
+                "side": 1
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "group-action-1",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  50,
+                  49,
+                  52,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 600000,
+                "whole": -214
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  3,
+                  0
+                ],
+                "actual_profit": -3,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 4
+              }
+            }
+          },
+          {
+            "label": "group-action-2",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  55,
+                  57,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 200000,
+                "whole": -79
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    1,
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  6,
+                  0
+                ],
+                "actual_profit": -6,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 4
+              }
+            }
+          },
+          {
+            "label": "group-action-3",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "group-action-4",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "expand_group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": false,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 18,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "group-action-5",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "expand_group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "expand_group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "group-action-6",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "expand_group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "expand_group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "mark_all",
+                "side": 0
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  65,
+                  108,
+                  108,
+                  111,
+                  119,
+                  101,
+                  100,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  60,
+                  49,
+                  226
+                ],
+                "color": 7,
+                "excess": false,
+                "fraction": 0,
+                "whole": 0
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  154,
+                  0
+                ],
+                "actual_profit": -154,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 4
+              }
+            }
+          },
+          {
+            "label": "group-action-7",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "expand_group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "expand_group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "mark_all",
+                "side": 0
+              },
+              {
+                "action": "unmark_all",
+                "side": 0
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "group-action-8",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "expand_group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "expand_group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "mark_all",
+                "side": 0
+              },
+              {
+                "action": "unmark_all",
+                "side": 0
+              },
+              {
+                "action": "mark_all",
+                "side": 1
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  56,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 485000,
+                "whole": -848
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    1,
+                    1,
+                    1,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    1,
+                    1
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  1528
+                ],
+                "actual_profit": 1528,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "group-action-9",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "expand_group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "expand_group",
+                "side": 0,
+                "subtype": -1,
+                "type": 4
+              },
+              {
+                "action": "mark_all",
+                "side": 0
+              },
+              {
+                "action": "unmark_all",
+                "side": 0
+              },
+              {
+                "action": "mark_all",
+                "side": 1
+              },
+              {
+                "action": "unmark_all",
+                "side": 1
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "group-action-filter-mark",
+            "filters": [
+              "IRON",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "action": "mark_all",
+                "side": 0
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  65,
+                  108,
+                  108,
+                  111,
+                  119,
+                  101,
+                  100,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  60,
+                  49,
+                  226
+                ],
+                "color": 7,
+                "excess": false,
+                "fraction": 0,
+                "whole": 0
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 1,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 6,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  154,
+                  0
+                ],
+                "actual_profit": -154,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 4
+              }
+            }
+          },
+          {
+            "label": "group-action-filter-unmark",
+            "filters": [
+              "IRON",
+              ""
+            ],
+            "selection_intents": [
+              {
+                "action": "mark_all",
+                "side": 0
+              },
+              {
+                "action": "unmark_all",
+                "side": 0
+              }
+            ],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 0,
+                      "on": false,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 6,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "speaker-long-name",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          },
+          {
+            "label": "speaker-unloading",
+            "filters": [
+              "",
+              ""
+            ],
+            "selection_intents": [],
+            "projection": {
+              "available": true,
+              "capacity": {
+                "caption": [
+                  69,
+                  120,
+                  99,
+                  101,
+                  115,
+                  115,
+                  32,
+                  87,
+                  101,
+                  105,
+                  103,
+                  104,
+                  116,
+                  58,
+                  32,
+                  51,
+                  52,
+                  56,
+                  226
+                ],
+                "color": 4,
+                "excess": true,
+                "fraction": 0,
+                "whole": -348
+              },
+              "sides": [
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 4
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 45
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 57
+                    }
+                  ],
+                  "height": 24,
+                  "items": [
+                    992,
+                    991,
+                    296,
+                    408,
+                    407
+                  ]
+                },
+                {
+                  "amounts": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "flags": [
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0
+                  ],
+                  "groups": [
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 2
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 23
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 32
+                    },
+                    {
+                      "expanded": true,
+                      "flags": 2,
+                      "on": true,
+                      "subtype": -1,
+                      "type": 46
+                    }
+                  ],
+                  "height": 57,
+                  "items": [
+                    1180,
+                    1494,
+                    3148,
+                    28694,
+                    28650,
+                    27311,
+                    27274,
+                    25085,
+                    25161,
+                    25157,
+                    25156,
+                    25113,
+                    25112,
+                    1736,
+                    1735
+                  ]
+                }
+              ],
+              "value_totals": {
+                "actual": [
+                  0,
+                  0
+                ],
+                "actual_profit": 0,
+                "broker_appraisal": 0,
+                "estimated": [
+                  0,
+                  0
+                ],
+                "estimated_profit": 0,
+                "profit_color": 6
+              }
+            }
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-184515/depot-trade-native.json": "b9486926837b2e503a9f17affacb54eac6d3dc46f60cf8ef7e1008a01a94220f",
+          "build/stockpile-storage-native-farm-discovery-20261115-184515/result.json": "c2977a78478aec8b6ff4a5f51740c7073283d4bd6265c6a564678b5c0c3169be",
+          "build/stockpile-storage-native-farm-discovery-20261115-184515/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-184515/capture-inputs.json": "d77c27bbbc8a9adfd523f6d44bbc5ef6dc3b6112ffd07b68b7af41e2fedf59b8",
+          "tools/smoke/depot-trade-native.lua": "4e555ab61c0ce2e5eb2fd5d355fc1a6c9e09864e8e8e228370527270e1352996",
+          "bridge/plugin/trade_projection_native.h": "23d4b77dd08d7d7b24a83e8cc67074e100079c0f57ff3578eb229240073d48b8",
+          "bridge/plugin/df3d.cpp": "6532c4bc8f419ffd2f210ccd123907cc8e4764ba6e8c654cbd704cbd4715007a"
+        }
       }
     },
     "pending_construction_reference": {

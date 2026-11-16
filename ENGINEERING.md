@@ -328,9 +328,37 @@ It inserts bin contents in native reference-reversed order, then calls native
 37c780 (filter and group selection flags) and37acc0 (height). These calls use
 only owned vectors/strings and simulation item getters/descriptions. Item IDs,
 flags, amounts, group type/subtype/expansion/visibility/selection flags and
-height leave the context as values. Selection intents can now replay through
-the native toggle into this fresh expanded draft; retained viewer state and
-public transport are not integrated.
+height leave the context as values. `TradeDraftNative` owns this storage for one
+safe-point operation and applies filter changes and selection intents in order
+through the native helpers. Its pointer-free `TradeDraftCheckpoint` retains
+item IDs, flags/amounts, group state, height and queries between operations.
+Restoration uses freshly resolved goods and validates both sides' item order,
+containment flags and group keys before changing draft storage. It preserves
+native derived flags exactly, including expansion's intentional lack of a
+group-selection refresh. The stateless `tradeProjection` adapter uses the same
+implementation. No native renderer or appraisal phase runs during draft work.
+
+Checkpoints are server-owned selection state, not client action authority or a
+complete trade session. Public session integration must additionally validate
+caravan/trader/depot identity, epoch and source revision, and retire obsolete
+state before any action. Source-list shape alone does not establish freshness.
+Negotiation/counteroffer state and nonzero quantities are not represented by
+this checkpoint. Retained viewer state and public transport remain unfinished.
+
+Protected184515 on2026-11-15 compares35 native states twice through the paused
+`trade-draft-probe`: the diagnostic reconstructs fresh storage and restores the
+checkpoint after every filter/action. The existing initial/search/speaker,
+individual/group/all selection and populated-bin expansion cases pass. Four
+additional states select a merchant item, search IRON, clear search and unmark
+the selection, with filter changes interleaved in the same draft. Item order,
+flags, amounts, group state and height match native after restoration. Native
+appraisal is suppressed. Owned DF41428 closes unsaved/source-preserved at30FPS,
+sampled GPU48C; the bridge build and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_draft_checkpoint_reference`.
+The earlier184412 attempt stopped at a diagnostic assertion expecting lowercase
+search text; native stores uppercase IRON. It is excluded from acceptance and
+its owned session also closed unsaved/source-preserved. No source-change,
+session retirement, negotiation or actual viewer workflow is qualified here.
 
 Protected180336 on2026-11-15 compares all those fields against native, twice
 per state, on the twelve-item source fixture. Native pointer/keyboard input

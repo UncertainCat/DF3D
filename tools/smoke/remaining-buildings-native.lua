@@ -6,6 +6,8 @@ local kinds={6,7,16,17,18,19,20,21,22,24,25,26,27,28,31,32,45,47,48,49,53}
 if os.getenv("DF3D_SIMPLE_BUILDING_SCENE")=="1" then kinds={19,32,45}end
 local default_families=os.getenv('DF3D_DEFAULT_BUILDINGS_NATIVE')=='1'
 if default_families then kinds={16,17,20,21,25,31}end
+local specialized_families=os.getenv('DF3D_SPECIAL_BUILDINGS_NATIVE')=='1'
+if specialized_families then kinds={22,24,26,27,48,49,53}end
 if os.getenv("DF3D_DEPOT_NATIVE")=="1" then kinds={6}end
 if os.getenv("DF3D_CAGE_NATIVE")=="1" then kinds={28}end
 local wanted={};for _,kind in ipairs(kinds)do wanted[kind]=true end
@@ -22,14 +24,18 @@ for _,b in ipairs(df.global.world.buildings.all)do
 end
 local fixtures={};local fixture_items={};local fixture_ids={}
 local ok,err=xpcall(function()
-if default_families then
+if default_families or specialized_families then
  for _,kind in ipairs(kinds)do
   if not selected[kind]then
    local b
    for y=80,140,4 do for x=80,160,4 do
-    local pos={x=x,y=y,z=165};local d,o=dfhack.maps.getTileFlags(pos)
-    if d and not d.hidden and o and not o.item and not o.unit and not o.unit_grounded and not dfhack.buildings.findAtTile(pos)then
-     local success,placed=pcall(dfhack.buildings.constructBuilding,{type=kind,pos=pos,full_rectangle=true})
+    local pos={x=x,y=y,z=165};local clear=true;local extent=kind==22 and 2 or 0
+    for dy=0,extent do for dx=0,extent do
+     local tile={x=x+dx,y=y+dy,z=165};local d,o=dfhack.maps.getTileFlags(tile)
+     if not d or d.hidden or not o or o.item or o.unit or o.unit_grounded or dfhack.buildings.findAtTile(tile)then clear=false end
+    end end
+    if clear then
+     local success,placed=pcall(dfhack.buildings.constructBuilding,{type=kind,subtype=kind==22 and 0 or -1,pos=pos,full_rectangle=true})
      if success and placed then b=placed;break end
     end
    end;if b then break end end
@@ -38,20 +44,27 @@ if default_families then
    fixture_ids[b.id]=true
    while #b.jobs>0 do assert(dfhack.job.removeJob(b.jobs[0]))end
    b:setBuildStage(b:getMaxBuildStage());b.flags.exists=true;b:updateOccupancy(b.centerx,b.centery)
-   local token=kind==16 and 'GLASS_GREEN' or kind==17 and 'INORGANIC:RUBY' or kind==31 and 'INORGANIC:IRON' or 'INORGANIC:GRANITE'
+   local token=kind==16 and 'GLASS_GREEN' or kind==17 and 'INORGANIC:RUBY' or kind==22 and 'PLANT:OAK:WOOD' or (kind==24 or kind==27 or kind==31) and 'INORGANIC:IRON' or 'INORGANIC:GRANITE'
    local material=assert(dfhack.matinfo.find(token));b.mat_type=material.type;b.mat_index=material.index
    if kind~=20 then
     local worker
     for _,u in ipairs(df.global.world.units.active)do if dfhack.units.isCitizen(u)then worker=u;break end end
-    local item_type=kind==16 and df.item_type.WINDOW or kind==17 and df.item_type.SMALLGEM or kind==31 and df.item_type.TRAPCOMP or df.item_type.BLOCKS
+    local item_type=kind==16 and df.item_type.WINDOW or kind==17 and df.item_type.SMALLGEM or kind==22 and df.item_type.CATAPULTPARTS or kind==24 and df.item_type.ANIMALTRAP or kind==27 and df.item_type.CHAIN or kind==31 and df.item_type.TRAPCOMP or (kind==48 or kind==49 or kind==53) and df.item_type.TOOL or df.item_type.BLOCKS
     local subtype=-1
     if kind==31 then
      for i,raw in ipairs(df.global.world.raws.itemdefs.trapcomps)do if raw.id=='ITEM_TRAPCOMP_MENACINGSPIKE'then subtype=i;break end end
      assert(subtype>=0,'Missing spike definition')
     end
-    local items=dfhack.items.createItem(assert(worker),item_type,subtype,material.type,material.index)
-    assert(#items==1);fixture_items[#fixture_items+1]=items[1]
-    assert(dfhack.items.moveToBuilding(items[1],b,2,true))
+    if item_type==df.item_type.TOOL then
+     local raw_id=kind==48 and 'ITEM_TOOL_NEST_BOX' or kind==49 and 'ITEM_TOOL_HIVE' or 'ITEM_TOOL_PEDESTAL'
+     for i,raw in ipairs(df.global.world.raws.itemdefs.tools)do if raw.id==raw_id then subtype=i;break end end
+     assert(subtype>=0,'Missing tool definition '..raw_id)
+    end
+    for index=1,kind==22 and 3 or 1 do
+     local items=dfhack.items.createItem(assert(worker),item_type,subtype,material.type,material.index)
+     assert(#items==1);fixture_items[#fixture_items+1]=items[1]
+     assert(dfhack.items.moveToBuilding(items[1],b,2,true))
+    end
    end
    selected[kind]=b
   end
@@ -62,9 +75,14 @@ for _,kind in ipairs(kinds)do
  if b then
   if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
   view:render(dfhack.getTickCount());select_map(b)
+  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==b.id,'Native building selection missed '..kind)
   local row={id=b.id,type=kind,subtype=b:getSubtype(),tile={b.centerx,b.centery,b.z},native_type=df.building_type[kind],custom_name=dfhack.df2utf(b.name),selected_sheet=sheet.active_sheet,selected_id=sheet.active_id,lines={}}
   row.temporary_fixture=fixture_ids[b.id] or false
   capture('remaining-building-'..kind)
+  if specialized_families then
+   row.items={}
+   for _,held in ipairs(b.contained_items)do row.items[#row.items+1]={id=held.item.id,type=held.item:getType(),use_mode=held.use_mode}end
+  end
   if kind==28 and os.getenv('DF3D_CAGE_NATIVE')=='1' then
    local function ids(v)local t={};for _,id in ipairs(v)do t[#t+1]=id end;return t end
    local before={units=ids(b.assigned_units),items=ids(b.assigned_items),flags=b.cage_flags.whole,jobs=#b.jobs}
@@ -126,6 +144,10 @@ for _,kind in ipairs(kinds)do
   for y=4,g.dimy-1 do
    local chars={};for x=52,112 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
    local text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','');if text:find('%S')then row.lines[#row.lines+1]={y=y,text=text}end
+  end
+  if specialized_families and os.getenv('DF3D_SPECIAL_BUILDINGS_CONTROLS')=='1' and (kind==24 or kind==48 or kind==49)then
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','special-building-controls-native.lua')
+   row.controls=assert(loadfile(source))(out,view,b,capture)
   end
   if kind==28 and os.getenv('DF3D_CAGE_NATIVE')=='1' then
    local text,code=dfhack.run_command_silent('df3d','cage-room-read',tostring(b.id))

@@ -3095,6 +3095,36 @@ render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
 
 ## Remaining completed-building native providers
 
+### Nest box, animal trap and hive observations
+
+`special_building_native.cpp` supplies owned semantic bodies for NestBox48,
+AnimalTrap24 and Hive49. Nest claims resolve the unit and reuse the native name
+formatter with independently owned inventory context and the existing semantic
+name-color provider. Animal traps distinguish no contents, one installed trap,
+baited and occupied states; the second contained item supplies the native caption.
+Hive outdoor access calls standalone native560f10. Colony crowding follows the
+pinned native iteration over installed vermin and the HIVE vector, comparing
+virtual getRace and counting at most one matching colony per hive. These providers
+never execute the native renderer or read its selection/widget/drawing storage.
+
+Protected140937 on2026-11-16 (DF63216) compares the owned reads with four native
+bait choices, a controlled claimed/unclaimed nest, and all four install/gather
+flag combinations on an empty indoor hive. Names, status, color and semantic
+facts match; every read leaves GPS and main_interface bytes unchanged. The
+temporary seven-family discovery fixtures select their intended building before
+capture and are removed afterward. Source saves are preserved; owned DF closes
+unsaved at30FPS, sampled59–60C. Bridge build and all19 core checks pass.
+Evidence: `completed_sheet_discovery_reference.special_building_readers_reference`.
+
+The controlled claim establishes display behavior, not natural nesting eligibility.
+Occupied/baited trap bodies and hive crowding branches have static native evidence
+but no live acceptance yet. This milestone adds diagnostic reads only: semantic
+edits, transport, viewer bodies and public admission remain unfinished. Siege22,
+Chain27 and DisplayFurniture53 still need their workflows; Archery26 uses shared
+native footer controls. Shop7 and natural Nest47 require fortress-route assessment.
+Earlier135024's siege capture selected a dwarf inside the footprint and is invalid;
+135309 and140937 use full-footprint clearance and explicit selected-building checks.
+
 ### Cage assignment discovery
 
 Protected095820 on2026-11-16 opens the assignment picker for native Cage28,

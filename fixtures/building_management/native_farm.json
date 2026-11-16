@@ -114339,6 +114339,185 @@
           "presentations/godot/project/scripts/fortress_ui.gd": "e14f5965ea1fb10d0ab00945b05e101f0b05443e0cec75185ae4a9563c9ef19a",
           "presentations/godot/project/tests/simple_building_scene_live.gd": "e9afa32b2e6ef1dd9600160142a30e0097b27189830a4c1ddcfb3522f84faa8b"
         }
+      },
+      "special_building_readers_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-140937",
+        "owned_df_pid": 63216,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "cases": {
+          "24": {
+            "building_id": 1491,
+            "cases": [
+              {
+                "bait_type": 48,
+                "owned": {
+                  "bait_type": 48,
+                  "building_id": 1491,
+                  "item_id": -1,
+                  "name": "",
+                  "state": 1,
+                  "status": "Desired bait: Meat",
+                  "type": 24
+                },
+                "reference": "special-building-24-bait-1"
+              },
+              {
+                "bait_type": 49,
+                "owned": {
+                  "bait_type": 49,
+                  "building_id": 1491,
+                  "item_id": -1,
+                  "name": "",
+                  "state": 1,
+                  "status": "Desired bait: Fish",
+                  "type": 24
+                },
+                "reference": "special-building-24-bait-2"
+              },
+              {
+                "bait_type": 44,
+                "owned": {
+                  "bait_type": 44,
+                  "building_id": 1491,
+                  "item_id": -1,
+                  "name": "",
+                  "state": 1,
+                  "status": "Desired bait: Large gem",
+                  "type": 24
+                },
+                "reference": "special-building-24-bait-3"
+              },
+              {
+                "bait_type": -1,
+                "owned": {
+                  "bait_type": -1,
+                  "building_id": 1491,
+                  "item_id": -1,
+                  "name": "",
+                  "state": 1,
+                  "status": "Desired bait: Nothing",
+                  "type": 24
+                },
+                "reference": "special-building-24-bait-4"
+              }
+            ],
+            "restored": true,
+            "type": 24
+          },
+          "48": {
+            "building_id": 1494,
+            "cases": [
+              {
+                "claimed_by": 6960,
+                "owned": {
+                  "alternate": [
+                    2,
+                    0,
+                    0
+                  ],
+                  "building_id": 1494,
+                  "claimant_id": 6960,
+                  "color": [
+                    2,
+                    0,
+                    0
+                  ],
+                  "effect": 0,
+                  "name": "Stray Drake (Tame)",
+                  "source": 0,
+                  "status": "Nest box claimed by",
+                  "type": 48
+                },
+                "reference": "special-building-48-claimed"
+              },
+              {
+                "claimed_by": -1,
+                "owned": {
+                  "building_id": 1494,
+                  "claimant_id": -1,
+                  "name": "",
+                  "status": "Nest box unclaimed",
+                  "type": 48
+                },
+                "reference": "special-building-48-restored"
+              }
+            ],
+            "restored": true,
+            "type": 48
+          },
+          "49": {
+            "building_id": 1495,
+            "cases": [
+              {
+                "flags": 1,
+                "owned": {
+                  "building_id": 1495,
+                  "colony_race": -1,
+                  "crowding": 0,
+                  "flags": 1,
+                  "matching_colonies": 0,
+                  "outdoor_access": false,
+                  "type": 49
+                },
+                "reference": "special-building-49-install"
+              },
+              {
+                "flags": 3,
+                "owned": {
+                  "building_id": 1495,
+                  "colony_race": -1,
+                  "crowding": 0,
+                  "flags": 3,
+                  "matching_colonies": 0,
+                  "outdoor_access": false,
+                  "type": 49
+                },
+                "reference": "special-building-49-gather"
+              },
+              {
+                "flags": 2,
+                "owned": {
+                  "building_id": 1495,
+                  "colony_race": -1,
+                  "crowding": 0,
+                  "flags": 2,
+                  "matching_colonies": 0,
+                  "outdoor_access": false,
+                  "type": 49
+                },
+                "reference": "special-building-49-no-install"
+              },
+              {
+                "flags": 0,
+                "owned": {
+                  "building_id": 1495,
+                  "colony_race": -1,
+                  "crowding": 0,
+                  "flags": 0,
+                  "matching_colonies": 0,
+                  "outdoor_access": false,
+                  "type": 49
+                },
+                "reference": "special-building-49-restored"
+              }
+            ],
+            "restored": true,
+            "type": 49
+          }
+        },
+        "scope": "Native-only seven-family discovery with selected-building assertions. Owned readers match four trap bait choices, controlled nest claim/name/color and four empty indoor hive flag states; GPS/main_interface bytes unchanged on every read. No viewer, edits or public admission. Occupied/baited traps and colony crowding remain statically derived, live unqualified. Serial30FPS GPU59-60C.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-140937/remaining-buildings-native.json": "d87e0351ab06dc656af727a3a0a9ef603414981e7be97924122db47f2b683fb4",
+          "build/stockpile-storage-native-farm-discovery-20261116-140937/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-140937/special-building-24-controls.json": "f9c822a5c44a0bd3ac1d4eb4e01ded763e66ce0e8d46a632a2f0ca25d823ad2d",
+          "build/stockpile-storage-native-farm-discovery-20261116-140937/special-building-48-controls.json": "f6f28919a31f9698a8e863ddfdf5ec91bb0841278efcecf0d10a4564fe005dc9",
+          "build/stockpile-storage-native-farm-discovery-20261116-140937/special-building-49-controls.json": "fdc40e4356024e13e8e2b911d05665a344b09db37ba208618a9e26de8521e965",
+          "bridge/plugin/special_building_native.h": "6277d31f5756b223f08061239da9f650568e04186ef1c52de7a146d3d4d50bc4",
+          "bridge/plugin/special_building_native.cpp": "127fc6e45b95d13f46aeae54c173fc3632b12433799adc1e581f60155deadfaf",
+          "tools/smoke/special-building-controls-native.lua": "13bbd7aa8ddefd261d71d2576984e95db332fc8679384b5104061dad5173bab2",
+          "tools/smoke/remaining-buildings-native.lua": "9327da50e91fe16c96a1a12af75986f8a6ff5aeacc018dd21bd83699573f6b20"
+        }
       }
     },
     "pending_construction_reference": {

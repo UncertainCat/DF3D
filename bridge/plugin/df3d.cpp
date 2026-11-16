@@ -93,6 +93,7 @@
 #include "well_native.h"
 #include "cage_native.h"
 #include "cage_occupants_native.h"
+#include "special_building_native.h"
 #include "depot_native.h"
 #include "trade_entry_native.h"
 #include "trade_goods_native.h"
@@ -5699,6 +5700,30 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           Json::Value r;r["id"]=row.id;r["entity"]=row.entity;r["contained"]=row.contained;r["assigned"]=row.assigned;r["resolved"]=row.resolved;
           r["name"]=DF2UTF(row.name);r["status"]=DF2UTF(row.status);r["status_color"]=row.statusColor;result["rows"].append(r);
         }
+        out.print("{}",Json::FastWriter().write(result));return CR_OK;
+      }
+      if(parameters[0]=="special-building-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& arg=parameters[1];
+        const auto parsed=std::from_chars(arg.data(),arg.data()+arg.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=arg.data()+arg.size())return CR_WRONG_USAGE;
+        if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+        auto* building=df::building::find(id);if(!building)return CR_FAILURE;
+        Json::Value result;result["building_id"]=id;result["type"]=int(building->getType());
+        if(auto body=df3d_production::nestBoxBody(building)) {
+          result["claimant_id"]=body->claimantId;result["status"]=DF2UTF(body->status);result["name"]=DF2UTF(body->name);
+          if(body->nameColor) {
+            for(auto n:body->nameColor->color)result["color"].append(n);
+            for(auto n:body->nameColor->alternate)result["alternate"].append(n);
+            result["effect"]=body->nameColor->effect;result["source"]=body->nameColor->source;
+          }
+        } else if(auto body=df3d_production::animalTrapBody(building)) {
+          result["state"]=int(body->state);result["bait_type"]=body->baitType;result["item_id"]=body->itemId;
+          result["status"]=DF2UTF(body->status);result["name"]=DF2UTF(body->name);
+        } else if(auto body=df3d_production::hiveBody(building)) {
+          result["flags"]=body->flags;result["outdoor_access"]=body->outdoorAccess;
+          result["crowding"]=body->crowding;result["colony_race"]=body->colonyRace;result["matching_colonies"]=body->matchingColonies;
+        } else return CR_FAILURE;
         out.print("{}",Json::FastWriter().write(result));return CR_OK;
       }
       if(parameters[0]=="cage-room-read") {

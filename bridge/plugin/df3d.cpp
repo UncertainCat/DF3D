@@ -5286,11 +5286,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if(source)for(const auto& side:*source){Json::Value ids=Json::arrayValue;for(auto id:side)ids.append(id);output["sides"].append(ids);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
-      if(parameters[0]=="trade-dialogue-probe") {
+      if(parameters[0]=="trade-dialogue-probe" || parameters[0]=="trade-header-probe") {
         if(parameters.size()!=4)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
         int32_t values[3]={};for(size_t i=1;i<4;++i){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<0)return CR_WRONG_USAGE;}
         if(values[2]>28)return CR_WRONG_USAGE;
+        if(parameters[0]=="trade-header-probe") {
+          const auto header=df3d_production::tradeHeader(df::building::find(values[0]),size_t(values[1]),int16_t(values[2]));
+          Json::Value output;output["available"]=bool(header);
+          if(header){output["name"]=DF2UTF(header->name);output["speaker"]=header->speaker;output["dialogue"]=DF2UTF(header->dialogue);output["mood"]=DF2UTF(header->mood);output["mood_color"]=header->moodColor;output["status_color"]=header->statusColor;output["status"]=Json::arrayValue;for(const auto& line:header->status)output["status"].append(DF2UTF(line));
+            if(header->nameColor){const auto& c=*header->nameColor;output["name_color"]=Json::arrayValue;for(auto v:c.color)output["name_color"].append(v);output["name_effect"]=c.effect;}}
+          out.print("{}",Json::FastWriter().write(output));return CR_OK;
+        }
         const auto entry=df3d_production::tradeEntryFacts(df::building::find(values[0]),size_t(values[1]));
         std::optional<std::string> dialogue;
         if(entry){auto* civ=df::historical_entity::find(entry->entity);auto* caravan=df::global::plotinfo->caravans[size_t(values[1])];

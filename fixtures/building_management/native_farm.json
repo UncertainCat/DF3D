@@ -93276,6 +93276,364 @@
           "bridge/plugin/trade_dialogue_native.h": "126d5188815cba976d45e1666a47690c98ee325b0cd2aa1cc3890cbc5f8e5469",
           "tools/smoke/depot-trade-dialogue-native.lua": "0a0d59c0018bde6f44383f96199a72349bf6da1a857fc412799fca6139188ed1"
         }
+      },
+      "depot_trade_header_text_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-212041",
+        "owned_df_pid": 29112,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "17 paused header states compare native rendered names, status and mood captions and foreground colors. Includes long merchant nickname, no speaker, unloading, ordinary initial state and13 mood boundary values with effective Judging Intent. Portrait, animated name colors, wrapping, public transport and Godot header remain unqualified.",
+        "cases": [
+          {
+            "label": "single",
+            "cases": [
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "",
+                  "mood": "",
+                  "mood_color": -1,
+                  "name": "",
+                  "speaker": -1,
+                  "status": [
+                    "There are no merchants present with which to trade."
+                  ],
+                  "status_color": 7
+                },
+                "label": "initial"
+              }
+            ]
+          },
+          {
+            "label": "speaker",
+            "cases": [
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "",
+                  "mood_color": -1,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "initial"
+              },
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "Kel is unwilling to trade.",
+                  "mood_color": 13,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "mood--1"
+              },
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "Kel is unwilling to trade.",
+                  "mood_color": 13,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "mood-0"
+              },
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "Kel is not going to take much more of this.",
+                  "mood_color": 12,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "mood-1"
+              },
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "Kel is not going to take much more of this.",
+                  "mood_color": 12,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "mood-19"
+              },
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "Kel seems to be rapidly losing patience.",
+                  "mood_color": 14,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "mood-20"
+              },
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "Kel seems to be rapidly losing patience.",
+                  "mood_color": 14,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "mood-39"
+              },
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "Kel seems willing to trade.",
+                  "mood_color": 15,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "mood-40"
+              },
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "Kel seems willing to trade.",
+                  "mood_color": 15,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "mood-59"
+              },
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "Kel seems pleased with the trading.",
+                  "mood_color": 9,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "mood-60"
+              },
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "Kel seems pleased with the trading.",
+                  "mood_color": 9,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "mood-79"
+              },
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "Kel seems very happy about the trading.",
+                  "mood_color": 11,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "mood-80"
+              },
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "Kel seems very happy about the trading.",
+                  "mood_color": 11,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "mood-99"
+              },
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "Kel seems ecstatic with the trading.",
+                  "mood_color": 10,
+                  "name": "Kel Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "mood-100"
+              }
+            ]
+          },
+          {
+            "label": "speaker-long-name",
+            "cases": [
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                  "mood": "",
+                  "mood_color": -1,
+                  "name": "`Controlled long merchant nickname for truncation' Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [],
+                  "status_color": -1
+                },
+                "label": "initial"
+              }
+            ]
+          },
+          {
+            "label": "speaker-unloading",
+            "cases": [
+              {
+                "header": {
+                  "available": true,
+                  "dialogue": "",
+                  "mood": "",
+                  "mood_color": -1,
+                  "name": "`Controlled long merchant nickname for truncation' Oddomoslan, Peasant",
+                  "name_color": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "name_effect": 0,
+                  "speaker": 996,
+                  "status": [
+                    "My apologies, but we're still unloading.",
+                    "We'll be ready soon!"
+                  ],
+                  "status_color": 14
+                },
+                "label": "initial"
+              }
+            ]
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-212041/depot-trade-native.json": "2ef72579a0b9b1c2ae7af6a164a06ada99a8260bb945daca1ebfa33e91e438ef",
+          "build/stockpile-storage-native-farm-discovery-20261115-212041/result.json": "b835f49f97b828e4828f554aa7685a54fe55aa1bf87b9f09223f2b350f72504d",
+          "build/stockpile-storage-native-farm-discovery-20261115-212041/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/trade_header_native.h": "6430d4fcf8b7edfe31901e96236d0d91ea8ef96fb319f2b1fae2a64406ff6a05",
+          "tools/smoke/depot-trade-header-native.lua": "c51bc1d1f99975eb89667a25b1757f50d02b3a1f71f25c0c15ab017c0ca9ab5a"
+        }
       }
     },
     "pending_construction_reference": {

@@ -4,6 +4,7 @@
 #include "trade_value_totals_native.h"
 #include "trade_capacity_native.h"
 #include "trade_dialogue_native.h"
+#include "trade_header_native.h"
 #include <limits>
 
 namespace df3d_production {

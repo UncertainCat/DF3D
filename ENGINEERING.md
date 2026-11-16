@@ -1,3 +1,23 @@
+## Owned trade header text
+
+The staged header provider composes the merchant's native full name using an
+owned unit description context, reuses the qualified name-color provider, and
+supplies native unloading/no-merchant messages. Dialogue comes from the owned
+provider below. Mood visibility calls native effective Judging Intent72;
+positive skill admits the pinned3863c1..38654a captions and colors. This query
+may refresh semantic body/vision caches, but does not train the broker or read
+native UI state. The header never invokes native drawing functions.
+
+Protected212041 on2026-11-15 compares17 paused rendered header states: default,
+long merchant nickname, no merchant, unloading and13 mood boundary values.
+Names, status/mood text and foreground colors match. Owned DF29112 closes
+unsaved/source-preserved at30FPS, sampled GPU60C. Bridge build and all19 core
+checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_header_text_reference`.
+Portrait selection, animated name colors, wrapping, public transport and the
+Godot header are not qualified by this run. Protocol242 is unchanged and Trade
+remains hidden until its complete workflow is ready.
+
 ## Owned trade dialogue provider
 
 DF53.16 assembles trade dialogue inline in384850; there is no independent

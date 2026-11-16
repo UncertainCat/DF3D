@@ -53,6 +53,10 @@ local function record(label)
   end
  end
  result.cases[#result.cases+1]=row
+ if os.getenv('DF3D_DEPOT_TRADE_HEADER')=='1' and trade.open and not trade.choosing_merchant then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-header-native.lua')
+  row.header=assert(loadfile(source))(view,trade,b,label=='speaker')
+ end
  if label=='speaker' and os.getenv('DF3D_DEPOT_TRADE_ROW_VALUES')=='1' then
   row.value_rows={};row.visible_value_rows=0
   for side=0,1 do

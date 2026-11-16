@@ -308,6 +308,30 @@ requires stable caravan/session identity, expected revision, explicit entry
 ownership and uncertain-outcome handling. It must not expose the synchronous
 index selector or turn refresh into a mutation. Public trade routes stay hidden.
 
+`trade_owner_native.h` composes catalog consumption, explicit appraisal and
+selection-session ownership. Opening consumes a freshly revalidated opaque
+choice, runs native appraisal once, then reads entry captions and binds the
+selection source after those effects. This ordering matters because appraisal
+changes caravan history and can change the trader's profession. Invalid or
+consumed choices leave an existing session intact; catalog refresh retires it.
+Appraisal reports its first possible simulation-effect boundary to the owner;
+exceptions or session setup failure after that boundary return Unknown with no
+active selection, never an ordinary retryable rejection. The caller must own
+connection/epoch retirement and saving gates. No native menu is borrowed.
+
+Protected192853 on2026-11-15 runs this composed owner against the same controlled
+native appraisal oracle: five trained/nine recorded goods, identical complete
+skill/attribute/history snapshots, and a readable revision1 session after the
+effects. Consumed-token replay preserves both effects and that session. Two
+reopens report zero/zero; catalog replacement, epoch change and close retire
+selection ownership. Owned DF13692 closes unsaved/source-preserved at30FPS;
+sampled GPU50–53C. Bridge build and all19 root core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_owner_reference`.
+This is paused native-provider qualification through `trade-owner-probe`, not
+public open/session transport or viewer integration. Post-effect exception
+injection, level-up/RNG variants, quantity negotiation and exchange are not
+qualified by this run. Public routes remain hidden.
+
 `trade_entry_native.h` now stages an owned merchant-entry provider. It checks
 pinned native initializer/name/clear routines, resolves the current fortress
 site from simulation state, validates a completed non-removing depot with a

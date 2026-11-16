@@ -11,7 +11,8 @@ struct TradeAppraisalEffect {size_t recorded=0,trained=0;};
 // No native trade menu, renderer or input state is an argument or scratch area.
 // Index selection is diagnostic only; public transport needs caravan/session
 // identity and revision validation before invoking this safe-point operation.
-inline std::optional<TradeAppraisalEffect> tradeAppraise(df::building* building,size_t caravanIndex) {
+inline std::optional<TradeAppraisalEffect> tradeAppraise(df::building* building,size_t caravanIndex,bool* effectsStarted=nullptr) {
+    if(effectsStarted)*effectsStarted=false;
     const auto entry=tradeEntryFacts(building,caravanIndex);if(!entry || !df3d_room::valuationReady())return {};
     const auto projected=tradeProjection(building,caravanIndex);if(!projected)return {};
     static const bool ready=[] {
@@ -53,6 +54,7 @@ inline std::optional<TradeAppraisalEffect> tradeAppraise(df::building* building,
     TradeAppraisalEffect result;
     for(size_t side=0;side<2;++side)for(auto* item:items[side]) {
         if(std::find(history.begin(),history.end(),item->id)!=history.end())continue;
+        if(effectsStarted)*effectsStarted=true;
         if(side==0) {
             const auto value=reinterpret_cast<Value>(base+0xc66c30)(item,caravan,civ);
             const auto amount=std::min(50,value/10+1);

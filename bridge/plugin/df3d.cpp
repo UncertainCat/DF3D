@@ -101,6 +101,7 @@
 #include "trade_appraisal_native.h"
 #include "trade_session_native.h"
 #include "trade_catalog_native.h"
+#include "trade_owner_native.h"
 #include "depot_goods_native.h"
 #include "depot_selection_native.h"
 #include "depot_goods_read.h"
@@ -5100,6 +5101,30 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         for(const auto& row:*rows){Json::Value value;value["id"]=row.id;value["distance"]=row.distance;output["rows"].append(value);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="trade-owner-probe") {
+        if(parameters.size()<3 || parameters.size()>4)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        uint64_t a=0,b=0;
+        const auto number=[&](size_t i,uint64_t& value){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),value);return parsed.ec==std::errc{} && parsed.ptr==raw.data()+raw.size();};
+        if(!number(2,a) || (parameters.size()==4 && !number(3,b)))return CR_WRONG_USAGE;
+        auto& owner=df3d_production::tradeDiagnosticOwner();Json::Value output;
+        if(parameters[1]=="catalog" && parameters.size()==3 && a<=INT32_MAX){
+          const auto value=owner.refresh(state.terrain.epoch(),df::building::find(int32_t(a)));output["available"]=bool(value);output["tokens"]=Json::arrayValue;
+          if(value)for(const auto& row:value->choices)output["tokens"].append(Json::UInt64(row.token));
+        }else if(parameters[1]=="open" && parameters.size()==4 && a<=INT32_MAX){
+          const auto value=owner.open(state.terrain.epoch(),int32_t(a),b);
+          output["status"]=int(value.status);output["available"]=value.status==df3d_production::TradeOpenStatus::Available;
+          output["session"]=Json::UInt64(value.selection.session);output["revision"]=Json::UInt64(value.selection.revision);
+          if(value.appraisal){output["recorded"]=Json::UInt64(value.appraisal->recorded);output["trained"]=Json::UInt64(value.appraisal->trained);}
+          if(value.entry){output["entity"]=value.entry->entity;output["title"]=DF2UTF(value.entry->title);output["speaker"]=DF2UTF(value.entry->speaker);}
+        }else if((parameters[1]=="read" || parameters[1]=="epoch") && parameters.size()==4){
+          const auto value=owner.access(state.terrain.epoch()+(parameters[1]=="epoch"?1:0),a,b);
+          output["status"]=int(value.status);output["session"]=Json::UInt64(value.session);output["revision"]=Json::UInt64(value.revision);
+          output["available"]=value.status==df3d_production::TradeSessionStatus::Available;
+        }else if(parameters[1]=="close" && parameters.size()==3){output["status"]=int(owner.close(a).status);}
+        else return CR_WRONG_USAGE;
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="trade-catalog-probe") {
         if(parameters.size()!=3 && parameters.size()!=4)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
@@ -5920,6 +5945,7 @@ DFhackCExport command_result plugin_onstatechange(color_ostream& out,
         break;
     case SC_MAP_UNLOADED:
         df3d_production::tradeDiagnosticCatalog().reset();
+        df3d_production::tradeDiagnosticOwner().reset();
         df3d_production::tradeDiagnosticSession().reset();
         df3d_contact::setEnabled(false);
         df3d_contact::reset();
@@ -5937,6 +5963,7 @@ DFhackCExport command_result plugin_onstatechange(color_ostream& out,
         break;
     case SC_WORLD_UNLOADED:
         df3d_production::tradeDiagnosticCatalog().reset();
+        df3d_production::tradeDiagnosticOwner().reset();
         df3d_production::tradeDiagnosticSession().reset();
         df3d_contact::setEnabled(false);
         stopRecording(out, true);

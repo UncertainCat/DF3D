@@ -53,7 +53,25 @@ local ok,err=xpcall(function()
   assert(json.encode(snapshot())==json.encode(result.before))
   local title=trade.title;local appraisal=trade.handle_appraisal;local lists=trade.buildlists
   local active=df.global.game.main_interface.view_sheets.active_id
+  local owner_mode=os.getenv('DF3D_DEPOT_TRADE_OWNER')=='1'
+  local last_session
+  local function owner(action,a,b)
+   local args={'df3d','trade-owner-probe',action,tostring(a)};if b then args[#args+1]=tostring(b)end
+   local output,code=dfhack.run_command_silent(table.unpack(args));assert(code==0,output);return json.decode(output)
+  end
   local function probe(index)
+   if owner_mode then
+    local catalog=owner('catalog',trade.bld.id);assert(catalog.available and #catalog.tokens==1)
+    if last_session then assert(not owner('read',last_session,1).available,'New catalog retained old selection session')end
+    if index==100 then return owner('open',trade.bld.id,catalog.tokens[1]+1)end
+    local opened=owner('open',trade.bld.id,catalog.tokens[1]);assert(opened.available and opened.session>0 and opened.revision==1)
+    last_session=opened.session
+    assert(owner('read',opened.session,opened.revision).available,'Appraisal invalidated the newly opened session')
+    local before=json.encode(snapshot())
+    assert(not owner('open',trade.bld.id,catalog.tokens[1]).available,'Consumed token reopened a session')
+    assert(json.encode(snapshot())==before and owner('read',opened.session,opened.revision).available,'Rejected replay changed effects/session')
+    return opened
+   end
    local output,code=dfhack.run_command_silent('df3d','trade-appraisal-probe',tostring(trade.bld.id),tostring(index))
    assert(code==0,output);return json.decode(output)
   end
@@ -66,6 +84,12 @@ local ok,err=xpcall(function()
   end
   assert(trade.title==title and trade.handle_appraisal==appraisal and trade.buildlists==lists and df.global.game.main_interface.view_sheets.active_id==active)
   result.provider=effect;result.provider_deduplicated=true
+  if owner_mode then
+   assert(owner('epoch',last_session,1).status==2 and not owner('read',last_session,1).available)
+   local final=probe(0);assert(final.available and final.recorded==0 and final.trained==0)
+   assert(owner('close',final.session).status==3 and not owner('read',final.session,1).available)
+   result.owner={post_appraisal_source_valid=true,token_consumed_once=true,reopen_deduplicated=true,catalog_retires_previous=true,epoch_retires=true,close_retires=true}
+  end
  end
 end,debug.traceback)
 for i=0,12 do for _,name in ipairs(attr_fields)do soul.mental_attrs[i][name]=original_attrs[i+1][name]end end

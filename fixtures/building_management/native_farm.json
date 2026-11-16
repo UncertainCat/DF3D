@@ -74600,6 +74600,332 @@
           "build/notes/pm/trade-catalog-view_capture.stdout.log": "312a0b49c2396be13cb37fc3b6464fab474792af848dd7dbb87bba223b711cc8",
           "build/notes/pm/trade-catalog-view_capture.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         }
+      },
+      "depot_trade_owner_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-192853",
+        "owned_df_pid": 13692,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Composed native owner consumes a scoped caravan choice, applies native appraisal then binds a selection session to post-effect source. Full skill/attribute/history snapshot equals native. Readable revision1 session, consumed-token replay rejected without effects/session change, two reopens deduplicate, catalog/epoch/close retire selection. Paused controlled fixture only; not public transport/viewer integration, level-up/RNG, post-effect exception injection, quantities or exchange.",
+        "appraisal": {
+          "after": {
+            "attributes": [
+              {
+                "demotion_counter": 0,
+                "improve_counter": 52,
+                "max_value": 1951,
+                "rust_counter": 0,
+                "soft_demotion": 45,
+                "unused_counter": 0,
+                "value": 688
+              },
+              {
+                "demotion_counter": 2,
+                "improve_counter": 8,
+                "max_value": 3108,
+                "rust_counter": 0,
+                "soft_demotion": 53,
+                "unused_counter": 0,
+                "value": 1541
+              },
+              {
+                "demotion_counter": 1,
+                "improve_counter": 226,
+                "max_value": 1789,
+                "rust_counter": 0,
+                "soft_demotion": 1,
+                "unused_counter": 0,
+                "value": 785
+              },
+              {
+                "demotion_counter": 0,
+                "improve_counter": 50,
+                "max_value": 2302,
+                "rust_counter": 2,
+                "soft_demotion": 0,
+                "unused_counter": 0,
+                "value": 1051
+              },
+              {
+                "demotion_counter": 0,
+                "improve_counter": 179,
+                "max_value": 1341,
+                "rust_counter": 0,
+                "soft_demotion": 0,
+                "unused_counter": 0,
+                "value": 340
+              },
+              {
+                "demotion_counter": 3,
+                "improve_counter": 0,
+                "max_value": 3076,
+                "rust_counter": 0,
+                "soft_demotion": 55,
+                "unused_counter": 0,
+                "value": 1525
+              },
+              {
+                "demotion_counter": 0,
+                "improve_counter": 52,
+                "max_value": 3052,
+                "rust_counter": 0,
+                "soft_demotion": 45,
+                "unused_counter": 0,
+                "value": 1513
+              },
+              {
+                "demotion_counter": 0,
+                "improve_counter": 17,
+                "max_value": 1955,
+                "rust_counter": 1,
+                "soft_demotion": 0,
+                "unused_counter": 0,
+                "value": 966
+              },
+              {
+                "demotion_counter": 2,
+                "improve_counter": 8,
+                "max_value": 4478,
+                "rust_counter": 0,
+                "soft_demotion": 53,
+                "unused_counter": 0,
+                "value": 2226
+              },
+              {
+                "demotion_counter": 3,
+                "improve_counter": 0,
+                "max_value": 2316,
+                "rust_counter": 0,
+                "soft_demotion": 55,
+                "unused_counter": 0,
+                "value": 1145
+              },
+              {
+                "demotion_counter": 0,
+                "improve_counter": 12,
+                "max_value": 3688,
+                "rust_counter": 1,
+                "soft_demotion": 0,
+                "unused_counter": 0,
+                "value": 1845
+              },
+              {
+                "demotion_counter": 0,
+                "improve_counter": 329,
+                "max_value": 1355,
+                "rust_counter": 1,
+                "soft_demotion": 0,
+                "unused_counter": 0,
+                "value": 365
+              },
+              {
+                "demotion_counter": 0,
+                "improve_counter": 329,
+                "max_value": 1829,
+                "rust_counter": 1,
+                "soft_demotion": 0,
+                "unused_counter": 0,
+                "value": 839
+              }
+            ],
+            "goods": [
+              992,
+              991,
+              296,
+              408,
+              407,
+              1180,
+              1494,
+              1736,
+              1735
+            ],
+            "skill": {
+              "demotion_counter": 0,
+              "experience": 19,
+              "natural_skill_lvl": 0,
+              "rating": 0,
+              "rust_counter": 0,
+              "rusty": 0,
+              "unused_counter": 0
+            }
+          },
+          "before": {
+            "attributes": [
+              {
+                "demotion_counter": 3,
+                "improve_counter": 0,
+                "max_value": 1951,
+                "rust_counter": 0,
+                "soft_demotion": 55,
+                "unused_counter": 0,
+                "value": 688
+              },
+              {
+                "demotion_counter": 2,
+                "improve_counter": 8,
+                "max_value": 3108,
+                "rust_counter": 0,
+                "soft_demotion": 53,
+                "unused_counter": 0,
+                "value": 1541
+              },
+              {
+                "demotion_counter": 1,
+                "improve_counter": 226,
+                "max_value": 1789,
+                "rust_counter": 0,
+                "soft_demotion": 1,
+                "unused_counter": 0,
+                "value": 785
+              },
+              {
+                "demotion_counter": 0,
+                "improve_counter": 50,
+                "max_value": 2302,
+                "rust_counter": 2,
+                "soft_demotion": 0,
+                "unused_counter": 0,
+                "value": 1051
+              },
+              {
+                "demotion_counter": 0,
+                "improve_counter": 65,
+                "max_value": 1341,
+                "rust_counter": 1,
+                "soft_demotion": 0,
+                "unused_counter": 0,
+                "value": 340
+              },
+              {
+                "demotion_counter": 3,
+                "improve_counter": 0,
+                "max_value": 3076,
+                "rust_counter": 0,
+                "soft_demotion": 55,
+                "unused_counter": 0,
+                "value": 1525
+              },
+              {
+                "demotion_counter": 3,
+                "improve_counter": 0,
+                "max_value": 3052,
+                "rust_counter": 0,
+                "soft_demotion": 55,
+                "unused_counter": 0,
+                "value": 1513
+              },
+              {
+                "demotion_counter": 0,
+                "improve_counter": 17,
+                "max_value": 1955,
+                "rust_counter": 1,
+                "soft_demotion": 0,
+                "unused_counter": 0,
+                "value": 966
+              },
+              {
+                "demotion_counter": 2,
+                "improve_counter": 8,
+                "max_value": 4478,
+                "rust_counter": 0,
+                "soft_demotion": 53,
+                "unused_counter": 0,
+                "value": 2226
+              },
+              {
+                "demotion_counter": 3,
+                "improve_counter": 0,
+                "max_value": 2316,
+                "rust_counter": 0,
+                "soft_demotion": 55,
+                "unused_counter": 0,
+                "value": 1145
+              },
+              {
+                "demotion_counter": 0,
+                "improve_counter": 12,
+                "max_value": 3688,
+                "rust_counter": 1,
+                "soft_demotion": 0,
+                "unused_counter": 0,
+                "value": 1845
+              },
+              {
+                "demotion_counter": 0,
+                "improve_counter": 329,
+                "max_value": 1355,
+                "rust_counter": 1,
+                "soft_demotion": 0,
+                "unused_counter": 0,
+                "value": 365
+              },
+              {
+                "demotion_counter": 0,
+                "improve_counter": 329,
+                "max_value": 1829,
+                "rust_counter": 1,
+                "soft_demotion": 0,
+                "unused_counter": 0,
+                "value": 839
+              }
+            ],
+            "goods": [],
+            "skill": {
+              "demotion_counter": 0,
+              "experience": 0,
+              "natural_skill_lvl": 0,
+              "rating": 0,
+              "rust_counter": 0,
+              "rusty": 0,
+              "unused_counter": 0
+            }
+          },
+          "fortress_items": [
+            1180,
+            1494,
+            1736,
+            1735
+          ],
+          "merchant_items": [
+            992,
+            991,
+            296,
+            408,
+            407
+          ],
+          "owner": {
+            "catalog_retires_previous": true,
+            "close_retires": true,
+            "epoch_retires": true,
+            "post_appraisal_source_valid": true,
+            "reopen_deduplicated": true,
+            "token_consumed_once": true
+          },
+          "provider": {
+            "available": true,
+            "entity": 865,
+            "recorded": 9,
+            "revision": 1,
+            "session": 1,
+            "speaker": "",
+            "status": 0,
+            "title": "Merchants from Dumatzas",
+            "trained": 5
+          },
+          "provider_deduplicated": true,
+          "rearmed_deduplicated": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-192853/depot-trade-native.json": "6b5eebae7f9278203eff39fb24a4ee84c0397a2acc963d1d46578bd282451c00",
+          "build/stockpile-storage-native-farm-discovery-20261115-192853/result.json": "41933b8fa7cf239d3bef731c3b3415992e6a83153fe120034273ec0e9048dd29",
+          "build/stockpile-storage-native-farm-discovery-20261115-192853/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-192853/capture-inputs.json": "c12771c5a671dc4cc37bed46505c71bed3569e7e1fbd1d67f9f7b988a2d62b3f",
+          "bridge/plugin/trade_owner_native.h": "d742417474f99ddfb2f51e3f80d5f6d43579117dba89a9d19e4ccd801aff37c0",
+          "bridge/plugin/trade_appraisal_native.h": "952b3029f64fd872df7e026a7aa76901ad1257808e5b62b14337c360a4b1cb9e",
+          "bridge/plugin/trade_session_native.h": "99fd154d54167c99c5cfc754a23eb0b3d4562416823894597b58403af729f09d",
+          "bridge/plugin/trade_catalog_native.h": "460a04a0085c99ad7021aac303e9d9eb8565413e644eae9fc261f98b133c8936",
+          "tools/smoke/depot-trade-appraisal-native.lua": "b5c9be1a908eecb262006751d3aac2322a9b640a0e1e979d5ed6be6e653e27a8"
+        }
       }
     },
     "pending_construction_reference": {

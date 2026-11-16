@@ -32,7 +32,17 @@ local function click(x,y)
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
 end
 local function caravan()
- local c=df.caravan_state:new();c.entity=df.global.plotinfo.main.fortress_entity.id;c.trade_state=df.caravan_state.T_trade_state.AtDepot;c.time_remaining=1200
+ local entity=df.global.plotinfo.main.fortress_entity.id
+ if os.getenv('DF3D_DEPOT_TRADE_FOREIGN')=='1' then
+  entity=nil
+  -- Choose before creating goods/ownership refs, keeping the controlled speaker's race.
+  for _,candidate in ipairs(df.global.world.entities.all)do
+   if candidate.type==df.historical_entity_type.Civilization and candidate.id~=df.global.plotinfo.civ_id and candidate.race==df.global.plotinfo.race_id then entity=candidate.id;break end
+  end
+  assert(entity,'No foreign civilization of the controlled speaker race')
+ end
+ local c=df.caravan_state:new();c.entity=entity;c.trade_state=df.caravan_state.T_trade_state.AtDepot;c.time_remaining=1200
+ result.caravan_entity=entity;result.parent_civilization=df.global.plotinfo.civ_id
  caravans:insert('#',c);added[#added+1]=c
 end
 local function record(label)

@@ -101876,6 +101876,50 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_foreign_exchange_reference": {
+        "date": "2026-11-16",
+        "df_version": "53.16",
+        "native_run": "stockpile-storage-native-farm-discovery-20261116-084828",
+        "wire_run": "stockpile-storage-native-farm-discovery-20261116-084928",
+        "native_pid": 29036,
+        "wire_pid": 46916,
+        "synthetic_prerequisites": true,
+        "caravan_entity": 221,
+        "parent_civilization": 245,
+        "changed_items": 8,
+        "equal_fields": [
+          "accept_before",
+          "accept_after",
+          "accept_caravan",
+          "accept_conversation",
+          "accept_people",
+          "accept_rng"
+        ],
+        "field_sha256": {
+          "accept_before": "a5ca9cd4ffc184b240e3b7400e75de75d58fdb31d620c11b1f10ffbddb340166",
+          "accept_after": "1ca92df79ad1cba2c0212263f961d656ff1af6d0d0c909fd2e61d83cce4fb6e3",
+          "accept_caravan": "2b0e69568558316a5934a412b12ff3e87f44ea63f37d8cb694ffc23bf34b322b",
+          "accept_conversation": "c37a82ec79ac518e9c68b647f01d93fa0b6717a0b11f7b1641329a9d44f8711b",
+          "accept_people": "758c6d208dd160607ec1c2d0e2dbda43e74a1a006aba010ec63119b79d408ac8",
+          "accept_rng": "22e531974442f232ddcc0997dfcf1ddfed21bbe855a0919bc7466bf8d1dc8baf"
+        },
+        "accounting_totals_at_acceptance": {
+          "import_value": 0,
+          "export_value_total": 0,
+          "export_value_personal": 0,
+          "offer_value": 0
+        },
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "native_fps_cap": 30,
+        "wire_headless": true,
+        "client_stderr_empty": true,
+        "core_tests_passed": 19,
+        "limitations": [
+          "Paused acceptance only; later nonzero caravan accounting and departure effects remain unqualified.",
+          "Synthetic same-race foreign civilization; does not qualify all merchant races or diplomatic conditions."
+        ]
+      },
       "depot_trade_resize_reference": {
         "df_version": "53.16",
         "steam_build": "24557528",

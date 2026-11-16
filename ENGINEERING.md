@@ -87,6 +87,32 @@ minimum dimensions or foreign-caravan accounting. Main-scene exchange has the
 separate qualification below. Public Trade remains hidden until the remaining
 full-workflow gaps are resolved.
 
+### Foreign-caravan exchange
+
+The disposable Trade oracle supports `DF3D_DEPOT_TRADE_FOREIGN=1`. It chooses
+an existing civilization distinct from the fortress's parent civilization, with
+the controlled merchant's race, before creating caravan goods and ownership
+references. It fails if no suitable civilization exists. This is fixture setup,
+not a runtime change or a late rewrite of native menu ownership.
+
+Protected084828 (native DF29036) and084928 (wire DF46916) on2026-11-16 use
+caravan entity221 and parent civilization245. Counteroffer acceptance matches
+exactly for all eight transferred items, depot use count, both traders' skills
+and attributes, caravan state, conversation and active RNG. The wire run uses
+the existing composite Trade/Accept/Okay workflow. Both sessions close unsaved
+with source saves preserved; native graphics run serially at30FPS and the wire
+client is headless. Client stderr is empty, GPU samples59–60C, and19 core
+checks pass. Evidence: completed_sheet_discovery_reference.depot_trade_foreign_exchange_reference.
+
+This proves foreign ownership transfer at acceptance, not later caravan
+accounting. Import/export/personal-export/offer totals remain zero in both
+paused runs. Inspection of pinned53.16 code finds export/offer additions at
+a8a02b/a8a04e/a8a0b5 and a8b27c/a8b34a/a8b369, outside negotiation369490;
+e53454..e5347e consumes personal-export/offer totals into aggregate statistics.
+Their simulation lifecycle and nonzero totals still need live qualification.
+Do not add guessed accounting changes to the owned exchange to compensate for
+the paused fixture, or claim departure effects from this immediate snapshot.
+
 ## Owned native negotiation execution
 
 TradeNegotiationNative.negotiate checks the owned offer, computes actual values

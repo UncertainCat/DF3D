@@ -111,6 +111,13 @@ local function record(label)
     end
     assert(json.encode(ids())==before and trade.handle_appraisal==appraisal and trade.buildlists==lists and #added[1].goods==0)
     row.projection_provider=facts
+    if os.getenv('DF3D_DEPOT_TRADE_CAPACITY')=='1' and trade.havetalker==1 and trade.stillunloading==0 then
+     local capacity=assert(facts.capacity);local bytes={};local expected={}
+     for i,ch in ipairs(capacity.caption)do expected[#expected+1]=string.char(ch);bytes[#bytes+1]=string.char(dfhack.screen.readTile(5+i,59).ch)end
+     assert(table.concat(bytes)==table.concat(expected),'Native capacity caption differs')
+     assert(dfhack.screen.readTile(6,59).fg==capacity.color,'Native capacity color differs')
+     row.capacity=capacity
+    end
     if os.getenv('DF3D_DEPOT_TRADE_TOTALS')=='1' and trade.havetalker==1 and trade.stillunloading==0 then
      local totals=assert(facts.value_totals);local values={}
      for value in row.lines[58]:gmatch('Value: (%-?%d+)')do values[#values+1]=tonumber(value)end
@@ -250,6 +257,15 @@ local ok,err=xpcall(function()
      click(side==0 and 100 or 570,166)
     end
     record('search-cleared')
+    if os.getenv('DF3D_DEPOT_TRADE_CAPACITY')=='1' then
+     local mass=added[1].total_capacity;local whole,fraction=mass.whole,mass.fraction
+     mass.whole=1000;mass.fraction=750000;record('capacity-positive')
+     selection_intents={{side=0,action='mark_all'}};click(310,694);record('capacity-buy-all')
+     selection_intents[#selection_intents+1]={side=1,action='mark_all'};click(780,694);record('capacity-both')
+     selection_intents[#selection_intents+1]={side=0,action='unmark_all'};click(440,694);record('capacity-sell-all')
+     selection_intents[#selection_intents+1]={side=1,action='unmark_all'};click(900,694)
+     selection_intents={};mass.whole=whole;mass.fraction=fraction;record('capacity-restored')
+    end
     if os.getenv('DF3D_DEPOT_TRADE_TOTALS')=='1' then
      local assignments=df.global.plotinfo.main.fortress_entity.assignments_by_type[df.entity_position_responsibility.TRADE]
      assert(#assignments==0 and unit.hist_figure_id>=0)

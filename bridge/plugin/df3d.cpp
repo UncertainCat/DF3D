@@ -97,6 +97,7 @@
 #include "trade_projection_native.h"
 #include "trade_row_values_native.h"
 #include "trade_value_totals_native.h"
+#include "trade_capacity_native.h"
 #include "depot_goods_native.h"
 #include "depot_selection_native.h"
 #include "depot_goods_read.h"
@@ -5132,6 +5133,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           auto& value=output["value_totals"];value["broker_appraisal"]=totals->brokerAppraisal;value["actual"]=value["estimated"]=Json::arrayValue;
           for(auto number:totals->actual)value["actual"].append(number);for(auto number:totals->estimated)value["estimated"].append(number);
           value["actual_profit"]=totals->actualProfit;value["estimated_profit"]=totals->estimatedProfit;value["profit_color"]=totals->profitColor;
+          const auto capacity=df3d_production::tradeCapacity(df::building::find(values[0]),size_t(values[1]),*projection);if(!capacity)return CR_FAILURE;
+          auto& weight=output["capacity"];weight["whole"]=capacity->whole;weight["fraction"]=capacity->fraction;weight["excess"]=capacity->excess;weight["color"]=capacity->color;weight["caption"]=Json::arrayValue;
+          for(unsigned char ch:capacity->caption)weight["caption"].append(ch);
         }
         if(projection)for(const auto& side:*projection){Json::Value row;row["height"]=side.height;row["items"]=row["flags"]=row["amounts"]=row["groups"]=Json::arrayValue;
           for(auto id:side.items)row["items"].append(id);for(auto flag:side.flags)row["flags"].append(flag);for(auto amount:side.amounts)row["amounts"].append(amount);

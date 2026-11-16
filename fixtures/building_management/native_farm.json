@@ -64659,6 +64659,933 @@
           "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-merchant-5.png": "20837f9ffe63da2ca490d28357b5f9548beb9f6732a8b7cc37878ecc3e79eb48",
           "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-no-broker.png": "4ef4dff1dee11ab1bf60810d4a12e515b02324b5a68f1fdb73898781b23703de"
         }
+      },
+      "depot_trade_capacity_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-182920",
+        "owned_df_pid": 4452,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Thirty native states, twice compared. Complete native weight caption bytes including glyph and color match. Zero and1000+750000 fractional capacity; buy/sell/both; bin child selection and collapse. Whole/fraction are provider output, not independently observed native numeric storage. Appraisal effects suppressed. Not merchant/nested containers, partial quantity/overflow, natural capacity setup, exchange or public viewer acceptance.",
+        "cases": [
+          {
+            "label": "speaker",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "search-0-iron",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "search-0-boulders",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "search-0-zznomatch",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "search-1-blocks",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "search-cleared",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "capacity-positive",
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                54,
+                53,
+                50,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 750000,
+              "whole": 652
+            }
+          },
+          {
+            "label": "capacity-buy-all",
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                49,
+                48,
+                48,
+                48,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 750000,
+              "whole": 1000
+            }
+          },
+          {
+            "label": "capacity-both",
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                53,
+                48,
+                49,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 235000,
+              "whole": 501
+            }
+          },
+          {
+            "label": "capacity-sell-all",
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                49,
+                53,
+                51,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 235000,
+              "whole": 153
+            }
+          },
+          {
+            "label": "capacity-restored",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "totals-merchant-0",
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                60,
+                49,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 0,
+              "whole": 0
+            }
+          },
+          {
+            "label": "totals-both-0",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                53,
+                48,
+                48,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 485000,
+              "whole": -500
+            }
+          },
+          {
+            "label": "totals-fortress-0",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                56,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 485000,
+              "whole": -848
+            }
+          },
+          {
+            "label": "totals-cleared-0",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "totals-merchant-5",
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                60,
+                49,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 0,
+              "whole": 0
+            }
+          },
+          {
+            "label": "totals-both-5",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                53,
+                48,
+                48,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 485000,
+              "whole": -500
+            }
+          },
+          {
+            "label": "totals-fortress-5",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                56,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 485000,
+              "whole": -848
+            }
+          },
+          {
+            "label": "totals-cleared-5",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "totals-merchant-15",
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                60,
+                49,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 0,
+              "whole": 0
+            }
+          },
+          {
+            "label": "totals-both-15",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                53,
+                48,
+                48,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 485000,
+              "whole": -500
+            }
+          },
+          {
+            "label": "totals-fortress-15",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                56,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 485000,
+              "whole": -848
+            }
+          },
+          {
+            "label": "totals-cleared-15",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "totals-no-broker",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "bin-action-1",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                56,
+                50,
+                55,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 200000,
+              "whole": -827
+            }
+          },
+          {
+            "label": "bin-action-2",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                55,
+                56,
+                48,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 300000,
+              "whole": -780
+            }
+          },
+          {
+            "label": "bin-action-3",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                55,
+                56,
+                48,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 300000,
+              "whole": -780
+            }
+          },
+          {
+            "label": "bin-action-4",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                55,
+                56,
+                48,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 300000,
+              "whole": -780
+            }
+          },
+          {
+            "label": "bin-action-5",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "speaker-long-name",
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-182920/depot-trade-native.json": "006ce0ab55a22daa8cd4383fce06446dfe9b8a896294eb7e67ce82e79daac103",
+          "build/stockpile-storage-native-farm-discovery-20261115-182920/result.json": "ac16666dfcc14af4e9126fffc259c2b796518f8160649798244b88f53348645a",
+          "build/stockpile-storage-native-farm-discovery-20261115-182920/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-182920/capture-inputs.json": "a7ac77cf69cc7e8ffb2034122ea306c5adec48f2ec32938dc11667c27d37ae07",
+          "tools/smoke/depot-trade-native.lua": "01d71451b532b6223bd1c71bb806e22f91dca8a48adfb8ff3b477119dad32085",
+          "bridge/plugin/trade_capacity_native.h": "0ae5321c15399f63ce83094271378949874ea49f4f33e4232761cf01fb676e4f",
+          "build/stockpile-storage-native-farm-discovery-20261115-182920/depot-trade-capacity-both.png": "a439ca912e05147fede628db3dbcdb2f6eed64cbde3d661e72d1086c9394acc3",
+          "build/stockpile-storage-native-farm-discovery-20261115-182920/depot-trade-capacity-buy-all.png": "f1e1744059246af5d06f8b7a291402160f1095d8557bebfc1113ccf79d52ad96",
+          "build/stockpile-storage-native-farm-discovery-20261115-182920/depot-trade-capacity-positive.png": "39c97eacddf84a5e457ef7e5a9258933e2f55e7c55cabe0c40bc80ae6a300c83",
+          "build/stockpile-storage-native-farm-discovery-20261115-182920/depot-trade-capacity-restored.png": "4ef4dff1dee11ab1bf60810d4a12e515b02324b5a68f1fdb73898781b23703de",
+          "build/stockpile-storage-native-farm-discovery-20261115-182920/depot-trade-capacity-sell-all.png": "c8b89fe75f00545543798771b931df5674b99e256690d794554bfe97fbf8ccb4"
+        }
       }
     },
     "pending_construction_reference": {

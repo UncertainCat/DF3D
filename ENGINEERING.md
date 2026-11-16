@@ -433,6 +433,34 @@ This does not qualify partial quantities, overflow cases, pricing agreements,
 carrying weight/capacity, appraisal training, negotiation/exchange or the public
 viewer. Appraisal entry effects remain suppressed in this diagnostic.
 
+`trade_capacity_native.h` projects the weight footer from owned rows. It starts
+with caravan.total_capacity, skips simulation CONTAINED_IN_ITEM rows at the
+top level, subtracts retained merchant goods and selected fortress goods, and
+adjusts listed direct bin children whose selected state differs from their
+parent. Native30cb20/30cb50 obtain whole/fraction weight,30c700 accumulates mass,
+and7754d0 formats the caption. Label bytes come from verified installed strings.
+The full inline weight range is pinned but never invoked; it reads global menu
+storage. Native lazy weight caches remain semantic item state. The provider
+rejects partial-quantity drafts and unrepresentable signed negation. It preserves
+native whole-only excess-weight formatting and does not authorize an exchange
+from displayed capacity alone.
+
+Protected182920 on2026-11-15 compares complete weight-caption bytes (including
+the weight glyph) and color on30 native states, twice each. Capacity1000 plus
+fraction750000 exercises positive remaining weight with buying all, selling all
+and both; restoring zero capacity exercises excess weight. Bin selection, child
+deselection and collapse/reopen retain matching displayed capacity. The positive
+both-side caption is501; internal whole/fraction501/235000 are provider output,
+not independently observed native numeric storage. Existing value-total and
+projection checks pass. The native positive-capacity PNG was inspected as a
+reference, not viewer pixel acceptance. Fixture restores; owned DF4452 closes
+unsaved/source-preserved with frame unchanged,30FPS and sampled GPU48C. Bridge
+and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_capacity_reference`.
+Merchant-side/nested container weight, quantity/overflow cases, natural caravan
+capacity setup, appraisal entry effects, negotiation/exchange and public viewer
+integration remain unfinished. This fixture suppresses appraisal entry effects.
+
 ## Depot goods value transport migration
 
 Management protocol235 adds required appraisal knowledge to depot goods replies

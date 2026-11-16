@@ -113271,6 +113271,25 @@
           "tools/smoke/depot-settings-native.lua": "83dae6ec3af156b053f8f7a0bbf9438d296c7cf488b58c663e8dd3d41d187a13",
           "presentations/godot/project/tests/depot_scene_live.gd": "06c84dda68f1306e0c7943ef9abb062d6f47350d0e753fa6c7b3f70d0c0a6ee2"
         }
+      },
+      "depot_map_exchange_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-093944",
+        "owned_df_pid": 38592,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Actual map click selects trader; pointer selects depot alternative, Trade, counteroffer acceptance, Okay and Escape. Selection tabs retired. Counter/accepted full panel pixels match. Eight item changes and trader/caravan/RNG snapshots match native084828. Row selection uses controller intents. Physical disconnect/advancing departure accounting not qualified. Clean stderr.",
+        "surface": "actual map click to depot to counteroffer to acceptance",
+        "changed_items": 8,
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-093944/depot-trade-native.json": "e692fb4a65e16037ec070968f34757dbde18a505195f2efdaf2d3883862a4406",
+          "build/stockpile-storage-native-farm-discovery-20261116-093944/trade-exchange-wire-result.json": "a21671c99b3f312f43e04697e03741b21b106ed0331af162ec70cab91077de7c",
+          "build/stockpile-storage-native-farm-discovery-20261116-093944/result.json": "aabecb96df41cd7745f6cc77562a24b6bd0052d3d8ef32a3de1fcc72a5b0787b",
+          "build/stockpile-storage-native-farm-discovery-20261116-093944/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-093944/trade-exchange-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "presentations/godot/project/tests/trade_main_scene_live.gd": "5a55d8bd3ae8307d9aab762811118dff816bac34a85f8944a4a9cd69149d8e08",
+          "presentations/godot/project/scripts/fortress_ui.gd": "ec9961a22e05c8355558902bcf6be45084a19644db34becad62e5753a36e61cc",
+          "presentations/godot/project/scripts/furniture_panel.gd": "fcd012d8927fa9a52bf0fff89f3a30ae5e8dc7f2ee71c2b1f93671d3b0f61676"
+        }
       }
     },
     "pending_construction_reference": {

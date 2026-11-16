@@ -1,5 +1,5 @@
 extends "res://scripts/well_sheet_view.gd"
-# Staged native depot body. Goods/trade navigation must be connected before exposure.
+# Native depot body; the furniture owner handles goods and Trade navigation.
 signal goods_requested
 signal trade_requested
 const MODES=["Broker requested at depot","Anyone requested at depot","No trader needed at depot"]

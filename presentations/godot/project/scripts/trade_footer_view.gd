@@ -1,6 +1,6 @@
 extends Control
 # Native3891b4..389b1f summary and bulk selection. Exchange actions are owned by
-# the still-unfinished outer trade screen; this component never submits them.
+# outer trade screen; this component never submits them.
 var world
 var state
 var input_allowed: Callable

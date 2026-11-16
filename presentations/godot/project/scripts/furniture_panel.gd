@@ -1,5 +1,6 @@
 extends "res://scripts/farm_panel.gd"
 signal focus_requested(tile: Vector3i)
+signal selection_retired
 var goods=preload("res://scripts/depot_goods_state.gd").new()
 var goods_view
 var goods_mode:=false
@@ -61,12 +62,14 @@ func _open_goods() -> void:
 	if goods_mode or trade_mode or not play_enabled or not ui_host.allows_panel_input(self) or not panel.contents_allowed():return
 	if state.snapshot.get("type",-1)!=6 or not state.snapshot.get("depot",{}).get("goods_available",false):return
 	goods_mode=true;panel.finish_rename();panel.hide();cancel_gesture()
+	selection_retired.emit()
 	goods_view._closing=false;goods_view.show();goods.open(state.building_id)
 func _open_trade() -> void:
 	if goods_mode or trade_mode or not play_enabled or not ui_host.allows_panel_input(self) or not panel.contents_allowed():return
 	var depot: Dictionary=state.snapshot.get("depot",{})
 	if state.snapshot.get("type",-1)!=6 or not depot.get("trade_available",false) or depot.get("worker_id",-1)<0:return
 	trade_mode=true;panel.finish_rename();panel.hide();cancel_gesture()
+	selection_retired.emit()
 	trade_view.show();trade.open(state.building_id)
 func _retire_trade() -> void:
 	trade_mode=false

@@ -619,8 +619,7 @@ checks pass. Native closing observations also agree with protected075630.
 Evidence: completed_sheet_discovery_reference.depot_trade_main_route_reference.
 These fixtures use synthetic caravans without a merchant speaker or goods;
 they qualify navigation/ownership, not full main-scene exchange effects or
-announcement/resize behavior. Public depot selection remains gated in
-fortress_ui until the remaining Trade workflows are complete.
+announcement/resize behavior. Public map entry is qualified separately below.
 
 Protected083024 on2026-11-16 (DF39260) qualifies depot navigation and exchange
 together in res://scenes/main.tscn. The staged furniture owner opens the depot;
@@ -638,8 +637,30 @@ oracle-only. The source is preserved and DF closes unsaved; both graphical
 processes run at30FPS, logs are clean, sampled GPU56–57C (not peak), and all19
 core checks pass. Evidence:
 completed_sheet_discovery_reference.depot_trade_main_exchange_reference.
-Public depot selection remains gated while minimum dimensions, long counteroffer
-lists and foreign-caravan accounting are unfinished.
+Map entry, resizing and foreign-caravan exchange are qualified separately below.
+
+### Depot map entry
+
+Completed depots now use the native selection route and furniture controller
+from map hits and building-holder navigation. Entering Move goods or Trade
+retires the parent selection receipt and side tabs, retaining only the active
+goods/session owner. These screens close the parent on Escape.
+
+Protected093944 on2026-11-16 (DF38592) starts with an actual main-scene map
+click. Native selection first chooses trader988 standing on depot54; clicking
+the depot alternative opens its controls. Pointer input then opens Trade,
+negotiates, accepts, dismisses with Okay and closes with Escape. Trade has no
+remaining depot selection tabs. Counteroffer and accepted944x708 panels match
+native pixels. Eight item changes and recorded trader/caravan/RNG effects match
+the foreign-caravan native084828 reference. Item selection still uses controller
+intents in this test. This is not evidence for every row-input combination,
+advancing caravan departure accounting or a physical disconnect during exchange.
+Those verification limits do not identify missing Trade controls or require
+reimplementing native transfer rules. Existing session tests verify unknown
+mutations are not retried and late replies cannot revive closed goods; catalog
+and goods state checks pass headless. The live run has clean stderr, preserved
+source saves and an unsaved owned shutdown at30FPS; GPU samples58–60C.
+Evidence: completed_sheet_discovery_reference.depot_map_exchange_reference.
 
 ### Trade resizing
 
@@ -3252,8 +3273,8 @@ Owned DF45864 closes unsaved/source-preserved at30FPS; GPU samples58–59C.
 The established rendering-thread/finalize/two ObjectDB diagnostics remain;
 all19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_broker_input_reference`.
-Inaccessible broker appearance remains unqualified. Goods and Trade evidence
-is maintained in their owning sections; public map and holder routes remain hidden.
+Inaccessible broker appearance remains unqualified. Goods, Trade and public
+map-entry evidence is maintained in their owning sections.
 
 ### Depot goods native reference and ownership boundary
 

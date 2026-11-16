@@ -1,5 +1,5 @@
 extends Control
-# Native384850 goods body, separate from the still-unfinished dialogue/footer.
+# Native384850 goods body, composed with the dialogue/footer by trade_view.
 # All membership, grouping, selection and item status comes from owned DF pages.
 signal cancelled
 var world

@@ -90129,6 +90129,2692 @@
           "build/notes/pm/trade-goods-view.stdout.log": "1ec32b706b37c63f643a04bdd72c40567f45460eca0436495266cb652ee290f9",
           "build/notes/pm/trade-goods-view.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         }
+      },
+      "depot_trade_footer_summary_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-205128",
+        "owned_df_pid": 33936,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Thirty native states compare each value/profit/loss caption byte including currency glyph and capacity caption/color twice. Includes three broker skill levels, selected sides, populated bin, capacity changes and missing broker. Two revision-bound session reads successfully compose entry, totals and capacity. Existing session stale/source/trader/epoch retirement checks still pass. No public footer transport, rendered Godot footer, partial quantities, overflow cases or exchange acceptance.",
+        "cases": [
+          {
+            "label": "speaker",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "search-0-iron",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "search-0-boulders",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "search-0-zznomatch",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "search-1-blocks",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "search-cleared",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "capacity-positive",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                54,
+                53,
+                50,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 750000,
+              "whole": 652
+            }
+          },
+          {
+            "label": "capacity-buy-all",
+            "totals": {
+              "actual": [
+                154,
+                0
+              ],
+              "actual_profit": -154,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 4,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                49,
+                48,
+                48,
+                48,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 750000,
+              "whole": 1000
+            }
+          },
+          {
+            "label": "capacity-both",
+            "totals": {
+              "actual": [
+                154,
+                1528
+              ],
+              "actual_profit": 1374,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 2,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                53,
+                48,
+                49,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 235000,
+              "whole": 501
+            }
+          },
+          {
+            "label": "capacity-sell-all",
+            "totals": {
+              "actual": [
+                0,
+                1528
+              ],
+              "actual_profit": 1528,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                49,
+                53,
+                51,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 235000,
+              "whole": 153
+            }
+          },
+          {
+            "label": "capacity-restored",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "totals-merchant-0",
+            "totals": {
+              "actual": [
+                154,
+                0
+              ],
+              "actual_profit": -154,
+              "broker_appraisal": 1,
+              "estimated": [
+                160,
+                0
+              ],
+              "estimated_profit": -160,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                76,
+                111,
+                115,
+                115,
+                58,
+                32,
+                49,
+                54,
+                48,
+                15
+              ],
+              "profit_color": 4,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  49,
+                  54,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                60,
+                49,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 0,
+              "whole": 0
+            }
+          },
+          {
+            "label": "totals-both-0",
+            "totals": {
+              "actual": [
+                154,
+                1528
+              ],
+              "actual_profit": 1374,
+              "broker_appraisal": 1,
+              "estimated": [
+                160,
+                2030
+              ],
+              "estimated_profit": 1870,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                49,
+                56,
+                55,
+                48,
+                15
+              ],
+              "profit_color": 2,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  49,
+                  54,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  50,
+                  48,
+                  51,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                53,
+                48,
+                48,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 485000,
+              "whole": -500
+            }
+          },
+          {
+            "label": "totals-fortress-0",
+            "totals": {
+              "actual": [
+                0,
+                1528
+              ],
+              "actual_profit": 1528,
+              "broker_appraisal": 1,
+              "estimated": [
+                0,
+                2030
+              ],
+              "estimated_profit": 2030,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                50,
+                48,
+                51,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  50,
+                  48,
+                  51,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                56,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 485000,
+              "whole": -848
+            }
+          },
+          {
+            "label": "totals-cleared-0",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 1,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "totals-merchant-5",
+            "totals": {
+              "actual": [
+                154,
+                0
+              ],
+              "actual_profit": -154,
+              "broker_appraisal": 6,
+              "estimated": [
+                154,
+                0
+              ],
+              "estimated_profit": -154,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                76,
+                111,
+                115,
+                115,
+                58,
+                32,
+                49,
+                53,
+                52,
+                15
+              ],
+              "profit_color": 4,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  49,
+                  53,
+                  52,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                60,
+                49,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 0,
+              "whole": 0
+            }
+          },
+          {
+            "label": "totals-both-5",
+            "totals": {
+              "actual": [
+                154,
+                1528
+              ],
+              "actual_profit": 1374,
+              "broker_appraisal": 6,
+              "estimated": [
+                154,
+                1528
+              ],
+              "estimated_profit": 1374,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                49,
+                51,
+                55,
+                52,
+                15
+              ],
+              "profit_color": 2,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  49,
+                  53,
+                  52,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  49,
+                  53,
+                  50,
+                  56,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                53,
+                48,
+                48,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 485000,
+              "whole": -500
+            }
+          },
+          {
+            "label": "totals-fortress-5",
+            "totals": {
+              "actual": [
+                0,
+                1528
+              ],
+              "actual_profit": 1528,
+              "broker_appraisal": 6,
+              "estimated": [
+                0,
+                1528
+              ],
+              "estimated_profit": 1528,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                49,
+                53,
+                50,
+                56,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  49,
+                  53,
+                  50,
+                  56,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                56,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 485000,
+              "whole": -848
+            }
+          },
+          {
+            "label": "totals-cleared-5",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 6,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "totals-merchant-15",
+            "totals": {
+              "actual": [
+                154,
+                0
+              ],
+              "actual_profit": -154,
+              "broker_appraisal": 16,
+              "estimated": [
+                154,
+                0
+              ],
+              "estimated_profit": -154,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                76,
+                111,
+                115,
+                115,
+                58,
+                32,
+                49,
+                53,
+                52,
+                15
+              ],
+              "profit_color": 4,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  49,
+                  53,
+                  52,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                60,
+                49,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 0,
+              "whole": 0
+            }
+          },
+          {
+            "label": "totals-both-15",
+            "totals": {
+              "actual": [
+                154,
+                1528
+              ],
+              "actual_profit": 1374,
+              "broker_appraisal": 16,
+              "estimated": [
+                154,
+                1528
+              ],
+              "estimated_profit": 1374,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                49,
+                51,
+                55,
+                52,
+                15
+              ],
+              "profit_color": 2,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  49,
+                  53,
+                  52,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  49,
+                  53,
+                  50,
+                  56,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                53,
+                48,
+                48,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 485000,
+              "whole": -500
+            }
+          },
+          {
+            "label": "totals-fortress-15",
+            "totals": {
+              "actual": [
+                0,
+                1528
+              ],
+              "actual_profit": 1528,
+              "broker_appraisal": 16,
+              "estimated": [
+                0,
+                1528
+              ],
+              "estimated_profit": 1528,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                49,
+                53,
+                50,
+                56,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  49,
+                  53,
+                  50,
+                  56,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                56,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 485000,
+              "whole": -848
+            }
+          },
+          {
+            "label": "totals-cleared-15",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 16,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "totals-no-broker",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "bin-action-1",
+            "totals": {
+              "actual": [
+                0,
+                1518
+              ],
+              "actual_profit": 1518,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                56,
+                50,
+                55,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 200000,
+              "whole": -827
+            }
+          },
+          {
+            "label": "bin-action-2",
+            "totals": {
+              "actual": [
+                0,
+                1368
+              ],
+              "actual_profit": 1368,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                55,
+                56,
+                48,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 300000,
+              "whole": -780
+            }
+          },
+          {
+            "label": "bin-action-3",
+            "totals": {
+              "actual": [
+                0,
+                1368
+              ],
+              "actual_profit": 1368,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                55,
+                56,
+                48,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 300000,
+              "whole": -780
+            }
+          },
+          {
+            "label": "bin-action-4",
+            "totals": {
+              "actual": [
+                0,
+                1368
+              ],
+              "actual_profit": 1368,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                55,
+                56,
+                48,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 300000,
+              "whole": -780
+            }
+          },
+          {
+            "label": "bin-action-5",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          },
+          {
+            "label": "speaker-long-name",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            }
+          }
+        ],
+        "summary_reads": [
+          "stale-and-invalid-unchanged",
+          "read-repeat"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-205128/depot-trade-native.json": "502b079e39e6309fcfe547ab5b440222c4fad606182790f5653b5c1f11aab87b",
+          "build/stockpile-storage-native-farm-discovery-20261115-205128/result.json": "31ef14a770dcbb14452625a0dbe7e2298fe3fa18542b9c75848aeb3c8473d711",
+          "build/stockpile-storage-native-farm-discovery-20261115-205128/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/trade_value_totals_native.h": "3d974fff7346cc8a36612f79f68944e4942877f09b14e306ada72b1b095a37cf",
+          "bridge/plugin/trade_session_native.h": "e4885c6b247e186a324566b107dfec13f0d6252487665c80a633eb6836009031",
+          "bridge/plugin/trade_owner_native.h": "8b8d33c5092a8ee2fe32bfc02bfa0ea7b18eeacc6f3593fe3a374fb0c789ce88",
+          "tools/smoke/depot-trade-native.lua": "9dbc73164773804d95a94089ce2f07e245ecdb32f1a2e631d632063670c1e2c5",
+          "tools/smoke/depot-trade-session-native.lua": "18ec265a3d640aad455516a439c076ef5fe5cad2d3c1dabbf05f4cc319dfdf2a"
+        }
       }
     },
     "pending_construction_reference": {

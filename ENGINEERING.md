@@ -1,3 +1,24 @@
+## Owned trade footer summary
+
+TradeSelectionSession and TradeOwner provide a revision-bound summary that
+validates the current selection source before composing entry facts, value
+totals and carrying capacity. It does not appraise/train or perform exchange.
+Totals now include native captions: the already-estimated sums are formatted
+by52c130 and followed by the native currency character. They must not be fed
+through the row appraisal formatter again. Native3891b4..3894f9 supplies the
+profit/loss label, sign and color behavior; strings and code bytes are pinned.
+
+Protected205128 on2026-11-15 compares all footer caption bytes and colors in30
+native states, twice each, including broker skill0/5/15, independently selected
+sides, a populated bin, capacity changes and missing broker. Two owned-session
+reads successfully compose the summary; existing stale/source/trader/epoch
+retirement checks pass. Owned DF33936 closes unsaved/source-preserved at30FPS,
+sampled59-60C. Bridge build and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_footer_summary_reference`.
+Public summary transport and rendered footer integration remain unfinished;
+this evidence does not qualify partial quantities, overflow or exchange.
+Management protocol remains241.
+
 ## Staged native trade goods body
 
 The goods body renders owned native pages, disposition colors, captions,

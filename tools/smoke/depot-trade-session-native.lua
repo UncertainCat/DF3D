@@ -18,6 +18,7 @@ local function native()
  return sides
 end
 local function compare(label,row)
+ if row.display_verified then assert(row.summary_verified,'Owned footer summary was not verified')end
  assert(row.status==0 and json.encode(row.sides)==json.encode(native()),'Session/native mismatch: '..label)
  assert(row.filters[1]==dfhack.df2utf(trade.item_filter[0]) and row.filters[2]==dfhack.df2utf(trade.item_filter[1]))
  result.cases[#result.cases+1]={label=label,state=row}

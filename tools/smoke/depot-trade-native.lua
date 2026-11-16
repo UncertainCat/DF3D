@@ -131,6 +131,10 @@ local function record(label)
      local label=totals.estimated_profit<0 and 'Trader Loss: ' or 'Trader Profit: '
      assert(row.lines[59]:find(label..tostring(math.abs(totals.estimated_profit)),1,true),'Native footer profit differs: '..row.lines[59])
      assert(dfhack.screen.readTile(6,58).fg==totals.profit_color,'Native footer profit color differs')
+     local function caption(x,y,bytes)
+      for i,ch in ipairs(bytes)do assert(dfhack.screen.readTile(x+i-1,y).ch==ch,'Native footer caption byte differs')end
+     end
+     caption(6,57,totals.value_captions[1]);caption(65,57,totals.value_captions[2]);caption(6,58,totals.profit_caption)
      row.value_totals=totals
     end
     row.filters={trade.item_filter[0],trade.item_filter[1]}

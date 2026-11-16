@@ -1,6 +1,8 @@
 #pragma once
 #include "trade_projection_native.h"
 #include "trade_display_native.h"
+#include "trade_value_totals_native.h"
+#include "trade_capacity_native.h"
 #include <limits>
 
 namespace df3d_production {
@@ -42,6 +44,13 @@ struct TradeSessionRead {
     std::optional<TradeDraftCheckpoint> draft;
 };
 struct TradeSessionDisplay {TradeSessionStatus status=TradeSessionStatus::Rejected;uint64_t session=0,revision=0;std::string query;std::optional<TradeDisplayPage> page;};
+struct TradeSessionSummary {
+    TradeSessionStatus status=TradeSessionStatus::Rejected;
+    uint64_t session=0,revision=0;
+    std::optional<TradeEntryFacts> entry;
+    std::optional<TradeValueTotals> values;
+    std::optional<TradeCapacity> capacity;
+};
 class TradeSelectionSession {
     struct Binding {
         uint64_t session=0,revision=1,epoch=0,source=0;
@@ -68,6 +77,19 @@ public:
     TradeSessionRead close(uint64_t session) {
         if(!current || current->session!=session)return reply(TradeSessionStatus::Rejected);
         reset();return reply(TradeSessionStatus::Closed);
+    }
+    TradeSessionSummary summary(uint64_t epoch,uint64_t session,uint64_t revision) {
+        TradeSessionSummary result;
+        const auto read=access(epoch,session,revision);result.status=read.status;
+        if(read.status!=TradeSessionStatus::Available || !read.draft || !current)return result;
+        auto* building=df::building::find(current->depot);
+        auto entry=tradeEntryFacts(building,current->caravan);
+        auto values=tradeValueTotals(building,current->caravan,read.draft->sides);
+        auto capacity=tradeCapacity(building,current->caravan,read.draft->sides);
+        if(!entry || !values || !capacity){result.status=TradeSessionStatus::Rejected;return result;}
+        result.session=read.session;result.revision=read.revision;
+        result.entry=std::move(entry);result.values=std::move(values);result.capacity=std::move(capacity);
+        return result;
     }
     std::optional<TradeDisplayPage> display(uint64_t epoch,uint64_t session,uint64_t revision,int32_t side,size_t offset,size_t limit) {
         return displayRead(epoch,session,revision,side,offset,limit).page;

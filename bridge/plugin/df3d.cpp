@@ -5175,6 +5175,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if(action=="read" && result.status==df3d_production::TradeSessionStatus::Available){
           for(int32_t side=0;side<2;++side){const auto page=session.display(state.terrain.epoch(),a,b,side,0,64);if(!page || !result.draft || page->total*3!=size_t(result.draft->sides[side].height))return CR_FAILURE;}
           output["display_verified"]=true;
+          const auto summary=session.summary(state.terrain.epoch(),a,b);
+          if(summary.status!=result.status || summary.session!=a || summary.revision!=b ||
+             !summary.entry || !summary.values || !summary.capacity)return CR_FAILURE;
+          output["summary_verified"]=true;
         }
         output["sides"]=Json::arrayValue;output["filters"]=Json::arrayValue;
         if(result.draft)for(size_t side=0;side<2;++side){const auto& value=result.draft->sides[side];Json::Value row;
@@ -5260,6 +5264,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           auto& value=output["value_totals"];value["broker_appraisal"]=totals->brokerAppraisal;value["actual"]=value["estimated"]=Json::arrayValue;
           for(auto number:totals->actual)value["actual"].append(number);for(auto number:totals->estimated)value["estimated"].append(number);
           value["actual_profit"]=totals->actualProfit;value["estimated_profit"]=totals->estimatedProfit;value["profit_color"]=totals->profitColor;
+          const auto bytes=[](const std::string& text){Json::Value result(Json::arrayValue);for(unsigned char ch:text)result.append(ch);return result;};
+          value["value_captions"]=Json::arrayValue;for(const auto& caption:totals->valueCaptions)value["value_captions"].append(bytes(caption));
+          value["profit_caption"]=bytes(totals->profitCaption);
           const auto capacity=df3d_production::tradeCapacity(df::building::find(values[0]),size_t(values[1]),*projection);if(!capacity)return CR_FAILURE;
           auto& weight=output["capacity"];weight["whole"]=capacity->whole;weight["fraction"]=capacity->fraction;weight["excess"]=capacity->excess;weight["color"]=capacity->color;weight["caption"]=Json::arrayValue;
           for(unsigned char ch:capacity->caption)weight["caption"].append(ch);

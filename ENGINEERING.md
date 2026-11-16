@@ -228,6 +228,33 @@ Caste-rate/RNG variants, level-up/profession/thought effects, newly arriving goo
 container appraisal and negotiation remain outstanding. Runtime appraisal must
 stay separate from repeatable providers; the full renderer remains inadmissible.
 
+`trade_appraisal_native.h` implements that explicit safe-point mutation through
+native valuation c66c30, skill training133baf0 and attribute training13d5020.
+It uses the validated depot/caravan/trader and owned projected item order,
+resolves every target and reserves history storage before training, and checks
+caravan.goods before each item. Merchant goods train then enter history;
+fortress goods only enter history. The native training routines retain caste
+rates/RNG, rust, profession and thought behavior. Read providers do not call
+this operation. Full function/table pins cover the new entry points and reuse
+the existing valuation, profession and thought qualification.
+
+Protected183853 on2026-11-15 compares native rendering's explicit appraisal
+phase against `df3d trade-appraisal-probe` from identical captured skill/mental
+attribute state and empty caravan history. Both produce the same complete
+snapshot:19 Appraisal experience, changes to mental attributes0/4/6, and nine
+ordered history IDs. The bridge reports five trained/nine recorded items;
+two repeats report zero/zero without changing the snapshot. Caravan index100
+rejects without effects. Native title, list/appraisal flags and map selection
+remain unchanged. The fixture deliberately stays below level-up and does not
+rewind RNG; caste-rate/RNG variants and profession/thought effects remain
+unqualified. Owned DF42012 closes unsaved/source-preserved at30FPS, sampled
+GPU48C. Bridge build and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_appraisal_provider_reference`.
+This command is paused diagnostic access only. Public trade transport still
+requires stable caravan/session identity, expected revision, explicit entry
+ownership and uncertain-outcome handling. It must not expose the synchronous
+index selector or turn refresh into a mutation. Public trade routes stay hidden.
+
 `trade_entry_native.h` now stages an owned merchant-entry provider. It checks
 pinned native initializer/name/clear routines, resolves the current fortress
 site from simulation state, validates a completed non-removing depot with a

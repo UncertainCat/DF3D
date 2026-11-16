@@ -43,6 +43,30 @@ local ok,err=xpcall(function()
   assert(json.encode(snapshot())==json.encode(result.after),'Appraisal repeated for known goods')
  end
  result.rearmed_deduplicated=true
+ if os.getenv('DF3D_DEPOT_TRADE_APPRAISAL_PROVIDER')=='1' then
+  -- Rewind only the explicitly captured semantic fields in this disposable
+  -- no-level-up fixture. Native and bridge start from identical skill/attrs.
+  -- This does not establish equivalence for caste RNG or profession changes.
+  for _,name in ipairs(skill_fields)do skill[name]=result.before.skill[name]end
+  for i=0,12 do for _,name in ipairs(attr_fields)do soul.mental_attrs[i][name]=result.before.attributes[i+1][name]end end
+  caravan.goods:resize(0)
+  assert(json.encode(snapshot())==json.encode(result.before))
+  local title=trade.title;local appraisal=trade.handle_appraisal;local lists=trade.buildlists
+  local active=df.global.game.main_interface.view_sheets.active_id
+  local function probe(index)
+   local output,code=dfhack.run_command_silent('df3d','trade-appraisal-probe',tostring(trade.bld.id),tostring(index))
+   assert(code==0,output);return json.decode(output)
+  end
+  assert(not probe(100).available and json.encode(snapshot())==json.encode(result.before))
+  local effect=probe(0);assert(effect.available and effect.trained==#result.merchant_items and effect.recorded==#result.after.goods)
+  assert(json.encode(snapshot())==json.encode(result.after),'Bridge appraisal effects differ from native')
+  for iteration=1,2 do
+   local repeated=probe(0);assert(repeated.available and repeated.trained==0 and repeated.recorded==0)
+   assert(json.encode(snapshot())==json.encode(result.after),'Bridge repeated appraisal')
+  end
+  assert(trade.title==title and trade.handle_appraisal==appraisal and trade.buildlists==lists and df.global.game.main_interface.view_sheets.active_id==active)
+  result.provider=effect;result.provider_deduplicated=true
+ end
 end,debug.traceback)
 for i=0,12 do for _,name in ipairs(attr_fields)do soul.mental_attrs[i][name]=original_attrs[i+1][name]end end
 if created then

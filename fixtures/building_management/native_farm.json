@@ -113553,6 +113553,22 @@
           "bridge/plugin/cage_native.h": "4567782bb6293830427d8666e708f82b12dd3cbdd394b73f5c18f64576ca2261",
           "tools/smoke/cage-assignment-native.lua": "e8e27e0f8ff58a3f754278de5fe70b445d9d524af080478ce5d83307b4bfe8be"
         }
+      },
+      "cage_contract_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-103606",
+        "owned_df_pid": 58216,
+        "protocol": 248,
+        "scope": "Schema migration regression only: seven raw candidates and six ordinary revisioned cage effect snapshots match native100903. Source unchanged/closed unsaved at30FPS GPU60C. Headless management contract test passes with documented separate-render-thread warning. Cage wire provider and public picker remain unavailable; this is not cage UI acceptance.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-103606/remaining-buildings-native.json": "0a0650cd5203782ebd8708cf59463ee1130acc0091c2a55a7ca59fa275fe08b9",
+          "build/stockpile-storage-native-farm-discovery-20261116-103606/result.json": "309eb99330dbeb0f5d92895bca5fb417c2f88eb809123cf65afe65cf81a9edf8",
+          "build/stockpile-storage-native-farm-discovery-20261116-103606/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "schema/mirror.fbs": "94b74a915fe5b54b564100fc5c5261b05fb3958f8f82057790b812e71cce7f1d",
+          "schema/cpp/management_util.h": "58e6abef410587e23b4e53abb153b240de98494b3ce1c04f928726e0a556d0c7",
+          "presentations/godot/project/tests/management_contract_test.gd": "e8715eeddfc1c365472d66806cc949be4cd0bb71fc2740eb52e35cd1a76fcba1",
+          "build/notes/pm/cage-contract-engine.stdout.log": "872e0fb2c59f79ecef5afae67248e90c0c9007b90ad8f58774cb67cee824de53",
+          "build/notes/pm/cage-contract-engine.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
+        }
       }
     },
     "pending_construction_reference": {

@@ -3,6 +3,46 @@
 namespace wm::detail::management {
 namespace m = df3d::mirror;
 
+AreaCandidateRow decodeAreaCandidate(const m::AreaCandidateRow* v) {
+  auto text=[](const flatbuffers::String* value){return value?value->str():std::string{};};
+    AreaCandidateRow row{v->id(),text(v->name()),text(v->profession()),v->sex(),v->mood(),v->grazer(),v->assigned(),v->squad_use()};
+    if(const auto* d=v->owner_display()) {
+      row.ownerDisplay=AreaOwnerDisplay{d->columns(),text(d->first_line()),text(d->second_line()),text(d->status()),d->room_value()};
+      if(const auto* c=d->name_color())row.ownerDisplay->nameColor=AreaNameColor{{c->foreground(),c->background(),c->bright()},
+        {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
+    }
+    if(const auto* p=v->sheet_icon()) {
+      row.sheetIcon.emplace();
+      for(const auto* t:*p->tile_pages())row.sheetIcon->tilePages.push_back(t->str());
+      for(const auto* t:*p->palettes())row.sheetIcon->palettes.push_back(t->str());
+      for(const auto* l:*p->layers())row.sheetIcon->layers.push_back({l->page(),l->tile_x(),l->tile_y(),l->cells_x(),l->cells_y(),
+        l->palette(),l->palette_row(),l->palette_key_row(),l->offset_x(),l->offset_y()});
+    }
+    if(const auto* d=v->animal_display()) {
+      row.animalDisplay=AreaAnimalDisplay{d->columns(),text(d->first_line()),text(d->second_line()),d->combined_fits(),text(d->warning())};
+      if(const auto* c=d->name_color())row.animalDisplay->nameColor=AreaNameColor{{c->foreground(),c->background(),c->bright()},
+        {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
+    }
+    if(const auto* s=v->animal_status())row.animalStatus=AreaAnimalStatus{s->kind(),s->containment(),s->item_id()};
+    if(const auto* c=v->animal_item_color())row.animalItemColor=std::array<uint8_t,3>{c->foreground(),c->background(),c->bright()};
+    if(const auto* s=v->squad_symbol())row.squadSymbol=std::array<uint8_t,7>{s->index(),s->foreground_r(),s->foreground_g(),s->foreground_b(),s->background_r(),s->background_g(),s->background_b()};
+    if(const auto* r=v->animal_restraint())row.animalRestraint=AreaAnimalRestraint{r->rope(),text(r->solid_color())};
+    if(const auto* c=v->animal_container()) {
+      row.animalContainer.emplace();auto& container=*row.animalContainer;
+      container.materialFamily=c->material_family();container.solidColor=text(c->solid_color());
+      container.occupantEntity=c->occupant_entity();container.occupantId=c->occupant_id();
+      if(const auto* p=c->occupant()) {
+        container.occupant.emplace();
+        for(const auto* t:*p->tile_pages())container.occupant->tilePages.push_back(t->str());
+        for(const auto* t:*p->palettes())container.occupant->palettes.push_back(t->str());
+        for(const auto* l:*p->layers())container.occupant->layers.push_back({l->page(),l->tile_x(),l->tile_y(),l->cells_x(),l->cells_y(),
+          l->palette(),l->palette_row(),l->palette_key_row(),l->offset_x(),l->offset_y()});
+      }
+    }
+    row.entity=AreaCandidateEntity(v->entity());
+  return row;
+}
+
 void decodeConstruction(const m::ManagementState* s, ManagementState& next) {
   auto text=[](const flatbuffers::String* v){return v ? v->str() : std::string{};};
   auto filters=[&](const auto* values){
@@ -207,44 +247,7 @@ AreaState decodeArea(const m::AreaState* a) {
   out.buildTotal=a->build_total();out.omitted=a->omitted();out.capturedTick=a->captured_tick();
   if(a->settings())for(const auto* v:*a->settings())out.settings.push_back({text(v->key()),v->index(),text(v->label()),v->kind(),v->state(),v->estimated()});
   if(a->locations())for(const auto* v:*a->locations())out.locations.push_back({v->id(),text(v->name()),v->location_kind(),text(v->religion()),v->guild_profession(),v->location_tier(),v->site_id()});
-  if(a->candidates())for(const auto* v:*a->candidates()) {
-    AreaCandidateRow row{v->id(),text(v->name()),text(v->profession()),v->sex(),v->mood(),v->grazer(),v->assigned(),v->squad_use()};
-    if(const auto* d=v->owner_display()) {
-      row.ownerDisplay=AreaOwnerDisplay{d->columns(),text(d->first_line()),text(d->second_line()),text(d->status()),d->room_value()};
-      if(const auto* c=d->name_color())row.ownerDisplay->nameColor=AreaNameColor{{c->foreground(),c->background(),c->bright()},
-        {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
-    }
-    if(const auto* p=v->sheet_icon()) {
-      row.sheetIcon.emplace();
-      for(const auto* t:*p->tile_pages())row.sheetIcon->tilePages.push_back(t->str());
-      for(const auto* t:*p->palettes())row.sheetIcon->palettes.push_back(t->str());
-      for(const auto* l:*p->layers())row.sheetIcon->layers.push_back({l->page(),l->tile_x(),l->tile_y(),l->cells_x(),l->cells_y(),
-        l->palette(),l->palette_row(),l->palette_key_row(),l->offset_x(),l->offset_y()});
-    }
-    if(const auto* d=v->animal_display()) {
-      row.animalDisplay=AreaAnimalDisplay{d->columns(),text(d->first_line()),text(d->second_line()),d->combined_fits(),text(d->warning())};
-      if(const auto* c=d->name_color())row.animalDisplay->nameColor=AreaNameColor{{c->foreground(),c->background(),c->bright()},
-        {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
-    }
-    if(const auto* s=v->animal_status())row.animalStatus=AreaAnimalStatus{s->kind(),s->containment(),s->item_id()};
-    if(const auto* c=v->animal_item_color())row.animalItemColor=std::array<uint8_t,3>{c->foreground(),c->background(),c->bright()};
-    if(const auto* s=v->squad_symbol())row.squadSymbol=std::array<uint8_t,7>{s->index(),s->foreground_r(),s->foreground_g(),s->foreground_b(),s->background_r(),s->background_g(),s->background_b()};
-    if(const auto* r=v->animal_restraint())row.animalRestraint=AreaAnimalRestraint{r->rope(),text(r->solid_color())};
-    if(const auto* c=v->animal_container()) {
-      row.animalContainer.emplace();auto& container=*row.animalContainer;
-      container.materialFamily=c->material_family();container.solidColor=text(c->solid_color());
-      container.occupantEntity=c->occupant_entity();container.occupantId=c->occupant_id();
-      if(const auto* p=c->occupant()) {
-        container.occupant.emplace();
-        for(const auto* t:*p->tile_pages())container.occupant->tilePages.push_back(t->str());
-        for(const auto* t:*p->palettes())container.occupant->palettes.push_back(t->str());
-        for(const auto* l:*p->layers())container.occupant->layers.push_back({l->page(),l->tile_x(),l->tile_y(),l->cells_x(),l->cells_y(),
-          l->palette(),l->palette_row(),l->palette_key_row(),l->offset_x(),l->offset_y()});
-      }
-    }
-    row.entity=AreaCandidateEntity(v->entity());
-    out.candidates.push_back(std::move(row));
-  }
+  if(a->candidates())for(const auto* v:*a->candidates())out.candidates.push_back(decodeAreaCandidate(v));
   if(a->links())for(const auto* v:*a->links())out.links.push_back({v->id(),AreaKind(v->kind()),v->direction(),text(v->name())});
   if (a->choices())
     for (const auto* c : *a->choices())

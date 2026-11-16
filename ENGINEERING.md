@@ -3156,8 +3156,24 @@ before effects and a repeated current assignment completes without effects.
 Source preservation and unsaved cleanup pass; sampled GPU58-60C at30FPS.
 Evidence: `completed_sheet_discovery_reference.cage_authority_reference`.
 
-Next is the semantic transport request/reply owner and the complete cage picker,
-including native sorting/text/artwork, selection effects and public map entry.
+Protocol248 defines an independent CageRequest/CageState contract under production:
+owned building identity/revision, read or assignment intent, query/sort/columns,
+bounded64-row pages and explicit Completed/Rejected/Stale/Unknown edit outcomes.
+A rejection carries no snapshot authority; Unknown cannot authorize replay. Unit
+and critter IDs are distinct identities. Animal presentation rows share the zone
+row validator and model/Godot codecs, without sharing zone request authority.
+Both peers must upgrade together; earlier recordings cannot fabricate cage facts.
+The native page provider is not connected yet, so the bridge explicitly refuses
+cage intents before generic production dispatch. This is a contract migration,
+not public cage readiness. Protected103606 (DF58216) retains the seven candidate
+rows and six native100903 effect snapshots under protocol248, preserving source
+saves and closing unsaved at30FPS/GPU60C. The headless management contract test
+passes with only the documented separate-render-thread warning. Evidence:
+`completed_sheet_discovery_reference.cage_contract_reference`. Bridge/extension
+builds and all19 root checks pass against the final protocol248 binaries.
+
+Next is the semantic page provider and complete cage picker, including native
+sorting/text/artwork, selection effects and public map entry.
 Shared animal presentation components can be reused only where their semantics
 match; a zone ID must not stand in for cage authority.
 

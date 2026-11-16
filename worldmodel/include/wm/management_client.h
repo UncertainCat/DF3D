@@ -270,7 +270,12 @@ struct LeverRequest {
   std::optional<std::array<int16_t,3>> position;
   int32_t targetId=-1,sourceMechanism=-1,targetMechanism=-1;
 };
+struct CageRequest {
+  uint8_t operation=0;int32_t candidateId=-1;AreaCandidateEntity entity=AreaCandidateEntity::Unknown;
+  bool assigned=false;uint8_t sort=0;bool descending=false;uint16_t columns=27;
+};
 struct ProductionRequest {
+  std::optional<CageRequest> cage;
   std::optional<LeverRequest> lever;
   bool pendingBuilding=false;int8_t pendingOperation=-1;bool buildingLinks=false;
   bool doorControls=false;int8_t doorForbidden=-1;
@@ -487,7 +492,15 @@ struct LeverState {
   int32_t sourceMechanism=-1,targetMechanism=-1,targetId=-1,jobId=-1;
   std::string sourceName,targetName;
 };
+struct CageState {
+  int32_t buildingId=-1;uint64_t revision=0;bool removing=false;
+  uint8_t operation=0;int32_t candidateId=-1;AreaCandidateEntity entity=AreaCandidateEntity::Unknown;bool assigned=false;
+  std::string query;uint8_t sort=0;bool descending=false;uint16_t columns=27;
+  uint32_t cursor=0,nextCursor=0,total=0;std::vector<AreaCandidateRow> rows;
+  FarmEditOutcome outcome=FarmEditOutcome::None;
+};
 struct ProductionState {
+  std::optional<CageState> cage;
   std::optional<std::string> taskCategory,taskParent;
   std::vector<ProductionTaskCategory> taskCategories;
   std::optional<WorkshopOrdersState> workshopOrders;

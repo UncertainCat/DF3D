@@ -4221,6 +4221,11 @@ void run(color_ostream& out) {
     }
     publish();return;
   }
+  // The typed cage contract is installed before its native page provider.
+  // Never let an unavailable cage intent fall through to generic production.
+  if(r->production() && r->production()->cage()) {
+    message.clear();status=m::ManagementStatus::Rejected;production={};publish();return;
+  }
   if(r->production() && r->production()->lever()) {
     const auto* q=r->production();const auto* intent=q->lever();
     message.clear();status=m::ManagementStatus::Rejected;production={};

@@ -8,6 +8,7 @@ namespace df3d_godot::management {
 // Stateless presentation codecs own dictionary spelling, types and bounds.
 // Callers own connection availability and request sequencing.
 void writeConstruction(godot::Dictionary& result, const wm::ManagementState& s);
+godot::Dictionary areaCandidateDictionary(const wm::AreaCandidateRow& v);
 void writeArea(godot::Dictionary& result, const wm::AreaState& s);
 godot::Dictionary itemRecipeDictionary(const wm::SelectionAppearance& source);
 godot::Dictionary itemAppearanceDictionary(const wm::ItemInspectionAppearance& appearance);

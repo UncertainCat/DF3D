@@ -114,6 +114,50 @@ void writeConstruction(Dictionary& result, const wm::ManagementState& s) {
   result["inputs"] = inputs;
 }
 
+Dictionary areaCandidateDictionary(const wm::AreaCandidateRow& v) {
+    Dictionary row;row["id"]=v.id;row["name"]=String::utf8(v.name.c_str());row["profession"]=String::utf8(v.profession.c_str());
+    row["entity"]=int(v.entity);row["sex"]=v.sex;row["mood"]=v.mood;row["grazer"]=v.grazer;row["assigned"]=v.assigned;row["squad_use"]=v.squadUse;
+    if(v.ownerDisplay) {const auto& d=*v.ownerDisplay;Dictionary display;
+      display["columns"]=d.columns;display["first_line"]=String::utf8(d.firstLine.c_str());display["second_line"]=String::utf8(d.secondLine.c_str());
+      display["status"]=String::utf8(d.status.c_str());display["room_value"]=d.roomValue;
+      if(d.nameColor) {Dictionary color;Array primary,alternate;
+        for(auto c:d.nameColor->color)primary.push_back(int(c));for(auto c:d.nameColor->alternate)alternate.push_back(int(c));
+        color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(d.nameColor->effect);display["name_color"]=color;}
+      row["owner_display"]=display;}
+    if(v.animalStatus) {const auto& s=*v.animalStatus;Dictionary status;status["kind"]=s.kind;status["containment"]=s.containment;status["item_id"]=s.itemId;row["animal_status"]=status;}
+    if(v.animalDisplay) {const auto& d=*v.animalDisplay;Dictionary display,color;Array primary,alternate;
+      display["columns"]=d.columns;display["first_line"]=String::utf8(d.firstLine.c_str());display["second_line"]=String::utf8(d.secondLine.c_str());
+      display["combined_fits"]=d.combinedFits;display["warning"]=String::utf8(d.warning.c_str());
+      for(auto c:d.nameColor.color)primary.push_back(int(c));for(auto c:d.nameColor.alternate)alternate.push_back(int(c));
+      color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(d.nameColor.effect);
+      display["name_color"]=color;row["animal_display"]=display;}
+    if(v.sheetIcon) {Dictionary icon;Array pages,palettes,layers;
+      for(const auto& name:v.sheetIcon->tilePages)pages.push_back(String::utf8(name.c_str()));
+      for(const auto& name:v.sheetIcon->palettes)palettes.push_back(String::utf8(name.c_str()));
+      for(const auto& l:v.sheetIcon->layers) {Array layer;
+        for(int value:{int(l.page),int(l.tileX),int(l.tileY),int(l.cellsX),int(l.cellsY),int(l.palette),int(l.paletteRow),int(l.paletteKeyRow),int(l.offsetX),int(l.offsetY)})layer.push_back(value);
+        layers.push_back(layer);}
+      icon["tile_pages"]=pages;icon["palettes"]=palettes;icon["layers"]=layers;row["sheet_icon"]=icon;
+    }
+    if(v.animalItemColor){const auto& c=*v.animalItemColor;Dictionary color;color["foreground"]=c[0];color["background"]=c[1];color["bright"]=c[2];row["animal_item_color"]=color;}
+    if(v.squadSymbol){const auto& s=*v.squadSymbol;Dictionary symbol;symbol["index"]=s[0];Array foreground,background;for(size_t i=1;i<4;++i){foreground.push_back(s[i]);background.push_back(s[i+3]);}symbol["foreground"]=foreground;symbol["background"]=background;row["squad_symbol"]=symbol;}
+    if(v.animalRestraint){Dictionary restraint;restraint["rope"]=v.animalRestraint->rope;restraint["solid_color"]=String::utf8(v.animalRestraint->solidColor.c_str());row["animal_restraint"]=restraint;}
+    if(v.animalContainer) {const auto& c=*v.animalContainer;Dictionary container;
+      container["material_family"]=c.materialFamily;container["solid_color"]=String::utf8(c.solidColor.c_str());
+      container["occupant_entity"]=c.occupantEntity;container["occupant_id"]=c.occupantId;
+    if(c.occupant) {Dictionary icon;Array pages,palettes,layers;
+      for(const auto& name:c.occupant->tilePages)pages.push_back(String::utf8(name.c_str()));
+      for(const auto& name:c.occupant->palettes)palettes.push_back(String::utf8(name.c_str()));
+      for(const auto& l:c.occupant->layers) {Array layer;
+        for(int value:{int(l.page),int(l.tileX),int(l.tileY),int(l.cellsX),int(l.cellsY),int(l.palette),int(l.paletteRow),int(l.paletteKeyRow),int(l.offsetX),int(l.offsetY)})layer.push_back(value);
+        layers.push_back(layer);}
+      icon["tile_pages"]=pages;icon["palettes"]=palettes;icon["layers"]=layers;container["occupant"]=icon;
+    }
+      row["animal_container"]=container;
+    }
+  return row;
+}
+
 void writeArea(Dictionary& result, const wm::AreaState& s) {
   Array areas, choices;
   for (const auto& a : s.areas) {
@@ -301,49 +345,7 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
     Dictionary row;row["id"]=v.id;row["name"]=String::utf8(v.name.c_str());row["location_kind"]=v.locationKind;
     row["religion"]=String::utf8(v.religion.c_str());row["guild_profession"]=v.guildProfession;row["location_tier"]=v.locationTier;row["site_id"]=v.siteId;locations.push_back(row);
   }
-  for(const auto& v:s.candidates) {
-    Dictionary row;row["id"]=v.id;row["name"]=String::utf8(v.name.c_str());row["profession"]=String::utf8(v.profession.c_str());
-    row["entity"]=int(v.entity);row["sex"]=v.sex;row["mood"]=v.mood;row["grazer"]=v.grazer;row["assigned"]=v.assigned;row["squad_use"]=v.squadUse;
-    if(v.ownerDisplay) {const auto& d=*v.ownerDisplay;Dictionary display;
-      display["columns"]=d.columns;display["first_line"]=String::utf8(d.firstLine.c_str());display["second_line"]=String::utf8(d.secondLine.c_str());
-      display["status"]=String::utf8(d.status.c_str());display["room_value"]=d.roomValue;
-      if(d.nameColor) {Dictionary color;Array primary,alternate;
-        for(auto c:d.nameColor->color)primary.push_back(int(c));for(auto c:d.nameColor->alternate)alternate.push_back(int(c));
-        color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(d.nameColor->effect);display["name_color"]=color;}
-      row["owner_display"]=display;}
-    if(v.animalStatus) {const auto& s=*v.animalStatus;Dictionary status;status["kind"]=s.kind;status["containment"]=s.containment;status["item_id"]=s.itemId;row["animal_status"]=status;}
-    if(v.animalDisplay) {const auto& d=*v.animalDisplay;Dictionary display,color;Array primary,alternate;
-      display["columns"]=d.columns;display["first_line"]=String::utf8(d.firstLine.c_str());display["second_line"]=String::utf8(d.secondLine.c_str());
-      display["combined_fits"]=d.combinedFits;display["warning"]=String::utf8(d.warning.c_str());
-      for(auto c:d.nameColor.color)primary.push_back(int(c));for(auto c:d.nameColor.alternate)alternate.push_back(int(c));
-      color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(d.nameColor.effect);
-      display["name_color"]=color;row["animal_display"]=display;}
-    if(v.sheetIcon) {Dictionary icon;Array pages,palettes,layers;
-      for(const auto& name:v.sheetIcon->tilePages)pages.push_back(String::utf8(name.c_str()));
-      for(const auto& name:v.sheetIcon->palettes)palettes.push_back(String::utf8(name.c_str()));
-      for(const auto& l:v.sheetIcon->layers) {Array layer;
-        for(int value:{int(l.page),int(l.tileX),int(l.tileY),int(l.cellsX),int(l.cellsY),int(l.palette),int(l.paletteRow),int(l.paletteKeyRow),int(l.offsetX),int(l.offsetY)})layer.push_back(value);
-        layers.push_back(layer);}
-      icon["tile_pages"]=pages;icon["palettes"]=palettes;icon["layers"]=layers;row["sheet_icon"]=icon;
-    }
-    if(v.animalItemColor){const auto& c=*v.animalItemColor;Dictionary color;color["foreground"]=c[0];color["background"]=c[1];color["bright"]=c[2];row["animal_item_color"]=color;}
-    if(v.squadSymbol){const auto& s=*v.squadSymbol;Dictionary symbol;symbol["index"]=s[0];Array foreground,background;for(size_t i=1;i<4;++i){foreground.push_back(s[i]);background.push_back(s[i+3]);}symbol["foreground"]=foreground;symbol["background"]=background;row["squad_symbol"]=symbol;}
-    if(v.animalRestraint){Dictionary restraint;restraint["rope"]=v.animalRestraint->rope;restraint["solid_color"]=String::utf8(v.animalRestraint->solidColor.c_str());row["animal_restraint"]=restraint;}
-    if(v.animalContainer) {const auto& c=*v.animalContainer;Dictionary container;
-      container["material_family"]=c.materialFamily;container["solid_color"]=String::utf8(c.solidColor.c_str());
-      container["occupant_entity"]=c.occupantEntity;container["occupant_id"]=c.occupantId;
-    if(c.occupant) {Dictionary icon;Array pages,palettes,layers;
-      for(const auto& name:c.occupant->tilePages)pages.push_back(String::utf8(name.c_str()));
-      for(const auto& name:c.occupant->palettes)palettes.push_back(String::utf8(name.c_str()));
-      for(const auto& l:c.occupant->layers) {Array layer;
-        for(int value:{int(l.page),int(l.tileX),int(l.tileY),int(l.cellsX),int(l.cellsY),int(l.palette),int(l.paletteRow),int(l.paletteKeyRow),int(l.offsetX),int(l.offsetY)})layer.push_back(value);
-        layers.push_back(layer);}
-      icon["tile_pages"]=pages;icon["palettes"]=palettes;icon["layers"]=layers;container["occupant"]=icon;
-    }
-      row["animal_container"]=container;
-    }
-    candidates.push_back(row);
-  }
+  for(const auto& v:s.candidates)candidates.push_back(areaCandidateDictionary(v));
   for(const auto& v:s.links) {
     Dictionary row;row["id"]=v.id;row["kind"]=int(v.kind);row["direction"]=v.direction;row["name"]=String::utf8(v.name.c_str());links.push_back(row);
   }

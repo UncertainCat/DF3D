@@ -77,6 +77,13 @@ ProductionState decodeProduction(const m::ProductionState* p) {
       v.rows.push_back(std::move(row));
     }
   }
+  if(const auto* s=p->cage()) {
+    auto& v=n.cage.emplace();v.outcome=FarmEditOutcome(s->outcome());v.buildingId=s->building_id();v.revision=s->revision();v.removing=s->removing();
+    v.operation=s->operation();v.candidateId=s->candidate_id();v.entity=AreaCandidateEntity(s->entity());v.assigned=s->assigned();
+    v.query=s->query()->str();v.sort=s->sort();v.descending=s->descending();v.columns=s->columns();
+    v.cursor=s->cursor();v.nextCursor=s->next_cursor();v.total=s->total();
+    for(const auto* row:*s->rows())v.rows.push_back(decodeAreaCandidate(row));
+  }
   if(const auto* s=p->lever()) {
     auto& v=n.lever.emplace();v.buildingId=s->building_id();v.revision=s->revision();v.operation=s->operation();v.outcome=s->outcome();
     v.sourceMechanism=s->source_mechanism();v.targetMechanism=s->target_mechanism();v.targetId=s->target_id();v.jobId=s->job_id();
@@ -374,6 +381,8 @@ KitchenState decodeKitchen(const m::KitchenState* k) {
 flatbuffers::Offset<m::ProductionRequest> encodeProduction(flatbuffers::FlatBufferBuilder& b,
                                                            const ProductionRequest& value) {
   const auto& p = value;
+  flatbuffers::Offset<m::CageRequest> cage;
+  if(p.cage){const auto& v=*p.cage;cage=m::CreateCageRequest(b,v.operation,v.candidateId,m::AreaCandidateEntity(v.entity),v.assigned,v.sort,v.descending,v.columns);}
   flatbuffers::Offset<m::LeverRequest> lever;
   if(p.lever) {
     const auto& v=*p.lever;const m::TilePos pos(v.position?(*v.position)[0]:0,v.position?(*v.position)[1]:0,v.position?(*v.position)[2]:0);
@@ -382,7 +391,7 @@ flatbuffers::Offset<m::ProductionRequest> encodeProduction(flatbuffers::FlatBuff
   return m::CreateProductionRequest(b, p.buildingId, p.jobId, b.CreateString(p.recipe),
                                     b.CreateString(p.query), p.cursor, p.repeat, p.suspend,
                                     p.cancel, p.season, p.cropId, p.expectedRevision,static_cast<m::FarmOperation>(p.farmOperation),p.seasonalFertilization,
-                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem,p.buildingHeader,p.workshopWorkers,p.workerId,p.workerListRevision,p.workerValue,p.workshopOrders,p.generalOrderDelta,p.generalOrderValue,p.contentsItemId,p.priority,p.expectedPriority,b.CreateString(p.taskCategory),p.expectedPreviousJobId,p.doorControls,p.doorForbidden,p.pendingBuilding,p.pendingOperation,p.buildingLinks,lever);
+                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem,p.buildingHeader,p.workshopWorkers,p.workerId,p.workerListRevision,p.workerValue,p.workshopOrders,p.generalOrderDelta,p.generalOrderValue,p.contentsItemId,p.priority,p.expectedPriority,b.CreateString(p.taskCategory),p.expectedPreviousJobId,p.doorControls,p.doorForbidden,p.pendingBuilding,p.pendingOperation,p.buildingLinks,lever,cage);
 }
 
 flatbuffers::Offset<m::WorkOrderArtRequest> encodeArtRequest(flatbuffers::FlatBufferBuilder& b,const WorkOrderArtRequest& a) {

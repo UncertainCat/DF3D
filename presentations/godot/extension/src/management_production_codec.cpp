@@ -235,6 +235,13 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     }
     v["rows"]=rows;prod["workshop_workers"]=v;
   }
+  if(p.cage) {
+    const auto& v=*p.cage;Dictionary d;d["outcome"]=int(v.outcome);d["building_id"]=v.buildingId;d["revision"]=int64_t(v.revision);d["removing"]=v.removing;
+    d["operation"]=v.operation;d["candidate_id"]=v.candidateId;d["entity"]=int(v.entity);d["assigned"]=v.assigned;
+    d["query"]=String::utf8(v.query.c_str());d["sort"]=v.sort;d["descending"]=v.descending;d["columns"]=v.columns;
+    d["cursor"]=v.cursor;d["next_cursor"]=v.nextCursor;d["total"]=v.total;Array rows;
+    for(const auto& row:v.rows)rows.push_back(areaCandidateDictionary(row));d["rows"]=rows;prod["cage"]=d;
+  }
   if(p.lever) {
     const auto& v=*p.lever;Dictionary d;d["building_id"]=v.buildingId;d["revision"]=int64_t(v.revision);d["operation"]=v.operation;d["outcome"]=v.outcome;
     d["source_mechanism"]=v.sourceMechanism;d["target_mechanism"]=v.targetMechanism;d["target_id"]=v.targetId;d["job_id"]=v.jobId;
@@ -738,6 +745,17 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   if(data.has("pending_building") && data["pending_building"].get_type()!=Variant::BOOL){error="Wrong management field type: pending_building";return false;}
   if(data.has("pending_operation") && data["pending_operation"].get_type()!=Variant::INT){error="Wrong management field type: pending_operation";return false;}
   if(data.has("building_links") && data["building_links"].get_type()!=Variant::BOOL){error="Wrong management field type: building_links";return false;}
+  if(data.has("cage_operation")) {
+    for(const char* key:{"cage_operation","cage_candidate_id","cage_entity","cage_sort","cage_columns"})
+      if(data.has(key) && data[key].get_type()!=Variant::INT){error=String("Wrong management field type: ")+key;return false;}
+    for(const char* key:{"cage_assigned","cage_descending"})
+      if(data.has(key) && data[key].get_type()!=Variant::BOOL){error=String("Wrong management field type: ")+key;return false;}
+    auto& v=value.cage.emplace();v.operation=uint8_t(n("cage_operation",0,0,1));
+    v.candidateId=int32_t(n("cage_candidate_id",-1,-1,INT32_MAX));v.entity=wm::AreaCandidateEntity(n("cage_entity",0,0,2));
+    v.assigned=data.get("cage_assigned",false);v.sort=uint8_t(n("cage_sort",0,0,3));v.descending=data.get("cage_descending",false);
+    v.columns=uint16_t(n("cage_columns",27,3,128));
+  } else for(const char* key:{"cage_candidate_id","cage_entity","cage_assigned","cage_sort","cage_descending","cage_columns"})
+    if(data.has(key)){error="Cage fields require operation";return false;}
   if(data.has("lever_operation")) {
     for(const char* key:{"lever_operation","lever_target_id","lever_source_mechanism","lever_target_mechanism","lever_x","lever_y","lever_z"})
       if(data.has(key) && data[key].get_type()!=Variant::INT){error=String("Wrong management field type: ")+key;return false;}

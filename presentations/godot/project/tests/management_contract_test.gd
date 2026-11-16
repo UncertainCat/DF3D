@@ -542,6 +542,17 @@ func reject_production(request: Dictionary, error: String) -> void:
 	assert(world.last_error() == error)
 
 func test_production() -> void:
+	var cage := {"action":A.ProductionQueue,"building_id":261,"expected_revision":9007199254740993,"cage_operation":1,"cage_candidate_id":5969,"cage_entity":2,"cage_assigned":true}
+	for key in ["cage_operation","cage_candidate_id","cage_entity","cage_sort","cage_columns"]:
+		var invalid: Dictionary=cage.duplicate();invalid[key]=1.5
+		reject_production(invalid,"Wrong management field type: "+key)
+	for key in ["cage_assigned","cage_descending"]:
+		var invalid: Dictionary=cage.duplicate();invalid[key]=1
+		reject_production(invalid,"Wrong management field type: "+key)
+	var missing_cage_revision: Dictionary=cage.duplicate();missing_cage_revision.erase("expected_revision")
+	reject_production(missing_cage_revision,"Missing management field: expected_revision")
+	var invalid_cage_target: Dictionary=cage.duplicate();invalid_cage_target.cage_candidate_id=-1
+	reject_production(invalid_cage_target,"invalid cage target")
 	for request in [{"action":16,"building_id":1}, {"action":17,"building_id":1,"recipe":"builtin:114:2"},
 		{"action":18,"building_id":1,"job_id":12}, {"action":19,"building_id":3,"season":0,"crop_id":-1,"expected_revision":9007199254740993}]:
 		for key in request:

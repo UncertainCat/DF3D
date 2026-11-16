@@ -32,6 +32,7 @@ inline ItemInspectionAppearance decodeInspectionAppearance(const df3d::mirror::I
 // transport correlation, world epochs and replay policy remain in the client.
 // Construction fields are embedded in the legacy envelope, not a nested table.
 void decodeConstruction(const df3d::mirror::ManagementState* state, ManagementState& output);
+AreaCandidateRow decodeAreaCandidate(const df3d::mirror::AreaCandidateRow* v);
 AreaState decodeArea(const df3d::mirror::AreaState* a);
 CreatureInfo decodeCreature(const df3d::mirror::CreatureState* c);
 CitizenState decodeCitizen(const df3d::mirror::CitizenState* c);

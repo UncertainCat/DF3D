@@ -1532,6 +1532,21 @@ table LeverState {
   source_name:string (required); target_name:string (required);
   target_id:int32 = -1; job_id:int32 = -1;
 }
+// Cage ownership is independent of zone assignment, even though rows share presentation facts.
+// operation: 0 read, 1 assign. Query/cursor/revision belong to ProductionRequest.
+enum FarmEditOutcome : uint8 { None, Completed, Rejected, Stale, Unknown }
+table CageRequest {
+  operation:uint8; candidate_id:int32 = -1; entity:AreaCandidateEntity; assigned:bool;
+  sort:uint8; descending:bool; columns:uint16 = 27;
+}
+table CageState {
+  building_id:int32 = -1; revision:uint64; removing:bool;
+  operation:uint8; candidate_id:int32 = -1; entity:AreaCandidateEntity; assigned:bool;
+  query:string (required); sort:uint8; descending:bool; columns:uint16 = 27;
+  cursor:uint32; next_cursor:uint32; total:uint32;
+  rows:[AreaCandidateRow] (required);
+  outcome:FarmEditOutcome; // Unknown after effects never permits automatic replay.
+}
 table ProductionRequest {
   building_id:int32 = -1;
   job_id:int32 = -1;
@@ -1571,6 +1586,7 @@ table ProductionRequest {
   pending_operation:int8 = -1; // 0 resume, 1 suspend, 2 cancel, 3 cancel removal; -1 read.
   building_links:bool;
   lever:LeverRequest;
+  cage:CageRequest;
 }
 table ProductionRequirement { description:string; quantity:int32; item_type:int16 = -1; }
 // Absent on legacy observations and providers without native availability evidence.
@@ -1601,7 +1617,6 @@ table FarmCrop { id:int32; name:string; seasons:uint8; seeds:uint32; }
 // Native choices for one locally selected tab. Availability is not a seed count.
 // A missing snapshot means unavailable; legacy FarmCrop fields cannot synthesize it.
 table NativeFarmCrop { id:int32; name:string; seeds_available:bool; current_season_warning:bool; raw_id:string; }
-enum FarmEditOutcome : uint8 { None, Completed, Rejected, Stale, Unknown }
 table FarmSnapshot {
   building_id:int32 = -1;
   revision:uint64;
@@ -1789,6 +1804,7 @@ table ProductionState {
   pending_building:PendingBuildingState;
   building_links:BuildingLinksPage;
   lever:LeverState;
+  cage:CageState;
 }
 // Details is a distinct intent; choice IDs refer to the observed native catalog.
 // Artwork subject IDs are simulation IDs, not Details choice ordinals.
@@ -2638,7 +2654,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 247;
+  schema_version:uint32 = 248;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2716,7 +2732,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 247;
+  schema_version:uint32 = 248;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

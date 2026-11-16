@@ -22,9 +22,14 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Current management protocol247 requires the three native action captions and
+Current management protocol248 adds an independently owned cage picker request,
+bounded animal-row pages and revision-bound assignment receipts. Both peers must
+use248. Zone authority cannot authorize cage edits, and old recordings cannot
+synthesize cage state. The shared candidate-row representation keeps its existing
+facts; workflow identity and request validation remain separate.
+Protocol247 requires the three native action captions and
 enablement facts on successful TradeSessionRead replies. Other receipts cannot
-carry these facts. Both peers must use247; old summaries cannot synthesize them.
+carry these facts. Old summaries cannot synthesize them.
 Protocol246 adds revision-bound TradeSessionGift and
 TradeSessionSeize. Both accept only the owned session identity and expected
 revision; outcome receipts never authorize automatic replay. Both peers must

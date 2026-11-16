@@ -116,7 +116,7 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
     case A::AreaDelete: case A::AreaLink: return require("id");
     case A::ProductionInspect: return (bool(data.get("locate_item",false)) || bool(data.get("independent_item",false)))?require("item_id"):require("building_id");
     case A::ProductionQueue:
-        return require("building_id") && (data.has("lever_operation")?require("expected_revision"):require("recipe"));
+        return require("building_id") && ((data.has("lever_operation") || data.has("cage_operation"))?require("expected_revision"):require("recipe"));
     case A::ProductionJobEdit: return require("building_id") && require("job_id");
     case A::FarmEdit:
         if(bool(data.get("workshop_orders",false)))return require("building_id") && require("expected_revision") && (data.has("general_order_value")?require("general_order_value"):require("general_order_delta"));

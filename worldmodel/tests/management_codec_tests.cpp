@@ -6102,3 +6102,61 @@ TEST_CASE("Counteroffer pages are read-only and Okay is revision-bound") {
     if(!fault){auto decoded=codec::decodeState(state);b.Clear();REQUIRE(decoded.tradeDraft->page);CHECK(decoded.tradeDraft->page->heading.size()==2);CHECK(decoded.tradeDraft->page->dismiss=="synthetic");}
   }
 }
+
+TEST_CASE("cage intents keep their own authority and reject conflicting selectors") {
+  for(int operation=0;operation<2;++operation)for(int fault=0;fault<7;++fault) {
+    wm::ManagementRequest r;r.action=operation?wm::ManagementAction::ProductionQueue:wm::ManagementAction::ProductionInspect;
+    auto& p=r.production;p.buildingId=261;p.query="cat";p.expectedRevision=9007199254740993ULL;
+    auto& v=p.cage.emplace();v.operation=uint8_t(operation);v.sort=2;v.descending=true;
+    if(operation){v.candidateId=5969;v.entity=wm::AreaCandidateEntity::Item;v.assigned=true;}
+    else p.cursor=64;
+    if(fault==1)p.expectedRevision=0;
+    if(fault==2)p.lever.emplace();
+    if(fault==3)p.buildingHeader=true;
+    if(fault==4)v.entity=wm::AreaCandidateEntity::Squad;
+    if(fault==5)r.action=wm::ManagementAction::FarmEdit;
+    if(fault==6)v.columns=2;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* encoded=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(operation);CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*encoded))==(fault!=0));
+    REQUIRE(encoded->production()->cage());CHECK(encoded->production()->cage()->candidate_id()==v.candidateId);
+    CHECK(encoded->production()->expected_revision()==p.expectedRevision);
+  }
+}
+
+TEST_CASE("cage pages retain owned animal facts and reject false continuation or duplicate identity") {
+  for(int fault=0;fault<6;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    auto first=wire::CreateAreaCandidateRow(b,5969,b.CreateString("critter"),b.CreateString(""),-1,0,false,true,-1,0,0,wire::AreaCandidateEntity::Item);
+    auto second=wire::CreateAreaCandidateRow(b,5969,b.CreateString("animal"),b.CreateString(""),-1,0,false,false,-1,0,0,fault==1?wire::AreaCandidateEntity::Item:wire::AreaCandidateEntity::Unit);
+    const auto cage=wire::CreateCageState(b,261,9007199254740993ULL,false,0,-1,wire::AreaCandidateEntity::Unknown,false,
+      b.CreateString("cat"),2,true,27,0,fault==2?3:2,3,b.CreateVector(std::vector{first,second}));
+    wire::ProductionStateBuilder p(b);p.add_cage(cage);if(fault==3)p.add_selected_building(261);const auto prod=p.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_action(fault==4?wire::ManagementAction::ProductionQueue:wire::ManagementAction::ProductionInspect);
+    root.add_status(fault==5?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);root.add_production(prod);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CAPTURE(fault);CHECK(bool(wire::validateManagementState(*state))==(fault!=0));
+    if(!fault) {
+      auto decoded=codec::decodeProduction(state->production());b.Clear();REQUIRE(decoded.cage);
+      CHECK(decoded.cage->revision==9007199254740993ULL);CHECK(decoded.cage->query=="cat");CHECK(decoded.cage->nextCursor==2);
+      REQUIRE(decoded.cage->rows.size()==2);CHECK(decoded.cage->rows[0].name=="critter");CHECK(decoded.cage->rows[0].assigned);
+      CHECK(decoded.cage->rows[1].entity==wm::AreaCandidateEntity::Unit);
+    }
+  }
+}
+
+
+TEST_CASE("cage unknown outcomes remain explicit without a fabricated snapshot") {
+  for(auto outcome:{wire::FarmEditOutcome::Rejected,wire::FarmEditOutcome::Stale,wire::FarmEditOutcome::Unknown}) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto cage=wire::CreateCageState(b,261,0,false,1,5969,wire::AreaCandidateEntity::Item,true,
+      b.CreateString(""),0,false,27,0,0,0,b.CreateVector(std::vector<flatbuffers::Offset<wire::AreaCandidateRow>>{}),outcome);
+    wire::ProductionStateBuilder p(b);p.add_cage(cage);const auto prod=p.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_action(wire::ManagementAction::ProductionQueue);
+    root.add_status(wire::ManagementStatus::Rejected);root.add_production(prod);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    REQUIRE_FALSE(wire::validateManagementState(*state));
+    auto decoded=codec::decodeProduction(state->production());b.Clear();REQUIRE(decoded.cage);
+    CHECK(int(decoded.cage->outcome)==int(outcome));CHECK(decoded.cage->revision==0);CHECK(decoded.cage->rows.empty());
+  }
+}

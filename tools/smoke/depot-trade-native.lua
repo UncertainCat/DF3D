@@ -19,6 +19,9 @@ local selection_intents={}
 assert(not source_probe or os.getenv('DF3D_DEPOT_TRADE_LISTS')~='1','Source isolation must not qualify appraisal')
 local added_job=false;local added={};local result={depot=b.id,trader=unit.id,synthetic_prerequisites=true,cases={}}
 local function click(x,y)
+ -- At this fixed1200x800 oracle viewport, an overflowing right list shifts
+ -- row checkboxes left16px to make room for the native scrollbar.
+ if x==932 and result.bin and trade.i_height[1]>39 then x=916 end
  gps.precise_mouse_x=x;gps.precise_mouse_y=y;gps.mouse_x=x//8;gps.mouse_y=(y-4)//12
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
  gui.simulateInput(view,'_MOUSE_L')
@@ -52,9 +55,10 @@ local function record(label)
  if source_probe and trade.open and not trade.choosing_merchant then
   local function ids()local sides={{},{}};for side=0,1 do for _,item in ipairs(trade.good[side])do table.insert(sides[side+1],item.id)end end;return sides end
   local expected=ids();local before=json.encode(expected);local appraisal=trade.handle_appraisal;local lists=trade.buildlists
+  local source_ids={{},{}};for side=0,1 do for i,item in ipairs(trade.good[side])do if not trade.goodflag[side][i].contained then table.insert(source_ids[side+1],item.id)end end end
   for iteration=1,2 do
    local output,code=dfhack.run_command_silent('df3d','trade-goods-source-probe',tostring(b.id),'0');assert(code==0,output)
-   local facts=json.decode(output);assert(facts.available and json.encode(facts.sides)==before,'Owned goods source differs: '..output..' expected '..before)
+   local facts=json.decode(output);assert(facts.available and json.encode(facts.sides)==json.encode(source_ids),'Owned goods source differs: '..output..' expected '..json.encode(source_ids))
    assert(json.encode(ids())==before and trade.handle_appraisal==appraisal and trade.buildlists==lists and #added[1].goods==0)
    row.source_provider=facts
   end
@@ -116,21 +120,33 @@ local ok,err=xpcall(function()
    end
   end
   assert(#candidates==12,'Need twelve safe source items')
+  if os.getenv('DF3D_DEPOT_TRADE_CONTAINER')=='1' then
+   for _,item in ipairs(df.global.world.items.all)do
+    if item:getType()==df.item_type.BIN and item.flags.on_ground and not item.flags.in_inventory and not item.flags.in_building and not item.flags.trader and not item.flags.in_job then
+     local children={};local nested=false
+     for _,ref in ipairs(item.general_refs)do if ref:getType()==df.general_ref_type.CONTAINS_ITEM then local child=ref:getItem();if child then children[#children+1]=child.id;if child:getType()==df.item_type.BIN then nested=true end end end end
+     if #children>0 and not nested then candidates[#candidates+1]=item;result.bin={id=item.id,children=children};break end
+    end
+   end
+   assert(result.bin,'No safe populated ground bin')
+  end
   restore_sources=function()
    for i=#snapshots,1,-1 do local s=snapshots[i]
     if s.ref then assert(s.item.general_refs[#s.item.general_refs-1]==s.ref);s.item.general_refs:erase(#s.item.general_refs-1);s.ref:delete()end
     s.item.flags.in_building=false;assert(dfhack.items.moveToGround(s.item,s.pos));s.item.flags.whole=s.flags
+    for _,child in ipairs(s.children or {})do child.item.pos.x=child.pos.x;child.item.pos.y=child.pos.y;child.item.pos.z=child.pos.z;child.item.flags.whole=child.flags end
    end
    assert(#b.contained_items==contained);restore_sources=nil
   end
   result.source_items={};result.appraisal_suppressed=true
   for i,item in ipairs(candidates)do
    local s={item=item,pos={x=item.pos.x,y=item.pos.y,z=item.pos.z},flags=item.flags.whole};snapshots[#snapshots+1]=s
+   if result.bin and item.id==result.bin.id then s.children={};for _,id in ipairs(result.bin.children)do local child=df.item.find(id);s.children[#s.children+1]={item=child,pos={x=child.pos.x,y=child.pos.y,z=child.pos.z},flags=child.flags.whole}end end
    assert(dfhack.items.moveToBuilding(item,b,0,true))
    if i<=6 then s.ref=df.general_ref_entity_itemownerst:new();s.ref.entity_id=i==6 and -1 or added[1].entity;item.general_refs:insert('#',s.ref);item.flags.trader=true end
    if i==11 then b.contained_items[#b.contained_items-1].use_mode=2 end
    if i==12 then item.flags.in_building=false end
-   result.source_items[#result.source_items+1]={id=item.id,type=item:getType(),side=i<=5 and 0 or (i>=7 and i<=10 and 1 or -1)}
+   result.source_items[#result.source_items+1]={id=item.id,type=item:getType(),side=i<=5 and 0 or ((i>=7 and i<=10 or i==13) and 1 or -1)}
   end
  end
  if os.getenv('DF3D_DEPOT_TRADE_LISTS')=='1' then
@@ -192,6 +208,21 @@ local ok,err=xpcall(function()
      click(side==0 and 100 or 570,166)
     end
     record('search-cleared')
+    if result.bin then
+     local index;for i,item in ipairs(trade.good[1])do if item.id==result.bin.id then index=i;break end end
+     assert(index and trade.goodflag[1][index+1].contained)
+     local child=trade.good[1][index+1].id
+     local actions={
+      {{side=1,item=result.bin.id},932,382},
+      {{side=1,item=child},932,418},
+      {{side=1,action='expand_container',item=result.bin.id},570,382},
+      {{side=1,action='expand_container',item=result.bin.id},570,382},
+      {{side=1,item=result.bin.id},932,382},
+     }
+     for i,test in ipairs(actions)do selection_intents[#selection_intents+1]=test[1];click(test[2],test[3]);record('bin-action-'..i)end
+     for _,flag in ipairs(trade.goodflag[1])do assert(not flag.selected)end
+     assert(not trade.goodflag[1][index].container_collapsed);selection_intents={}
+    end
     if os.getenv('DF3D_DEPOT_TRADE_SELECTION')=='1' then
      for i,test in ipairs{{0,0,468,238},{0,1,468,274},{0,0,468,238},{1,0,932,238},{0,1,468,274},{1,0,932,238}}do
       local side,index,x,y=table.unpack(test);local item=trade.good[side][index]
@@ -252,6 +283,7 @@ local ok,err=xpcall(function()
  local multiple=record('merchants');assert(multiple.merchants==2)
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)
 end,debug.traceback)
+if not ok then local file=assert(io.open(out..'/depot-trade-failure.txt','w'));file:write(tostring(err));file:close()end
 if trade.open then gui.simulateInput(view,'LEAVESCREEN')end
 if restore_item then restore_item()end
 if restore_sources then restore_sources()end

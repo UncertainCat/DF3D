@@ -5,7 +5,7 @@
 
 namespace df3d_production {
 struct TradeProjectedGroup {int32_t type=-1,subtype=-1;bool expanded=false,on=false;uint32_t flags=0;};
-enum class TradeDraftAction {Item,Group,MarkAll,UnmarkAll,ExpandGroup};
+enum class TradeDraftAction {Item,Group,MarkAll,UnmarkAll,ExpandGroup,ExpandContainer};
 struct TradeSelectionIntent {int32_t side=-1,item=-1;TradeDraftAction action=TradeDraftAction::Item;int32_t type=-1,subtype=-1;};
 struct TradeProjectedSide {
     std::vector<int32_t> items,amounts;
@@ -23,7 +23,7 @@ inline std::optional<std::array<TradeProjectedSide,2>> tradeProjection(
     const std::vector<TradeSelectionIntent>& selections={}) {
     if(filters[0].size()>512 || filters[1].size()>512 || selections.size()>4096)return {};
     for(const auto& intent:selections)if(intent.side<0 || intent.side>1 ||
-        (intent.action==TradeDraftAction::Item && intent.item<0))return {};
+        ((intent.action==TradeDraftAction::Item || intent.action==TradeDraftAction::ExpandContainer) && intent.item<0))return {};
     const auto sources=tradeGoodsSources(building,caravanIndex);if(!sources)return {};
     static const bool ready=[] {
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -88,10 +88,14 @@ inline std::optional<std::array<TradeProjectedSide,2>> tradeProjection(
         // Native row clicks call this routine with amount0 and final byte0.
         // It changes owned selection/amount/counteroffer storage only.
         for(const auto& intent:selections)if(intent.side==int32_t(side)) {
-            if(intent.action==TradeDraftAction::Item) {
+            if(intent.action==TradeDraftAction::Item || intent.action==TradeDraftAction::ExpandContainer) {
                 auto found=std::find_if(goods.begin(),goods.end(),[&](const auto* item){return item->id==intent.item;});
                 if(found==goods.end())return {};
-                toggle(size_t(found-goods.begin()));
+                const auto index=size_t(found-goods.begin());
+                if(intent.action==TradeDraftAction::ExpandContainer) {
+                    if((*found)->getType()!=df::item_type::BIN || flags[index].bits.contained)return {};
+                    flags[index].whole^=4;
+                }else toggle(index);
             } else if(intent.action==TradeDraftAction::MarkAll || intent.action==TradeDraftAction::UnmarkAll) {
                 // Native buttons scan the whole side, including hidden groups.
                 const bool selected=intent.action==TradeDraftAction::MarkAll;
@@ -107,7 +111,10 @@ inline std::optional<std::array<TradeProjectedSide,2>> tradeProjection(
                         (state.bits.all_selected || (state.bits.can_do_select && !flags[i].bits.selected)))toggle(i);
                 }
             } else return {};
-            refresh();
+            // Native expansion changes height only; do not incidentally refresh
+            // group selection flags. Selection actions explicitly refresh them.
+            if(intent.action!=TradeDraftAction::ExpandGroup && intent.action!=TradeDraftAction::ExpandContainer)
+                reinterpret_cast<Project>(base+0x37d750)(&owned,int32_t(side));
         }
         reinterpret_cast<Project>(base+0x37acc0)(&owned,int32_t(side));
         auto& projected=result[side];projected.height=owned.i_height[side];projected.amounts=amounts;

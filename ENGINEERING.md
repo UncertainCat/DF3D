@@ -351,6 +351,33 @@ Appraisal is still diagnostically suppressed. Bin-child selection/expansion,
 nonempty subtypes, quantity UI availability, prices/totals, appraisal effects,
 exchange and public viewer integration remain unfinished.
 
+Trade container expansion toggles only the owned parent flag and invokes
+native height projection. Selection actions refresh group flags through37d750;
+expansion does not implicitly refresh them, matching the native input sequence.
+The diagnostic source comparison excludes contained rows from the top-level
+catalog oracle while comparing the complete projected rows separately.
+
+Protected181638 on2026-11-15 adds a populated fortress-side bin with ten direct
+children to the source fixture. Its projected child order matches native's
+reference-reversed insertion, including child flags, amounts, groups and height.
+Five native pointer states select the bin, deselect its first listed child,
+collapse/reopen the bin and deselect the parent; each matches two owned calls.
+The prior26 search/selection/group states also pass with the longer right list.
+The bin-collapse PNG was inspected as a layout reference, not viewer acceptance.
+The overflowing native list moves its row checkboxes16px left for its scrollbar;
+the oracle uses that observed geometry. Bin/child positions and flags, temporary
+owner refs, worker, job and caravans restore; frame remains unchanged. Owned
+DF13652 closes unsaved/source-preserved at30FPS, sampled GPU50C. Bridge and
+all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_container_reference`.
+181443/181542 are failed fixture attempts, excluded from acceptance: the first
+cleanup asserted child flags rather than restoring move-to-building changes,
+and both used the non-scrolling checkbox coordinate. Their owned sessions closed
+unsaved/source-preserved. Failure diagnostics now survive cleanup assertions.
+Appraisal remains suppressed in this oracle. Nested/empty bins, merchant-side
+containers, subtype groups, quantity UI availability, prices/totals, appraisal
+effects, exchange and public viewer integration remain unfinished.
+
 ## Depot goods value transport migration
 
 Management protocol235 adds required appraisal knowledge to depot goods replies

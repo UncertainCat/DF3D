@@ -5106,7 +5106,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             df3d_production::TradeSelectionIntent draft;draft.side=intent["side"].asInt();
             if(intent.isMember("action") && !intent["action"].isString())return CR_WRONG_USAGE;
             const auto action=intent.get("action","item").asString();
-            if(action=="item"){if(!intent["item"].isInt())return CR_WRONG_USAGE;draft.item=intent["item"].asInt();}
+            if(action=="item" || action=="expand_container"){if(!intent["item"].isInt())return CR_WRONG_USAGE;draft.item=intent["item"].asInt();if(action=="expand_container")draft.action=df3d_production::TradeDraftAction::ExpandContainer;}
             else if(action=="mark_all")draft.action=df3d_production::TradeDraftAction::MarkAll;
             else if(action=="unmark_all")draft.action=df3d_production::TradeDraftAction::UnmarkAll;
             else if(action=="group" || action=="expand_group") {

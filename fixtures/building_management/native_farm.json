@@ -63802,6 +63802,285 @@
           "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-group-action-filter-mark.png": "e3ade8abac28f8565ef85969b7403e19d927073f556109a3c591cbadca99c772",
           "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-group-action-filter-unmark.png": "6cc7e9cbed106a01da7b683837a7d6ae1e68526efcd0a5b940a4b71dd72d0227"
         }
+      },
+      "depot_trade_container_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-181638",
+        "owned_df_pid": 13652,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Populated fortress-side bin with ten children, native reverse-reference child ordering. Five bin/child-selection/collapse/reopen states twice compared plus26 prior projection states. Source excludes contained rows; projection includes them. Appraisal suppressed. Restores parent/child positions/flags and fixture prerequisites. Not nested/empty/merchant-bin/subtype/quantity/prices/appraisal/exchange/public viewer acceptance.",
+        "bin": {
+          "children": [
+            25112,
+            25113,
+            25156,
+            25157,
+            25161,
+            25085,
+            27274,
+            27311,
+            28650,
+            28694
+          ],
+          "id": 3148
+        },
+        "cases": [
+          {
+            "label": "bin-action-1",
+            "action": {
+              "item": 3148,
+              "side": 1
+            },
+            "right_items": [
+              1180,
+              1494,
+              3148,
+              28694,
+              28650,
+              27311,
+              27274,
+              25085,
+              25161,
+              25157,
+              25156,
+              25113,
+              25112,
+              1736,
+              1735
+            ],
+            "right_flags": [
+              0,
+              0,
+              1,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              0,
+              0
+            ],
+            "right_group_flags": [
+              2,
+              2,
+              1,
+              2
+            ],
+            "right_height": 57
+          },
+          {
+            "label": "bin-action-2",
+            "action": {
+              "item": 28694,
+              "side": 1
+            },
+            "right_items": [
+              1180,
+              1494,
+              3148,
+              28694,
+              28650,
+              27311,
+              27274,
+              25085,
+              25161,
+              25157,
+              25156,
+              25113,
+              25112,
+              1736,
+              1735
+            ],
+            "right_flags": [
+              0,
+              0,
+              1,
+              2,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              0,
+              0
+            ],
+            "right_group_flags": [
+              2,
+              2,
+              1,
+              2
+            ],
+            "right_height": 57
+          },
+          {
+            "label": "bin-action-3",
+            "action": {
+              "action": "expand_container",
+              "item": 3148,
+              "side": 1
+            },
+            "right_items": [
+              1180,
+              1494,
+              3148,
+              28694,
+              28650,
+              27311,
+              27274,
+              25085,
+              25161,
+              25157,
+              25156,
+              25113,
+              25112,
+              1736,
+              1735
+            ],
+            "right_flags": [
+              0,
+              0,
+              5,
+              2,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              0,
+              0
+            ],
+            "right_group_flags": [
+              2,
+              2,
+              1,
+              2
+            ],
+            "right_height": 27
+          },
+          {
+            "label": "bin-action-4",
+            "action": {
+              "action": "expand_container",
+              "item": 3148,
+              "side": 1
+            },
+            "right_items": [
+              1180,
+              1494,
+              3148,
+              28694,
+              28650,
+              27311,
+              27274,
+              25085,
+              25161,
+              25157,
+              25156,
+              25113,
+              25112,
+              1736,
+              1735
+            ],
+            "right_flags": [
+              0,
+              0,
+              1,
+              2,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              0,
+              0
+            ],
+            "right_group_flags": [
+              2,
+              2,
+              1,
+              2
+            ],
+            "right_height": 57
+          },
+          {
+            "label": "bin-action-5",
+            "action": {
+              "item": 3148,
+              "side": 1
+            },
+            "right_items": [
+              1180,
+              1494,
+              3148,
+              28694,
+              28650,
+              27311,
+              27274,
+              25085,
+              25161,
+              25157,
+              25156,
+              25113,
+              25112,
+              1736,
+              1735
+            ],
+            "right_flags": [
+              0,
+              0,
+              0,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              0,
+              0
+            ],
+            "right_group_flags": [
+              2,
+              2,
+              2,
+              2
+            ],
+            "right_height": 57
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-181638/depot-trade-native.json": "632b09709315891b2f106af3103f0e2423f7f5f5731ee305865688e4971a1292",
+          "build/stockpile-storage-native-farm-discovery-20261115-181638/result.json": "7301fcd357cdc0a2a72511f6f7fadd7ee69b445c0b1db444f84572f960fbaabe",
+          "build/stockpile-storage-native-farm-discovery-20261115-181638/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-181638/capture-inputs.json": "29689650264c0daa47a079a1a39ab26bb0ce9f24c3b8d62e5c481a49ad0c8930",
+          "tools/smoke/depot-trade-native.lua": "244e9599d5948d387a930078037df82bcc120f4641f74e624344d5cdd874f36a",
+          "bridge/plugin/trade_projection_native.h": "ac54bd3eae590da60fa7db10d689e989013d40e9b7f76e2bff6135991b5aa63f",
+          "build/stockpile-storage-native-farm-discovery-20261115-181638/depot-trade-bin-action-1.png": "f8973ab594bf6ac79188f56f37cb7acf9985ec80c93d857ef05df6d05d2e9f77",
+          "build/stockpile-storage-native-farm-discovery-20261115-181638/depot-trade-bin-action-2.png": "ead6724b66cb50e2fc4eb090a42c795f4106b7464ceaf1d43e14f10b2648e8b4",
+          "build/stockpile-storage-native-farm-discovery-20261115-181638/depot-trade-bin-action-3.png": "0ad6d96d6f0502ae64a91a530afae21d7de34bf57fd42919d0d4a0da0d878ed7",
+          "build/stockpile-storage-native-farm-discovery-20261115-181638/depot-trade-bin-action-4.png": "ead6724b66cb50e2fc4eb090a42c795f4106b7464ceaf1d43e14f10b2648e8b4",
+          "build/stockpile-storage-native-farm-discovery-20261115-181638/depot-trade-bin-action-5.png": "4ef4dff1dee11ab1bf60810d4a12e515b02324b5a68f1fdb73898781b23703de"
+        }
       }
     },
     "pending_construction_reference": {

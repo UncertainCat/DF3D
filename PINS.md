@@ -22,9 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Current management protocol248 adds an independently owned cage picker request,
+Current management protocol249 adds typed cage parent-body room membership,
+justice/glass/aquarium facts and a revision-bound CageAquarium setting intent.
+Both peers must use249. Old recordings cannot infer the new parent facts;
+the staged cage picker remains distinct from public workflow readiness.
+Protocol248 adds an independently owned cage picker request,
 bounded animal-row pages and revision-bound assignment receipts. Both peers must
-use248. Zone authority cannot authorize cage edits, and old recordings cannot
+use248 for that migration. Zone authority cannot authorize cage edits, and old recordings cannot
 synthesize cage state. The shared candidate-row representation keeps its existing
 facts; workflow identity and request validation remain separate.
 Protocol247 requires the three native action captions and

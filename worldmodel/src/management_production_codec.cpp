@@ -113,6 +113,13 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     state.operation=static_cast<FarmOperation>(source->operation());
     if(const auto* f=source->snapshot())state.snapshot=BuildingHeaderSnapshot{f->id(),f->type(),f->stage(),f->max_stage(),f->revision(),
       str(f->custom_name()),str(f->native_name()),str(f->header_name()),f->removing(),f->suspended(),f->has_worker(),f->forbidden(),f->appearance()?std::optional<SelectionAppearance>(decodeItemRecipe(f->appearance())):std::nullopt};
+    if(source->snapshot() && source->snapshot()->cage()) {
+      const auto* f=source->snapshot()->cage();auto& v=state.snapshot->cage.emplace();
+      v.justiceRestraint=f->justice_restraint();v.glass=f->glass();v.aquarium=f->aquarium();
+      const auto* room=f->room();v.room.roomId=room->room_id();v.room.roomType=room->room_type();
+      v.room.introduction=str(room->introduction());v.room.name=str(room->name());
+      for(const auto* notice:*room->notices())v.room.notices.push_back(str(notice));
+    }
     if(source->snapshot() && source->snapshot()->depot()) {
       const auto* f=source->snapshot()->depot();
       state.snapshot->depot=DepotBodySnapshot{f->requested(),f->anyone(),f->goods_available(),f->trade_available(),f->awaiting_items(),

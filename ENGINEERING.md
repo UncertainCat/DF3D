@@ -3170,6 +3170,24 @@ passes with only the documented separate-render-thread warning. Evidence:
 `completed_sheet_discovery_reference.cage_contract_reference`. Bridge/extension
 builds and all19 root checks pass against the final protocol248 binaries.
 
+Protocol249 adds a separate cage parent body to the shared building header:
+justice-restraint, glass and aquarium facts plus an independent room body with
+native identity/type/name or notices. Cage headers require this body; other
+building types cannot carry it. Model and Godot decoders preserve those facts
+without reinterpreting the coffin body. CageAquarium is an explicit revision-bound
+header setting intent with a boolean value; confirmation requires a non-justice,
+glass cage. During this migration the bridge refuses that new intent explicitly.
+Native parent-provider connection and effect acceptance remain unfinished. Both
+peers must upgrade together; older recordings cannot infer these new facts.
+Protected112659 (DF52300) verifies the new intent reaches the bridge and rejects
+without effects while retaining prior cage reads/assignments/stale reversals and
+restoration. Source unchanged and unsaved cleanup pass at30FPS; sampled GPU59C.
+The wire client reports only the known separate-render-thread notice. Bridge and
+extension builds, clean safe-thread engine contract check and all19 core checks
+pass. The initial core compile failed on a test builder field typo; the corrected
+rebuild and subsequent CTest are the accepted evidence. Reference:
+`completed_sheet_discovery_reference.cage_parent_contract_reference`.
+
 The production provider now calls the owned cage authority and shares native
 animal ordering, text/color/art recipes and row serialization with zones. Native
 context7 status decoration is pinned at3d4f80 (197 bytes,

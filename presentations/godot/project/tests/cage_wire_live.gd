@@ -17,6 +17,9 @@ func run() -> void:
 	var page: Dictionary=response.get("production",{}).get("cage",{})
 	if not check(response.get("status")==C.ManagementStatus.Ok and page.get("revision",0)>0,"Cage read failed: "+str(response)):quit(1);return
 	var initial:=page.duplicate(true)
+	if OS.get_environment("DF3D_CAGE_PARENT_CONTRACT")=="1":
+		var unavailable:=await request("production",{"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":int(expected.id),"expected_revision":page.revision,"farm_operation":C.FarmOperation.CageAquarium,"item_value":1})
+		check(unavailable.get("status")==C.ManagementStatus.Rejected and unavailable.get("production",{}).get("building_header",{}).get("outcome")==C.FarmEditOutcome.Rejected,"Unconnected cage setting must reject without effects")
 	check(page.rows.size()==expected.rows.size() and page.next_cursor==0,"Cage rows missing")
 	for native in expected.rows:
 		var matches: Array=page.rows.filter(func(row):return row.id==int(native.id) and row.entity==int(native.kind)+1)

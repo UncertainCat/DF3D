@@ -301,6 +301,14 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
         if(v.brokerAppearance)body["broker_appearance"]=itemRecipeDictionary(*v.brokerAppearance);
         value["depot"]=body;
       }
+      if(f.cage) {
+        const auto& v=*f.cage;Dictionary body,room;Array notices;
+        body["justice_restraint"]=v.justiceRestraint;body["glass"]=v.glass;body["aquarium"]=v.aquarium;
+        room["room_id"]=v.room.roomId;room["room_type"]=v.room.roomType;
+        room["introduction"]=String::utf8(v.room.introduction.c_str());room["name"]=String::utf8(v.room.name.c_str());
+        for(const auto& notice:v.room.notices)notices.push_back(String::utf8(notice.c_str()));
+        room["notices"]=notices;body["room"]=room;value["cage"]=body;
+      }
       headerState["snapshot"]=value;
     }
     prod["building_header"]=headerState;
@@ -777,7 +785,7 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.generalOrderValue=int16_t(n("general_order_value",-1,-1,99));
   value.workshopWorkers=data.get("workshop_workers",false);
   value.workerId=int32_t(n("worker_id",-1,-1,INT32_MAX));value.workerListRevision=uint64_t(n("worker_list_revision",0,0,INT64_MAX));value.workerValue=int8_t(n("worker_value",-1,-1,1));
-  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,int(wm::FarmOperation::DepotMode)));
+  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,int(wm::FarmOperation::CageAquarium)));
   value.itemId=int32_t(n("item_id",-1,-1,INT32_MAX));
   value.itemValue=int8_t(n("item_value",-1,-1,value.farmOperation==wm::FarmOperation::DepotMode?2:1));
   String farmName=data.get("farm_name",String());

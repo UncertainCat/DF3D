@@ -269,6 +269,7 @@ enum class FarmOperation : uint8_t {
   WorkerSpecialize = 12,
   PumpManual = 13,
   DepotMode = 14,
+  CageAquarium = 15,
 };
 enum class ManagementAction : uint8_t {
   Catalog = 0,

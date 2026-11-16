@@ -4478,6 +4478,12 @@ void run(color_ostream& out) {
     }
     publish();return;
   }
+  // Protocol249 installs the typed intent before the cage setting provider.
+  // Never reinterpret it as the older header fallback (CancelRemoval).
+  if(r->production() && r->production()->farm_operation()==m::FarmOperation::CageAquarium) {
+    message.clear();status=m::ManagementStatus::Rejected;production={};
+    production.buildingHeader.emplace().outcome=m::FarmEditOutcome::Rejected;publish();return;
+  }
   if(r->production() && r->production()->building_header()) {
     const auto* q=r->production();message.clear();status=m::ManagementStatus::Rejected;production={};
     auto& response=production.buildingHeader.emplace();const bool editing=r->action()==m::ManagementAction::FarmEdit;

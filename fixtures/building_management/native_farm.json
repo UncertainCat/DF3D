@@ -113614,6 +113614,21 @@
           "build/stockpile-storage-native-farm-discovery-20261116-111718/result.json": "5dc5786d8e97f49e0e13065126984adfdb4e2526bd622fd1ade4c2b7ee2adc66",
           "build/stockpile-storage-native-farm-discovery-20261116-111718/cage-wire-result.json": "093d52af500601803c37d0cee63794a9183f5bf581719ac2faec27b20264af89"
         }
+      },
+      "cage_parent_contract_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-112659",
+        "protocol": 249,
+        "owned_df_pid": 52300,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Cage parent-body contract migration: independent room/justice/glass/aquarium facts, explicit boolean CageAquarium setting intent. Model codec ownership and rejection tests pass. Native setting deliberately unconnected and explicitly rejected; DF3D_CAGE_PARENT_CONTRACT1 typed rejection and prior seven candidate/four edit/stale restoration checks pass. No public parent UI acceptance.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-112659/cage-wire-result.json": "093d52af500601803c37d0cee63794a9183f5bf581719ac2faec27b20264af89",
+          "build/stockpile-storage-native-farm-discovery-20261116-112659/remaining-buildings-native.json": "b3328d9269837872f80eea1dbb4090f6b14a889e1519ed13708738b29c426f99",
+          "build/stockpile-storage-native-farm-discovery-20261116-112659/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-112659/result.json": "2a9e5da7d4ae58dfdd7f9bafdc71f8832c1eeb26803fa82e9f01f73dd20c59ee",
+          "presentations/godot/project/tests/cage_wire_live.gd": "f084d3086bf1a5d43e5ac673af2e38a9d32b46c0ab53ebb544e64f4f0e96169c"
+        }
       }
     },
     "pending_construction_reference": {

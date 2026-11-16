@@ -6160,3 +6160,35 @@ TEST_CASE("cage unknown outcomes remain explicit without a fabricated snapshot")
     CHECK(int(decoded.cage->outcome)==int(outcome));CHECK(decoded.cage->revision==0);CHECK(decoded.cage->rows.empty());
   }
 }
+
+TEST_CASE("cage parent body retains independent room facts") {
+  for(int fault=0;fault<6;++fault) {
+    flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");
+    const auto notices=b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{});
+    const auto room=wire::CreateBuildingRoomBody(b,fault==2?-1:259,fault==3?100:87,
+      b.CreateString("Synthetic room introduction"),b.CreateString("Synthetic room"),notices);
+    const auto cage=wire::CreateCageBodySnapshot(b,false,true,true,room);
+    const auto snapshot=wire::CreateBuildingHeaderSnapshot(b,261,fault==1?15:28,9007199254740993ULL,1,1,
+      empty,b.CreateString("Synthetic cage"),b.CreateString("Synthetic cage"),false,false,false,0,0,0,0,0,0,fault==4?0:cage);
+    const auto header=wire::CreateBuildingHeaderState(b,snapshot,wire::FarmEditOutcome::None);
+    wire::ProductionStateBuilder p(b);p.add_building_header(header);const auto payload=p.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_schema_version(fault==5?248:wire::kManagementVersion);
+    root.add_action(wire::ManagementAction::ProductionInspect);root.add_status(wire::ManagementStatus::Ok);root.add_production(payload);b.Finish(root.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CAPTURE(fault);CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(fault==0){auto decoded=codec::decodeProduction(value->production());b.Clear();
+      REQUIRE(decoded.buildingHeader->snapshot->cage);const auto& body=*decoded.buildingHeader->snapshot->cage;
+      CHECK(body.glass);CHECK(body.aquarium);CHECK_FALSE(body.justiceRestraint);
+      CHECK(body.room.roomId==259);CHECK(body.room.roomType==87);CHECK(body.room.name=="Synthetic room");}
+  }
+}
+TEST_CASE("cage aquarium setting requires typed header authority") {
+  for(int fault=0;fault<6;++fault) {
+    flatbuffers::FlatBufferBuilder b;wire::ProductionRequestBuilder p(b);
+    p.add_building_header(fault!=1);p.add_building_id(261);p.add_expected_revision(fault==2?0:9007199254740993ULL);
+    p.add_farm_operation(wire::FarmOperation::CageAquarium);p.add_item_value(fault==3?2:fault==4?-1:1);
+    const auto payload=p.Finish();wire::ConstructionRequestBuilder root(b);root.add_client_id(1);root.add_seq(1);root.add_world_epoch(1);
+    root.add_action(fault==5?wire::ManagementAction::ProductionInspect:wire::ManagementAction::FarmEdit);root.add_production(payload);b.Finish(root.Finish());
+    CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+  }
+}

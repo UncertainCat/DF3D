@@ -450,6 +450,15 @@ struct DepotBodySnapshot {
   bool bright=false,accessible=false;
   std::optional<SelectionAppearance> brokerAppearance;
 };
+struct BuildingRoomBody {
+  int32_t roomId=-1,roomType=-1;
+  std::string introduction,name;
+  std::vector<std::string> notices;
+};
+struct CageBodySnapshot {
+  bool justiceRestraint=false,glass=false,aquarium=false;
+  BuildingRoomBody room;
+};
 struct BuildingHeaderSnapshot {
   int32_t id=-1,type=-1,stage=-1,maxStage=-1;uint64_t revision=0;
   std::string customName,nativeName,headerName;
@@ -460,6 +469,7 @@ struct BuildingHeaderSnapshot {
   std::optional<MachineryBodySnapshot> machinery;
   std::optional<WellBodySnapshot> well;
   std::optional<DepotBodySnapshot> depot;
+  std::optional<CageBodySnapshot> cage;
 };
 struct BuildingHeaderState {
   std::optional<BuildingHeaderSnapshot> snapshot;

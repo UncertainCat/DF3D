@@ -92958,6 +92958,38 @@
           "presentations/godot/project/scripts/trade_goods_state.gd": "2a82b4934ca91c26c11ea9bfcff5aedf381bff2503d04000ab18fb8bc3b50196",
           "presentations/godot/project/tests/trade_session_wire_live.gd": "ff625a8d1d5e8a985c01f7be6702e78d979fe307c2b1cb7c5801f39bf35e73b5"
         }
+      },
+      "depot_trade_footer_view_reference": {
+        "native_lane": "build/stockpile-storage-native-farm-discovery-20261115-205128",
+        "scope": "Staged footer summary headings/captions/colors and four bulk-selection controls match native capture exactly at1200x800. Actual pointer events dispatch each correct native MarkAll/UnmarkAll intent once through fake semantic service. No exchange-button, hover, resize, integrated main-scene or native mutation-effect claim; actual transport/controller qualification is separate.",
+        "pixel_rectangles_xyxy": [
+          [
+            48,
+            676,
+            496,
+            712
+          ],
+          [
+            520,
+            676,
+            960,
+            712
+          ],
+          [
+            48,
+            712,
+            264,
+            724
+          ]
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-205128/depot-trade-speaker.png": "4ef4dff1dee11ab1bf60810d4a12e515b02324b5a68f1fdb73898781b23703de",
+          "build/stockpile-storage-native-farm-discovery-20261115-205128/trade-footer-view.png": "63e7dce5b2cf454d0a51bf0647eff48583dd875be742213558d0286ddd274cd2",
+          "presentations/godot/project/scripts/trade_footer_view.gd": "d7aa603df36e23e5d7c023f5057753584a4ba4aa74b1ef67ee2a37254aaec898",
+          "presentations/godot/project/tests/trade_footer_view_capture.gd": "969d0211a5e8672bb5b3afd18ccd1ec26ea77f8b1e1f8a8489fef598019089df",
+          "build/notes/pm/trade-footer-view.stdout.log": "2d2f1795faee35c79f7db469a3c5e2270f21305f9ea79a2cb2ff7f1ea7450cf2",
+          "build/notes/pm/trade-footer-view.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
       }
     },
     "pending_construction_reference": {

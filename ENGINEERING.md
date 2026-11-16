@@ -1,3 +1,21 @@
+## Staged trade footer rendering
+
+The footer component displays native summary headings, value/profit/capacity
+captions and colors, plus four Mark all/Unmark all controls. It uses the
+installed HORIZONTAL_OPTION_CONFIRM artwork. Input dispatches the existing
+revision-bound native draft actions and respects the outer panel's input gate.
+The component contains no exchange implementation.
+
+A serial30FPS render at1200x800 matches the summary and bulk-control regions of
+native205128 pixel-for-pixel. Pointer clicks dispatch each correct side/action
+once through a fake semantic service; actual controller/native effects are
+qualified separately by210207 above. The final log is clean, sampled GPU63C;
+the owned viewer closes. All19 core checks and goods/catalog headless checks
+pass. Evidence: `completed_sheet_discovery_reference.depot_trade_footer_view_reference`.
+Native dialogue, exchange controls/effects, partial quantities, responsive
+layout and integrated main-scene acceptance remain unfinished. Public trade
+stays hidden until the full workflow is ready.
+
 ## Trade footer transport migration
 
 Management protocol242 requires a native footer on each successful

@@ -70,6 +70,16 @@ func submit_continuation(previous: int, domain: String, request: Dictionary, obs
 		_queue.erase(ticket); _queue.push_front(ticket)
 	return ticket
 
+func retire_trade_open(ticket: int) -> void:
+	# The service outlives the panel. Cancel queued opens; for sent opens retain
+	# only the obligation to close an exactly identified, later confirmed session.
+	# This never retries opening/appraisal, even after an unknown outcome.
+	if not _requests.has(ticket):return
+	var item: Dictionary=_requests[ticket]
+	if item.domain!="trade_session" or item.request.get("action")!=Action.TradeSessionOpen:return
+	item["retire_trade_open"]=true
+	detach(ticket)
+
 func result(ticket: int) -> Dictionary:
 	return _results.get(ticket, {}).duplicate(true)
 
@@ -109,6 +119,11 @@ func _publish(ticket: int, state: Dictionary) -> void:
 	# already have isolated copies. Transfer this last local copy to the one-shot
 	# observer instead of copying every material candidate yet again.
 	if observer.is_valid(): observer.call(ticket, state, item.request.duplicate(true))
+	if not _invalidating and item.get("retire_trade_open",false) and state.get("status")==Status.Ok and state.get("action")==Action.TradeSessionOpen and state.get("outcome","")!="unknown":
+		var receipt: Dictionary=state.get("trade_session",{})
+		if receipt.get("outcome")==Contract.TradeSessionOutcome.Available and typeof(receipt.get("session"))==TYPE_INT and receipt.session>0:
+			item.retire_trade_open=false
+			submit("trade_session",{"action":Action.TradeSessionClose,"session":receipt.session},Callable())
 	_continuation_ticket = previous_ticket; _continuation_domain = previous_domain; _continuation_used = previous_used
 
 func _invalidate(message: String = "The world changed before this action was confirmed; it will not be retried automatically") -> void:

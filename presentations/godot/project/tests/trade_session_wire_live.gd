@@ -1,5 +1,43 @@
 extends "res://tests/machinery_wire_live.gd"
 var receipts: Array=[]
+const Model=preload("res://scripts/trade_catalog_state.gd")
+func poll_controller(service,model,terminal: int) -> bool:
+	var deadline:=Time.get_ticks_msec()+5000
+	while model.phase in [Model.Phase.Reading,Model.Phase.Choosing,Model.Phase.Checking] and Time.get_ticks_msec()<deadline:
+		world.poll();service.poll(0.01);await create_timer(0.01).timeout
+	return check(model.phase==terminal,"Trade controller did not reach expected phase: "+str(model.phase))
+func controller_workflow(depot: int) -> Dictionary:
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true);service.set_process(false)
+	var model=Model.new();model.configure(service)
+	var closed: Array=[];service.completed.connect(func(_ticket,result):
+		if result.get("action")==C.ManagementAction.TradeSessionClose:closed.append(result.get("trade_session",{})))
+	model.open(depot)
+	if not await poll_controller(service,model,Model.Phase.Active):model.dispose();service.queue_free();return {}
+	var initial: int=model.session
+	model.refresh_session();await poll_controller(service,model,Model.Phase.Active)
+	check(model.session==initial,"Controller read replaced session")
+	model.close()
+	var deadline:=Time.get_ticks_msec()+5000
+	while closed.size()<1 and Time.get_ticks_msec()<deadline:
+		world.poll();service.poll(0.01);await create_timer(0.01).timeout
+	check(closed.size()==1 and closed[0].get("outcome")==C.TradeSessionOutcome.Closed and closed[0].get("session")==initial,"Controller close did not retire native session")
+	# Stop observing an open after it was sent, before consuming its response.
+	model.open(depot);deadline=Time.get_ticks_msec()+5000
+	while model.phase==Model.Phase.Reading and Time.get_ticks_msec()<deadline:
+		world.poll();service.poll(0.01);await create_timer(0.01).timeout
+	check(model.phase==Model.Phase.Choosing and model.ticket>0,"Cancellation did not reach a pending open")
+	var opening: int=model.ticket
+	check(service._requests.get(opening,{}).get("sequence",0)>0,"Cancellation open was not sent")
+	model.dispose()
+	deadline=Time.get_ticks_msec()+5000
+	while closed.size()<2 and Time.get_ticks_msec()<deadline:
+		world.poll();service.poll(0.01);await create_timer(0.01).timeout
+	var late: Dictionary=service.result(opening).get("trade_session",{})
+	check(late.get("outcome")==C.TradeSessionOutcome.Available and closed.size()==2 and closed[1].get("session")==late.get("session") and closed[1].get("outcome")==C.TradeSessionOutcome.Closed,"Disposed panel's late session was not retired")
+	check(model.phase==Model.Phase.Closed and model.session==0,"Late open revived disposed panel")
+	var result: Dictionary={"initial_session":initial,"late_open":late,"closes":closed}
+	service.queue_free();await process_frame
+	return result
 func session_request(intent: Dictionary,outcome: int) -> Dictionary:
 	var response:=await request("trade_session",intent)
 	var value: Dictionary=response.get("trade_session",{})
@@ -47,6 +85,7 @@ func run() -> void:
 			var closed:=await session_request({"action":C.ManagementAction.TradeSessionClose,"session":opened.session},C.TradeSessionOutcome.Closed)
 			check(closed.get("session")==opened.session,"Close receipt lost session identity")
 		await session_request(read,C.TradeSessionOutcome.Rejected)
+	var controller:=await controller_workflow(depot)
 	var file:=FileAccess.open(directory+"/trade-session-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"receipts":receipts,"sessions":sessions}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"receipts":receipts,"sessions":sessions,"controller":controller}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)

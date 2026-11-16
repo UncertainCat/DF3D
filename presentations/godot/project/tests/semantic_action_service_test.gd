@@ -36,6 +36,23 @@ func check(ok: bool, message: String):
 		failures += 1
 		push_error(message)
 func _initialize(): call_deferred("run")
+func test_trade_open_retirement() -> void:
+	for mode in ["queued","sent","timeout","native_unknown","epoch"]:
+		var world:=FakeWorld.new();var service:=Service.new();service.configure(world)
+		var observations: Array=[]
+		var ticket:=service.submit("trade_session",{"action":Contract.ManagementAction.TradeSessionOpen,"depot_id":54,"choice_token":9007199254740993},func(_ticket,result,_request):observations.append(result))
+		if mode!="queued":service.poll()
+		if mode=="timeout":service.timeout_seconds=0.001;service.poll(0.01)
+		service.retire_trade_open(ticket)
+		if mode=="queued":
+			service.poll();check(world.calls.is_empty(),"Cancelled queued open reached DF");service.free();continue
+		world.state={"world_epoch":6 if mode=="epoch" else 5,"revision":2,"request_seq":1,"status":Contract.ManagementStatus.Ok,"action":Contract.ManagementAction.TradeSessionOpen,"trade_session":{"outcome":Contract.TradeSessionOutcome.Unknown if mode=="native_unknown" else Contract.TradeSessionOutcome.Available,"session":9007199254740995,"revision":1}}
+		service.poll();service.poll()
+		if mode in ["sent","timeout"]:
+			check(world.calls.size()==2 and world.calls[1].request=={"action":Contract.ManagementAction.TradeSessionClose,"session":9007199254740995},"Late successful open was not retired exactly once")
+		else:check(world.calls.size()==1,"Unknown or obsolete-epoch receipt authorized a close")
+		check(observations.size()==(1 if mode=="timeout" else 0),"Retired open reached its panel observer")
+		service.free()
 func test_continuation_order() -> void:
 	for outcome in ["ok","rejected","unknown","read"]:
 		var world := FakeWorld.new()
@@ -114,6 +131,7 @@ func test_justice_unknown() -> void:
 	service.free()
 
 func run():
+	test_trade_open_retirement()
 	test_justice_unknown()
 	test_nobles_unknown()
 	test_header_payload_delivery()

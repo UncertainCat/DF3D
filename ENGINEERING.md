@@ -16,9 +16,10 @@ Opening consumes the token, appraises through native routines and binds the
 post-effect selection source. It is classified as a mutation in the shared
 contract; Unknown is propagated to the semantic service without replay.
 Malformed post-effect replies retain uncertainty rather than reporting rejection.
-Old recordings cannot invent session IDs, revisions or entry facts. The existing
-chooser still requires session-controller integration, and public trade remains
-hidden until the full workflow is functional.
+Old recordings cannot invent session IDs, revisions or entry facts. The chooser
+controller now opens and retains these sessions; goods projection, selection and
+negotiation still need viewer transport/integration. Public trade remains hidden
+until the full workflow is functional.
 
 Protected193659 on2026-11-15 verifies the actual bridge/mailbox/model/Godot
 open/read/close path with23 receipts. Three opens issue distinct integer session
@@ -36,6 +37,28 @@ This does not qualify rendered session UI, advancing simulation, reconnect/epoch
 transport behavior, level-up/RNG variants, post-effect fault injection, goods
 selection transport or exchange.
 
+The chooser owns the confirmed session and native entry receipt. A single
+merchant enters directly; otherwise a row click submits its exact opaque choice
+once. Session refresh checks the retained ID/revision without reopening. Close
+retires a known session. If opening is pending, the shared semantic service
+cancels an unsent request or closes the exact session from a later confirmed
+success, even after panel disposal. Unknown opens are never retried; an eventual
+success may authorize only that session's close. Epoch invalidation suppresses
+obsolete cleanup, and a rejected close cannot affect a newer session.
+
+Protected194239 on2026-11-15 verifies actual controller/service single-merchant
+entry, session refresh and close, then disposes the controller after its next
+open was sent. The service receives that late success and closes its exact
+session, with no panel resurrection. The combined five opens still produce the
+same complete appraisal snapshot as one native open. Owned DF10100 closes
+unsaved/source-preserved at30FPS, sampled GPU60C; the headless log is clean.
+Headless controller/service checks cover full-width identities, unknown outcomes,
+queued cancellation, late success and epoch retirement. The standalone rendered
+chooser click/cancel check still matches the entire native191555 panel exactly;
+it runs serially at30FPS, sampled62C, with a clean log. All19 root checks pass.
+Evidence: `completed_sheet_discovery_reference.depot_trade_entry_controller_reference`.
+This verifies entry ownership, not a populated trade screen or main-scene route.
+
 ## Caravan catalog transport migration
 
 Management protocol237 adds `TradeCatalogRead`, a depot-ID request and required
@@ -52,9 +75,9 @@ The native management handler owns a catalog separate from diagnostic probes,
 resolves a revealed depot, and refreshes it through the qualified native catalog
 provider. World/transport teardown and a different mailbox client retire its
 binding. Public request conversion accepts only the action and depot ID; no
-native index enters the model API. This migration transports catalog reads only:
-choice consumption, appraisal/session transitions and the trade viewer remain
-unwired, and the gameplay route stays hidden.
+native index enters the model API. Protocol237 transported catalog reads only;
+protocol238 and the controller above now provide choice consumption and session
+entry. The gameplay route stays hidden pending the remaining trade workflow.
 
 Protected191555 on2026-11-15 passes actual bridge/mailbox/model/Godot catalog
 reads. Two same-civilization choices retain native order, header, race/name
@@ -70,8 +93,8 @@ appraisal/session transitions, disconnection behavior or merchant exchange.
 
 The staged merchant chooser now reads through the shared semantic service and
 retains native ordering and captions, including indistinguishable same-civilization
-rows. Clicking hands off the exact opaque token once; it does not yet consume it
-or open a trade session. Close, session replacement and disposal retire local
+rows. Clicking submits the exact opaque token once to open the session described
+above. Close, session replacement and disposal retire local
 ownership, and late replies cannot replace a reopened chooser. No status prose is
 invented. The native frame, heading and rows are rendered from installed assets.
 
@@ -85,8 +108,7 @@ serially at30FPS (sampled51–52C), with a clean final engine log. Headless chec
 full-width tokens, duplicate captions, invalid receipts, replacement and disposal.
 All19 root core checks pass.
 Evidence: `completed_sheet_discovery_reference.depot_trade_catalog_view_reference`.
-Overflow/resize and keyboard acceptance, single-merchant direct entry, token
-consumption/session transport and main-scene routing remain unfinished. The
+Overflow/resize and keyboard acceptance and main-scene routing remain unfinished. The
 depot/trade route stays hidden; this is not trade-screen acceptance.
 
 ## Depot goods container transport migration

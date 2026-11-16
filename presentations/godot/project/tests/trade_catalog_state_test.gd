@@ -6,9 +6,11 @@ class Service extends Node:
 	var calls: Dictionary={}
 	var next:=0
 	var detached: Array=[]
+	var retired: Array=[]
 	func submit(domain: String,intent: Dictionary,observer: Callable) -> int:
 		next+=1;calls[next]={"domain":domain,"intent":intent,"observer":observer};return next
 	func detach(ticket: int) -> void:detached.append(ticket)
+	func retire_trade_open(ticket: int) -> void:retired.append(ticket);detach(ticket)
 	func reply(ticket: int,value: Dictionary) -> void:
 		calls[ticket].observer.call(ticket,{"status":C.ManagementStatus.Ok,"action":C.ManagementAction.TradeCatalogRead,"trade_catalog":value},calls[ticket].intent)
 var failed:=false
@@ -16,6 +18,28 @@ func check(ok: bool,message: String) -> void:
 	if not ok:failed=true;push_error(message)
 func snapshot(id: int=7) -> Dictionary:
 	return {"depot_id":id,"title":"Synthetic title","from_text":" / ","choices":[{"token":9007199254740993,"entity_id":4,"race":"Synthetic race","name":"Synthetic name"},{"token":9007199254740994,"entity_id":4,"race":"Synthetic race","name":"Synthetic name"}]}
+func session_value() -> Dictionary:
+	return {"outcome":C.TradeSessionOutcome.Available,"session":9007199254740995,"revision":1,"entry":{"entity_id":4,"fortress_trader":988,"merchant_trader":-1,"dialogue":-1,"unloading":false,"has_speaker":false,"title":"Synthetic entry","speaker":"","fortress":"Synthetic fortress","place":"Synthetic place"}}
+func session_reply(service,ticket: int,value: Dictionary,extra: Dictionary={}) -> void:
+	var call: Dictionary=service.calls[ticket]
+	var result: Dictionary={"status":C.ManagementStatus.Ok,"action":call.intent.action,"trade_session":value};result.merge(extra,true)
+	call.observer.call(ticket,result,call.intent)
+func sessions(service,state) -> void:
+	state.open(7);service.reply(state.ticket,snapshot());state.choose(9007199254740994)
+	var opened: int=state.ticket
+	check(service.calls[opened].intent=={"action":C.ManagementAction.TradeSessionOpen,"depot_id":7,"choice_token":9007199254740994},"Chooser lost exact open intent")
+	session_reply(service,opened,session_value())
+	check(state.phase==Model.Phase.Active and state.session==9007199254740995 and state.entry.title=="Synthetic entry","Open receipt did not establish session")
+	state.refresh_session();var value:=session_value();value.erase("entry");session_reply(service,state.ticket,value)
+	check(state.phase==Model.Phase.Active,"Read did not preserve active session")
+	state.close();check(service.calls[service.next].intent=={"action":C.ManagementAction.TradeSessionClose,"session":9007199254740995},"Close did not retire known native session")
+	state.open(7);var single:=snapshot();single.choices.resize(1);service.reply(state.ticket,single)
+	check(state.phase==Model.Phase.Choosing and service.calls[state.ticket].intent.choice_token==9007199254740993,"Single merchant did not enter directly")
+	opened=state.ticket;state.close();session_reply(service,opened,session_value())
+	check(service.retired.has(opened) and state.phase==Model.Phase.Closed and state.session==0,"Late open resurrected closed chooser")
+	state.open(7);service.reply(state.ticket,single);opened=state.ticket
+	session_reply(service,opened,{}, {"outcome":"unknown"});state.close()
+	check(service.retired.has(opened),"Unknown open lost its eventual retirement obligation")
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
 	var service=Service.new();root.add_child(service)
@@ -38,6 +62,7 @@ func run() -> void:
 		service.reply(state.ticket,value);check(state.phase==Model.Phase.Rejected and state.choices.is_empty(),"Invalid receipt exposed choices: "+kind)
 	state.open(7);old=state.ticket;state.dispose();service.reply(old,snapshot())
 	check(state.phase==Model.Phase.Closed and state.choices.is_empty(),"Disposed chooser accepted a late reply")
+	state.configure(service);sessions(service,state);state.dispose()
 	service.queue_free();await process_frame
 	if not failed:print("TRADE_CATALOG_STATE_PASS")
 	quit(1 if failed else 0)

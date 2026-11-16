@@ -61,7 +61,7 @@ inline std::optional<std::vector<std::string>> tradeDialogueLines(std::string di
 // Header semantic text only. Portrait selection and wrapping belong to their
 // independently qualified providers; never expose native cached textures.
 inline std::optional<TradeHeader> tradeHeader(df::building* building,size_t caravanIndex,int16_t line) {
-    if(!tradeHeaderNativeReady())return {};
+    if(!tradeHeaderNativeReady() || line < -1 || line>28)return {};
     const auto entry=tradeEntryFacts(building,caravanIndex);if(!entry)return {};
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     const auto text=[&](size_t rva){return std::string(reinterpret_cast<const char*>(base+rva));};
@@ -87,8 +87,12 @@ inline std::optional<TradeHeader> tradeHeader(df::building* building,size_t cara
     if(result.speaker<0)return result;
     auto* civ=df::historical_entity::find(entry->entity);auto* broker=df::unit::find(entry->fortressTrader);
     auto* caravan=df::global::plotinfo->caravans[caravanIndex];if(!civ || !caravan)return {};
-    const auto dialogue=tradeDialogue(*civ,*caravan,broker,line);if(!dialogue)return {};
-    result.dialogue=*dialogue;
+    // -1 uses already-wrapped announcement lines retained by the session's
+    // owned native transfer result. It is not a dialogue literal to reconstruct.
+    if(line>=0){
+        const auto dialogue=tradeDialogue(*civ,*caravan,broker,line);if(!dialogue)return {};
+        result.dialogue=*dialogue;
+    }
     // Native effective-skill query may refresh semantic body/vision caches;
     // it does not train the broker or consult UI state.
     if(broker && reinterpret_cast<int32_t(*)(df::unit*,int32_t)>(base+0x133e7a0)(broker,72)>0) {

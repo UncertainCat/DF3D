@@ -48,7 +48,13 @@ func run() -> void:
 	model.refresh_session()
 	if not await poll_controller(service,model,Model.Phase.Active):quit(1);return
 	check(model.conversation==final,"Refresh lost transfer conversation")
-	var result: Dictionary={"before_view":before_view,"conversation":final,"pages":model.pages.duplicate(true),"revision":model.revision}
+	if final.dialogue==-1:check(model.header.lines==final.announcement,"Announcement lost native wrapping")
+	deadline=Time.get_ticks_msec()+10000
+	while model.appearance_pending() and Time.get_ticks_msec()<deadline:
+		world.poll();service.poll(0.01);await create_timer(0.01).timeout
+	check(not model.appearance_pending(),"Final Trade artwork did not finish")
+	var after_view: Dictionary={"header":model.header.duplicate(true),"footer":model.footer.duplicate(true),"entry":model.entry.duplicate(true),"actions":model.actions.duplicate(true),"pages":model.pages.duplicate(true),"appearances":model.appearances.duplicate(true),"conversation":final}
+	var result: Dictionary={"before_view":before_view,"after_view":after_view,"conversation":final,"pages":model.pages.duplicate(true),"revision":model.revision}
 	var old_session: int=model.session;var old_revision: int=model.revision
 	var closed: Array=[]
 	service.completed.connect(func(_ticket,response):

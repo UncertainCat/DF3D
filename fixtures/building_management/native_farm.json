@@ -101876,6 +101876,997 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_announcement_reference": {
+        "df_version": "53.16",
+        "steam_build": "24557528",
+        "exe_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+        "native_capture": "build/stockpile-storage-native-farm-discovery-20261116-080653",
+        "wire_capture": "build/stockpile-storage-native-farm-discovery-20261116-080936",
+        "native_df_pid": 44020,
+        "wire_df_pid": 4420,
+        "synthetic_prerequisites": "Artifact261 attached to existing steel bar, name copied from existing artifact, entity claim added; objects and reference removed after test. Disposable unsaved source-protected sessions.",
+        "native": {
+          "dialogue": -1,
+          "announcement": [
+            "You honor The Rough Crystal with the presentation of Searchedcall."
+          ],
+          "before": {
+            "caravan": {
+              "export_value_personal": 0,
+              "export_value_total": 0,
+              "flags": 0,
+              "haggle": 0,
+              "import_value": 0,
+              "mood": 50,
+              "offer_value": 0,
+              "time": 1200
+            },
+            "contained": [
+              {
+                "id": 296,
+                "use_mode": 0
+              },
+              {
+                "id": 407,
+                "use_mode": 0
+              },
+              {
+                "id": 408,
+                "use_mode": 0
+              },
+              {
+                "id": 991,
+                "use_mode": 0
+              },
+              {
+                "id": 992,
+                "use_mode": 0
+              },
+              {
+                "id": 1179,
+                "use_mode": 0
+              },
+              {
+                "id": 1180,
+                "use_mode": 0
+              },
+              {
+                "id": 1494,
+                "use_mode": 0
+              },
+              {
+                "id": 1735,
+                "use_mode": 0
+              },
+              {
+                "id": 1736,
+                "use_mode": 0
+              },
+              {
+                "id": 1744,
+                "use_mode": 2
+              },
+              {
+                "id": 1772,
+                "use_mode": 2
+              },
+              {
+                "id": 1773,
+                "use_mode": 2
+              },
+              {
+                "id": 1774,
+                "use_mode": 2
+              },
+              {
+                "id": 3148,
+                "use_mode": 0
+              },
+              {
+                "id": 3157,
+                "use_mode": 0
+              },
+              {
+                "id": 4536,
+                "use_mode": 0
+              },
+              {
+                "id": 4547,
+                "use_mode": 0
+              },
+              {
+                "id": 4561,
+                "use_mode": 0
+              },
+              {
+                "id": 10417,
+                "use_mode": 0
+              },
+              {
+                "id": 10441,
+                "use_mode": 0
+              },
+              {
+                "id": 10442,
+                "use_mode": 0
+              },
+              {
+                "id": 10444,
+                "use_mode": 0
+              },
+              {
+                "id": 10467,
+                "use_mode": 0
+              },
+              {
+                "id": 12862,
+                "use_mode": 0
+              },
+              {
+                "id": 12892,
+                "use_mode": 0
+              },
+              {
+                "id": 19773,
+                "use_mode": 0
+              },
+              {
+                "id": 19838,
+                "use_mode": 0
+              }
+            ],
+            "history_suppression": 0,
+            "items": [
+              {
+                "flags": 536920096,
+                "id": 296,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 865,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 407,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 865,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 408,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 865,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537428000,
+                "id": 991,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 865,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537428000,
+                "id": 992,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 865,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537395232,
+                "id": 1180,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1494,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 32,
+                "id": 1735,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 32,
+                "id": 1736,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536871008,
+                "id": 3148,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25085,
+                "position": [
+                  146,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25112,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25113,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25156,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25157,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25161,
+                "position": [
+                  119,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27274,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27311,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28650,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537133064,
+                "id": 28694,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              }
+            ],
+            "times_used": 0
+          },
+          "after": {
+            "caravan": {
+              "export_value_personal": 0,
+              "export_value_total": 0,
+              "flags": 0,
+              "haggle": 0,
+              "import_value": 0,
+              "mood": 50,
+              "offer_value": 0,
+              "time": 1200
+            },
+            "contained": [
+              {
+                "id": 296,
+                "use_mode": 0
+              },
+              {
+                "id": 407,
+                "use_mode": 0
+              },
+              {
+                "id": 408,
+                "use_mode": 0
+              },
+              {
+                "id": 991,
+                "use_mode": 0
+              },
+              {
+                "id": 992,
+                "use_mode": 0
+              },
+              {
+                "id": 1179,
+                "use_mode": 0
+              },
+              {
+                "id": 1180,
+                "use_mode": 0
+              },
+              {
+                "id": 1494,
+                "use_mode": 0
+              },
+              {
+                "id": 1735,
+                "use_mode": 0
+              },
+              {
+                "id": 1736,
+                "use_mode": 0
+              },
+              {
+                "id": 1744,
+                "use_mode": 2
+              },
+              {
+                "id": 1772,
+                "use_mode": 2
+              },
+              {
+                "id": 1773,
+                "use_mode": 2
+              },
+              {
+                "id": 1774,
+                "use_mode": 2
+              },
+              {
+                "id": 3148,
+                "use_mode": 0
+              },
+              {
+                "id": 3157,
+                "use_mode": 0
+              },
+              {
+                "id": 4536,
+                "use_mode": 0
+              },
+              {
+                "id": 4547,
+                "use_mode": 0
+              },
+              {
+                "id": 4561,
+                "use_mode": 0
+              },
+              {
+                "id": 10417,
+                "use_mode": 0
+              },
+              {
+                "id": 10441,
+                "use_mode": 0
+              },
+              {
+                "id": 10442,
+                "use_mode": 0
+              },
+              {
+                "id": 10444,
+                "use_mode": 0
+              },
+              {
+                "id": 10467,
+                "use_mode": 0
+              },
+              {
+                "id": 12862,
+                "use_mode": 0
+              },
+              {
+                "id": 12892,
+                "use_mode": 0
+              },
+              {
+                "id": 19773,
+                "use_mode": 0
+              },
+              {
+                "id": 19838,
+                "use_mode": 0
+              },
+              {
+                "id": 28694,
+                "use_mode": 0
+              }
+            ],
+            "history_suppression": 0,
+            "items": [
+              {
+                "flags": 536920096,
+                "id": 296,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 865,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 407,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 865,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 408,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 865,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537428000,
+                "id": 991,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 865,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537428000,
+                "id": 992,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 865,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537395232,
+                "id": 1180,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1494,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1735,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1736,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536871008,
+                "id": 3148,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25085,
+                "position": [
+                  146,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25112,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25113,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25156,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25157,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25161,
+                "position": [
+                  119,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27274,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27311,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28650,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537165856,
+                "id": 28694,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 865,
+                    "kind": 44
+                  },
+                  {
+                    "id": 865,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              }
+            ],
+            "times_used": 0
+          },
+          "artifact_id": 261,
+          "counter_offer": false
+        },
+        "wire_effects_equal": true,
+        "wire_refresh_stale_closed_checks": true,
+        "header_pixel_equal": true,
+        "header_region": [
+          40,
+          64,
+          928,
+          72
+        ],
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "fps_cap": 30,
+        "sampled_gpu_celsius": [
+          59,
+          61
+        ],
+        "limits": [
+          "one native-produced announcement line",
+          "long announcement layout and scrolling not qualified",
+          "artifact Gift only; artifact Seize and exchange not qualified"
+        ]
+      },
       "depot_trade_main_route_reference": {
         "df_version": "53.16",
         "steam_build": "24557528",

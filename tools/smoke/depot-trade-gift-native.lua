@@ -2,6 +2,7 @@
 -- protected sessions; neither session is saved.
 local view,trade,click,capture,out=...
 local json=require('json')
+local artifact_case=os.getenv('DF3D_DEPOT_TRADE_ARTIFACT')=='1'
 local mode=os.getenv('DF3D_DEPOT_TRADE_GIFT');assert(mode=='native' or mode=='owned' or mode=='session' or mode=='wire')
 local history={};for _,id in ipairs(trade.mer.goods)do history[#history+1]=id end
 local tracked={}
@@ -49,7 +50,18 @@ else
 end
 assert(trade.talkline==line and json.encode(snapshot())==json.encode(imported_before),'Imported Gift changed state')
 bar.flags.foreign=imported;view:render(dfhack.getTickCount())
-local result={mode=mode,item=bar.id,before=snapshot()}
+local artifact,artifact_ref,artifact_flag
+if artifact_case then
+ assert(mode=='native' or mode=='wire','Artifact oracle qualifies native and wire modes')
+ local artifacts=df.global.world.artifacts.all
+ assert(#artifacts>0 and not bar.flags.artifact)
+ artifact=df.artifact_record:new();artifact.id=artifacts[#artifacts-1].id+1;artifact.item=bar
+ artifact.name:assign(artifacts[0].name);artifact.entity_claims:insert('#',trade.civ.id)
+ artifacts:insert('#',artifact)
+ artifact_ref=df.general_ref_is_artifactst:new();artifact_ref.artifact_id=artifact.id
+ bar.general_refs:insert('#',artifact_ref);artifact_flag=bar.flags.artifact;bar.flags.artifact=true
+end
+local result={mode=mode,item=bar.id,before=snapshot(),artifact_case=artifact_case}
 result.imported_gift_rejected=true
 for _,row in ipairs(result.before.items)do for _,ref in ipairs(row.refs)do assert(ref.kind~=df.general_ref_type.ENTITY_OFFERED,'Gift cleanup needs an unoffered fixture')end end
 local ok,err=xpcall(function()
@@ -59,7 +71,7 @@ local ok,err=xpcall(function()
   for _,text in ipairs(trade.big_announce.text)do result.announcement[#result.announcement+1]=dfhack.df2utf(text.value)end
   capture('depot-trade-gift')
  elseif mode=='wire' then
-  local file=assert(io.open(out..'/trade-transfer-wire-expected.json','w'));file:write(json.encode({depot=trade.bld.id,side=1,intents={{side=1,item=bar.id}},dialogue=8}));file:close()
+  local file=assert(io.open(out..'/trade-transfer-wire-expected.json','w'));file:write(json.encode({depot=trade.bld.id,side=1,intents={{side=1,item=bar.id}},dialogue=artifact_case and -1 or 8}));file:close()
   capture('trade-transfer-wire')
   file=assert(io.open(out..'/trade-transfer-wire-result.json'));local wire=json.decode(file:read('*a'));file:close();assert(wire.success,json.encode(wire))
   result.dialogue=wire.conversation.dialogue;result.counter_offer=wire.conversation.counter_offer;result.announcement=wire.conversation.announcement;result.wire=wire
@@ -105,7 +117,8 @@ local ok,err=xpcall(function()
   assert(code==0 and json.decode(output).available,output)
  end
  result.after=snapshot()
- assert(result.dialogue==8 and not result.counter_offer,'Gift did not complete')
+ assert(result.dialogue==(artifact_case and -1 or 8) and not result.counter_offer,'Gift did not complete')
+ if artifact_case then assert(#result.announcement>0,'Artifact transfer produced no announcement');result.artifact_id=artifact.id end
  local changes=0
  for i,row in ipairs(result.after.items)do if json.encode(row)~=json.encode(result.before.items[i])then changes=changes+1 end end
  assert(changes>0 and bar.flags.trader,'Gift changed no ownership')
@@ -116,6 +129,11 @@ end,debug.traceback)
 for _,item in pairs(tracked)do for i=#item.general_refs-1,0,-1 do local ref=item.general_refs[i]
  if ref:getType()==df.general_ref_type.ENTITY_OFFERED then item.general_refs:erase(i);ref:delete()end
 end end
+if artifact then
+ for i=#bar.general_refs-1,0,-1 do if bar.general_refs[i]==artifact_ref then bar.general_refs:erase(i);break end end
+ artifact_ref:delete();bar.flags.artifact=artifact_flag
+ local artifacts=df.global.world.artifacts.all;assert(artifacts[#artifacts-1]==artifact);artifacts:erase(#artifacts-1);artifact:delete()
+end
 trade.mer.total_capacity.whole=whole;trade.mer.total_capacity.fraction=fraction;trade.talkline=line
 click(440,694);click(900,694)
 trade.mer.goods:resize(0);for _,id in ipairs(history)do trade.mer.goods:insert("#",id)end

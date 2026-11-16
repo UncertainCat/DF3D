@@ -372,6 +372,36 @@ This qualifies one full-panel visual state and the two transfer click workflows,
 not the composite counteroffer workflow, minimum sizes or real announcements.
 Trade remains hidden.
 
+### Artifact announcements
+
+Native artifact transfers can replace ordinary Trade dialogue with talkline=-1.
+TradeNegotiationNative already retains those independently owned announcement
+lines. Summary reads now preserve them verbatim instead of trying to resolve -1
+as a dialogue literal and rejecting the panel. Header naming, portrait and mood
+still use their semantic providers. No native menu text is read. Protocol247's
+existing line array carries these facts without a schema change.
+
+Native36a9c0 creates the artifact-transfer text and wraps it at68 columns;
+renderer38628d..3863b8 reads these retained lines directly, without rewrapping
+for viewport width. Renderer3857c0..385804 expands the header by
+clamp(line_count-2,0,5) rows, and the announcement viewport holds3+extra rows.
+This expansion and its scrollbar remain unfinished in DF3D; do not expose Trade
+until long announcements and the remaining full-workflow gaps are addressed.
+
+Protected080653 (native DF44020) and080936 (wire DF4420) on2026-11-16 gift a
+controlled artifact261 attached to a steel bar. The fixture copies an existing
+artifact name, adds a claim and removes its synthetic objects/reference afterward.
+Native produces one announcement line. The real bridge/composite Gift click,
+refresh, stale-revision rejection and closed-session rejection pass; native and
+wire dialogue, announcement and full tracked before/after effects are equal.
+The rendered928x72 header at40,64 matches native pixel-for-pixel. This qualifies
+one-line artifact Gift, not artifact Seize/exchange, long text or scrolling.
+Both sessions preserve the source and close unsaved; native and graphical checks
+are serial30FPS, wire Godot is headless. Client/render stderr is clean. GPU
+samples59–61C include the post-render reading, not a measured peak. Bridge build
+and19 core checks pass. Evidence:
+completed_sheet_discovery_reference.depot_trade_announcement_reference.
+
 ### Main-scene Trade ownership
 
 The furniture owner connects the native-enabled Trade button to its owned goods

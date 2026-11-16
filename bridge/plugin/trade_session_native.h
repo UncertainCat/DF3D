@@ -108,7 +108,14 @@ public:
         if(!result.actions){result.status=TradeSessionStatus::Rejected;return result;}
         if(current->conversation)entry->dialogue=current->conversation->dialogue;
         auto header=tradeHeader(building,current->caravan,entry->dialogue);
-        const auto lines=header?tradeDialogueLines(header->dialogue,columns):std::nullopt;
+        std::optional<std::vector<std::string>> lines;
+        if(header){
+            // Native38628d reads retained big_announce lines directly; artifact
+            // transfers wrap them at68 columns in36a9c0, independently of viewport.
+            // context.restore above has validated the owned conversation bounds.
+            if(entry->dialogue==-1 && current->conversation)lines=current->conversation->announcement;
+            else lines=tradeDialogueLines(header->dialogue,columns);
+        }
         if(!header || !lines){result.status=TradeSessionStatus::Rejected;return result;}
         result.session=read.session;result.revision=read.revision;
         result.conversation=current->conversation.value_or(TradeConversation{entry->dialogue});

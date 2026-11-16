@@ -43,6 +43,12 @@ for _,kind in ipairs(kinds)do
     result.cage_picker.candidates=assert(loadfile(source))(view,b)
    end
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());capture('cage-assignment-closed')
+   if os.getenv('DF3D_CAGE_WIRE')=='1'then
+    local f=assert(io.open(out..'/cage-wire-expected.json','w'));f:write(json.encode({id=b.id,rows=result.cage_picker.candidates.owned}));f:close()
+    local active=sheet.active_id;capture('cage-wire')
+    f=assert(io.open(out..'/cage-wire-result.json'));result.cage_picker.wire=json.decode(f:read('*a'));f:close()
+    assert(result.cage_picker.wire.success and sheet.active_id==active,'Cage wire failed or changed native selection')
+   end
    result.cage_picker.after={units=ids(b.assigned_units),items=ids(b.assigned_items),flags=b.cage_flags.whole,jobs=#b.jobs}
    assert(json.encode(before)==json.encode(result.cage_picker.after),'Opening/cancelling cage assignment changed simulation')
    result.cage_picker.closed_context=picker.context

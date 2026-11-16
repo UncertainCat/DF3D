@@ -66,6 +66,7 @@
 #include "df/manager_order_condition_order.h"
 #include "LuaTools.h"
 #include "management_data.h"
+#include "cage_native.h"
 #include "lua_fields.h"
 #include "management_util.h"
 #include "management_helpers.h"
@@ -364,10 +365,96 @@ struct NativeAreaChoice { int32_t id=-1; std::string name,label; };
 std::vector<NativeAreaChoice> areaChoices;
 struct NativeAreaSetting { std::string key,label; int32_t index=-1; uint8_t kind=0,state=0; bool estimated=false; };
 struct NativeAreaLocation { int32_t id=-1; std::string name,religion; uint8_t kind=0; int16_t guildProfession=-1; int32_t locationTier=-1; int32_t siteId=-1; };
-struct NativeOwnerDisplay { uint16_t columns=45; std::string firstLine,secondLine,status; int32_t roomValue=0; std::optional<df3d_area::ZoneOwnerNameColor> nameColor; };
-struct NativeAnimalDisplay { uint16_t columns=27; std::string firstLine,secondLine; bool combinedFits=false; std::string warning; df3d_area::ZoneOwnerNameColor nameColor; };
-struct NativeAnimalContainer { df3d_area::ZoneAnimalContainer facts; ResidentAppearanceRecipe occupant; };
-struct NativeAreaCandidate { int32_t id=-1; std::string name,profession; int8_t sex=-1,squadUse=-1; uint8_t mood=0; bool grazer=false,assigned=false; std::optional<NativeOwnerDisplay> ownerDisplay; ResidentAppearanceRecipe sheetIcon; m::AreaCandidateEntity entity=m::AreaCandidateEntity::Unknown; std::optional<NativeAnimalDisplay> animalDisplay; std::optional<df3d_area::ZoneAnimalStatus> animalStatus; std::optional<NativeAnimalContainer> animalContainer; std::optional<df3d_area::ZoneAnimalRestraint> animalRestraint; std::optional<std::array<uint8_t,3>> animalItemColor; std::optional<std::array<uint8_t,7>> squadSymbol; };
+flatbuffers::Offset<m::AreaCandidateRow> buildAreaCandidate(flatbuffers::FlatBufferBuilder& b,const NativeAreaCandidate& v) {
+    flatbuffers::Offset<m::AreaOwnerDisplay> display;
+    if(v.ownerDisplay) {const auto& d=*v.ownerDisplay;flatbuffers::Offset<m::AreaNameColor> color;
+      if(d.nameColor) {const auto& c=*d.nameColor;color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);}
+      display=m::CreateAreaOwnerDisplay(b,d.columns,b.CreateString(d.firstLine),b.CreateString(d.secondLine),b.CreateString(d.status),d.roomValue,color);}
+    flatbuffers::Offset<m::AreaAnimalDisplay> animalDisplay;
+    if(v.animalDisplay) {const auto& d=*v.animalDisplay;const auto& c=d.nameColor;
+      const auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
+      animalDisplay=m::CreateAreaAnimalDisplay(b,d.columns,b.CreateString(d.firstLine),b.CreateString(d.secondLine),d.combinedFits,b.CreateString(d.warning),color);}
+    flatbuffers::Offset<m::AreaAnimalStatus> animalStatus;
+    if(v.animalStatus) {const auto& s=*v.animalStatus;animalStatus=m::CreateAreaAnimalStatus(b,s.kind,s.containment,s.itemId);}
+    flatbuffers::Offset<m::AreaAnimalContainer> container;
+    if(v.animalContainer) {const auto& c=*v.animalContainer;container=m::CreateAreaAnimalContainer(b,c.facts.materialFamily,b.CreateString(c.facts.solidColor),c.facts.occupantEntity,c.facts.occupantId,c.occupant.build(b));}
+    flatbuffers::Offset<m::AreaAnimalRestraint> restraint;
+    if(v.animalRestraint)restraint=m::CreateAreaAnimalRestraint(b,v.animalRestraint->rope,b.CreateString(v.animalRestraint->solidColor));
+    flatbuffers::Offset<m::AreaAnimalItemColor> itemColor;
+    if(v.animalItemColor){const auto& c=*v.animalItemColor;itemColor=m::CreateAreaAnimalItemColor(b,c[0],c[1],c[2]);}
+    flatbuffers::Offset<m::AreaSquadSymbol> squadSymbol;
+    if(v.squadSymbol){const auto& s=*v.squadSymbol;squadSymbol=m::CreateAreaSquadSymbol(b,s[0],s[1],s[2],s[3],s[4],s[5],s[6]);}
+    return m::CreateAreaCandidateRow(b,v.id,b.CreateString(v.name),b.CreateString(v.profession),v.sex,v.mood,v.grazer,v.assigned,v.squadUse,display,v.sheetIcon.build(b),v.entity,animalDisplay,animalStatus,container,restraint,itemColor,squadSymbol);
+}
+struct CageOrder {
+  uint64_t revision=0;
+  std::vector<df3d_area::ZoneAnimalCandidate> rows;
+};
+std::optional<CageOrder> cageOrder(const df3d_production::CageSnapshot& snapshot,const m::ProductionRequest& request) {
+  const auto& q=*request.cage();const std::string query=request.query()?request.query()->str():std::string{};
+  auto rows=df3d_area::nativeAnimalPickerOrder(snapshot.candidates,q.sort(),q.descending(),UTF2DF(query));
+  if(!rows)return {};
+  uint64_t hash=UINT64_C(14695981039346656037);
+  const auto add=[&](uint64_t value){for(int i=0;i<8;++i){hash^=uint8_t(value);hash*=UINT64_C(1099511628211);value>>=8;}};
+  add(snapshot.revision);add(q.sort());add(q.descending());add(q.columns());add(query.size());
+  for(unsigned char value:query)add(value);
+  for(const auto& row:*rows){add(row.id);add(row.item);}
+  return CageOrder{(hash&INT64_MAX)|1,std::move(*rows)};
+}
+std::optional<NativeAreaCandidate> cageRow(const df3d_area::ZoneAnimalCandidate& candidate,uint16_t columns) {
+  NativeAreaCandidate row;row.id=candidate.id;row.assigned=candidate.assigned;
+  row.entity=candidate.item?m::AreaCandidateEntity::Item:m::AreaCandidateEntity::Unit;
+  if(candidate.item) {
+    auto* item=df::item::find(candidate.id);if(!item)return {};
+    const auto text=df3d_area::nativeZoneAnimalItemText(*item);
+    const auto color=df3d_area::nativeZoneAnimalItemColor(*item);
+    df3d_appearance::Result icon;
+    if(!text || !color || !df3d_appearance::resolveCritterItemSelector(item,icon))return {};
+    row.name=DF2UTF(*text);row.animalItemColor=*color;
+    for(const auto& layer:icon.layers)appendAppearanceLayer(row.sheetIcon.pages,row.sheetIcon.palettes,row.sheetIcon.layers,layer);
+    // Cage item rows have selection checks but no zone-assignment marker.
+    row.animalStatus=df3d_area::ZoneAnimalStatus{};
+  } else {
+    auto* unit=df::unit::find(candidate.id);if(!unit)return {};
+    const auto display=df3d_area::nativeZoneAnimalUnitDisplay(*unit,columns);
+    const auto status=df3d_area::nativeCageAnimalStatus(*unit);
+    if(!display || !status)return {};
+    row.name=DF2UTF(display->text.combined);row.profession=DF2UTF(display->text.profession);
+    row.sex=unit->sex;row.grazer=display->grazer;row.sheetIcon.collect(unit,true);
+    row.animalDisplay=NativeAnimalDisplay{columns,DF2UTF(display->text.firstLine),DF2UTF(display->text.secondLine),display->text.combined.size()<=columns,DF2UTF(display->warning),display->nameColor};
+    row.animalStatus=*status;
+    if(status->kind==4) {
+      auto* item=df::item::find(status->itemId);if(!item)return {};
+      if(item->getType()==df::item_type::CAGE) {
+        const auto facts=df3d_area::nativeZoneAnimalContainer(*item);if(!facts)return {};
+        NativeAnimalContainer container;container.facts=*facts;
+        if(facts->occupantEntity==1)container.occupant.collect(df::unit::find(facts->occupantId),true);
+        else if(facts->occupantEntity==2) {
+          df3d_appearance::Result icon;
+          if(!df3d_appearance::resolveCritterItemSelector(df::item::find(facts->occupantId),icon))return {};
+          for(const auto& layer:icon.layers)appendAppearanceLayer(container.occupant.pages,container.occupant.palettes,container.occupant.layers,layer);
+        }
+        row.animalContainer=std::move(container);
+      } else {row.animalRestraint=df3d_area::nativeZoneAnimalRestraint(*item);if(!row.animalRestraint)return {};}
+    }
+  }
+  return row;
+}
+bool fillCagePage(CageState& result,const df3d_production::CageSnapshot& snapshot,const CageOrder& order,uint32_t cursor) {
+  if(cursor>order.rows.size() || (cursor && cursor==order.rows.size()))return false;
+  std::vector<NativeAreaCandidate> rows;size_t bytes=0;
+  for(size_t i=cursor;i<order.rows.size() && rows.size()<64;++i) {
+    auto row=cageRow(order.rows[i],result.columns);if(!row)return false;
+    flatbuffers::FlatBufferBuilder buffer;buffer.Finish(buildAreaCandidate(buffer,*row));size_t rowBytes=0;
+    if(m::validateAreaCandidate(flatbuffers::GetRoot<m::AreaCandidateRow>(buffer.GetBufferPointer()),2,m::AreaOperation::CandidateList,rowBytes))return false;
+    if(rowBytes>224*1024-bytes){if(rows.empty())return false;break;}
+    bytes+=rowBytes;rows.push_back(std::move(*row));
+  }
+  result.revision=order.revision;result.removing=snapshot.removing;result.cursor=cursor;
+  result.total=uint32_t(order.rows.size());result.nextCursor=cursor+uint32_t(rows.size());
+  if(result.nextCursor==result.total)result.nextCursor=0;
+  result.rows=std::move(rows);return true;
+}
 struct NativeAreaLink { int32_t id=-1; uint8_t kind=0,direction=0; std::string name; };
 struct NativeLocationNamePage {
   df3d_area::LocationNameSnapshot snapshot;uint8_t component=0;std::string query;
@@ -1011,27 +1098,7 @@ void publish() {
   std::vector<flatbuffers::Offset<m::AreaLinkRow>> links;
   for(const auto& v:areaPage.settings)settings.push_back(m::CreateAreaSettingRow(b,b.CreateString(v.key),v.index,b.CreateString(v.label),v.kind,v.state,v.estimated));
   for(const auto& v:areaPage.locations)locations.push_back(m::CreateAreaLocationRow(b,v.id,b.CreateString(v.name),v.kind,b.CreateString(v.religion),v.guildProfession,v.locationTier,v.siteId));
-  for(const auto& v:areaPage.candidates) {
-    flatbuffers::Offset<m::AreaOwnerDisplay> display;
-    if(v.ownerDisplay) {const auto& d=*v.ownerDisplay;flatbuffers::Offset<m::AreaNameColor> color;
-      if(d.nameColor) {const auto& c=*d.nameColor;color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);}
-      display=m::CreateAreaOwnerDisplay(b,d.columns,b.CreateString(d.firstLine),b.CreateString(d.secondLine),b.CreateString(d.status),d.roomValue,color);}
-    flatbuffers::Offset<m::AreaAnimalDisplay> animalDisplay;
-    if(v.animalDisplay) {const auto& d=*v.animalDisplay;const auto& c=d.nameColor;
-      const auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
-      animalDisplay=m::CreateAreaAnimalDisplay(b,d.columns,b.CreateString(d.firstLine),b.CreateString(d.secondLine),d.combinedFits,b.CreateString(d.warning),color);}
-    flatbuffers::Offset<m::AreaAnimalStatus> animalStatus;
-    if(v.animalStatus) {const auto& s=*v.animalStatus;animalStatus=m::CreateAreaAnimalStatus(b,s.kind,s.containment,s.itemId);}
-    flatbuffers::Offset<m::AreaAnimalContainer> container;
-    if(v.animalContainer) {const auto& c=*v.animalContainer;container=m::CreateAreaAnimalContainer(b,c.facts.materialFamily,b.CreateString(c.facts.solidColor),c.facts.occupantEntity,c.facts.occupantId,c.occupant.build(b));}
-    flatbuffers::Offset<m::AreaAnimalRestraint> restraint;
-    if(v.animalRestraint)restraint=m::CreateAreaAnimalRestraint(b,v.animalRestraint->rope,b.CreateString(v.animalRestraint->solidColor));
-    flatbuffers::Offset<m::AreaAnimalItemColor> itemColor;
-    if(v.animalItemColor){const auto& c=*v.animalItemColor;itemColor=m::CreateAreaAnimalItemColor(b,c[0],c[1],c[2]);}
-    flatbuffers::Offset<m::AreaSquadSymbol> squadSymbol;
-    if(v.squadSymbol){const auto& s=*v.squadSymbol;squadSymbol=m::CreateAreaSquadSymbol(b,s[0],s[1],s[2],s[3],s[4],s[5],s[6]);}
-    candidates.push_back(m::CreateAreaCandidateRow(b,v.id,b.CreateString(v.name),b.CreateString(v.profession),v.sex,v.mood,v.grazer,v.assigned,v.squadUse,display,v.sheetIcon.build(b),v.entity,animalDisplay,animalStatus,container,restraint,itemColor,squadSymbol));
-  }
+  for(const auto& v:areaPage.candidates)candidates.push_back(buildAreaCandidate(b,v));
   for(const auto& v:areaPage.links)links.push_back(m::CreateAreaLinkRow(b,v.id,m::AreaKind(v.kind),v.direction,b.CreateString(v.name)));
   flatbuffers::Offset<m::LocationCatalog> locationCatalog;
   if(areaPage.religions || areaPage.guilds) {
@@ -1334,7 +1401,14 @@ void publish() {
   }
   std::vector<flatbuffers::Offset<m::ProductionTaskCategory>> taskCategories;
   for(const auto& v:production.taskCategories)taskCategories.push_back(m::CreateProductionTaskCategory(b,b.CreateString(v.key),b.CreateString(v.name),dyeStatus(v.dye)));
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders,production.taskCategory?b.CreateString(*production.taskCategory):0,production.taskCategory?b.CreateVector(taskCategories):0,production.taskParent?b.CreateString(*production.taskParent):0,doorControls,pendingBuilding,buildingLinks,lever);
+  flatbuffers::Offset<m::CageState> cage;
+  if(production.cage) {
+    const auto& v=*production.cage;std::vector<flatbuffers::Offset<m::AreaCandidateRow>> rows;
+    for(const auto& row:v.rows)rows.push_back(buildAreaCandidate(b,row));
+    cage=m::CreateCageState(b,v.buildingId,v.revision,v.removing,v.operation,v.candidateId,v.entity,v.assigned,
+      b.CreateString(v.query),v.sort,v.descending,v.columns,v.cursor,v.nextCursor,v.total,b.CreateVector(rows),v.outcome);
+  }
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders,production.taskCategory?b.CreateString(*production.taskCategory):0,production.taskCategory?b.CreateVector(taskCategories):0,production.taskParent?b.CreateString(*production.taskParent):0,doorControls,pendingBuilding,buildingLinks,lever,cage);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
@@ -1827,9 +1901,15 @@ void publish() {
     const bool hunterUnknown=hunter && (hunter->outcome==m::HunterAmmunitionOutcome::Applied || hunter->outcome==m::HunterAmmunitionOutcome::Unknown);
     const bool standingUnknown=standingOrders && (standingOrders->outcome==m::StandingOrdersOutcome::Applied || standingOrders->outcome==m::StandingOrdersOutcome::Unknown);
     const bool citizenUnknown=citizenWriteStarted || citizens.outcomeUnknown;
+    auto cageWrite=production.cage;
+    if(cageWrite && mutated) {
+      cageWrite->revision=0;cageWrite->removing=false;cageWrite->cursor=0;cageWrite->nextCursor=0;cageWrite->total=0;cageWrite->rows.clear();
+      cageWrite->outcome=m::FarmEditOutcome::Unknown;
+    } else cageWrite.reset();
     auto jobWrite=jobSettingsEdit;
     if(jobWrite && jobWrite->outcome!=m::JobSettingsEditOutcome::Applied && jobWrite->outcome!=m::JobSettingsEditOutcome::Unknown)jobWrite.reset();
     clearResult();
+    if(cageWrite){production.cage=std::move(cageWrite);mutated=true;}
     if(justiceUnknown){justice.emplace();justice->tab=justiceTab;justice->outcome=m::JusticeOutcome::Unknown;mutated=true;}
     if(tasksUnknown){tasks.emplace();tasks->jobId=tasksTarget;tasks->outcome=m::TasksOutcome::Unknown;mutated=true;}
     if(stocksUnknown){stocks.emplace();stocks->outcome=m::StocksMenuOutcome::Unknown;mutated=true;}
@@ -4221,10 +4301,46 @@ void run(color_ostream& out) {
     }
     publish();return;
   }
-  // The typed cage contract is installed before its native page provider.
-  // Never let an unavailable cage intent fall through to generic production.
   if(r->production() && r->production()->cage()) {
-    message.clear();status=m::ManagementStatus::Rejected;production={};publish();return;
+    const auto& q=*r->production();const auto& intent=*q.cage();
+    message.clear();status=m::ManagementStatus::Rejected;production={};
+    auto& result=production.cage.emplace();result.buildingId=q.building_id();result.operation=intent.operation();
+    result.candidateId=intent.candidate_id();result.entity=intent.entity();result.assigned=intent.assigned();
+    result.query=q.query()?q.query()->str():std::string{};result.sort=intent.sort();result.descending=intent.descending();result.columns=intent.columns();
+    const bool edit=intent.operation()==1;
+    result.outcome=edit?m::FarmEditOutcome::Rejected:m::FarmEditOutcome::None;
+    const auto clearSnapshot=[&]{result.revision=0;result.removing=false;result.cursor=0;result.nextCursor=0;result.total=0;result.rows.clear();};
+    bool entered=false;
+    try {
+      const auto execute=[&] {
+      auto* building=df::building::find(q.building_id());
+      const auto before=df3d_production::observeCage(building);
+      const auto order=before?cageOrder(*before,q):std::nullopt;
+      if(!before || !order){return;}
+      if(q.expected_revision() && q.expected_revision()!=order->revision) {
+        if(edit)result.outcome=m::FarmEditOutcome::Stale;return;
+      }
+      if(edit) {
+        const auto applied=df3d_production::setCageAssignment(building,before->revision,intent.candidate_id(),intent.entity()==m::AreaCandidateEntity::Item,intent.assigned());
+        entered=applied.effectsStarted;mutated=entered;
+        using O=df3d_production::CageOutcome;
+        result.outcome=applied.outcome==O::Completed?m::FarmEditOutcome::Completed:applied.outcome==O::Stale?m::FarmEditOutcome::Stale:
+          applied.outcome==O::Unknown?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected;
+        if(applied.outcome==O::Completed && applied.receipt) {
+          const auto after=cageOrder(*applied.receipt,q);
+          if(after && fillCagePage(result,*applied.receipt,*after,0))status=m::ManagementStatus::Ok;
+          else {clearSnapshot();result.outcome=mutated?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected;}
+        }
+      } else if(fillCagePage(result,*before,*order,q.cursor()))status=m::ManagementStatus::Ok;
+      };execute();
+    } catch(...) {
+      clearSnapshot();status=m::ManagementStatus::Rejected;
+      result.outcome=edit?(entered?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected):m::FarmEditOutcome::None;
+    }
+    // Publication may replace/reset the result on validation failure. No
+    // references to its storage survive entry, and no failure replays effects.
+    try{publish();}catch(...){if(entered)status=m::ManagementStatus::Pending;}
+    return;
   }
   if(r->production() && r->production()->lever()) {
     const auto* q=r->production();const auto* intent=q->lever();

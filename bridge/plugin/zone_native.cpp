@@ -314,11 +314,11 @@ std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalCandidates(const
         if(item && !items.count(item->id) && !append(item->id,true,false))return std::nullopt;
     return result;
 }
-std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalPickerCandidates(
-    const df::building_civzonest& zone,int32_t sort,bool descending,std::string query) {
+std::optional<std::vector<ZoneAnimalCandidate>> nativeAnimalPickerOrder(
+    std::vector<ZoneAnimalCandidate> input,int32_t sort,bool descending,std::string query) {
     const auto& readers=staffOrderingFunctions();
     if(!readers || sort<0 || sort>3 || query.size()>128)return std::nullopt;
-    auto candidates=nativeZoneAnimalCandidates(zone);if(!candidates)return std::nullopt;
+    auto candidates=std::move(input);if(candidates.size()>4096)return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     static const bool compatible=
         hash(base+0x1435a10,0x110)==0x98ce3d80a8c10b09ULL &&
@@ -332,8 +332,8 @@ std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalPickerCandidates
     struct Ranked { ZoneAnimalCandidate candidate; std::string key; std::array<int32_t,2> category{}; };
     struct Entry { void* object; uint8_t kind; uint8_t padding[7]{}; };
     static_assert(sizeof(Entry)==16);
-    std::vector<Ranked> rows;rows.reserve(candidates->size());
-    for(const auto& candidate:*candidates) {
+    std::vector<Ranked> rows;rows.reserve(candidates.size());
+    for(const auto& candidate:candidates) {
         Ranked row{candidate};std::string name;
         Entry entry{};
         if(candidate.item) {
@@ -367,8 +367,13 @@ std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalPickerCandidates
         const int compared=a.key.compare(b.key);
         return descending?compared>0:compared<0;
     });
-    candidates->clear();for(const auto& row:rows)candidates->push_back(row.candidate);
+    candidates.clear();for(const auto& row:rows)candidates.push_back(row.candidate);
     return candidates;
+}
+std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalPickerCandidates(
+    const df::building_civzonest& zone,int32_t sort,bool descending,std::string query) {
+    auto candidates=nativeZoneAnimalCandidates(zone);if(!candidates)return std::nullopt;
+    return nativeAnimalPickerOrder(std::move(*candidates),sort,descending,std::move(query));
 }
 std::optional<std::array<uint8_t,3>> nativeZoneAnimalItemColor(df::item& item) {
     if(!df::global::world || !nativeZoneOwnerCandidatesReady())return std::nullopt;
@@ -934,14 +939,14 @@ std::optional<ZoneAnimalStatus> nativeZoneAnimalItemStatus(df::building_civzones
     if(!animalStatusReady() || (picker.type!=df::civzone_type::Pen && picker.type!=df::civzone_type::Pond))return std::nullopt;
     return selected?animalZoneStatus(picker):ZoneAnimalStatus{};
 }
-std::optional<ZoneAnimalStatus> nativeZoneAnimalStatus(df::building_civzonest& picker,df::unit& candidate) {
-    if(!animalStatusReady() || (picker.type!=df::civzone_type::Pen && picker.type!=df::civzone_type::Pond))return std::nullopt;
+std::optional<ZoneAnimalStatus> animalStatus(df::unit& candidate,ZoneAnimalStatus zoneStatus) {
+    if(!animalStatusReady())return std::nullopt;
     const auto firstRef=[&](df::general_ref_type kind)->df::general_ref* {
         for(auto* ref:candidate.general_refs)if(ref && ref->getType()==kind)return ref;
         return nullptr;
     };
     if(auto* ref=firstRef(df::general_ref_type::BUILDING_CIVZONE_ASSIGNED))
-        if(ref->getBuilding())return animalZoneStatus(picker);
+        if(ref->getBuilding())return zoneStatus;
     if(!candidate.flags1.bits.chained && !candidate.flags1.bits.caged)return ZoneAnimalStatus{};
     const auto status=[](df::item* item,uint8_t relation) {return ZoneAnimalStatus{4,relation,item->id};};
     if(candidate.flags1.bits.chained) {
@@ -962,6 +967,19 @@ std::optional<ZoneAnimalStatus> nativeZoneAnimalStatus(df::building_civzonest& p
         if(cage && std::find(cage->assigned_units.begin(),cage->assigned_units.end(),candidate.id)!=cage->assigned_units.end())
             if(auto* item=firstBuildingItem(cage))return status(item,4);
     return ZoneAnimalStatus{5,0,-1};
+}
+std::optional<ZoneAnimalStatus> nativeZoneAnimalStatus(df::building_civzonest& picker,df::unit& candidate) {
+    if(picker.type!=df::civzone_type::Pen && picker.type!=df::civzone_type::Pond)return std::nullopt;
+    return animalStatus(candidate,animalZoneStatus(picker));
+}
+std::optional<ZoneAnimalStatus> nativeCageAnimalStatus(df::unit& candidate) {
+    // Native3d0260 uses the pasture marker for non-pond contexts, including7.
+    // Containment fallback3acdc0 is independent of picker identity.
+    if(!animalStatusReady())return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=hash(base+0x3d4f80,0x197)==UINT64_C(0x4c4acebb5e51efef);
+    if(!compatible)return std::nullopt;
+    return animalStatus(candidate,ZoneAnimalStatus{1,0,-1});
 }
 std::optional<ZoneAnimalContainer> nativeZoneAnimalContainer(df::item& container) {
     if(!df::global::world || !nativeZoneDefaultsReady() || container.getType()!=df::item_type::CAGE)return std::nullopt;

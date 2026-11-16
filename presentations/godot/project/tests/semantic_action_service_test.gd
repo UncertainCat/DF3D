@@ -648,7 +648,7 @@ func test_header_payload_delivery() -> void:
 	service.free()
 
 func test_independent_item_unknown() -> void:
-	for domain_state in ["independent_item","door_controls","pending_building"]:
+	for domain_state in ["independent_item","door_controls","pending_building","cage"]:
 		test_production_unknown(domain_state)
 
 func test_production_unknown(domain_state: String) -> void:

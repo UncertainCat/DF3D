@@ -181,6 +181,7 @@ func poll(delta: float = 0.0) -> void:
 			if (int(state.get("area",{}).get("location_entry_outcome",0)) == Contract.LocationEntryOutcome.Unknown
 				or int(state.get("area",{}).get("location_edit_outcome",0)) == Contract.LocationEditOutcome.Unknown
 				or int(state.get("production",{}).get("farm_edit_outcome",0)) == Contract.FarmEditOutcome.Unknown
+				or int(state.get("production",{}).get("cage",{}).get("outcome",0)) == Contract.FarmEditOutcome.Unknown
 				or int(state.get("production",{}).get("independent_item",{}).get("outcome",0)) == Contract.FarmEditOutcome.Unknown
 				or int(state.get("production",{}).get("building_header",{}).get("outcome",0)) == Contract.FarmEditOutcome.Unknown
 				or int(state.get("production",{}).get("door_controls",{}).get("outcome",0)) == Contract.FarmEditOutcome.Unknown

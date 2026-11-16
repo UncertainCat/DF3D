@@ -3134,8 +3134,8 @@ candidate identities/eligibility, destination settings/jobs and prior cage/zone/
 chain assignment facts. Post-entry failure remains unknown without replay. The
 enclosing transport must supply session/epoch authority. Diagnostic
 `cage-state-probe` requires a paused, loaded, non-saving session; the earlier
-unrevisioned diagnostic writer is removed. There is no public transport or viewer
-action yet.
+unrevisioned diagnostic writer is removed. Typed transport is qualified below;
+there is no public viewer action yet.
 
 Protected100524 on2026-11-16 first qualifies the read provider. Native100903
 (DF41556) and owned101004 (DF52068) then match all seven raw candidate IDs/order
@@ -3163,17 +3163,32 @@ A rejection carries no snapshot authority; Unknown cannot authorize replay. Unit
 and critter IDs are distinct identities. Animal presentation rows share the zone
 row validator and model/Godot codecs, without sharing zone request authority.
 Both peers must upgrade together; earlier recordings cannot fabricate cage facts.
-The native page provider is not connected yet, so the bridge explicitly refuses
-cage intents before generic production dispatch. This is a contract migration,
-not public cage readiness. Protected103606 (DF58216) retains the seven candidate
+This contract migration does not establish public cage readiness. Protected103606 (DF58216) retains the seven candidate
 rows and six native100903 effect snapshots under protocol248, preserving source
 saves and closing unsaved at30FPS/GPU60C. The headless management contract test
 passes with only the documented separate-render-thread warning. Evidence:
 `completed_sheet_discovery_reference.cage_contract_reference`. Bridge/extension
 builds and all19 root checks pass against the final protocol248 binaries.
 
-Next is the semantic page provider and complete cage picker, including native
-sorting/text/artwork, selection effects and public map entry.
+The production provider now calls the owned cage authority and shares native
+animal ordering, text/color/art recipes and row serialization with zones. Native
+context7 status decoration is pinned at3d4f80 (197 bytes,
+4c4acebb5e51efef); cage item rows have no zone marker. Query, sort, direction,
+columns and sorted identities join the semantic revision so continuation pages
+and edits cannot silently use a different ordering. Pages retain the64-row and
+224KiB bounds. Effects are never replayed after a missing or invalid receipt.
+
+Protected105758 (DF53500) verifies seven native candidate identities/assignment
+bits through the typed wire, six filtered rows, four unit/item assignment changes,
+stale reversal rejection and restoration of the original rows/revision. Source
+preservation and unsaved cleanup pass at30FPS; sampled GPU59C. Bridge build and
+all19 root checks pass. The independent cage picker state passes headless exact
+revision, unknown-effect, late-reply, epoch and native byte-filter checks, with
+only the documented separate-render-thread warning. Evidence:
+`completed_sheet_discovery_reference.cage_provider_reference`.
+
+The complete cage picker still needs native layout/art verification, selection
+effects through the assembled viewer and public map entry.
 Shared animal presentation components can be reused only where their semantics
 match; a zone ID must not stand in for cage authority.
 

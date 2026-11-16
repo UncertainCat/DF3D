@@ -4,6 +4,7 @@
 #include "lua_fields.h"
 #include "appearance.h"
 #include "location_staff_native.h"
+#include "zone_native.h"
 #include "df/unit.h"
 #include "mirror_generated.h"
 #include <algorithm>
@@ -238,7 +239,19 @@ struct LeverState {
   int32_t sourceMechanism=-1,targetMechanism=-1,targetId=-1,jobId=-1;
   std::string sourceName,targetName;
 };
+struct NativeOwnerDisplay { uint16_t columns=45; std::string firstLine,secondLine,status; int32_t roomValue=0; std::optional<df3d_area::ZoneOwnerNameColor> nameColor; };
+struct NativeAnimalDisplay { uint16_t columns=27; std::string firstLine,secondLine; bool combinedFits=false; std::string warning; df3d_area::ZoneOwnerNameColor nameColor; };
+struct NativeAnimalContainer { df3d_area::ZoneAnimalContainer facts; ResidentAppearanceRecipe occupant; };
+struct NativeAreaCandidate { int32_t id=-1; std::string name,profession; int8_t sex=-1,squadUse=-1; uint8_t mood=0; bool grazer=false,assigned=false; std::optional<NativeOwnerDisplay> ownerDisplay; ResidentAppearanceRecipe sheetIcon; df3d::mirror::AreaCandidateEntity entity=df3d::mirror::AreaCandidateEntity::Unknown; std::optional<NativeAnimalDisplay> animalDisplay; std::optional<df3d_area::ZoneAnimalStatus> animalStatus; std::optional<NativeAnimalContainer> animalContainer; std::optional<df3d_area::ZoneAnimalRestraint> animalRestraint; std::optional<std::array<uint8_t,3>> animalItemColor; std::optional<std::array<uint8_t,7>> squadSymbol; };
+struct CageState {
+  int32_t buildingId=-1;uint64_t revision=0;bool removing=false;
+  uint8_t operation=0;int32_t candidateId=-1;df3d::mirror::AreaCandidateEntity entity=df3d::mirror::AreaCandidateEntity::Unknown;bool assigned=false;
+  std::string query;uint8_t sort=0;bool descending=false;uint16_t columns=27;
+  uint32_t cursor=0,nextCursor=0,total=0;std::vector<NativeAreaCandidate> rows;
+  df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
+};
 struct ProductionState {
+  std::optional<CageState> cage;
   std::optional<std::string> taskCategory,taskParent;
   std::vector<ProductionTaskCategory> taskCategories;
   std::optional<WorkshopOrdersState> workshopOrders;

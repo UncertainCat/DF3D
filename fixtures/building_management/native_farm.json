@@ -113569,6 +113569,18 @@
           "build/notes/pm/cage-contract-engine.stdout.log": "872e0fb2c59f79ecef5afae67248e90c0c9007b90ad8f58774cb67cee824de53",
           "build/notes/pm/cage-contract-engine.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
         }
+      },
+      "cage_provider_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-105758",
+        "owned_df_pid": 53500,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Protocol248 native cage provider: seven native candidate identities and assignment bits; filtered descending query; four unit/item toggles and stale reversals; final rows and revision restored. Shared native ordering and animal row serialization. Public picker and rendered parity remain unqualified.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-105758/cage-wire-result.json": "093d52af500601803c37d0cee63794a9183f5bf581719ac2faec27b20264af89",
+          "build/stockpile-storage-native-farm-discovery-20261116-105758/result.json": "3011d3894e459ef98287c740a312a85b904ef0cff165d741360bd02f1f21cf24",
+          "build/stockpile-storage-native-farm-discovery-20261116-105758/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

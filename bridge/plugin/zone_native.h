@@ -82,6 +82,7 @@ struct ZoneAnimalStatus {
     uint8_t containment=0;
     int32_t itemId=-1;
 };
+std::optional<ZoneAnimalStatus> nativeCageAnimalStatus(df::unit& candidate);
 std::optional<ZoneAnimalStatus> nativeZoneAnimalStatus(df::building_civzonest& picker,df::unit& candidate);
 // Item rows use caller-owned selection membership, never the native widget set.
 std::optional<ZoneAnimalStatus> nativeZoneAnimalItemStatus(df::building_civzonest& picker,bool selected);
@@ -131,6 +132,9 @@ struct ZoneAnimalCandidate { int32_t id; bool item; bool assigned; };
 std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalCandidates(const df::building_civzonest& zone);
 // Owned native description search and selected-first ordering. Query is DF
 // encoded. sort0/2 Category,1 Name,3 Profession; no sort keys leave the bridge.
+// Shared native sorting/filtering of independently supplied eligible rows.
+std::optional<std::vector<ZoneAnimalCandidate>> nativeAnimalPickerOrder(
+    std::vector<ZoneAnimalCandidate> input,int32_t sort,bool descending,std::string query);
 std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalPickerCandidates(
     const df::building_civzonest& zone,int32_t sort,bool descending,std::string query);
 // Native decorated critter text in DF encoding, written to an owned string.

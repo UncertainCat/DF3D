@@ -372,8 +372,9 @@ and mass providers. Accepted eligibility returns Ready; the separate explicit ne
 described above performs the native action.
 Explicit refusal uses native71f30 for the first paired reply, then preserves DF's
 alternation. Ethical refusal calls36a780 and applies native time_remaining501
-limit; this effect path is staged and not exposed by the current diagnostic.
-Reads never select a reply or apply those consequences.
+limit. The read-only refusal probe does not execute ethical consequences;
+the owned session exchange path does, as qualified below. Reads never select
+a reply or apply those consequences.
 
 Protected221121 on2026-11-15 compares native pointer actions against owned
 empty12/13, merchant-only14/15, fortress-only16/17 and overweight3/4 replies.
@@ -382,8 +383,32 @@ draw is not rewound/replayed. A balanced offer returns Ready and is not submitte
 to native exchange. Owned DF47920 closes unsaved/source-preserved at30FPS,
 sampled60C. Bridge build and all19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_trade_refusal_reference`.
-Ethical consequences and loss branches still need live qualification; the
-controlled counteroffer and acceptance cases are qualified above. Protocol243 and public Trade exposure are unchanged.
+Protected091507 (native DF48080) and091622 (owned session DF46260) on
+2026-11-16 qualify animal19, plant20 and combined18 ethical refusals. The
+paused disposable oracle temporarily sets both civilization ethics to
+UNTHINKABLE, offers existing bone remains and/or a wooden bin, and controls
+initial broker skills and RNG. Runtime does not override ethics or rewind RNG.
+Both paths have identical before/after item ownership/stack facts, depot use,
+caravan state, both traders' complete skills/attributes and active RNG words
+and cursor. In this controlled low-skill case, mood100 becomes0, flags gain32,
+time_remaining1200 becomes1, and the RNG cursor advances0→4. Broker skills
+train while merchant skills and all goods transfers remain unchanged. The
+session retains the refusal through refresh, rejects a stale exchange without
+repeating training or caravan effects, and leaves native menu state unchanged.
+All controlled ethics, people, caravan, appraisal history and RNG are restored
+before the disposable session closes.
+
+Protected091742 (DF53088) also verifies the loss-only5/6 and combined
+loss/overweight1/2 refusal pairs, using a merchant anvil valued100 against
+fortress blocks valued10. Owned and native replies alternate identically from
+the same prior dialogue; the existing empty/one-sided/overweight cases still
+pass. These are paused native/session comparisons, not a new end-to-end wire
+or visual qualification. Native graphics are serial30FPS, GPU samples58–61C;
+all three source saves are preserved and sessions close unsaved. All19 core
+checks pass. Evidence:
+completed_sheet_discovery_reference.depot_trade_refusal_effects_reference.
+The controlled counteroffer and acceptance cases are qualified above.
+Public Trade exposure remains unchanged.
 
 ## Owned trade negotiation context
 

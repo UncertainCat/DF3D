@@ -101876,6 +101876,276 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_refusal_effects_reference": {
+        "supported_df": "53.16 Steam24557528",
+        "native_run": "20261116-091507",
+        "native_pid": 48080,
+        "session_run": "20261116-091622",
+        "session_pid": 46260,
+        "loss_run": "20261116-091742",
+        "loss_pid": 53088,
+        "controlled_ethics_skills_rng": true,
+        "ethics_cases": [
+          {
+            "label": "animal",
+            "dialogue": 19,
+            "before_caravan": {
+              "flags": 0,
+              "haggle_fail_count": 0,
+              "mood": 100,
+              "time_remaining": 1200
+            },
+            "after_caravan": {
+              "flags": 32,
+              "haggle_fail_count": 0,
+              "mood": 0,
+              "time_remaining": 1
+            },
+            "before_rng_cursor": 0,
+            "after_rng_cursor": 4,
+            "exact_case_sha256": "b1b121d04ce5645ea93e6c95feb12bbcaf81d35887b5e5ced55d20b4b46deae3"
+          },
+          {
+            "label": "plant",
+            "dialogue": 20,
+            "before_caravan": {
+              "flags": 0,
+              "haggle_fail_count": 0,
+              "mood": 100,
+              "time_remaining": 1200
+            },
+            "after_caravan": {
+              "flags": 32,
+              "haggle_fail_count": 0,
+              "mood": 0,
+              "time_remaining": 1
+            },
+            "before_rng_cursor": 0,
+            "after_rng_cursor": 4,
+            "exact_case_sha256": "846efe8c5e639d4034fab683db8f8d1ec94f5592a5f02b63eb9e666f839b7c2b"
+          },
+          {
+            "label": "both",
+            "dialogue": 18,
+            "before_caravan": {
+              "flags": 0,
+              "haggle_fail_count": 0,
+              "mood": 100,
+              "time_remaining": 1200
+            },
+            "after_caravan": {
+              "flags": 32,
+              "haggle_fail_count": 0,
+              "mood": 0,
+              "time_remaining": 1
+            },
+            "before_rng_cursor": 0,
+            "after_rng_cursor": 4,
+            "exact_case_sha256": "b3cc7b25f0484a841200e0b51086965878a5848f87b30ef762a2d858199b8242"
+          }
+        ],
+        "loss_cases": [
+          {
+            "label": "loss",
+            "reply_base": 5,
+            "replies": [
+              6,
+              5
+            ],
+            "native_dialogue": 5,
+            "value_totals": {
+              "actual": [
+                100,
+                10
+              ],
+              "actual_profit": -90,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 4,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                57,
+                57,
+                55,
+                49,
+                51,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 400000,
+              "whole": 99713
+            }
+          },
+          {
+            "label": "loss-overweight",
+            "reply_base": 1,
+            "replies": [
+              1,
+              2
+            ],
+            "native_dialogue": 2,
+            "value_totals": {
+              "actual": [
+                100,
+                10
+              ],
+              "actual_profit": -90,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 4,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            },
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                50,
+                56,
+                55,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 400000,
+              "whole": -287
+            }
+          }
+        ],
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "fps_cap": 30,
+        "stale_refusal_effects_rejected": true,
+        "native_menu_unchanged_by_session": true,
+        "core_tests_passed": 19,
+        "limits": [
+          "Paused controlled native/session comparisons; not a new complete wire/main-scene workflow.",
+          "Low-skill retirement branch observed; surviving-caravan outcomes not independently exercised."
+        ]
+      },
       "depot_trade_artifact_seize_reference": {
         "supported_df": "53.16 Steam24557528",
         "native_run": "build/stockpile-storage-native-farm-discovery-20261116-090830",

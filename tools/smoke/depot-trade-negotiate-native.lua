@@ -46,10 +46,13 @@ local original_rng=rng();local original_people=people();local original_caravan=c
 local mass={whole=caravan.total_capacity.whole,fraction=caravan.total_capacity.fraction};local line=trade.talkline
 local result={}
 local accept_mode=os.getenv('DF3D_DEPOT_TRADE_ACCEPT')
+local ethics_mode=os.getenv('DF3D_DEPOT_TRADE_ETHICS')
+local original_ethics={animal=trade.civ.resources.ethic.KILL_ANIMAL,plant=trade.civ.resources.ethic.KILL_PLANT}
+assert(not ethics_mode or ethics_mode=='native' or ethics_mode=='session')
 local active_okay=os.getenv('DF3D_DEPOT_TRADE_ACTIVE_OKAY')=='1'
 assert(not accept_mode or accept_mode=='native' or accept_mode=='owned' or accept_mode=='session' or accept_mode=='wire')
 local history={};for _,id in ipairs(caravan.goods)do history[#history+1]=id end
-if accept_mode=='wire' then
+if accept_mode=='wire' or ethics_mode then
  -- Isolate negotiation from entry appraisal, which has separate live coverage.
  -- Record all current goods before the controlled native reference as well.
  local seen={};for _,id in ipairs(history)do seen[id]=true end
@@ -78,6 +81,49 @@ local function transfers()
  return {items=rows,times_used=trade.bld.times_used,import_value=caravan.import_value,export_value_total=caravan.export_value_total,export_value_personal=caravan.export_value_personal,offer_value=caravan.offer_value}
 end
 local ok,err=xpcall(function()
+ if ethics_mode then
+  result.ethics={mode=ethics_mode,cases={}}
+  trade.civ.resources.ethic.KILL_ANIMAL=df.ethic_response.UNTHINKABLE
+  trade.civ.resources.ethic.KILL_PLANT=df.ethic_response.UNTHINKABLE
+  local bone,bin
+  for _,item in ipairs(trade.good[1])do
+   if item:getType()==df.item_type.CORPSEPIECE then bone=item end
+   if item:getType()==df.item_type.BIN then bin=item end
+  end
+  assert(bone and bin,'Ethics fixture requires bone remains and a wooden bin')
+  for _,test in ipairs{{'animal',true,false,19},{'plant',false,true,20},{'both',true,true,18}}do
+   restore_people(original_people);restore_caravan(original_caravan)
+   click(440,694);click(900,694);trade.talkline=line;trade.counter_offer=false;trade.counter_offer_item:resize(0)
+   caravan.mood=100;caravan.haggle_fail_count=0;caravan.time_remaining=1200
+   caravan.total_capacity.whole=100000;caravan.total_capacity.fraction=0
+   for _,unit in ipairs(units)do for _,skill in ipairs(unit.status.current_soul.skills)do for _,field in ipairs(sf)do skill[field]=0 end end end
+   local intents={{side=0,item=trade.good[0][0].id}};click(468,238)
+   if test[2]then intents[#intents+1]={side=1,item=bone.id};click(932,310)end
+   if test[3]then intents[#intents+1]={side=1,item=bin.id};click(932,382)end
+   local output,code=dfhack.run_command_silent('df3d','trade-refusal-probe',tostring(trade.bld.id),'0','','',json.encode(intents))
+   assert(code==0,output);local check=json.decode(output);assert(check.ethical and check.reply_base==test[4],output)
+   local controlled=rng();controlled.cursor=0;for i=1,624 do controlled.words[i]=(i*104729)%2147483647 end;set_rng(controlled)
+   local sample={label=test[1],before={people=people(),caravan=caravan_state(),rng=rng(),transfers=transfers()}}
+   if ethics_mode=='native' then
+    click(508,730);sample.dialogue=trade.talkline;capture('depot-trade-ethics-'..test[1])
+   else
+    local state=session_probe('open',trade.bld.id,0);assert(state.status==0,json.encode(state));local id=state.session
+    for _,intent in ipairs(intents)do state=session_probe('item',id,state.revision,intent.side,intent.item);assert(state.status==0,json.encode(state))end
+    local revision=state.revision;state=session_probe('exchange',id,revision)
+    assert(state.status==0 and state.exchange_status==0,json.encode(state));sample.dialogue=state.dialogue
+    local after_rng=rng();local after_people=people();local after_caravan=caravan_state()
+    local refreshed=session_probe('read',id,state.revision);assert(refreshed.status==0 and refreshed.dialogue==state.dialogue,json.encode(refreshed))
+    assert(session_probe('exchange',id,revision).exchange_status==1,'Stale ethical offer replayed')
+    assert(json.encode(rng())==json.encode(after_rng) and json.encode(people())==json.encode(after_people) and json.encode(caravan_state())==json.encode(after_caravan),'Refusal refresh/rejection changed simulation')
+    assert(session_probe('close',id).status==3);assert(trade.talkline==line,'Owned ethical refusal changed native menu')
+   end
+   sample.after={people=people(),caravan=caravan_state(),rng=rng(),transfers=transfers()}
+   assert(sample.dialogue==test[4] and caravan.time_remaining<=501,'Ethical offer did not apply native refusal')
+   assert(json.encode(sample.before.transfers)==json.encode(sample.after.transfers),'Ethical refusal transferred goods')
+   result.ethics.cases[#result.ethics.cases+1]=sample
+  end
+  result.success=true;return
+ end
  click(440,694);click(900,694)
  local anvil,bar
  for _,item in ipairs(trade.good[0])do if item:getType()==df.item_type.ANVIL then anvil=item;break end end
@@ -241,6 +287,7 @@ local ok,err=xpcall(function()
  assert(not trade.counter_offer and trade.talkline==line,'Owned negotiation changed native menu')
  result.rng_equal=true;result.rng_cursor=after.cursor;result.success=true
 end,debug.traceback)
+trade.civ.resources.ethic.KILL_ANIMAL=original_ethics.animal;trade.civ.resources.ethic.KILL_PLANT=original_ethics.plant
 restore_people(original_people);restore_caravan(original_caravan);set_rng(original_rng)
 caravan.goods:resize(0);for _,id in ipairs(history)do caravan.goods:insert("#",id)end
 caravan.total_capacity.whole=mass.whole;caravan.total_capacity.fraction=mass.fraction

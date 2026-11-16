@@ -2,7 +2,6 @@ extends "res://scripts/well_sheet_view.gd"
 # Staged native depot body. Goods/trade navigation must be connected before exposure.
 signal goods_requested
 signal trade_requested
-signal broker_requested(id: int)
 const MODES=["Broker requested at depot","Anyone requested at depot","No trader needed at depot"]
 var broker_recipe: Dictionary={}
 var broker_texture: Texture2D
@@ -33,7 +32,6 @@ func _gui_input(event: InputEvent) -> void:
 			if Rect2(16,top,216,36).has_point(event.position):goods_requested.emit();accept_event();return
 			top+=36
 		if body.trade_available and body.worker_id>=0 and Rect2(16,top,112,36).has_point(event.position):trade_requested.emit();accept_event();return
-		if body.broker_id>=0 and broker_rect().has_point(event.position):broker_requested.emit(body.broker_id);accept_event();return
 	super._gui_input(event)
 func _draw() -> void:
 	super._draw()

@@ -113143,6 +113143,134 @@
           "presentations/godot/project/tests/trade_exchange_wire_live.gd": "75fdbfd7ce9ccbf3b969ff8c3ac18cdc9ecf6b4ffab821e7eb77fcf3af899fed",
           "tools/smoke/depot-trade-negotiate-native.lua": "3a505364d7ec5576b2cb3a6b83c87c033fd6f4a6436fd3f4f33c6b2ae8503ae4"
         }
+      },
+      "depot_broker_input_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-093233",
+        "owned_df_pid": 45864,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Informational broker name/portrait native clicks retain building and camera. Actual main scene retains depot ownership after both clicks; four full-panel comparisons and Escape pass. Temporary child assignment is a display fixture, not office eligibility. Known rendering-thread/finalize/two ObjectDB diagnostics retained. Public map routes remain hidden.",
+        "broker": {
+          "cases": [
+            {
+              "accessible": true,
+              "activity": "Drink",
+              "background": 0,
+              "bright": true,
+              "broker_id": 988,
+              "broker_name": "îton Unibmamot, Dwarven Child",
+              "flags": 2,
+              "foreground": 3,
+              "goods": false,
+              "label": "assigned",
+              "scene": {
+                "roundtrip": true,
+                "success": true,
+                "surface": "actual main scene"
+              },
+              "trade": false,
+              "worker": -1
+            },
+            {
+              "accessible": true,
+              "activity": "Play Make Believe",
+              "background": 0,
+              "bright": true,
+              "broker_id": 988,
+              "broker_name": "îton Unibmamot, Dwarven Child",
+              "flags": 2,
+              "foreground": 2,
+              "goods": false,
+              "label": "activity",
+              "scene": {
+                "roundtrip": true,
+                "success": true,
+                "surface": "actual main scene"
+              },
+              "trade": false,
+              "worker": -1
+            },
+            {
+              "accessible": false,
+              "activity": "",
+              "background": 0,
+              "bright": false,
+              "broker_id": -1,
+              "broker_name": "",
+              "flags": 2,
+              "foreground": 7,
+              "goods": false,
+              "label": "missing-figure",
+              "scene": {
+                "roundtrip": true,
+                "success": true,
+                "surface": "actual main scene"
+              },
+              "trade": false,
+              "worker": -1
+            }
+          ],
+          "navigation": [
+            {
+              "after": [
+                103,
+                84,
+                165
+              ],
+              "before": [
+                103,
+                84,
+                165
+              ],
+              "id": 54,
+              "label": "name",
+              "sheet": 2
+            },
+            {
+              "after": [
+                103,
+                84,
+                165
+              ],
+              "before": [
+                103,
+                84,
+                165
+              ],
+              "id": 54,
+              "label": "portrait",
+              "sheet": 2
+            }
+          ],
+          "restored": {
+            "accessible": false,
+            "activity": "",
+            "background": 0,
+            "bright": false,
+            "broker_id": -1,
+            "broker_name": "",
+            "flags": 2,
+            "foreground": 7,
+            "goods": false,
+            "label": "restored",
+            "scene": {
+              "roundtrip": true,
+              "success": true,
+              "surface": "actual main scene"
+            },
+            "trade": false,
+            "worker": -1
+          },
+          "success": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-093233/depot-settings-native.json": "325975ad0524b390f08f95d4ce08670e3e0da7c574e95a146f18f2b1f4afa9f8",
+          "build/stockpile-storage-native-farm-discovery-20261116-093233/result.json": "55139118a6115bcfd1950547b33c35fc9532d8fefb24f7a2fa6b55819188a0cb",
+          "build/stockpile-storage-native-farm-discovery-20261116-093233/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-093233/depot-scene.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e",
+          "tools/smoke/depot-settings-native.lua": "83dae6ec3af156b053f8f7a0bbf9438d296c7cf488b58c663e8dd3d41d187a13",
+          "presentations/godot/project/tests/depot_scene_live.gd": "06c84dda68f1306e0c7943ef9abb062d6f47350d0e753fa6c7b3f70d0c0a6ee2"
+        }
       }
     },
     "pending_construction_reference": {

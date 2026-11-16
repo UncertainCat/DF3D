@@ -3239,9 +3239,21 @@ job pointer and depot flags are restored; native selection and paused frame stay
 unchanged. Owned DF44912 closes unsaved with source preservation, graphics capped
 30FPS, sampled GPU60C. Core19 passes; only the established rendering-thread,
 finalize and two ObjectDB diagnostics remain. Evidence:
-`completed_sheet_discovery_reference.depot_broker_scene_reference`. Inaccessible
-broker appearance, goods/trade buttons and navigation remain unqualified. Public depot map
-and holder routes remain hidden until those workflows are complete.
+`completed_sheet_discovery_reference.depot_broker_scene_reference`.
+
+The broker row is informational. Protected093233 on2026-11-16 independently
+clicks the native name and portrait: both retain building54 and camera103,84,165.
+Native depot input1af8b5..1afacf handles goods, Trade and request modes without
+a broker navigation action. The unused viewer broker-navigation signal is removed.
+The actual main scene retains depot ownership after both clicks, passes four
+full-panel image comparisons and releases ownership on Escape. The temporary
+child assignment remains a display fixture, not evidence of office eligibility.
+Owned DF45864 closes unsaved/source-preserved at30FPS; GPU samples58–59C.
+The established rendering-thread/finalize/two ObjectDB diagnostics remain;
+all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_broker_input_reference`.
+Inaccessible broker appearance remains unqualified. Goods and Trade evidence
+is maintained in their owning sections; public map and holder routes remain hidden.
 
 ### Depot goods native reference and ownership boundary
 

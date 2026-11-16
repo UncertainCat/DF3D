@@ -38,6 +38,10 @@ func exercise(expected: Dictionary) -> void:
 	if expected.has("reference"):
 		check(owner.state.snapshot.depot.broker_id==int(expected.broker_id),"Depot broker identity differs")
 		await panel_capture("depot-broker",expected.reference)
+		if int(expected.broker_id)>=0:
+			for offset in [Vector2(18,18),Vector2(168,18)]:
+				await pointer(owner.panel.get_global_transform_with_canvas()*(owner.panel.broker_rect().position+offset))
+				check(scene._ui.host.active==owner and owner.panel.visible and owner.state.building_id==int(expected.id),"Informational broker row navigated away from depot")
 		key(KEY_ESCAPE);await drain()
 		check(scene._ui.host.active==null,"Depot retained broker panel ownership")
 		exercised=true

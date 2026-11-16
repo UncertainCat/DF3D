@@ -102,6 +102,21 @@ local ok,err=xpcall(function()
   end
   local broker_ok,broker_err=xpcall(function()
    result.broker={cases={read('assigned',true)}}
+   if os.getenv('DF3D_DEPOT_BROKER_NAV')=='1' then
+    result.broker.navigation={}
+    local sheet=df.global.game.main_interface.view_sheets
+    for _,point in ipairs{{'name',600,370},{'portrait',450,370}}do
+     local before={df.global.window_x,df.global.window_y,df.global.window_z}
+     g.precise_mouse_x=point[2];g.precise_mouse_y=point[3];g.mouse_x=point[2]//8;g.mouse_y=(point[3]-4)//12
+     df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+     df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+     result.broker.navigation[#result.broker.navigation+1]={label=point[1],sheet=sheet.active_sheet,id=sheet.active_id,before=before,after={df.global.window_x,df.global.window_y,df.global.window_z}}
+     assert(sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==b.id,'Broker row navigated away from depot')
+     assert(before[1]==df.global.window_x and before[2]==df.global.window_y and before[3]==df.global.window_z,'Broker row moved camera')
+     capture('depot-broker-navigation-'..point[1])
+     gui.simulateInput(view,'LEAVESCREEN');select_map(b);view:render(dfhack.getTickCount())
+    end
+   end
    unit.job.current_job=nil
    result.broker.cases[#result.broker.cases+1]=read('activity',true)
    assignment.histfig=-1

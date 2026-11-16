@@ -62,6 +62,20 @@ for _,kind in ipairs(kinds)do
    local chars={};for x=52,112 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
    local text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','');if text:find('%S')then row.lines[#row.lines+1]={y=y,text=text}end
   end
+  if kind==28 and os.getenv('DF3D_CAGE_NATIVE')=='1' then
+   local text,code=dfhack.run_command_silent('df3d','cage-room-read',tostring(b.id))
+   assert(code==0,text);row.room_body=json.decode(text)
+   local screen={};for _,line in ipairs(row.lines)do screen[#screen+1]=line.text end
+   screen=table.concat(screen,'\n')
+   local body=row.room_body
+   assert(body.building_id==b.id)
+   if body.room_id>=0 then
+    assert(screen:find(body.introduction,1,true) and screen:find(body.name,1,true),'Cage room copy differs from native')
+    local found=false;for _,zone in ipairs(b.relations)do if zone.id==body.room_id then found=true;assert(zone.type==body.room_type)end end
+    assert(found,'Cage room absent from semantic relations')
+   end
+   for _,notice in ipairs(body.notices)do assert(screen:find(notice,1,true),'Cage room notice differs from native')end
+  end
   if kind==18 and os.getenv('DF3D_WELL_PROVIDER')=='1' then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','well-status-native.lua')
    result.well_status=assert(loadfile(source))(out,view,b,capture)

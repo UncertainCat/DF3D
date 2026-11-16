@@ -113590,6 +113590,30 @@
           "build/stockpile-storage-native-farm-discovery-20261116-105758/cage-picker-view.png": "8289cf2697b54ff84a83bcfeed8ec18f477f581bfa50a90c7a9bd9d7de208dd3",
           "presentations/godot/project/tests/cage_picker_capture.gd": "16fca65b98387942d9bf52aafa295a7743e2645a32bf882ae042712954752fca"
         }
+      },
+      "cage_room_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-111718",
+        "owned_df_pid": 55800,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "room_body": {
+          "building_id": 261,
+          "introduction": "This furniture is a part of",
+          "name": "Unnamed memorial hall",
+          "notices": [],
+          "room_id": 259,
+          "room_type": 87,
+          "rooms": [
+            259
+          ]
+        },
+        "scope": "Read-only cage room provider uses native54bb10 relation predicate shared with coffin. Ordinary cage261 room259 identity/type and visible name/introduction match native. Prior typed candidate/edit/stale restoration checks retained. No public header transport or room navigation qualified.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-111718/remaining-buildings-native.json": "b3328d9269837872f80eea1dbb4090f6b14a889e1519ed13708738b29c426f99",
+          "build/stockpile-storage-native-farm-discovery-20261116-111718/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-111718/result.json": "5dc5786d8e97f49e0e13065126984adfdb4e2526bd622fd1ade4c2b7ee2adc66",
+          "build/stockpile-storage-native-farm-discovery-20261116-111718/cage-wire-result.json": "093d52af500601803c37d0cee63794a9183f5bf581719ac2faec27b20264af89"
+        }
       }
     },
     "pending_construction_reference": {

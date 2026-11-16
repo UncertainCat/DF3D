@@ -3201,6 +3201,25 @@ not live acceptance: the cage header admission and native room-membership body
 are still missing, so no public route is enabled. Next qualify the complete parent
 and map-entry/assignment/close workflow. Room membership is visible in the native
 parent and must not be omitted when exposing it.
+`building_room_native.h` shares the native54bb10 room predicate with the coffin
+provider. Cage renderer18edc1..18ee88 filters its semantic relations using this
+predicate; the owned reader copies only IDs, type and native name/copy. It never
+calls the renderer or reads the selected sheet. Diagnostic `cage-room-read` exposes
+this read for protected comparison. Protected111718 (DF55800) matches cage261's
+room259/type87, native introduction and Unnamed memorial hall. Existing typed
+candidate/assignment/stale-restoration checks also pass, with source unchanged
+and unsaved cleanup at30FPS; sampled GPU60C. Bridge build and root19 pass.
+Evidence: `completed_sheet_discovery_reference.cage_room_reference`. This ordinary
+single-room evidence does not qualify multiple/no-room render variants or navigation.
+
+The native type dispatch19fbe0/19fb8c maps Cage28 to18c6e2 and Chain27 to190341.
+The cage body hides its assignment/options when native isJusticeRestraint
+(vtable slot60) is true. Otherwise material predicate145bee0 with flag49
+(IS_GLASS) gates Terrarium/Aquarium controls. Native input1af04f..1af064 clears
+cage_flags bit1 and sets bit2 for Terrarium;1af0a2 sets bits1/2 for Aquarium.
+These controls and the justice gate still need semantic transport/effect acceptance;
+ordinary lead-cage evidence does not authorize omitting them from a public cage UI.
+
 Shared animal presentation components can be reused only where their semantics
 match; a zone ID must not stand in for cage authority.
 

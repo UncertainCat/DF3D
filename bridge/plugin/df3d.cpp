@@ -5675,6 +5675,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         } else if(parameters.size()==2)return CR_FAILURE;
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="cage-room-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& value=parameters[1];
+        const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        auto* building=df::building::find(id);if(!building)return CR_FAILURE;
+        const auto body=df3d_production::cageRoomBody(*building);if(!body)return CR_FAILURE;
+        Json::Value result;result["building_id"]=id;result["room_id"]=body->roomId;result["room_type"]=body->roomType;
+        result["introduction"]=DF2UTF(body->introduction);result["name"]=DF2UTF(body->name);
+        result["rooms"]=Json::Value(Json::arrayValue);for(auto room:body->relevantZones)result["rooms"].append(room);
+        result["notices"]=Json::Value(Json::arrayValue);for(const auto& text:body->notices)result["notices"].append(DF2UTF(text));
+        out.print("{}",Json::FastWriter().write(result));return CR_OK;
+      }
       if(parameters[0]=="cage-candidates-read") {
         if(parameters.size()!=2)return CR_WRONG_USAGE;
         int32_t id=-1;const auto& value=parameters[1];

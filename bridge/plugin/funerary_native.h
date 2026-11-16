@@ -2,6 +2,7 @@
 #include "unit_description_native.h"
 #include "building_item_native.h"
 #include "zone_native.h"
+#include "building_room_native.h"
 #include "df/building_actual.h"
 #include "df/building_civzonest.h"
 #include "df/item_slabst.h"
@@ -56,17 +57,9 @@ inline std::optional<FuneraryBody> funeraryBody(df::building* building) {
         static_assert(offsetof(df::building,relations)==0xa0);
         static_assert(offsetof(df::building_civzonest,type)==0x150);
         static_assert(offsetof(df::building_civzonest,assigned_unit_id)==0x1a0);
-        if(building->relations.size()>10000)return std::nullopt;
-        using Relevant=bool(*)(int32_t);
+        const auto rooms=relevantBuildingRooms(*building);if(!rooms)return std::nullopt;
         df::building_civzonest* tomb=nullptr;
-        // Renderer194b0f..194e56 owns this filtered list; use semantic
-        // relations with the same native predicate, never menu list storage.
-        for(auto* zone:building->relations) {
-            if(!zone)return std::nullopt;
-            if(reinterpret_cast<Relevant>(base+0x54bb10)(int32_t(zone->type))) {
-                result.relevantZones.push_back(zone->id);tomb=zone;
-            }
-        }
+        for(auto* zone:*rooms){result.relevantZones.push_back(zone->id);tomb=zone;}
         if(result.relevantZones.empty()) {
             for(const size_t rva:{0x1601c90,0x1601c78,0x1601c60})result.notices.emplace_back(reinterpret_cast<const char*>(base+rva));
         }else if(result.relevantZones.size()>1)result.notices.emplace_back(reinterpret_cast<const char*>(base+0x1601820));

@@ -46,6 +46,7 @@ local original_rng=rng();local original_people=people();local original_caravan=c
 local mass={whole=caravan.total_capacity.whole,fraction=caravan.total_capacity.fraction};local line=trade.talkline
 local result={}
 local accept_mode=os.getenv('DF3D_DEPOT_TRADE_ACCEPT')
+local active_okay=os.getenv('DF3D_DEPOT_TRADE_ACTIVE_OKAY')=='1'
 assert(not accept_mode or accept_mode=='native' or accept_mode=='owned' or accept_mode=='session' or accept_mode=='wire')
 local history={};for _,id in ipairs(caravan.goods)do history[#history+1]=id end
 if accept_mode=='wire' then
@@ -106,6 +107,14 @@ local ok,err=xpcall(function()
  if accept_mode then
   result.accept_before=transfers();result.counter_goods=goods()
   if accept_mode=='native' then
+   if active_okay then
+    local before_rng=rng();local before_people=people();local before_transfers=transfers();local before_goods=goods()
+    click(920,166)
+    assert(trade.counter_offer and #trade.counter_offer_item==0 and trade.talkline==24)
+    assert(json.encode(rng())==json.encode(before_rng) and json.encode(people())==json.encode(before_people) and json.encode(transfers())==json.encode(before_transfers) and json.encode(goods())==json.encode(before_goods),'Active Okay changed simulation or draft')
+    result.active_okay={counter_offer=trade.counter_offer,dialogue=trade.talkline,requested_items=0,effects_unchanged=true}
+    capture('depot-trade-active-okay')
+   end
    click(508,730)
    result.accept_conversation={dialogue=trade.talkline,counter_offer=trade.counter_offer,announcement={}}
    for _,text in ipairs(trade.big_announce.text)do result.accept_conversation.announcement[#result.accept_conversation.announcement+1]=dfhack.df2utf(text.value)end
@@ -115,7 +124,7 @@ local ok,err=xpcall(function()
    restore_people(initial_people);restore_caravan(initial_caravan);trade.counter_offer=false;trade.counter_offer_item:resize(0);trade.talkline=line
    set_rng(controlled)
    if accept_mode=='wire' then
-    local file=assert(io.open(out..'/trade-exchange-wire-expected.json','w'));file:write(json.encode({depot=trade.bld.id,intents=intents,counter_items=result.native.items}));file:close()
+    local file=assert(io.open(out..'/trade-exchange-wire-expected.json','w'));file:write(json.encode({depot=trade.bld.id,intents=intents,counter_items=result.native.items,active_okay=active_okay}));file:close()
     capture('trade-exchange-wire')
     file=assert(io.open(out..'/trade-exchange-wire-result.json'));local wire=json.decode(file:read('*a'));file:close();assert(wire.success,json.encode(wire))
     result.accept_conversation={dialogue=wire.final.dialogue,counter_offer=wire.final.counter_offer,announcement=wire.final.announcement};result.wire=wire

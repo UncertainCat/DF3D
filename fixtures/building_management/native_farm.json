@@ -101876,6 +101876,68 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_counter_composite_reference": {
+        "df_version": "53.16",
+        "steam_build": "24557528",
+        "ordinary_wire_capture": "build/stockpile-storage-native-farm-discovery-20261116-082027",
+        "ordinary_native_capture": "build/stockpile-storage-native-farm-discovery-20261115-224201",
+        "active_okay_native_capture": "build/stockpile-storage-native-farm-discovery-20261116-082311",
+        "active_okay_wire_capture": "build/stockpile-storage-native-farm-discovery-20261116-082406",
+        "native_df_pid": 50108,
+        "wire_df_pid": 37752,
+        "ordinary_wire_df_pid": 41956,
+        "native_active_okay": {
+          "counter_offer": true,
+          "dialogue": 24,
+          "effects_unchanged": true,
+          "requested_items": 0
+        },
+        "compared_effects_sha256": {
+          "accept_before": "25a57c7f4ac71c4298c68040a48f6b8c2022b49ab7d5360d03044ac37ec1faef",
+          "accept_after": "694ebf6a6c3d839578ad6191a0d4c0b869572649f64b12229220dd9d4e258b2e",
+          "accept_people": "51f701342e9ca8ba4bd4e224a589efc5ea593a27ee396f27afc53c06c059aca8",
+          "accept_caravan": "86a18fb8c36ccd1f9121e2b1c296892b3fc7fb7618ec1abf6c5e8eed19dc03b3",
+          "accept_rng": "d6141c80581cd04270474969b1d39d621a767a8ba8e16d0d30d89bfed636c9f1",
+          "accept_conversation": "fd4913d8fdf051a7862440fcfb563fb6a7ae5973ceb0dc4862521080c73fd1b2"
+        },
+        "active_okay_effects_equal": true,
+        "ordinary_effects_equal": true,
+        "changed_items": 8,
+        "full_panel_pixel_equal": true,
+        "panel_region": [
+          32,
+          52,
+          944,
+          708
+        ],
+        "rendered_states": [
+          "counteroffer",
+          "accepted with retained requested list",
+          "active counteroffer after Okay",
+          "accepted after early Okay"
+        ],
+        "wire_pointer_actions": [
+          "Trade",
+          "Accept Counteroffer",
+          "Okay before acceptance",
+          "Okay after acceptance"
+        ],
+        "controls_unchanged_with_indented_art": true,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "fps_cap": 30,
+        "sampled_gpu_celsius": [
+          59,
+          62
+        ],
+        "limits": [
+          "1200x800",
+          "five requested counteroffer items",
+          "synthetic caravan and controlled negotiation RNG",
+          "not main-scene depot navigation plus actual exchange",
+          "foreign-caravan accounting and long counteroffer lists remain unqualified"
+        ]
+      },
       "depot_trade_announcement_scroll_reference": {
         "df_version": "53.16",
         "steam_build": "24557528",

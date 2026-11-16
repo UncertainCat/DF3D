@@ -52,6 +52,41 @@ narrow widths. Protocol245 transport and pane integration are qualified in the
 session transport section below. Trade remains hidden until its complete
 workflow is ready.
 
+### Composite counteroffer workflow
+
+The assembled Trade view routes Trade/Accept Counteroffer and Okay through the
+owned session. Requested items control pane visibility independently of the
+counteroffer flag. Native Okay before acceptance clears only that list; the
+Accept Counteroffer action remains available, and acceptance still transfers
+the agreed goods. Okay after acceptance returns to ordinary fortress goods.
+The counteroffer pane extends one character cell farther right than the ordinary
+goods area. Indented item backgrounds retain their native full width, including
+the16px indentation beyond the unindented controls; control hitboxes retain their
+original width. These were integration defects caught by full-panel comparison.
+
+Protected082027 on2026-11-16 (DF41956) executes Trade, Accept Counteroffer and
+post-acceptance Okay through actual composite buttons. Effects match native224201
+for eight transferred items, caravan accounting/state, both traders' skills and
+attributes, and active RNG. Protected082311 (native DF50108) and082406 (wire
+DF37752) additionally dismiss the list before acceptance. Native verifies that
+this Okay leaves goods, people, transfers and RNG unchanged while retaining the
+counteroffer flag. The owned workflow preserves that state, accepts afterward,
+and matches all tracked final effects. Refresh, pending exclusion, stale actions
+and session closure remain covered. Synthetic prerequisites/control of RNG are
+confined to disposable oracles; runtime does not rewind simulation state.
+
+The complete944x708 panel at1200x800 matches native in the active counteroffer,
+accepted retained-list, active-after-Okay and accepted-after-early-Okay states.
+Pointer dispatch is also exercised in rendered checks. Ordinary Trade remains
+pixel-exact against075110 after the clipping correction. Native sessions close
+unsaved/source-preserved; graphics are serial30FPS and wire clients are headless.
+Final client/render stderr is clean, GPU samples59–62C, and all19 core checks pass.
+Evidence: completed_sheet_discovery_reference.depot_trade_counter_composite_reference.
+These fixtures have five requested items; they do not qualify long lists,
+minimum dimensions, foreign-caravan accounting, or main-scene depot navigation
+combined with an actual exchange. Public Trade remains hidden until those gaps
+are resolved.
+
 ## Owned native negotiation execution
 
 TradeNegotiationNative.negotiate checks the owned offer, computes actual values

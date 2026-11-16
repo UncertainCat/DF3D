@@ -38,14 +38,16 @@ func layout(panel_size: Vector2) -> void:
 		searches[side].position=Vector2(x,0);searches[side].size=Vector2(width,36)
 		canvases[side].position=Vector2(x,36);canvases[side].size=Vector2(width,maxi(0,floori((size.y-36)/36)*36))
 		bars[side].position=Vector2(x+width-16,36);bars[side].size=Vector2(16,canvases[side].size.y);bars[side].page=int(canvases[side].size.y/12)
-	counter.position=Vector2(left+24,0);counter.layout(Vector2(size.x-left-24,size.y))
+	# Native counteroffer rows extend one cell farther right than ordinary goods.
+	counter.position=Vector2(left+24,0);counter.layout(Vector2(size.x-left-16,size.y))
 	refresh()
 func refresh() -> void:
 	if state==null or canvases.is_empty():return
 	for side in range(2):
 		var page: Dictionary=state.pages[side]
 		bars[side].set_rows(int(page.get("total",0))*3,0 if state.phase==state.Phase.Closed else bars[side].first)
-		canvases[side].size.x=searches[side].size.x-(16 if bars[side].visible else 0)
+		# Native indented row art retains its full width beyond the unindented controls.
+		canvases[side].size.x=_row_width(side)+16
 		searches[side].editable=state.phase in [state.Phase.Active,state.Phase.Applying,state.Phase.GoodsReading]
 		# Keep locally typed text while native filtering is pending.
 		if state.goods_ready() and not searches[side].has_focus():searches[side].set_bytes(String(page.get("query","")).to_utf8_buffer())
@@ -89,14 +91,15 @@ func _patch(canvas: Control,token: String,origin: Vector2,columns: int) -> void:
 		for x in columns:canvas.draw_texture_rect_region(texture,Rect2(origin+Vector2(x*8,y*12),Vector2(8,12)),Rect2(0 if x==0 else 16 if x==columns-1 else 8,y*12,8,12))
 func _text(canvas: Control,value: String,point: Vector2,color: int) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(canvas.get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[color])
+func _row_width(side: int) -> float:return searches[side].size.x-(16 if bars[side].visible else 0)
 func _draw_side(side: int) -> void:
 	if state==null or colors.size()!=16:return
-	var canvas: Control=canvases[side];var page: Dictionary=state.pages[side]
+	var canvas: Control=canvases[side];var width: float=_row_width(side);var page: Dictionary=state.pages[side]
 	for index in page.get("rows",[]).size():
 		var row: Dictionary=page.rows[index];var y: int=(int(page.offset)+index)*36-bars[side].first*12
 		if y+36<=0 or y>=canvas.size.y:continue
 		var indent:=16 if row.parent>=0 else 0
-		_patch(canvas,"BUTTON_CATEGORY_RECTANGLE" if row.group else "BUTTON_RECTANGLE",Vector2(indent,y),int(canvas.size.x/8))
+		_patch(canvas,"BUTTON_CATEGORY_RECTANGLE" if row.group else "BUTTON_RECTANGLE",Vector2(indent,y),int(width/8))
 		if row.group:_text(canvas,row.caption,Vector2(16,y+24),15)
 		else:
 			var frame: Texture2D=picture.texture(false)
@@ -105,16 +108,16 @@ func _draw_side(side: int) -> void:
 					for fx in 5:canvas.draw_texture_rect_region(frame,Rect2(indent+fx*8,y+fy*12,8,12),Rect2(0 if fx==0 else 16 if fx==4 else 8,fy*12,8,12))
 			var icon: Texture2D=icons.get(row.id,{}).get("texture")
 			if icon!=null and y>=0 and y+36<=canvas.size.y:canvas.draw_texture_rect(icon,Rect2(indent+2,y+2,32,32),false)
-			var caption: String=row.caption;var length: int=maxi(0,int((canvas.size.x-indent)/8)-24)
+			var caption: String=row.caption;var length: int=maxi(0,int((width-indent)/8)-24)
 			if caption.length()>length:caption=caption.substr(0,length-3)+"..." if length>3 else caption.substr(0,length)
-			if row.appraisal>0:caption=caption.substr(0,maxi(0,int((canvas.size.x-264-indent)/8)))
+			if row.appraisal>0:caption=caption.substr(0,maxi(0,int((width-264-indent)/8)))
 			_text(canvas,caption,Vector2(indent+56,y+24),[14,15,13,12,10][row.disposition])
-			if row.contained_count>0:_text(canvas,row.contents_caption.substr(0,maxi(0,int((canvas.size.x-264-indent)/8))),Vector2(indent+56,y+36),14)
-			if row.appraisal>0:_text(canvas,"Value: "+row.value_caption,Vector2(canvas.size.x-208,y+24),14)
-			_text(canvas,"Weight: "+row.weight_caption,Vector2(canvas.size.x-208,y+36),15)
+			if row.contained_count>0:_text(canvas,row.contents_caption.substr(0,maxi(0,int((width-264-indent)/8))),Vector2(indent+56,y+36),14)
+			if row.appraisal>0:_text(canvas,"Value: "+row.value_caption,Vector2(width-208,y+24),14)
+			_text(canvas,"Weight: "+row.weight_caption,Vector2(width-208,y+36),15)
 		if not row.group or row.flags&3:
 			var texture: Texture2D=art.texture("ASSIGN_TRADE_SELECTED" if row.flags&1 else "ASSIGN_TRADE_NOT_SELECTED")
-			if texture!=null:canvas.draw_texture_rect(texture,Rect2(canvas.size.x-40,y,24,36),false)
+			if texture!=null:canvas.draw_texture_rect(texture,Rect2(width-40,y,24,36),false)
 func _draw() -> void:
 	for side in range(searches.size()):draw_rect(Rect2(searches[side].position,Vector2(searches[side].size.x,size.y)),Color8(28,28,28))
 func _input(event: InputEvent) -> void:
@@ -130,12 +133,12 @@ func _gui_input(event: InputEvent) -> void:
 	if not ready():return
 	for side in range(2):
 		var canvas: Control=canvases[side];var local: Vector2=event.position-canvas.position
-		if not canvas.visible or not Rect2(Vector2.ZERO,canvas.size).has_point(local):continue
+		if not canvas.visible or not Rect2(Vector2.ZERO,Vector2(_row_width(side),canvas.size.y)).has_point(local):continue
 		if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:bars[side].move_to(bars[side].first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));return
 		if event.button_index!=MOUSE_BUTTON_LEFT:return
 		for search in searches:search.release_focus()
 		var index: int=int((local.y+bars[side].first*12)/36)-int(state.pages[side].offset)
 		if index<0 or index>=state.pages[side].rows.size():return
-		state.toggle_row(side,index,not (local.x>=canvas.size.x-40 and local.x<canvas.size.x-16));return
+		state.toggle_row(side,index,not (local.x>=_row_width(side)-40 and local.x<_row_width(side)-16));return
 func _exit_tree() -> void:
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)

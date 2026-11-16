@@ -40,6 +40,15 @@ func _initialize() -> void:call_deferred("run")
 func run() -> void:
 	for wrong_receipt in [false,true]:
 		setup();model.open(278);service.poll()
+		var cage:=snapshot();cage.type=28
+		cage.cage={"justice_restraint":false,"glass":true,"aquarium":false,"room":{"room_id":-1,"room_type":-1,"introduction":"","name":"","notices":[]}}
+		reply(cage);model.set_cage_aquarium(true);service.poll()
+		check(world.calls[-1].request.get("farm_operation")==C.FarmOperation.CageAquarium,"cage sends typed setting")
+		cage.revision+=1;cage.cage.aquarium=not wrong_receipt
+		reply(cage,C.FarmEditOutcome.Completed,C.FarmOperation.CageAquarium)
+		check(model.phase==(Model.Phase.Unknown if wrong_receipt else Model.Phase.Ready),"cage receipt must confirm explicit setting")
+	for wrong_receipt in [false,true]:
+		setup();model.open(278);service.poll()
 		var pump:=snapshot();pump.type=33
 		pump.machinery={"machine_id":-1,"produced":0,"required":0,"status":0,"stable_foundation":true,"disengaged":false,"pump_manual":0,"pump_direction":0}
 		reply(pump);model.set_pump_manual(true);service.poll()

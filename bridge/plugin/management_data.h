@@ -1,4 +1,5 @@
 #pragma once
+#include "cage_body.h"
 #include "bed_appearance_native.h"
 #include "item_appearance_recipe.h"
 #include "lua_fields.h"
@@ -207,6 +208,7 @@ struct BuildingHeaderSnapshot {
   std::optional<MachineryBodySnapshot> machinery;
   std::optional<WellBodySnapshot> well;
   std::optional<DepotBodySnapshot> depot;
+  std::optional<df3d_production::CageBody> cage;
 };
 struct BuildingHeaderState {
   std::optional<BuildingHeaderSnapshot> snapshot;

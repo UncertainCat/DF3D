@@ -1,6 +1,7 @@
 #pragma once
 #include "machinery_body.h"
 #include "depot_body.h"
+#include "cage_body.h"
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -19,6 +20,7 @@ struct BuildingHeaderObservation {
     std::optional<MachineryBody> machinery;
     std::optional<uint8_t> wellStatus;
     std::optional<DepotBody> depot;
+    std::optional<CageBody> cage;
 };
 inline uint64_t buildingHeaderRevision(const BuildingHeaderObservation& value) {
     uint64_t hash=UINT64_C(14695981039346656037);
@@ -39,6 +41,11 @@ inline uint64_t buildingHeaderRevision(const BuildingHeaderObservation& value) {
         number(v.workerId);number(v.brokerId);number(v.brokerJobId);number(v.foreground);number(v.background);byte(v.bright);byte(v.accessible);
         for(const auto* text:{&v.brokerName,&v.activity}){number(text->size());for(unsigned char c:*text)byte(c);}}
 
+    if(value.cage){const auto& v=*value.cage;number(v.flags);number(v.materialType);number(v.materialIndex);byte(v.justiceRestraint);byte(v.glass);
+        number(v.room.buildingId);number(v.room.roomId);number(v.room.roomType);number(v.room.relevantZones.size());
+        for(auto id:v.room.relevantZones)number(id);
+        for(const auto* text:{&v.room.introduction,&v.room.name}){number(text->size());for(unsigned char c:*text)byte(c);}
+        number(v.room.notices.size());for(const auto& text:v.room.notices){number(text.size());for(unsigned char c:text)byte(c);}}
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;
 }
 inline bool validBuildingHeader(const BuildingHeaderObservation& value) {
@@ -48,10 +55,11 @@ inline bool validBuildingHeader(const BuildingHeaderObservation& value) {
         (value.removing || (!value.suspended && !value.hasWorker)) &&
         (value.type==18)==value.wellStatus.has_value() && (!value.wellStatus || *value.wellStatus<=3) &&
         (value.type==6)==value.depot.has_value() && (!value.depot || validDepotBody(*value.depot)) &&
+        (value.type==28)==bool(value.cage) && (!value.cage || value.cage->room.buildingId==value.id) &&
         machineryType(value.type)==bool(value.machinery) &&
         (!value.machinery || validMachineryBody(*value.machinery,value.type)) && value.revision==buildingHeaderRevision(value);
 }
-enum class BuildingHeaderOperation : uint8_t { Rename, Remove, CancelRemoval, PumpManual, DepotMode };
+enum class BuildingHeaderOperation : uint8_t { Rename, Remove, CancelRemoval, PumpManual, DepotMode, CageAquarium };
 enum class BuildingHeaderOutcome : uint8_t { Rejected, Completed, Stale, Unknown };
 struct BuildingHeaderEdit {
     BuildingHeaderOutcome outcome=BuildingHeaderOutcome::Rejected;
@@ -68,15 +76,19 @@ BuildingHeaderEdit finishBuildingHeaderEdit(const BuildingHeaderObservation& bef
     BuildingHeaderEdit result;
     if(!expected || !validBuildingHeader(before) || before.stage!=before.maxStage)return result;
     if(operation!=BuildingHeaderOperation::Rename && operation!=BuildingHeaderOperation::Remove &&
-       operation!=BuildingHeaderOperation::CancelRemoval && operation!=BuildingHeaderOperation::PumpManual && operation!=BuildingHeaderOperation::DepotMode)return result;
+       operation!=BuildingHeaderOperation::CancelRemoval && operation!=BuildingHeaderOperation::PumpManual && operation!=BuildingHeaderOperation::DepotMode && operation!=BuildingHeaderOperation::CageAquarium)return result;
     const bool pump=operation==BuildingHeaderOperation::PumpManual;
     const bool depot=operation==BuildingHeaderOperation::DepotMode;
-    if(pump ? (before.type!=33 || pumpValue<0 || pumpValue>1) : depot ? (before.type!=6 || pumpValue<0 || pumpValue>2) : pumpValue!=-1)return result;
+    const bool cage=operation==BuildingHeaderOperation::CageAquarium;
+    if(cage && (before.type!=28 || !before.cage || before.cage->justiceRestraint || !before.cage->glass || pumpValue<0 || pumpValue>1))return result;
+    const uint16_t cageFlags=cage?uint16_t((before.cage->flags&~2U)|(pumpValue?6U:4U)):0;
+    if(pump ? (before.type!=33 || pumpValue<0 || pumpValue>1) : depot ? (before.type!=6 || pumpValue<0 || pumpValue>2) : !cage && pumpValue!=-1)return result;
     const uint32_t depotFlags=depot?(pumpValue==0?(before.depot->flags|1U)&~2U:pumpValue==1?before.depot->flags|3U:before.depot->flags&~1U):0;
     const bool rename=operation==BuildingHeaderOperation::Rename;
     if((rename && (name.size()>30 || name.find('\0')!=std::string::npos)) || (!rename && !name.empty()))return result;
     if(expected!=before.revision){result.outcome=BuildingHeaderOutcome::Stale;return result;}
-    if((rename || pump || depot) ? before.removing : before.removing==(operation==BuildingHeaderOperation::Remove))return result;
+    if((rename || pump || depot || cage) ? before.removing : before.removing==(operation==BuildingHeaderOperation::Remove))return result;
+    if(cage && before.cage->flags==cageFlags){result.receipt=before;result.outcome=BuildingHeaderOutcome::Completed;return result;}
     if(depot && before.depot->flags==depotFlags){result.receipt=before;result.outcome=BuildingHeaderOutcome::Completed;return result;}
     if(pump && before.machinery->pumpManual==pumpValue){result.receipt=before;result.outcome=BuildingHeaderOutcome::Completed;return result;}
     if(rename && name==before.customName){result.receipt=before;result.outcome=BuildingHeaderOutcome::Completed;return result;}
@@ -122,6 +134,9 @@ BuildingHeaderEdit finishBuildingHeaderEdit(const BuildingHeaderObservation& bef
                     unchanged.depot->background=before.depot->background;unchanged.depot->bright=before.depot->bright;
                 }
             }
+        } else if(cage) {
+            if(!after->cage || after->cage->flags!=cageFlags)return result;
+            unchanged.cage->flags=before.cage->flags;
         } else if(pump) {
             if(!after->machinery || after->machinery->pumpManual!=pumpValue)return result;
             unchanged.machinery->pumpManual=before.machinery->pumpManual;

@@ -726,6 +726,29 @@ TEST_CASE("item recipes own references and invalidate observations") {
     item.appearance->corpseSelector->layers[0][5]=0;
     CHECK_FALSE(validInspectionInstrument(*item.appearance,23));
 }
+TEST_CASE("cage aquarium receipts require the native check-occupants effect") {
+    using namespace df3d_production;
+    BuildingHeaderObservation before;before.id=261;before.type=28;before.stage=before.maxStage=1;
+    before.nativeName=before.headerName="Cage";before.cage.emplace();
+    before.cage->room.buildingId=before.id;before.cage->glass=true;
+    before.revision=buildingHeaderRevision(before);
+    int calls=0;
+    auto after=before;after.cage->flags=4;after.revision=buildingHeaderRevision(after);
+    auto apply=[&]{++calls;return true;};auto observe=[&]{return std::optional<BuildingHeaderObservation>{after};};
+    auto result=finishBuildingHeaderEdit(before,before.revision,BuildingHeaderOperation::CageAquarium,"",apply,observe,0);
+    CHECK(result.outcome==BuildingHeaderOutcome::Completed);CHECK(calls==1);CHECK(result.mutated);
+    auto duplicate=finishBuildingHeaderEdit(after,after.revision,BuildingHeaderOperation::CageAquarium,"",apply,observe,0);
+    CHECK(duplicate.outcome==BuildingHeaderOutcome::Completed);CHECK_FALSE(duplicate.mutated);CHECK(calls==1);
+    after.cage->flags=2;after.revision=buildingHeaderRevision(after);
+    auto missingCheck=finishBuildingHeaderEdit(before,before.revision,BuildingHeaderOperation::CageAquarium,"",apply,observe,1);
+    CHECK(missingCheck.outcome==BuildingHeaderOutcome::Unknown);CHECK_FALSE(missingCheck.receipt);
+    auto changed=before;changed.cage->room.relevantZones.push_back(259);changed.revision=buildingHeaderRevision(changed);
+    auto stale=finishBuildingHeaderEdit(changed,before.revision,BuildingHeaderOperation::CageAquarium,"",apply,observe,1);
+    CHECK(stale.outcome==BuildingHeaderOutcome::Stale);CHECK(calls==2);
+    changed.cage->justiceRestraint=true;changed.revision=buildingHeaderRevision(changed);
+    auto blocked=finishBuildingHeaderEdit(changed,changed.revision,BuildingHeaderOperation::CageAquarium,"",apply,observe,1);
+    CHECK(blocked.outcome==BuildingHeaderOutcome::Rejected);CHECK(calls==2);
+}
 TEST_CASE("well status changes retire header edit authority") {
     using namespace df3d_production;
     BuildingHeaderObservation before;before.id=161;before.type=18;before.stage=before.maxStage=1;

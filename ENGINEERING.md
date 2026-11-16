@@ -3176,9 +3176,13 @@ native identity/type/name or notices. Cage headers require this body; other
 building types cannot carry it. Model and Godot decoders preserve those facts
 without reinterpreting the coffin body. CageAquarium is an explicit revision-bound
 header setting intent with a boolean value; confirmation requires a non-justice,
-glass cage. During this migration the bridge refuses that new intent explicitly.
-Native parent-provider connection and effect acceptance remain unfinished. Both
-peers must upgrade together; older recordings cannot infer these new facts.
+glass cage. The connected parent provider owns the room facts and includes cage
+flags, material, justice status and room relations/copy in edit authority. The
+pinned native material predicate supplies the glass gate; the setting reproduces
+the pinned inline WATER/CHECKOCCUPANTS update without borrowing UI state.
+Assignments reject justice restraints, and the staged picker retires when that
+status changes. Both peers must upgrade together; older recordings cannot infer
+these new facts. Glass effect/render acceptance remains unfinished.
 Protected112659 (DF52300) verifies the new intent reaches the bridge and rejects
 without effects while retaining prior cage reads/assignments/stale reversals and
 restoration. Source unchanged and unsaved cleanup pass at30FPS; sampled GPU59C.
@@ -3187,6 +3191,15 @@ extension builds, clean safe-thread engine contract check and all19 core checks
 pass. The initial core compile failed on a test builder field typo; the corrected
 rebuild and subsequent CTest are the accepted evidence. Reference:
 `completed_sheet_discovery_reference.cage_parent_contract_reference`.
+
+Protected114212 (DF56072) verifies the connected typed parent: native room259/type87
+and copy, ordinary lead/non-justice facts and non-glass setting rejection. Existing
+assignment edits/stale reversals restore original facts. Source unchanged, owned
+DF closed unsaved at30FPS; sampled GPU59C. Only the known separate-render-thread
+notice appears. Bridge build, core19 and safe-thread header/picker state checks
+pass. Initial114112 stopped on a test-client action typo before parent inspection;
+that run is not acceptance. Evidence:
+`completed_sheet_discovery_reference.cage_parent_provider_reference`.
 
 The production provider now calls the owned cage authority and shares native
 animal ordering, text/color/art recipes and row serialization with zones. Native
@@ -3235,8 +3248,10 @@ The cage body hides its assignment/options when native isJusticeRestraint
 (vtable slot60) is true. Otherwise material predicate145bee0 with flag49
 (IS_GLASS) gates Terrarium/Aquarium controls. Native input1af04f..1af064 clears
 cage_flags bit1 and sets bit2 for Terrarium;1af0a2 sets bits1/2 for Aquarium.
-These controls and the justice gate still need semantic transport/effect acceptance;
-ordinary lead-cage evidence does not authorize omitting them from a public cage UI.
+The parent transport and staged justice gate are connected. Glass setting effects,
+room/location icons, occupant body, composed rendering and public navigation still
+need qualification; ordinary lead-cage evidence does not authorize omitting them
+from a public cage UI.
 
 Shared animal presentation components can be reused only where their semantics
 match; a zone ID must not stand in for cage authority.

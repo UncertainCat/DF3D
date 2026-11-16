@@ -17,9 +17,13 @@ func run() -> void:
 	var page: Dictionary=response.get("production",{}).get("cage",{})
 	if not check(response.get("status")==C.ManagementStatus.Ok and page.get("revision",0)>0,"Cage read failed: "+str(response)):quit(1);return
 	var initial:=page.duplicate(true)
-	if OS.get_environment("DF3D_CAGE_PARENT_CONTRACT")=="1":
-		var unavailable:=await request("production",{"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":int(expected.id),"expected_revision":page.revision,"farm_operation":C.FarmOperation.CageAquarium,"item_value":1})
-		check(unavailable.get("status")==C.ManagementStatus.Rejected and unavailable.get("production",{}).get("building_header",{}).get("outcome")==C.FarmEditOutcome.Rejected,"Unconnected cage setting must reject without effects")
+	var parent_response:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":int(expected.id)})
+	var parent: Dictionary=parent_response.get("production",{}).get("building_header",{}).get("snapshot",{})
+	if not check(parent_response.get("status")==C.ManagementStatus.Ok and parent.get("type")==28 and parent.has("cage"),"Cage parent read failed: "+str(parent_response)):quit(1);return
+	check(not parent.cage.glass and not parent.cage.justice_restraint,"Expected ordinary lead cage")
+	check(parent.cage.room.room_id==259 and parent.cage.room.room_type==87 and parent.cage.room.name=="Unnamed memorial hall" and parent.cage.room.introduction=="This furniture is a part of","Cage room facts differ from native")
+	var unavailable:=await request("production",{"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":int(expected.id),"expected_revision":parent.revision,"farm_operation":C.FarmOperation.CageAquarium,"item_value":1})
+	check(unavailable.get("status")==C.ManagementStatus.Rejected and unavailable.get("production",{}).get("building_header",{}).get("outcome")==C.FarmEditOutcome.Rejected,"Non-glass cage setting must reject without effects")
 	check(page.rows.size()==expected.rows.size() and page.next_cursor==0,"Cage rows missing")
 	for native in expected.rows:
 		var matches: Array=page.rows.filter(func(row):return row.id==int(native.id) and row.entity==int(native.kind)+1)
@@ -43,5 +47,5 @@ func run() -> void:
 		page=receipt;receipts.append(receipt)
 	check(page.rows==initial.rows and page.revision==initial.revision,"Cage wire toggles did not restore original facts")
 	var file:=FileAccess.open(directory+"/cage-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"initial":initial,"search":search,"receipts":receipts}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"parent":parent,"initial":initial,"search":search,"receipts":receipts}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)

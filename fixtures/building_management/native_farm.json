@@ -113629,6 +113629,66 @@
           "build/stockpile-storage-native-farm-discovery-20261116-112659/result.json": "2a9e5da7d4ae58dfdd7f9bafdc71f8832c1eeb26803fa82e9f01f73dd20c59ee",
           "presentations/godot/project/tests/cage_wire_live.gd": "f084d3086bf1a5d43e5ac673af2e38a9d32b46c0ab53ebb544e64f4f0e96169c"
         }
+      },
+      "cage_parent_provider_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-114212",
+        "owned_df_pid": 56072,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Connected typed cage parent read matches native single room and ordinary non-glass/non-justice flags. Aquarium intent rejects on lead cage. Prior candidate reads, four assignment edits, stale reversals and restored facts pass. No glass effects, justice variant, composed parent render or public navigation acceptance. Known separate-render-thread notice only.",
+        "parent": {
+          "appearance": {
+            "layers": [
+              [
+                0,
+                4,
+                10,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "BUILDING_ICONS"
+            ]
+          },
+          "cage": {
+            "aquarium": false,
+            "glass": false,
+            "justice_restraint": false,
+            "room": {
+              "introduction": "This furniture is a part of",
+              "name": "Unnamed memorial hall",
+              "notices": [],
+              "room_id": 259,
+              "room_type": 87
+            }
+          },
+          "custom_name": "",
+          "forbidden": false,
+          "has_worker": false,
+          "header_name": "Masked Lovebird (♀) Cage (lead)",
+          "id": 261,
+          "max_stage": 1,
+          "native_name": "Masked Lovebird (♀) Cage (lead)",
+          "removing": false,
+          "revision": 6940610168276917969,
+          "stage": 1,
+          "suspended": false,
+          "type": 28
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-114212/cage-wire-result.json": "cc39833b46f3801256b7c1e7eb14b824815ab85b1eae13d496327e464afae719",
+          "build/stockpile-storage-native-farm-discovery-20261116-114212/remaining-buildings-native.json": "4b3e9d179a6dd11ee53c23957b9188958fdb0d36796d77459463d1203b44a06e",
+          "build/stockpile-storage-native-farm-discovery-20261116-114212/result.json": "6633864f7c2737bd699d64d85b7b1a089945c032d1757a77a3c5b9280e336c86",
+          "build/stockpile-storage-native-farm-discovery-20261116-114212/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-114212/cage-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
+        }
       }
     },
     "pending_construction_reference": {

@@ -1371,8 +1371,14 @@ void publish() {
       if(f.well)well=m::CreateWellBodySnapshot(b,f.well->status);
       flatbuffers::Offset<m::MachineryBodySnapshot> machinery;
       if(f.machinery){const auto& v=*f.machinery;machinery=m::CreateMachineryBodySnapshot(b,v.machineId,v.produced,v.required,v.status,v.stableFoundation,v.disengaged,v.pumpManual,v.pumpDirection);}
+      flatbuffers::Offset<m::CageBodySnapshot> cage;
+      if(f.cage){const auto& v=*f.cage;const auto& room=v.room;
+        std::vector<flatbuffers::Offset<flatbuffers::String>> notices;
+        for(const auto& text:room.notices)notices.push_back(b.CreateString(text));
+        const auto body=m::CreateBuildingRoomBody(b,room.roomId,room.roomType,b.CreateString(room.introduction),b.CreateString(room.name),b.CreateVector(notices));
+        cage=m::CreateCageBodySnapshot(b,v.justiceRestraint,v.glass,(v.flags&2U)!=0,body);}
       snapshot=m::CreateBuildingHeaderSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,
-        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance),funerary,machinery,well,depot);
+        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance),funerary,machinery,well,depot,cage);
     }
     buildingHeader=m::CreateBuildingHeaderState(b,snapshot,state.outcome,state.operation,state.missingBuildingId);
   }
@@ -3619,7 +3625,7 @@ df::building_actual* contentsBuilding(int32_t id,bool editing=false) {
   if(!building)return nullptr;
   const auto type=building->getType();
   const bool lever=type==df::building_type::Trap && (building->getSubtype()==0 || building->getSubtype()==1);
-  if(type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
+  if(type!=df::building_type::Cage && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
      !lever && (editing || !df3d_production::productionProfileBuilding(building)) &&
      !df3d_production::observePendingBuilding(building))return nullptr;
   auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
@@ -4478,12 +4484,6 @@ void run(color_ostream& out) {
     }
     publish();return;
   }
-  // Protocol249 installs the typed intent before the cage setting provider.
-  // Never reinterpret it as the older header fallback (CancelRemoval).
-  if(r->production() && r->production()->farm_operation()==m::FarmOperation::CageAquarium) {
-    message.clear();status=m::ManagementStatus::Rejected;production={};
-    production.buildingHeader.emplace().outcome=m::FarmEditOutcome::Rejected;publish();return;
-  }
   if(r->production() && r->production()->building_header()) {
     const auto* q=r->production();message.clear();status=m::ManagementStatus::Rejected;production={};
     auto& response=production.buildingHeader.emplace();const bool editing=r->action()==m::ManagementAction::FarmEdit;
@@ -4491,19 +4491,22 @@ void run(color_ostream& out) {
     // Newly admitted wire operations must not fall through to CancelRemoval.
     if(editing && q->farm_operation()!=m::FarmOperation::Rename &&
        q->farm_operation()!=m::FarmOperation::Remove && q->farm_operation()!=m::FarmOperation::CancelRemoval &&
-       q->farm_operation()!=m::FarmOperation::PumpManual && q->farm_operation()!=m::FarmOperation::DepotMode){publish();return;}
+       q->farm_operation()!=m::FarmOperation::PumpManual && q->farm_operation()!=m::FarmOperation::DepotMode && q->farm_operation()!=m::FarmOperation::CageAquarium){publish();return;}
     try {
       const auto target=[&]()->df::building* {
         auto* building=df::building::find(q->building_id());
         if(!building)return nullptr;
         const auto type=building->getType();
-        if(type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && !df3d_production::productionProfileBuilding(building))return nullptr;
+        if(type!=df::building_type::Cage && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && !df3d_production::productionProfileBuilding(building))return nullptr;
         auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
         return tile && !tile->bits.hidden?building:nullptr;
       };
       const auto observe=[&]{return df3d_production::observeBuildingHeader(target(),true);};
       const auto convert=[](const df3d_production::BuildingHeaderObservation& f)->std::optional<BuildingHeaderSnapshot> {
         BuildingHeaderSnapshot result{f.id,f.type,f.stage,f.maxStage,f.revision,DF2UTF(f.customName),DF2UTF(f.nativeName),DF2UTF(f.headerName),f.removing,f.suspended,f.hasWorker,int8_t(f.forbidden),df3d_tasks::destinationArtwork(df::building::find(f.id))};
+        if(f.cage){result.cage=*f.cage;auto& room=result.cage->room;
+          room.introduction=DF2UTF(room.introduction);room.name=DF2UTF(room.name);
+          for(auto& notice:room.notices)notice=DF2UTF(notice);}
         if(f.depot){const auto& body=*f.depot;auto& v=result.depot.emplace();
           v.requested=(body.flags&1U)!=0;v.anyone=(body.flags&2U)!=0;v.goodsAvailable=body.goods;v.tradeAvailable=body.trade;
           v.awaitingItems=body.awaitingItems;v.workerId=body.workerId;v.brokerId=body.brokerId;
@@ -4534,7 +4537,8 @@ void run(color_ostream& out) {
         const bool rename=q->farm_operation()==m::FarmOperation::Rename;
         const bool pump=q->farm_operation()==m::FarmOperation::PumpManual;
         const bool depot=q->farm_operation()==m::FarmOperation::DepotMode;
-        const auto operation=depot?A::DepotMode:pump?A::PumpManual:rename?A::Rename:q->farm_operation()==m::FarmOperation::Remove?A::Remove:A::CancelRemoval;
+        const bool cage=q->farm_operation()==m::FarmOperation::CageAquarium;
+        const auto operation=cage?A::CageAquarium:depot?A::DepotMode:pump?A::PumpManual:rename?A::Rename:q->farm_operation()==m::FarmOperation::Remove?A::Remove:A::CancelRemoval;
         const auto text=rename?q->farm_name()->str():std::string{};const auto name=UTF2DF(text);
         if(DF2UTF(name)==text) {
           const auto result=df3d_production::finishBuildingHeaderEdit(*before,q->expected_revision(),operation,name,[&]{
@@ -4542,11 +4546,12 @@ void run(color_ostream& out) {
             if(depot){const auto outcome=df3d_production::setDepotMode(building,before->depot->flags,q->item_value());
               if(outcome==df3d_production::DepotSettingOutcome::Unknown)throw std::runtime_error("Unknown depot mode outcome");
               if(outcome==df3d_production::DepotSettingOutcome::Rejected){entered=false;return false;}return true;}
+            if(cage){const bool applied=df3d_production::setCageAquarium(building,q->item_value()!=0);if(!applied)entered=false;return applied;}
             if(pump){const bool applied=df3d_production::setPumpManual(building,q->item_value()!=0);if(!applied)entered=false;return applied;}
             if(rename){building->name=name;return true;}
             if(operation==A::CancelRemoval){const bool applied=df3d_production::cancelBuildingRemoval(building);if(!applied)entered=false;return applied;}
             building->queueDestroy();return true;
-          },observe,(pump || depot)?int(q->item_value()):-1);
+          },observe,(pump || depot || cage)?int(q->item_value()):-1);
           mutated=result.mutated;
           if(result.outcome==O::Completed) {
             response.outcome=m::FarmEditOutcome::Unknown;response.snapshot=convert(*result.receipt);
@@ -4619,7 +4624,7 @@ void run(color_ostream& out) {
         const auto contentsType=contentsBuilding(q->building_id())->getType();
         const bool editRemoving=df3d_production::ordinaryTrapBuilding(contentsBuilding(q->building_id())) || unfinished || contentsType==df::building_type::Box ||
           (contentsType==df::building_type::Trap && (contentsBuilding(q->building_id())->getSubtype()==0 || contentsBuilding(q->building_id())->getSubtype()==1)) ||
-          contentsType==df::building_type::TradeDepot || contentsType==df::building_type::Well || df3d_production::machineryBuildingType(contentsType) || df3d_production::plainFurnitureType(contentsType) || df3d_production::funeraryFurnitureType(contentsType) || df3d_production::linkedFurnitureType(contentsType);
+          contentsType==df::building_type::Cage || contentsType==df::building_type::TradeDepot || contentsType==df::building_type::Well || df3d_production::machineryBuildingType(contentsType) || df3d_production::plainFurnitureType(contentsType) || df3d_production::funeraryFurnitureType(contentsType) || df3d_production::linkedFurnitureType(contentsType);
         auto edit=df3d_production::finishBuildingItemEdit(*before,q->expected_revision(),q->item_id(),action,q->item_value()!=0,[&] {
           auto* building=contentsBuilding(q->building_id(),true);
           if(!building)return false;

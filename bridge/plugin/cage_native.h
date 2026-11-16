@@ -107,7 +107,7 @@ inline bool cageAssign(df::building_cagest& cage,int32_t id,bool item,bool assig
 struct CageSnapshot {
     int32_t buildingId=-1;
     uint64_t revision=0;
-    bool removing=false;
+    bool removing=false,justiceRestraint=false;
     std::vector<df3d_area::ZoneAnimalCandidate> candidates;
 };
 
@@ -123,6 +123,7 @@ inline std::optional<CageSnapshot> observeCage(df::building* building) {
     const auto add=[&](uint64_t value) {
         for(int i=0;i<8;++i){hash^=uint8_t(value);hash*=UINT64_C(1099511628211);value>>=8;}
     };
+    result.justiceRestraint=cage.isJusticeRestraint();add(result.justiceRestraint);
     add(cage.id);add(cage.cage_flags.whole);add(cage.centerx);add(cage.centery);add(cage.z);
     for(auto* job:cage.jobs)if(job) {
         add(job->id);add(int32_t(job->job_type));
@@ -173,7 +174,7 @@ inline CageEdit setCageAssignment(df::building* building,uint64_t expected,int32
         const auto before=observeCage(building);
         if(!before || !expected || expected>INT64_MAX || !cageAssignmentReady())return result;
         if(before->revision!=expected){result.outcome=CageOutcome::Stale;return result;}
-        if(before->removing)return result;
+        if(before->removing || before->justiceRestraint)return result;
         const auto found=std::find_if(before->candidates.begin(),before->candidates.end(),[&](const auto& row) {
             return row.id==id && row.item==item;
         });

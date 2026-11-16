@@ -1,5 +1,7 @@
 #pragma once
 #include "zone_native.h"
+#include "cage_body.h"
+#include <cstring>
 #include "df/building.h"
 #include "df/building_civzonest.h"
 #include <windows.h>
@@ -26,12 +28,6 @@ inline std::optional<std::vector<df::building_civzonest*>> relevantBuildingRooms
     }
     return result;
 }
-struct BuildingRoomBody {
-    int32_t buildingId=-1,roomId=-1,roomType=-1;
-    std::vector<int32_t> relevantZones;
-    std::vector<std::string> notices;
-    std::string introduction,name;
-};
 inline std::optional<BuildingRoomBody> cageRoomBody(df::building& building) {
     if(building.getType()!=df::building_type::Cage)return {};
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));

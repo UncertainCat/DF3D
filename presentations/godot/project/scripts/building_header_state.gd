@@ -69,7 +69,7 @@ func _read() -> void:
 	_send({"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":building_id})
 
 func begin_name_entry() -> bool:
-	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("type",-1) not in [0,1,2,3,5,6,8,9,10,11,12,13,14,15,18,19,23,32,33,35,36,37,38,39,40,41,42,43,44,45,46,50,51,52,54] or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
+	if phase!=Phase.Ready or ticket!=0 or name_session!=null or snapshot.get("type",-1) not in [0,1,2,3,5,6,8,9,10,11,12,13,14,15,18,19,23,28,32,33,35,36,37,38,39,40,41,42,43,44,45,46,50,51,52,54] or snapshot.get("removing",true) or snapshot.stage!=snapshot.max_stage:return false
 	_retire_refresh()
 	var owner:=generation
 	var owned=load("res://scripts/farm_rename_session.gd").new()
@@ -111,7 +111,7 @@ func set_pump_manual(desired: bool) -> void:
 	_edit(C.FarmOperation.PumpManual,{"item_value":int(desired)})
 
 func _edit(operation: int,fields: Dictionary) -> void:
-	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in [0,1,2,3,5,6,8,9,10,11,12,13,14,15,18,19,23,32,33,35,36,37,38,39,40,41,42,43,44,45,46,50,51,52,54] or snapshot.stage!=snapshot.max_stage:return
+	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in [0,1,2,3,5,6,8,9,10,11,12,13,14,15,18,19,23,28,32,33,35,36,37,38,39,40,41,42,43,44,45,46,50,51,52,54] or snapshot.stage!=snapshot.max_stage:return
 	if snapshot.removing!=(operation==C.FarmOperation.CancelRemoval):return
 	_retire_refresh()
 	var intent={"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":building_id,
@@ -131,7 +131,7 @@ func _fail(next: Phase) -> void:
 static func valid_snapshot(value: Dictionary,id: int) -> bool:
 	for field in ["id","type","revision","stage","max_stage"]:
 		if typeof(value.get(field))!=TYPE_INT:return false
-	if value.id!=id or id<0 or id>2147483647 or value.type not in [0,1,2,3,5,6,8,9,10,11,12,13,14,15,18,19,23,32,33,35,36,37,38,39,40,41,42,43,44,45,46,50,51,52,54] or value.revision<=0 or value.stage<0 or value.max_stage<value.stage or value.max_stage>2147483647:return false
+	if value.id!=id or id<0 or id>2147483647 or value.type not in [0,1,2,3,5,6,8,9,10,11,12,13,14,15,18,19,23,28,32,33,35,36,37,38,39,40,41,42,43,44,45,46,50,51,52,54] or value.revision<=0 or value.stage<0 or value.max_stage<value.stage or value.max_stage>2147483647:return false
 	for field in ["custom_name","native_name","header_name"]:
 		if typeof(value.get(field))!=TYPE_STRING:return false
 		var bytes: PackedByteArray=value[field].to_utf8_buffer()
@@ -139,8 +139,32 @@ static func valid_snapshot(value: Dictionary,id: int) -> bool:
 	for field in ["removing","suspended","has_worker","forbidden"]:
 		if typeof(value.get(field))!=TYPE_BOOL:return false
 	if value.has("appearance") and not preload("res://scripts/item_sheet_state.gd")._valid_recipe(value.appearance):return false
-	if not valid_funerary(value) or not valid_machinery(value) or not valid_well(value) or not valid_depot(value):return false
+	if not valid_cage(value) or not valid_funerary(value) or not valid_machinery(value) or not valid_well(value) or not valid_depot(value):return false
 	return value.removing or (not value.suspended and not value.has_worker)
+
+static func valid_cage(value: Dictionary) -> bool:
+	if value.type!=28:return not value.has("cage")
+	if typeof(value.get("cage"))!=TYPE_DICTIONARY:return false
+	var body: Dictionary=value.cage
+	for field in ["justice_restraint","glass","aquarium"]:
+		if typeof(body.get(field))!=TYPE_BOOL:return false
+	if typeof(body.get("room"))!=TYPE_DICTIONARY:return false
+	var room: Dictionary=body.room
+	for field in ["room_id","room_type"]:
+		if typeof(room.get(field))!=TYPE_INT:return false
+	if room.room_id< -1 or room.room_id>2147483647:return false
+	for field in ["introduction","name"]:
+		if typeof(room.get(field))!=TYPE_STRING or room[field].to_utf8_buffer().size()>1536 or room[field].to_utf8_buffer().has(0):return false
+	if typeof(room.get("notices"))!=TYPE_ARRAY or room.notices.size()>3:return false
+	for notice in room.notices:
+		if typeof(notice)!=TYPE_STRING or notice.is_empty() or notice.to_utf8_buffer().size()>1536 or notice.to_utf8_buffer().has(0):return false
+	var single: bool=room.room_id>=0
+	return single==(not room.name.is_empty()) and single==(not room.introduction.is_empty()) and ((room.room_type>=79 and room.room_type<=97 and room.notices.is_empty()) if single else room.room_type==-1)
+
+func set_cage_aquarium(desired: bool) -> void:
+	var body: Dictionary=snapshot.get("cage",{})
+	if snapshot.get("type",-1)!=28 or body.get("justice_restraint",true) or not body.get("glass",false):return
+	_edit(C.FarmOperation.CageAquarium,{"item_value":int(desired)})
 
 static func valid_depot(value: Dictionary) -> bool:
 	if value.type!=6:return not value.has("depot")
@@ -225,6 +249,7 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 		if observed.stage!=observed.max_stage or observed.removing!=(operation==C.FarmOperation.Remove) or \
 			(operation==C.FarmOperation.Rename and observed.custom_name!=sent.farm_name) or \
 			(operation==C.FarmOperation.PumpManual and (observed.type!=33 or observed.machinery.pump_manual!=sent.item_value)) or \
+			(operation==C.FarmOperation.CageAquarium and (observed.type!=28 or observed.cage.justice_restraint or not observed.cage.glass or observed.cage.aquarium!=(sent.item_value==1))) or \
 			(operation==C.FarmOperation.DepotMode and (observed.type!=6 or observed.depot.requested!=(sent.item_value!=2) or (sent.item_value!=2 and observed.depot.anyone!=(sent.item_value==1)))):
 			_fail(Phase.Unknown);return
 	var different: bool=phase!=Phase.Ready or snapshot!=observed

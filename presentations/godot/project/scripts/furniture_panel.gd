@@ -53,7 +53,7 @@ func configure(world,service,host,help=null) -> void:
 			close_panel();focus_requested.emit(tile))
 func _state_changed() -> void:
 	super._state_changed()
-	if cage_mode and (state.building_id!=cage.building_id or state.snapshot.get("removing",false)):_retire_cage()
+	if cage_mode and (state.building_id!=cage.building_id or state.snapshot.get("removing",false) or state.snapshot.get("cage",{}).get("justice_restraint",false)):_retire_cage()
 	if goods_mode:
 		if state.building_id!=goods.depot_id or state.building_id<0:
 			_retire_goods()
@@ -94,7 +94,7 @@ func _retire_goods() -> void:
 	if goods_view!=null:goods_view._closing=false;goods_view.hide()
 	goods.close()
 func _open_cage() -> void:
-	if cage_mode or not play_enabled or not ui_host.allows_panel_input(self) or not panel.contents_allowed() or state.snapshot.get("type",-1)!=28 or state.snapshot.get("removing",true):return
+	if cage_mode or not play_enabled or not ui_host.allows_panel_input(self) or not panel.contents_allowed() or state.snapshot.get("type",-1)!=28 or state.snapshot.get("removing",true) or state.snapshot.get("cage",{}).get("justice_restraint",true):return
 	panel.finish_rename();cancel_gesture();cage_mode=true;cage_view.show();cage.open(state.building_id)
 func _retire_cage() -> void:
 	cage_mode=false

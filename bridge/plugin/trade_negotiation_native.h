@@ -1,5 +1,8 @@
 #pragma once
 #include "trade_projection_native.h"
+#include "trade_value_totals_native.h"
+#include "trade_capacity_native.h"
+#include "trade_dialogue_native.h"
 
 namespace df3d_production {
 // Pointer-free conversation state. A session must validate its source before
@@ -14,15 +17,33 @@ struct TradeNegotiationCheckpoint {
     TradeDraftCheckpoint draft;
     TradeConversation conversation;
 };
+enum class TradeOfferDisposition {Unavailable,Refused,Ready};
+struct TradeOfferCheck {TradeOfferDisposition disposition=TradeOfferDisposition::Unavailable;int16_t reply=-1;bool alternating=false,ethical=false;};
+inline bool tradeRefusalNativeReady(){
+    if(!tradeDialogueNativeReady())return false;
+    static const bool ready=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin{size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={{0x31a552,0x132,UINT64_C(0x0bf32f01daaa3f16)},
+            {0x31b252,0x3c3,UINT64_C(0x9503654d447f154d)},
+            {0xc90bc0,0x3a1,UINT64_C(0xa28c8ad0b097a1e3)},
+            {0x36a780,0xb3,UINT64_C(0x0ac637bc9fd1bbdb)},
+            {0x71f30,0x53,UINT64_C(0x5eb4fcfbdedb7745)}};
+        for(const auto& pin:pins){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<pin.length;++i){h^=base[pin.rva+i];h*=UINT64_C(1099511628211);}if(h!=pin.hash)return false;}
+        return true;
+    }();return ready;
+}
 // Safe-point lifetime only. Entry metadata and goods are independently owned;
 // no active native trade menu is read or borrowed. This context does not yet
-// expose execution: native refusal checks and exchange effects remain separate.
+// expose exchange execution. Refusal checks retain DF's inline branch order;
+// semantic item/ethics queries, random choice and ethical consequences call DF.
 class TradeNegotiationNative {
     TradeDraftNative draft;
+    size_t caravanIndex=0;
     bool valid=false;
 public:
     TradeNegotiationNative(df::building* building,size_t caravanIndex,const TradeDraftCheckpoint& selection)
-        :draft(building,caravanIndex) {
+        :draft(building,caravanIndex),caravanIndex(caravanIndex) {
         if(!draft || !draft.restore(selection) || !tradeEntryNativeReady())return;
         auto* depot=virtual_cast<df::building_tradedepotst>(building);
         auto* site=df::world_site::find(df::global::plotinfo->site_id);
@@ -44,6 +65,54 @@ public:
         }
     }
     explicit operator bool() const{return valid;}
+    TradeOfferCheck checkOffer() const {
+        if(!valid || !tradeRefusalNativeReady())return {};
+        const auto& owned=draft.owned;
+        if(!owned.merchant_trader || !owned.havetalker || owned.stillunloading || (owned.mer->flags.whole&0x20))return {};
+        const auto rows=draft.snapshot();if(!rows)return {};
+        const auto values=tradeValueTotals(owned.bld,caravanIndex,*rows);
+        const auto capacity=tradeCapacity(owned.bld,caravanIndex,*rows);
+        if(!values || !capacity)return {};
+        const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+        const auto forbids=reinterpret_cast<bool(*)(int16_t)>(base+0x75cfd0);
+        const auto animal=int16_t(owned.civ->resources.ethic[df::ethic_type::KILL_ANIMAL]);
+        const bool forbidAnimal=forbids(animal) || animal==5 || animal==6;
+        const bool forbidPlant=forbids(int16_t(owned.civ->resources.ethic[df::ethic_type::KILL_PLANT]));
+        bool animalOffer=false,plantOffer=false;
+        for(size_t i=0;i<owned.good[1].size();++i)if(owned.goodflag[1][i].bits.selected){
+            auto* item=owned.good[1][i];
+            animalOffer|=forbidAnimal && item->isAnimalProduct();
+            plantOffer|=forbidPlant && reinterpret_cast<bool(*)(df::item*)>(base+0xc90bc0)(item);
+        }
+        if(animalOffer || plantOffer)return {TradeOfferDisposition::Refused,int16_t(animalOffer?(plantOffer?18:19):20),false,true};
+        int16_t reply=-1;
+        if(values->actual[0]<=0 && values->actual[1]<=0)reply=12;
+        else if(values->actual[1]<=0)reply=14;
+        else if(values->actual[0]<=0)reply=16;
+        else if(values->actualProfit<0 && capacity->whole<0)reply=1;
+        else if(values->actualProfit<0)reply=5;
+        else if(capacity->whole<0)reply=3;
+        return reply<0?TradeOfferCheck{TradeOfferDisposition::Ready}:TradeOfferCheck{TradeOfferDisposition::Refused,reply,true,false};
+    }
+    // An explicit action, never a read: the first alternating reply consumes
+    // native RNG, and ethical refusal can train the broker and retire a caravan.
+    // Caller supplies saving/source/revision gates and must not replay uncertainty.
+    TradeOfferCheck refuseOffer(bool* effectsStarted=nullptr){
+        const auto result=checkOffer();if(result.disposition!=TradeOfferDisposition::Refused)return result;
+        auto& owned=draft.owned;const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+        int16_t reply=result.reply;
+        if(effectsStarted)*effectsStarted=true;
+        if(result.alternating){
+            const auto previous=int16_t(owned.talkline);
+            reply=previous==reply?int16_t(reply+1):previous==reply+1?reply:int16_t(reply+reinterpret_cast<int32_t(*)(int32_t)>(base+0x71f30)(2));
+        }
+        owned.talkline=df::talk_line_type(reply);
+        if(result.ethical){
+            reinterpret_cast<void(*)(df::trade_interfacest*)>(base+0x36a780)(&owned);
+            if(owned.mer->time_remaining>501)owned.mer->time_remaining=501;
+        }
+        return result;
+    }
     std::optional<TradeNegotiationCheckpoint> checkpoint() const {
         if(!valid)return {};
         const auto sides=draft.snapshot();if(!sides)return {};

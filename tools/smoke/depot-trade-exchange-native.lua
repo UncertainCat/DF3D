@@ -30,6 +30,29 @@ local ok,err=xpcall(function()
    if iteration==2 then click(468,238)end
   end
  end
+ if os.getenv('DF3D_DEPOT_TRADE_REFUSAL')=='1' then
+  local json=require('json');result.refusals={}
+  for _,test in ipairs{{'empty',false,false,100000},{'merchant-only',true,false,100000},{'fortress-only',false,true,100000},{'both',true,true,100000},{'both-overweight',true,true,0}}do
+   click(440,694);click(900,694)
+   local intents={}
+   if test[2]then intents[#intents+1]={side=0,item=trade.good[0][0].id};click(468,238)end
+   if test[3]then intents[#intents+1]={side=1,item=trade.good[1][0].id};click(932,238)end
+   mass.whole=test[4];mass.fraction=0;view:render(dfhack.getTickCount())
+   local native_line=trade.talkline
+   local output,code=dfhack.run_command_silent('df3d','trade-refusal-probe',tostring(trade.bld.id),'0','','',json.encode(intents))
+   assert(code==0,output);local facts=json.decode(output);assert(facts.available and not facts.ethical and trade.talkline==native_line)
+   if facts.disposition==1 then
+    assert(#facts.replies==2 and facts.replies[1]~=facts.replies[2] and math.min(facts.replies[1],facts.replies[2])==facts.reply_base)
+    -- Set the same prior conversation so native's alternating branch is exact;
+    -- do not rewind or substitute the simulation RNG consumed by the owned call.
+    trade.talkline=facts.replies[1];click(508,730)
+    assert(trade.talkline==facts.replies[2] and not trade.counter_offer,'Owned refusal differs from native Trade')
+    facts.native_dialogue=trade.talkline
+   else assert(facts.disposition==2,'Offer unexpectedly unavailable')end
+   facts.label=test[1];result.refusals[#result.refusals+1]=facts
+  end
+  click(440,694);click(900,694);trade.talkline=talkline
+ end
  mass.whole=100000;mass.fraction=0;view:render(dfhack.getTickCount());snapshot('before')
  click(508,730);snapshot('trade')
  click(735,730);snapshot('gift')

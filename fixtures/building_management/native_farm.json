@@ -95880,6 +95880,995 @@
           "bridge/plugin/trade_projection_native.h": "a177b196e136cf3be1c75275dc00dff2d4ca5a4139f75c1594f221b9809bdd80",
           "tools/smoke/depot-trade-exchange-native.lua": "c8dfe7e353fcbc26242ca22ea0dd60030ca4fb67e01609db2cd427519b122138"
         }
+      },
+      "depot_trade_refusal_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-221121",
+        "owned_df_pid": 47920,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Native click comparison for empty, merchant-only, fortress-only and overweight Trade refusals, with exact second reply after equal prior dialogue. Balanced positive-capacity draft classifies ready without executing. Ethical consequences and loss variants are implemented but not live-qualified here; first native RNG draw is not replay-compared. No counteroffer, accepted exchange or public action.",
+        "cases": [
+          {
+            "announcement": [],
+            "available": true,
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                57,
+                57,
+                54,
+                53,
+                50,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 0,
+              "whole": 99652
+            },
+            "counter_offer": false,
+            "dialogue": 13,
+            "disposition": 1,
+            "ethical": false,
+            "label": "empty",
+            "native_dialogue": 13,
+            "replies": [
+              12,
+              13
+            ],
+            "reply_base": 12,
+            "requested_items": [],
+            "sides": [
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 4
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 45
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 57
+                  }
+                ],
+                "height": 24,
+                "items": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ]
+              },
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 2
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 23
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 46
+                  }
+                ],
+                "height": 21,
+                "items": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ]
+              }
+            ],
+            "value_totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            }
+          },
+          {
+            "announcement": [],
+            "available": true,
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                57,
+                57,
+                55,
+                56,
+                54,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 600000,
+              "whole": 99786
+            },
+            "counter_offer": false,
+            "dialogue": 15,
+            "disposition": 1,
+            "ethical": false,
+            "label": "merchant-only",
+            "native_dialogue": 15,
+            "replies": [
+              14,
+              15
+            ],
+            "reply_base": 14,
+            "requested_items": [],
+            "sides": [
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 4
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 45
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 57
+                  }
+                ],
+                "height": 24,
+                "items": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ]
+              },
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 2
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 23
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 46
+                  }
+                ],
+                "height": 21,
+                "items": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ]
+              }
+            ],
+            "value_totals": {
+              "actual": [
+                3,
+                0
+              ],
+              "actual_profit": -3,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 4,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            }
+          },
+          {
+            "announcement": [],
+            "available": true,
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                57,
+                57,
+                54,
+                51,
+                52,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 900000,
+              "whole": 99634
+            },
+            "counter_offer": false,
+            "dialogue": 17,
+            "disposition": 1,
+            "ethical": false,
+            "label": "fortress-only",
+            "native_dialogue": 17,
+            "replies": [
+              16,
+              17
+            ],
+            "reply_base": 16,
+            "requested_items": [],
+            "sides": [
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 4
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 45
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 57
+                  }
+                ],
+                "height": 24,
+                "items": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ]
+              },
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 1,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 2
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 23
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 46
+                  }
+                ],
+                "height": 21,
+                "items": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ]
+              }
+            ],
+            "value_totals": {
+              "actual": [
+                0,
+                10
+              ],
+              "actual_profit": 10,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            }
+          },
+          {
+            "announcement": [],
+            "available": true,
+            "capacity": {
+              "caption": [
+                65,
+                108,
+                108,
+                111,
+                119,
+                101,
+                100,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                57,
+                57,
+                55,
+                54,
+                57,
+                226
+              ],
+              "color": 7,
+              "excess": false,
+              "fraction": 500000,
+              "whole": 99769
+            },
+            "counter_offer": false,
+            "dialogue": 0,
+            "disposition": 2,
+            "ethical": false,
+            "label": "both",
+            "replies": [],
+            "reply_base": -1,
+            "requested_items": [],
+            "sides": [
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 4
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 45
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 57
+                  }
+                ],
+                "height": 24,
+                "items": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ]
+              },
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 1,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 2
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 23
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 46
+                  }
+                ],
+                "height": 21,
+                "items": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ]
+              }
+            ],
+            "value_totals": {
+              "actual": [
+                3,
+                10
+              ],
+              "actual_profit": 7,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 2,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            }
+          },
+          {
+            "announcement": [],
+            "available": true,
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                50,
+                51,
+                49,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 500000,
+              "whole": -231
+            },
+            "counter_offer": false,
+            "dialogue": 4,
+            "disposition": 1,
+            "ethical": false,
+            "label": "both-overweight",
+            "native_dialogue": 4,
+            "replies": [
+              3,
+              4
+            ],
+            "reply_base": 3,
+            "requested_items": [],
+            "sides": [
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 4
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 45
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 57
+                  }
+                ],
+                "height": 24,
+                "items": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ]
+              },
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 1,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 2
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 23
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 46
+                  }
+                ],
+                "height": 21,
+                "items": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ]
+              }
+            ],
+            "value_totals": {
+              "actual": [
+                3,
+                10
+              ],
+              "actual_profit": 7,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 2,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            }
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-221121/depot-trade-native.json": "4ae4116449892974214f9555832abdb95948ef9dcabd5f2595d5c08f71438ebb",
+          "build/stockpile-storage-native-farm-discovery-20261115-221121/result.json": "448417539fff787a71b55f570848aa6bec1724b88ed8e75d10fc5ed5b9e85387",
+          "build/stockpile-storage-native-farm-discovery-20261115-221121/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/trade_negotiation_native.h": "df8ddd80ac379856fd184aec97f9a060b309ef9e9fe81cd3fc017ece0d0502c8",
+          "tools/smoke/depot-trade-exchange-native.lua": "1629bb82b337d7e823c7b867a5f730f5f6dcdedb80f68fcef498c7651e1a0f78"
+        }
       }
     },
     "pending_construction_reference": {

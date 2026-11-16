@@ -5215,7 +5215,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if(rows)for(const auto& row:*rows){Json::Value value;value["id"]=row.id;value["value"]=row.value;value["appraisal"]=row.appraisal;value["value_caption"]=DF2UTF(row.valueCaption);value["weight_caption"]=DF2UTF(row.weightCaption);output["rows"].append(value);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
-      if(parameters[0]=="trade-projection-probe" || parameters[0]=="trade-draft-probe" || parameters[0]=="trade-display-probe" || parameters[0]=="trade-negotiation-seed-probe") {
+      if(parameters[0]=="trade-projection-probe" || parameters[0]=="trade-draft-probe" || parameters[0]=="trade-display-probe" || parameters[0]=="trade-negotiation-seed-probe" || parameters[0]=="trade-refusal-probe") {
         if(parameters.size()!=3 && parameters.size()!=5 && parameters.size()!=6)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
         int32_t values[2]={-1,-1};
@@ -5252,9 +5252,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           projection=draft->snapshot();
         }
         Json::Value output;output["available"]=bool(projection);output["sides"]=Json::arrayValue;
-        if(projection && parameters[0]=="trade-negotiation-seed-probe") {
+        if(projection && (parameters[0]=="trade-negotiation-seed-probe" || parameters[0]=="trade-refusal-probe")) {
           df3d_production::TradeDraftCheckpoint selected{*projection,filters};
           df3d_production::TradeNegotiationNative context(df::building::find(values[0]),size_t(values[1]),selected);
+          if(parameters[0]=="trade-refusal-probe") {
+            const auto check=context.checkOffer();output["disposition"]=int(check.disposition);output["reply_base"]=check.reply;output["ethical"]=check.ethical;output["replies"]=Json::arrayValue;
+            // Ethical effects require their own destructive native reference.
+            // This diagnostic currently exercises only the RNG/dialogue path.
+            if(!check.ethical && check.disposition==df3d_production::TradeOfferDisposition::Refused)for(int i=0;i<2;++i){
+              context.refuseOffer();const auto response=context.checkpoint();if(!response)return CR_FAILURE;output["replies"].append(response->conversation.dialogue);}
+          }
           const auto checkpoint=context.checkpoint();output["available"]=bool(checkpoint);
           if(checkpoint){projection=checkpoint->draft.sides;const auto& c=checkpoint->conversation;
             output["dialogue"]=c.dialogue;output["counter_offer"]=c.counterOffer;output["requested_items"]=Json::arrayValue;output["announcement"]=Json::arrayValue;

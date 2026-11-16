@@ -1,3 +1,24 @@
+## Owned Trade refusal checks
+
+The owned negotiation context evaluates DF's pinned31b252..31b615 branch order:
+ethical restrictions, empty/one-sided values, combined loss/excess weight, loss,
+and excess weight. It calls native item/ethics queries and existing native value
+and mass providers. Accepted eligibility returns Ready without executing trade.
+Explicit refusal uses native71f30 for the first paired reply, then preserves DF's
+alternation. Ethical refusal calls36a780 and applies native time_remaining501
+limit; this effect path is staged and not exposed by the current diagnostic.
+Reads never select a reply or apply those consequences.
+
+Protected221121 on2026-11-15 compares native pointer actions against owned
+empty12/13, merchant-only14/15, fortress-only16/17 and overweight3/4 replies.
+The same prior dialogue makes the next alternating reply exact; the first RNG
+draw is not rewound/replayed. A balanced offer returns Ready and is not submitted
+to native exchange. Owned DF47920 closes unsaved/source-preserved at30FPS,
+sampled60C. Bridge build and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_refusal_reference`.
+Ethical consequences, loss branches, counteroffers and accepted exchanges still
+need live qualification. Protocol243 and public Trade exposure are unchanged.
+
 ## Owned trade negotiation context
 
 TradeNegotiationNative builds safe-point-owned storage from a freshly resolved
@@ -5,8 +26,8 @@ TradeDraftNative and a server-owned checkpoint, then calls the pinned native
 merchant initializer36b590 with the depot/site/caravan. Native menu state is not
 an input. Its checkpoint copies dialogue, counteroffer item IDs and announcement
 strings into pointer-free values. Explicit cleanup owns the native text box's
-string pointers. The class currently exposes initialization/readback only;
-refusal gates, conversation restoration and negotiation execution remain next.
+string pointers. The class exposes initialization/readback and the refusal path described above.
+Conversation restoration and negotiation execution remain next.
 
 Protected220705 on2026-11-15 verifies initial and selected merchant drafts against
 native IDs, flags, amounts and list heights. Native dialogue/buildlists/appraisal

@@ -186,11 +186,11 @@ Both protected lanes close unsaved/source-preserved at30FPS. Bridge build and
 all19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_trade_gift_session_reference`.
 
-Public transport, other Gift refusal effects, cages, artifact announcements and foreign-caravan behavior still need
+Visible Gift controls, other refusal effects, cages, artifact announcements and foreign-caravan behavior still need
 qualification. Seize remains separate unfinished work: its inline path begins
 31a7be, usesc90540 for ownership removal and ENTITY_STOLEN references, and changes
 caravan flags, mood and departure time. The Gift method must not substitute
-for that action. Trade remains hidden and protocol245 is unchanged.
+for that action. Trade remains hidden; protocol246 transport is described below.
 
 ### Seize executor and qualification boundary
 
@@ -315,6 +315,31 @@ Trade/gift/Seize effects remain unfinished.
 
 ## Trade session transport
 
+Protocol246 adds TradeSessionGift and TradeSessionSeize with the same
+session/expected-revision-only request and action receipt as Trade. The bridge
+dispatches these to the owned session transaction; the controller's offer_gift
+and seize methods share pending exclusion and full refreshed publication with
+exchange. No draft, item list or conversation can be supplied by these actions.
+Old recordings cannot synthesize Gift/Seize receipts. Public controls and the
+complete Trade route remain unfinished; the transport qualification is separate
+from the direct/session native-effect evidence above.
+
+Protected073149 (Gift DF28556) and073305 (Seize DF40812) on2026-11-16
+exercise the actual headless Godot goods controller through protocol246.
+Selection, action, duplicate-pending exclusion, full refresh, stale revision
+rejection, close and closed-session rejection pass for each action. Tracked
+before/after item/depot/caravan effects and conversation match native234515
+and071850 respectively, except Seize item992 has weight_computed set after
+the controller's full refresh. That is the sole raw snapshot difference:
+ownership references, position, stack and all other flags agree. The fixture
+records both raw flags; runtime code does not force cache state to match.
+Both client logs are clean and both lanes close
+unsaved/source-preserved; DF runs at30FPS, GPU samples55–59C. Evidence:
+`completed_sheet_discovery_reference.depot_trade_transfer_transport_reference`.
+These are controller checks, not qualification of visible action buttons.
+The disposable oracle restores appraisal history populated by real session
+opening; runtime appraisal behavior is unchanged.
+
 Management protocol245 adds TradeSessionDismiss with session and expected
 revision only. Counteroffer pages use TradeDraftRead side2; side2 cannot accept
 draft edits. The page carries two bounded native heading lines, Okay text and
@@ -329,7 +354,7 @@ must not be replayed. Post-effect serialization failure retains uncertainty.
 Successful TradeSessionRead now requires a bounded pointer-free conversation:
 dialogue, independent counteroffer flag, ordered requested IDs and announcement
 lines. Open/exchange/close receipts cannot carry that read payload. Both peers
-use Local\df3d_management_v245; rebuild together. Old recordings must not
+use Local\df3d_management_v246; rebuild together. Old recordings must not
 synthesize conversation or exchange receipts. Existing header/footer requirements
 remain in force.
 

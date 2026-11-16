@@ -934,14 +934,14 @@ bool validateTradeSession(const Dictionary& data,String& error) {
     const auto integer=[](const Dictionary& d,const char* key,int64_t lo,int64_t hi){return d.has(key) && d[key].get_type()==Variant::INT && int64_t(d[key])>=lo && int64_t(d[key])<=hi;};
     const auto action=wm::ManagementAction(int64_t(data["action"]));
     if(action==wm::ManagementAction::TradeSessionOpen){if(data.size()!=3 || !integer(data,"depot_id",0,INT32_MAX) || !integer(data,"choice_token",1,INT64_MAX))return false;}
-    else if((action==wm::ManagementAction::TradeSessionExchange || action==wm::ManagementAction::TradeSessionDismiss)){if(data.size()!=3 || !integer(data,"session",1,INT64_MAX) || !integer(data,"expected_revision",1,INT64_MAX))return false;}
+    else if(((action==wm::ManagementAction::TradeSessionExchange || action==wm::ManagementAction::TradeSessionGift || action==wm::ManagementAction::TradeSessionSeize) || action==wm::ManagementAction::TradeSessionDismiss)){if(data.size()!=3 || !integer(data,"session",1,INT64_MAX) || !integer(data,"expected_revision",1,INT64_MAX))return false;}
     else if(!integer(data,"session",1,INT64_MAX) || (action==wm::ManagementAction::TradeSessionRead ? (data.size()!=4 || !integer(data,"expected_revision",1,INT64_MAX) || !integer(data,"columns",1,512)):data.size()!=2))return false;
     error=String();return true;
 }
 bool readTradeSession(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.tradeSession;
     if(request.action==wm::ManagementAction::TradeSessionOpen){q.depotId=int32_t(int64_t(data["depot_id"]));q.choiceToken=uint64_t(int64_t(data["choice_token"]));}
-    else {q.session=uint64_t(int64_t(data["session"]));if((request.action==wm::ManagementAction::TradeSessionExchange || request.action==wm::ManagementAction::TradeSessionDismiss))q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));if(request.action==wm::ManagementAction::TradeSessionRead){q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.columns=uint16_t(int64_t(data["columns"]));}}
+    else {q.session=uint64_t(int64_t(data["session"]));if(((request.action==wm::ManagementAction::TradeSessionExchange || request.action==wm::ManagementAction::TradeSessionGift || request.action==wm::ManagementAction::TradeSessionSeize) || request.action==wm::ManagementAction::TradeSessionDismiss))q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));if(request.action==wm::ManagementAction::TradeSessionRead){q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.columns=uint16_t(int64_t(data["columns"]));}}
     return true;
 }
 bool readTradeCatalog(const Dictionary& data,wm::ManagementRequest& request,String&) {
@@ -1376,7 +1376,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::TradeSessionDismiss)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::TradeSessionSeize)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

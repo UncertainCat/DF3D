@@ -71,10 +71,10 @@ TEST_CASE("Trade draft pages are bounded complete and owned by the read action")
 
 TEST_CASE("Trade session transport binds explicit open read and close intents") {
   constexpr uint64_t token=UINT64_C(9007199254740993);
-  for(auto action:{wm::ManagementAction::TradeSessionOpen,wm::ManagementAction::TradeSessionRead,wm::ManagementAction::TradeSessionClose,wm::ManagementAction::TradeSessionExchange})for(int fault=0;fault<4;++fault){
+  for(auto action:{wm::ManagementAction::TradeSessionOpen,wm::ManagementAction::TradeSessionRead,wm::ManagementAction::TradeSessionClose,wm::ManagementAction::TradeSessionExchange,wm::ManagementAction::TradeSessionGift,wm::ManagementAction::TradeSessionSeize})for(int fault=0;fault<4;++fault){
     wm::ManagementRequest r;r.action=action;
     if(action==wm::ManagementAction::TradeSessionOpen){r.tradeSession.depotId=54;r.tradeSession.choiceToken=token;if(fault==1)r.tradeSession.choiceToken=0;if(fault==2)r.tradeSession.session=1;if(fault==3)r.tradeSession.choiceToken=UINT64_MAX;}
-    else {r.tradeSession.session=token;if(action==wm::ManagementAction::TradeSessionRead || action==wm::ManagementAction::TradeSessionExchange){r.tradeSession.expectedRevision=1;if(action==wm::ManagementAction::TradeSessionRead)r.tradeSession.columns=102;}if(fault==1)r.tradeSession.session=0;if(fault==2)r.tradeSession.depotId=54;if(fault==3)r.tradeSession.choiceToken=1;}
+    else {r.tradeSession.session=token;if(action!=wm::ManagementAction::TradeSessionClose){r.tradeSession.expectedRevision=1;if(action==wm::ManagementAction::TradeSessionRead)r.tradeSession.columns=102;}if(fault==1)r.tradeSession.session=0;if(fault==2)r.tradeSession.depotId=54;if(fault==3)r.tradeSession.choiceToken=1;}
     flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
     CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
     if(!fault)CHECK((action==wm::ManagementAction::TradeSessionOpen?value->trade_session()->choice_token():value->trade_session()->session())==token);
@@ -6053,12 +6053,12 @@ TEST_CASE("item bedding preserves native variants and rejects malformed or non-b
 }
 
 TEST_CASE("Trade exchange receipts carry authority only and conversation reads are bounded") {
-  for(int fault=0;fault<4;++fault){
+  for(auto action:{wire::ManagementAction::TradeSessionExchange,wire::ManagementAction::TradeSessionGift,wire::ManagementAction::TradeSessionSeize})for(int fault=0;fault<4;++fault){
     flatbuffers::FlatBufferBuilder b;
     const auto outcome=fault==1?wire::TradeSessionOutcome::Unknown:wire::TradeSessionOutcome::Available;
     const auto result=wire::CreateTradeSessionState(b,outcome,fault==1?0:91,fault==1?0:fault==2?0:4);
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);
-    state.add_action(fault==3?wire::ManagementAction::TradeSessionRead:wire::ManagementAction::TradeSessionExchange);state.add_trade_session(result);b.Finish(state.Finish());
+    state.add_action(fault==3?wire::ManagementAction::TradeSessionRead:action);state.add_trade_session(result);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
     CHECK(bool(wire::validateManagementState(*value))==(fault>=2));
     if(fault<2){auto decoded=codec::decodeState(value);REQUIRE(decoded.tradeSession);CHECK(decoded.tradeSession->outcome==wm::TradeSessionOutcome(outcome));}

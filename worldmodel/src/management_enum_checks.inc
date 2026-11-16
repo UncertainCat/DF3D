@@ -371,7 +371,9 @@ static_assert(static_cast<int>(wm::ManagementAction::TradeDraftRead) == static_c
 static_assert(static_cast<int>(wm::ManagementAction::TradeDraftApply) == static_cast<int>(df3d::mirror::ManagementAction::TradeDraftApply));
 static_assert(static_cast<int>(wm::ManagementAction::TradeSessionExchange) == static_cast<int>(df3d::mirror::ManagementAction::TradeSessionExchange));
 static_assert(static_cast<int>(wm::ManagementAction::TradeSessionDismiss) == static_cast<int>(df3d::mirror::ManagementAction::TradeSessionDismiss));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 143);
+static_assert(static_cast<int>(wm::ManagementAction::TradeSessionGift) == static_cast<int>(df3d::mirror::ManagementAction::TradeSessionGift));
+static_assert(static_cast<int>(wm::ManagementAction::TradeSessionSeize) == static_cast<int>(df3d::mirror::ManagementAction::TradeSessionSeize));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 145);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -722,3 +724,5 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeDraftRead) == df3d:
 static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeDraftApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeDraftApply));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionExchange) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeSessionExchange));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionDismiss) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeSessionDismiss));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionGift) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeSessionGift));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionSeize) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeSessionSeize));

@@ -2,7 +2,8 @@
 -- protected sessions; neither session is saved.
 local view,trade,click,capture,out=...
 local json=require('json')
-local mode=os.getenv('DF3D_DEPOT_TRADE_GIFT');assert(mode=='native' or mode=='owned' or mode=='session')
+local mode=os.getenv('DF3D_DEPOT_TRADE_GIFT');assert(mode=='native' or mode=='owned' or mode=='session' or mode=='wire')
+local history={};for _,id in ipairs(trade.mer.goods)do history[#history+1]=id end
 local tracked={}
 for side=0,1 do for _,item in ipairs(trade.good[side])do tracked[item.id]=item end end
 local function snapshot()
@@ -57,6 +58,12 @@ local ok,err=xpcall(function()
   result.dialogue=trade.talkline;result.counter_offer=trade.counter_offer;result.announcement={}
   for _,text in ipairs(trade.big_announce.text)do result.announcement[#result.announcement+1]=dfhack.df2utf(text.value)end
   capture('depot-trade-gift')
+ elseif mode=='wire' then
+  local file=assert(io.open(out..'/trade-transfer-wire-expected.json','w'));file:write(json.encode({depot=trade.bld.id,side=1,intents={{side=1,item=bar.id}},dialogue=8}));file:close()
+  capture('trade-transfer-wire')
+  file=assert(io.open(out..'/trade-transfer-wire-result.json'));local wire=json.decode(file:read('*a'));file:close();assert(wire.success,json.encode(wire))
+  result.dialogue=wire.conversation.dialogue;result.counter_offer=wire.conversation.counter_offer;result.announcement=wire.conversation.announcement;result.wire=wire
+  assert(trade.talkline==line,'Wire transfer changed native conversation')
  elseif mode=='session' then
   local function probe(action,...)
    local args={...};for i,value in ipairs(args)do args[i]=tostring(value)end
@@ -111,6 +118,7 @@ for _,item in pairs(tracked)do for i=#item.general_refs-1,0,-1 do local ref=item
 end end
 trade.mer.total_capacity.whole=whole;trade.mer.total_capacity.fraction=fraction;trade.talkline=line
 click(440,694);click(900,694)
+trade.mer.goods:resize(0);for _,id in ipairs(history)do trade.mer.goods:insert("#",id)end
 assert(ok,err)
 local file=assert(io.open(out..'/trade-gift-result.json','w'));file:write(json.encode(result));file:close()
 return result

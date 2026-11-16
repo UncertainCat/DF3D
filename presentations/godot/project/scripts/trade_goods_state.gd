@@ -132,6 +132,10 @@ func _valid_counter(value: Variant,ids: Array,offset: int,limit: int) -> bool:
 	return true
 func exchange() -> void:
 	_session_action(C.ManagementAction.TradeSessionExchange)
+func offer_gift() -> void:
+	_session_action(C.ManagementAction.TradeSessionGift)
+func seize() -> void:
+	_session_action(C.ManagementAction.TradeSessionSeize)
 func dismiss_counteroffer() -> void:
 	if counter_page.is_empty() or counter_page.total==0:return
 	_session_action(C.ManagementAction.TradeSessionDismiss)

@@ -414,6 +414,8 @@ enum class ManagementAction : uint8_t {
   TradeDraftApply = 140,
   TradeSessionExchange = 141,
   TradeSessionDismiss = 142,
+  TradeSessionGift = 143,
+  TradeSessionSeize = 144,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -769,6 +771,8 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::TradeDraftApply: return true;
   case ManagementAction::TradeSessionExchange: return true;
   case ManagementAction::TradeSessionDismiss: return true;
+  case ManagementAction::TradeSessionGift: return true;
+  case ManagementAction::TradeSessionSeize: return true;
   default: return false;
   }
 }
@@ -781,6 +785,8 @@ constexpr const char* managementDomain(ManagementAction action) {
   case ManagementAction::TradeSessionClose: return "trade_session";
   case ManagementAction::TradeSessionExchange: return "trade_session";
   case ManagementAction::TradeSessionDismiss: return "trade_session";
+  case ManagementAction::TradeSessionGift: return "trade_session";
+  case ManagementAction::TradeSessionSeize: return "trade_session";
   case ManagementAction::TradeCatalogRead: return "trade_catalog";
   case ManagementAction::DepotGoodsRead: return "depot_goods";
   case ManagementAction::DepotGoodsCommit: return "depot_goods";

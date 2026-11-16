@@ -1806,7 +1806,7 @@ void publish() {
     // A batch may already have changed jobs. Never turn a malformed receipt
     // into a definite rejection; retain Pending for unknown-outcome retirement.
     if(action==m::ManagementAction::DepotGoodsCommit && mutated)return;
-    if((action==m::ManagementAction::TradeSessionOpen || action==m::ManagementAction::TradeSessionExchange || action==m::ManagementAction::TradeSessionDismiss || action==m::ManagementAction::TradeDraftApply) && mutated)return;
+    if((action==m::ManagementAction::TradeSessionOpen || (action==m::ManagementAction::TradeSessionExchange || action==m::ManagementAction::TradeSessionGift || action==m::ManagementAction::TradeSessionSeize) || action==m::ManagementAction::TradeSessionDismiss || action==m::ManagementAction::TradeDraftApply) && mutated)return;
     // A malformed lever receipt after native job creation is uncertain, never
     // a rejection that could encourage retrying the mutation.
     if(action==m::ManagementAction::ProductionQueue && production.lever && mutated)return;
@@ -5356,11 +5356,11 @@ void run(color_ostream& out) {
     }catch(...){reply={};if(apply){reply.outcome=m::TradeSessionOutcome::Unknown;mutated=true;}}
     publish();return;
   }
-  if((r->action()>=m::ManagementAction::TradeSessionOpen && r->action()<=m::ManagementAction::TradeSessionClose) || r->action()==m::ManagementAction::TradeSessionExchange || r->action()==m::ManagementAction::TradeSessionDismiss){
+  if((r->action()>=m::ManagementAction::TradeSessionOpen && r->action()<=m::ManagementAction::TradeSessionClose) || (r->action()==m::ManagementAction::TradeSessionExchange || r->action()==m::ManagementAction::TradeSessionGift || r->action()==m::ManagementAction::TradeSessionSeize) || r->action()==m::ManagementAction::TradeSessionDismiss){
     tradeSessionReply.emplace();auto& reply=*tradeSessionReply;status=m::ManagementStatus::Ok;message.clear();
     const auto& q=*r->trade_session();
-    if(r->action()==m::ManagementAction::TradeSessionExchange){
-      const auto result=tradeCatalogOwner.exchange(epoch,q.session(),q.expected_revision());
+    if((r->action()==m::ManagementAction::TradeSessionExchange || r->action()==m::ManagementAction::TradeSessionGift || r->action()==m::ManagementAction::TradeSessionSeize)){
+      const auto result=r->action()==m::ManagementAction::TradeSessionGift?tradeCatalogOwner.gift(epoch,q.session(),q.expected_revision()):r->action()==m::ManagementAction::TradeSessionSeize?tradeCatalogOwner.seize(epoch,q.session(),q.expected_revision()):tradeCatalogOwner.exchange(epoch,q.session(),q.expected_revision());
       switch(result.status){
         case df3d_production::TradeExchangeStatus::Available:reply.outcome=m::TradeSessionOutcome::Available;reply.session=result.selection.session;reply.revision=result.selection.revision;mutated=true;break;
         case df3d_production::TradeExchangeStatus::Unknown:reply.outcome=m::TradeSessionOutcome::Unknown;mutated=true;break;

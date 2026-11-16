@@ -65,5 +65,10 @@ elseif kind==48 then
  result.restored=true
 end
 assert(result.restored and #b.jobs==0)
+if os.getenv('DF3D_SPECIAL_BUILDINGS_EDITS')=='1' and (kind==24 or kind==49)then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('special%-building%-controls%-native.lua$','special-building-edits-native.lua')
+ result.edits=assert(loadfile(source))(out,view,b,click)
+ assert(#b.jobs==0)
+end
 local f=assert(io.open(out..'/special-building-'..kind..'-controls.json','w'));f:write(json.encode(result));f:close()
 return result

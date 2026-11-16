@@ -3118,12 +3118,33 @@ Evidence: `completed_sheet_discovery_reference.special_building_readers_referenc
 
 The controlled claim establishes display behavior, not natural nesting eligibility.
 Occupied/baited trap bodies and hive crowding branches have static native evidence
-but no live acceptance yet. This milestone adds diagnostic reads only: semantic
-edits, transport, viewer bodies and public admission remain unfinished. Siege22,
+but no live acceptance yet. Transport, viewer bodies and public admission remain
+unfinished. Siege22,
 Chain27 and DisplayFurniture53 still need their workflows; Archery26 uses shared
 native footer controls. Shop7 and natural Nest47 require fortress-route assessment.
 Earlier135024's siege capture selected a dwarf inside the footprint and is invalid;
 135309 and140937 use full-footprint clearance and explicit selected-building checks.
+
+The trap/hive control provider now owns revisions over target stage/flags,
+contents, body facts and jobs. Bait selection preserves native1afad4..1afbc9:
+set the requested bait and cancel mismatched BaitTrap107 jobs backwards using
+native54bcd0, including when reselecting the same bait. Hive settings preserve
+native1adfee..1ae263's individual flag changes. Edits reject stale observations
+and demolition, and return Unknown without authority if effects begin but their
+postconditions cannot be confirmed. Epoch and visibility belong to the enclosing
+production caller; this provider does not borrow native menu authority.
+
+Protected141652 (DF60372) compares all four bait choices and both hive flags
+against native clicks. Controlled matching/mismatched bait jobs and unrelated
+CleanTrap144 work confirm exact retention/cancellation, including same-bait
+selection. Ready-split and unrelated hive bits remain unchanged. Old revisions
+and queued demolition reject without effects; GPS/main_interface bytes remain
+unchanged for reads and edits. Temporary jobs/fixtures are removed, source saves
+are unchanged, owned DF closes unsaved at30FPS, GPU samples58–59C. Bridge build
+and19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.special_building_edits_reference`.
+These are safe-point provider checks, not public workflow acceptance; transport
+and presentation lifecycle coverage remain required.
 
 ### Cage assignment discovery
 

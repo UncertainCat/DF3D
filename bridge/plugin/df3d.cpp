@@ -5702,6 +5702,36 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(result));return CR_OK;
       }
+      if(parameters[0]=="special-building-controls-read" || parameters[0]=="special-building-controls-probe") {
+        const bool edit=parameters[0]=="special-building-controls-probe";
+        if(parameters.size()!=(edit?5:2))return CR_WRONG_USAGE;
+        std::array<int64_t,4> args{};
+        for(size_t i=1;i<parameters.size();++i) {
+          const auto& value=parameters[i];const auto parsed=std::from_chars(value.data(),value.data()+value.size(),args[i-1]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        }
+        if(args[0]<0 || args[0]>INT32_MAX || !state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+        auto* building=df::building::find(int32_t(args[0]));
+        std::optional<df3d_production::SpecialBuildingControls> body;Json::Value result;
+        if(edit) {
+          if(!df::global::pause_state || !*df::global::pause_state || args[1]<=0)return CR_FAILURE;
+          df3d_production::SpecialBuildingEdit outcome;
+          if(args[2]==0 && args[3]>=INT16_MIN && args[3]<=INT16_MAX)
+            outcome=df3d_production::setAnimalTrapBait(building,uint64_t(args[1]),int16_t(args[3]));
+          else if((args[2]==1 || args[2]==2) && (args[3]==0 || args[3]==1))
+            outcome=df3d_production::setHiveSetting(building,uint64_t(args[1]),uint32_t(args[2]),args[3]!=0);
+          else return CR_WRONG_USAGE;
+          result["outcome"]=int(outcome.outcome);result["effects_started"]=outcome.effectsStarted;body=std::move(outcome.receipt);
+        } else body=df3d_production::specialBuildingControls(building);
+        if(body) {
+          result["building_id"]=body->id;result["revision"]=Json::UInt64(body->revision);result["removing"]=body->removing;
+          if(body->trap)result["bait_type"]=body->trap->baitType;
+          if(body->hive)result["flags"]=body->hive->flags;
+          result["jobs"]=Json::Value(Json::arrayValue);
+          for(const auto& job:body->jobs){Json::Value row;row["id"]=job.id;row["type"]=job.type;row["item_type"]=job.itemType;row["flags"]=job.flags;result["jobs"].append(row);}
+        } else if(!edit)return CR_FAILURE;
+        out.print("{}",Json::FastWriter().write(result));return CR_OK;
+      }
       if(parameters[0]=="special-building-read") {
         if(parameters.size()!=2)return CR_WRONG_USAGE;
         int32_t id=-1;const auto& arg=parameters[1];

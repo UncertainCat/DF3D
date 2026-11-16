@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <optional>
 #include <string>
+#include <vector>
 
 namespace df { struct building; }
 namespace df3d_production {
@@ -29,4 +30,24 @@ struct HiveBody {
 std::optional<NestBoxBody> nestBoxBody(df::building* building);
 std::optional<AnimalTrapBody> animalTrapBody(df::building* building);
 std::optional<HiveBody> hiveBody(df::building* building);
+struct SpecialBuildingControls {
+    struct Job {int32_t id,type,itemType;uint32_t flags;};
+    int32_t id=-1,type=-1;
+    uint64_t revision=0;
+    bool removing=false;
+    std::optional<AnimalTrapBody> trap;
+    std::optional<HiveBody> hive;
+    std::vector<Job> jobs;
+};
+enum class SpecialBuildingOutcome:uint8_t { Rejected,Completed,Stale,Unknown };
+struct SpecialBuildingEdit {
+    SpecialBuildingOutcome outcome=SpecialBuildingOutcome::Rejected;
+    bool effectsStarted=false;
+    std::optional<SpecialBuildingControls> receipt;
+};
+// Caller owns epoch/visibility validation at the same safe point. No native UI
+// authority is consulted; revisions cover the actual target, contents and jobs.
+std::optional<SpecialBuildingControls> specialBuildingControls(df::building* building);
+SpecialBuildingEdit setAnimalTrapBait(df::building* building,uint64_t expected,int16_t bait);
+SpecialBuildingEdit setHiveSetting(df::building* building,uint64_t expected,uint32_t mask,bool enabled);
 }

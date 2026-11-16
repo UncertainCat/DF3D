@@ -114518,6 +114518,172 @@
           "tools/smoke/special-building-controls-native.lua": "13bbd7aa8ddefd261d71d2576984e95db332fc8679384b5104061dad5173bab2",
           "tools/smoke/remaining-buildings-native.lua": "9327da50e91fe16c96a1a12af75986f8a6ff5aeacc018dd21bd83699573f6b20"
         }
+      },
+      "special_building_edits_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-141652",
+        "owned_df_pid": 60372,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "cases": {
+          "24": {
+            "cases": [
+              {
+                "bait": 48,
+                "native": 48,
+                "owned": {
+                  "bait_type": 48,
+                  "building_id": 1491,
+                  "effects_started": true,
+                  "jobs": [],
+                  "outcome": 1,
+                  "removing": false,
+                  "revision": 6796961595040169066
+                }
+              },
+              {
+                "bait": 49,
+                "native": 49,
+                "owned": {
+                  "bait_type": 49,
+                  "building_id": 1491,
+                  "effects_started": true,
+                  "jobs": [],
+                  "outcome": 1,
+                  "removing": false,
+                  "revision": 3828706528902882839
+                }
+              },
+              {
+                "bait": 44,
+                "native": 44,
+                "owned": {
+                  "bait_type": 44,
+                  "building_id": 1491,
+                  "effects_started": true,
+                  "jobs": [],
+                  "outcome": 1,
+                  "removing": false,
+                  "revision": 2680079654535991782
+                }
+              },
+              {
+                "bait": -1,
+                "native": -1,
+                "owned": {
+                  "bait_type": -1,
+                  "building_id": 1491,
+                  "effects_started": true,
+                  "jobs": [],
+                  "outcome": 1,
+                  "removing": false,
+                  "revision": 5734655702350733586
+                }
+              }
+            ],
+            "jobs": {
+              "native_removed": 382803,
+              "owned": {
+                "bait_type": 48,
+                "building_id": 1491,
+                "effects_started": true,
+                "jobs": [
+                  {
+                    "flags": 0,
+                    "id": 382807,
+                    "item_type": 48,
+                    "type": 107
+                  },
+                  {
+                    "flags": 0,
+                    "id": 382808,
+                    "item_type": -1,
+                    "type": 144
+                  }
+                ],
+                "outcome": 1,
+                "removing": false,
+                "revision": 6012676643345493000
+              },
+              "owned_removed": 382806
+            },
+            "removing_rejected": true,
+            "restored": true,
+            "type": 24
+          },
+          "49": {
+            "cases": [
+              {
+                "before": 0,
+                "mask": 1,
+                "native": 1,
+                "owned": {
+                  "building_id": 1495,
+                  "effects_started": true,
+                  "flags": 1,
+                  "jobs": [],
+                  "outcome": 1,
+                  "removing": false,
+                  "revision": 8507448139425547703
+                }
+              },
+              {
+                "before": 0,
+                "mask": 2,
+                "native": 2,
+                "owned": {
+                  "building_id": 1495,
+                  "effects_started": true,
+                  "flags": 2,
+                  "jobs": [],
+                  "outcome": 1,
+                  "removing": false,
+                  "revision": 2193574477997403860
+                }
+              },
+              {
+                "before": 12,
+                "mask": 1,
+                "native": 13,
+                "owned": {
+                  "building_id": 1495,
+                  "effects_started": true,
+                  "flags": 13,
+                  "jobs": [],
+                  "outcome": 1,
+                  "removing": false,
+                  "revision": 4629629393148517667
+                }
+              },
+              {
+                "before": 12,
+                "mask": 2,
+                "native": 14,
+                "owned": {
+                  "building_id": 1495,
+                  "effects_started": true,
+                  "flags": 14,
+                  "jobs": [],
+                  "outcome": 1,
+                  "removing": false,
+                  "revision": 1193122394976630336
+                }
+              }
+            ],
+            "removing_rejected": true,
+            "restored": true,
+            "type": 49
+          }
+        },
+        "scope": "Native/owned bait choices and hive flags. Same-bait selection cancels mismatched BaitTrap107 and retains matching BaitTrap107 plus CleanTrap144. Ready-split/unrelated hive bits preserved. Stale and demolition rejected without effects; GPS/main_interface unchanged. Temporary jobs/fixtures cleaned. Serial30FPS GPU58-59C. Provider-only, no transport or public UI acceptance.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-141652/remaining-buildings-native.json": "93d7cfedfe310eeb039917b6bdab6dd6436dec712c1c1e0a90f7c7b9a7e0fe92",
+          "build/stockpile-storage-native-farm-discovery-20261116-141652/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-141652/special-building-24-edits.json": "3260eb0a335f2cba2c397ecf48e0852a058a47587a1d445dbea48aacde8f3a15",
+          "build/stockpile-storage-native-farm-discovery-20261116-141652/special-building-49-edits.json": "7eb4765227ab23ff146078fc8e933bde327a8b8589780cb48cb51e046c50a9a9",
+          "bridge/plugin/special_building_native.cpp": "2bfab09d8ebb5615e056364fea934a43d6689cacd8b45949c6369e3e08dc102b",
+          "bridge/plugin/special_building_native.h": "25adb5d40d93cf48f56865105cd39556a0a1a48c76b7969e5a045ce26f4a40ef",
+          "tools/smoke/special-building-edits-native.lua": "80ae3e3095410bd01cfd0860d422a8fed0c1ff107f70b8e469c50fb6799f1c97"
+        }
       }
     },
     "pending_construction_reference": {

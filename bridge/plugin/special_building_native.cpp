@@ -129,4 +129,97 @@ std::optional<HiveBody> hiveBody(df::building* building) {
     }
     return result;
 }
+std::optional<SpecialBuildingControls> specialBuildingControls(df::building* building) {
+    if(!building)return {};
+    SpecialBuildingControls result;result.id=building->id;result.type=int32_t(building->getType());
+    df::building_actual* actual=nullptr;
+    if(result.type==24) {
+        result.trap=animalTrapBody(building);if(!result.trap)return {};
+        actual=static_cast<df::building_animaltrapst*>(building);
+    } else if(result.type==49) {
+        result.hive=hiveBody(building);if(!result.hive)return {};
+        actual=static_cast<df::building_hivest*>(building);
+    } else return {};
+    if(building->jobs.size()>10000 || actual->contained_items.size()>10000)return {};
+    uint64_t hash=UINT64_C(14695981039346656037);
+    const auto number=[&](uint64_t n){for(int i=0;i<8;++i){hash^=uint8_t(n);hash*=UINT64_C(1099511628211);n>>=8;}};
+    number(result.id);number(result.type);number(building->getBuildStage());number(building->getMaxBuildStage());number(building->flags.whole);
+    if(result.trap){number(result.trap->baitType);number(uint8_t(result.trap->state));number(result.trap->itemId);}
+    if(result.hive){number(result.hive->flags);number(result.hive->outdoorAccess);number(result.hive->colonyRace);number(result.hive->matchingColonies);}
+    number(actual->contained_items.size());
+    for(const auto* entry:actual->contained_items) {
+        if(!entry || !entry->item)return {};
+        number(entry->item->id);number(entry->use_mode);number(entry->item->flags.whole);
+    }
+    number(building->jobs.size());
+    for(const auto* job:building->jobs) {
+        if(!job)return {};
+        result.jobs.push_back({job->id,int32_t(job->job_type),int32_t(job->item_type),job->flags.whole});
+        number(job->id);number(int32_t(job->job_type));number(int32_t(job->item_type));number(job->flags.whole);
+        result.removing|=job->job_type==df::job_type::DestroyBuilding;
+    }
+    result.revision=(hash&INT64_MAX)?hash&INT64_MAX:1;return result;
+}
+namespace {
+bool editsReady() {
+    if(!ready())return false;
+    static const bool pinned=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        const auto pin=[&](size_t at,size_t count,uint64_t expected) {
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<count;++i){hash^=base[at+i];hash*=UINT64_C(1099511628211);}
+            return hash==expected;
+        };
+        return pin(0x1afad4,0xf5,UINT64_C(0x81dbccbc33c93a1a)) &&
+            pin(0x1adfee,0x275,UINT64_C(0x93cbe65241c0f8b8));
+    }();return pinned;
+}
+bool sameJobs(const std::vector<SpecialBuildingControls::Job>& a,const std::vector<SpecialBuildingControls::Job>& b) {
+    if(a.size()!=b.size())return false;
+    for(size_t i=0;i<a.size();++i)if(a[i].id!=b[i].id || a[i].type!=b[i].type || a[i].itemType!=b[i].itemType || a[i].flags!=b[i].flags)return false;
+    return true;
+}
+}
+SpecialBuildingEdit setAnimalTrapBait(df::building* building,uint64_t expected,int16_t bait) {
+    SpecialBuildingEdit result;
+    try {
+        if(!expected || expected>INT64_MAX || (bait!=-1 && bait!=44 && bait!=48 && bait!=49) || !editsReady())return result;
+        const auto before=specialBuildingControls(building);if(!before || !before->trap)return result;
+        if(before->revision!=expected){result.outcome=SpecialBuildingOutcome::Stale;return result;}
+        if(before->removing || before->trap->state!=AnimalTrapBody::State::Empty)return result;
+        auto& trap=*static_cast<df::building_animaltrapst*>(building);
+        std::vector<SpecialBuildingControls::Job> retained;
+        for(const auto& job:before->jobs)if(job.type!=int32_t(df::job_type::BaitTrap) || job.itemType==bait)retained.push_back(job);
+        // Even clicking the already selected bait cancels mismatched fill jobs.
+        result.effectsStarted=true;result.outcome=SpecialBuildingOutcome::Unknown;
+        trap.bait_type=bait;
+        using Cancel=void(*)(df::building*,int32_t);
+        const auto cancel=reinterpret_cast<Cancel>(farmFunctions().cancelJob);
+        for(size_t i=trap.jobs.size();i-->0;) {
+            const auto* job=trap.jobs[i];
+            if(job->job_type==df::job_type::BaitTrap && int32_t(job->item_type)!=bait)cancel(&trap,int32_t(i));
+        }
+        auto after=specialBuildingControls(building);
+        if(!after || !after->trap || after->trap->baitType!=bait || !sameJobs(retained,after->jobs))return result;
+        result.receipt=std::move(after);result.outcome=SpecialBuildingOutcome::Completed;
+    }catch(...){}
+    return result;
+}
+SpecialBuildingEdit setHiveSetting(df::building* building,uint64_t expected,uint32_t mask,bool enabled) {
+    SpecialBuildingEdit result;
+    try {
+        if(!expected || expected>INT64_MAX || (mask!=1 && mask!=2) || !editsReady())return result;
+        const auto before=specialBuildingControls(building);if(!before || !before->hive)return result;
+        if(before->revision!=expected){result.outcome=SpecialBuildingOutcome::Stale;return result;}
+        if(before->removing)return result;
+        const auto flags=(before->hive->flags&~mask)|(enabled?mask:0U);
+        if(flags==before->hive->flags){result.outcome=SpecialBuildingOutcome::Completed;result.receipt=before;return result;}
+        result.effectsStarted=true;result.outcome=SpecialBuildingOutcome::Unknown;
+        static_cast<df::building_hivest*>(building)->hive_flags.whole=flags;
+        auto after=specialBuildingControls(building);
+        if(!after || !after->hive || after->hive->flags!=flags || !sameJobs(before->jobs,after->jobs))return result;
+        result.receipt=std::move(after);result.outcome=SpecialBuildingOutcome::Completed;
+    }catch(...){}
+    return result;
+}
 }

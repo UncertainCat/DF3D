@@ -5,7 +5,7 @@ signal changed
 signal choice_requested(depot_id: int, token: int)
 signal session_opened
 const C=preload("res://scripts/management_contract.gd")
-enum Phase {Closed,Reading,Ready,Choosing,Rejected,Unknown,Unavailable,Active,Checking,GoodsReading,Applying}
+enum Phase {Closed,Reading,Ready,Choosing,Rejected,Unknown,Unavailable,Active,Checking,GoodsReading,Applying,Exchanging}
 var service
 var phase:=Phase.Closed
 var depot_id: int=-1
@@ -19,6 +19,7 @@ var revision: int=0
 var entry: Dictionary={}
 var footer: Dictionary={}
 var header: Dictionary={}
+var conversation: Dictionary={}
 var header_columns: int=102
 var _open_ticket:=0
 func configure(source) -> void:
@@ -34,7 +35,7 @@ func close() -> void:
 		if _open_ticket!=0:service.retire_trade_open(_open_ticket)
 		if ticket!=0 and ticket!=_open_ticket:service.detach(ticket)
 		if session>0:service.submit("trade_session",{"action":C.ManagementAction.TradeSessionClose,"session":session},Callable())
-	_open_ticket=0;session=0;revision=0;entry={};footer={};header={}
+	_open_ticket=0;session=0;revision=0;entry={};footer={};header={};conversation={}
 	ticket=0;depot_id=-1;title="";from_text="";choices=[];phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:close();phase=Phase.Unavailable;changed.emit()
 func open(id: int) -> void:
@@ -86,12 +87,24 @@ func refresh_session() -> void:
 		ticket=0
 		var value: Variant=result.get("trade_session")
 		if result.get("outcome")=="unknown":phase=Phase.Unknown
-		elif result.get("status")==C.ManagementStatus.Ok and result.get("action")==C.ManagementAction.TradeSessionRead and typeof(value)==TYPE_DICTIONARY and value.get("outcome")==C.TradeSessionOutcome.Available and typeof(value.get("session"))==TYPE_INT and typeof(value.get("revision"))==TYPE_INT and value.session==session and value.revision==revision and not value.has("entry") and _valid_footer(value.get("footer")) and _valid_header(value.get("header"),header_columns):
-			footer=value.footer.duplicate(true);header=value.header.duplicate(true);phase=Phase.Active
+		elif result.get("status")==C.ManagementStatus.Ok and result.get("action")==C.ManagementAction.TradeSessionRead and typeof(value)==TYPE_DICTIONARY and value.get("outcome")==C.TradeSessionOutcome.Available and typeof(value.get("session"))==TYPE_INT and typeof(value.get("revision"))==TYPE_INT and value.session==session and value.revision==revision and not value.has("entry") and _valid_footer(value.get("footer")) and _valid_header(value.get("header"),header_columns) and _valid_conversation(value.get("conversation")):
+			footer=value.footer.duplicate(true);header=value.header.duplicate(true);conversation=value.conversation.duplicate(true);phase=Phase.Active
 		else:phase=Phase.Rejected
 		changed.emit())
 	if ticket==0:phase=Phase.Unavailable
 	changed.emit()
+static func _valid_conversation(value: Variant) -> bool:
+	if typeof(value)!=TYPE_DICTIONARY or typeof(value.get("dialogue"))!=TYPE_INT or value.dialogue < -1 or value.dialogue>28 or typeof(value.get("counter_offer"))!=TYPE_BOOL:return false
+	if typeof(value.get("requested_items"))!=TYPE_ARRAY or value.requested_items.size()>1048576 or typeof(value.get("announcement"))!=TYPE_ARRAY or value.announcement.size()>2049:return false
+	var ids: Dictionary={}
+	for id in value.requested_items:
+		if typeof(id)!=TYPE_INT or id<0 or id>2147483647 or ids.has(id):return false
+		ids[id]=true
+	var bytes:=0
+	for line in value.announcement:
+		if typeof(line)!=TYPE_STRING or line.to_utf8_buffer().size()>8192:return false
+		bytes+=line.to_utf8_buffer().size()
+	return bytes<=65536
 static func _valid_header(value: Variant,columns: int) -> bool:
 	if typeof(value)!=TYPE_DICTIONARY or typeof(value.get("columns"))!=TYPE_INT or value.columns!=columns or columns<1 or columns>512:return false
 	if typeof(value.get("speaker"))!=TYPE_INT or value.speaker < -1 or value.speaker>2147483647:return false

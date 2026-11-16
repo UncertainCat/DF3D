@@ -668,7 +668,8 @@ struct TradeSessionRequest {int32_t depotId=-1;uint64_t choiceToken=0,session=0,
 struct TradeSessionEntry {int32_t entityId=-1,fortressTrader=-1,merchantTrader=-1;int16_t dialogue=-1;bool unloading=false,hasSpeaker=false;std::string title,speaker,fortress,place;};
 struct TradeFooter {std::string merchantValue,fortressValue,profit;int8_t profitColor=6;std::string capacity;int8_t capacityColor=7;};
 struct TradeHeader {int32_t speaker=-1;uint16_t columns=0;std::string name,mood;std::vector<std::string> lines,status;int8_t moodColor=-1,statusColor=-1;std::optional<AreaNameColor> nameColor;std::optional<SelectionAppearance> appearance;};
-struct TradeSessionState {TradeSessionOutcome outcome=TradeSessionOutcome::Rejected;uint64_t session=0,revision=0;std::optional<TradeSessionEntry> entry;std::optional<TradeFooter> footer;std::optional<TradeHeader> header;};
+struct TradeConversation {int16_t dialogue=0;bool counterOffer=false;std::vector<int32_t> requestedItems;std::vector<std::string> announcement;};
+struct TradeSessionState {TradeSessionOutcome outcome=TradeSessionOutcome::Rejected;uint64_t session=0,revision=0;std::optional<TradeSessionEntry> entry;std::optional<TradeFooter> footer;std::optional<TradeHeader> header;std::optional<TradeConversation> conversation;};
 struct TradeCatalogChoice {uint64_t token=0;int32_t entityId=-1;std::string race,name;};
 struct TradeCatalogState {int32_t depotId=-1;std::string title,from;std::vector<TradeCatalogChoice> choices;};
 struct DepotGoodsRequest {int32_t depotId=-1;int16_t category=-1;std::string query;bool sortByDistance=true,pendingOnTop=true,excludeProhibited=false;std::vector<int32_t> itemIds;uint64_t expectedRevision=0;std::vector<DepotGoodsChange> draft,sortDraft;int32_t containerId=-1,containerOffset=0,containerLimit=0;};

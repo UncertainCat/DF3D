@@ -98969,6 +98969,63 @@
           "bridge/plugin/df3d.cpp": "095e0ac21b56bc161f24d2e6ddf95e2fe4204cd8b431ad6a4883b54f6a36274f",
           "tools/smoke/depot-trade-negotiate-native.lua": "7c085824ea872ffb9454e67ecce3e91354aaf055fcd2e77636f5eb7a31c39b59"
         }
+      },
+      "depot_trade_exchange_transport_reference": {
+        "protocol": 244,
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-225954",
+        "native_reference": "build/stockpile-storage-native-farm-discovery-20261115-224201",
+        "owned_df_pid": 26220,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Actual headless Godot Trade controller opens, selects three items, submits native counteroffer, refreshes, accepts, refreshes new goods, rejects old revisions and closes. Eight ownership changes, conversation, people, caravan and active RNG match native. Entry appraisal isolated by pre-recorded current goods; separate existing appraisal evidence applies. Full visual route, counteroffer list rendering, Okay, Seize/gift, foreign accounting, real announcements and destructive wire-failure injection remain unqualified.",
+        "compared_native_fields": [
+          "accept_before",
+          "accept_after",
+          "accept_conversation",
+          "accept_people",
+          "accept_caravan",
+          "accept_rng"
+        ],
+        "counter": {
+          "announcement": [],
+          "counter_offer": true,
+          "dialogue": 24,
+          "requested_items": [
+            1180,
+            1735,
+            1736,
+            1494,
+            25112
+          ]
+        },
+        "accepted": {
+          "announcement": [],
+          "counter_offer": false,
+          "dialogue": 7,
+          "requested_items": [
+            1180,
+            1735,
+            1736,
+            1494,
+            25112
+          ]
+        },
+        "final_revision": 6,
+        "changed_items": 8,
+        "headless_log_clean": true,
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-225954/depot-trade-native.json": "c83186acb50e7d8ea839f43819b034ab120ad3f9369232f3231c49f1075f12cb",
+          "build/stockpile-storage-native-farm-discovery-20261115-225954/trade-exchange-wire-result.json": "cb1da0ea8ba746ae224b74366eb21dbbd231f0c9e381eced03e54de77e3cf0e6",
+          "build/stockpile-storage-native-farm-discovery-20261115-225954/result.json": "247885fb573bd017e6ac9d35f839b5731612eeb2de6b25ee846a5d540821945f",
+          "build/stockpile-storage-native-farm-discovery-20261115-225954/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "schema/mirror.fbs": "55c311c2d158b401e1ec9ed0d3483c0e5f01d1e96c7bd67c6af75cb860542ae3",
+          "schema/cpp/management_util.h": "ed778153c550f6a13ba9f784a5b668585d43f9a26527da858e96c5324d4d5c8d",
+          "bridge/plugin/management.cpp": "42d93e9734a578fe533fc2c1ff01f269d438c4d7d779fcea06d1a92c52312a5a",
+          "presentations/godot/extension/src/df3d_requests.cpp": "389c4321270e806f945bcaf7733fa5f07cec7297762772972249687de7153f27",
+          "presentations/godot/project/scripts/trade_goods_state.gd": "c18598e9ff8229d3ceb4a9f508fd13127bf6d98e39d32ec3d84c9b185de63f88",
+          "presentations/godot/project/tests/trade_exchange_wire_live.gd": "75fdbfd7ce9ccbf3b969ff8c3ac18cdc9ecf6b4ffab821e7eb77fcf3af899fed",
+          "tools/smoke/depot-trade-negotiate-native.lua": "3a505364d7ec5576b2cb3a6b83c87c033fd6f4a6436fd3f4f33c6b2ae8503ae4"
+        }
       }
     },
     "pending_construction_reference": {

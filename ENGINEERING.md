@@ -32,7 +32,8 @@ handle post-effect failure as uncertainty and must not retry it automatically.
 The routine consumes normal DF RNG, trains both traders and can mutate caravan
 state, counteroffers or item ownership. TradeSelectionSession retains its
 pointer-free conversation alongside the selection; TradeOwner forwards explicit
-exchange actions. Public transport/controller integration remains unfinished.
+exchange actions. Protocol244 and the staged controller carry these actions;
+the full visible Trade route remains unfinished.
 
 Session exchange validates the existing epoch/session/source/revision before
 reconstructing an owned context. Refusal and negotiation are explicit actions;
@@ -178,7 +179,43 @@ This is native reference evidence only; the owned executor and actual successful
 Trade/gift/Seize effects remain unfinished.
 
 
-## Trade header transport migration
+## Trade session transport
+
+Management protocol244 adds TradeSessionExchange with session and expected
+revision only. It returns a processed-action receipt, never optimistic goods.
+Available advances the revision; Rejected/Retired are definite refusals; Unknown
+must not be replayed. Post-effect serialization failure retains uncertainty.
+Successful TradeSessionRead now requires a bounded pointer-free conversation:
+dialogue, independent counteroffer flag, ordered requested IDs and announcement
+lines. Open/exchange/close receipts cannot carry that read payload. Both peers
+use Local\df3d_management_v244; rebuild together. Old recordings must not
+synthesize conversation or exchange receipts. Existing header/footer requirements
+remain in force.
+
+The goods controller serializes exchange with draft changes, disables controls
+while pending and refreshes both pages plus header/footer/conversation at the
+new revision before re-enabling. Uncertainty keeps content disabled and permits
+closing; there is no retry. Closing/epoch replacement retires callback ownership.
+Headless controller checks cover duplicate clicks, atomic conversation publication
+and unknown-outcome closing; malformed conversation/receipt tests cover the codec.
+
+Protected225954 on2026-11-15 executes the actual headless Godot controller through
+protocol244. It opens, selects, negotiates a counteroffer, refreshes, accepts,
+refreshes changed goods, rejects old revisions and closes. The resulting eight
+ownership changes, dialogue, traders' skills/attributes, caravan and active RNG
+match native224201. The fixture pre-records current goods to isolate negotiation
+from separately qualified entry appraisal. DF26220 closes unsaved/source-preserved;
+native rendering is capped30FPS and Godot is headless. The post-run GPU sample
+is56C, not a peak measurement. Both peers build,19 core checks pass and controller
+logs are clean. Evidence:
+`completed_sheet_discovery_reference.depot_trade_exchange_transport_reference`.
+
+The first225401 attempt stopped in diagnostic setup before exchange.225548 reached
+a pending request at the new action boundary; a forced dispatcher/adapter
+rebuild resolved it, consistent with an enum-range edit made during compilation. Neither failed run supplies acceptance evidence.
+Full Trade rendering/input, Okay, gift/Seize, foreign-caravan accounting, real
+announcements and destructive transport-failure injection remain unfinished.
+Trade stays hidden pending the complete workflow.
 
 Management protocol243 requires TradeSessionRead columns1..512 and a native
 header on each successful read. Header text, wrapped lines, status/mood colors,

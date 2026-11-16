@@ -15,7 +15,7 @@ TEST_CASE("Trade header reads preserve native lines and reject malformed summari
     std::vector<flatbuffers::Offset<flatbuffers::String>> lines{caption},none;
     auto footer=wire::CreateTradeFooter(b,caption,caption,caption,6,caption,7);
     auto header=wire::CreateTradeHeader(b,fault==4?12:-1,fault==2?0:fault==3?513:102,empty,b.CreateVector(lines),empty,fault==5?10:-1,b.CreateVector(none),fault==6?7:-1);
-    auto result=wire::CreateTradeSessionState(b,wire::TradeSessionOutcome::Available,91,3,0,footer,fault==1?0:header);
+    auto result=wire::CreateTradeSessionState(b,wire::TradeSessionOutcome::Available,91,3,0,footer,fault==1?0:header,wire::CreateTradeConversation(b,0,false,b.CreateVector(std::vector<int32_t>{}),b.CreateVector(none)));
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);
     state.add_action(wire::ManagementAction::TradeSessionRead);state.add_trade_session(result);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
@@ -36,7 +36,7 @@ TEST_CASE("Trade session reads require bounded native footer captions") {
     auto oversized=b.CreateString(std::string(2049,'x'));
     auto footer=wire::CreateTradeFooter(b,fault==1?0:fault==2?oversized:text,text,text,fault==3?7:6,text,fault==4?6:7);
     auto empty=b.CreateString("");std::vector<flatbuffers::Offset<flatbuffers::String>> lines;auto header=wire::CreateTradeHeader(b,-1,102,empty,b.CreateVector(lines),empty,-1,b.CreateVector(lines),-1);
-    auto result=wire::CreateTradeSessionState(b,fault==5?wire::TradeSessionOutcome::Rejected:wire::TradeSessionOutcome::Available,91,3,0,fault==6?0:footer,header);
+    auto result=wire::CreateTradeSessionState(b,fault==5?wire::TradeSessionOutcome::Rejected:wire::TradeSessionOutcome::Available,91,3,0,fault==6?0:footer,header,wire::CreateTradeConversation(b,0,false,b.CreateVector(std::vector<int32_t>{}),b.CreateVector(lines)));
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);
     state.add_action(fault==7?wire::ManagementAction::TradeSessionClose:wire::ManagementAction::TradeSessionRead);state.add_trade_session(result);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
@@ -71,10 +71,10 @@ TEST_CASE("Trade draft pages are bounded complete and owned by the read action")
 
 TEST_CASE("Trade session transport binds explicit open read and close intents") {
   constexpr uint64_t token=UINT64_C(9007199254740993);
-  for(auto action:{wm::ManagementAction::TradeSessionOpen,wm::ManagementAction::TradeSessionRead,wm::ManagementAction::TradeSessionClose})for(int fault=0;fault<4;++fault){
+  for(auto action:{wm::ManagementAction::TradeSessionOpen,wm::ManagementAction::TradeSessionRead,wm::ManagementAction::TradeSessionClose,wm::ManagementAction::TradeSessionExchange})for(int fault=0;fault<4;++fault){
     wm::ManagementRequest r;r.action=action;
     if(action==wm::ManagementAction::TradeSessionOpen){r.tradeSession.depotId=54;r.tradeSession.choiceToken=token;if(fault==1)r.tradeSession.choiceToken=0;if(fault==2)r.tradeSession.session=1;if(fault==3)r.tradeSession.choiceToken=UINT64_MAX;}
-    else {r.tradeSession.session=token;if(action==wm::ManagementAction::TradeSessionRead){r.tradeSession.expectedRevision=1;r.tradeSession.columns=102;}if(fault==1)r.tradeSession.session=0;if(fault==2)r.tradeSession.depotId=54;if(fault==3)r.tradeSession.choiceToken=1;}
+    else {r.tradeSession.session=token;if(action==wm::ManagementAction::TradeSessionRead || action==wm::ManagementAction::TradeSessionExchange){r.tradeSession.expectedRevision=1;if(action==wm::ManagementAction::TradeSessionRead)r.tradeSession.columns=102;}if(fault==1)r.tradeSession.session=0;if(fault==2)r.tradeSession.depotId=54;if(fault==3)r.tradeSession.choiceToken=1;}
     flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
     CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
     if(!fault)CHECK((action==wm::ManagementAction::TradeSessionOpen?value->trade_session()->choice_token():value->trade_session()->session())==token);
@@ -6049,5 +6049,29 @@ TEST_CASE("item bedding preserves native variants and rejects malformed or non-b
     const auto* value=flatbuffers::GetRoot<wire::ItemInspectionAppearance>(b.GetBufferPointer());
     CHECK(wire::validInspectionInstrument(*value,fault==6?9:8)==(fault==0));
     if(!fault){auto decoded=codec::decodeInspectionAppearance(value);b.Clear();REQUIRE(decoded.bedding);CHECK(decoded.bedding->sheet==1);CHECK(decoded.bedding->pillow==2);CHECK(decoded.bedding->baseColor=="BROWN");CHECK(decoded.bedding->sheetColor=="RED");}
+  }
+}
+
+TEST_CASE("Trade exchange receipts carry authority only and conversation reads are bounded") {
+  for(int fault=0;fault<4;++fault){
+    flatbuffers::FlatBufferBuilder b;
+    const auto outcome=fault==1?wire::TradeSessionOutcome::Unknown:wire::TradeSessionOutcome::Available;
+    const auto result=wire::CreateTradeSessionState(b,outcome,fault==1?0:91,fault==1?0:fault==2?0:4);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);
+    state.add_action(fault==3?wire::ManagementAction::TradeSessionRead:wire::ManagementAction::TradeSessionExchange);state.add_trade_session(result);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault>=2));
+    if(fault<2){auto decoded=codec::decodeState(value);REQUIRE(decoded.tradeSession);CHECK(decoded.tradeSession->outcome==wm::TradeSessionOutcome(outcome));}
+  }
+  for(int fault=0;fault<5;++fault){
+    flatbuffers::FlatBufferBuilder b;auto text=b.CreateString("Synthetic");auto empty=b.CreateString("");std::vector<flatbuffers::Offset<flatbuffers::String>> lines;
+    auto header=wire::CreateTradeHeader(b,-1,102,empty,b.CreateVector(lines),empty,-1,b.CreateVector(lines),-1);
+    auto footer=wire::CreateTradeFooter(b,text,text,text,6,text,7);
+    std::vector<int32_t> ids=fault==1?std::vector<int32_t>{-1}:fault==2?std::vector<int32_t>{4,4}:std::vector<int32_t>{4};
+    auto conversation=wire::CreateTradeConversation(b,fault==3?29:24,true,b.CreateVector(ids),b.CreateVector(lines));
+    auto result=wire::CreateTradeSessionState(b,wire::TradeSessionOutcome::Available,91,3,0,footer,header,fault==4?0:conversation);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);state.add_action(wire::ManagementAction::TradeSessionRead);state.add_trade_session(result);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeState(value);REQUIRE(decoded.tradeSession->conversation);CHECK(decoded.tradeSession->conversation->requestedItems==ids);CHECK(decoded.tradeSession->conversation->counterOffer);}
   }
 }

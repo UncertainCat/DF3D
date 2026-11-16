@@ -3,9 +3,9 @@ var receipts: Array=[]
 const Model=preload("res://scripts/trade_goods_state.gd")
 func poll_controller(service,model,terminal: int) -> bool:
 	var deadline:=Time.get_ticks_msec()+5000
-	while model.phase in [Model.Phase.Reading,Model.Phase.Choosing,Model.Phase.Checking,Model.Phase.GoodsReading,Model.Phase.Applying] and Time.get_ticks_msec()<deadline:
+	while model.phase in [Model.Phase.Reading,Model.Phase.Choosing,Model.Phase.Checking,Model.Phase.GoodsReading,Model.Phase.Applying,Model.Phase.Exchanging] and Time.get_ticks_msec()<deadline:
 		world.poll();service.poll(0.01);await create_timer(0.01).timeout
-	return check(model.phase==terminal,"Trade controller did not reach expected phase: "+str(model.phase))
+	return check(model.phase==terminal,"Trade controller did not reach expected phase: "+str(model.phase)+(" transport="+str(world.poll_management())+" error="+world.last_error() if model.phase!=terminal else ""))
 func compare_goods(model,state: Dictionary) -> void:
 	check(model.goods_ready(),"Controller goods are not ready")
 	for key in ["speaker","columns","name","mood","mood_color","status_color","lines","status"]:

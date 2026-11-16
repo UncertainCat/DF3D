@@ -91,10 +91,28 @@ func _read_summary() -> void:
 		if owner!=generation or received!=ticket:return
 		ticket=0
 		var value: Variant=result.get("trade_session")
-		if not _receipt(result,value,intent.action,revision) or not _valid_footer(value.get("footer")) or not _valid_header(value.get("header"),header_columns):
+		if not _receipt(result,value,intent.action,revision) or not _valid_footer(value.get("footer")) or not _valid_header(value.get("header"),header_columns) or not _valid_conversation(value.get("conversation")):
 			_fail_goods(result);return
-		footer=value.footer.duplicate(true);header=value.header.duplicate(true);pages=_pending_pages;_pending_pages=[{},{}]
+		footer=value.footer.duplicate(true);header=value.header.duplicate(true);conversation=value.conversation.duplicate(true);pages=_pending_pages;_pending_pages=[{},{}]
 		phase=Phase.Active;changed.emit();_drain_filter())
+	if ticket==0:phase=Phase.Unavailable;changed.emit()
+func exchange() -> void:
+	if not goods_ready() or service==null or not _queued_filters.is_empty() or revision==9223372036854775807:return
+	var owner:=generation
+	var expected:=revision+1
+	var intent: Dictionary={"action":C.ManagementAction.TradeSessionExchange,"session":session,"expected_revision":revision}
+	phase=Phase.Exchanging;_retire_appearance();changed.emit()
+	if owner!=generation or phase!=Phase.Exchanging:return
+	ticket=service.submit("trade_session",intent,func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0
+		var value: Variant=result.get("trade_session")
+		if not _receipt(result,value,intent.action,expected):
+			_pending_pages=[{},{}];_queued_filters={}
+			var definite: bool=result.get("outcome")!="unknown" and (result.get("status")==C.ManagementStatus.Rejected or (typeof(value)==TYPE_DICTIONARY and value.get("outcome") in [C.TradeSessionOutcome.Rejected,C.TradeSessionOutcome.Retired]))
+			phase=Phase.Rejected if definite else Phase.Unknown
+			changed.emit();return
+		revision=expected;phase=Phase.Active;_load_goods())
 	if ticket==0:phase=Phase.Unavailable;changed.emit()
 func toggle_row(side: int,index: int,expand: bool=false) -> void:
 	if not goods_ready() or side<0 or side>1 or index<0 or index>=pages[side].rows.size():return

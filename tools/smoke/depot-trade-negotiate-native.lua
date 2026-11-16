@@ -1,5 +1,5 @@
 -- Disposable paused differential oracle; runtime never snapshots or rewinds RNG.
-local view,trade,click,capture=...
+local view,trade,click,capture,out=...
 local json=require('json');local utils=require('utils')
 local base=dfhack.internal.getImageBase()
 local function rng()
@@ -20,30 +20,6 @@ local function write(o,r)for k,v in pairs(r)do o[k]=v end end
 local units={trade.merchant_trader,trade.fortress_trader}
 local function people()
  local result={}
-local accept_mode=os.getenv('DF3D_DEPOT_TRADE_ACCEPT')
-assert(not accept_mode or accept_mode=='native' or accept_mode=='owned' or accept_mode=='session')
-local tracked={};for side=0,1 do for _,item in ipairs(trade.good[side])do tracked[item.id]=item end end
-local function goods()
- local sides={}
- for side=0,1 do local r={items={},flags={},amounts={},groups={},height=trade.i_height[side]}
-  for i,item in ipairs(trade.good[side])do r.items[#r.items+1]=item.id;r.flags[#r.flags+1]=trade.goodflag[side][i].whole;r.amounts[#r.amounts+1]=trade.good_amount[side][i]end
-  for i,kind in ipairs(trade.current_type_a_type[side])do r.groups[#r.groups+1]={type=kind,subtype=trade.current_type_a_subtype[side][i],expanded=trade.current_type_a_expanded[side][i],on=trade.current_type_a_on[side][i],flags=trade.current_type_a_flag[side][i].whole}end
-  sides[#sides+1]=r
- end
- return sides
-end
-local function session_probe(action,...)
- local args={...};for i,v in ipairs(args)do args[i]=tostring(v)end
- local text,code=dfhack.run_command_silent('df3d','trade-session-probe',action,table.unpack(args));assert(code==0,text);return json.decode(text)
-end
-local function transfers()
- local rows={};for id,item in pairs(tracked)do
-  local owners={};for _,ref in ipairs(item.general_refs)do if ref:getType()==df.general_ref_type.ENTITY_ITEMOWNER then owners[#owners+1]=ref.entity_id end end
-  table.sort(owners);rows[#rows+1]={id=id,owners=owners,trader=item.flags.trader,owned=item.flags.owned,forbid=item.flags.forbid,stack=item:getStackSize()}
- end
- table.sort(rows,function(a,b)return a.id<b.id end)
- return {items=rows,times_used=trade.bld.times_used,import_value=caravan.import_value,export_value_total=caravan.export_value_total,export_value_personal=caravan.export_value_personal,offer_value=caravan.offer_value}
-end
  for _,unit in ipairs(units)do local soul=assert(unit.status.current_soul);local r={skills={},mental={},physical={}}
   for _,s in ipairs(soul.skills)do local v=fields(s,sf);v.id=s.id;r.skills[#r.skills+1]=v end
   for i=0,12 do r.mental[i+1]=fields(soul.mental_attrs[i],af)end
@@ -70,7 +46,14 @@ local original_rng=rng();local original_people=people();local original_caravan=c
 local mass={whole=caravan.total_capacity.whole,fraction=caravan.total_capacity.fraction};local line=trade.talkline
 local result={}
 local accept_mode=os.getenv('DF3D_DEPOT_TRADE_ACCEPT')
-assert(not accept_mode or accept_mode=='native' or accept_mode=='owned' or accept_mode=='session')
+assert(not accept_mode or accept_mode=='native' or accept_mode=='owned' or accept_mode=='session' or accept_mode=='wire')
+local history={};for _,id in ipairs(caravan.goods)do history[#history+1]=id end
+if accept_mode=='wire' then
+ -- Isolate negotiation from entry appraisal, which has separate live coverage.
+ -- Record all current goods before the controlled native reference as well.
+ local seen={};for _,id in ipairs(history)do seen[id]=true end
+ for side=0,1 do for _,item in ipairs(trade.good[side])do if not seen[item.id]then caravan.goods:insert('#',item.id);seen[item.id]=true end end end
+end
 local tracked={};for side=0,1 do for _,item in ipairs(trade.good[side])do tracked[item.id]=item end end
 local function goods()
  local sides={}
@@ -131,7 +114,12 @@ local ok,err=xpcall(function()
   else
    restore_people(initial_people);restore_caravan(initial_caravan);trade.counter_offer=false;trade.counter_offer_item:resize(0);trade.talkline=line
    set_rng(controlled)
-   if accept_mode=='session' then
+   if accept_mode=='wire' then
+    local file=assert(io.open(out..'/trade-exchange-wire-expected.json','w'));file:write(json.encode({depot=trade.bld.id,intents=intents,counter_items=result.native.items}));file:close()
+    capture('trade-exchange-wire')
+    file=assert(io.open(out..'/trade-exchange-wire-result.json'));local wire=json.decode(file:read('*a'));file:close();assert(wire.success,json.encode(wire))
+    result.accept_conversation={dialogue=wire.final.dialogue,counter_offer=wire.final.counter_offer,announcement=wire.final.announcement};result.wire=wire
+   elseif accept_mode=='session' then
     local state=session_probe('open',trade.bld.id,0);assert(state.status==0)
     local id=state.session
     for _,intent in ipairs(intents)do state=session_probe('item',id,state.revision,intent.side,intent.item);assert(state.status==0)end
@@ -178,6 +166,7 @@ local ok,err=xpcall(function()
  result.rng_equal=true;result.rng_cursor=after.cursor;result.success=true
 end,debug.traceback)
 restore_people(original_people);restore_caravan(original_caravan);set_rng(original_rng)
+caravan.goods:resize(0);for _,id in ipairs(history)do caravan.goods:insert("#",id)end
 caravan.total_capacity.whole=mass.whole;caravan.total_capacity.fraction=mass.fraction
 trade.counter_offer=false;trade.counter_offer_item:resize(0);trade.talkline=line
 click(440,694);click(900,694)

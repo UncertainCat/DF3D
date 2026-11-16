@@ -20,6 +20,8 @@ func snapshot(id: int=7) -> Dictionary:
 	return {"depot_id":id,"title":"Synthetic title","from_text":" / ","choices":[{"token":9007199254740993,"entity_id":4,"race":"Synthetic race","name":"Synthetic name"},{"token":9007199254740994,"entity_id":4,"race":"Synthetic race","name":"Synthetic name"}]}
 func session_value() -> Dictionary:
 	return {"outcome":C.TradeSessionOutcome.Available,"session":9007199254740995,"revision":1,"entry":{"entity_id":4,"fortress_trader":988,"merchant_trader":-1,"dialogue":-1,"unloading":false,"has_speaker":false,"title":"Synthetic entry","speaker":"","fortress":"Synthetic fortress","place":"Synthetic place"}}
+func conversation_value() -> Dictionary:
+	return {"dialogue":0,"counter_offer":false,"requested_items":[],"announcement":[]}
 func header_value() -> Dictionary:
 	return {"speaker":-1,"columns":102,"name":"","mood":"","mood_color":-1,"status":[],"status_color":-1,"lines":[]}
 func footer_value() -> Dictionary:
@@ -34,7 +36,7 @@ func sessions(service,state) -> void:
 	check(service.calls[opened].intent=={"action":C.ManagementAction.TradeSessionOpen,"depot_id":7,"choice_token":9007199254740994},"Chooser lost exact open intent")
 	session_reply(service,opened,session_value())
 	check(state.phase==Model.Phase.Active and state.session==9007199254740995 and state.entry.title=="Synthetic entry","Open receipt did not establish session")
-	state.refresh_session();var value:=session_value();value.erase("entry");value.footer=footer_value();value.header=header_value();session_reply(service,state.ticket,value)
+	state.refresh_session();var value:=session_value();value.erase("entry");value.footer=footer_value();value.header=header_value();value.conversation=conversation_value();session_reply(service,state.ticket,value)
 	check(state.phase==Model.Phase.Active,"Read did not preserve active session")
 	state.close();check(service.calls[service.next].intent=={"action":C.ManagementAction.TradeSessionClose,"session":9007199254740995},"Close did not retire known native session")
 	state.open(7);var single:=snapshot();single.choices.resize(1);service.reply(state.ticket,single)

@@ -192,8 +192,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 243;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v243";
+inline constexpr uint32_t kManagementVersion = 244;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v244";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -492,7 +492,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::TradeDraftApply &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::TradeSessionExchange &&
       action != ManagementAction::Alert &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -581,7 +581,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::TradeDraftApply)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::TradeSessionExchange)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -828,12 +828,12 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       if(op==TradeDraftOperation::Filter ? (!q->query() || q->query()->size()>256) : query)return "invalid trade draft filter";
     }
   }else if(r.trade_draft())return "unexpected trade draft request";
-  if(r.action()>=ManagementAction::TradeSessionOpen && r.action()<=ManagementAction::TradeSessionClose){
+  if(((r.action()>=ManagementAction::TradeSessionOpen && r.action()<=ManagementAction::TradeSessionClose) || r.action()==ManagementAction::TradeSessionExchange)){
     const auto* q=r.trade_session();if(!q)return "missing trade session request";
     if(r.action()==ManagementAction::TradeSessionRead ? (q->columns()<1 || q->columns()>512) : q->columns()!=0)return "invalid trade header width";
     if(r.action()==ManagementAction::TradeSessionOpen){
       if(q->depot_id()<0 || !q->choice_token() || q->choice_token()>INT64_MAX || q->session() || q->expected_revision())return "invalid trade open request";
-    }else if(q->depot_id()!=-1 || q->choice_token() || !q->session() || q->session()>INT64_MAX || q->expected_revision()>INT64_MAX || (r.action()==ManagementAction::TradeSessionRead?!q->expected_revision():q->expected_revision()!=0))return "invalid trade session request";
+    }else if(q->depot_id()!=-1 || q->choice_token() || !q->session() || q->session()>INT64_MAX || q->expected_revision()>INT64_MAX || (r.action()!=ManagementAction::TradeSessionClose?!q->expected_revision():q->expected_revision()!=0))return "invalid trade session request";
   }else if(r.trade_session())return "unexpected trade session request";
   if(r.action()==ManagementAction::DepotGoodsCommit){
     const auto* q=r.depot_commit();if(!q || q->depot_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX || !q->changes() || !q->changes()->size() || q->changes()->size()>65536)return "invalid depot commit request";
@@ -1497,7 +1497,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::TradeDraftApply ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::TradeSessionExchange ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1941,14 +1941,19 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     }
   }else if(s.status()==ManagementStatus::Ok && (s.action()==ManagementAction::TradeDraftRead || s.action()==ManagementAction::TradeDraftApply))return "missing trade draft result";
   if(const auto* r=s.trade_session()) {
-    if(s.action()<ManagementAction::TradeSessionOpen || s.action()>ManagementAction::TradeSessionClose || s.status()!=ManagementStatus::Ok || r->outcome()>TradeSessionOutcome::Unknown || r->session()>INT64_MAX || r->revision()>INT64_MAX)return "invalid trade session result";
+    if(((s.action()<ManagementAction::TradeSessionOpen || s.action()>ManagementAction::TradeSessionClose) && s.action()!=ManagementAction::TradeSessionExchange) || s.status()!=ManagementStatus::Ok || r->outcome()>TradeSessionOutcome::Unknown || r->session()>INT64_MAX || r->revision()>INT64_MAX)return "invalid trade session result";
     const auto outcome=r->outcome();
     if(outcome==TradeSessionOutcome::Available){
-      if(s.action()==ManagementAction::TradeSessionClose || !r->session() || !r->revision() || (bool(r->entry())!=(s.action()==ManagementAction::TradeSessionOpen)) || (bool(r->footer())!=(s.action()==ManagementAction::TradeSessionRead)) || (bool(r->header())!=(s.action()==ManagementAction::TradeSessionRead)))return "invalid available trade session";
+      if(s.action()==ManagementAction::TradeSessionClose || !r->session() || !r->revision() || (bool(r->entry())!=(s.action()==ManagementAction::TradeSessionOpen)) || (bool(r->footer())!=(s.action()==ManagementAction::TradeSessionRead)) || (bool(r->header())!=(s.action()==ManagementAction::TradeSessionRead)) || (bool(r->conversation())!=(s.action()==ManagementAction::TradeSessionRead)))return "invalid available trade session";
     }else{
-      if(r->entry() || r->footer() || r->header() || r->revision() || (outcome==TradeSessionOutcome::Closed ? (!r->session() || s.action()!=ManagementAction::TradeSessionClose):r->session()!=0))return "invalid terminal trade session";
-      if(outcome==TradeSessionOutcome::Unknown && s.action()!=ManagementAction::TradeSessionOpen)return "unexpected trade open uncertainty";
-      if(outcome==TradeSessionOutcome::Retired && s.action()!=ManagementAction::TradeSessionRead)return "unexpected retired trade session";
+      if(r->entry() || r->footer() || r->header() || r->conversation() || r->revision() || (outcome==TradeSessionOutcome::Closed ? (!r->session() || s.action()!=ManagementAction::TradeSessionClose):r->session()!=0))return "invalid terminal trade session";
+      if(outcome==TradeSessionOutcome::Unknown && s.action()!=ManagementAction::TradeSessionOpen && s.action()!=ManagementAction::TradeSessionExchange)return "unexpected trade open uncertainty";
+      if(outcome==TradeSessionOutcome::Retired && s.action()!=ManagementAction::TradeSessionRead && s.action()!=ManagementAction::TradeSessionExchange)return "unexpected retired trade session";
+    }
+    if(const auto* c=r->conversation()){
+      if(c->dialogue() < -1 || c->dialogue()>28 || !c->requested_items() || c->requested_items()->size()>1048576 || !c->announcement() || c->announcement()->size()>2049)return "invalid trade conversation";
+      std::unordered_set<int32_t> ids;for(auto id:*c->requested_items())if(id<0 || !ids.insert(id).second)return "invalid counteroffer item";
+      size_t bytes=0;for(const auto* line:*c->announcement()){if(!line || line->size()>8192)return "invalid trade announcement";bytes+=line->size();}if(bytes>65536)return "oversized trade announcement";
     }
     if(const auto* h=r->header()){
       if(h->speaker()<-1 || h->columns()<1 || h->columns()>512 || !h->name() || h->name()->size()>2048 || !h->mood() || h->mood()->size()>2048 || !h->lines() || h->lines()->size()>2049 || !h->status() || h->status()->size()>2)return "invalid trade header";
@@ -1969,7 +1974,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(e->entity_id()<0 || e->fortress_trader()<0 || e->merchant_trader()<-1 || e->dialogue()<-1)return "invalid trade entry identity";
       for(const auto* caption:{e->title(),e->speaker(),e->fortress(),e->place()})if(!caption || caption->size()>2048)return "invalid trade entry caption";
     }
-  }else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::TradeSessionOpen && s.action()<=ManagementAction::TradeSessionClose)return "missing trade session result";
+  }else if(s.status()==ManagementStatus::Ok && ((s.action()>=ManagementAction::TradeSessionOpen && s.action()<=ManagementAction::TradeSessionClose) || s.action()==ManagementAction::TradeSessionExchange))return "missing trade session result";
   if(const auto* r=s.depot_commit()) {
     if(s.action()!=ManagementAction::DepotGoodsCommit || s.status()!=ManagementStatus::Ok || r->depot_id()<0 || !r->expected_revision() || r->expected_revision()>INT64_MAX || r->observed_revision()>INT64_MAX || r->outcome()<DepotGoodsCommitOutcome::Rejected || r->outcome()>DepotGoodsCommitOutcome::Unknown)return "invalid depot commit result";
     if(r->outcome()==DepotGoodsCommitOutcome::Stale ? (!r->observed_revision() || r->observed_revision()==r->expected_revision()) : (r->outcome()!=DepotGoodsCommitOutcome::Rejected && r->observed_revision()!=r->expected_revision()))return "invalid depot commit receipt";

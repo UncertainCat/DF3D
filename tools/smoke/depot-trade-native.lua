@@ -300,7 +300,7 @@ local ok,err=xpcall(function()
    local row=record(label);assert(row.merchant_trader==speaker.id and row.havetalker==1 and row.stillunloading==unloading)
    if label=='speaker' and os.getenv('DF3D_DEPOT_TRADE_EXCHANGE')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-exchange-native.lua')
-    result.exchange=assert(loadfile(source))(view,trade,click,capture)
+    result.exchange=assert(loadfile(source))(view,trade,click,capture,out)
    end
    if label=='speaker' and os.getenv('DF3D_DEPOT_TRADE_QUANTITY')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-quantity-native.lua')

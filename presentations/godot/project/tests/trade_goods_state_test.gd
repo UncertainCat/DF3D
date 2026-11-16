@@ -11,14 +11,14 @@ func draft_reply(service,state,page: Dictionary={},revision: int=-1,extra: Dicti
 	var result: Dictionary={"status":C.ManagementStatus.Ok,"action":call.intent.action,"trade_draft":value};result.merge(extra,true)
 	call.observer.call(state.ticket,result,call.intent)
 	if finish_summary and state.ticket>0 and service.calls[state.ticket].intent.action==C.ManagementAction.TradeSessionRead:
-		session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":state.revision,"footer":footer_value(),"header":header_value()})
+		session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":state.revision,"footer":footer_value(),"header":header_value(),"conversation":conversation_value()})
 func open_goods(service,state) -> void:
 	state.open(7);var single:=snapshot();single.choices.resize(1);service.reply(state.ticket,single);session_reply(service,state.ticket,session_value())
 	check(state.phase==Goods.Phase.GoodsReading,"Open did not request goods")
 	draft_reply(service,state,page_value(0));check(state.pages==[{},{}],"Half-loaded goods became visible")
 	draft_reply(service,state,page_value(1),-1,{},false)
 	check(state.pages==[{},{}] and not state.goods_ready(),"Goods appeared before their footer")
-	session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":state.revision,"footer":footer_value(),"header":header_value()})
+	session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":state.revision,"footer":footer_value(),"header":header_value(),"conversation":conversation_value()})
 	check(state.goods_ready() and state.footer==footer_value() and state.header==header_value(),"Goods and footer did not become ready together")
 func run() -> void:
 	var service=Service.new();root.add_child(service)
@@ -54,6 +54,18 @@ func run() -> void:
 	var current: Array=state.pages.duplicate(true)
 	old.observer.call(pending,{"status":C.ManagementStatus.Ok,"action":C.ManagementAction.TradeDraftApply,"trade_draft":{"outcome":C.TradeSessionOutcome.Available,"session":9007199254740995,"revision":2}},old.intent)
 	check(state.goods_ready() and state.revision==1 and state.pages==current and service.detached.has(pending),"Late mutation replaced reopened goods")
+	state.exchange();pending=state.ticket;state.exchange()
+	check(state.phase==Goods.Phase.Exchanging and state.ticket==pending and service.calls[pending].intent.action==C.ManagementAction.TradeSessionExchange,"Duplicate exchange was submitted")
+	session_reply(service,pending,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":2})
+	draft_reply(service,state,page_value(0));draft_reply(service,state,page_value(1),-1,{},false)
+	var counter:=conversation_value();counter.counter_offer=true;counter.dialogue=24;counter.requested_items=[992]
+	session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":2,"footer":footer_value(),"header":header_value(),"conversation":counter})
+	check(state.goods_ready() and state.conversation==counter,"Exchange conversation was not published with refreshed goods")
+	state.exchange();pending=state.ticket
+	session_reply(service,pending,{"outcome":C.TradeSessionOutcome.Unknown,"session":0,"revision":0},{"outcome":"unknown"})
+	state.exchange();check(state.phase==Goods.Phase.Unknown and state.ticket==0 and service.next==pending,"Uncertain exchange was replayed")
+	state.close();check(state.phase==Goods.Phase.Closed and state.conversation.is_empty(),"Uncertain exchange could not close")
+	open_goods(service,state)
 	service.session_changed.emit();check(state.phase==Goods.Phase.Unavailable and state.pages==[{},{}],"Epoch replacement retained goods")
 	state.dispose();service.queue_free();await process_frame
 	if not failed:print("TRADE_GOODS_STATE_PASS")

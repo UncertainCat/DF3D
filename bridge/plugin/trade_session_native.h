@@ -60,6 +60,7 @@ struct TradeSessionSummary {
     std::optional<TradeHeader> header;
     std::vector<std::string> dialogueLines;
     uint16_t columns=0;
+    TradeConversation conversation;
 };
 class TradeSelectionSession {
     struct Binding {
@@ -104,6 +105,7 @@ public:
         const auto lines=header?tradeDialogueLines(header->dialogue,columns):std::nullopt;
         if(!header || !lines){result.status=TradeSessionStatus::Rejected;return result;}
         result.session=read.session;result.revision=read.revision;
+        result.conversation=current->conversation.value_or(TradeConversation{entry->dialogue});
         result.entry=std::move(entry);result.values=std::move(values);result.capacity=std::move(capacity);
         result.header=std::move(header);result.dialogueLines=*lines;result.columns=columns;
         return result;

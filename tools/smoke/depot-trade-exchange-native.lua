@@ -1,5 +1,5 @@
 -- Paused native reference. Empty selections cannot transfer fixture items.
-local view,trade,click,capture=...
+local view,trade,click,capture,out=...
 local gps=df.global.gps
 local result={cases={},globals={}}
 for _,entry in ipairs{{'display',gps,'force_full_display_count'}, {'history_suppression',df.global.world,'artifact_history_suppression_count'}, {'fortress_entity',df.global.plotinfo.main,'fortress_entity'}}do
@@ -16,7 +16,7 @@ end
 local ok,err=xpcall(function()
  if os.getenv('DF3D_DEPOT_TRADE_NEGOTIATE')=='1' then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-exchange%-native.lua$','depot-trade-negotiate-native.lua')
-  result.negotiation=assert(loadfile(source))(view,trade,click,capture)
+  result.negotiation=assert(loadfile(source))(view,trade,click,capture,out)
  end
  if os.getenv('DF3D_DEPOT_TRADE_NEGOTIATION_SEED')=='1' then
   local json=require('json');result.seeds={}

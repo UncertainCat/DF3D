@@ -96869,6 +96869,1381 @@
           "bridge/plugin/trade_negotiation_native.h": "df8ddd80ac379856fd184aec97f9a060b309ef9e9fe81cd3fc017ece0d0502c8",
           "tools/smoke/depot-trade-exchange-native.lua": "1629bb82b337d7e823c7b867a5f730f5f6dcdedb80f68fcef498c7651e1a0f78"
         }
+      },
+      "depot_trade_negotiation_effect_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-222057",
+        "owned_df_pid": 12516,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Controlled paused first counteroffer with values103/150. Owned/native dialogue24, five requested IDs, both trader skill/mental/physical attribute snapshots, caravan fields and active RNG state match. Native menu unchanged by owned execution. Does not qualify accepted transfers, subsequent counteroffer restoration/acceptance, ethical effects, announcements or public actions.",
+        "negotiation": {
+          "native": {
+            "caravan": {
+              "flags": 0,
+              "haggle_fail_count": 1,
+              "mood": 100,
+              "time_remaining": 1200
+            },
+            "dialogue": 24,
+            "items": [
+              1180,
+              1735,
+              1736,
+              1494,
+              25112
+            ],
+            "people": [
+              {
+                "mental": [
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 2404,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1154
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 3090,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1545
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 2224,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1112
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 5,
+                    "max_value": 2508,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1254
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 15,
+                    "max_value": 2210,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1105
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 2139,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 889
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 2357,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1107
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 35,
+                    "max_value": 1932,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 932
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 4454,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 2227
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 1953,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 953
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 10,
+                    "max_value": 1890,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 890
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 40,
+                    "max_value": 2074,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1037
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 40,
+                    "max_value": 2496,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1248
+                  }
+                ],
+                "physical": [
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 5,
+                    "max_value": 2426,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1176
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 10,
+                    "max_value": 1793,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 893
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 2445,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1195
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 2004,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1002
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 3578,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1789
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 1686,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 686
+                  }
+                ],
+                "skills": [
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 44,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 45,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 15,
+                    "id": 70,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 10,
+                    "id": 71,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 15,
+                    "id": 72,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 5,
+                    "id": 77,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 5,
+                    "id": 79,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 86,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 87,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 99,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 101,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 102,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 103,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  }
+                ]
+              },
+              {
+                "mental": [
+                  {
+                    "demotion_counter": 3,
+                    "improve_counter": 0,
+                    "max_value": 1951,
+                    "rust_counter": 0,
+                    "soft_demotion": 55,
+                    "unused_counter": 0,
+                    "value": 688
+                  },
+                  {
+                    "demotion_counter": 2,
+                    "improve_counter": 8,
+                    "max_value": 3108,
+                    "rust_counter": 0,
+                    "soft_demotion": 53,
+                    "unused_counter": 0,
+                    "value": 1541
+                  },
+                  {
+                    "demotion_counter": 1,
+                    "improve_counter": 226,
+                    "max_value": 1789,
+                    "rust_counter": 0,
+                    "soft_demotion": 1,
+                    "unused_counter": 0,
+                    "value": 785
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 55,
+                    "max_value": 2302,
+                    "rust_counter": 1,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1051
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 80,
+                    "max_value": 1341,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 340
+                  },
+                  {
+                    "demotion_counter": 3,
+                    "improve_counter": 0,
+                    "max_value": 3076,
+                    "rust_counter": 0,
+                    "soft_demotion": 55,
+                    "unused_counter": 0,
+                    "value": 1525
+                  },
+                  {
+                    "demotion_counter": 3,
+                    "improve_counter": 0,
+                    "max_value": 3052,
+                    "rust_counter": 0,
+                    "soft_demotion": 55,
+                    "unused_counter": 0,
+                    "value": 1513
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 52,
+                    "max_value": 1955,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 966
+                  },
+                  {
+                    "demotion_counter": 2,
+                    "improve_counter": 8,
+                    "max_value": 4478,
+                    "rust_counter": 0,
+                    "soft_demotion": 53,
+                    "unused_counter": 0,
+                    "value": 2226
+                  },
+                  {
+                    "demotion_counter": 3,
+                    "improve_counter": 0,
+                    "max_value": 2316,
+                    "rust_counter": 0,
+                    "soft_demotion": 55,
+                    "unused_counter": 0,
+                    "value": 1145
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 22,
+                    "max_value": 3688,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1845
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 369,
+                    "max_value": 1355,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 365
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 369,
+                    "max_value": 1829,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 839
+                  }
+                ],
+                "physical": [
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 403,
+                    "max_value": 2514,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1249
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 206,
+                    "max_value": 1513,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 604
+                  },
+                  {
+                    "demotion_counter": 1,
+                    "improve_counter": 192,
+                    "max_value": 2437,
+                    "rust_counter": 3,
+                    "soft_demotion": 1,
+                    "unused_counter": 2,
+                    "value": 1171
+                  },
+                  {
+                    "demotion_counter": 1,
+                    "improve_counter": 110,
+                    "max_value": 2150,
+                    "rust_counter": 3,
+                    "soft_demotion": 1,
+                    "unused_counter": 2,
+                    "value": 1107
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 1374,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 1100,
+                    "value": 374
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 1576,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 1100,
+                    "value": 576
+                  }
+                ],
+                "skills": [
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 21,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 44,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 45,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 15,
+                    "id": 70,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 10,
+                    "id": 71,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 15,
+                    "id": 72,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 5,
+                    "id": 77,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 78,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 5,
+                    "id": 79,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 81,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 82,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 86,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 87,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 92,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 99,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 102,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 103,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "owned": {
+            "caravan": {
+              "flags": 0,
+              "haggle_fail_count": 1,
+              "mood": 100,
+              "time_remaining": 1200
+            },
+            "dialogue": 24,
+            "items": [
+              1180,
+              1735,
+              1736,
+              1494,
+              25112
+            ],
+            "people": [
+              {
+                "mental": [
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 2404,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1154
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 3090,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1545
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 2224,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1112
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 5,
+                    "max_value": 2508,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1254
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 15,
+                    "max_value": 2210,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1105
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 2139,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 889
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 2357,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1107
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 35,
+                    "max_value": 1932,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 932
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 4454,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 2227
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 1953,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 953
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 10,
+                    "max_value": 1890,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 890
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 40,
+                    "max_value": 2074,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1037
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 40,
+                    "max_value": 2496,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1248
+                  }
+                ],
+                "physical": [
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 5,
+                    "max_value": 2426,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1176
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 10,
+                    "max_value": 1793,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 893
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 2445,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1195
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 2004,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1002
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 3578,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1789
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 1686,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 686
+                  }
+                ],
+                "skills": [
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 44,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 45,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 15,
+                    "id": 70,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 10,
+                    "id": 71,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 15,
+                    "id": 72,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 5,
+                    "id": 77,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 5,
+                    "id": 79,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 86,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 87,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 99,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 101,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 102,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 103,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  }
+                ]
+              },
+              {
+                "mental": [
+                  {
+                    "demotion_counter": 3,
+                    "improve_counter": 0,
+                    "max_value": 1951,
+                    "rust_counter": 0,
+                    "soft_demotion": 55,
+                    "unused_counter": 0,
+                    "value": 688
+                  },
+                  {
+                    "demotion_counter": 2,
+                    "improve_counter": 8,
+                    "max_value": 3108,
+                    "rust_counter": 0,
+                    "soft_demotion": 53,
+                    "unused_counter": 0,
+                    "value": 1541
+                  },
+                  {
+                    "demotion_counter": 1,
+                    "improve_counter": 226,
+                    "max_value": 1789,
+                    "rust_counter": 0,
+                    "soft_demotion": 1,
+                    "unused_counter": 0,
+                    "value": 785
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 55,
+                    "max_value": 2302,
+                    "rust_counter": 1,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1051
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 80,
+                    "max_value": 1341,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 340
+                  },
+                  {
+                    "demotion_counter": 3,
+                    "improve_counter": 0,
+                    "max_value": 3076,
+                    "rust_counter": 0,
+                    "soft_demotion": 55,
+                    "unused_counter": 0,
+                    "value": 1525
+                  },
+                  {
+                    "demotion_counter": 3,
+                    "improve_counter": 0,
+                    "max_value": 3052,
+                    "rust_counter": 0,
+                    "soft_demotion": 55,
+                    "unused_counter": 0,
+                    "value": 1513
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 52,
+                    "max_value": 1955,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 966
+                  },
+                  {
+                    "demotion_counter": 2,
+                    "improve_counter": 8,
+                    "max_value": 4478,
+                    "rust_counter": 0,
+                    "soft_demotion": 53,
+                    "unused_counter": 0,
+                    "value": 2226
+                  },
+                  {
+                    "demotion_counter": 3,
+                    "improve_counter": 0,
+                    "max_value": 2316,
+                    "rust_counter": 0,
+                    "soft_demotion": 55,
+                    "unused_counter": 0,
+                    "value": 1145
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 22,
+                    "max_value": 3688,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1845
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 369,
+                    "max_value": 1355,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 365
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 369,
+                    "max_value": 1829,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 839
+                  }
+                ],
+                "physical": [
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 403,
+                    "max_value": 2514,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 1249
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 206,
+                    "max_value": 1513,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 0,
+                    "value": 604
+                  },
+                  {
+                    "demotion_counter": 1,
+                    "improve_counter": 192,
+                    "max_value": 2437,
+                    "rust_counter": 3,
+                    "soft_demotion": 1,
+                    "unused_counter": 2,
+                    "value": 1171
+                  },
+                  {
+                    "demotion_counter": 1,
+                    "improve_counter": 110,
+                    "max_value": 2150,
+                    "rust_counter": 3,
+                    "soft_demotion": 1,
+                    "unused_counter": 2,
+                    "value": 1107
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 1374,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 1100,
+                    "value": 374
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "improve_counter": 0,
+                    "max_value": 1576,
+                    "rust_counter": 0,
+                    "soft_demotion": 0,
+                    "unused_counter": 1100,
+                    "value": 576
+                  }
+                ],
+                "skills": [
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 21,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 44,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 45,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 15,
+                    "id": 70,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 10,
+                    "id": 71,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 15,
+                    "id": 72,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 5,
+                    "id": 77,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 78,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 5,
+                    "id": 79,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 81,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 82,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 86,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 87,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 92,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 99,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 102,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  },
+                  {
+                    "demotion_counter": 0,
+                    "experience": 0,
+                    "id": 103,
+                    "natural_skill_lvl": 0,
+                    "rating": 0,
+                    "rust_counter": 0,
+                    "rusty": 0,
+                    "unused_counter": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "rng_cursor": 8,
+          "rng_equal": true,
+          "success": true,
+          "values": [
+            103,
+            150
+          ]
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-222057/depot-trade-native.json": "019b282854acd9c4728f294c6d37560be834b671e12f1d5e5d885de08cc5afd7",
+          "build/stockpile-storage-native-farm-discovery-20261115-222057/result.json": "be1ca5207b3c95a358f0487c40bfd3f79715f191e876e0e3a84aedc20fb51bec",
+          "build/stockpile-storage-native-farm-discovery-20261115-222057/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/trade_negotiation_native.h": "413c60268c1546a261c4a0ac54b56fcbefb63f1ea96310ed531e729a11fae84f",
+          "tools/smoke/depot-trade-negotiate-native.lua": "c43640d2b37caa77a3daa0c43311845e96bb2198ca020db99cc5783b3e40d71e"
+        }
       }
     },
     "pending_construction_reference": {

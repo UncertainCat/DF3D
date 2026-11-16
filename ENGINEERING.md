@@ -1,9 +1,38 @@
+## Owned native negotiation execution
+
+TradeNegotiationNative.negotiate checks the owned offer, computes actual values
+and remaining mass through the existing providers, then invokes native369490
+with the owned context. It marks effects started before the call: callers must
+handle post-effect failure as uncertainty and must not retry it automatically.
+The routine consumes normal DF RNG, trains both traders and can mutate caravan
+state, counteroffers or item ownership. This is staged behind a paused diagnostic;
+public session source rebinding and counteroffer restoration remain unfinished.
+
+Protected222057 on2026-11-15 compares a first counteroffer from values103/150.
+The owned call matches native dialogue24 and five requested item IDs, caravan
+mood/haggle count/time/flags, both traders' full skill fields and mental/physical
+attribute fields, and the active RNG cursor/words. Each trader gains experience
+in skills70/71/72/77/79. The native menu remains unchanged by owned execution.
+The disposable oracle temporarily controls/restores RNG and skills to make this
+comparison deterministic; runtime code does neither. Owned DF12516 closes
+unsaved/source-preserved at30FPS, sampled60C. Bridge build and all19 core checks
+pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_negotiation_effect_reference`.
+
+The earlier221756 fixture offered233% profit and native accepted it;222007
+clicked the bin-group checkbox and selected extra goods. Those runs failed the
+counteroffer prerequisite and do not qualify product exchange. The corrected
+run selects one steel bar at y418 and validates103/150 values. Accepted item
+transfers, restored/subsequent counteroffers, ethical effects and announcement
+results still require qualification. Protocol243 and public exposure are unchanged.
+
 ## Owned Trade refusal checks
 
 The owned negotiation context evaluates DF's pinned31b252..31b615 branch order:
 ethical restrictions, empty/one-sided values, combined loss/excess weight, loss,
 and excess weight. It calls native item/ethics queries and existing native value
-and mass providers. Accepted eligibility returns Ready without executing trade.
+and mass providers. Accepted eligibility returns Ready; the separate explicit negotiation method
+described above performs the native action.
 Explicit refusal uses native71f30 for the first paired reply, then preserves DF's
 alternation. Ethical refusal calls36a780 and applies native time_remaining501
 limit; this effect path is staged and not exposed by the current diagnostic.
@@ -27,7 +56,7 @@ merchant initializer36b590 with the depot/site/caravan. Native menu state is not
 an input. Its checkpoint copies dialogue, counteroffer item IDs and announcement
 strings into pointer-free values. Explicit cleanup owns the native text box's
 string pointers. The class exposes initialization/readback and the refusal path described above.
-Conversation restoration and negotiation execution remain next.
+Conversation restoration and public action integration remain next.
 
 Protected220705 on2026-11-15 verifies initial and selected merchant drafts against
 native IDs, flags, amounts and list heights. Native dialogue/buildlists/appraisal

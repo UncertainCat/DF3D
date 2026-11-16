@@ -33,9 +33,23 @@ inline bool tradeRefusalNativeReady(){
         return true;
     }();return ready;
 }
+inline bool tradeNegotiationNativeReady(){
+    if(!tradeRefusalNativeReady())return false;
+    static const bool ready=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin{size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={{0x369490,0x12f0,UINT64_C(0x26d292e102cd0ee8)},
+            {0x36a9c0,0x6f0,UINT64_C(0xee4669ba81c63227)},
+            {0x1367d10,0xaa0,UINT64_C(0x9f1dafacf3bb34b1)},
+            {0x13687b0,0x1e6,UINT64_C(0x5cc0af1f23613928)},
+            {0x13b1230,0x1d5,UINT64_C(0x18579bd4fd08baf0)}};
+        for(const auto& pin:pins){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<pin.length;++i){h^=base[pin.rva+i];h*=UINT64_C(1099511628211);}if(h!=pin.hash)return false;}
+        return true;
+    }();return ready;
+}
 // Safe-point lifetime only. Entry metadata and goods are independently owned;
 // no active native trade menu is read or borrowed. This context does not yet
-// expose exchange execution. Refusal checks retain DF's inline branch order;
+// Refusal checks retain DF's inline branch order;
 // semantic item/ethics queries, random choice and ethical consequences call DF.
 class TradeNegotiationNative {
     TradeDraftNative draft;
@@ -112,6 +126,23 @@ public:
             if(owned.mer->time_remaining>501)owned.mer->time_remaining=501;
         }
         return result;
+    }
+    // Mutating native negotiation, never a preview. A successful call can
+    // train both traders, change caravan state, request a counteroffer or
+    // transfer goods. The owning session must retire/rebind its source after
+    // effects and report uncertainty if copying the outcome fails.
+    bool negotiate(bool* effectsStarted=nullptr){
+        if(!tradeNegotiationNativeReady() || checkOffer().disposition!=TradeOfferDisposition::Ready)return false;
+        const auto rows=draft.snapshot();if(!rows)return false;
+        auto& owned=draft.owned;
+        const auto values=tradeValueTotals(owned.bld,caravanIndex,*rows);
+        const auto capacity=tradeCapacity(owned.bld,caravanIndex,*rows);
+        if(!values || !capacity)return false;
+        df::massst remaining{};remaining.whole=capacity->whole;remaining.fraction=capacity->fraction;
+        const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+        if(effectsStarted)*effectsStarted=true;
+        reinterpret_cast<void(*)(df::trade_interfacest*,int32_t,int32_t,df::massst*)>(base+0x369490)(&owned,values->actual[0],values->actual[1],&remaining);
+        return true;
     }
     std::optional<TradeNegotiationCheckpoint> checkpoint() const {
         if(!valid)return {};

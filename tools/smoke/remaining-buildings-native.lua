@@ -5,6 +5,7 @@ local sheet=df.global.game.main_interface.view_sheets
 local kinds={6,7,16,17,18,19,20,21,22,24,25,26,27,28,31,32,45,47,48,49,53}
 if os.getenv("DF3D_SIMPLE_BUILDING_SCENE")=="1" then kinds={19,32,45}end
 if os.getenv("DF3D_DEPOT_NATIVE")=="1" then kinds={6}end
+if os.getenv("DF3D_CAGE_NATIVE")=="1" then kinds={28}end
 local wanted={};for _,kind in ipairs(kinds)do wanted[kind]=true end
 local result={frame=df.global.world.frame_counter,inventory={},buildings={},missing={}}
 local selected={}
@@ -24,6 +25,25 @@ for _,kind in ipairs(kinds)do
   view:render(dfhack.getTickCount());select_map(b)
   local row={id=b.id,type=kind,subtype=b:getSubtype(),tile={b.centerx,b.centery,b.z},native_type=df.building_type[kind],custom_name=dfhack.df2utf(b.name),selected_sheet=sheet.active_sheet,selected_id=sheet.active_id,lines={}}
   capture('remaining-building-'..kind)
+  if kind==28 and os.getenv('DF3D_CAGE_NATIVE')=='1' then
+   local function ids(v)local t={};for _,id in ipairs(v)do t[#t+1]=id end;return t end
+   local before={units=ids(b.assigned_units),items=ids(b.assigned_items),flags=b.cage_flags.whole,jobs=#b.jobs}
+   g.precise_mouse_x=448;g.precise_mouse_y=406;g.mouse_x=56;g.mouse_y=33
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+   gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+   local picker=df.global.game.main_interface.unit_selector
+   capture('cage-assignment-click')
+   -- Native 3a5940 captures the cage pointer in widget callbacks; bld_id stays -1.
+   assert(picker.context==df.unit_selector_context_type.CAGE_ASSIGNMENT and sheet.active_id==b.id,'Cage picker or parent selection did not open')
+   capture('cage-assignment-open')
+   result.cage_picker={context=picker.context,building_id=b.id,legacy_selector_building_id=picker.bld_id,before=before}
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());capture('cage-assignment-closed')
+   result.cage_picker.after={units=ids(b.assigned_units),items=ids(b.assigned_items),flags=b.cage_flags.whole,jobs=#b.jobs}
+   assert(json.encode(before)==json.encode(result.cage_picker.after),'Opening/cancelling cage assignment changed simulation')
+   result.cage_picker.closed_context=picker.context
+   select_map(b);view:render(dfhack.getTickCount())
+  end
   if kind==6 and os.getenv('DF3D_DEPOT_NATIVE')=='1' then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','depot-settings-native.lua')
    result.depot_settings=assert(loadfile(source))(out,view,b,capture,select_map)

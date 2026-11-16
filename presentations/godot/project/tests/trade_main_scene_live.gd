@@ -1,6 +1,16 @@
 extends "res://tests/trade_exchange_wire_live.gd"
 var scene
 var owner
+func select_item(model,side: int,index: int) -> void:
+	await process_frame
+	var goods=owner.trade_view.goods
+	var canvas: Control=goods.canvases[side]
+	var local:=Vector2(goods._row_width(side)-28,(int(model.pages[side].offset)+index)*36-goods.bars[side].first*12+18)
+	if not check(Rect2(Vector2.ZERO,canvas.size).has_point(local),"Selected Trade row is outside the visible list"):return
+	var point: Vector2=canvas.get_global_transform_with_canvas()*local
+	for pressed in [true,false]:
+		var event:=InputEventMouseButton.new();event.position=point;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed;root.push_input(event,true)
+	check(model.phase==model.Phase.Applying and model.ticket>0,"Trade row click did not submit selection")
 func initialize_world() -> bool:
 	if DisplayServer.get_name()=="headless":return check(false,"Main scene requires rendered execution")
 	OS.set_environment("DF3D_FIXTURE","")

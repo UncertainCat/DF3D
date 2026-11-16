@@ -662,6 +662,17 @@ and goods state checks pass headless. The live run has clean stderr, preserved
 source saves and an unsaved owned shutdown at30FPS; GPU samples58–60C.
 Evidence: completed_sheet_discovery_reference.depot_map_exchange_reference.
 
+Protected094326 on2026-11-16 (DF34008) additionally selects both merchant and
+fortress goods through actual main-scene row pointer clicks. The test derives
+the hit from the visible goods canvas, asserts selection enters the Applying
+phase, then follows the same map/depot/Trade/counteroffer/Okay/Escape workflow.
+All seven recorded effect groups (before/after items, caravan, traders, RNG,
+conversation and changed-item count) match native084828 exactly. Eight items
+change; client stderr is empty. The protected lane passes, preserves its source
+and closes owned DF unsaved. This qualifies the recorded visible item rows,
+not arbitrary grouped or offscreen selection combinations. Evidence:
+completed_sheet_discovery_reference.depot_row_exchange_reference.
+
 ### Trade resizing
 
 The view derives native dialogue width from its owned panel width
@@ -3083,6 +3094,32 @@ render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
 `completed_sheet_discovery_reference.machinery_workflow_reference`.
 
 ## Remaining completed-building native providers
+
+### Cage assignment discovery
+
+Protected095820 on2026-11-16 opens the assignment picker for native Cage28,
+building261, using its visible button, then presses Escape. Installed artwork
+and native rows are captured; opening and cancellation preserve assigned
+critter5969, empty assigned-unit vector, cage flags0 and zero building jobs at
+paused frame0. The open/closed screenshots were inspected. Owned DF45732 closes
+unsaved, the source manifest is unchanged, graphics run at30FPS, and sampled GPU
+temperatures are59–61C. Evidence:
+`completed_sheet_discovery_reference.cage_picker_discovery_reference`.
+
+Native input1aefc6..1aefed initializes context7 and calls3a5940 with the cage.
+That widget builder captures the cage pointer in callback data rather than
+setting the legacy unit-selector bld_id; it stays-1. Context7 also remains after
+Escape, so neither field is sufficient to determine open state. Earlier094602
+and095708 probes failed an incorrect bld_id assertion despite opening the picker;
+these failures are not native/product bugs.
+
+The builder3a5940 retains assigned units/items, then calls candidate predicates
+576df0 for units and576f50 for critter race/caste before appending new entries.
+These are audit leads, not yet accepted runtime entry points. The widget builder
+itself must not become a runtime dependency. Candidate ownership, assignment
+callbacks/effects, main-scene presentation and public Cage controls remain open.
+
+### Other completed-building families
 
 Protected120249 on2026-11-15 inventories the completed building families outside
 the current public routes. Existing revealed examples cover TradeDepot6, Well18,

@@ -1,5 +1,6 @@
 extends "res://tests/trade_session_wire_live.gd"
 var view
+func select_item(model,side: int,index: int) -> void:model.toggle_row(side,index)
 func exchange_click() -> void:
 	var point: Vector2=view.frame.position+view.actions.position+view.actions.buttons[1].get_center()
 	for pressed in [true,false]:
@@ -30,7 +31,7 @@ func run() -> void:
 		for index in range(model.pages[side].rows.size()):
 			if not model.pages[side].rows[index].group and model.pages[side].rows[index].id==int(intent.item):found=index;break
 		if not check(found>=0,"Trade selection item missing"):quit(1);return
-		model.toggle_row(side,found)
+		await select_item(model,side,found)
 		if not await poll_controller(service,model,Model.Phase.Active):quit(1);return
 	if not configure_view(model):quit(1);return
 	for i in 3:await process_frame

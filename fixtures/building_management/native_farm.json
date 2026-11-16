@@ -113290,6 +113290,62 @@
           "presentations/godot/project/scripts/fortress_ui.gd": "ec9961a22e05c8355558902bcf6be45084a19644db34becad62e5753a36e61cc",
           "presentations/godot/project/scripts/furniture_panel.gd": "fcd012d8927fa9a52bf0fff89f3a30ae5e8dc7f2ee71c2b1f93671d3b0f61676"
         }
+      },
+      "depot_row_exchange_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-094326",
+        "owned_df_pid": 34008,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Actual map click selects trader; pointer selects depot alternative, Trade, counteroffer acceptance, Okay and Escape. Selection tabs retired. Counter/accepted full panel pixels match. Eight item changes and trader/caravan/RNG snapshots match native084828. Both merchant and fortress item selections use actual row pointer clicks through the main-scene goods canvas. Physical disconnect/advancing departure accounting not qualified. Clean stderr.",
+        "surface": "actual map click to depot to counteroffer to acceptance",
+        "changed_items": 8,
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-094326/depot-trade-native.json": "e692fb4a65e16037ec070968f34757dbde18a505195f2efdaf2d3883862a4406",
+          "build/stockpile-storage-native-farm-discovery-20261116-094326/trade-exchange-wire-result.json": "a21671c99b3f312f43e04697e03741b21b106ed0331af162ec70cab91077de7c",
+          "build/stockpile-storage-native-farm-discovery-20261116-094326/result.json": "f325892d0f86f6e0c1ddf7f3116d69105ad5c8305e6e173cc1e1241cfbc2bd25",
+          "build/stockpile-storage-native-farm-discovery-20261116-094326/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-094326/trade-exchange-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "presentations/godot/project/tests/trade_main_scene_live.gd": "644afcfc887aae5bc18337cbb3e124c584ecf43a0ec71488eb35925c4c0bd100",
+          "presentations/godot/project/tests/trade_exchange_wire_live.gd": "14d8bde63b8d6936a3bf12a4cfac18bac6139de112cbe05a64bfd6ead092d7a8",
+          "presentations/godot/project/scripts/fortress_ui.gd": "ec9961a22e05c8355558902bcf6be45084a19644db34becad62e5753a36e61cc",
+          "presentations/godot/project/scripts/furniture_panel.gd": "fcd012d8927fa9a52bf0fff89f3a30ae5e8dc7f2ee71c2b1f93671d3b0f61676"
+        }
+      },
+      "cage_picker_discovery_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-095820",
+        "owned_df_pid": 45732,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "observations": {
+          "after": {
+            "flags": 0,
+            "items": [
+              5969
+            ],
+            "jobs": 0,
+            "units": []
+          },
+          "before": {
+            "flags": 0,
+            "items": [
+              5969
+            ],
+            "jobs": 0,
+            "units": []
+          },
+          "building_id": 261,
+          "closed_context": 7,
+          "context": 7,
+          "legacy_selector_building_id": -1
+        },
+        "scope": "Native open/Escape only, paused frame0. Cage261 retains assigned critter5969, flags0 and zero jobs. Open and closed screenshots inspected. Legacy bld_id stays -1; context7 remains after Escape and is not an open-state flag. No runtime provider, assignment effect or viewer acceptance.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-095820/remaining-buildings-native.json": "cb3997baa2d2f652a24e6cd9a39c6eaa305db89760216648a2578cd319e470c1",
+          "build/stockpile-storage-native-farm-discovery-20261116-095820/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-095820/cage-assignment-open.png": "02ec2357d1e168b850a2f25e56b9332064e391df91b586e11f62e38d85578649",
+          "build/stockpile-storage-native-farm-discovery-20261116-095820/cage-assignment-closed.png": "3fd15ba29b5b57fcf03cf83a610962c73f4a1402820dc63782af62b8346aac51",
+          "tools/smoke/remaining-buildings-native.lua": "401309abb537bc96babb4c9523fbff76064f0abcbd3850380afa5cce161d7aae"
+        }
       }
     },
     "pending_construction_reference": {

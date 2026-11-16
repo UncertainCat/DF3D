@@ -22,6 +22,22 @@ changes, so invoking the global input handler is not an acceptable shortcut.
 The next implementation must retain an independently owned negotiation context,
 revalidate its session/source and carry native outcome/counteroffer state.
 
+Protected220017 on2026-11-15 identifies the direct global references in369490:
+264aaf8 is gps.force_full_display_count (redraw request),25060f8 is
+world.artifact_history_suppression_count, and239a1e8 is the fortress entity
+pointer. These are not active trade-menu data. Exact field addresses were read
+from DF's reflected objects. The routine still requires a callee/ownership audit;
+these findings alone do not authorize bypassing native eligibility checks.
+Native input31b2b1..31b615 handles ethical refusals first, then empty values,
+one-sided offers, loss/capacity failures, and only then calls369490. An empty
+Trade click at positive capacity produces dialogue12; empty Offer as gift
+produces10. No items are selected/transferred and no counteroffer appears.
+Owned DF49556 closes unsaved/source-preserved,30FPS, sampled60C. Evidence:
+`completed_sheet_discovery_reference.depot_trade_exchange_entry_reference`.
+This is native reference evidence only; the owned executor and actual successful
+Trade/gift/Seize effects remain unfinished.
+
+
 ## Trade header transport migration
 
 Management protocol243 requires TradeSessionRead columns1..512 and a native

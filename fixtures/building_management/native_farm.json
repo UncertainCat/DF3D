@@ -95431,6 +95431,70 @@
           "build/stockpile-storage-native-farm-discovery-20261115-215603/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
           "tools/smoke/depot-trade-quantity-native.lua": "6c622a34d628cc1a6fef204abfc409b57f934916b718bd5b37ac4c97d1d9c30a"
         }
+      },
+      "depot_trade_exchange_entry_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-220017",
+        "owned_df_pid": 49556,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Empty Trade and gift pointer actions at positive capacity, with source goods but no selections, produce native dialogue states12 and10. Actual field addresses identify negotiation direct global accesses. No accepted exchange, counteroffer, item transfer, owned executor or viewer acceptance is established.",
+        "exchange": {
+          "cases": [
+            {
+              "counter_offer": false,
+              "label": "before",
+              "lines": [
+                "            Kel Oddomoslan, Peasant",
+                "",
+                "            \"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "talkline": 0
+            },
+            {
+              "counter_offer": false,
+              "label": "trade",
+              "lines": [
+                "            Kel Oddomoslan, Peasant",
+                "",
+                "            \"I am a merchant, yes.  You see, I wish to trade.  Which of my goods do you desire?\"",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "talkline": 12
+            },
+            {
+              "counter_offer": false,
+              "label": "gift",
+              "lines": [
+                "            Kel Oddomoslan, Peasant",
+                "",
+                "            \"You wish to make an offering to our leader?  This would please us greatly.  What do you offer?\"",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "talkline": 10
+            }
+          ],
+          "globals": {
+            "display": 40151800,
+            "fortress_entity": 37331432,
+            "history_suppression": 38822136
+          }
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-220017/depot-trade-native.json": "3c148aa75f1382e9833bdbd10494e0b140edaa3c346f416c0ae785752505acd1",
+          "build/stockpile-storage-native-farm-discovery-20261115-220017/result.json": "803e55853eff4fad261c0b280805a08aaa0d6bf869562b3c4e4abde3bffb68dd",
+          "build/stockpile-storage-native-farm-discovery-20261115-220017/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "tools/smoke/depot-trade-exchange-native.lua": "68b5c590e16df73b80f59307c1c5a1090dca00bb03db8a7072d01dd56231be67"
+        }
       }
     },
     "pending_construction_reference": {

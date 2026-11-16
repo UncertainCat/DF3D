@@ -286,6 +286,10 @@ local ok,err=xpcall(function()
    unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z;select_map(b);assert(main.view_sheets.active_id==b.id)
    unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z;click(480,190);assert(trade.open)
    local row=record(label);assert(row.merchant_trader==speaker.id and row.havetalker==1 and row.stillunloading==unloading)
+   if label=='speaker' and os.getenv('DF3D_DEPOT_TRADE_EXCHANGE')=='1' then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-exchange-native.lua')
+    result.exchange=assert(loadfile(source))(view,trade,click,capture)
+   end
    if label=='speaker' and os.getenv('DF3D_DEPOT_TRADE_QUANTITY')=='1' then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-quantity-native.lua')
     result.quantity=assert(loadfile(source))(view,trade,click,capture,result.quantity_item)

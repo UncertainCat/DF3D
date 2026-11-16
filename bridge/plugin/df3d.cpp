@@ -5268,7 +5268,23 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(!check.ethical && check.disposition==df3d_production::TradeOfferDisposition::Refused)for(int i=0;i<2;++i){
               context.refuseOffer();const auto response=context.checkpoint();if(!response)return CR_FAILURE;output["replies"].append(response->conversation.dialogue);}
           }
-          const auto checkpoint=context.checkpoint();output["available"]=bool(checkpoint);
+          auto checkpoint=context.checkpoint();output["available"]=bool(checkpoint);
+          if(checkpoint && parameters[0]=="trade-negotiate-probe"){
+            const auto equal=[](const auto& a,const auto& b){return a.dialogue==b.dialogue && a.counterOffer==b.counterOffer && a.requestedItems==b.requestedItems && a.announcement==b.announcement;};
+            df3d_production::TradeNegotiationNative restored(df::building::find(values[0]),size_t(values[1]),checkpoint->draft);
+            if(!restored.restore(*checkpoint))return CR_FAILURE;
+            auto copy=restored.checkpoint();if(!copy || !equal(copy->conversation,checkpoint->conversation))return CR_FAILURE;
+            output["conversation_restored"]=true;checkpoint=std::move(copy);
+            df3d_production::TradeNegotiationNative invalid(df::building::find(values[0]),size_t(values[1]),checkpoint->draft);
+            const auto before=invalid.checkpoint();auto missing=*checkpoint;missing.conversation.requestedItems.push_back(INT32_MAX);
+            if(!before || invalid.restore(missing))return CR_FAILURE;
+            const auto after=invalid.checkpoint();if(!after || !equal(before->conversation,after->conversation))return CR_FAILURE;
+            output["missing_counter_item_rejected"]=true;
+            auto announcement=*checkpoint;announcement.conversation.dialogue=-1;announcement.conversation.announcement={"Synthetic owned announcement","Second line"};
+            if(!invalid.restore(announcement))return CR_FAILURE;
+            const auto text=invalid.checkpoint();if(!text || !equal(text->conversation,announcement.conversation))return CR_FAILURE;
+            output["owned_text_roundtrip"]=true;
+          }
           if(checkpoint){projection=checkpoint->draft.sides;const auto& c=checkpoint->conversation;
             output["dialogue"]=c.dialogue;output["counter_offer"]=c.counterOffer;output["requested_items"]=Json::arrayValue;output["announcement"]=Json::arrayValue;
             for(auto id:c.requestedItems)output["requested_items"].append(id);

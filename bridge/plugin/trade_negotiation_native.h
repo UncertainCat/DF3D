@@ -3,6 +3,7 @@
 #include "trade_value_totals_native.h"
 #include "trade_capacity_native.h"
 #include "trade_dialogue_native.h"
+#include <memory>
 
 namespace df3d_production {
 // Pointer-free conversation state. A session must validate its source before
@@ -79,6 +80,31 @@ public:
         }
     }
     explicit operator bool() const{return valid;}
+    // Rehydrate only into a freshly constructed context after the owner has
+    // validated epoch/session/source. Resolve requested goods from this fresh
+    // fortress-side vector, never from a retained pointer or arbitrary ID.
+    bool restore(const TradeNegotiationCheckpoint& saved){
+        if(!valid)return false;
+        const auto& c=saved.conversation;
+        if(c.dialogue < -1 || c.dialogue>28 || c.requestedItems.size()>1048576 || c.announcement.size()>2049)return false;
+        size_t bytes=0;
+        std::vector<std::unique_ptr<std::string>> lines;lines.reserve(c.announcement.size());
+        for(const auto& line:c.announcement){bytes+=line.size();if(line.size()>2048 || bytes>16384)return false;lines.push_back(std::make_unique<std::string>(line));}
+        auto& owned=draft.owned;
+        std::vector<df::item*> requested;requested.reserve(c.requestedItems.size());
+        for(auto id:c.requestedItems){
+            const auto found=std::find_if(owned.good[1].begin(),owned.good[1].end(),[id](const auto* item){return item && item->id==id;});
+            if(id<0 || found==owned.good[1].end())return false;
+            requested.push_back(*found);
+        }
+        std::vector<std::string*> text;text.reserve(lines.size());for(const auto& line:lines)text.push_back(line.get());
+        if(!draft.restore(saved.draft))return false;
+        const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+        reinterpret_cast<void(*)(df::curses_text_boxst*)>(base+0xbb9b0)(&owned.big_announce);
+        owned.big_announce.text.swap(text);for(auto& line:lines)line.release();
+        owned.counter_offer_item.swap(requested);owned.counter_offer=c.counterOffer;owned.talkline=df::talk_line_type(c.dialogue);
+        return true;
+    }
     TradeOfferCheck checkOffer() const {
         if(!valid || !tradeRefusalNativeReady())return {};
         const auto& owned=draft.owned;

@@ -1,3 +1,25 @@
+## Trade conversation reconstruction
+
+The owned negotiation context restores pointer-free conversation checkpoints
+only into freshly resolved storage. Requested IDs must be present in the new
+fortress-side goods vector. All conversation bounds and IDs are checked before
+changing the draft; missing goods reject. Announcement strings are copied into
+independently owned allocations and released through the text-box cleanup.
+Session/epoch/source validation remains the enclosing owner's responsibility.
+The counteroffer flag and requested-items list are separate: native Okay clears
+the list via316469..316470 without clearing the flag, so an empty list must not
+invalidate a retained counteroffer.
+
+Protected222521 on2026-11-15 round-trips the first counteroffer into a fresh
+context, rejects a missing requested ID without conversation changes, and checks
+synthetic announcement copying/cleanup. The original native effect and active
+RNG comparison still passes. Owned DF34820 closes unsaved/source-preserved,
+30FPS, sampled60C. Bridge build and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_conversation_restore_reference`.
+This verifies reconstruction within one safe point. Asynchronous session
+rebinding, real announcement content, Okay input and accepted transfers remain
+unfinished. Protocol243 and public Trade exposure are unchanged.
+
 ## Owned native negotiation execution
 
 TradeNegotiationNative.negotiate checks the owned offer, computes actual values
@@ -6,7 +28,8 @@ with the owned context. It marks effects started before the call: callers must
 handle post-effect failure as uncertainty and must not retry it automatically.
 The routine consumes normal DF RNG, trains both traders and can mutate caravan
 state, counteroffers or item ownership. This is staged behind a paused diagnostic;
-public session source rebinding and counteroffer restoration remain unfinished.
+public session source rebinding remains unfinished; context restoration is
+qualified separately above.
 
 Protected222057 on2026-11-15 compares a first counteroffer from values103/150.
 The owned call matches native dialogue24 and five requested item IDs, caravan
@@ -56,7 +79,7 @@ merchant initializer36b590 with the depot/site/caravan. Native menu state is not
 an input. Its checkpoint copies dialogue, counteroffer item IDs and announcement
 strings into pointer-free values. Explicit cleanup owns the native text box's
 string pointers. The class exposes initialization/readback and the refusal path described above.
-Conversation restoration and public action integration remain next.
+Public action integration remains next; context restoration is described above.
 
 Protected220705 on2026-11-15 verifies initial and selected merchant drafts against
 native IDs, flags, amounts and list heights. Native dialogue/buildlists/appraisal

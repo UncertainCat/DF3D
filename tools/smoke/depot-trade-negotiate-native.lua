@@ -56,7 +56,11 @@ local ok,err=xpcall(function()
  local facts,code=dfhack.run_command_silent('df3d','trade-projection-probe',tostring(trade.bld.id),'0','','',json.encode(intents))
  assert(code==0,facts);local values=json.decode(facts).value_totals.actual
  assert(values[1]>0 and values[2]>=values[1] and (values[2]-values[1])*100/values[1]<50,'Counteroffer fixture must offer under50% profit')
- for side=0,1 do for _,intent in ipairs(intents)do if intent.side==side then local found=false;for i,item in ipairs(trade.good[side])do if item.id==intent.item then assert(trade.goodflag[side][i].selected);found=true end end;assert(found)end end end
+ for side=0,1 do
+  local wanted={};for _,intent in ipairs(intents)do if intent.side==side then wanted[intent.item]=true end end
+  for i,item in ipairs(trade.good[side])do assert(trade.goodflag[side][i].selected==not not wanted[item.id],'Unexpected selected fixture item');wanted[item.id]=nil end
+  assert(next(wanted)==nil,'Fixture item absent')
+ end
  result.values=values
  caravan.total_capacity.whole=100000;caravan.total_capacity.fraction=0;caravan.mood=100;caravan.haggle_fail_count=0
  for _,unit in ipairs(units)do for _,s in ipairs(unit.status.current_soul.skills)do for _,f in ipairs(sf)do s[f]=0 end end end
@@ -71,6 +75,8 @@ local ok,err=xpcall(function()
  set_rng(controlled)
  local output,code=dfhack.run_command_silent('df3d','trade-negotiate-probe',tostring(trade.bld.id),'0','','',json.encode(intents))
  assert(code==0,output);local owned=json.decode(output);assert(owned.available and owned.executed and owned.effects_started and owned.counter_offer,output)
+ assert(owned.conversation_restored and owned.missing_counter_item_rejected and owned.owned_text_roundtrip,'Negotiation checkpoint restoration failed')
+ result.conversation_restored=true;result.missing_counter_item_rejected=true;result.owned_text_roundtrip=true
  result.owned={dialogue=owned.dialogue,items=owned.requested_items,people=people(),caravan=caravan_state()}
  assert(json.encode(result.owned)==json.encode(result.native),'Owned negotiation effects differ from native')
  local after=rng();assert(after.context==native_rng.context and after.cursor==native_rng.cursor,'Negotiation RNG cursor differs')

@@ -98244,6 +98244,31 @@
           "bridge/plugin/trade_negotiation_native.h": "413c60268c1546a261c4a0ac54b56fcbefb63f1ea96310ed531e729a11fae84f",
           "tools/smoke/depot-trade-negotiate-native.lua": "c43640d2b37caa77a3daa0c43311845e96bb2198ca020db99cc5783b3e40d71e"
         }
+      },
+      "depot_trade_conversation_restore_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-222521",
+        "owned_df_pid": 34820,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Fresh owned context restores first native-qualified counteroffer IDs/flag/dialogue. Missing requested item rejects without conversation change. Synthetic announcement lines round-trip and are destroyed through native cleanup. Native counteroffer effects and active RNG still match. Same-safe-point reconstruction only: async session rebinding, real announcements and accepted transfers remain unqualified.",
+        "conversation_restored": true,
+        "missing_counter_item_rejected": true,
+        "synthetic_text_roundtrip": true,
+        "native_dialogue": 24,
+        "requested_items": [
+          1180,
+          1735,
+          1736,
+          1494,
+          25112
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-222521/depot-trade-native.json": "0e67e2a5eec62cf4c5fa502c960bd1e860d815e7fa106c6888c96e893fe5d67d",
+          "build/stockpile-storage-native-farm-discovery-20261115-222521/result.json": "f1fd294dcbb91f12ca6cd80e1ee210b2094fb761750d97576ddbee8a3c2a6be9",
+          "build/stockpile-storage-native-farm-discovery-20261115-222521/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/trade_negotiation_native.h": "764238f6112d125bc63bd2abfaa4b785475d78e68f5d4cca560acf1de1231cb4",
+          "tools/smoke/depot-trade-negotiate-native.lua": "222ec426aab4707afda3ac4660940060417b678254b298c65cf009d3d0cea69a"
+        }
       }
     },
     "pending_construction_reference": {

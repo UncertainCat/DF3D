@@ -30,6 +30,27 @@ extension builds pass, as do all19 core checks. Evidence:
 This verifies catalog transport, not rendered chooser input, token consumption,
 appraisal/session transitions, disconnection behavior or merchant exchange.
 
+The staged merchant chooser now reads through the shared semantic service and
+retains native ordering and captions, including indistinguishable same-civilization
+rows. Clicking hands off the exact opaque token once; it does not yet consume it
+or open a trade session. Close, session replacement and disposal retire local
+ownership, and late replies cannot replace a reopened chooser. No status prose is
+invented. The native frame, heading and rows are rendered from installed assets.
+
+Protected192414 on2026-11-15 verifies two reads through that actual controller,
+matching the native two-merchant catalog and preserving the native chooser/frame.
+Owned DF43944 closes unsaved/source-preserved; native30FPS, sampled GPU49C, clean
+headless log. The standalone graphical check compares the entire944x708 panel
+against native191555 exactly at1200x800, dispatches actual second-row clicks,
+rejects a duplicate click while handing off, and closes on right-click. It runs
+serially at30FPS (sampled51–52C), with a clean final engine log. Headless checks cover
+full-width tokens, duplicate captions, invalid receipts, replacement and disposal.
+All19 root core checks pass.
+Evidence: `completed_sheet_discovery_reference.depot_trade_catalog_view_reference`.
+Overflow/resize and keyboard acceptance, single-merchant direct entry, token
+consumption/session transport and main-scene routing remain unfinished. The
+depot/trade route stays hidden; this is not trade-screen acceptance.
+
 ## Depot goods container transport migration
 
 Management protocol236 adds required direct-child counts parallel to each depot

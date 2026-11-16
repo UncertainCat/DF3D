@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "trade_catalog_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/trade_catalog_state_test.gd",
+      "completion": "^TRADE_CATALOG_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "depot_goods_state_test",
       "lane": "core",
       "kind": "godot",

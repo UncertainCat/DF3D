@@ -74530,6 +74530,76 @@
           "schema/mirror.fbs": "51f4d9f59ba8a1845a38081a7f6007ae93eca13a5ff990b9cf5c5d5daddd4a56",
           "schema/cpp/management_util.h": "7a8fda35eb81c795bd01d5d9429c18371ea99909c1e4f4e344d59360d17fb14a"
         }
+      },
+      "depot_trade_catalog_view_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-192414",
+        "owned_df_pid": 43944,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Actual semantic service/controller two catalog reads preserve native order/captions and full integer tokens. Standalone 1200x800 rendered full 944x708 panel exactly matches native191555; actual second-row click hands off exact token once, right-click closes. Headless ownership tests cover late/replacement/disposed replies and malformed receipts. No token consumption, trade session, main-scene routing, overflow/resize/keyboard or single-merchant direct-entry acceptance.",
+        "render_native": "build/stockpile-storage-native-farm-discovery-20261115-191555",
+        "controller": {
+          "responses": [
+            {
+              "choices": [
+                {
+                  "entity_id": 865,
+                  "name": "Dumatzas",
+                  "race": "Dwarves",
+                  "token": 1
+                },
+                {
+                  "entity_id": 865,
+                  "name": "Dumatzas",
+                  "race": "Dwarves",
+                  "token": 2
+                }
+              ],
+              "depot_id": 54,
+              "from_text": " from ",
+              "title": "Select a merchant group to trade with:"
+            },
+            {
+              "choices": [
+                {
+                  "entity_id": 865,
+                  "name": "Dumatzas",
+                  "race": "Dwarves",
+                  "token": 3
+                },
+                {
+                  "entity_id": 865,
+                  "name": "Dumatzas",
+                  "race": "Dwarves",
+                  "token": 4
+                }
+              ],
+              "depot_id": 54,
+              "from_text": " from ",
+              "title": "Select a merchant group to trade with:"
+            }
+          ],
+          "success": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-192414/depot-trade-native.json": "78254260d26f01a218e209c0e80153f137a5c1810a514c9ac0d458980ebd1d35",
+          "build/stockpile-storage-native-farm-discovery-20261115-192414/trade-catalog-wire-result.json": "cf0624e930f3d054e1773b654a1bf70568616925e375aa9c4d7df1f52557940b",
+          "build/stockpile-storage-native-farm-discovery-20261115-192414/trade-catalog-wire.stdout.log": "0fb41bb7cc71b68a335c01d8f84a806304e1cc6bb173f34ca02cb913d0f62013",
+          "build/stockpile-storage-native-farm-discovery-20261115-192414/trade-catalog-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261115-192414/result.json": "7863efc8d2cda16398771cfbf2e02609f2f7bb81089148a1fff0a937b942ac3b",
+          "build/stockpile-storage-native-farm-discovery-20261115-192414/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-191555/trade-catalog-wire.png": "3dbb243278ba3e101e8849855224c0543d9a55b70d2725f34e54f106777b7ac3",
+          "build/stockpile-storage-native-farm-discovery-20261115-191555/trade-catalog-view.png": "559742ab9afaf1c1bd1ba18df3d99f449d5f40eb22d4c5984b5fba165b46ff5c",
+          "presentations/godot/project/scripts/trade_catalog_state.gd": "54b1115e57f5ff189a689f1681615ff663fd51ed520b8cbf4778f04098e12e45",
+          "presentations/godot/project/scripts/trade_catalog_view.gd": "dd05766ae48f457b7cacd84a28f34049870ec8103a292e7dd79fa2ae1880fea9",
+          "presentations/godot/project/tests/trade_catalog_state_test.gd": "2928e80c508a8ef37fc3f6822d3b31ebf4996e827eb089081169f1cc7e39af67",
+          "presentations/godot/project/tests/trade_catalog_view_capture.gd": "836d81019de95f15f4578f68cbc0a8494f04d4a2cc582a0f9fe5cf5e00dd0543",
+          "presentations/godot/project/tests/trade_catalog_wire_live.gd": "a739f2be681c67d8beca83a89fb29dab94e363cc83e9caa86e37fe3723503855",
+          "build/notes/pm/trade-catalog-state_test.stdout.log": "65bfcf00a688cdf52a3483f70031da769f60571dba306a2a9ce1b3df82225ff6",
+          "build/notes/pm/trade-catalog-state_test.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/notes/pm/trade-catalog-view_capture.stdout.log": "312a0b49c2396be13cb37fc3b6464fab474792af848dd7dbb87bba223b711cc8",
+          "build/notes/pm/trade-catalog-view_capture.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
       }
     },
     "pending_construction_reference": {

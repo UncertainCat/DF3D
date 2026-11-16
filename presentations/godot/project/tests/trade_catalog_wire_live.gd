@@ -1,4 +1,5 @@
 extends "res://tests/machinery_wire_live.gd"
+const Model=preload("res://scripts/trade_catalog_state.gd")
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	if directory.is_empty():quit(77);return
@@ -17,10 +18,19 @@ func run() -> void:
 		check(world.management_request("trade_catalog",invalid)==0,"Malformed catalog reached transport")
 	var tokens: Array=[]
 	var responses: Array=[]
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true);service.set_process(false)
+	var model=Model.new();model.configure(service)
 	for iteration in range(2):
-		var response:=await request("trade_catalog",intent)
+		model.open(intent.depot_id)
+		var ticket: int=model.ticket
+		deadline=Time.get_ticks_msec()+5000
+		while model.phase==Model.Phase.Reading and Time.get_ticks_msec()<deadline:
+			world.poll();service.poll(0.01);await create_timer(0.01).timeout
+		var response: Dictionary=service.result(ticket)
+		check(model.phase==Model.Phase.Ready,"Merchant chooser controller did not become ready")
 		if not check(response.get("status")==C.ManagementStatus.Ok and response.has("trade_catalog"),"Catalog transport failed: "+str(response.get("message",""))):break
 		var value: Dictionary=response.trade_catalog
+		check(model.choices==value.choices and model.title==value.title and model.from_text==value.from_text,"Controller changed native catalog")
 		check(value.depot_id==expected.depot_id and value.title==expected.title and value.from_text==expected.from,"Catalog header changed")
 		check(value.choices.size()==expected.choices.size(),"Catalog choice count changed")
 		for i in range(mini(value.choices.size(),expected.choices.size())):
@@ -29,6 +39,7 @@ func run() -> void:
 			check(typeof(row.token)==TYPE_INT and row.token>0 and not tokens.has(row.token),"Catalog token duplicated or coerced")
 			tokens.append(row.token)
 		responses.append(value)
+	model.dispose();service.queue_free();await process_frame
 	var unavailable:=await request("trade_catalog",{"action":C.ManagementAction.TradeCatalogRead,"depot_id":2147483647})
 	check(unavailable.get("status")==C.ManagementStatus.Rejected and not unavailable.has("trade_catalog"),"Missing depot did not reject")
 	var file:=FileAccess.open(directory+"/trade-catalog-wire-result.json",FileAccess.WRITE)

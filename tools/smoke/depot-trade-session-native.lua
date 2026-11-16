@@ -18,7 +18,13 @@ local function native()
  return sides
 end
 local function compare(label,row)
- if row.display_verified then assert(row.summary_verified,'Owned footer summary was not verified')end
+ if row.display_verified then
+  assert(row.summary_verified and row.header_summary_verified,'Owned header/footer summary was not verified')
+  for i,text in ipairs(row.header_lines)do
+   local chars={};for x=17,118 do local tile=dfhack.screen.readTile(x,6+i);chars[#chars+1]=tile.ch>=32 and tile.ch<=255 and string.char(tile.ch)or' 'end
+   local bytes=dfhack.utf2df(text);assert(bytes..string.rep(' ',102-#bytes)==table.concat(chars),'Session header differs from native')
+  end
+ end
  assert(row.status==0 and json.encode(row.sides)==json.encode(native()),'Session/native mismatch: '..label)
  assert(row.filters[1]==dfhack.df2utf(trade.item_filter[0]) and row.filters[2]==dfhack.df2utf(trade.item_filter[1]))
  result.cases[#result.cases+1]={label=label,state=row}

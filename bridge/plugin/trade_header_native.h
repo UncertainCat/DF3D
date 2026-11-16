@@ -2,12 +2,14 @@
 #include "trade_dialogue_native.h"
 #include "unit_description_native.h"
 #include "zone_native.h"
+#include "building_item_native.h"
 
 namespace df3d_production {
 struct TradeHeader {
     std::string name,dialogue,mood;
     std::vector<std::string> status;
     std::optional<df3d_area::ZoneOwnerNameColor> nameColor;
+    std::optional<ItemAppearanceRecipe> appearance;
     int8_t moodColor=-1,statusColor=-1;
     int32_t speaker=-1;
 };
@@ -72,6 +74,10 @@ inline std::optional<TradeHeader> tradeHeader(df::building* building,size_t cara
         reinterpret_cast<void(*)(df::unit*,std::string*,bool)>(base+0x1330c30)(owned.unit(),&result.name,false);
         result.nameColor=df3d_area::nativeZoneOwnerNameColor(*speaker);
         if(!result.nameColor || result.name.size()>2048)return {};
+        df3d_appearance::Result resolved;
+        if(df3d_appearance::resolveUnitSelector(speaker,resolved)) {
+            result.appearance=ownedItemRecipe(resolved);if(!result.appearance)return {};
+        }
     }
     if(entry->unloading || !entry->hasSpeaker) {
         if(entry->hasSpeaker){result.status={text(0x162a908),text(0x162a998)};result.statusColor=14;}

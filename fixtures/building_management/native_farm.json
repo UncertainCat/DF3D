@@ -94128,6 +94128,1094 @@
           "presentations/godot/project/scripts/trade_header_view.gd": "fc6f6fca36f81cd078c8bcd4cee45f139d8ae7de20a2f5dd2b37c5870c498a6f",
           "presentations/godot/project/tests/trade_header_view_capture.gd": "286656348de7c036adca5d98bd69c97b3cdcba29c3d9d68b7e06b9464018f789"
         }
+      },
+      "depot_trade_header_session_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-214026",
+        "owned_df_pid": 48588,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Two revision-bound owner reads compose native header/artwork/wrapped lines with totals/capacity.102-column lines match native cells;40-column requests retain the same revision/prose;0/513 widths and old revisions reject. Ten existing lifecycle states plus source/trader/epoch retirement remain passing. Public header transport and controller publication are not covered.",
+        "session": {
+          "cases": [
+            {
+              "label": "open",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 1,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "selected",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 2,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      1,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "stale-and-invalid-unchanged",
+              "state": {
+                "display_verified": true,
+                "filters": [
+                  "",
+                  ""
+                ],
+                "header_lines": [
+                  "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\""
+                ],
+                "header_name": "Kel Oddomoslan, Peasant",
+                "header_summary_verified": true,
+                "revision": 2,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      1,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0,
+                "summary_verified": true
+              }
+            },
+            {
+              "label": "filtered",
+              "state": {
+                "filters": [
+                  "IRON",
+                  ""
+                ],
+                "revision": 3,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      1,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 0,
+                        "on": false,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 0,
+                        "on": false,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 6,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "filter-cleared",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 4,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      1,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "selection-cleared",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 5,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "read-repeat",
+              "state": {
+                "display_verified": true,
+                "filters": [
+                  "",
+                  ""
+                ],
+                "header_lines": [
+                  "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\""
+                ],
+                "header_name": "Kel Oddomoslan, Peasant",
+                "header_summary_verified": true,
+                "revision": 5,
+                "session": 1,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0,
+                "summary_verified": true
+              }
+            },
+            {
+              "label": "reopened",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 1,
+                "session": 2,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "after-source-retirement",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 1,
+                "session": 3,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            },
+            {
+              "label": "after-trader-retirement",
+              "state": {
+                "filters": [
+                  "",
+                  ""
+                ],
+                "revision": 1,
+                "session": 4,
+                "sides": [
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 4
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 45
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 57
+                      }
+                    ],
+                    "height": 24,
+                    "items": [
+                      992,
+                      991,
+                      296,
+                      408,
+                      407
+                    ]
+                  },
+                  {
+                    "amounts": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "flags": [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "groups": [
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 2
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 23
+                      },
+                      {
+                        "expanded": true,
+                        "flags": 2,
+                        "on": true,
+                        "subtype": -1,
+                        "type": 46
+                      }
+                    ],
+                    "height": 21,
+                    "items": [
+                      1180,
+                      1494,
+                      1736,
+                      1735
+                    ]
+                  }
+                ],
+                "status": 0
+              }
+            }
+          ],
+          "epoch_retired": true,
+          "source_retired": true,
+          "stale_rejected": true,
+          "trader_retired": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-214026/depot-trade-native.json": "ffaaebec93b230032726450d481d7c7692b30bf782c6aab0f4269bc9e881cc40",
+          "build/stockpile-storage-native-farm-discovery-20261115-214026/result.json": "37734189425a11ecf9acab3c05df8aefe0480fa84141c811d3ff143b4394d53d",
+          "build/stockpile-storage-native-farm-discovery-20261115-214026/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/trade_header_native.h": "93778b3853f7ce1ac21837e39d70a763929d2e7d39c6188cf581dd138b1a5a97",
+          "bridge/plugin/trade_session_native.h": "5c821b2d86429ac867c2ea04b511f484ce0eba9a1f8fcc1e7ef65a797110b110",
+          "bridge/plugin/trade_owner_native.h": "e672eb2877dbea6130d0c8fbfc5b4ec6b35dc0061477edb5f4740fc4a1ec89b0",
+          "tools/smoke/depot-trade-session-native.lua": "d5deb8006b9e6ec65ad3177a46194597915fb5d84d17db80032a952d80a0e3da"
+        }
       }
     },
     "pending_construction_reference": {

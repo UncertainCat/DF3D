@@ -1,3 +1,23 @@
+## Revision-bound trade header summary
+
+TradeSelectionSession/TradeOwner summary now composes owned header text,
+name-color facts, original-artwork recipe and native wrapped dialogue alongside
+entry/value/capacity facts at one safe point. The caller supplies columns1..512;
+the internal compatibility default remains102 until public transport carries
+width. Invalid widths reject without changing the owner. Stale session/revision
+and source checks precede header construction. Header artwork resolution now
+lives in the provider, rather than only in its diagnostic command.
+
+Protected214026 on2026-11-15 qualifies two summary reads through ten existing
+session lifecycle states.102-column dialogue matches native screen cells;
+40-column reads retain the same revision/prose;0/513 and old revisions reject.
+Source, trader and epoch retirement still pass. Owned DF48588 closes unsaved,
+source-preserved at30FPS, sampled61C. Bridge build and all19 core checks pass.
+Evidence: `completed_sheet_discovery_reference.depot_trade_header_session_reference`.
+Protocol242 remains unchanged: its public read still publishes only the footer.
+Header schema/model/controller publication is the next migration; this owner
+integration does not qualify the full Trade workflow or negotiation outcomes.
+
 ## Staged trade header rendering
 
 The Godot header draws provider-supplied names, dialogue lines, status and mood;

@@ -48,8 +48,8 @@ public:
         return selection.displayRead(epoch,session,revision,side,offset,limit);
     }
     TradeSessionRead close(uint64_t session){return selection.close(session);}
-    TradeSessionSummary summary(uint64_t epoch,uint64_t session,uint64_t revision) {
-        return selection.summary(epoch,session,revision);
+    TradeSessionSummary summary(uint64_t epoch,uint64_t session,uint64_t revision,uint16_t columns=102) {
+        return selection.summary(epoch,session,revision,columns);
     }
     std::optional<TradeDisplayPage> display(uint64_t epoch,uint64_t session,uint64_t revision,int32_t side,size_t offset,size_t limit) {
         return selection.display(epoch,session,revision,side,offset,limit);

@@ -52,6 +52,9 @@ struct TradeSessionSummary {
     std::optional<TradeEntryFacts> entry;
     std::optional<TradeValueTotals> values;
     std::optional<TradeCapacity> capacity;
+    std::optional<TradeHeader> header;
+    std::vector<std::string> dialogueLines;
+    uint16_t columns=0;
 };
 class TradeSelectionSession {
     struct Binding {
@@ -80,8 +83,9 @@ public:
         if(!current || current->session!=session)return reply(TradeSessionStatus::Rejected);
         reset();return reply(TradeSessionStatus::Closed);
     }
-    TradeSessionSummary summary(uint64_t epoch,uint64_t session,uint64_t revision) {
+    TradeSessionSummary summary(uint64_t epoch,uint64_t session,uint64_t revision,uint16_t columns=102) {
         TradeSessionSummary result;
+        if(columns<1 || columns>512)return result;
         const auto read=access(epoch,session,revision);result.status=read.status;
         if(read.status!=TradeSessionStatus::Available || !read.draft || !current)return result;
         auto* building=df::building::find(current->depot);
@@ -89,8 +93,12 @@ public:
         auto values=tradeValueTotals(building,current->caravan,read.draft->sides);
         auto capacity=tradeCapacity(building,current->caravan,read.draft->sides);
         if(!entry || !values || !capacity){result.status=TradeSessionStatus::Rejected;return result;}
+        auto header=tradeHeader(building,current->caravan,entry->dialogue);
+        const auto lines=header?tradeDialogueLines(header->dialogue,columns):std::nullopt;
+        if(!header || !lines){result.status=TradeSessionStatus::Rejected;return result;}
         result.session=read.session;result.revision=read.revision;
         result.entry=std::move(entry);result.values=std::move(values);result.capacity=std::move(capacity);
+        result.header=std::move(header);result.dialogueLines=*lines;result.columns=columns;
         return result;
     }
     std::optional<TradeDisplayPage> display(uint64_t epoch,uint64_t session,uint64_t revision,int32_t side,size_t offset,size_t limit) {

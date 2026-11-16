@@ -331,9 +331,37 @@ is untouched. The lane closes unsaved/source-preserved at30FPS, sampled48C;
 bridge build and19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_trade_seize_session_reference`.
 This qualifies paused session commands, not advancing simulation or injected
-post-effect failures. Container detachment, contained units, empty refusal,
-artifact announcements and public action integration remain unqualified.
-Trade remains hidden.
+post-effect failures. Container detachment, contained units and empty refusal
+remain unqualified. Artifact announcements are qualified below; composite
+transport integration has its separate evidence. Trade remains hidden.
+
+### Artifact seizure
+
+Protected090830 (native DF38864) and090926 (wire DF45772) on2026-11-16
+qualify Seize with a synthetic artifact261 attached to merchant item992,
+claimed by foreign civilization221. The civilization is chosen before merchant
+entry (`DF3D_DEPOT_TRADE_FOREIGN=1`), so both paths resolve the same speaker.
+Changing civilization after entry is invalid for this comparison: native keeps
+a cached speaker that a fresh owned context correctly cannot find. The earlier
+090650 comparison used that invalid setup and is not acceptance evidence.
+
+The composite Seize button removes merchant ownership, adds ENTITY_STOLEN221,
+sets the same caravan flags/mood/departure timer, and preserves the same artifact
+claims and recorded location/holder fields. Both paths produce dialogue-1 and
+the identical native warning about seizure of Searchedcall. The928x72 header
+and divider match native pixels exactly. Refresh retains the announcement;
+stale/closed requests reject. The render check also verifies the now-disabled
+Trade button submits no action, and closing resets the panel. No runtime code
+change was required.
+
+All tracked post-read facts match except item992 flags786432 versus537657344:
+only weight_computed (bit29), the previously observed lazy native weight-cache
+read effect. Before row refresh, items1735/1736 also differ by that same bit;
+equivalent row-value reads remove those two differences. Do not claim raw full
+snapshot equality or unobserved world-history effects. Both saves are preserved
+and owned sessions close unsaved. Native/render runs are serial30FPS, wire
+client headless, final stderr empty, GPU samples59–62C, and19 core checks pass.
+Evidence: completed_sheet_discovery_reference.depot_trade_artifact_seize_reference.
 
 ## Owned Trade refusal checks
 

@@ -101876,6 +101876,103 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_artifact_seize_reference": {
+        "supported_df": "53.16 Steam24557528",
+        "native_run": "build/stockpile-storage-native-farm-discovery-20261116-090830",
+        "wire_run": "build/stockpile-storage-native-farm-discovery-20261116-090926",
+        "native_pid": 38864,
+        "wire_pid": 45772,
+        "synthetic_artifact": 261,
+        "item": 992,
+        "foreign_entity": 221,
+        "announcement": [
+          "Villains!  The seizure of Searchedcall will not go unanswered."
+        ],
+        "dialogue": -1,
+        "before_equal": true,
+        "after_equal_except_weight_cache": true,
+        "raw_after_differences": [
+          {
+            "id": 992,
+            "native_flags": 786432,
+            "wire_flags": 537657344
+          }
+        ],
+        "artifact_before": {
+          "abs_tile_x": 0,
+          "abs_tile_y": 0,
+          "abs_tile_z": 0,
+          "entity_claims": [
+            221
+          ],
+          "family_claims": [],
+          "feature_layer": -1,
+          "holder_hf": -1,
+          "last_layer": -1,
+          "last_local_bld_id": -1,
+          "loss_region": -1,
+          "owner_hf": -1,
+          "remote_claims": [],
+          "season_tick": -1,
+          "site": -1,
+          "site_building_profile": -1,
+          "storage_site": -1,
+          "storage_structure_local": -1,
+          "structure_local": -1,
+          "subregion": -1,
+          "year": -1
+        },
+        "artifact_after": {
+          "abs_tile_x": 0,
+          "abs_tile_y": 0,
+          "abs_tile_z": 0,
+          "entity_claims": [
+            221
+          ],
+          "family_claims": [],
+          "feature_layer": -1,
+          "holder_hf": -1,
+          "last_layer": -1,
+          "last_local_bld_id": -1,
+          "loss_region": -1,
+          "owner_hf": -1,
+          "remote_claims": [],
+          "season_tick": -1,
+          "site": -1,
+          "site_building_profile": -1,
+          "storage_site": -1,
+          "storage_structure_local": -1,
+          "structure_local": -1,
+          "subregion": -1,
+          "year": -1
+        },
+        "after_normalized_sha256": "469d3c4ba6f0b1ecfbb5943d41c2b66ab26af838e8a1f652e5ac8c06aafd9cf7",
+        "render_regions": [
+          [
+            40,
+            64,
+            928,
+            72
+          ],
+          [
+            40,
+            136,
+            928,
+            12
+          ]
+        ],
+        "pixel_equal": true,
+        "disabled_trade_button_verified": true,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "fps_cap": 30,
+        "core_tests_passed": 19,
+        "limits": [
+          "Synthetic artifact and controlled merchant, paused transfer only.",
+          "No claim of all world-history events or subsequent departure effects.",
+          "Raw weight-computed cache bit difference retained explicitly."
+        ]
+      },
       "depot_trade_counter_input_reference": {
         "supported_df": "53.16 Steam24557528",
         "protected_run": "build/stockpile-storage-native-farm-discovery-20261116-090124",

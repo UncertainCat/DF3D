@@ -1,11 +1,19 @@
 -- Disposable paused foreign-caravan Seize comparison; never save this session.
 local view,trade,click,capture,out=...
 local json=require('json')
+local artifact_case=os.getenv('DF3D_DEPOT_TRADE_ARTIFACT')=='1'
+local artifact,artifact_ref,artifact_flag
 local mode=os.getenv('DF3D_DEPOT_TRADE_SEIZE');assert(mode=='native' or mode=='owned' or mode=='session' or mode=='wire')
 local history={};for _,id in ipairs(trade.mer.goods)do history[#history+1]=id end
 local tracked={}
 for side=0,1 do for _,item in ipairs(trade.good[side])do tracked[item.id]=item end end
 local function snapshot()
+ local artifact_state
+ if artifact then
+  artifact_state={remote_claims={},entity_claims={},family_claims={}}
+  for _,field in ipairs{'remote_claims','entity_claims','family_claims'}do for _,id in ipairs(artifact[field])do table.insert(artifact_state[field],id)end end
+  for _,field in ipairs{'abs_tile_x','abs_tile_y','abs_tile_z','last_local_bld_id','site','structure_local','site_building_profile','subregion','feature_layer','owner_hf','storage_site','storage_structure_local','loss_region','last_layer','holder_hf','year','season_tick'}do artifact_state[field]=artifact[field]end
+ end
  local rows={}
  for id,item in pairs(tracked)do
   local refs={}
@@ -23,7 +31,7 @@ local function snapshot()
  local contained={};for _,row in ipairs(trade.bld.contained_items)do contained[#contained+1]={id=row.item.id,use_mode=row.use_mode}end
  table.sort(contained,function(a,b)return a.id<b.id end)
  local c=trade.mer
- return {items=rows,contained=contained,times_used=trade.bld.times_used,history_suppression=df.global.world.artifact_history_suppression_count,
+ return {artifact=artifact_state,items=rows,contained=contained,times_used=trade.bld.times_used,history_suppression=df.global.world.artifact_history_suppression_count,
   caravan={flags=c.flags.whole,mood=c.mood,haggle=c.haggle_fail_count,time=c.time_remaining,import_value=c.import_value,export_value_total=c.export_value_total,export_value_personal=c.export_value_personal,offer_value=c.offer_value}}
 end
 
@@ -31,6 +39,12 @@ local civ=trade.civ;local entity=trade.mer.entity
 local foreign
 for _,candidate in ipairs(df.global.world.entities.all)do
  if candidate.type==df.historical_entity_type.Civilization and candidate.id~=df.global.plotinfo.civ_id then foreign=candidate;break end
+end
+if artifact_case then
+ -- Artifact dialogue needs a freshly resolvable merchant speaker. Changing
+ -- civilization after native entry would leave only native's cached speaker.
+ assert(os.getenv('DF3D_DEPOT_TRADE_FOREIGN')=='1' and civ.type==df.historical_entity_type.Civilization and civ.id~=df.global.plotinfo.civ_id)
+ foreign=civ
 end
 assert(foreign,'No foreign civilization for Seize fixture')
 local flags,mood,time=trade.mer.flags.whole,trade.mer.mood,trade.mer.time_remaining
@@ -45,8 +59,16 @@ click(440,694);click(900,694);click(468,238)
 local selected
 for i,item in ipairs(trade.good[0])do if trade.goodflag[0][i].selected then assert(not selected);selected=item end end
 assert(selected,'Seize fixture requires exactly one selected merchant item')
+if artifact_case then
+ assert(mode=='native' or mode=='wire','Artifact Seize oracle qualifies native and wire modes')
+ local artifacts=df.global.world.artifacts.all;assert(#artifacts>0 and not selected.flags.artifact)
+ artifact=df.artifact_record:new();artifact.id=artifacts[#artifacts-1].id+1;artifact.item=selected;artifact.name:assign(artifacts[0].name)
+ artifact.entity_claims:insert('#',foreign.id);artifacts:insert('#',artifact)
+ artifact_ref=df.general_ref_is_artifactst:new();artifact_ref.artifact_id=artifact.id
+ selected.general_refs:insert('#',artifact_ref);artifact_flag=selected.flags.artifact;selected.flags.artifact=true
+end
 view:render(dfhack.getTickCount());capture('depot-trade-seize-before')
-local result={mode=mode,foreign=foreign.id,item=selected.id,before=snapshot()}
+local result={mode=mode,foreign=foreign.id,item=selected.id,before=snapshot(),artifact_case=artifact_case}
 for _,row in ipairs(result.before.items)do for _,ref in ipairs(row.refs)do assert(ref.kind~=df.general_ref_type.ENTITY_STOLEN,'Seize cleanup requires no old stolen refs')end end
 local ok,err=xpcall(function()
  if mode=='native' then
@@ -61,7 +83,7 @@ local ok,err=xpcall(function()
   for _,text in ipairs(trade.big_announce.text)do result.announcement[#result.announcement+1]=dfhack.df2utf(text.value)end
   capture('depot-trade-seize-after')
  elseif mode=='wire' then
-  local file=assert(io.open(out..'/trade-transfer-wire-expected.json','w'));file:write(json.encode({depot=trade.bld.id,side=0,intents={{side=0,item=selected.id}},dialogue=9}));file:close()
+  local file=assert(io.open(out..'/trade-transfer-wire-expected.json','w'));file:write(json.encode({depot=trade.bld.id,side=0,intents={{side=0,item=selected.id}},dialogue=artifact_case and -1 or 9}));file:close()
   capture('trade-transfer-wire')
   file=assert(io.open(out..'/trade-transfer-wire-result.json'));local wire=json.decode(file:read('*a'));file:close();assert(wire.success,json.encode(wire))
   result.dialogue=wire.conversation.dialogue;result.counter_offer=wire.conversation.counter_offer;result.announcement=wire.conversation.announcement;result.wire=wire
@@ -102,13 +124,19 @@ local ok,err=xpcall(function()
   assert(code==0 and json.decode(output).available,output)
  end
  result.after=snapshot()
- assert(result.dialogue==9 and not result.counter_offer and not selected.flags.trader,'Seize did not complete')
+ assert(result.dialogue==(artifact_case and -1 or 9) and not result.counter_offer and not selected.flags.trader,'Seize did not complete')
  assert(trade.mer.flags.whole&0x30==0x30 and trade.mer.mood==0 and trade.mer.time_remaining<=501)
+ if artifact_case then assert(#result.announcement>0,'Artifact Seize produced no announcement');result.artifact_id=artifact.id end
  result.success=true
 end,debug.traceback)
 for _,item in pairs(tracked)do for i=#item.general_refs-1,0,-1 do local ref=item.general_refs[i]
  if ref:getType()==df.general_ref_type.ENTITY_STOLEN then item.general_refs:erase(i);ref:delete()end
 end end
+if artifact then
+ for i=#selected.general_refs-1,0,-1 do if selected.general_refs[i]==artifact_ref then selected.general_refs:erase(i);break end end
+ artifact_ref:delete();selected.flags.artifact=artifact_flag
+ local artifacts=df.global.world.artifacts.all;assert(artifacts[#artifacts-1]==artifact);artifacts:erase(#artifacts-1);artifact:delete()
+end
 -- References of selected goods may have been deleted; locate survivors by item.
 for _,saved in ipairs(owners)do for _,ref in ipairs(saved.item.general_refs)do if ref:getType()==df.general_ref_type.ENTITY_ITEMOWNER then ref.entity_id=saved.id end end end
 trade.civ=civ;trade.mer.entity=entity;trade.mer.flags.whole=flags;trade.mer.mood=mood;trade.mer.time_remaining=time;trade.talkline=line

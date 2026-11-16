@@ -31,7 +31,10 @@ func run() -> void:
 		await click(Vector2(700,190));check(view.header.scrollbar.first==1,"Announcement arrow did not move one line")
 		await announcement_capture(reference_dir+"/depot-trade-announcement-arrow.png","arrow")
 		await click(Vector2(700,82));check(view.header.scrollbar.first==0,"Announcement arrow did not return to the start")
-	await click(Vector2(508,714));check(service.calls[service.next].intent.action==C.ManagementAction.TradeSessionExchange,"Composite Trade button missed")
+	var calls_before: int=service.next
+	await click(Vector2(508,714))
+	if data.actions[1].enabled:check(service.next==calls_before+1 and service.calls.get(service.next,{}).get("intent",{}).get("action")==C.ManagementAction.TradeSessionExchange,"Composite Trade button missed")
+	else:check(service.next==calls_before,"Disabled native Trade action dispatched")
 	model.phase=Goods.Phase.Active;model.ticket=0
 	await click(Vector2(100,166),MOUSE_BUTTON_RIGHT);check(model.phase==Goods.Phase.Closed,"Composite Trade did not close")
 	check(view.goods.position.y==96 and not view.header.scrollbar.visible and view.header.scrollbar.first==0,"Closing retained announcement layout or scrolling")

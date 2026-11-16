@@ -5102,7 +5102,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         std::array<std::string,2> filters{};if(parameters.size()>=5){filters[0]=UTF2DF(parameters[3]);filters[1]=UTF2DF(parameters[4]);}
         std::vector<df3d_production::TradeSelectionIntent> selections;
         if(parameters.size()==6){Json::Value intents;Json::Reader reader;if(parameters[5].size()>131072 || !reader.parse(parameters[5],intents) || !intents.isArray() || intents.size()>4096)return CR_WRONG_USAGE;
-          for(const auto& intent:intents){if(!intent.isObject() || !intent["side"].isInt() || !intent["item"].isInt())return CR_WRONG_USAGE;selections.push_back({intent["side"].asInt(),intent["item"].asInt()});}}
+          for(const auto& intent:intents){if(!intent.isObject() || !intent["side"].isInt())return CR_WRONG_USAGE;
+            df3d_production::TradeSelectionIntent draft;draft.side=intent["side"].asInt();
+            if(intent.isMember("action") && !intent["action"].isString())return CR_WRONG_USAGE;
+            const auto action=intent.get("action","item").asString();
+            if(action=="item"){if(!intent["item"].isInt())return CR_WRONG_USAGE;draft.item=intent["item"].asInt();}
+            else if(action=="mark_all")draft.action=df3d_production::TradeDraftAction::MarkAll;
+            else if(action=="unmark_all")draft.action=df3d_production::TradeDraftAction::UnmarkAll;
+            else if(action=="group" || action=="expand_group") {
+              if(!intent["type"].isInt() || !intent["subtype"].isInt())return CR_WRONG_USAGE;
+              draft.action=action=="group"?df3d_production::TradeDraftAction::Group:df3d_production::TradeDraftAction::ExpandGroup;draft.type=intent["type"].asInt();draft.subtype=intent["subtype"].asInt();
+            }else return CR_WRONG_USAGE;
+            selections.push_back(draft);}}
         const auto projection=df3d_production::tradeProjection(df::building::find(values[0]),size_t(values[1]),filters,selections);
         Json::Value output;output["available"]=bool(projection);output["sides"]=Json::arrayValue;
         if(projection)for(const auto& side:*projection){Json::Value row;row["height"]=side.height;row["items"]=row["flags"]=row["amounts"]=row["groups"]=Json::arrayValue;

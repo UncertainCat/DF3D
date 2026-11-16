@@ -327,6 +327,30 @@ Container selection propagation, group/all button integration, expansion,
 quantity UI availability, totals/prices, appraisal and actual exchange remain
 unqualified. This diagnostic provider does not expose a gameplay screen.
 
+The owned trade draft also accepts group selection, Mark all, Unmark all and
+group expansion intents. Group selection reads DF-derived all_selected and
+can_do_select flags, scans matching non-contained type/subtype rows and calls
+the native item toggle; all-side buttons scan every item irrespective of search.
+Expansion changes owned current-group state and invokes native height projection.
+These adapters follow the pinned inline input range316aeb..317d62; they do not
+call the global input handler or read native menu storage. Diagnostic sequences
+use one fixed query per projection; they are not a retained public draft session
+and do not establish lifecycle or changing-query history handling.
+
+Protected181149 on2026-11-15 adds11 native pointer states: partially selected
+group completion, group clearing, collapse/reopen, both sides' Mark all/Unmark
+all and merchant-side all/none while IRON search hides other groups. Two owned
+projections per state match native item flags/amounts, group flags/expansion/
+visibility and height. The hidden-item case explicitly confirms every merchant
+item becomes selected. Prior15 source/search/row-selection states also pass.
+The collapsed native PNG was inspected as a layout reference. Fixture restores,
+simulation frame stays unchanged and owned DF48504 closes unsaved/source-
+preserved at30FPS, sampled GPU49C. Bridge and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_group_actions_reference`.
+Appraisal is still diagnostically suppressed. Bin-child selection/expansion,
+nonempty subtypes, quantity UI availability, prices/totals, appraisal effects,
+exchange and public viewer integration remain unfinished.
+
 ## Depot goods value transport migration
 
 Management protocol235 adds required appraisal knowledge to depot goods replies

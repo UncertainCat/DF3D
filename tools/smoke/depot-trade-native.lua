@@ -202,6 +202,36 @@ local ok,err=xpcall(function()
      end
      for side=0,1 do for _,flag in ipairs(trade.goodflag[side])do assert(not flag.selected)end end
      selection_intents={}
+     if os.getenv('DF3D_DEPOT_TRADE_GROUP_ACTIONS')=='1' then
+      local group_type=trade.current_type_a_type[0][0];local group_subtype=trade.current_type_a_subtype[0][0]
+      local actions={
+       {{side=0,item=trade.good[0][0].id},468,238},
+       {{side=0,action='group',type=group_type,subtype=group_subtype},468,202},
+       {{side=0,action='group',type=group_type,subtype=group_subtype},468,202},
+       {{side=0,action='expand_group',type=group_type,subtype=group_subtype},100,202},
+       {{side=0,action='expand_group',type=group_type,subtype=group_subtype},100,202},
+       {{side=0,action='mark_all'},310,694},
+       {{side=0,action='unmark_all'},440,694},
+       {{side=1,action='mark_all'},780,694},
+       {{side=1,action='unmark_all'},900,694},
+      }
+      for i,test in ipairs(actions)do
+       selection_intents[#selection_intents+1]=test[1];click(test[2],test[3]);record('group-action-'..i)
+      end
+      for side=0,1 do for _,flag in ipairs(trade.goodflag[side])do assert(not flag.selected)end end
+      assert(trade.current_type_a_expanded[0][0]);selection_intents={}
+      click(100,166);for byte in ('iron'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(byte:byte()))end
+      view:render(dfhack.getTickCount());assert(trade.item_filter[0]~='')
+      selection_intents={{side=0,action='mark_all'}};click(310,694);record('group-action-filter-mark')
+      for _,flag in ipairs(trade.goodflag[0])do assert(flag.selected,'Mark all skipped a filtered item')end
+      selection_intents[#selection_intents+1]={side=0,action='unmark_all'};click(440,694);record('group-action-filter-unmark')
+      -- Native button clicks release search focus; reacquire it before clearing.
+      if not trade.entering_item_filter[0] then click(100,166)end
+      for i=1,4 do gui.simulateInput(view,'STRING_A000')end
+      view:render(dfhack.getTickCount());assert(trade.item_filter[0]=='')
+      if trade.entering_item_filter[0] then click(100,166)end
+      selection_intents={}
+     end
     end
    end
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)

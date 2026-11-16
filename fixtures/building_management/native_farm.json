@@ -63293,6 +63293,515 @@
           "build/stockpile-storage-native-farm-discovery-20261115-180805/depot-trade-selection-5.png": "26f460a5349f1fdf909a07792548a72b46587ffab88cb9eedec3ffdde0978e0e",
           "build/stockpile-storage-native-farm-discovery-20261115-180805/depot-trade-selection-6.png": "fe23e3bfc22d4fd722a4813c127f3c260959c53e8b194fbf1565707bbb28998f"
         }
+      },
+      "depot_trade_group_actions_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-181149",
+        "owned_df_pid": 48504,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Eleven actual native pointer states, twice compared against owned projection. Group partial-to-all/clear, collapse/reopen, both side mark/unmark all and IRON-filtered hidden-item all/none. Prior15 projection states pass. Appraisal suppressed. Not container/subtype/quantity/prices/appraisal/exchange/public viewer acceptance.",
+        "cases": [
+          {
+            "label": "group-action-1",
+            "action": {
+              "item": 992,
+              "side": 0
+            },
+            "filters": [
+              "",
+              ""
+            ],
+            "sides": [
+              {
+                "selected": [
+                  992
+                ],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 24
+              },
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "group-action-2",
+            "action": {
+              "action": "group",
+              "side": 0,
+              "subtype": -1,
+              "type": 4
+            },
+            "filters": [
+              "",
+              ""
+            ],
+            "sides": [
+              {
+                "selected": [
+                  992,
+                  991
+                ],
+                "group_flags": [
+                  1,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 24
+              },
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "group-action-3",
+            "action": {
+              "action": "group",
+              "side": 0,
+              "subtype": -1,
+              "type": 4
+            },
+            "filters": [
+              "",
+              ""
+            ],
+            "sides": [
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 24
+              },
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "group-action-4",
+            "action": {
+              "action": "expand_group",
+              "side": 0,
+              "subtype": -1,
+              "type": 4
+            },
+            "filters": [
+              "",
+              ""
+            ],
+            "sides": [
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  false,
+                  true,
+                  true
+                ],
+                "height": 18
+              },
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "group-action-5",
+            "action": {
+              "action": "expand_group",
+              "side": 0,
+              "subtype": -1,
+              "type": 4
+            },
+            "filters": [
+              "",
+              ""
+            ],
+            "sides": [
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 24
+              },
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "group-action-6",
+            "action": {
+              "action": "mark_all",
+              "side": 0
+            },
+            "filters": [
+              "",
+              ""
+            ],
+            "sides": [
+              {
+                "selected": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ],
+                "group_flags": [
+                  1,
+                  1,
+                  1
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 24
+              },
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "group-action-7",
+            "action": {
+              "action": "unmark_all",
+              "side": 0
+            },
+            "filters": [
+              "",
+              ""
+            ],
+            "sides": [
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 24
+              },
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "group-action-8",
+            "action": {
+              "action": "mark_all",
+              "side": 1
+            },
+            "filters": [
+              "",
+              ""
+            ],
+            "sides": [
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 24
+              },
+              {
+                "selected": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ],
+                "group_flags": [
+                  1,
+                  1,
+                  1
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "group-action-9",
+            "action": {
+              "action": "unmark_all",
+              "side": 1
+            },
+            "filters": [
+              "",
+              ""
+            ],
+            "sides": [
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 24
+              },
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "group-action-filter-mark",
+            "action": {
+              "action": "mark_all",
+              "side": 0
+            },
+            "filters": [
+              "IRON",
+              ""
+            ],
+            "sides": [
+              {
+                "selected": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ],
+                "group_flags": [
+                  0,
+                  1,
+                  0
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 6
+              },
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "group-action-filter-unmark",
+            "action": {
+              "action": "unmark_all",
+              "side": 0
+            },
+            "filters": [
+              "IRON",
+              ""
+            ],
+            "sides": [
+              {
+                "selected": [],
+                "group_flags": [
+                  0,
+                  2,
+                  0
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 6
+              },
+              {
+                "selected": [],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "expanded": [
+                  true,
+                  true,
+                  true
+                ],
+                "height": 21
+              }
+            ]
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-native.json": "54b67240c274de2450a83e8149bc4757b5a3de0adee484562f065886b95b59b5",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/result.json": "efebad84faedde27d25bbcfb4d9c6224f09bc833dd23271edc223b8c3e6ac998",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/capture-inputs.json": "1c95c3e38457ca79cff842e35d9583bdae6fb7b8d47631bfb72c28350e34add9",
+          "tools/smoke/depot-trade-native.lua": "a92050ff835aec9d186422cfdb7e3345597a01cc99a6461a33b497d931ba95f8",
+          "bridge/plugin/trade_projection_native.h": "53c480ec0dd7e82d0f991e4a56b27f56a91b485c4d66954d2420c8db8fab5faa",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-group-action-1.png": "97264507bfec5c1893f1db31792e927a8ecadbe87fe0561b9a14738a7f5c8d52",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-group-action-2.png": "81ba28a5dc8f546107eab71e6b13d37b5137649b8148edb0ba8545783f477c46",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-group-action-3.png": "fe23e3bfc22d4fd722a4813c127f3c260959c53e8b194fbf1565707bbb28998f",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-group-action-4.png": "11c95f092e25e10ba3892781e26c75ca2577fd17337197c24edfc99ded872c53",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-group-action-5.png": "fe23e3bfc22d4fd722a4813c127f3c260959c53e8b194fbf1565707bbb28998f",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-group-action-6.png": "647622b72d90bbdedc99eec6f8f791e8de63423c7536a5d7af5312c0c1dbcbc5",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-group-action-7.png": "fe23e3bfc22d4fd722a4813c127f3c260959c53e8b194fbf1565707bbb28998f",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-group-action-8.png": "87fd51ea57a743aba993ed6823a0088f5e873f96421b365d8b960d4b629f6442",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-group-action-9.png": "fe23e3bfc22d4fd722a4813c127f3c260959c53e8b194fbf1565707bbb28998f",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-group-action-filter-mark.png": "e3ade8abac28f8565ef85969b7403e19d927073f556109a3c591cbadca99c772",
+          "build/stockpile-storage-native-farm-discovery-20261115-181149/depot-trade-group-action-filter-unmark.png": "6cc7e9cbed106a01da7b683837a7d6ae1e68526efcd0a5b940a4b71dd72d0227"
+        }
       }
     },
     "pending_construction_reference": {

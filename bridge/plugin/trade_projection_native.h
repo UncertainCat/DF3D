@@ -5,7 +5,8 @@
 
 namespace df3d_production {
 struct TradeProjectedGroup {int32_t type=-1,subtype=-1;bool expanded=false,on=false;uint32_t flags=0;};
-struct TradeSelectionIntent {int32_t side=-1,item=-1;};
+enum class TradeDraftAction {Item,Group,MarkAll,UnmarkAll,ExpandGroup};
+struct TradeSelectionIntent {int32_t side=-1,item=-1;TradeDraftAction action=TradeDraftAction::Item;int32_t type=-1,subtype=-1;};
 struct TradeProjectedSide {
     std::vector<int32_t> items,amounts;
     std::vector<uint8_t> flags;
@@ -21,7 +22,8 @@ inline std::optional<std::array<TradeProjectedSide,2>> tradeProjection(
     df::building* building,size_t caravanIndex,const std::array<std::string,2>& filters={},
     const std::vector<TradeSelectionIntent>& selections={}) {
     if(filters[0].size()>512 || filters[1].size()>512 || selections.size()>4096)return {};
-    for(const auto& intent:selections)if(intent.side<0 || intent.side>1 || intent.item<0)return {};
+    for(const auto& intent:selections)if(intent.side<0 || intent.side>1 ||
+        (intent.action==TradeDraftAction::Item && intent.item<0))return {};
     const auto sources=tradeGoodsSources(building,caravanIndex);if(!sources)return {};
     static const bool ready=[] {
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -32,6 +34,7 @@ inline std::optional<std::array<TradeProjectedSide,2>> tradeProjection(
             {0x37d750,0x263,UINT64_C(0x7c5835146ecefb8c)},
             {0x37acc0,0x1ea,UINT64_C(0x02b0383285e5f9ff)},
             {0x36a840,0x17b,UINT64_C(0xe74fe58ae7b5234c)},
+            {0x316aeb,0x1277,UINT64_C(0xfb5f763c9e669383)},
             {0xc65450,0xaba,UINT64_C(0x47fa672b7bbcd332)},
             {0xa82c10,0x56ec,UINT64_C(0x66347214dfd39a0b)},
             {0x52cee0,0x19e,UINT64_C(0xc25c2d8a6eb9fcac)},
@@ -77,16 +80,35 @@ inline std::optional<std::array<TradeProjectedSide,2>> tradeProjection(
             }
         }
         owned.item_filter[side]=filters[side];
+        using Project=void(*)(df::trade_interfacest*,int32_t);
+        const auto refresh=[&]{reinterpret_cast<Project>(base+0x37c780)(&owned,int32_t(side));};
+        using Toggle=void(*)(df::trade_interfacest*,int32_t,int32_t,int32_t,bool);
+        const auto toggle=[&](size_t i){reinterpret_cast<Toggle>(base+0x36a840)(&owned,int32_t(side),int32_t(i),0,false);};
+        refresh();
         // Native row clicks call this routine with amount0 and final byte0.
         // It changes owned selection/amount/counteroffer storage only.
         for(const auto& intent:selections)if(intent.side==int32_t(side)) {
-            auto found=std::find_if(goods.begin(),goods.end(),[&](const auto* item){return item->id==intent.item;});
-            if(found==goods.end())return {};
-            using Toggle=void(*)(df::trade_interfacest*,int32_t,int32_t,int32_t,bool);
-            reinterpret_cast<Toggle>(base+0x36a840)(&owned,int32_t(side),int32_t(found-goods.begin()),0,false);
+            if(intent.action==TradeDraftAction::Item) {
+                auto found=std::find_if(goods.begin(),goods.end(),[&](const auto* item){return item->id==intent.item;});
+                if(found==goods.end())return {};
+                toggle(size_t(found-goods.begin()));
+            } else if(intent.action==TradeDraftAction::MarkAll || intent.action==TradeDraftAction::UnmarkAll) {
+                // Native buttons scan the whole side, including hidden groups.
+                const bool selected=intent.action==TradeDraftAction::MarkAll;
+                for(size_t i=0;i<goods.size();++i)if(bool(flags[i].bits.selected)!=selected)toggle(i);
+            } else if(intent.action==TradeDraftAction::Group || intent.action==TradeDraftAction::ExpandGroup) {
+                size_t group=0;while(group<types.size() && (types[group]!=intent.type || subtypes[group]!=intent.subtype))++group;
+                if(group==types.size())return {};
+                if(intent.action==TradeDraftAction::ExpandGroup)owned.current_type_a_expanded[side][group]=!owned.current_type_a_expanded[side][group];
+                else {
+                    const auto state=owned.current_type_a_flag[side][group];
+                    for(size_t i=0;i<goods.size();++i)if(!flags[i].bits.contained &&
+                        int32_t(goods[i]->getType())==intent.type && int32_t(goods[i]->getSubtype())==intent.subtype &&
+                        (state.bits.all_selected || (state.bits.can_do_select && !flags[i].bits.selected)))toggle(i);
+                }
+            } else return {};
+            refresh();
         }
-        using Project=void(*)(df::trade_interfacest*,int32_t);
-        reinterpret_cast<Project>(base+0x37c780)(&owned,int32_t(side));
         reinterpret_cast<Project>(base+0x37acc0)(&owned,int32_t(side));
         auto& projected=result[side];projected.height=owned.i_height[side];projected.amounts=amounts;
         for(size_t i=0;i<goods.size();++i){projected.items.push_back(goods[i]->id);projected.flags.push_back(flags[i].whole);}

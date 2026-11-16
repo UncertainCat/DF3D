@@ -341,11 +341,36 @@ Evidence: `completed_sheet_discovery_reference.depot_trade_action_buttons_refere
 The fortress entity used by older synthetic caravan fixtures is distinct from
 the parent civilization in plotinfo.civ_id. Those fixtures did not qualify the
 same-civilization king restriction; the local case above uses that actual
-parent entity. Action facts still need public summary transport and main-screen
-integration. Minimum dimensions and absent-civilization rendering remain
+parent entity. Action facts use the summary transport below; main-screen
+routing remains unfinished. Minimum dimensions and absent-civilization rendering remain
 unqualified. Trade stays hidden.
 
 ### Action transport
+
+Protocol247 requires exactly three action facts on successful TradeSessionRead:
+ordered kinds0/1/2, bounded native captions and enablement. Other receipts must
+omit them. The owner reconstructs an independent context at the validated
+revision to read these facts; the controller publishes them atomically with
+header/footer/conversation and both goods pages. Old recordings cannot
+synthesize these facts. Both peers must be rebuilt together.
+
+The staged trade_view combines the native chooser, header, goods/counteroffer,
+summary and action row. Protected075110 (Gift DF51332) and075211 (Seize DF52532)
+on2026-11-16 exercise actual composite pointer clicks through protocol247,
+pending exclusion, refreshed facts, stale requests, close and closed-request
+rejection. Tracked effects agree with the earlier native references, retaining
+only the documented Seize item992 weight cache difference. Both runs are
+source-preserved/closed unsaved, native30FPS and headless Godot with clean logs.
+Bridge/client builds,19 core checks and the headless goods controller pass.
+
+The complete944x708 panel in075110 matches native pixel-for-pixel at1200x800,
+including assembled frame/separators, header, goods, footer and action row.
+Rendered Trade pointer dispatch and right-click closure pass. Render checks
+run serially at30FPS and exit; the post-run GPU sample is60C. Evidence:
+`completed_sheet_discovery_reference.depot_trade_composite_reference`.
+This qualifies one full-panel visual state and the two transfer click workflows,
+not main furniture-panel routing, chooser transitions, the composite counteroffer
+workflow, minimum sizes or real announcements. Trade remains hidden.
 
 Protocol246 adds TradeSessionGift and TradeSessionSeize with the same
 session/expected-revision-only request and action receipt as Trade. The bridge
@@ -386,7 +411,7 @@ must not be replayed. Post-effect serialization failure retains uncertainty.
 Successful TradeSessionRead now requires a bounded pointer-free conversation:
 dialogue, independent counteroffer flag, ordered requested IDs and announcement
 lines. Open/exchange/close receipts cannot carry that read payload. Both peers
-use Local\df3d_management_v246; rebuild together. Old recordings must not
+use Local\df3d_management_v247; rebuild together. Old recordings must not
 synthesize conversation or exchange receipts. Existing header/footer requirements
 remain in force.
 

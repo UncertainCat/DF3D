@@ -2512,7 +2512,8 @@ table TradeSessionEntry { entity_id:int32 = -1; fortress_trader:int32 = -1; merc
 table TradeFooter { merchant_value:string; fortress_value:string; profit:string; profit_color:int8; capacity:string; capacity_color:int8; }
 table TradeHeader { speaker:int32 = -1; columns:uint16; name:string (required); lines:[string] (required); mood:string (required); mood_color:int8 = -1; status:[string] (required); status_color:int8 = -1; name_color:AreaNameColor; appearance:SelectionAppearance; }
 table TradeConversation { dialogue:int16; counter_offer:bool; requested_items:[int32] (required); announcement:[string] (required); }
-table TradeSessionState { outcome:TradeSessionOutcome = Rejected; session:uint64; revision:uint64; entry:TradeSessionEntry; footer:TradeFooter; header:TradeHeader; conversation:TradeConversation; }
+table TradeActionButton { kind:uint8; caption:string (required); enabled:bool; }
+table TradeSessionState { outcome:TradeSessionOutcome = Rejected; session:uint64; revision:uint64; entry:TradeSessionEntry; footer:TradeFooter; header:TradeHeader; conversation:TradeConversation; actions:[TradeActionButton]; }
 table TradeCatalogRequest { depot_id:int32 = -1; }
 table TradeCatalogChoice { token:uint64; entity_id:int32 = -1; race:string (required); name:string (required); }
 table TradeCatalogState { depot_id:int32 = -1; title:string (required); from_text:string (required); choices:[TradeCatalogChoice] (required); }
@@ -2637,7 +2638,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 246;
+  schema_version:uint32 = 247;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2715,7 +2716,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 246;
+  schema_version:uint32 = 247;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

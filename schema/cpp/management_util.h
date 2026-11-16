@@ -192,8 +192,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 246;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v246";
+inline constexpr uint32_t kManagementVersion = 247;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v247";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1949,11 +1949,15 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if(((s.action()<ManagementAction::TradeSessionOpen || s.action()>ManagementAction::TradeSessionClose) && (s.action()!=ManagementAction::TradeSessionExchange && s.action()!=ManagementAction::TradeSessionGift && s.action()!=ManagementAction::TradeSessionSeize) && s.action()!=ManagementAction::TradeSessionDismiss) || s.status()!=ManagementStatus::Ok || r->outcome()>TradeSessionOutcome::Unknown || r->session()>INT64_MAX || r->revision()>INT64_MAX)return "invalid trade session result";
     const auto outcome=r->outcome();
     if(outcome==TradeSessionOutcome::Available){
-      if(s.action()==ManagementAction::TradeSessionClose || !r->session() || !r->revision() || (bool(r->entry())!=(s.action()==ManagementAction::TradeSessionOpen)) || (bool(r->footer())!=(s.action()==ManagementAction::TradeSessionRead)) || (bool(r->header())!=(s.action()==ManagementAction::TradeSessionRead)) || (bool(r->conversation())!=(s.action()==ManagementAction::TradeSessionRead)))return "invalid available trade session";
+      if(s.action()==ManagementAction::TradeSessionClose || !r->session() || !r->revision() || (bool(r->entry())!=(s.action()==ManagementAction::TradeSessionOpen)) || (bool(r->footer())!=(s.action()==ManagementAction::TradeSessionRead)) || (bool(r->header())!=(s.action()==ManagementAction::TradeSessionRead)) || (bool(r->conversation())!=(s.action()==ManagementAction::TradeSessionRead)) || (bool(r->actions())!=(s.action()==ManagementAction::TradeSessionRead)))return "invalid available trade session";
     }else{
-      if(r->entry() || r->footer() || r->header() || r->conversation() || r->revision() || (outcome==TradeSessionOutcome::Closed ? (!r->session() || s.action()!=ManagementAction::TradeSessionClose):r->session()!=0))return "invalid terminal trade session";
+      if(r->entry() || r->footer() || r->header() || r->conversation() || r->actions() || r->revision() || (outcome==TradeSessionOutcome::Closed ? (!r->session() || s.action()!=ManagementAction::TradeSessionClose):r->session()!=0))return "invalid terminal trade session";
       if(outcome==TradeSessionOutcome::Unknown && s.action()!=ManagementAction::TradeSessionOpen && (s.action()!=ManagementAction::TradeSessionExchange && s.action()!=ManagementAction::TradeSessionGift && s.action()!=ManagementAction::TradeSessionSeize) && s.action()!=ManagementAction::TradeSessionDismiss)return "unexpected trade open uncertainty";
       if(outcome==TradeSessionOutcome::Retired && s.action()!=ManagementAction::TradeSessionRead && (s.action()!=ManagementAction::TradeSessionExchange && s.action()!=ManagementAction::TradeSessionGift && s.action()!=ManagementAction::TradeSessionSeize) && s.action()!=ManagementAction::TradeSessionDismiss)return "unexpected retired trade session";
+    }
+    if(const auto* actions=r->actions()){
+      if(actions->size()!=3)return "invalid trade actions";
+      for(uint32_t i=0;i<3;++i){const auto* a=actions->Get(i);if(!a || a->kind()!=i || !a->caption() || !a->caption()->size() || a->caption()->size()>64)return "invalid trade action";}
     }
     if(const auto* c=r->conversation()){
       if(c->dialogue() < -1 || c->dialogue()>28 || !c->requested_items() || c->requested_items()->size()>1048576 || !c->announcement() || c->announcement()->size()>2049)return "invalid trade conversation";

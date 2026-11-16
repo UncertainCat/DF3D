@@ -368,6 +368,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
           for(const auto& line:h.lines)lines.push_back(String::utf8(line.c_str()));for(const auto& line:h.status)status.push_back(String::utf8(line.c_str()));header["lines"]=lines;header["status"]=status;
           if(h.nameColor){const auto& c=*h.nameColor;Dictionary color;Array primary,alternate;for(auto v:c.color)primary.push_back(v);for(auto v:c.alternate)alternate.push_back(v);color["color"]=primary;color["alternate"]=alternate;color["effect"]=c.effect;header["name_color"]=color;}
           if(h.appearance)header["appearance"]=management::itemRecipeDictionary(*h.appearance);value["header"]=header;}
+        if(!v.actions.empty()){Array actions;for(const auto& a:v.actions){Dictionary row;row["kind"]=a.kind;row["caption"]=String::utf8(a.caption.c_str());row["enabled"]=a.enabled;actions.push_back(row);}value["actions"]=actions;}
         if(v.conversation){const auto& c=*v.conversation;Dictionary conversation;conversation["dialogue"]=c.dialogue;conversation["counter_offer"]=c.counterOffer;Array ids,lines;for(auto id:c.requestedItems)ids.push_back(id);for(const auto& line:c.announcement)lines.push_back(String::utf8(line.c_str()));conversation["requested_items"]=ids;conversation["announcement"]=lines;value["conversation"]=conversation;}
         result["trade_session"]=value;if(v.outcome==wm::TradeSessionOutcome::Unknown)result["outcome"]="unknown";
     }

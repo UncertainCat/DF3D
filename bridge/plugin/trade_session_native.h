@@ -62,6 +62,7 @@ struct TradeSessionSummary {
     std::vector<std::string> dialogueLines;
     uint16_t columns=0;
     TradeConversation conversation;
+    std::optional<std::array<TradeActionButton,3>> actions;
 };
 class TradeSelectionSession {
     struct Binding {
@@ -101,6 +102,10 @@ public:
         auto values=tradeValueTotals(building,current->caravan,read.draft->sides);
         auto capacity=tradeCapacity(building,current->caravan,read.draft->sides);
         if(!entry || !values || !capacity){result.status=TradeSessionStatus::Rejected;return result;}
+        TradeNegotiationNative context(building,current->caravan,*read.draft);
+        if(!context || (current->conversation && !context.restore({*read.draft,*current->conversation}))){result.status=TradeSessionStatus::Rejected;return result;}
+        result.actions=context.actionButtons();
+        if(!result.actions){result.status=TradeSessionStatus::Rejected;return result;}
         if(current->conversation)entry->dialogue=current->conversation->dialogue;
         auto header=tradeHeader(building,current->caravan,entry->dialogue);
         const auto lines=header?tradeDialogueLines(header->dialogue,columns):std::nullopt;

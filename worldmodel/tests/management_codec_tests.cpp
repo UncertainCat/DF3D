@@ -9,13 +9,18 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+static auto tradeActions(flatbuffers::FlatBufferBuilder& b){
+  std::vector<flatbuffers::Offset<wire::TradeActionButton>> rows;
+  for(uint8_t i=0;i<3;++i)rows.push_back(wire::CreateTradeActionButton(b,i,b.CreateString("Synthetic"),true));
+  return b.CreateVector(rows);
+}
 TEST_CASE("Trade header reads preserve native lines and reject malformed summaries") {
   for(int fault=0;fault<7;++fault){
     flatbuffers::FlatBufferBuilder b;auto empty=b.CreateString("");auto caption=b.CreateString("Synthetic caption");
     std::vector<flatbuffers::Offset<flatbuffers::String>> lines{caption},none;
     auto footer=wire::CreateTradeFooter(b,caption,caption,caption,6,caption,7);
     auto header=wire::CreateTradeHeader(b,fault==4?12:-1,fault==2?0:fault==3?513:102,empty,b.CreateVector(lines),empty,fault==5?10:-1,b.CreateVector(none),fault==6?7:-1);
-    auto result=wire::CreateTradeSessionState(b,wire::TradeSessionOutcome::Available,91,3,0,footer,fault==1?0:header,wire::CreateTradeConversation(b,0,false,b.CreateVector(std::vector<int32_t>{}),b.CreateVector(none)));
+    auto result=wire::CreateTradeSessionState(b,wire::TradeSessionOutcome::Available,91,3,0,footer,fault==1?0:header,wire::CreateTradeConversation(b,0,false,b.CreateVector(std::vector<int32_t>{}),b.CreateVector(none)),tradeActions(b));
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);
     state.add_action(wire::ManagementAction::TradeSessionRead);state.add_trade_session(result);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
@@ -36,7 +41,7 @@ TEST_CASE("Trade session reads require bounded native footer captions") {
     auto oversized=b.CreateString(std::string(2049,'x'));
     auto footer=wire::CreateTradeFooter(b,fault==1?0:fault==2?oversized:text,text,text,fault==3?7:6,text,fault==4?6:7);
     auto empty=b.CreateString("");std::vector<flatbuffers::Offset<flatbuffers::String>> lines;auto header=wire::CreateTradeHeader(b,-1,102,empty,b.CreateVector(lines),empty,-1,b.CreateVector(lines),-1);
-    auto result=wire::CreateTradeSessionState(b,fault==5?wire::TradeSessionOutcome::Rejected:wire::TradeSessionOutcome::Available,91,3,0,fault==6?0:footer,header,wire::CreateTradeConversation(b,0,false,b.CreateVector(std::vector<int32_t>{}),b.CreateVector(lines)));
+    auto result=wire::CreateTradeSessionState(b,fault==5?wire::TradeSessionOutcome::Rejected:wire::TradeSessionOutcome::Available,91,3,0,fault==6?0:footer,header,wire::CreateTradeConversation(b,0,false,b.CreateVector(std::vector<int32_t>{}),b.CreateVector(lines)),tradeActions(b));
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);
     state.add_action(fault==7?wire::ManagementAction::TradeSessionClose:wire::ManagementAction::TradeSessionRead);state.add_trade_session(result);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
@@ -6069,7 +6074,7 @@ TEST_CASE("Trade exchange receipts carry authority only and conversation reads a
     auto footer=wire::CreateTradeFooter(b,text,text,text,6,text,7);
     std::vector<int32_t> ids=fault==1?std::vector<int32_t>{-1}:fault==2?std::vector<int32_t>{4,4}:std::vector<int32_t>{4};
     auto conversation=wire::CreateTradeConversation(b,fault==3?29:24,true,b.CreateVector(ids),b.CreateVector(lines));
-    auto result=wire::CreateTradeSessionState(b,wire::TradeSessionOutcome::Available,91,3,0,footer,header,fault==4?0:conversation);
+    auto result=wire::CreateTradeSessionState(b,wire::TradeSessionOutcome::Available,91,3,0,footer,header,fault==4?0:conversation,tradeActions(b));
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);state.add_action(wire::ManagementAction::TradeSessionRead);state.add_trade_session(result);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
     if(!fault){auto decoded=codec::decodeState(value);REQUIRE(decoded.tradeSession->conversation);CHECK(decoded.tradeSession->conversation->requestedItems==ids);CHECK(decoded.tradeSession->conversation->counterOffer);}

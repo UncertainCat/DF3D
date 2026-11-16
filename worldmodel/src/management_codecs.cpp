@@ -216,6 +216,7 @@ ManagementState decodeState(const m::ManagementState* s) {
   }
   if(const auto* r=s->trade_session()) {
     next.tradeSession.emplace();auto& out=*next.tradeSession;out.outcome=TradeSessionOutcome(r->outcome());out.session=r->session();out.revision=r->revision();
+    if(const auto* actions=r->actions())for(const auto* a:*actions)out.actions.push_back({a->kind(),a->caption()->str(),a->enabled()});
     if(const auto* c=r->conversation()){out.conversation.emplace();auto& v=*out.conversation;v.dialogue=c->dialogue();v.counterOffer=c->counter_offer();v.requestedItems.assign(c->requested_items()->begin(),c->requested_items()->end());for(const auto* line:*c->announcement())v.announcement.push_back(line->str());}
     if(const auto* h=r->header()){out.header.emplace();auto& v=*out.header;v.speaker=h->speaker();v.columns=h->columns();v.name=h->name()->str();v.mood=h->mood()->str();v.moodColor=h->mood_color();v.statusColor=h->status_color();
       for(const auto* line:*h->lines())v.lines.push_back(line->str());for(const auto* line:*h->status())v.status.push_back(line->str());

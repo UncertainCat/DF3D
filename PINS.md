@@ -22,10 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Current management protocol246 adds revision-bound TradeSessionGift and
+Current management protocol247 requires the three native action captions and
+enablement facts on successful TradeSessionRead replies. Other receipts cannot
+carry these facts. Both peers must use247; old summaries cannot synthesize them.
+Protocol246 adds revision-bound TradeSessionGift and
 TradeSessionSeize. Both accept only the owned session identity and expected
 revision; outcome receipts never authorize automatic replay. Both peers must
-use246; old recordings cannot synthesize these actions or their outcomes.
+use the current protocol; old recordings cannot synthesize these actions or their outcomes.
 Protocol245 adds revision-bound TradeSessionDismiss and
 read-only counteroffer pages (TradeDraftRead side2), carrying native headings
 and Okay text. Side2 never accepts selection edits. Old recordings cannot

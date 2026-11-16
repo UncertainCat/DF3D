@@ -24,7 +24,22 @@ func run() -> void:
 	var first_revision: int=model.revision
 	var action: int=C.ManagementAction.TradeSessionGift if int(expected.side)==1 else C.ManagementAction.TradeSessionSeize
 	var method: String="offer_gift" if int(expected.side)==1 else "seize"
-	model.call(method);var pending: int=model.ticket;model.call(method)
+	var view=preload("res://scripts/trade_view.gd").new();root.add_child(view)
+	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Trade UI assets missing"):quit(1);return
+	view.configure_trade(world,model);view.layout(Vector2(1200,800))
+	for i in 3:await process_frame
+	deadline=Time.get_ticks_msec()+10000
+	while model.appearance_pending() and Time.get_ticks_msec()<deadline:
+		world.poll();service.poll(0.01);await create_timer(0.01).timeout
+	check(not model.appearance_pending(),"Trade artwork did not finish")
+	var before_view: Dictionary={"header":model.header.duplicate(true),"footer":model.footer.duplicate(true),"entry":model.entry.duplicate(true),"actions":model.actions.duplicate(true),"pages":model.pages.duplicate(true),"appearances":model.appearances.duplicate(true)}
+	check(model.actions.size()==3 and view.actions.actions==model.actions,"Action summary missing from composite")
+	var button_index: int=2 if int(expected.side)==1 else 0
+	check(model.actions[button_index].enabled,"Native transfer action disabled")
+	var point: Vector2=view.frame.position+view.actions.position+view.actions.buttons[button_index].get_center()
+	for pressed in [true,false]:
+		var event:=InputEventMouseButton.new();event.position=point;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed;root.push_input(event,true)
+	var pending: int=model.ticket;model.call(method)
 	check(model.ticket==pending and model.phase==Model.Phase.Exchanging,"Duplicate transfer submitted")
 	if not await poll_controller(service,model,Model.Phase.Active):quit(1);return
 	var final: Dictionary=model.conversation.duplicate(true)
@@ -33,7 +48,7 @@ func run() -> void:
 	model.refresh_session()
 	if not await poll_controller(service,model,Model.Phase.Active):quit(1);return
 	check(model.conversation==final,"Refresh lost transfer conversation")
-	var result: Dictionary={"conversation":final,"pages":model.pages.duplicate(true),"revision":model.revision}
+	var result: Dictionary={"before_view":before_view,"conversation":final,"pages":model.pages.duplicate(true),"revision":model.revision}
 	var old_session: int=model.session;var old_revision: int=model.revision
 	var closed: Array=[]
 	service.completed.connect(func(_ticket,response):
@@ -44,6 +59,7 @@ func run() -> void:
 	check(closed.size()==1,"Trade transfer session did not close")
 	await session_request({"action":action,"session":old_session,"expected_revision":old_revision},C.TradeSessionOutcome.Rejected)
 	result.success=not failed
+	view.queue_free();await process_frame
 	model.dispose();service.queue_free()
 	var file=FileAccess.open(directory+"/trade-transfer-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify(result));file.close()
 	world.queue_free();await process_frame

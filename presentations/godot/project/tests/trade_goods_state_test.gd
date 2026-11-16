@@ -11,14 +11,14 @@ func draft_reply(service,state,page: Dictionary={},revision: int=-1,extra: Dicti
 	var result: Dictionary={"status":C.ManagementStatus.Ok,"action":call.intent.action,"trade_draft":value};result.merge(extra,true)
 	call.observer.call(state.ticket,result,call.intent)
 	if finish_summary and state.ticket>0 and service.calls[state.ticket].intent.action==C.ManagementAction.TradeSessionRead:
-		session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":state.revision,"footer":footer_value(),"header":header_value(),"conversation":conversation_value()})
+		session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":state.revision,"footer":footer_value(),"header":header_value(),"actions":actions_value(),"conversation":conversation_value()})
 func open_goods(service,state) -> void:
 	state.open(7);var single:=snapshot();single.choices.resize(1);service.reply(state.ticket,single);session_reply(service,state.ticket,session_value())
 	check(state.phase==Goods.Phase.GoodsReading,"Open did not request goods")
 	draft_reply(service,state,page_value(0));check(state.pages==[{},{}],"Half-loaded goods became visible")
 	draft_reply(service,state,page_value(1),-1,{},false)
 	check(state.pages==[{},{}] and not state.goods_ready(),"Goods appeared before their footer")
-	session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":state.revision,"footer":footer_value(),"header":header_value(),"conversation":conversation_value()})
+	session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":state.revision,"footer":footer_value(),"header":header_value(),"actions":actions_value(),"conversation":conversation_value()})
 	check(state.goods_ready() and state.footer==footer_value() and state.header==header_value(),"Goods and footer did not become ready together")
 func run() -> void:
 	var service=Service.new();root.add_child(service)
@@ -59,7 +59,7 @@ func run() -> void:
 	session_reply(service,pending,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":2})
 	draft_reply(service,state,page_value(0));draft_reply(service,state,page_value(1),-1,{},false)
 	var counter:=conversation_value();counter.counter_offer=true;counter.dialogue=24;counter.requested_items=[992]
-	session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":2,"footer":footer_value(),"header":header_value(),"conversation":counter})
+	session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":2,"footer":footer_value(),"header":header_value(),"actions":actions_value(),"conversation":counter})
 	check(not state.goods_ready() and state.conversation!=counter,"Counteroffer summary published before its page")
 	var counter_page:=page_value(2);counter_page.rows[0].id=992;counter_page.rows[0].expanded=false
 	counter_page.heading=["Synthetic heading","Synthetic second line"];counter_page.dismiss="Synthetic Okay"

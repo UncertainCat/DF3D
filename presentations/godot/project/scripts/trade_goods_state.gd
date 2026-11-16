@@ -99,7 +99,7 @@ func _read_summary() -> void:
 		if owner!=generation or received!=ticket:return
 		ticket=0
 		var value: Variant=result.get("trade_session")
-		if not _receipt(result,value,intent.action,revision) or not _valid_footer(value.get("footer")) or not _valid_header(value.get("header"),header_columns) or not _valid_conversation(value.get("conversation")):
+		if not _receipt(result,value,intent.action,revision) or not _valid_footer(value.get("footer")) or not _valid_header(value.get("header"),header_columns) or not _valid_conversation(value.get("conversation")) or not _valid_actions(value.get("actions")):
 			_fail_goods(result);return
 		if value.conversation.requested_items.is_empty():_publish_goods(value,{})
 		else:_read_counter(value.duplicate(true)))
@@ -117,7 +117,7 @@ func _read_counter(summary: Dictionary) -> void:
 		_publish_goods(summary,value.page))
 	if ticket==0:phase=Phase.Unavailable;changed.emit()
 func _publish_goods(summary: Dictionary,counter: Dictionary) -> void:
-	footer=summary.footer.duplicate(true);header=summary.header.duplicate(true);conversation=summary.conversation.duplicate(true)
+	footer=summary.footer.duplicate(true);header=summary.header.duplicate(true);conversation=summary.conversation.duplicate(true);actions=summary.actions.duplicate(true)
 	counter_page=counter.duplicate(true);pages=_pending_pages;_pending_pages=[{},{}]
 	if counter_page.is_empty():counter_offset=0
 	phase=Phase.Active;changed.emit();_drain_filter()

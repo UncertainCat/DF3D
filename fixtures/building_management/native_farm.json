@@ -101876,6 +101876,107 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_composite_reference": {
+        "supported_df": "53.16 Steam24557528",
+        "protocol": 247,
+        "runs": [
+          {
+            "action": "gift",
+            "run": "build/stockpile-storage-native-farm-discovery-20261116-075110",
+            "df_pid": 51332,
+            "source_preserved": true,
+            "closed_unsaved": true,
+            "fps_cap": 30,
+            "headless_composite_pointer": true,
+            "before_actions": [
+              {
+                "caption": "Seize",
+                "enabled": true,
+                "kind": 0
+              },
+              {
+                "caption": "Trade",
+                "enabled": true,
+                "kind": 1
+              },
+              {
+                "caption": "Offer as gift",
+                "enabled": true,
+                "kind": 2
+              }
+            ],
+            "final_conversation": {
+              "announcement": [],
+              "counter_offer": false,
+              "dialogue": 8,
+              "requested_items": []
+            },
+            "revision": 3,
+            "cache_difference": null
+          },
+          {
+            "action": "seize",
+            "run": "build/stockpile-storage-native-farm-discovery-20261116-075211",
+            "df_pid": 52532,
+            "source_preserved": true,
+            "closed_unsaved": true,
+            "fps_cap": 30,
+            "headless_composite_pointer": true,
+            "before_actions": [
+              {
+                "caption": "Seize",
+                "enabled": true,
+                "kind": 0
+              },
+              {
+                "caption": "Trade",
+                "enabled": true,
+                "kind": 1
+              },
+              {
+                "caption": "Offer as gift",
+                "enabled": true,
+                "kind": 2
+              }
+            ],
+            "final_conversation": {
+              "announcement": [],
+              "counter_offer": false,
+              "dialogue": 9,
+              "requested_items": []
+            },
+            "revision": 3,
+            "cache_difference": {
+              "item": 992,
+              "native_flags": 524288,
+              "viewer_flags": 537395200,
+              "field": "weight_computed"
+            }
+          }
+        ],
+        "core_checks_passed": 19,
+        "headless_goods_state": "clean pass",
+        "rendered_composite": {
+          "run": "build/stockpile-storage-native-farm-discovery-20261116-075110",
+          "native": "trade-transfer-wire.png",
+          "viewer": "trade-composite-view.png",
+          "rectangle": [
+            32,
+            52,
+            944,
+            708
+          ],
+          "pixel_exact": true,
+          "trade_pointer_and_right_click_close": true,
+          "fps_cap": 30,
+          "post_gpu_sample_celsius": 60
+        },
+        "limits": [
+          "Main furniture-panel route not connected",
+          "Only one complete-panel visual state at1200x800",
+          "Counteroffer composite, chooser transitions, narrow layouts and real announcements remain unfinished"
+        ]
+      },
       "depot_trade_action_buttons_reference": {
         "supported_df": "53.16 Steam24557528",
         "native_run": "build/stockpile-storage-native-farm-discovery-20261116-074104",

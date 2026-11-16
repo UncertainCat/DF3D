@@ -21,6 +21,7 @@ inline bool tradeHeaderNativeReady() {
             {0x3863c1,0x18a,UINT64_C(0xc9ad6b202b54f6a2)},
             {0x38a407,0x105,UINT64_C(0x6a72ff9558af16f2)},
             {0x133e7a0,0x32d,UINT64_C(0xb3c6cbdbc8f6dade)},
+            {0x8e7310,0x121,UINT64_C(0x672cfcd6c9373787)},
             {0x15f71e4,5,UINT64_C(0xf302b01c91704c3b)},
             {0x162ab40,8,UINT64_C(0x45e00f82a09b94ba)},
             {0x162ab20,0x1a,UINT64_C(0x5b53134d8a127581)},
@@ -38,6 +39,22 @@ inline bool tradeHeaderNativeReady() {
         for(const auto& pin:pins){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<pin.length;++i){h^=base[pin.rva+i];h*=UINT64_C(1099511628211);}if(h!=pin.hash)return false;}
         return true;
     }();return ready;
+}
+// Native3861cc supplies the available dialogue width to8e7310. Layout width
+// is owned by the caller; no gps/window/menu state is an input here. CP437
+// bytes remain intact until transport converts each resulting line to UTF-8.
+inline std::optional<std::vector<std::string>> tradeDialogueLines(std::string dialogue,int32_t columns) {
+    if(!tradeHeaderNativeReady() || columns<1 || columns>512 || dialogue.size()>2048)return {};
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    df::curses_text_boxst box;
+    struct Cleanup {df::curses_text_boxst& box;const uint8_t* base;
+        ~Cleanup(){reinterpret_cast<void(*)(df::curses_text_boxst*)>(base+0xbb9b0)(&box);}
+    } cleanup{box,base};
+    reinterpret_cast<void(*)(df::curses_text_boxst*,std::string*,int32_t)>(base+0x8e7310)(&box,&dialogue,columns);
+    if(box.text.size()>2049)return {};
+    std::vector<std::string> result;result.reserve(box.text.size());
+    for(const auto* line:box.text){if(!line || line->size()>2048)return {};result.push_back(*line);}
+    return result;
 }
 // Header semantic text only. Portrait selection and wrapping belong to their
 // independently qualified providers; never expose native cached textures.

@@ -21,7 +21,17 @@ local function check(label,line)
  local output,code=dfhack.run_command_silent('df3d','trade-dialogue-probe',tostring(building.id),'0',tostring(line));assert(code==0,output)
  local actual=json.decode(output);assert(actual.available,output)
  assert(normalized(actual.dialogue)==expected,label..': '..actual.dialogue..' != '..expected)
- result.cases[#result.cases+1]={label=label,line=line,dialogue=actual.dialogue,native=expected}
+ local wrapped
+ if os.getenv('DF3D_DEPOT_TRADE_WRAP')=='1' then
+  local body,status=dfhack.run_command_silent('df3d','trade-header-probe',tostring(building.id),'0',tostring(line),'102')
+  assert(status==0,body);local header=json.decode(body);assert(header.available and header.lines,body);wrapped=header.lines
+  for i,text in ipairs(wrapped)do
+   local chars={};for x=17,118 do local t=dfhack.screen.readTile(x,6+i);chars[#chars+1]=t.ch>=32 and t.ch<=255 and string.char(t.ch)or' 'end
+   local actual_bytes=dfhack.utf2df(text);assert(#actual_bytes<=102)
+   assert(actual_bytes..string.rep(' ',102-#actual_bytes)==table.concat(chars),'Wrapped dialogue differs at '..label..' line '..i)
+  end
+ end
+ result.cases[#result.cases+1]={label=label,line=line,dialogue=actual.dialogue,native=expected,wrapped=wrapped}
 end
 local ok,err=xpcall(function()
  for line=0,28 do check('default-'..line,line)end

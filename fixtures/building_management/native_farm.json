@@ -93634,6 +93634,428 @@
           "bridge/plugin/trade_header_native.h": "6430d4fcf8b7edfe31901e96236d0d91ea8ef96fb319f2b1fae2a64406ff6a05",
           "tools/smoke/depot-trade-header-native.lua": "c51bc1d1f99975eb89667a25b1757f50d02b3a1f71f25c0c15ab017c0ca9ab5a"
         }
+      },
+      "depot_trade_dialogue_wrap_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-212527",
+        "owned_df_pid": 43300,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "columns": 102,
+        "scope": "45 native dialogue cases compare every wrapped line byte after padding to its102-cell width against actual native screen cells at1200x800. Owned8e7310 text-box storage and native cleanup; no wrapping reconstruction. Other viewport sizes, portrait and public transport remain unqualified.",
+        "cases": [
+          {
+            "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+            "label": "default-0",
+            "line": 0,
+            "native": "\"Greetings from our mountain halls to yours. Let us strengthen our bonds in trade.\"",
+            "wrapped": [
+              "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\""
+            ]
+          },
+          {
+            "dialogue": "\"These goods are too heavy and cheap for me to consider.\"",
+            "label": "default-1",
+            "line": 1,
+            "native": "\"These goods are too heavy and cheap for me to consider.\"",
+            "wrapped": [
+              "\"These goods are too heavy and cheap for me to consider.\""
+            ]
+          },
+          {
+            "dialogue": "\"I cannot take so much -- and at such cost!\"",
+            "label": "default-2",
+            "line": 2,
+            "native": "\"I cannot take so much -- and at such cost!\"",
+            "wrapped": [
+              "\"I cannot take so much -- and at such cost!\""
+            ]
+          },
+          {
+            "dialogue": "\"Do not tempt me!  My beasts of burden cannot possibly haul such a load.\"",
+            "label": "default-3",
+            "line": 3,
+            "native": "\"Do not tempt me! My beasts of burden cannot possibly haul such a load.\"",
+            "wrapped": [
+              "\"Do not tempt me!  My beasts of burden cannot possibly haul such a load.\""
+            ]
+          },
+          {
+            "dialogue": "\"I wish I could take so much, but my animals...\"",
+            "label": "default-4",
+            "line": 4,
+            "native": "\"I wish I could take so much, but my animals...\"",
+            "wrapped": [
+              "\"I wish I could take so much, but my animals...\""
+            ]
+          },
+          {
+            "dialogue": "\"I must make a profit.  There is simply not enough value here.\"",
+            "label": "default-5",
+            "line": 5,
+            "native": "\"I must make a profit. There is simply not enough value here.\"",
+            "wrapped": [
+              "\"I must make a profit.  There is simply not enough value here.\""
+            ]
+          },
+          {
+            "dialogue": "\"I won't trade at a loss.\"",
+            "label": "default-6",
+            "line": 6,
+            "native": "\"I won't trade at a loss.\"",
+            "wrapped": [
+              "\"I won't trade at a loss.\""
+            ]
+          },
+          {
+            "dialogue": "\"Ah, wonderful.  Thank you for your business.\"",
+            "label": "default-7",
+            "line": 7,
+            "native": "\"Ah, wonderful. Thank you for your business.\"",
+            "wrapped": [
+              "\"Ah, wonderful.  Thank you for your business.\""
+            ]
+          },
+          {
+            "dialogue": "\"I will see that our leader gets this offering.\"",
+            "label": "default-8",
+            "line": 8,
+            "native": "\"I will see that our leader gets this offering.\"",
+            "wrapped": [
+              "\"I will see that our leader gets this offering.\""
+            ]
+          },
+          {
+            "dialogue": "\"Take what you wish.  I can't stop you.\"",
+            "label": "default-9",
+            "line": 9,
+            "native": "\"Take what you wish. I can't stop you.\"",
+            "wrapped": [
+              "\"Take what you wish.  I can't stop you.\""
+            ]
+          },
+          {
+            "dialogue": "\"You wish to make an offering to our leader?  This would please us greatly.  What do you offer?\"",
+            "label": "default-10",
+            "line": 10,
+            "native": "\"You wish to make an offering to our leader? This would please us greatly. What do you offer?\"",
+            "wrapped": [
+              "\"You wish to make an offering to our leader?  This would please us greatly.  What do you offer?\""
+            ]
+          },
+          {
+            "dialogue": "\"[Laughs uproariously]  You had me going there.  Obviously, your copious wit is matched only by your industry!\"",
+            "label": "default-11",
+            "line": 11,
+            "native": "\"[Laughs uproariously] You had me going there. Obviously, your copious wit is matched only by your industry!\"",
+            "wrapped": [
+              "\"[Laughs uproariously]  You had me going there.  Obviously, your copious wit is matched only by your ",
+              "industry!\""
+            ]
+          },
+          {
+            "dialogue": "\"I am a merchant, yes.  You see, I wish to trade.  Which of my goods do you desire?\"",
+            "label": "default-12",
+            "line": 12,
+            "native": "\"I am a merchant, yes. You see, I wish to trade. Which of my goods do you desire?\"",
+            "wrapped": [
+              "\"I am a merchant, yes.  You see, I wish to trade.  Which of my goods do you desire?\""
+            ]
+          },
+          {
+            "dialogue": "\"Yes, and trade we will!  Simply tell me what interests you and what you're prepared to offer in exchange.\"",
+            "label": "default-13",
+            "line": 13,
+            "native": "\"Yes, and trade we will! Simply tell me what interests you and what you're prepared to offer in exchange.\"",
+            "wrapped": [
+              "\"Yes, and trade we will!  Simply tell me what interests you and what you're prepared to offer in ",
+              "exchange.\""
+            ]
+          },
+          {
+            "dialogue": "\"Ah, but my goods are not free!  What do you offer in trade?\"",
+            "label": "default-14",
+            "line": 14,
+            "native": "\"Ah, but my goods are not free! What do you offer in trade?\"",
+            "wrapped": [
+              "\"Ah, but my goods are not free!  What do you offer in trade?\""
+            ]
+          },
+          {
+            "dialogue": "\"These _are_ fine items, aren't they?  Now, what do offer for them?\"",
+            "label": "default-15",
+            "line": 15,
+            "native": "\"These _are_ fine items, aren't they? Now, what do offer for them?\"",
+            "wrapped": [
+              "\"These _are_ fine items, aren't they?  Now, what do offer for them?\""
+            ]
+          },
+          {
+            "dialogue": "\"For me?  At no price?  I can accept your offer, or perhaps you wish to trade.\"",
+            "label": "default-16",
+            "line": 16,
+            "native": "\"For me? At no price? I can accept your offer, or perhaps you wish to trade.\"",
+            "wrapped": [
+              "\"For me?  At no price?  I can accept your offer, or perhaps you wish to trade.\""
+            ]
+          },
+          {
+            "dialogue": "\"My stones, are you giving me those?  Do you wish to trade or to make an offering to our leader?\"",
+            "label": "default-17",
+            "line": 17,
+            "native": "\"My stones, are you giving me those? Do you wish to trade or to make an offering to our leader?\"",
+            "wrapped": [
+              "\"My stones, are you giving me those?  Do you wish to trade or to make an offering to our leader?\""
+            ]
+          },
+          {
+            "dialogue": "\"You truly despise life, don't you?  I am beside myself with grief.  Perhaps we will show you how they suffered.\"",
+            "label": "default-18",
+            "line": 18,
+            "native": "\"You truly despise life, don't you? I am beside myself with grief. Perhaps we will show you how they suffered.\"",
+            "wrapped": [
+              "\"You truly despise life, don't you?  I am beside myself with grief.  Perhaps we will show you how ",
+              "they suffered.\""
+            ]
+          },
+          {
+            "dialogue": "\"I see your low race still revels in death.  That poor, gentle creature...\"",
+            "label": "default-19",
+            "line": 19,
+            "native": "\"I see your low race still revels in death. That poor, gentle creature...\"",
+            "wrapped": [
+              "\"I see your low race still revels in death.  That poor, gentle creature...\""
+            ]
+          },
+          {
+            "dialogue": "\"Once a beautiful tree, and now?  It is a rude bauble, fit only for your kind.\"",
+            "label": "default-20",
+            "line": 20,
+            "native": "\"Once a beautiful tree, and now? It is a rude bauble, fit only for your kind.\"",
+            "wrapped": [
+              "\"Once a beautiful tree, and now?  It is a rude bauble, fit only for your kind.\""
+            ]
+          },
+          {
+            "dialogue": "\"\"",
+            "label": "default-21",
+            "line": 21,
+            "native": "\"\"",
+            "wrapped": [
+              "\"\""
+            ]
+          },
+          {
+            "dialogue": "\"\"",
+            "label": "default-22",
+            "line": 22,
+            "native": "\"\"",
+            "wrapped": [
+              "\"\""
+            ]
+          },
+          {
+            "dialogue": "\"\"",
+            "label": "default-23",
+            "line": 23,
+            "native": "\"\"",
+            "wrapped": [
+              "\"\""
+            ]
+          },
+          {
+            "dialogue": "\"Please understand the journey must be profitable.  Perhaps you'd consider tossing in a little extra?\"",
+            "label": "default-24",
+            "line": 24,
+            "native": "\"Please understand the journey must be profitable. Perhaps you'd consider tossing in a little extra?\"",
+            "wrapped": [
+              "\"Please understand the journey must be profitable.  Perhaps you'd consider tossing in a little extra?\""
+            ]
+          },
+          {
+            "dialogue": "\"You'll need more goods to make this arrangement.  All I see here is not enough.\"",
+            "label": "default-25",
+            "line": 25,
+            "native": "\"You'll need more goods to make this arrangement. All I see here is not enough.\"",
+            "wrapped": [
+              "\"You'll need more goods to make this arrangement.  All I see here is not enough.\""
+            ]
+          },
+          {
+            "dialogue": "\"Even with your combined trade goods, such as they are, I can't fathom you ending up with the items you desire.\"",
+            "label": "default-26",
+            "line": 26,
+            "native": "\"Even with your combined trade goods, such as they are, I can't fathom you ending up with the items you desire.\"",
+            "wrapped": [
+              "\"Even with your combined trade goods, such as they are, I can't fathom you ending up with the items ",
+              "you desire.\""
+            ]
+          },
+          {
+            "dialogue": "\"What do you want?\"",
+            "label": "default-27",
+            "line": 27,
+            "native": "\"What do you want?\"",
+            "wrapped": [
+              "\"What do you want?\""
+            ]
+          },
+          {
+            "dialogue": "\"Your childish games have made me tired.  Perhaps next time I visit you'll take this seriously.\"",
+            "label": "default-28",
+            "line": 28,
+            "native": "\"Your childish games have made me tired. Perhaps next time I visit you'll take this seriously.\"",
+            "wrapped": [
+              "\"Your childish games have made me tired.  Perhaps next time I visit you'll take this seriously.\""
+            ]
+          },
+          {
+            "dialogue": "\"Greetings.  We are enchanted by your more ethical works.  We've come to trade.\"",
+            "label": "ethical-0",
+            "line": 0,
+            "native": "\"Greetings. We are enchanted by your more ethical works. We've come to trade.\"",
+            "wrapped": [
+              "\"Greetings.  We are enchanted by your more ethical works.  We've come to trade.\""
+            ]
+          },
+          {
+            "dialogue": "\"You are too kind.\"",
+            "label": "ethical-8",
+            "line": 8,
+            "native": "\"You are too kind.\"",
+            "wrapped": [
+              "\"You are too kind.\""
+            ]
+          },
+          {
+            "dialogue": "\"You wish to make an offering?  We love gifts.\"",
+            "label": "ethical-10",
+            "line": 10,
+            "native": "\"You wish to make an offering? We love gifts.\"",
+            "wrapped": [
+              "\"You wish to make an offering?  We love gifts.\""
+            ]
+          },
+          {
+            "dialogue": "\"[Chuckles]  How droll.\"",
+            "label": "ethical-11",
+            "line": 11,
+            "native": "\"[Chuckles] How droll.\"",
+            "wrapped": [
+              "\"[Chuckles]  How droll.\""
+            ]
+          },
+          {
+            "dialogue": "\"What do you want?\"",
+            "label": "ethical-27",
+            "line": 27,
+            "native": "\"What do you want?\"",
+            "wrapped": [
+              "\"What do you want?\""
+            ]
+          },
+          {
+            "dialogue": "\"Leave it to the besotted dullard to miss the finer points of discourse.  I'm leaving.  Do reflect.\"",
+            "label": "ethical-28",
+            "line": 28,
+            "native": "\"Leave it to the besotted dullard to miss the finer points of discourse. I'm leaving. Do reflect.\"",
+            "wrapped": [
+              "\"Leave it to the besotted dullard to miss the finer points of discourse.  I'm leaving.  Do reflect.\""
+            ]
+          },
+          {
+            "dialogue": "\"A hairy drunkard has come hither to once more disrespect the sanctity of life, I see.\"",
+            "label": "ethical-offended",
+            "line": 27,
+            "native": "\"A hairy drunkard has come hither to once more disrespect the sanctity of life, I see.\"",
+            "wrapped": [
+              "\"A hairy drunkard has come hither to once more disrespect the sanctity of life, I see.\""
+            ]
+          },
+          {
+            "dialogue": "\"Greetings.  We are enchanted by your more ethical works.  We've come to trade.\"",
+            "label": "extreme-reason",
+            "line": 0,
+            "native": "\"Greetings. We are enchanted by your more ethical works. We've come to trade.\"",
+            "wrapped": [
+              "\"Greetings.  We are enchanted by your more ethical works.  We've come to trade.\""
+            ]
+          },
+          {
+            "dialogue": "\"Greetings.  We are enchanted by your more ethical works.  We've come to trade.\"",
+            "label": "self-defense",
+            "line": 0,
+            "native": "\"Greetings. We are enchanted by your more ethical works. We've come to trade.\"",
+            "wrapped": [
+              "\"Greetings.  We are enchanted by your more ethical works.  We've come to trade.\""
+            ]
+          },
+          {
+            "dialogue": "\"Greetings.  We are enchanted by your more ethical works.  We've come to trade.\"",
+            "label": "plant-ethic",
+            "line": 0,
+            "native": "\"Greetings. We are enchanted by your more ethical works. We've come to trade.\"",
+            "wrapped": [
+              "\"Greetings.  We are enchanted by your more ethical works.  We've come to trade.\""
+            ]
+          },
+          {
+            "dialogue": "\"Greetings from the Mountainhomes.  Your efforts are legend there.  Let us trade!\"",
+            "label": "mountainhomes",
+            "line": 0,
+            "native": "\"Greetings from the Mountainhomes. Your efforts are legend there. Let us trade!\"",
+            "wrapped": [
+              "\"Greetings from the Mountainhomes.  Your efforts are legend there.  Let us trade!\""
+            ]
+          },
+          {
+            "dialogue": "\"Greetings from the outer lands.  Your efforts are legend there.  Let us trade!\"",
+            "label": "outer-lands",
+            "line": 0,
+            "native": "\"Greetings from the outer lands. Your efforts are legend there. Let us trade!\"",
+            "wrapped": [
+              "\"Greetings from the outer lands.  Your efforts are legend there.  Let us trade!\""
+            ]
+          },
+          {
+            "dialogue": "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\"",
+            "label": "same-race",
+            "line": 0,
+            "native": "\"Greetings from our mountain halls to yours. Let us strengthen our bonds in trade.\"",
+            "wrapped": [
+              "\"Greetings from our mountain halls to yours.  Let us strengthen our bonds in trade.\""
+            ]
+          },
+          {
+            "dialogue": "\"My stones, are you giving me those?  Do you wish to trade or to make an offering to our leader?\"",
+            "label": "same-race-offer",
+            "line": 17,
+            "native": "\"My stones, are you giving me those? Do you wish to trade or to make an offering to our leader?\"",
+            "wrapped": [
+              "\"My stones, are you giving me those?  Do you wish to trade or to make an offering to our leader?\""
+            ]
+          },
+          {
+            "dialogue": "\"Greetings.  The craftsdwarfship of the dwarves is unparalleled.  Let's make a deal!\"",
+            "label": "other-race",
+            "line": 0,
+            "native": "\"Greetings. The craftsdwarfship of the dwarves is unparalleled. Let's make a deal!\"",
+            "wrapped": []
+          },
+          {
+            "dialogue": "\"Are these gifts?  Do you wish to trade?\"",
+            "label": "other-race-offer",
+            "line": 17,
+            "native": "\"Are these gifts? Do you wish to trade?\"",
+            "wrapped": []
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-212527/depot-trade-native.json": "fa60cd7d6cf527f626a482001e959f229d2c9b09c591cff67943f22f41d35c4f",
+          "build/stockpile-storage-native-farm-discovery-20261115-212527/result.json": "35b7dfa9caaeea9a41e23705246e9ae0980bf776506dc8109f3dd0c329851a4d",
+          "build/stockpile-storage-native-farm-discovery-20261115-212527/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/trade_header_native.h": "8fbc37f1ff7ad52ebfb20c8258c3fb056ce34d3e172024f7c4648e2c7e6f1074",
+          "tools/smoke/depot-trade-dialogue-native.lua": "5dbc61c170bcd9888113cb9c808cf6467672eebba0266d26ef70202827ed159f"
+        }
       }
     },
     "pending_construction_reference": {

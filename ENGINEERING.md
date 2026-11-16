@@ -18,6 +18,17 @@ Portrait selection, animated name colors, wrapping, public transport and the
 Godot header are not qualified by this run. Protocol242 is unchanged and Trade
 remains hidden until its complete workflow is ready.
 
+Dialogue wrapping calls native8e7310 with an owned text box and caller-supplied
+width, retaining CP437 until each completed line crosses the transport boundary.
+Widths are bounded1..512 and text at2048 bytes; native cleanup releases every
+owned line. Protected212527 on2026-11-15 compares all45 dialogue cases at102
+columns against the actual1200x800 native screen, preserving spaces and line
+breaks. Owned DF43300 closes unsaved/source-preserved at30FPS, sampled60C.
+Bridge build and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_dialogue_wrap_reference`.
+This qualifies native wrapping at that viewport, not other sizes, portrait
+selection or the pending public header transport/Godot integration.
+
 ## Owned trade dialogue provider
 
 DF53.16 assembles trade dialogue inline in384850; there is no independent

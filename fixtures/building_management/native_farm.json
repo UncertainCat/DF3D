@@ -101876,6 +101876,55 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_main_exchange_reference": {
+        "df_version": "53.16",
+        "steam_build": "24557528",
+        "capture": "build/stockpile-storage-native-farm-discovery-20261116-083024",
+        "df_pid": 39260,
+        "surface": "actual main scene depot to counteroffer to acceptance",
+        "success": true,
+        "native_effect_reference": "build/stockpile-storage-native-farm-discovery-20261115-224201",
+        "effects_equal": true,
+        "effect_sha256": {
+          "accept_before": "25a57c7f4ac71c4298c68040a48f6b8c2022b49ab7d5360d03044ac37ec1faef",
+          "accept_after": "694ebf6a6c3d839578ad6191a0d4c0b869572649f64b12229220dd9d4e258b2e",
+          "accept_people": "51f701342e9ca8ba4bd4e224a589efc5ea593a27ee396f27afc53c06c059aca8",
+          "accept_caravan": "86a18fb8c36ccd1f9121e2b1c296892b3fc7fb7618ec1abf6c5e8eed19dc03b3",
+          "accept_rng": "d6141c80581cd04270474969b1d39d621a767a8ba8e16d0d30d89bfed636c9f1",
+          "accept_conversation": "fd4913d8fdf051a7862440fcfb563fb6a7ae5973ceb0dc4862521080c73fd1b2"
+        },
+        "changed_items": 8,
+        "pixel_equal_states": [
+          "counteroffer",
+          "accepted"
+        ],
+        "pixel_region": [
+          32,
+          52,
+          944,
+          708
+        ],
+        "pointer_actions": [
+          "depot Trade",
+          "Trade",
+          "Accept Counteroffer",
+          "Okay",
+          "Escape closes depot selection and trade session"
+        ],
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "fps_cap": 30,
+        "sampled_gpu_celsius": [
+          56,
+          57
+        ],
+        "limits": [
+          "staged furniture owner opened directly because public depot map admission remains gated",
+          "item selection uses semantic controller intents; exchange/navigation buttons use actual scene input",
+          "synthetic caravan with controlled negotiation RNG",
+          "1200x800; no minimum-size or foreign-caravan accounting acceptance"
+        ]
+      },
       "depot_trade_counter_composite_reference": {
         "df_version": "53.16",
         "steam_build": "24557528",

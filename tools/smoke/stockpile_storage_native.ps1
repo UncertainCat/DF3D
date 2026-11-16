@@ -462,6 +462,7 @@ try {
      if($name -eq 'depot-scene'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/depot_scene_live.gd')}
      if($name -eq 'trade-goods-art-wire'){$clientArgs=@('--headless','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/trade_goods_art_wire_live.gd')}
      if($name -eq 'trade-exchange-wire'){$env:DF3D_DF_PATH=$dfPath;$clientArgs=@('--headless','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/trade_exchange_wire_live.gd')}
+     if($name -eq 'trade-exchange-wire' -and $env:DF3D_TRADE_MAIN_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/trade_main_scene_live.gd')}
      if($name -eq 'trade-transfer-wire'){$env:DF3D_DF_PATH=$dfPath;$clientArgs=@('--headless','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/trade_transfer_wire_live.gd')}
      if($name -eq 'trade-session-wire'){$clientArgs=@('--headless','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/trade_session_wire_live.gd')}
      if($name -eq 'trade-catalog-wire'){$clientArgs=@('--headless','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/trade_catalog_wire_live.gd')}

@@ -83,9 +83,9 @@ unsaved/source-preserved; graphics are serial30FPS and wire clients are headless
 Final client/render stderr is clean, GPU samples59–62C, and all19 core checks pass.
 Evidence: completed_sheet_discovery_reference.depot_trade_counter_composite_reference.
 These fixtures have five requested items; they do not qualify long lists,
-minimum dimensions, foreign-caravan accounting, or main-scene depot navigation
-combined with an actual exchange. Public Trade remains hidden until those gaps
-are resolved.
+minimum dimensions or foreign-caravan accounting. Main-scene exchange has the
+separate qualification below. Public Trade remains hidden until the remaining
+full-workflow gaps are resolved.
 
 ## Owned native negotiation execution
 
@@ -479,6 +479,25 @@ These fixtures use synthetic caravans without a merchant speaker or goods;
 they qualify navigation/ownership, not full main-scene exchange effects or
 announcement/resize behavior. Public depot selection remains gated in
 fortress_ui until the remaining Trade workflows are complete.
+
+Protected083024 on2026-11-16 (DF39260) qualifies depot navigation and exchange
+together in res://scenes/main.tscn. The staged furniture owner opens the depot;
+actual pointer input opens Trade, negotiates, accepts the counteroffer and
+presses Okay. Escape clears the depot selection, releases the panel host and
+closes the session exactly once. Item selection uses controller semantic intents;
+this run does not claim map admission or row-selection pointer coverage.
+
+Counteroffer and accepted full944x708 scene captures match native at1200x800.
+All tracked before/after transfers, caravan accounting/state, both traders'
+skills/attributes and active RNG match native224201, including eight changed
+items. Pending exclusion, refresh, stale requests and session closure share the
+same workflow as the standalone composite checks. Fixture RNG controls remain
+oracle-only. The source is preserved and DF closes unsaved; both graphical
+processes run at30FPS, logs are clean, sampled GPU56–57C (not peak), and all19
+core checks pass. Evidence:
+completed_sheet_discovery_reference.depot_trade_main_exchange_reference.
+Public depot selection remains gated while minimum dimensions, long counteroffer
+lists and foreign-caravan accounting are unfinished.
 
 Protocol246 adds TradeSessionGift and TradeSessionSeize with the same
 session/expected-revision-only request and action receipt as Trade. The bridge

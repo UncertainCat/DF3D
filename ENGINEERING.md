@@ -278,8 +278,9 @@ It inserts bin contents in native reference-reversed order, then calls native
 37c780 (filter and group selection flags) and37acc0 (height). These calls use
 only owned vectors/strings and simulation item getters/descriptions. Item IDs,
 flags, amounts, group type/subtype/expansion/visibility/selection flags and
-height leave the context as values. This currently models the initial expanded,
-unselected draft; viewer-owned edits and public transport are not integrated.
+height leave the context as values. Selection intents can now replay through
+the native toggle into this fresh expanded draft; retained viewer state and
+public transport are not integrated.
 
 Protected180336 on2026-11-15 compares all those fields against native, twice
 per state, on the twelve-item source fixture. Native pointer/keyboard input
@@ -297,6 +298,34 @@ The earlier180108/180203 runs also passed initial/populated comparisons;180336
 is the expanded acceptance reference. Bin-child projection, nonempty subtype
 groups, collapsed groups, selection/quantity drafts, appraisal, prices,
 negotiation and rendered/public exchange integration remain unfinished.
+
+Native36a840..36a9bb toggles the selected bit, sets the supplied amount and
+propagates selection to matching contained items already present in the supplied
+goods vector; it clears that context's counteroffer flag. Its full split-unwind
+range contains only owned-storage writes and reference getters. The provider
+pins that range and invokes it with amount0/final byte0, exactly as all seven
+row/group/Mark all/Unmark all call sites in the native input handler do.
+Diagnostic intents use side plus item ID, reject absent IDs/invalid sides and
+are bounded to4096; they never replay against simulation. Public draft identity,
+revision validation and lifecycle integration remain required. A struct amount
+field is not evidence of a currently exposed quantity picker; its native UI
+availability remains unresolved and no substitute control is introduced.
+
+Protected180805 on2026-11-15 adds six native pointer selection states: select
+one merchant boulder, select its second group member, deselect the first, select
+a fortress block, and clear both remaining selections. Two owned projection
+calls per state match native IDs, item flags/amounts, group expansion/visibility/
+selection flags and height; the prior nine initial/search/speaker states also
+pass. Native lists/pending flags/appraisal history remain unchanged by reads.
+The selected-group native PNG was inspected as a reference, not viewer parity.
+Appraisal remains diagnostically suppressed; no exchange is submitted. Fixture
+prerequisites restore and owned DF41648 closes unsaved/source-preserved with
+simulation frame unchanged,30FPS and sampled GPU49C. Bridge and all19 core
+checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_selection_reference`.
+Container selection propagation, group/all button integration, expansion,
+quantity UI availability, totals/prices, appraisal and actual exchange remain
+unqualified. This diagnostic provider does not expose a gameplay screen.
 
 ## Depot goods value transport migration
 

@@ -5095,12 +5095,15 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="trade-projection-probe") {
-        if(parameters.size()!=3 && parameters.size()!=5)return CR_WRONG_USAGE;
+        if(parameters.size()!=3 && parameters.size()!=5 && parameters.size()!=6)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
         int32_t values[2]={-1,-1};
         for(size_t i=1;i<3;++i){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<0)return CR_WRONG_USAGE;}
-        std::array<std::string,2> filters{};if(parameters.size()==5){filters[0]=UTF2DF(parameters[3]);filters[1]=UTF2DF(parameters[4]);}
-        const auto projection=df3d_production::tradeProjection(df::building::find(values[0]),size_t(values[1]),filters);
+        std::array<std::string,2> filters{};if(parameters.size()>=5){filters[0]=UTF2DF(parameters[3]);filters[1]=UTF2DF(parameters[4]);}
+        std::vector<df3d_production::TradeSelectionIntent> selections;
+        if(parameters.size()==6){Json::Value intents;Json::Reader reader;if(parameters[5].size()>131072 || !reader.parse(parameters[5],intents) || !intents.isArray() || intents.size()>4096)return CR_WRONG_USAGE;
+          for(const auto& intent:intents){if(!intent.isObject() || !intent["side"].isInt() || !intent["item"].isInt())return CR_WRONG_USAGE;selections.push_back({intent["side"].asInt(),intent["item"].asInt()});}}
+        const auto projection=df3d_production::tradeProjection(df::building::find(values[0]),size_t(values[1]),filters,selections);
         Json::Value output;output["available"]=bool(projection);output["sides"]=Json::arrayValue;
         if(projection)for(const auto& side:*projection){Json::Value row;row["height"]=side.height;row["items"]=row["flags"]=row["amounts"]=row["groups"]=Json::arrayValue;
           for(auto id:side.items)row["items"].append(id);for(auto flag:side.flags)row["flags"].append(flag);for(auto amount:side.amounts)row["amounts"].append(amount);

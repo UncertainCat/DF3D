@@ -62814,6 +62814,485 @@
           "build/stockpile-storage-native-farm-discovery-20261115-180336/depot-trade-search-cleared.png": "fe23e3bfc22d4fd722a4813c127f3c260959c53e8b194fbf1565707bbb28998f",
           "build/stockpile-storage-native-farm-discovery-20261115-180336/depot-trade-speaker.png": "fe23e3bfc22d4fd722a4813c127f3c260959c53e8b194fbf1565707bbb28998f"
         }
+      },
+      "depot_trade_selection_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-180805",
+        "owned_df_pid": 41648,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Six actual native row-click states, two owned projections each, plus nine prior projection/search states. Native item and group selection flags/amounts/heights match. All temporary simulation prerequisites restore; appraisal diagnostically suppressed. No container propagation, group/all button integration, quantity UI, totals/prices, appraisal effects, exchange or viewer acceptance.",
+        "cases": [
+          {
+            "label": "selection-1",
+            "intents": [
+              {
+                "item": 992,
+                "side": 0
+              }
+            ],
+            "sides": [
+              {
+                "items": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ],
+                "flags": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "height": 24
+              },
+              {
+                "items": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ],
+                "flags": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "selection-2",
+            "intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 991,
+                "side": 0
+              }
+            ],
+            "sides": [
+              {
+                "items": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ],
+                "flags": [
+                  1,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "group_flags": [
+                  1,
+                  2,
+                  2
+                ],
+                "height": 24
+              },
+              {
+                "items": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ],
+                "flags": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "selection-3",
+            "intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 991,
+                "side": 0
+              },
+              {
+                "item": 992,
+                "side": 0
+              }
+            ],
+            "sides": [
+              {
+                "items": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ],
+                "flags": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "height": 24
+              },
+              {
+                "items": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ],
+                "flags": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "selection-4",
+            "intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 991,
+                "side": 0
+              },
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 1180,
+                "side": 1
+              }
+            ],
+            "sides": [
+              {
+                "items": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ],
+                "flags": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "height": 24
+              },
+              {
+                "items": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ],
+                "flags": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "group_flags": [
+                  1,
+                  2,
+                  2
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "selection-5",
+            "intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 991,
+                "side": 0
+              },
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 1180,
+                "side": 1
+              },
+              {
+                "item": 991,
+                "side": 0
+              }
+            ],
+            "sides": [
+              {
+                "items": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ],
+                "flags": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "height": 24
+              },
+              {
+                "items": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ],
+                "flags": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "group_flags": [
+                  1,
+                  2,
+                  2
+                ],
+                "height": 21
+              }
+            ]
+          },
+          {
+            "label": "selection-6",
+            "intents": [
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 991,
+                "side": 0
+              },
+              {
+                "item": 992,
+                "side": 0
+              },
+              {
+                "item": 1180,
+                "side": 1
+              },
+              {
+                "item": 991,
+                "side": 0
+              },
+              {
+                "item": 1180,
+                "side": 1
+              }
+            ],
+            "sides": [
+              {
+                "items": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ],
+                "flags": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "height": 24
+              },
+              {
+                "items": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ],
+                "flags": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "group_flags": [
+                  2,
+                  2,
+                  2
+                ],
+                "height": 21
+              }
+            ]
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-180805/depot-trade-native.json": "a94d55141c9d5adf6101c658ca6f8115a01922694d1237b37325622d56f71f7f",
+          "build/stockpile-storage-native-farm-discovery-20261115-180805/result.json": "4a3ac41b7adb27e404f2c2d376ee4e9c31b0e50de1424636f2b5baf0938916b5",
+          "build/stockpile-storage-native-farm-discovery-20261115-180805/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-180805/capture-inputs.json": "b6e4ad226cd5e8654e6e40cc59453838956c3e20ad8eb8fe6f3d228d279bb7a5",
+          "tools/smoke/depot-trade-native.lua": "28c0d46ffb382abe62bad2b5dba2e4499503b1019b033f7189a87bb96e625088",
+          "bridge/plugin/trade_projection_native.h": "6e6eda45119b0e73648b534fb5c51725ad45833cbe4908509a0d96dc71f2db04",
+          "build/stockpile-storage-native-farm-discovery-20261115-180805/depot-trade-selection-1.png": "97264507bfec5c1893f1db31792e927a8ecadbe87fe0561b9a14738a7f5c8d52",
+          "build/stockpile-storage-native-farm-discovery-20261115-180805/depot-trade-selection-2.png": "81ba28a5dc8f546107eab71e6b13d37b5137649b8148edb0ba8545783f477c46",
+          "build/stockpile-storage-native-farm-discovery-20261115-180805/depot-trade-selection-3.png": "d6acfdf3d726f8445ea86d868e692ad13756112c0bc6dd852dddc60f3f3bfa51",
+          "build/stockpile-storage-native-farm-discovery-20261115-180805/depot-trade-selection-4.png": "d0e79c2d88c1b8b8082af315444a9b0805fa9efa67e9d44d2b269932aacb7ed4",
+          "build/stockpile-storage-native-farm-discovery-20261115-180805/depot-trade-selection-5.png": "26f460a5349f1fdf909a07792548a72b46587ffab88cb9eedec3ffdde0978e0e",
+          "build/stockpile-storage-native-farm-discovery-20261115-180805/depot-trade-selection-6.png": "fe23e3bfc22d4fd722a4813c127f3c260959c53e8b194fbf1565707bbb28998f"
+        }
       }
     },
     "pending_construction_reference": {

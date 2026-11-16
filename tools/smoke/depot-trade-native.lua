@@ -15,6 +15,7 @@ local restore_speaker
 local restore_item
 local restore_sources
 local source_probe=os.getenv('DF3D_DEPOT_TRADE_SOURCES')=='1'
+local selection_intents={}
 assert(not source_probe or os.getenv('DF3D_DEPOT_TRADE_LISTS')~='1','Source isolation must not qualify appraisal')
 local added_job=false;local added={};local result={depot=b.id,trader=unit.id,synthetic_prerequisites=true,cases={}}
 local function click(x,y)
@@ -59,7 +60,7 @@ local function record(label)
   end
   if os.getenv('DF3D_DEPOT_TRADE_PROJECTION')=='1' then
    for iteration=1,2 do
-    local output,code=dfhack.run_command_silent('df3d','trade-projection-probe',tostring(b.id),'0',trade.item_filter[0],trade.item_filter[1]);assert(code==0,output)
+    local output,code=dfhack.run_command_silent('df3d','trade-projection-probe',tostring(b.id),'0',trade.item_filter[0],trade.item_filter[1],#selection_intents==0 and '[]' or json.encode(selection_intents));assert(code==0,output)
     local facts=json.decode(output);assert(facts.available,output)
     for side=0,1 do
      local actual=facts.sides[side+1]
@@ -74,6 +75,7 @@ local function record(label)
     assert(json.encode(ids())==before and trade.handle_appraisal==appraisal and trade.buildlists==lists and #added[1].goods==0)
     row.projection_provider=facts
     row.filters={trade.item_filter[0],trade.item_filter[1]}
+    row.selection_intents=json.decode(json.encode(selection_intents))
    end
   end
  end
@@ -190,6 +192,17 @@ local ok,err=xpcall(function()
      click(side==0 and 100 or 570,166)
     end
     record('search-cleared')
+    if os.getenv('DF3D_DEPOT_TRADE_SELECTION')=='1' then
+     for i,test in ipairs{{0,0,468,238},{0,1,468,274},{0,0,468,238},{1,0,932,238},{0,1,468,274},{1,0,932,238}}do
+      local side,index,x,y=table.unpack(test);local item=trade.good[side][index]
+      local before=trade.goodflag[side][index].selected
+      selection_intents[#selection_intents+1]={side=side,item=item.id}
+      click(x,y);assert(trade.goodflag[side][index].selected~=before,'Native row selection did not toggle')
+      record('selection-'..i)
+     end
+     for side=0,1 do for _,flag in ipairs(trade.goodflag[side])do assert(not flag.selected)end end
+     selection_intents={}
+    end
    end
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)
   end

@@ -1,9 +1,11 @@
 #pragma once
 #include "trade_goods_native.h"
 #include "df/general_ref.h"
+#include <algorithm>
 
 namespace df3d_production {
 struct TradeProjectedGroup {int32_t type=-1,subtype=-1;bool expanded=false,on=false;uint32_t flags=0;};
+struct TradeSelectionIntent {int32_t side=-1,item=-1;};
 struct TradeProjectedSide {
     std::vector<int32_t> items,amounts;
     std::vector<uint8_t> flags;
@@ -13,11 +15,13 @@ struct TradeProjectedSide {
 // The renderer's initialization is inline (385007..38559c). Reproduce only
 // that owned-storage construction, then call native filter/flags/height helpers.
 // Never call the renderer: appraisal is a separate simulation mutation.
-// This projects the initial unselected, expanded draft. Applying viewer-owned
-// selections, quantities and expansion state is a separate integration step.
+// Selection intents replay only into this fresh local draft, never simulation.
+// Public transport still needs source identity/revision and retained draft state.
 inline std::optional<std::array<TradeProjectedSide,2>> tradeProjection(
-    df::building* building,size_t caravanIndex,const std::array<std::string,2>& filters={}) {
-    if(filters[0].size()>512 || filters[1].size()>512)return {};
+    df::building* building,size_t caravanIndex,const std::array<std::string,2>& filters={},
+    const std::vector<TradeSelectionIntent>& selections={}) {
+    if(filters[0].size()>512 || filters[1].size()>512 || selections.size()>4096)return {};
+    for(const auto& intent:selections)if(intent.side<0 || intent.side>1 || intent.item<0)return {};
     const auto sources=tradeGoodsSources(building,caravanIndex);if(!sources)return {};
     static const bool ready=[] {
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -27,6 +31,7 @@ inline std::optional<std::array<TradeProjectedSide,2>> tradeProjection(
             {0x37c780,0x5cc,UINT64_C(0xbb97b0e36dee07ec)},
             {0x37d750,0x263,UINT64_C(0x7c5835146ecefb8c)},
             {0x37acc0,0x1ea,UINT64_C(0x02b0383285e5f9ff)},
+            {0x36a840,0x17b,UINT64_C(0xe74fe58ae7b5234c)},
             {0xc65450,0xaba,UINT64_C(0x47fa672b7bbcd332)},
             {0xa82c10,0x56ec,UINT64_C(0x66347214dfd39a0b)},
             {0x52cee0,0x19e,UINT64_C(0xc25c2d8a6eb9fcac)},
@@ -72,6 +77,14 @@ inline std::optional<std::array<TradeProjectedSide,2>> tradeProjection(
             }
         }
         owned.item_filter[side]=filters[side];
+        // Native row clicks call this routine with amount0 and final byte0.
+        // It changes owned selection/amount/counteroffer storage only.
+        for(const auto& intent:selections)if(intent.side==int32_t(side)) {
+            auto found=std::find_if(goods.begin(),goods.end(),[&](const auto* item){return item->id==intent.item;});
+            if(found==goods.end())return {};
+            using Toggle=void(*)(df::trade_interfacest*,int32_t,int32_t,int32_t,bool);
+            reinterpret_cast<Toggle>(base+0x36a840)(&owned,int32_t(side),int32_t(found-goods.begin()),0,false);
+        }
         using Project=void(*)(df::trade_interfacest*,int32_t);
         reinterpret_cast<Project>(base+0x37c780)(&owned,int32_t(side));
         reinterpret_cast<Project>(base+0x37acc0)(&owned,int32_t(side));

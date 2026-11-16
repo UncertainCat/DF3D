@@ -52,6 +52,40 @@ narrow widths. Protocol245 transport and pane integration are qualified in the
 session transport section below. Trade remains hidden until its complete
 workflow is ready.
 
+### Long counteroffer lists
+
+The counteroffer pane now owns a scrollbar in native12px text-line units,
+with clipped partial rows and artwork only for fully visible item cells. It
+requests missing counteroffer pages and newly visible appearances through the
+existing session owner. Pending reads disable input; dismissal and closure
+reset scrolling. Heading/Okay and row widths reserve native scrollbar space.
+
+Protected085429 on2026-11-16 (DF54600) temporarily substitutes all15 existing
+fortress goods into the native counteroffer list in a paused disposable oracle.
+It restores the original five requests before acceptance. Native arrow clicks
+move0→1→0 and a lower-track click reaches6, the final text-line offset.
+All four448x504 pane captures match the DF3D rendered pane exactly, including
+partial-row clipping, captions, item artwork and scrollbar. Page facts reuse
+the recorded native item providers and artwork from protected204339; the
+expanded list is synthetic, not evidence that negotiation requested those15
+items. The headless integration check additionally scrolls a synthetic90-item
+list beyond the loaded page, verifies the request starts at item75, and closes
+while that read is pending. Disabled scrolling and Okay dispatch also pass.
+
+Native38702e..387056 sizes the drawn thumb using ordinary fortress-goods
+height, while the counteroffer input path315766..3157eb uses requested-item
+height. DF3D preserves this distinction: it affects thumb artwork, not the
+counteroffer's scroll bounds. In this fixture those heights are57 and45 cells.
+Wheel and drag behavior have not been independently qualified. Large-list
+integration is headless; a natural long counteroffer through the complete live
+Trade route remains unqualified.
+
+The ordinary foreign-caravan composite counteroffer/accepted views remain
+pixel-exact against084928/084828 after this change. Graphics run serially at
+30FPS; sampled GPU temperatures are58–64C. Owned native sessions close unsaved
+with source preserved. Evidence:
+completed_sheet_discovery_reference.depot_trade_long_counter_reference.
+
 ### Composite counteroffer workflow
 
 The assembled Trade view routes Trade/Accept Counteroffer and Okay through the

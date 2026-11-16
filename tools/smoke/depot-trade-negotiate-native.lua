@@ -104,6 +104,25 @@ local ok,err=xpcall(function()
  result.native={dialogue=trade.talkline,items={},people=people(),caravan=caravan_state()}
  for _,item in ipairs(trade.counter_offer_item)do result.native.items[#result.native.items+1]=item.id end
  local native_rng=rng();capture('depot-trade-counteroffer')
+ if os.getenv('DF3D_DEPOT_TRADE_LONG_COUNTER')=='1' then
+  local saved={};for _,item in ipairs(trade.counter_offer_item)do saved[#saved+1]=item end
+  local offset=trade.scroll_position_counter_offer
+  trade.counter_offer_item:resize(0)
+  for _,item in ipairs(trade.good[1])do trade.counter_offer_item:insert('#',item)end
+  trade.scroll_position_counter_offer=0
+  result.long_counter={count=#trade.counter_offer_item,goods_height=trade.i_height[1],steps={}}
+  local function record_long(label)
+   local g=df.global.gps;g.precise_mouse_x=0;g.precise_mouse_y=0;g.mouse_x=0;g.mouse_y=0
+   view:render(dfhack.getTickCount());capture('depot-trade-long-counter-'..label)
+   result.long_counter.steps[#result.long_counter.steps+1]={label=label,offset=trade.scroll_position_counter_offer}
+  end
+  record_long('initial');click(952,646);record_long('down');click(952,190);record_long('up')
+  click(952,610);record_long('track')
+  assert(result.long_counter.count==15 and result.long_counter.steps[2].offset==1 and result.long_counter.steps[3].offset==0 and result.long_counter.steps[4].offset==6,'Native counteroffer scroll behavior changed')
+  trade.counter_offer_item:resize(0);for _,item in ipairs(saved)do trade.counter_offer_item:insert('#',item)end
+  trade.scroll_position_counter_offer=offset;trade.scrolling_counter_offer=false
+  view:render(dfhack.getTickCount())
+ end
  if os.getenv('DF3D_DEPOT_TRADE_RESIZE')=='1' then
   result.resize={};local script=require('gui.script');local g=df.global.gps
   for _,size in ipairs{'minimum','small','wide','default'}do

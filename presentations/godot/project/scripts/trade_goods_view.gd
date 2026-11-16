@@ -25,7 +25,7 @@ func configure_goods(source,model) -> void:
 		for edge in [SIDE_TOP,SIDE_BOTTOM]:inset.set_texture_margin(edge,12)
 		var search=preload("res://scripts/stocks_filter.gd").new();add_child(search);search.theme=theme;search.byte_limit=256;search.configure(inset,colors);search.placeholder_ink=Color8(160,160,160)
 		search.edited.connect(func(bytes):state.set_filter(side,bytes.get_string_from_utf8()));searches.append(search)
-	add_child(counter);counter.configure_counter(source);counter.input_allowed=ready;counter.dismissed.connect(state.dismiss_counteroffer)
+	add_child(counter);counter.configure_counter(source);counter.input_allowed=ready;counter.dismissed.connect(state.dismiss_counteroffer);counter.scrolled.connect(refresh)
 	state.changed.connect(refresh)
 func allowed() -> bool:return is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call())
 func ready() -> bool:return allowed() and state!=null and state.goods_ready()
@@ -65,8 +65,8 @@ func refresh() -> void:
 		searches[1].release_focus();searches[1].hide();canvases[1].hide();bars[1].hide()
 		var counter_icons: Dictionary={}
 		for row in state.counter_page.rows:counter_icons[row.id]=icons.get(row.id,{}).get("texture")
-		counter.set_page(state.counter_page,counter_icons)
-	else:searches[1].show();canvases[1].show()
+		counter.set_page(state.counter_page,counter_icons,int(state.pages[1].total))
+	else:counter.set_page({},{});searches[1].show();canvases[1].show()
 	queue_redraw()
 	if ready() and not _requested:_requested=true;_fetch.call_deferred()
 func _fetch() -> void:
@@ -81,8 +81,12 @@ func _fetch() -> void:
 		if first<int(page.offset) or mini(first+count,int(page.total))>int(page.offset)+page.rows.size():state.read_page(side,first,mini(64,maxi(1,count)));return
 		for row in page.rows.slice(maxi(0,first-int(page.offset)),maxi(0,first-int(page.offset))+count):
 			if not row.group and not ids.has(row.id):ids.append(row.id)
-	for row in state.counter_page.get("rows",[]).slice(0,maxi(0,ceili((counter.size.y-36)/36))):
-		if not ids.has(row.id):ids.append(row.id)
+	if counter.visible:
+		var page: Dictionary=state.counter_page
+		var first: int=counter.visible_first();var count: int=counter.visible_count()
+		if first<int(page.offset) or mini(first+count,int(page.total))>int(page.offset)+page.rows.size():state.read_counter_page(first,mini(64,maxi(1,count)));return
+		for row in page.rows.slice(maxi(0,first-int(page.offset)),maxi(0,first-int(page.offset))+count):
+			if not ids.has(row.id):ids.append(row.id)
 	state.request_appearances(ids.slice(0,64))
 func _patch(canvas: Control,token: String,origin: Vector2,columns: int) -> void:
 	var texture: Texture2D=art.texture(token)

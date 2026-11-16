@@ -92815,6 +92815,149 @@
           "tools/smoke/depot-trade-native.lua": "9dbc73164773804d95a94089ce2f07e245ecdb32f1a2e631d632063670c1e2c5",
           "tools/smoke/depot-trade-session-native.lua": "18ec265a3d640aad455516a439c076ef5fe5cad2d3c1dabbf05f4cc319dfdf2a"
         }
+      },
+      "depot_trade_footer_transport_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-210207",
+        "protocol": 242,
+        "owned_df_pid": 6776,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Successful TradeSessionRead carries required native footer captions/colors. Actual goods controller matches native-qualified footer in11 states, pagination and rapid filtering;87 existing draft receipts and appraisal/late-close checks pass. No rendered footer or dialogue/exchange claim.",
+        "footers": [
+          {
+            "capacity": "Excess Weight: 348Γ",
+            "capacity_color": 4,
+            "fortress_value": "Value: 0☼",
+            "merchant_value": "Value: 0☼",
+            "profit": "Trader Profit: 0☼",
+            "profit_color": 6
+          },
+          {
+            "capacity": "Excess Weight: 214Γ",
+            "capacity_color": 4,
+            "fortress_value": "Value: 0☼",
+            "merchant_value": "Value: 0☼",
+            "profit": "Trader Profit: 0☼",
+            "profit_color": 4
+          },
+          {
+            "capacity": "Excess Weight: 79Γ",
+            "capacity_color": 4,
+            "fortress_value": "Value: 0☼",
+            "merchant_value": "Value: 0☼",
+            "profit": "Trader Profit: 0☼",
+            "profit_color": 4
+          },
+          {
+            "capacity": "Excess Weight: 79Γ",
+            "capacity_color": 4,
+            "fortress_value": "Value: 0☼",
+            "merchant_value": "Value: 0☼",
+            "profit": "Trader Profit: 0☼",
+            "profit_color": 4
+          },
+          {
+            "capacity": "Excess Weight: 79Γ",
+            "capacity_color": 4,
+            "fortress_value": "Value: 0☼",
+            "merchant_value": "Value: 0☼",
+            "profit": "Trader Profit: 0☼",
+            "profit_color": 4
+          },
+          {
+            "capacity": "Excess Weight: 579Γ",
+            "capacity_color": 4,
+            "fortress_value": "Value: 0☼",
+            "merchant_value": "Value: 0☼",
+            "profit": "Trader Profit: 0☼",
+            "profit_color": 2
+          },
+          {
+            "capacity": "Excess Weight: 79Γ",
+            "capacity_color": 4,
+            "fortress_value": "Value: 0☼",
+            "merchant_value": "Value: 0☼",
+            "profit": "Trader Profit: 0☼",
+            "profit_color": 4
+          },
+          {
+            "capacity": "Excess Weight: 79Γ",
+            "capacity_color": 4,
+            "fortress_value": "Value: 0☼",
+            "merchant_value": "Value: 0☼",
+            "profit": "Trader Profit: 0☼",
+            "profit_color": 4
+          },
+          {
+            "capacity": "Excess Weight: 79Γ",
+            "capacity_color": 4,
+            "fortress_value": "Value: 0☼",
+            "merchant_value": "Value: 0☼",
+            "profit": "Trader Profit: 0☼",
+            "profit_color": 4
+          },
+          {
+            "capacity": "Excess Weight: 79Γ",
+            "capacity_color": 4,
+            "fortress_value": "Value: 0☼",
+            "merchant_value": "Value: 0☼",
+            "profit": "Trader Profit: 0☼",
+            "profit_color": 4
+          },
+          {
+            "capacity": "Excess Weight: 79Γ",
+            "capacity_color": 4,
+            "fortress_value": "Value: 0☼",
+            "merchant_value": "Value: 0☼",
+            "profit": "Trader Profit: 0☼",
+            "profit_color": 4
+          }
+        ],
+        "controller": {
+          "closes": [
+            {
+              "outcome": 3,
+              "revision": 0,
+              "session": 4
+            },
+            {
+              "outcome": 3,
+              "revision": 0,
+              "session": 5
+            }
+          ],
+          "goods_states": 11,
+          "initial_session": 4,
+          "late_open": {
+            "entry": {
+              "dialogue": 0,
+              "entity_id": 865,
+              "fortress": "Your fortress of Roderònul",
+              "fortress_trader": 988,
+              "has_speaker": false,
+              "merchant_trader": -1,
+              "place": "Dumatzas",
+              "speaker": "",
+              "title": "Merchants from Dumatzas",
+              "unloading": false
+            },
+            "outcome": 0,
+            "revision": 1,
+            "session": 5
+          }
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-210207/depot-trade-native.json": "343ba2140aefb6a2359ad29a455f2ef309105332d477e3c48c99e18cab4023f1",
+          "build/stockpile-storage-native-farm-discovery-20261115-210207/trade-session-wire-expected.json": "2a53f8cae067fe3ac7bbd7412d3fe600ca58f020fe974057feb8ce0c2062e912",
+          "build/stockpile-storage-native-farm-discovery-20261115-210207/trade-session-wire-result.json": "06a9a1b99ed8705bd5fa2f6bc2cd089ab9b49f87e82beabd3a2fc019dab3d35d",
+          "build/stockpile-storage-native-farm-discovery-20261115-210207/trade-session-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261115-210207/result.json": "b6da8468e09d8e19dbebe4d09e768cb9643828e01420792870b12c6150720398",
+          "build/stockpile-storage-native-farm-discovery-20261115-210207/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "schema/mirror.fbs": "529dcb15a62586c74a284b1484b7c846df5cc17bb16b452e3ff5424322deed9c",
+          "schema/cpp/management_util.h": "5bced73efbf0f9755cd982e545afcbda1388d8a6043fbdaa0795b53eb26da9ab",
+          "presentations/godot/project/scripts/trade_goods_state.gd": "2a82b4934ca91c26c11ea9bfcff5aedf381bff2503d04000ab18fb8bc3b50196",
+          "presentations/godot/project/tests/trade_session_wire_live.gd": "ff625a8d1d5e8a985c01f7be6702e78d979fe307c2b1cb7c5801f39bf35e73b5"
+        }
       }
     },
     "pending_construction_reference": {

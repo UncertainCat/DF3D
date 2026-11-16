@@ -192,8 +192,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 241;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v241";
+inline constexpr uint32_t kManagementVersion = 242;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v242";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1943,11 +1943,15 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if(s.action()<ManagementAction::TradeSessionOpen || s.action()>ManagementAction::TradeSessionClose || s.status()!=ManagementStatus::Ok || r->outcome()>TradeSessionOutcome::Unknown || r->session()>INT64_MAX || r->revision()>INT64_MAX)return "invalid trade session result";
     const auto outcome=r->outcome();
     if(outcome==TradeSessionOutcome::Available){
-      if(s.action()==ManagementAction::TradeSessionClose || !r->session() || !r->revision() || (bool(r->entry())!=(s.action()==ManagementAction::TradeSessionOpen)))return "invalid available trade session";
+      if(s.action()==ManagementAction::TradeSessionClose || !r->session() || !r->revision() || (bool(r->entry())!=(s.action()==ManagementAction::TradeSessionOpen)) || (bool(r->footer())!=(s.action()==ManagementAction::TradeSessionRead)))return "invalid available trade session";
     }else{
-      if(r->entry() || r->revision() || (outcome==TradeSessionOutcome::Closed ? (!r->session() || s.action()!=ManagementAction::TradeSessionClose):r->session()!=0))return "invalid terminal trade session";
+      if(r->entry() || r->footer() || r->revision() || (outcome==TradeSessionOutcome::Closed ? (!r->session() || s.action()!=ManagementAction::TradeSessionClose):r->session()!=0))return "invalid terminal trade session";
       if(outcome==TradeSessionOutcome::Unknown && s.action()!=ManagementAction::TradeSessionOpen)return "unexpected trade open uncertainty";
       if(outcome==TradeSessionOutcome::Retired && s.action()!=ManagementAction::TradeSessionRead)return "unexpected retired trade session";
+    }
+    if(const auto* f=r->footer()){
+      for(const auto* text:{f->merchant_value(),f->fortress_value(),f->profit(),f->capacity()})if(!text || !text->size() || text->size()>2048)return "invalid trade footer caption";
+      if((f->profit_color()!=2 && f->profit_color()!=4 && f->profit_color()!=6) || (f->capacity_color()!=4 && f->capacity_color()!=7))return "invalid trade footer color";
     }
     if(const auto* e=r->entry()){
       if(e->entity_id()<0 || e->fortress_trader()<0 || e->merchant_trader()<-1 || e->dialogue()<-1)return "invalid trade entry identity";

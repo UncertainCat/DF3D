@@ -8,6 +8,9 @@ func poll_controller(service,model,terminal: int) -> bool:
 	return check(model.phase==terminal,"Trade controller did not reach expected phase: "+str(model.phase))
 func compare_goods(model,state: Dictionary) -> void:
 	check(model.goods_ready(),"Controller goods are not ready")
+	for key in state.footer:
+		var expected: Variant=int(state.footer[key]) if key.ends_with("_color") else state.footer[key]
+		check(model.footer.get(key)==expected,"Controller native footer differs: "+str([key,model.footer.get(key),expected]))
 	for side in range(2):
 		var page: Dictionary=model.pages[side]
 		var expected: Dictionary=state.display[side]

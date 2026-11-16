@@ -2509,7 +2509,8 @@ table TradeDraftPage { side:int8 = -1; offset:uint32; total:uint32; query:string
 table TradeDraftState { outcome:TradeSessionOutcome = Rejected; session:uint64; revision:uint64; page:TradeDraftPage; }
 table TradeSessionRequest { depot_id:int32 = -1; choice_token:uint64; session:uint64; expected_revision:uint64; }
 table TradeSessionEntry { entity_id:int32 = -1; fortress_trader:int32 = -1; merchant_trader:int32 = -1; dialogue:int16 = -1; unloading:bool; has_speaker:bool; title:string (required); speaker:string (required); fortress:string (required); place:string (required); }
-table TradeSessionState { outcome:TradeSessionOutcome = Rejected; session:uint64; revision:uint64; entry:TradeSessionEntry; }
+table TradeFooter { merchant_value:string; fortress_value:string; profit:string; profit_color:int8; capacity:string; capacity_color:int8; }
+table TradeSessionState { outcome:TradeSessionOutcome = Rejected; session:uint64; revision:uint64; entry:TradeSessionEntry; footer:TradeFooter; }
 table TradeCatalogRequest { depot_id:int32 = -1; }
 table TradeCatalogChoice { token:uint64; entity_id:int32 = -1; race:string (required); name:string (required); }
 table TradeCatalogState { depot_id:int32 = -1; title:string (required); from_text:string (required); choices:[TradeCatalogChoice] (required); }
@@ -2634,7 +2635,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 241;
+  schema_version:uint32 = 242;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2712,7 +2713,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 241;
+  schema_version:uint32 = 242;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

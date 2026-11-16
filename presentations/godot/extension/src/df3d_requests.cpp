@@ -363,6 +363,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
     }
     if(s.tradeSession){const auto& v=*s.tradeSession;Dictionary value;value["outcome"]=int(v.outcome);value["session"]=int64_t(v.session);value["revision"]=int64_t(v.revision);
         if(v.entry){const auto& e=*v.entry;Dictionary entry;entry["entity_id"]=e.entityId;entry["fortress_trader"]=e.fortressTrader;entry["merchant_trader"]=e.merchantTrader;entry["dialogue"]=e.dialogue;entry["unloading"]=e.unloading;entry["has_speaker"]=e.hasSpeaker;entry["title"]=String::utf8(e.title.c_str());entry["speaker"]=String::utf8(e.speaker.c_str());entry["fortress"]=String::utf8(e.fortress.c_str());entry["place"]=String::utf8(e.place.c_str());value["entry"]=entry;}
+        if(v.footer){const auto& f=*v.footer;Dictionary footer;footer["merchant_value"]=String::utf8(f.merchantValue.c_str());footer["fortress_value"]=String::utf8(f.fortressValue.c_str());footer["profit"]=String::utf8(f.profit.c_str());footer["profit_color"]=f.profitColor;footer["capacity"]=String::utf8(f.capacity.c_str());footer["capacity_color"]=f.capacityColor;value["footer"]=footer;}
         result["trade_session"]=value;if(v.outcome==wm::TradeSessionOutcome::Unknown)result["outcome"]="unknown";
     }
     if(s.depotGoods){const auto& v=*s.depotGoods;Dictionary value;Array categories,groups,items;

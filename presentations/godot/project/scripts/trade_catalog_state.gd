@@ -17,6 +17,7 @@ var generation:=0
 var session: int=0
 var revision: int=0
 var entry: Dictionary={}
+var footer: Dictionary={}
 var _open_ticket:=0
 func configure(source) -> void:
 	dispose();service=source
@@ -31,7 +32,7 @@ func close() -> void:
 		if _open_ticket!=0:service.retire_trade_open(_open_ticket)
 		if ticket!=0 and ticket!=_open_ticket:service.detach(ticket)
 		if session>0:service.submit("trade_session",{"action":C.ManagementAction.TradeSessionClose,"session":session},Callable())
-	_open_ticket=0;session=0;revision=0;entry={}
+	_open_ticket=0;session=0;revision=0;entry={};footer={}
 	ticket=0;depot_id=-1;title="";from_text="";choices=[];phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:close();phase=Phase.Unavailable;changed.emit()
 func open(id: int) -> void:
@@ -83,11 +84,17 @@ func refresh_session() -> void:
 		ticket=0
 		var value: Variant=result.get("trade_session")
 		if result.get("outcome")=="unknown":phase=Phase.Unknown
-		elif result.get("status")==C.ManagementStatus.Ok and result.get("action")==C.ManagementAction.TradeSessionRead and typeof(value)==TYPE_DICTIONARY and value.get("outcome")==C.TradeSessionOutcome.Available and typeof(value.get("session"))==TYPE_INT and typeof(value.get("revision"))==TYPE_INT and value.session==session and value.revision==revision and not value.has("entry"):phase=Phase.Active
+		elif result.get("status")==C.ManagementStatus.Ok and result.get("action")==C.ManagementAction.TradeSessionRead and typeof(value)==TYPE_DICTIONARY and value.get("outcome")==C.TradeSessionOutcome.Available and typeof(value.get("session"))==TYPE_INT and typeof(value.get("revision"))==TYPE_INT and value.session==session and value.revision==revision and not value.has("entry") and _valid_footer(value.get("footer")):
+			footer=value.footer.duplicate(true);phase=Phase.Active
 		else:phase=Phase.Rejected
 		changed.emit())
 	if ticket==0:phase=Phase.Unavailable
 	changed.emit()
+static func _valid_footer(value: Variant) -> bool:
+	if typeof(value)!=TYPE_DICTIONARY or value.size()!=6:return false
+	for key in ["merchant_value","fortress_value","profit","capacity"]:
+		if typeof(value.get(key))!=TYPE_STRING or value[key].is_empty() or value[key].to_utf8_buffer().size()>2048:return false
+	return typeof(value.get("profit_color"))==TYPE_INT and value.profit_color in [2,4,6] and typeof(value.get("capacity_color"))==TYPE_INT and value.capacity_color in [4,7]
 func _valid_open(value: Variant) -> bool:
 	if typeof(value)!=TYPE_DICTIONARY or value.get("outcome")!=C.TradeSessionOutcome.Available or typeof(value.get("session"))!=TYPE_INT or value.session<=0 or typeof(value.get("revision"))!=TYPE_INT or value.revision!=1 or typeof(value.get("entry"))!=TYPE_DICTIONARY:return false
 	var e: Dictionary=value.entry

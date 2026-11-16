@@ -603,7 +603,7 @@ std::optional<df3d_production::TradeCaravanCatalog> tradeCatalogReply;
 int32_t tradeCatalogDepot=-1;
 uint64_t tradeCatalogClient=0;
 df3d_production::TradeOwner tradeCatalogOwner;
-struct TradeSessionReply {m::TradeSessionOutcome outcome=m::TradeSessionOutcome::Rejected;uint64_t session=0,revision=0;std::optional<df3d_production::TradeEntryFacts> entry;};
+struct TradeSessionReply {m::TradeSessionOutcome outcome=m::TradeSessionOutcome::Rejected;uint64_t session=0,revision=0;std::optional<df3d_production::TradeEntryFacts> entry;std::optional<df3d_production::TradeValueTotals> values;std::optional<df3d_production::TradeCapacity> capacity;};
 std::optional<TradeSessionReply> tradeSessionReply;
 struct TradeDraftReply {m::TradeSessionOutcome outcome=m::TradeSessionOutcome::Rejected;uint64_t session=0,revision=0;int8_t side=-1;std::string query;std::optional<df3d_production::TradeDisplayPage> page;};
 std::optional<TradeDraftReply> tradeDraftReply;
@@ -1674,7 +1674,9 @@ void publish() {
   flatbuffers::Offset<m::TradeSessionState> tradeSessionResult;
   if(tradeSessionReply){const auto& v=*tradeSessionReply;flatbuffers::Offset<m::TradeSessionEntry> entry;
     if(v.entry){const auto& e=*v.entry;entry=m::CreateTradeSessionEntry(b,e.entity,e.fortressTrader,e.merchantTrader,e.dialogue,e.unloading,e.hasSpeaker,b.CreateString(DF2UTF(e.title)),b.CreateString(DF2UTF(e.speaker)),b.CreateString(DF2UTF(e.fortress)),b.CreateString(DF2UTF(e.place)));}
-    tradeSessionResult=m::CreateTradeSessionState(b,v.outcome,v.session,v.revision,entry);
+    flatbuffers::Offset<m::TradeFooter> footer;
+    if(v.values && v.capacity){const auto& f=*v.values;const auto& c=*v.capacity;footer=m::CreateTradeFooter(b,b.CreateString(DF2UTF(f.valueCaptions[0])),b.CreateString(DF2UTF(f.valueCaptions[1])),b.CreateString(DF2UTF(f.profitCaption)),int8_t(f.profitColor),b.CreateString(DF2UTF(c.caption)),int8_t(c.color));}
+    tradeSessionResult=m::CreateTradeSessionState(b,v.outcome,v.session,v.revision,entry,footer);
   }
   if(tradeCatalogReply){const auto& v=*tradeCatalogReply;std::vector<flatbuffers::Offset<m::TradeCatalogChoice>> choices;
     for(const auto& row:v.choices)choices.push_back(m::CreateTradeCatalogChoice(b,row.token,row.entity,b.CreateString(DF2UTF(row.race)),b.CreateString(DF2UTF(row.name))));
@@ -5350,8 +5352,12 @@ void run(color_ostream& out) {
         mutated=reply.outcome!=m::TradeSessionOutcome::Rejected;
         if(reply.outcome==m::TradeSessionOutcome::Available){reply.session=result.selection.session;reply.revision=result.selection.revision;reply.entry=std::move(result.entry);}
       }
+    }else if(r->action()==m::ManagementAction::TradeSessionRead) {
+      auto result=tradeCatalogOwner.summary(epoch,q.session(),q.expected_revision());
+      if(result.status==df3d_production::TradeSessionStatus::Available){reply.outcome=m::TradeSessionOutcome::Available;reply.session=result.session;reply.revision=result.revision;reply.values=std::move(result.values);reply.capacity=std::move(result.capacity);}
+      else if(result.status==df3d_production::TradeSessionStatus::Retired)reply.outcome=m::TradeSessionOutcome::Retired;
     }else {
-      const auto result=r->action()==m::ManagementAction::TradeSessionRead?tradeCatalogOwner.access(epoch,q.session(),q.expected_revision()):tradeCatalogOwner.close(q.session());
+      const auto result=tradeCatalogOwner.close(q.session());
       switch(result.status){
         case df3d_production::TradeSessionStatus::Available:reply.outcome=m::TradeSessionOutcome::Available;reply.session=result.session;reply.revision=result.revision;break;
         case df3d_production::TradeSessionStatus::Retired:reply.outcome=m::TradeSessionOutcome::Retired;break;

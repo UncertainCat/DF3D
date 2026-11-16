@@ -4,17 +4,22 @@ func page_value(side: int,query: String="",selected: bool=false,total: int=1,off
 	var rows: Array=[]
 	for index in range(offset,total):rows.append({"group":false,"expanded":true,"id":992+side*100+index,"parent":-1,"type":1,"subtype":-1,"amount":0,"flags":1 if selected else 0,"caption":"Synthetic item","value":10,"appraisal":1,"value_caption":"10","weight_caption":"1","disposition":0,"contained_count":0,"expandable":false,"contents_caption":""})
 	return {"side":side,"offset":offset,"total":total,"query":query,"rows":rows}
-func draft_reply(service,state,page: Dictionary={},revision: int=-1,extra: Dictionary={}) -> void:
+func draft_reply(service,state,page: Dictionary={},revision: int=-1,extra: Dictionary={},finish_summary: bool=true) -> void:
 	var call: Dictionary=service.calls[state.ticket]
 	var value: Dictionary={"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":state.revision if revision<0 else revision}
 	if not page.is_empty():value.page=page
 	var result: Dictionary={"status":C.ManagementStatus.Ok,"action":call.intent.action,"trade_draft":value};result.merge(extra,true)
 	call.observer.call(state.ticket,result,call.intent)
+	if finish_summary and state.ticket>0 and service.calls[state.ticket].intent.action==C.ManagementAction.TradeSessionRead:
+		session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":state.revision,"footer":footer_value()})
 func open_goods(service,state) -> void:
 	state.open(7);var single:=snapshot();single.choices.resize(1);service.reply(state.ticket,single);session_reply(service,state.ticket,session_value())
 	check(state.phase==Goods.Phase.GoodsReading,"Open did not request goods")
 	draft_reply(service,state,page_value(0));check(state.pages==[{},{}],"Half-loaded goods became visible")
-	draft_reply(service,state,page_value(1));check(state.goods_ready(),"Both sides did not become ready")
+	draft_reply(service,state,page_value(1),-1,{},false)
+	check(state.pages==[{},{}] and not state.goods_ready(),"Goods appeared before their footer")
+	session_reply(service,state.ticket,{"outcome":C.TradeSessionOutcome.Available,"session":state.session,"revision":state.revision,"footer":footer_value()})
+	check(state.goods_ready() and state.footer==footer_value(),"Goods and footer did not become ready together")
 func run() -> void:
 	var service=Service.new();root.add_child(service)
 	var state=Goods.new();state.configure(service);open_goods(service,state)

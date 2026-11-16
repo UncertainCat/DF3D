@@ -82,7 +82,19 @@ func _read_side(side: int,offset: int) -> void:
 		if offset!=target:offsets[side]=target;_read_side(side,target);return
 		offsets[side]=offset;_pending_pages[side]=page.duplicate(true)
 		if side==0:_read_side(1,0)
-		else:pages=_pending_pages;_pending_pages=[{},{}];phase=Phase.Active;changed.emit();_drain_filter())
+		else:_read_summary())
+	if ticket==0:phase=Phase.Unavailable;changed.emit()
+func _read_summary() -> void:
+	var owner:=generation
+	var intent: Dictionary={"action":C.ManagementAction.TradeSessionRead,"session":session,"expected_revision":revision}
+	ticket=service.submit("trade_session",intent,func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0
+		var value: Variant=result.get("trade_session")
+		if not _receipt(result,value,intent.action,revision) or not _valid_footer(value.get("footer")):
+			_fail_goods(result);return
+		footer=value.footer.duplicate(true);pages=_pending_pages;_pending_pages=[{},{}]
+		phase=Phase.Active;changed.emit();_drain_filter())
 	if ticket==0:phase=Phase.Unavailable;changed.emit()
 func toggle_row(side: int,index: int,expand: bool=false) -> void:
 	if not goods_ready() or side<0 or side>1 or index<0 or index>=pages[side].rows.size():return

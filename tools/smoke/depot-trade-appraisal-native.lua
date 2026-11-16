@@ -71,7 +71,9 @@ local ok,err=xpcall(function()
      if i>0 then applied[#applied+1]=intents[i]end
      local output,code=dfhack.run_command_silent('df3d','trade-display-probe',tostring(trade.bld.id),'0','','',i==0 and '[]' or json.encode(applied));assert(code==0,output)
      local facts=json.decode(output);assert(facts.available)
-     expected.draft[#expected.draft+1]={intent=i>0 and intents[i] or nil,display=facts.display}
+     local function caption(bytes)local parts={};for _,ch in ipairs(bytes)do parts[#parts+1]=string.char(ch)end;return dfhack.df2utf(table.concat(parts))end
+      local t,c=facts.value_totals,facts.capacity
+      expected.draft[#expected.draft+1]={intent=i>0 and intents[i] or nil,display=facts.display,footer={merchant_value=caption(t.value_captions[1]),fortress_value=caption(t.value_captions[2]),profit=caption(t.profit_caption),profit_color=t.profit_color,capacity=caption(c.caption),capacity_color=c.color}}
     end
    end
    local file=assert(io.open(out..'/trade-session-wire-expected.json','w'));file:write(json.encode(expected));file:close()

@@ -1,3 +1,26 @@
+## Trade footer transport migration
+
+Management protocol242 requires a native footer on each successful
+TradeSessionRead: merchant/fortress value captions, profit/loss caption/color,
+and capacity caption/color. Open and terminal responses cannot carry it.
+Captions and native color domains are bounded and validated through the model
+and Godot adapter. Old records cannot invent a footer. Rebuild both peers;
+DF53.16 compatibility remains unchanged.
+
+The goods controller reads both pages and the matching revision's footer before
+publishing them together. Pending/rejected reads retain disabled content;
+late replies cannot replace a reopened owner. Reads do not repeat appraisal.
+Protected210207 on2026-11-15 matches native-qualified footer fields in11 states
+through the actual transport/controller, including pagination and rapid filter
+changes. All87 draft receipts and the full appraisal/late-close checks still
+pass. Owned DF6776 closes unsaved/source-preserved at30FPS, sampled60C. Bridge,
+root and extension builds, all19 core checks and goods/catalog headless checks
+pass. The prior210040 comparison used JSON floats in dictionary equality; the
+rerun compares typed fields and passes with a clean log. Evidence:
+`completed_sheet_discovery_reference.depot_trade_footer_transport_reference`.
+This qualifies transport/controller behavior, not rendered footer, dialogue,
+partial quantities or exchange.
+
 ## Owned trade footer summary
 
 TradeSelectionSession and TradeOwner provide a revision-bound summary that
@@ -15,7 +38,8 @@ reads successfully compose the summary; existing stale/source/trader/epoch
 retirement checks pass. Owned DF33936 closes unsaved/source-preserved at30FPS,
 sampled59-60C. Bridge build and all19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_trade_footer_summary_reference`.
-Public summary transport and rendered footer integration remain unfinished;
+Protocol242 above adds public summary transport. Rendered footer integration
+was not covered by that provider run;
 this evidence does not qualify partial quantities, overflow or exchange.
 Management protocol remains241.
 
@@ -71,7 +95,7 @@ priority: offered, stolen, fortress-side export restriction, imported, local.
 Native cb2210 supplies the export restriction; container count follows resolved
 CONTAINS_ITEM references when the container flag is set, and native number/text
 routines supply the caption. No renderer/menu scratch is used. Godot maps these
-facts to native artwork/colors; it does not reconstruct restrictions. That migration used240; current peers use241 and require
+facts to native artwork/colors; it does not reconstruct restrictions. That migration used240; current peers use242 and require
 rebuilding together. Older records cannot invent row facts.
 DF53.16 compatibility remains unchanged.
 
@@ -103,7 +127,7 @@ expansion, item identities, captions, appraisal values and weight captions.
 Selection accepts only item/group/all/filter/expansion intents; native routines
 update the owned checkpoint and advance its revision. No exchange occurs.
 Stale requests reject without changing the draft; source changes retire it.
-Unknown apply outcomes must not be replayed. That migration used239; current peers use241 and require a
+Unknown apply outcomes must not be replayed. That migration used239; current peers use242 and require a
 bridge/viewer rebuild; DF53.16 pins remain unchanged. Older recordings cannot
 synthesize draft state. Public trade remains hidden pending complete integration.
 
@@ -150,7 +174,7 @@ close accepts only a session. Results distinguish Available, Rejected, Retired,
 Closed and Unknown. Successful open carries native entry captions and trader
 facts; reads validate ownership/source without repeating appraisal. Protocol239 above adds goods projections and selection; negotiation remains
 unimplemented. No native index/address
-enters the model API. That migration used238; current peers and schema defaults use241, requiring a bridge
+enters the model API. That migration used238; current peers and schema defaults use242, requiring a bridge
 and viewer rebuild together; DF53.16 compatibility pins are unchanged.
 
 The management connection owns the composed native catalog/session provider.
@@ -212,7 +236,7 @@ duplicate entities are valid, duplicate/zero/out-of-range tokens are not.
 Replies reject missing payloads, invalid depot/entity IDs, excess rows/strings
 and payload budgets. Oversized encoded replies reject explicitly rather than
 timing out at the mailbox. No choices or tokens are synthesized for old records.
-That migration used237; current peers use241 as described above. DF53.16 pins stay fixed.
+That migration used237; current peers use242 as described above. DF53.16 pins stay fixed.
 
 The native management handler owns a catalog separate from diagnostic probes,
 resolves a revealed depot, and refreshes it through the qualified native catalog
@@ -263,7 +287,7 @@ expected goods revision; pages carry at most64 children. Replies identify the
 parent, offset and total, and retain native child IDs/types, nested counts,
 descriptions, values, appraisal text and prohibition facts. A page total must
 agree with its parent's group count. Child IDs do not authorize hauling actions.
-That migration used236; current peers use241 as described above. DF53.16 pins are unchanged.
+That migration used236; current peers use242 as described above. DF53.16 pins are unchanged.
 Older recordings cannot invent container counts or pages. Staged viewer
 integration and its remaining acceptance limits are documented below.
 

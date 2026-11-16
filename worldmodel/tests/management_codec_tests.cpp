@@ -9,6 +9,20 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Trade session reads require bounded native footer captions") {
+  for(int fault=0;fault<8;++fault){
+    flatbuffers::FlatBufferBuilder b;auto text=b.CreateString("Native fixture caption");
+    auto oversized=b.CreateString(std::string(2049,'x'));
+    auto footer=wire::CreateTradeFooter(b,fault==1?0:fault==2?oversized:text,text,text,fault==3?7:6,text,fault==4?6:7);
+    auto result=wire::CreateTradeSessionState(b,fault==5?wire::TradeSessionOutcome::Rejected:wire::TradeSessionOutcome::Available,91,3,0,fault==6?0:footer);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);
+    state.add_action(fault==7?wire::ManagementAction::TradeSessionClose:wire::ManagementAction::TradeSessionRead);state.add_trade_session(result);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeState(value);REQUIRE(decoded.tradeSession);REQUIRE(decoded.tradeSession->footer);CHECK(decoded.tradeSession->footer->merchantValue=="Native fixture caption");CHECK(decoded.tradeSession->footer->capacityColor==7);}
+  }
+}
+
 TEST_CASE("Trade draft requests reject mixed authority and preserve wide identities") {
   for(int operation=-1;operation<=6;++operation)for(int fault=0;fault<7;++fault){
     wm::ManagementRequest r;r.action=operation<0?wm::ManagementAction::TradeDraftRead:wm::ManagementAction::TradeDraftApply;

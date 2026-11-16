@@ -216,6 +216,7 @@ ManagementState decodeState(const m::ManagementState* s) {
   }
   if(const auto* r=s->trade_session()) {
     next.tradeSession.emplace();auto& out=*next.tradeSession;out.outcome=TradeSessionOutcome(r->outcome());out.session=r->session();out.revision=r->revision();
+    if(const auto* f=r->footer())out.footer=TradeFooter{f->merchant_value()->str(),f->fortress_value()->str(),f->profit()->str(),f->profit_color(),f->capacity()->str(),f->capacity_color()};
     if(const auto* e=r->entry())out.entry=TradeSessionEntry{e->entity_id(),e->fortress_trader(),e->merchant_trader(),e->dialogue(),e->unloading(),e->has_speaker(),e->title()->str(),e->speaker()->str(),e->fortress()->str(),e->place()->str()};
   }
   if(const auto* r=s->depot_goods()) {

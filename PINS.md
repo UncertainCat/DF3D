@@ -22,7 +22,8 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Current management protocol241 adds optional paired web pattern/thickness facts,
+Current management protocol242 requires native footer captions/colors on successful
+TradeSessionRead. Old recordings cannot synthesize a footer. Protocol241 adds optional paired web pattern/thickness facts,
 selected by DF with an owned position seed. Missing facts remain unknown in old
 recordings. Protocol240 adds required trade row disposition and container
 facts/captions. Old recordings must not fabricate these facts. Protocol239 added revision-bound native trade draft pages and
@@ -40,7 +41,7 @@ source-bound child pages. Protocol235 added native appraisal knowledge and forma
 depot item values. Protocol234 added revision-bound checkbox drafts and retained
 sorting choices to goods reads. Protocol233 introduced whole-batch
 commits and explicit outcomes;232 introduced owned goods reads.
-Both peers use `Local\df3d_management_v241`; rebuild bridge and viewer together.
+Both peers use `Local\df3d_management_v242`; rebuild bridge and viewer together.
 Older recordings must not synthesize goods snapshots or commit receipts.
 Migration guidance is in ENGINEERING.md's trade draft/session, caravan catalog and depot goods transport sections.
 

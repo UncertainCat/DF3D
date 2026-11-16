@@ -5,6 +5,9 @@
 #include "df/unit.h"
 #include "df/item.h"
 #include "df/item_critter.h"
+#include "df/building_civzonest.h"
+#include "df/building_chainst.h"
+#include "df/job.h"
 #include <windows.h>
 #include <algorithm>
 #include <unordered_set>
@@ -99,5 +102,96 @@ inline bool cageAssign(df::building_cagest& cage,int32_t id,bool item,bool assig
     const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
     using Apply=bool(__fastcall*)(df::building_cagest**,Entry*,bool);
     return reinterpret_cast<Apply>(base+0x3cdd20)(&context,&entry,assign);
+}
+
+struct CageSnapshot {
+    int32_t buildingId=-1;
+    uint64_t revision=0;
+    bool removing=false;
+    std::vector<df3d_area::ZoneAnimalCandidate> candidates;
+};
+
+// Recompute authority from semantic facts at the request's safe point. Include
+// prior assignments that the native callback would retire, not just membership
+// of the destination cage. The enclosing request owner supplies session/epoch.
+inline std::optional<CageSnapshot> observeCage(df::building* building) {
+    if(!building || building->getType()!=df::building_type::Cage)return {};
+    auto& cage=*static_cast<df::building_cagest*>(building);
+    auto candidates=cageCandidates(cage);if(!candidates)return {};
+    CageSnapshot result;result.buildingId=cage.id;result.candidates=std::move(*candidates);
+    uint64_t hash=UINT64_C(14695981039346656037);
+    const auto add=[&](uint64_t value) {
+        for(int i=0;i<8;++i){hash^=uint8_t(value);hash*=UINT64_C(1099511628211);value>>=8;}
+    };
+    add(cage.id);add(cage.cage_flags.whole);add(cage.centerx);add(cage.centery);add(cage.z);
+    for(auto* job:cage.jobs)if(job) {
+        add(job->id);add(int32_t(job->job_type));
+        if(job->job_type==df::job_type::DestroyBuilding)result.removing=true;
+    }
+    add(result.candidates.size());
+    const auto contains=[](const auto& values,int32_t id) {
+        return std::find(values.begin(),values.end(),id)!=values.end();
+    };
+    for(const auto& row:result.candidates) {
+        add(row.id);add(row.item);add(row.assigned);
+        if(row.item) {
+            auto* item=df::item::find(row.id);if(!item)return {};
+            add(item->flags.whole);add(item->getMaterial());add(item->getMaterialIndex());
+        } else {
+            auto* unit=df::unit::find(row.id);if(!unit)return {};
+            add(unit->flags1.whole);add(unit->flags2.whole);
+            add(unit->job.current_job?unit->job.current_job->id:-1);
+        }
+        add(1);
+        for(auto* source:df::global::world->buildings.other.CAGE)
+            if(source && contains(row.item?source->assigned_items:source->assigned_units,row.id))add(source->id);
+        add(UINT64_MAX);
+        for(auto* source:df::global::world->buildings.other.ANY_ZONE)
+            if(source && contains(row.item?source->assigned_items:source->assigned_units,row.id))add(source->id);
+        add(UINT64_MAX-1);
+        if(!row.item)for(auto* chain:df::global::world->buildings.other.CHAIN) {
+            if(!chain || !chain->assigned || chain->assigned->id!=row.id)continue;
+            add(chain->id);
+            for(auto* job:chain->jobs)if(job){add(job->id);add(int32_t(job->job_type));}
+            add(UINT64_MAX-2);
+        }
+        add(UINT64_MAX-3);
+    }
+    result.revision=(hash&INT64_MAX)|1;
+    return result;
+}
+
+enum class CageOutcome:uint8_t { Unavailable, Completed, Stale, Unknown };
+struct CageEdit {
+    CageOutcome outcome=CageOutcome::Unavailable;
+    bool effectsStarted=false;
+    std::optional<CageSnapshot> receipt;
+};
+inline CageEdit setCageAssignment(df::building* building,uint64_t expected,int32_t id,bool item,bool assigned) {
+    CageEdit result;
+    try {
+        const auto before=observeCage(building);
+        if(!before || !expected || expected>INT64_MAX || !cageAssignmentReady())return result;
+        if(before->revision!=expected){result.outcome=CageOutcome::Stale;return result;}
+        if(before->removing)return result;
+        const auto found=std::find_if(before->candidates.begin(),before->candidates.end(),[&](const auto& row) {
+            return row.id==id && row.item==item;
+        });
+        if(found==before->candidates.end())return result;
+        if(found->assigned==assigned) {
+            result.outcome=CageOutcome::Completed;result.receipt=before;return result;
+        }
+        result.effectsStarted=true;result.outcome=CageOutcome::Unknown;
+        if(!cageAssign(*static_cast<df::building_cagest*>(building),id,item,assigned))return result;
+        const auto after=observeCage(building);if(!after)return result;
+        const auto current=std::find_if(after->candidates.begin(),after->candidates.end(),[&](const auto& row) {
+            return row.id==id && row.item==item;
+        });
+        // An unassigned row may cease to be eligible. Absence is never success
+        // for an assignment, and a still-assigned row is never successful removal.
+        if(current==after->candidates.end()?assigned:current->assigned!=assigned)return result;
+        result.receipt=after;result.outcome=CageOutcome::Completed;
+    }catch(...){}
+    return result;
 }
 }

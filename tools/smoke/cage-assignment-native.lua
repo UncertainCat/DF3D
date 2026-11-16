@@ -56,8 +56,21 @@ local function apply(kind,id,value)
   gui.simulateInput(view,'_MOUSE_L')
   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
  else
-  local text,code=dfhack.run_command_silent('df3d','cage-assign-probe',tostring(cage.id),tostring(id),tostring(kind),value and '1'or'0')
-  assert(code==0,text);local response=json.decode(text);assert(response.success and not response.outcome_unknown,text)
+  local function request(...)
+   local text,code=dfhack.run_command_silent('df3d','cage-state-probe',tostring(cage.id),...)
+   assert(code==0,text);return json.decode(text)
+  end
+  local before=request()
+  local function edit(revision,desired)
+   return request(tostring(revision),tostring(id),tostring(kind),desired and '1'or'0')
+  end
+  local response=edit(before.revision,value)
+  assert(response.outcome==1 and response.effects_started,'Revisioned cage edit failed')
+  assert(response.revision~=before.revision,'Cage edit did not change authority')
+  local stale=edit(before.revision,not value)
+  assert(stale.outcome==2 and not stale.effects_started,'Stale cage edit entered effects')
+  local duplicate=edit(response.revision,value)
+  assert(duplicate.outcome==1 and not duplicate.effects_started and duplicate.revision==response.revision,'Idempotent cage edit entered effects')
  end
  view:render(dfhack.getTickCount())
  assert(contains(kind==0 and cage.assigned_units or cage.assigned_items,id)==value,'Cage assignment effect differs')

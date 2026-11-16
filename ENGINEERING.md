@@ -3127,10 +3127,15 @@ For units, shared `nativeDetachAnimalRestraints` first performs the already-used
 zone semantic cage/chain cleanup, removing holder relationships before native
 chain-job destruction. The callback then finds no assigned chain, avoiding its
 menu-dependent job-detach branch. This extraction preserves the zone statements
-and ordering. Effects can partially complete; future request owners must validate
-current epoch/revision and treat post-entry failure as unknown without replay.
-Diagnostic `cage-assign-probe` requires a paused, loaded, non-saving session;
-there is no public transport or viewer action yet.
+and ordering. Effects can partially complete. `setCageAssignment` compares a fresh
+semantic revision before entry, rejects removing cages, and returns idempotent
+success without entering effects when membership already matches. Revisions cover
+candidate identities/eligibility, destination settings/jobs and prior cage/zone/
+chain assignment facts. Post-entry failure remains unknown without replay. The
+enclosing transport must supply session/epoch authority. Diagnostic
+`cage-state-probe` requires a paused, loaded, non-saving session; the earlier
+unrevisioned diagnostic writer is removed. There is no public transport or viewer
+action yet.
 
 Protected100524 on2026-11-16 first qualifies the read provider. Native100903
 (DF41556) and owned101004 (DF52068) then match all seven raw candidate IDs/order
@@ -3145,7 +3150,13 @@ the source manifest and close unsaved at30FPS; sampled GPU59–61C. The bridge
 build/install and all19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.cage_semantic_reference`.
 
-Next is the revisioned semantic request/reply owner and the complete cage picker,
+Protected101858 (DF66924) also matches the six native100903 effect snapshots
+through revisioned edits. For each of four toggles, stale reversal is refused
+before effects and a repeated current assignment completes without effects.
+Source preservation and unsaved cleanup pass; sampled GPU58-60C at30FPS.
+Evidence: `completed_sheet_discovery_reference.cage_authority_reference`.
+
+Next is the semantic transport request/reply owner and the complete cage picker,
 including native sorting/text/artwork, selection effects and public map entry.
 Shared animal presentation components can be reused only where their semantics
 match; a zone ID must not stand in for cage authority.

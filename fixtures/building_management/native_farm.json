@@ -113538,6 +113538,21 @@
           "tools/smoke/cage-candidates-native.lua": "71874dd20280e953ec82dbc36d5905bb5904b4c1c5ea348386f0a13b2364c509",
           "tools/smoke/cage-assignment-native.lua": "f1bb6307bd38ea913759b3250c2eeed6cb4919104ac240db2e463e157067680d"
         }
+      },
+      "cage_authority_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-101858",
+        "owned_df_pid": 66924,
+        "native_reference": "build/stockpile-storage-native-farm-discovery-20261116-100903",
+        "scope": "Four revisioned unit/critter toggles match all six native effect snapshots. Each stale reverse edit refuses before effects; each repeated current edit completes without effects. Candidate reads leave UI unchanged. Protocol/epoch transport and viewer not yet implemented. No zone/chain transfer or aquarium qualification.",
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-101858/remaining-buildings-native.json": "0a0650cd5203782ebd8708cf59463ee1130acc0091c2a55a7ca59fa275fe08b9",
+          "build/stockpile-storage-native-farm-discovery-20261116-101858/result.json": "91695ea9c324c64a544f0d4bce168b90e0f293a3a588e918be2824c67f9d8de1",
+          "build/stockpile-storage-native-farm-discovery-20261116-101858/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/cage_native.h": "4567782bb6293830427d8666e708f82b12dd3cbdd394b73f5c18f64576ca2261",
+          "tools/smoke/cage-assignment-native.lua": "e8e27e0f8ff58a3f754278de5fe70b445d9d524af080478ce5d83307b4bfe8be"
+        }
       }
     },
     "pending_construction_reference": {

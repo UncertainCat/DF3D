@@ -5648,20 +5648,31 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         Json::Value output(Json::arrayValue);for(auto id:*ids)output.append(id);
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
-      if(parameters[0]=="cage-assign-probe") {
-        if(parameters.size()!=5)return CR_WRONG_USAGE;
+      if(parameters[0]=="cage-state-probe") {
+        if(parameters.size()!=2 && parameters.size()!=6)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
-        std::array<int32_t,4> values{};
-        for(size_t i=0;i<values.size();++i) {
-          const auto& arg=parameters[i+1];const auto parsed=std::from_chars(arg.data(),arg.data()+arg.size(),values[i]);
+        std::array<int64_t,5> values{};
+        for(size_t i=1;i<parameters.size();++i) {
+          const auto& arg=parameters[i];const auto parsed=std::from_chars(arg.data(),arg.data()+arg.size(),values[i-1]);
           if(parsed.ec!=std::errc{} || parsed.ptr!=arg.data()+arg.size())return CR_WRONG_USAGE;
         }
-        if(values[2]<0 || values[2]>1 || values[3]<0 || values[3]>1)return CR_WRONG_USAGE;
-        auto* cage=virtual_cast<df::building_cagest>(df::building::find(values[0]));
-        if(!cage || !df3d_production::cageAssignmentReady())return CR_FAILURE;
-        Json::Value output;output["effects_started"]=true;
-        try {output["success"]=df3d_production::cageAssign(*cage,values[1],values[2]!=0,values[3]!=0);}
-        catch(...) {output["success"]=false;output["outcome_unknown"]=true;}
+        if(values[0]<0 || values[0]>INT32_MAX)return CR_WRONG_USAGE;
+        auto* cage=virtual_cast<df::building_cagest>(df::building::find(int32_t(values[0])));
+        Json::Value output;std::optional<df3d_production::CageSnapshot> snapshot;
+        if(parameters.size()==2)snapshot=df3d_production::observeCage(cage);
+        else {
+          if(values[1]<=0 || values[2]<0 || values[2]>INT32_MAX || values[3]<0 || values[3]>1 || values[4]<0 || values[4]>1)return CR_WRONG_USAGE;
+          auto edit=df3d_production::setCageAssignment(cage,uint64_t(values[1]),int32_t(values[2]),values[3]!=0,values[4]!=0);
+          output["outcome"]=int(edit.outcome);output["effects_started"]=edit.effectsStarted;snapshot=std::move(edit.receipt);
+        }
+        if(snapshot) {
+          output["building_id"]=snapshot->buildingId;output["revision"]=Json::UInt64(snapshot->revision);output["removing"]=snapshot->removing;
+          Json::Value rows(Json::arrayValue);
+          for(const auto& candidate:snapshot->candidates) {
+            Json::Value row;row["id"]=candidate.id;row["kind"]=candidate.item?1:0;row["assigned"]=candidate.assigned;rows.append(row);
+          }
+          output["rows"]=rows;
+        } else if(parameters.size()==2)return CR_FAILURE;
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="cage-candidates-read") {

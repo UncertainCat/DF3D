@@ -5165,6 +5165,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(action=="exchange"){
             if(parameters.size()!=4)return CR_WRONG_USAGE;
             const auto exchanged=session.exchange(state.terrain.epoch(),a,b);exchangeStatus=exchanged.status;result=exchanged.selection;
+          }else if(action=="okay") {
+            if(parameters.size()!=4)return CR_WRONG_USAGE;
+            result=session.dismissCounteroffer(state.terrain.epoch(),a,b);
           }else if(action=="read" || action=="epoch") {
             if(parameters.size()!=4)return CR_WRONG_USAGE;
             result=session.access(state.terrain.epoch()+(action=="epoch"?1:0),a,b);
@@ -5185,6 +5188,23 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if(action=="read" && result.status==df3d_production::TradeSessionStatus::Available){
           for(int32_t side=0;side<2;++side){const auto page=session.display(state.terrain.epoch(),a,b,side,0,64);if(!page || !result.draft || page->total*3!=size_t(result.draft->sides[side].height))return CR_FAILURE;}
           output["display_verified"]=true;
+          if(result.conversation){
+            const auto counter=session.counterPage(state.terrain.epoch(),a,b,0,64);if(!counter)return CR_FAILURE;
+            output["counter_page"]["heading"]=Json::arrayValue;
+            for(const auto& line:counter->heading)output["counter_page"]["heading"].append(DF2UTF(line));
+            output["counter_page"]["dismiss"]=DF2UTF(counter->dismiss);
+            output["counter_page"]["total"]=Json::UInt64(counter->page.total);
+            output["counter_page"]["offset"]=Json::UInt64(counter->page.offset);
+            output["counter_page"]["rows"]=Json::arrayValue;
+            for(const auto& row:counter->page.rows){
+              if(!row.valuation)return CR_FAILURE;Json::Value r;
+              r["id"]=row.id;r["type"]=row.type;r["subtype"]=row.subtype;r["caption"]=DF2UTF(row.caption);
+              r["disposition"]=int(row.disposition);r["contained_count"]=row.containedCount;r["contents_caption"]=DF2UTF(row.contentsCaption);
+              r["appraisal"]=row.valuation->appraisal;r["value_caption"]=DF2UTF(row.valuation->valueCaption);r["weight_caption"]=DF2UTF(row.valuation->weightCaption);
+              output["counter_page"]["rows"].append(r);
+            }
+            if(session.counterPage(state.terrain.epoch(),a,b-1,0,64) || session.counterPage(state.terrain.epoch(),a,b,counter->page.total+1,64))return CR_FAILURE;
+          }
           const auto summary=session.summary(state.terrain.epoch(),a,b);
           if(summary.status!=result.status || summary.session!=a || summary.revision!=b ||
              !summary.entry || !summary.values || !summary.capacity || !summary.header || summary.columns!=102)return CR_FAILURE;

@@ -21,7 +21,35 @@ RNG comparison still passes. Owned DF34820 closes unsaved/source-preserved,
 `completed_sheet_discovery_reference.depot_trade_conversation_restore_reference`.
 This evidence covers reconstruction within one safe point. Persistent session
 rebinding and accepted transfers are qualified below. Real announcement content
-and Okay input remain unfinished. Protocol243 and public exposure are unchanged.
+remains unfinished. Okay session behavior and the staged counteroffer pane are
+qualified below; public integration remains open.
+
+### Counteroffer pane and dismissal
+
+The session supplies a bounded counteroffer page from its validated conversation,
+resolving retained IDs against fresh goods. Active counteroffers require fortress
+goods; accepted lists can contain goods that have changed sides. Native item
+captions, status, valuation and weight providers are shared with ordinary rows.
+Heading and Okay text come from pinned native literals. Explicit dismissal calls
+native6f290 with the owned requested-items vector, preserving the independent
+counteroffer flag, dialogue and goods draft; successful dismissal advances the
+session revision. Empty lists and stale revisions reject.
+
+Protected231214 on2026-11-15 verifies the five retained accepted rows, dismissal,
+refresh and stale/empty rejection. Goods, transfers and active RNG do not change
+on dismissal. Acceptance still matches native224201 for goods, ownership,
+trader attributes/skills, caravan and RNG. Owned DF50564 closes unsaved with
+source preserved at30FPS; GPU samples59–60C. Bridge build and19 core checks pass.
+
+The staged trade_counter_view matches the entire448x504 native pane at520,148
+in native223337's1200x800 accepted screenshot, including item artwork and the
+native glyph-cell replacement where caption/value columns meet. Enabled and
+disabled Okay clicks pass in headless and rendered checks. Godot runs serially
+at30FPS and exits; the post-render GPU sample is61C, not a peak measurement.
+Evidence: completed_sheet_discovery_reference.depot_trade_counter_view_reference.
+This does not qualify active-counter dismissal, long lists, narrow widths,
+public transport or full-screen integration. Protocol244 remains unchanged and
+Trade remains hidden until its complete workflow is ready.
 
 ## Owned native negotiation execution
 

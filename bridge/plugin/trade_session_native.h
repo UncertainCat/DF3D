@@ -6,6 +6,7 @@
 #include "trade_dialogue_native.h"
 #include "trade_header_native.h"
 #include "trade_negotiation_native.h"
+#include "trade_counter_native.h"
 #include <limits>
 #include <stdexcept>
 
@@ -122,6 +123,21 @@ public:
         result.page=tradeDisplayPage(df::building::find(current->depot),current->caravan,read.draft->sides[side],offset,limit,side);
         if(!result.page){result.status=TradeSessionStatus::Rejected;return result;}
         result.session=read.session;result.revision=read.revision;result.query=read.draft->filters[side];return result;
+    }
+    std::optional<TradeCounterPage> counterPage(uint64_t epoch,uint64_t session,uint64_t revision,size_t offset,size_t limit){
+        const auto read=access(epoch,session,revision);
+        if(read.status!=TradeSessionStatus::Available || !current || !current->conversation)return {};
+        return tradeCounterPage(df::building::find(current->depot),current->caravan,{current->draft,*current->conversation},offset,limit);
+    }
+    TradeSessionRead dismissCounteroffer(uint64_t epoch,uint64_t session,uint64_t revision){
+        const auto read=access(epoch,session,revision);
+        if(read.status!=TradeSessionStatus::Available)return read;
+        if(!current || !current->conversation || revision==uint64_t(INT64_MAX))return reply(TradeSessionStatus::Rejected);
+        TradeNegotiationNative context(df::building::find(current->depot),current->caravan,current->draft);
+        if(!context.restore({current->draft,*current->conversation}) || !context.dismissCounteroffer())return reply(TradeSessionStatus::Rejected);
+        auto next=context.checkpoint();if(!next)return reply(TradeSessionStatus::Rejected);
+        current->conversation=std::move(next->conversation);++current->revision;
+        return reply(TradeSessionStatus::Available);
     }
     // Explicit semantic Trade/Accept Counteroffer action. The same revision
     // cannot execute twice. Post-effect failures retire ownership as Unknown;

@@ -112,6 +112,18 @@ public:
         owned.counter_offer_item.swap(requested);owned.counter_offer=c.counterOffer;owned.talkline=df::talk_line_type(c.dialogue);
         return true;
     }
+    bool dismissCounteroffer(){
+        if(!valid || draft.owned.counter_offer_item.empty())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        static const bool ready=[&]{
+            uint64_t call=UINT64_C(14695981039346656037),leaf=call;
+            for(size_t i=0;i<0xc;++i){call^=base[0x316469+i];call*=UINT64_C(1099511628211);}
+            for(size_t i=0;i<0x10;++i){leaf^=base[0x6f290+i];leaf*=UINT64_C(1099511628211);}
+            return call==UINT64_C(0x7ac93c1f9e5ff193) && leaf==UINT64_C(0x75c670f8be377ee6);
+        }();if(!ready)return false;
+        reinterpret_cast<void(*)(std::vector<df::item*>*)>(const_cast<uint8_t*>(base)+0x6f290)(&draft.owned.counter_offer_item);
+        return true;
+    }
     bool apply(const TradeSelectionIntent& intent){return valid && draft.apply(intent);}
     bool goodsNeedRebuild() const {return valid && draft.owned.buildlists!=0;}
     TradeOfferCheck checkOffer() const {

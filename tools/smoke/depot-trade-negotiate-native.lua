@@ -134,9 +134,20 @@ local ok,err=xpcall(function()
     state=session_probe('exchange',id,first.revision);assert(state.status==0 and state.exchange_status==0 and not state.counter_offer,json.encode(state))
     result.accept_conversation={dialogue=state.dialogue,counter_offer=state.counter_offer,announcement=state.announcement};result.accept_goods=state.sides
     local final=session_probe('read',id,state.revision);assert(final.status==0 and json.encode(final.sides)==json.encode(state.sides) and final.dialogue==state.dialogue and json.encode(final.requested_items)==json.encode(state.requested_items),'Accepted session did not survive refresh')
+    result.counter_page=final.counter_page
+    assert(final.counter_page.total==#final.requested_items)
+    for i,row in ipairs(final.counter_page.rows)do assert(row.id==final.requested_items[i])end
     local before_transfers=transfers();before_rng=rng()
     assert(session_probe('exchange',id,first.revision).exchange_status==1,'Accepted exchange replayed')
     assert(json.encode(transfers())==json.encode(before_transfers) and json.encode(rng())==json.encode(before_rng))
+    local dismissed=session_probe('okay',id,final.revision)
+    assert(dismissed.status==0 and dismissed.revision==final.revision+1 and #dismissed.requested_items==0 and dismissed.counter_offer==final.counter_offer and dismissed.dialogue==final.dialogue)
+    assert(json.encode(dismissed.sides)==json.encode(final.sides),'Okay changed the goods draft')
+    assert(session_probe('okay',id,final.revision).status==1,'Stale Okay accepted')
+    assert(session_probe('okay',id,dismissed.revision).status==1,'Empty Okay accepted')
+    local cleared=session_probe('read',id,dismissed.revision);assert(cleared.status==0 and cleared.counter_page.total==0)
+    assert(json.encode(transfers())==json.encode(before_transfers) and json.encode(rng())==json.encode(before_rng),'Okay changed simulation')
+    result.counter_dismiss_verified=true
     assert(session_probe('close',id).status==3);assert(session_probe('exchange',id,state.revision).exchange_status==1)
     result.session_verified=true
    else

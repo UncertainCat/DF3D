@@ -2,6 +2,15 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class TradeDraftOperation : uint8_t {
+  Item = 0,
+  Group = 1,
+  MarkAll = 2,
+  UnmarkAll = 3,
+  ExpandGroup = 4,
+  ExpandContainer = 5,
+  Filter = 6,
+};
 enum class TradeSessionOutcome : uint8_t {
   Available = 0,
   Rejected = 1,
@@ -394,6 +403,8 @@ enum class ManagementAction : uint8_t {
   TradeSessionOpen = 136,
   TradeSessionRead = 137,
   TradeSessionClose = 138,
+  TradeDraftRead = 139,
+  TradeDraftApply = 140,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -745,11 +756,15 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::TradeSessionOpen: return true;
   case ManagementAction::TradeSessionRead: return true;
   case ManagementAction::TradeSessionClose: return true;
+  case ManagementAction::TradeDraftRead: return true;
+  case ManagementAction::TradeDraftApply: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::TradeDraftRead: return "trade_draft";
+  case ManagementAction::TradeDraftApply: return "trade_draft";
   case ManagementAction::TradeSessionOpen: return "trade_session";
   case ManagementAction::TradeSessionRead: return "trade_session";
   case ManagementAction::TradeSessionClose: return "trade_session";

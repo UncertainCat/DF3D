@@ -9,6 +9,30 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Trade draft requests reject mixed authority and preserve wide identities") {
+  for(int operation=-1;operation<=6;++operation)for(int fault=0;fault<7;++fault){
+    wm::ManagementRequest r;r.action=operation<0?wm::ManagementAction::TradeDraftRead:wm::ManagementAction::TradeDraftApply;
+    auto& q=r.tradeDraft;q.session=UINT64_C(9007199254740993);q.expectedRevision=9;q.side=0;
+    if(operation<0){q.offset=3;q.limit=4;}else{q.operation=wm::TradeDraftOperation(operation);if(operation==0 || operation==5)q.item=992;if(operation==1 || operation==4){q.type=1;q.subtype=-1;}if(operation==6)q.query="IRON";}
+    if(fault==1)q.session=0;if(fault==2)q.expectedRevision=0;if(fault==3)q.side=2;if(fault==4){if(operation<0)q.limit=65;else q.limit=1;}if(fault==5)q.session=UINT64_MAX;if(fault==6){if(operation<0)q.query="mixed";else q.offset=1;}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(operation);CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){REQUIRE(value->trade_draft());CHECK(value->trade_draft()->session()==q.session);}
+  }
+}
+TEST_CASE("Trade draft pages are bounded complete and owned by the read action") {
+  for(int fault=0;fault<12;++fault){
+    flatbuffers::FlatBufferBuilder b;auto text=b.CreateString("Synthetic item");auto empty=b.CreateString("");
+    auto row=wire::CreateTradeDraftRow(b,false,true,fault==1?-1:992,-1,1,-1,0,1,text,12,fault==2?0:1,text,text);
+    std::vector<flatbuffers::Offset<wire::TradeDraftRow>> rows{row};if(fault==3)rows.push_back(row);if(fault==4)rows.assign(65,row);
+    auto page=wire::CreateTradeDraftPage(b,fault==5?2:0,fault==6?5:0,4,empty,b.CreateVector(rows));
+    auto draft=wire::CreateTradeDraftState(b,fault==7?wire::TradeSessionOutcome::Rejected:wire::TradeSessionOutcome::Available,UINT64_C(9007199254740993),fault==8?0:9,fault==9?0:page);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);state.add_action(fault==10?wire::ManagementAction::TradeDraftApply:wire::ManagementAction::TradeDraftRead);if(fault!=11)state.add_trade_draft(draft);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CAPTURE(fault);CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeState(value);b.Clear();REQUIRE(decoded.tradeDraft);CHECK(decoded.tradeDraft->session==UINT64_C(9007199254740993));REQUIRE(decoded.tradeDraft->page);REQUIRE(decoded.tradeDraft->page->rows.size()==1);CHECK(decoded.tradeDraft->page->rows[0].caption=="Synthetic item");}
+  }
+}
+
 TEST_CASE("Trade session transport binds explicit open read and close intents") {
   constexpr uint64_t token=UINT64_C(9007199254740993);
   for(auto action:{wm::ManagementAction::TradeSessionOpen,wm::ManagementAction::TradeSessionRead,wm::ManagementAction::TradeSessionClose})for(int fault=0;fault<4;++fault){

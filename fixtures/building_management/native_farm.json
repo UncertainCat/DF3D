@@ -88158,6 +88158,1122 @@
           "tools/smoke/depot-trade-display-native.lua": "9b1884880a3d92bbf2af2fe6fefd897be547f9ac597d874ce80182b3c21f99b6",
           "tools/smoke/depot-trade-native.lua": "483428c91c0fbb98caba12334e336070b41b451249bab06feffa7dd2d9aa1e9b"
         }
+      },
+      "depot_trade_draft_transport_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-200135",
+        "protocol": 239,
+        "owned_df_pid": 44720,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Actual bridge/mailbox/model/Godot transport compares both goods sides and bounded slices with the previously native-qualified display provider across initial state and eight item/group/expansion/all/filter intents. Stale mutation replay, beyond-end pages and invalid item reject. Session lifecycle and exact appraisal snapshot remain verified. Not rendered trade UI, successful container expansion transport, advancing simulation, reconnect/source retirement, quantity selection, negotiation or exchange.",
+        "receipt_counts": {
+          "0": 44,
+          "1": 27,
+          "2": 0,
+          "3": 0,
+          "4": 0
+        },
+        "wire": {
+          "controller": {
+            "closes": [
+              {
+                "outcome": 3,
+                "revision": 0,
+                "session": 4
+              },
+              {
+                "outcome": 3,
+                "revision": 0,
+                "session": 5
+              }
+            ],
+            "initial_session": 4,
+            "late_open": {
+              "entry": {
+                "dialogue": 0,
+                "entity_id": 865,
+                "fortress": "Your fortress of Roderònul",
+                "fortress_trader": 988,
+                "has_speaker": false,
+                "merchant_trader": -1,
+                "place": "Dumatzas",
+                "speaker": "",
+                "title": "Merchants from Dumatzas",
+                "unloading": false
+              },
+              "outcome": 0,
+              "revision": 1,
+              "session": 5
+            }
+          },
+          "receipts": [
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "entry": {
+                "dialogue": 0,
+                "entity_id": 865,
+                "fortress": "Your fortress of Roderònul",
+                "fortress_trader": 988,
+                "has_speaker": false,
+                "merchant_trader": -1,
+                "place": "Dumatzas",
+                "speaker": "",
+                "title": "Merchants from Dumatzas",
+                "unloading": false
+              },
+              "outcome": 0,
+              "revision": 1,
+              "session": 1
+            },
+            {
+              "outcome": 0,
+              "revision": 1,
+              "session": 1
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 0,
+              "revision": 1,
+              "session": 1
+            },
+            {
+              "outcome": 0,
+              "revision": 9,
+              "session": 1
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 3,
+              "revision": 0,
+              "session": 1
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "entry": {
+                "dialogue": 0,
+                "entity_id": 865,
+                "fortress": "Your fortress of Roderònul",
+                "fortress_trader": 988,
+                "has_speaker": false,
+                "merchant_trader": -1,
+                "place": "Dumatzas",
+                "speaker": "",
+                "title": "Merchants from Dumatzas",
+                "unloading": false
+              },
+              "outcome": 0,
+              "revision": 1,
+              "session": 2
+            },
+            {
+              "outcome": 0,
+              "revision": 1,
+              "session": 2
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 0,
+              "revision": 1,
+              "session": 2
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "entry": {
+                "dialogue": 0,
+                "entity_id": 865,
+                "fortress": "Your fortress of Roderònul",
+                "fortress_trader": 988,
+                "has_speaker": false,
+                "merchant_trader": -1,
+                "place": "Dumatzas",
+                "speaker": "",
+                "title": "Merchants from Dumatzas",
+                "unloading": false
+              },
+              "outcome": 0,
+              "revision": 1,
+              "session": 3
+            },
+            {
+              "outcome": 0,
+              "revision": 1,
+              "session": 3
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 0,
+              "revision": 1,
+              "session": 3
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            },
+            {
+              "outcome": 3,
+              "revision": 0,
+              "session": 3
+            },
+            {
+              "outcome": 1,
+              "revision": 0,
+              "session": 0
+            }
+          ],
+          "sessions": [
+            1,
+            2,
+            3
+          ],
+          "success": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-200135/depot-trade-native.json": "4dd6cb43f2289efc1e80ff27950c746f8aaa02319f5b334697d69ba1503adafe",
+          "build/stockpile-storage-native-farm-discovery-20261115-200135/trade-session-wire-expected.json": "ad5c99545aa005c550e0cfd02ece0368f3d2b68c4f6f1a09aa68252d10665240",
+          "build/stockpile-storage-native-farm-discovery-20261115-200135/trade-session-wire-result.json": "f7e559d57de6ef570c7a1ed693100d795fb811e4f003f422353ee76d6cb935b0",
+          "build/stockpile-storage-native-farm-discovery-20261115-200135/trade-session-wire.stdout.log": "0fb41bb7cc71b68a335c01d8f84a806304e1cc6bb173f34ca02cb913d0f62013",
+          "build/stockpile-storage-native-farm-discovery-20261115-200135/trade-session-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261115-200135/result.json": "287d7af065e6d4b27784af722ddbfd9a3d3a299b2b67e7bedb49d9ba0477363f",
+          "build/stockpile-storage-native-farm-discovery-20261115-200135/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-200135/capture-inputs.json": "dc1ee6a33e0e8f82c6861ddede7189e931f4330492a4be891c629fe9699d5ae8",
+          "schema/mirror.fbs": "eeab4e81ebb36a2076059026e478d0524eb82ee9efa058a7fc0b222ffbb65cd0",
+          "schema/cpp/management_util.h": "fe6b700c0cddc3336d2741cbbf3a26907a9daacd34a86ada3658676c5bf05bd8",
+          "bridge/plugin/trade_session_native.h": "54cb3b33b7bc37f32f7d3bbb643bb9f8a6972752e5012e0aa6ef5cd24ba8b156",
+          "tools/smoke/depot-trade-appraisal-native.lua": "1b7ba3069d86150e88fd45e8a3582eb0554c52159ef56368ddbc1d474112b6d8",
+          "presentations/godot/project/tests/trade_session_wire_live.gd": "f635c845fbf8cdcda58583bc6b88b0e36944c4c520452789d3889ffd1733f450"
+        },
+        "initial_pages": [
+          {
+            "offset": 0,
+            "query": "",
+            "rows": [
+              {
+                "amount": 0,
+                "appraisal": 0,
+                "caption": "Boulders",
+                "expanded": true,
+                "flags": 2,
+                "group": true,
+                "id": -1,
+                "parent": -1,
+                "subtype": -1,
+                "type": 4,
+                "value": 0,
+                "value_caption": "",
+                "weight_caption": ""
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "{bituminous coal}",
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 992,
+                "parent": -1,
+                "subtype": -1,
+                "type": 4,
+                "value": 3,
+                "value_caption": "~10☼",
+                "weight_caption": "134Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "{bituminous coal}",
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 991,
+                "parent": -1,
+                "subtype": -1,
+                "type": 4,
+                "value": 3,
+                "value_caption": "~10☼",
+                "weight_caption": "134Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 0,
+                "caption": "Anvils",
+                "expanded": true,
+                "flags": 2,
+                "group": true,
+                "id": -1,
+                "parent": -1,
+                "subtype": -1,
+                "type": 45,
+                "value": 0,
+                "value_caption": "",
+                "weight_caption": ""
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "(iron anvil)",
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 296,
+                "parent": -1,
+                "subtype": -1,
+                "type": 45,
+                "value": 100,
+                "value_caption": "~100☼",
+                "weight_caption": "78Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 0,
+                "caption": "Thread",
+                "expanded": true,
+                "flags": 2,
+                "group": true,
+                "id": -1,
+                "parent": -1,
+                "subtype": -1,
+                "type": 57,
+                "value": 0,
+                "value_caption": "",
+                "weight_caption": ""
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "giant cave spider silk web",
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 408,
+                "parent": -1,
+                "subtype": -1,
+                "type": 57,
+                "value": 24,
+                "value_caption": "~20☼",
+                "weight_caption": "<1Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "giant cave spider silk web",
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 407,
+                "parent": -1,
+                "subtype": -1,
+                "type": 57,
+                "value": 24,
+                "value_caption": "~20☼",
+                "weight_caption": "<1Γ"
+              }
+            ],
+            "side": 0,
+            "total": 8
+          },
+          {
+            "offset": 0,
+            "query": "",
+            "rows": [
+              {
+                "amount": 0,
+                "appraisal": 0,
+                "caption": "Blocks",
+                "expanded": true,
+                "flags": 2,
+                "group": true,
+                "id": -1,
+                "parent": -1,
+                "subtype": -1,
+                "type": 2,
+                "value": 0,
+                "value_caption": "",
+                "weight_caption": ""
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "{dolomite blocks}",
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 1180,
+                "parent": -1,
+                "subtype": -1,
+                "type": 2,
+                "value": 10,
+                "value_caption": "~10☼",
+                "weight_caption": "17Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 0,
+                "caption": "Corpses",
+                "expanded": true,
+                "flags": 2,
+                "group": true,
+                "id": -1,
+                "parent": -1,
+                "subtype": -1,
+                "type": 23,
+                "value": 0,
+                "value_caption": "",
+                "weight_caption": ""
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "crundle mangled skeleton",
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 1494,
+                "parent": -1,
+                "subtype": -1,
+                "type": 23,
+                "value": 0,
+                "value_caption": "0☼",
+                "weight_caption": "2Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 0,
+                "caption": "Body parts",
+                "expanded": true,
+                "flags": 2,
+                "group": true,
+                "id": -1,
+                "parent": -1,
+                "subtype": -1,
+                "type": 46,
+                "value": 0,
+                "value_caption": "",
+                "weight_caption": ""
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "elk bird left antler",
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 1736,
+                "parent": -1,
+                "subtype": -1,
+                "type": 46,
+                "value": 0,
+                "value_caption": "0☼",
+                "weight_caption": "1Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "elk bird beak",
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 1735,
+                "parent": -1,
+                "subtype": -1,
+                "type": 46,
+                "value": 0,
+                "value_caption": "0☼",
+                "weight_caption": "<1Γ"
+              }
+            ],
+            "side": 1,
+            "total": 7
+          }
+        ],
+        "draft_receipts": [
+          {
+            "outcome": 0,
+            "revision": 1,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 8,
+            "rows_sha256": "46f3645dba18601a00041c6b304b938e28cee2bc818a2cc45ba4e2a7bad78ab2"
+          },
+          {
+            "outcome": 0,
+            "revision": 1,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 2,
+            "rows_sha256": "e4399c776debf7a07a3e700631696826632164bd07d72dc136b4d6447893d916"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 1,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 7,
+            "rows_sha256": "30e9a412ccde9298040d3bce5a3d1bbb4398faa4d116cb421ed69319a1ee52be"
+          },
+          {
+            "outcome": 0,
+            "revision": 1,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 2,
+            "rows_sha256": "cfd5279f598928fa880e2f20ea83a203c26ad29dc206c34d420a31bf7fd28713"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 2,
+            "session": 1
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 2,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 8,
+            "rows_sha256": "0b6148eca3aac4b3527a03b629ffdf5ec69c3ecbf55144054a110a92b9264922"
+          },
+          {
+            "outcome": 0,
+            "revision": 2,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 2,
+            "rows_sha256": "e4399c776debf7a07a3e700631696826632164bd07d72dc136b4d6447893d916"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 2,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 7,
+            "rows_sha256": "30e9a412ccde9298040d3bce5a3d1bbb4398faa4d116cb421ed69319a1ee52be"
+          },
+          {
+            "outcome": 0,
+            "revision": 2,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 2,
+            "rows_sha256": "cfd5279f598928fa880e2f20ea83a203c26ad29dc206c34d420a31bf7fd28713"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 3,
+            "session": 1
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 3,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 8,
+            "rows_sha256": "7be06214b5485c28222453a4217fb828ed88b79f595153f924dae42c8fd34f6d"
+          },
+          {
+            "outcome": 0,
+            "revision": 3,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 2,
+            "rows_sha256": "e4399c776debf7a07a3e700631696826632164bd07d72dc136b4d6447893d916"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 3,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 7,
+            "rows_sha256": "30e9a412ccde9298040d3bce5a3d1bbb4398faa4d116cb421ed69319a1ee52be"
+          },
+          {
+            "outcome": 0,
+            "revision": 3,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 2,
+            "rows_sha256": "cfd5279f598928fa880e2f20ea83a203c26ad29dc206c34d420a31bf7fd28713"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 4,
+            "session": 1
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 4,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 0,
+              "total": 6
+            },
+            "row_count": 6,
+            "rows_sha256": "8fbcce2c7004e3308e2263e2214073babfd43ebcd3aa35ef20ffb187e104e6bc"
+          },
+          {
+            "outcome": 0,
+            "revision": 4,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 0,
+              "total": 6
+            },
+            "row_count": 2,
+            "rows_sha256": "d18719df8762b737de472029a30b1321a1da11e2534f44f5d1d30d9a5788c3bc"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 4,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 7,
+            "rows_sha256": "30e9a412ccde9298040d3bce5a3d1bbb4398faa4d116cb421ed69319a1ee52be"
+          },
+          {
+            "outcome": 0,
+            "revision": 4,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 2,
+            "rows_sha256": "cfd5279f598928fa880e2f20ea83a203c26ad29dc206c34d420a31bf7fd28713"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 5,
+            "session": 1
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 5,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 8,
+            "rows_sha256": "7be06214b5485c28222453a4217fb828ed88b79f595153f924dae42c8fd34f6d"
+          },
+          {
+            "outcome": 0,
+            "revision": 5,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 2,
+            "rows_sha256": "e4399c776debf7a07a3e700631696826632164bd07d72dc136b4d6447893d916"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 5,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 7,
+            "rows_sha256": "30e9a412ccde9298040d3bce5a3d1bbb4398faa4d116cb421ed69319a1ee52be"
+          },
+          {
+            "outcome": 0,
+            "revision": 5,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 2,
+            "rows_sha256": "cfd5279f598928fa880e2f20ea83a203c26ad29dc206c34d420a31bf7fd28713"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 6,
+            "session": 1
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 6,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 8,
+            "rows_sha256": "7be06214b5485c28222453a4217fb828ed88b79f595153f924dae42c8fd34f6d"
+          },
+          {
+            "outcome": 0,
+            "revision": 6,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 2,
+            "rows_sha256": "e4399c776debf7a07a3e700631696826632164bd07d72dc136b4d6447893d916"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 6,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 7,
+            "rows_sha256": "40de931823a99beaa95166fb242a474aabb41e2359efacb4298bc4c57d5a052d"
+          },
+          {
+            "outcome": 0,
+            "revision": 6,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 2,
+            "rows_sha256": "2cb658d1e9c71620833cb4e184134696013a5bd4c153ba0b27439f2422a68275"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 7,
+            "session": 1
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 7,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 8,
+            "rows_sha256": "7be06214b5485c28222453a4217fb828ed88b79f595153f924dae42c8fd34f6d"
+          },
+          {
+            "outcome": 0,
+            "revision": 7,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 2,
+            "rows_sha256": "e4399c776debf7a07a3e700631696826632164bd07d72dc136b4d6447893d916"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 7,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 7,
+            "rows_sha256": "30e9a412ccde9298040d3bce5a3d1bbb4398faa4d116cb421ed69319a1ee52be"
+          },
+          {
+            "outcome": 0,
+            "revision": 7,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 2,
+            "rows_sha256": "cfd5279f598928fa880e2f20ea83a203c26ad29dc206c34d420a31bf7fd28713"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 8,
+            "session": 1
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 8,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "IRON",
+              "side": 0,
+              "total": 2
+            },
+            "row_count": 2,
+            "rows_sha256": "e4399c776debf7a07a3e700631696826632164bd07d72dc136b4d6447893d916"
+          },
+          {
+            "outcome": 0,
+            "revision": 8,
+            "session": 1,
+            "page": {
+              "offset": 2,
+              "query": "IRON",
+              "side": 0,
+              "total": 2
+            },
+            "row_count": 0,
+            "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 8,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 7,
+            "rows_sha256": "30e9a412ccde9298040d3bce5a3d1bbb4398faa4d116cb421ed69319a1ee52be"
+          },
+          {
+            "outcome": 0,
+            "revision": 8,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 2,
+            "rows_sha256": "cfd5279f598928fa880e2f20ea83a203c26ad29dc206c34d420a31bf7fd28713"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 9,
+            "session": 1
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 9,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 8,
+            "rows_sha256": "7be06214b5485c28222453a4217fb828ed88b79f595153f924dae42c8fd34f6d"
+          },
+          {
+            "outcome": 0,
+            "revision": 9,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 0,
+              "total": 8
+            },
+            "row_count": 2,
+            "rows_sha256": "e4399c776debf7a07a3e700631696826632164bd07d72dc136b4d6447893d916"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 0,
+            "revision": 9,
+            "session": 1,
+            "page": {
+              "offset": 0,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 7,
+            "rows_sha256": "30e9a412ccde9298040d3bce5a3d1bbb4398faa4d116cb421ed69319a1ee52be"
+          },
+          {
+            "outcome": 0,
+            "revision": 9,
+            "session": 1,
+            "page": {
+              "offset": 3,
+              "query": "",
+              "side": 1,
+              "total": 7
+            },
+            "row_count": 2,
+            "rows_sha256": "cfd5279f598928fa880e2f20ea83a203c26ad29dc206c34d420a31bf7fd28713"
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          },
+          {
+            "outcome": 1,
+            "revision": 0,
+            "session": 0
+          }
+        ]
       }
     },
     "pending_construction_reference": {

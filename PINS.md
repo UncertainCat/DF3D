@@ -22,7 +22,10 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Current management protocol238 adds explicit trade-session open/read/close
+Current management protocol239 adds revision-bound native trade draft pages and
+selection intents. Pages are bounded to64 rows; item/group/filter/expansion
+actions change the owned draft only, never exchange goods. Old recordings must
+not invent pages or selection receipts. Protocol238 added explicit trade-session open/read/close
 requests and bounded entry/session receipts. Open is a mutation; its Unknown
 outcome must not be replayed. Session identities and revisions remain64-bit
 integers. Old records cannot synthesize a session or entry receipt.
@@ -34,9 +37,9 @@ source-bound child pages. Protocol235 added native appraisal knowledge and forma
 depot item values. Protocol234 added revision-bound checkbox drafts and retained
 sorting choices to goods reads. Protocol233 introduced whole-batch
 commits and explicit outcomes;232 introduced owned goods reads.
-Both peers use `Local\df3d_management_v238`; rebuild bridge and viewer together.
+Both peers use `Local\df3d_management_v239`; rebuild bridge and viewer together.
 Older recordings must not synthesize goods snapshots or commit receipts.
-Migration guidance is in ENGINEERING.md's trade-session, caravan catalog and depot goods transport sections.
+Migration guidance is in ENGINEERING.md's trade draft/session, caravan catalog and depot goods transport sections.
 
 Management231 added depot body facts and the explicit DepotMode
 building-header intent. Older recordings contain no depot body and must not

@@ -55,6 +55,21 @@ local ok,err=xpcall(function()
   local active=df.global.game.main_interface.view_sheets.active_id
   if os.getenv('DF3D_DEPOT_TRADE_SESSION_WIRE')=='1' then
    local expected={depot_id=trade.bld.id,entity_id=caravan.entity,fortress_trader=unit.id,title=dfhack.df2utf(trade.title)}
+   if os.getenv('DF3D_DEPOT_TRADE_DRAFT_WIRE')=='1' then
+    local item=trade.good[0][0]
+    local intents={{side=0,action='item',item=item.id},{side=0,action='group',type=item:getType(),subtype=item:getSubtype()},
+     {side=0,action='expand_group',type=item:getType(),subtype=item:getSubtype()},
+     {side=0,action='expand_group',type=item:getType(),subtype=item:getSubtype()},
+     {side=1,action='mark_all'},{side=1,action='unmark_all'},
+     {side=0,action='filter',query='IRON'},{side=0,action='filter',query=''}}
+    expected.draft={};local applied={}
+    for i=0,#intents do
+     if i>0 then applied[#applied+1]=intents[i]end
+     local output,code=dfhack.run_command_silent('df3d','trade-display-probe',tostring(trade.bld.id),'0','','',i==0 and '[]' or json.encode(applied));assert(code==0,output)
+     local facts=json.decode(output);assert(facts.available)
+     expected.draft[#expected.draft+1]={intent=i>0 and intents[i] or nil,display=facts.display}
+    end
+   end
    local file=assert(io.open(out..'/trade-session-wire-expected.json','w'));file:write(json.encode(expected));file:close()
    capture('trade-session-wire')
    file=assert(io.open(out..'/trade-session-wire-result.json'));result.wire=json.decode(file:read('*a'));file:close();assert(result.wire.success)

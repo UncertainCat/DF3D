@@ -605,6 +605,8 @@ uint64_t tradeCatalogClient=0;
 df3d_production::TradeOwner tradeCatalogOwner;
 struct TradeSessionReply {m::TradeSessionOutcome outcome=m::TradeSessionOutcome::Rejected;uint64_t session=0,revision=0;std::optional<df3d_production::TradeEntryFacts> entry;};
 std::optional<TradeSessionReply> tradeSessionReply;
+struct TradeDraftReply {m::TradeSessionOutcome outcome=m::TradeSessionOutcome::Rejected;uint64_t session=0,revision=0;int8_t side=-1;std::string query;std::optional<df3d_production::TradeDisplayPage> page;};
+std::optional<TradeDraftReply> tradeDraftReply;
 struct DepotCommitReply {int32_t depotId=-1;uint64_t expected=0,observed=0;m::DepotGoodsCommitOutcome outcome=m::DepotGoodsCommitOutcome::Rejected;};
 std::optional<DepotCommitReply> depotCommitReply;
 df3d::stocks_pages::Store pagedReplies;
@@ -780,7 +782,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();depotGoodsReply.reset();depotCommitReply.reset();tradeCatalogReply.reset();tradeCatalogDepot=-1;tradeSessionReply.reset();tasks.reset();objects.reset();justice.reset();places.reset();nobles.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();depotGoodsReply.reset();depotCommitReply.reset();tradeCatalogReply.reset();tradeCatalogDepot=-1;tradeSessionReply.reset();tradeDraftReply.reset();tasks.reset();objects.reset();justice.reset();places.reset();nobles.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1662,6 +1664,13 @@ void publish() {
   flatbuffers::Offset<m::DepotGoodsCommitResult> depotCommitResult;
   if(depotCommitReply){const auto& v=*depotCommitReply;depotCommitResult=m::CreateDepotGoodsCommitResult(b,v.depotId,v.expected,v.observed,v.outcome);}
   flatbuffers::Offset<m::TradeCatalogState> tradeCatalogResult;
+  flatbuffers::Offset<m::TradeDraftState> tradeDraftResult;
+  if(tradeDraftReply){const auto& v=*tradeDraftReply;flatbuffers::Offset<m::TradeDraftPage> page;
+    if(v.page){const auto& p=*v.page;std::vector<flatbuffers::Offset<m::TradeDraftRow>> rows;
+      for(const auto& row:p.rows)rows.push_back(m::CreateTradeDraftRow(b,row.group,row.expanded,row.id,row.parent,row.type,row.subtype,row.amount,row.flags,b.CreateString(DF2UTF(row.caption)),row.valuation?row.valuation->value:0,row.valuation?row.valuation->appraisal:0,b.CreateString(row.valuation?DF2UTF(row.valuation->valueCaption):""),b.CreateString(row.valuation?DF2UTF(row.valuation->weightCaption):"")));
+      page=m::CreateTradeDraftPage(b,v.side,uint32_t(p.offset),uint32_t(p.total),b.CreateString(DF2UTF(v.query)),b.CreateVector(rows));}
+    tradeDraftResult=m::CreateTradeDraftState(b,v.outcome,v.session,v.revision,page);
+  }
   flatbuffers::Offset<m::TradeSessionState> tradeSessionResult;
   if(tradeSessionReply){const auto& v=*tradeSessionReply;flatbuffers::Offset<m::TradeSessionEntry> entry;
     if(v.entry){const auto& e=*v.entry;entry=m::CreateTradeSessionEntry(b,e.entity,e.fortressTrader,e.merchantTrader,e.dialogue,e.unloading,e.hasSpeaker,b.CreateString(DF2UTF(e.title)),b.CreateString(DF2UTF(e.speaker)),b.CreateString(DF2UTF(e.fortress)),b.CreateString(DF2UTF(e.place)));}
@@ -1756,7 +1765,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult,depotGoodsResult,depotCommitResult,tradeCatalogResult,tradeSessionResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult,depotGoodsResult,depotCommitResult,tradeCatalogResult,tradeSessionResult,tradeDraftResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
@@ -1786,7 +1795,7 @@ void publish() {
     // A batch may already have changed jobs. Never turn a malformed receipt
     // into a definite rejection; retain Pending for unknown-outcome retirement.
     if(action==m::ManagementAction::DepotGoodsCommit && mutated)return;
-    if(action==m::ManagementAction::TradeSessionOpen && mutated)return;
+    if((action==m::ManagementAction::TradeSessionOpen || action==m::ManagementAction::TradeDraftApply) && mutated)return;
     // A malformed lever receipt after native job creation is uncertain, never
     // a rejection that could encourage retrying the mutation.
     if(action==m::ManagementAction::ProductionQueue && production.lever && mutated)return;
@@ -5299,6 +5308,34 @@ void run(color_ostream& out) {
       reply.outcome=result.stale?m::DepotGoodsCommitOutcome::Stale:result.outcome==df3d_production::DepotSettingOutcome::Applied?m::DepotGoodsCommitOutcome::Applied:result.outcome==df3d_production::DepotSettingOutcome::Unknown?m::DepotGoodsCommitOutcome::Unknown:m::DepotGoodsCommitOutcome::Rejected;
       mutated=reply.outcome==m::DepotGoodsCommitOutcome::Applied || reply.outcome==m::DepotGoodsCommitOutcome::Unknown;
     }catch(...){reply.outcome=m::DepotGoodsCommitOutcome::Rejected;}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::TradeDraftRead || r->action()==m::ManagementAction::TradeDraftApply){
+    tradeDraftReply.emplace();auto& reply=*tradeDraftReply;status=m::ManagementStatus::Ok;message.clear();const auto& q=*r->trade_draft();
+    const bool apply=r->action()==m::ManagementAction::TradeDraftApply;
+    try {
+      df3d_production::TradeSessionStatus result;
+      uint64_t session=0,revision=0;
+      if(apply){
+        df3d_production::TradeSelectionIntent intent;intent.side=q.side();intent.item=q.item();intent.type=q.type();intent.subtype=q.subtype();intent.query=q.query()?UTF2DF(q.query()->str()):"";
+        switch(q.operation()){
+          case m::TradeDraftOperation::Item:intent.action=df3d_production::TradeDraftAction::Item;break;
+          case m::TradeDraftOperation::Group:intent.action=df3d_production::TradeDraftAction::Group;break;
+          case m::TradeDraftOperation::MarkAll:intent.action=df3d_production::TradeDraftAction::MarkAll;break;
+          case m::TradeDraftOperation::UnmarkAll:intent.action=df3d_production::TradeDraftAction::UnmarkAll;break;
+          case m::TradeDraftOperation::ExpandGroup:intent.action=df3d_production::TradeDraftAction::ExpandGroup;break;
+          case m::TradeDraftOperation::ExpandContainer:intent.action=df3d_production::TradeDraftAction::ExpandContainer;break;
+          case m::TradeDraftOperation::Filter:intent.action=df3d_production::TradeDraftAction::Filter;break;
+        }
+        const auto read=tradeCatalogOwner.access(epoch,q.session(),q.expected_revision(),&intent);result=read.status;session=read.session;revision=read.revision;
+        mutated=result==df3d_production::TradeSessionStatus::Available;
+      }else{
+        auto read=tradeCatalogOwner.displayRead(epoch,q.session(),q.expected_revision(),q.side(),q.offset(),q.limit());result=read.status;session=read.session;revision=read.revision;
+        reply.side=q.side();reply.query=std::move(read.query);reply.page=std::move(read.page);
+      }
+      if(result==df3d_production::TradeSessionStatus::Available){reply.outcome=m::TradeSessionOutcome::Available;reply.session=session;reply.revision=revision;}
+      else if(result==df3d_production::TradeSessionStatus::Retired)reply.outcome=m::TradeSessionOutcome::Retired;
+    }catch(...){reply={};if(apply){reply.outcome=m::TradeSessionOutcome::Unknown;mutated=true;}}
     publish();return;
   }
   if(r->action()>=m::ManagementAction::TradeSessionOpen && r->action()<=m::ManagementAction::TradeSessionClose){

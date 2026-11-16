@@ -1,3 +1,31 @@
+## Trade draft transport migration
+
+Management protocol239 adds `TradeDraftRead` and `TradeDraftApply` under
+`trade_draft`. Both require an opaque session and expected revision. Reads
+specify a side and bounded page (at most64 rows). Replies carry native grouping,
+expansion, item identities, captions, appraisal values and weight captions.
+Selection accepts only item/group/all/filter/expansion intents; native routines
+update the owned checkpoint and advance its revision. No exchange occurs.
+Stale requests reject without changing the draft; source changes retire it.
+Unknown apply outcomes must not be replayed. Both peers use239 and require a
+bridge/viewer rebuild; DF53.16 pins remain unchanged. Older recordings cannot
+synthesize draft state. Public trade remains hidden pending complete integration.
+
+Protected200135 on2026-11-15 verifies71 draft receipts through the actual
+bridge/mailbox/model/Godot path. Both sides and bounded slices match the
+previously native-qualified display provider in nine states: initial, item and
+group selection, group collapse/expand, mark/unmark all and set/clear filter.
+Eight replayed stale actions reject without toggling twice; beyond-end pages and
+an absent item reject without changing revision. Adapter checks reject malformed
+request shapes. Existing open/read/close and late-open cleanup still pass, and
+the full appraisal skill/attribute/history snapshot equals one native open.
+Owned DF44720 closes unsaved/source-preserved, native30FPS, sampled GPU59–61C;
+the headless adapter log is clean. Root, bridge and extension builds and all19 root core checks pass.
+Evidence: `completed_sheet_discovery_reference.depot_trade_draft_transport_reference`.
+This qualifies transport against the owned provider, not rendered trade UI,
+successful container expansion through transport, quantity selection, advancing
+simulation, source retirement/reconnect, negotiation or exchange.
+
 ## Trade-session transport migration
 
 Management protocol238 adds `TradeSessionOpen`, `TradeSessionRead` and
@@ -5,9 +33,9 @@ Management protocol238 adds `TradeSessionOpen`, `TradeSessionRead` and
 ID and opaque catalog choice token; read accepts a session and expected revision;
 close accepts only a session. Results distinguish Available, Rejected, Retired,
 Closed and Unknown. Successful open carries native entry captions and trader
-facts; reads validate ownership/source without repeating appraisal. This stage
-does not transport goods projections or negotiation. No native index/address
-enters the model API. Both peers and schema defaults use238, requiring a bridge
+facts; reads validate ownership/source without repeating appraisal. Protocol239 above adds goods projections and selection; negotiation remains
+unimplemented. No native index/address
+enters the model API. That migration used238; current peers and schema defaults use239, requiring a bridge
 and viewer rebuild together; DF53.16 compatibility pins are unchanged.
 
 The management connection owns the composed native catalog/session provider.
@@ -17,8 +45,8 @@ post-effect selection source. It is classified as a mutation in the shared
 contract; Unknown is propagated to the semantic service without replay.
 Malformed post-effect replies retain uncertainty rather than reporting rejection.
 Old recordings cannot invent session IDs, revisions or entry facts. The chooser
-controller now opens and retains these sessions; goods projection, selection and
-negotiation still need viewer transport/integration. Public trade remains hidden
+controller now opens and retains these sessions; goods projection and selection now have transport; their viewer integration and
+negotiation remain unfinished. Public trade remains hidden
 until the full workflow is functional.
 
 Protected193659 on2026-11-15 verifies the actual bridge/mailbox/model/Godot
@@ -69,7 +97,7 @@ duplicate entities are valid, duplicate/zero/out-of-range tokens are not.
 Replies reject missing payloads, invalid depot/entity IDs, excess rows/strings
 and payload budgets. Oversized encoded replies reject explicitly rather than
 timing out at the mailbox. No choices or tokens are synthesized for old records.
-That migration used237; current peers use238 as described above. DF53.16 pins stay fixed.
+That migration used237; current peers use239 as described above. DF53.16 pins stay fixed.
 
 The native management handler owns a catalog separate from diagnostic probes,
 resolves a revealed depot, and refreshes it through the qualified native catalog
@@ -120,7 +148,7 @@ expected goods revision; pages carry at most64 children. Replies identify the
 parent, offset and total, and retain native child IDs/types, nested counts,
 descriptions, values, appraisal text and prohibition facts. A page total must
 agree with its parent's group count. Child IDs do not authorize hauling actions.
-That migration used236; current peers use238 as described above. DF53.16 pins are unchanged.
+That migration used236; current peers use239 as described above. DF53.16 pins are unchanged.
 Older recordings cannot invent container counts or pages. Staged viewer
 integration and its remaining acceptance limits are documented below.
 

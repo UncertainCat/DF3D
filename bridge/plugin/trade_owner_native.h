@@ -44,6 +44,9 @@ public:
     TradeSessionRead access(uint64_t epoch,uint64_t session,uint64_t revision,const TradeSelectionIntent* intent=nullptr) {
         return selection.access(epoch,session,revision,intent);
     }
+    TradeSessionDisplay displayRead(uint64_t epoch,uint64_t session,uint64_t revision,int32_t side,size_t offset,size_t limit) {
+        return selection.displayRead(epoch,session,revision,side,offset,limit);
+    }
     TradeSessionRead close(uint64_t session){return selection.close(session);}
     std::optional<TradeDisplayPage> display(uint64_t epoch,uint64_t session,uint64_t revision,int32_t side,size_t offset,size_t limit) {
         return selection.display(epoch,session,revision,side,offset,limit);

@@ -48,6 +48,42 @@ func catalog_token(depot: int) -> int:
 	var rows: Array=response.get("trade_catalog",{}).get("choices",[])
 	if not check(rows.size()==1,"Expected one native merchant"):return 0
 	return rows[0].token
+var draft_receipts: Array=[]
+func draft_request(intent: Dictionary,outcome: int) -> Dictionary:
+	var response:=await request("trade_draft",intent)
+	var value: Dictionary=response.get("trade_draft",{})
+	check(response.get("status")==C.ManagementStatus.Ok and value.get("outcome")==outcome,"Trade draft receipt differs: "+str(response))
+	draft_receipts.append(value);return value
+func draft_workflow(session: int,states: Array) -> void:
+	var revision:=1
+	var operations: Dictionary={"item":C.TradeDraftOperation.Item,"group":C.TradeDraftOperation.Group,"mark_all":C.TradeDraftOperation.MarkAll,"unmark_all":C.TradeDraftOperation.UnmarkAll,"expand_group":C.TradeDraftOperation.ExpandGroup,"expand_container":C.TradeDraftOperation.ExpandContainer,"filter":C.TradeDraftOperation.Filter}
+	for state in states:
+		if state.has("intent") and state.intent!=null:
+			var intent: Dictionary=state.intent
+			var command: Dictionary={"action":C.ManagementAction.TradeDraftApply,"session":session,"expected_revision":revision,"side":int(intent.side),"operation":operations[intent.action]}
+			for key in ["item","type","subtype","query"]:
+				if intent.has(key):command[key]=intent[key] if key=="query" else int(intent[key])
+			var result:=await draft_request(command,C.TradeSessionOutcome.Available)
+			revision+=1;check(result.get("session")==session and result.get("revision")==revision,"Draft mutation revision mismatch")
+			await draft_request(command,C.TradeSessionOutcome.Rejected)
+		for side in range(2):
+			var expected: Dictionary=state.display[side]
+			var query: Dictionary={"action":C.ManagementAction.TradeDraftRead,"session":session,"expected_revision":revision,"side":side,"offset":0,"limit":64}
+			var result:=await draft_request(query,C.TradeSessionOutcome.Available)
+			var page: Dictionary=result.get("page",{})
+			if not check(page.get("total")==expected.total and page.get("rows",[]).size()==expected.rows.size(),"Trade draft page count differs"):return
+			for index in range(expected.rows.size()):
+				for key in expected.rows[index]:check(page.rows[index].get(key)==expected.rows[index][key],"Trade draft row differs: "+str([index,key]))
+			query.offset=mini(3,int(expected.total));query.limit=2
+			var partial: Dictionary=(await draft_request(query,C.TradeSessionOutcome.Available)).get("page",{})
+			check(partial.get("rows",[])==page.rows.slice(query.offset,query.offset+2),"Bounded trade page differs")
+			query.offset=int(expected.total)+1
+			await draft_request(query,C.TradeSessionOutcome.Rejected)
+	# Valid transport shape, but nonexistent source item: no revision advance.
+	await draft_request({"action":C.ManagementAction.TradeDraftApply,"session":session,"expected_revision":revision,"side":0,"operation":C.TradeDraftOperation.Item,"item":2147483647},C.TradeSessionOutcome.Rejected)
+	await session_request({"action":C.ManagementAction.TradeSessionRead,"session":session,"expected_revision":revision},C.TradeSessionOutcome.Available)
+	for malformed in [{"action":C.ManagementAction.TradeDraftRead,"session":session,"expected_revision":revision,"side":0,"offset":0,"limit":65},{"action":C.ManagementAction.TradeDraftApply,"session":session,"expected_revision":revision,"side":0,"operation":C.TradeDraftOperation.Item,"item":992,"query":"mixed"},{"action":C.ManagementAction.TradeDraftApply,"session":session,"expected_revision":0,"side":0,"operation":C.TradeDraftOperation.MarkAll}]:
+		check(world.management_request("trade_draft",malformed)==0,"Malformed draft request reached transport")
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	if directory.is_empty():quit(77);return
@@ -78,6 +114,7 @@ func run() -> void:
 		await session_request({"action":C.ManagementAction.TradeSessionOpen,"depot_id":depot,"choice_token":token},C.TradeSessionOutcome.Rejected)
 		await session_request({"action":C.ManagementAction.TradeSessionRead,"session":opened.session,"expected_revision":2},C.TradeSessionOutcome.Rejected)
 		await session_request(read,C.TradeSessionOutcome.Available)
+		if iteration==0 and expected.has("draft"):await draft_workflow(opened.session,expected.draft)
 		if iteration==1:
 			await catalog_token(depot)
 		else:
@@ -87,5 +124,5 @@ func run() -> void:
 		await session_request(read,C.TradeSessionOutcome.Rejected)
 	var controller:=await controller_workflow(depot)
 	var file:=FileAccess.open(directory+"/trade-session-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"receipts":receipts,"sessions":sessions,"controller":controller}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"receipts":receipts,"sessions":sessions,"controller":controller,"draft_receipts":draft_receipts}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)

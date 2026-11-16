@@ -41,6 +41,7 @@ struct TradeSessionRead {
     uint64_t session=0,revision=0;
     std::optional<TradeDraftCheckpoint> draft;
 };
+struct TradeSessionDisplay {TradeSessionStatus status=TradeSessionStatus::Rejected;uint64_t session=0,revision=0;std::string query;std::optional<TradeDisplayPage> page;};
 class TradeSelectionSession {
     struct Binding {
         uint64_t session=0,revision=1,epoch=0,source=0;
@@ -69,10 +70,17 @@ public:
         reset();return reply(TradeSessionStatus::Closed);
     }
     std::optional<TradeDisplayPage> display(uint64_t epoch,uint64_t session,uint64_t revision,int32_t side,size_t offset,size_t limit) {
-        if(side<0 || side>1 || !limit || limit>64)return {};
+        return displayRead(epoch,session,revision,side,offset,limit).page;
+    }
+    TradeSessionDisplay displayRead(uint64_t epoch,uint64_t session,uint64_t revision,int32_t side,size_t offset,size_t limit) {
+        TradeSessionDisplay result;
+        if(side<0 || side>1 || !limit || limit>64)return result;
         const auto read=access(epoch,session,revision);
-        if(read.status!=TradeSessionStatus::Available || !read.draft || !current)return {};
-        return tradeDisplayPage(df::building::find(current->depot),current->caravan,read.draft->sides[side],offset,limit);
+        result.status=read.status;
+        if(read.status!=TradeSessionStatus::Available || !read.draft || !current)return result;
+        result.page=tradeDisplayPage(df::building::find(current->depot),current->caravan,read.draft->sides[side],offset,limit);
+        if(!result.page){result.status=TradeSessionStatus::Rejected;return result;}
+        result.session=read.session;result.revision=read.revision;result.query=read.draft->filters[side];return result;
     }
     // Caller owns connection/epoch retirement and saving gates. Read validates
     // the live source but never appraises, changes simulation, or advances revision.

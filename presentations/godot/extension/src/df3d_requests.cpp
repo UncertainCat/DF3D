@@ -356,6 +356,11 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& row:v.choices){Dictionary item;item["token"]=int64_t(row.token);item["entity_id"]=row.entityId;item["race"]=String::utf8(row.race.c_str());item["name"]=String::utf8(row.name.c_str());choices.append(item);}
         value["choices"]=choices;result["trade_catalog"]=value;
     }
+    if(s.tradeDraft){const auto& v=*s.tradeDraft;Dictionary value;value["outcome"]=int(v.outcome);value["session"]=int64_t(v.session);value["revision"]=int64_t(v.revision);
+        if(v.page){const auto& p=*v.page;Dictionary page;page["side"]=p.side;page["offset"]=p.offset;page["total"]=p.total;page["query"]=String::utf8(p.query.c_str());Array rows;
+            for(const auto& r:p.rows){Dictionary row;row["group"]=r.group;row["expanded"]=r.expanded;row["id"]=r.id;row["parent"]=r.parent;row["type"]=r.type;row["subtype"]=r.subtype;row["amount"]=r.amount;row["flags"]=r.flags;row["caption"]=String::utf8(r.caption.c_str());row["value"]=r.value;row["appraisal"]=r.appraisal;row["value_caption"]=String::utf8(r.valueCaption.c_str());row["weight_caption"]=String::utf8(r.weightCaption.c_str());rows.push_back(row);}page["rows"]=rows;value["page"]=page;}
+        result["trade_draft"]=value;if(v.outcome==wm::TradeSessionOutcome::Unknown)result["outcome"]="unknown";
+    }
     if(s.tradeSession){const auto& v=*s.tradeSession;Dictionary value;value["outcome"]=int(v.outcome);value["session"]=int64_t(v.session);value["revision"]=int64_t(v.revision);
         if(v.entry){const auto& e=*v.entry;Dictionary entry;entry["entity_id"]=e.entityId;entry["fortress_trader"]=e.fortressTrader;entry["merchant_trader"]=e.merchantTrader;entry["dialogue"]=e.dialogue;entry["unloading"]=e.unloading;entry["has_speaker"]=e.hasSpeaker;entry["title"]=String::utf8(e.title.c_str());entry["speaker"]=String::utf8(e.speaker.c_str());entry["fortress"]=String::utf8(e.fortress.c_str());entry["place"]=String::utf8(e.place.c_str());value["entry"]=entry;}
         result["trade_session"]=value;if(v.outcome==wm::TradeSessionOutcome::Unknown)result["outcome"]="unknown";
@@ -891,6 +896,28 @@ bool readTasks(const Dictionary& data,wm::ManagementRequest& request,String&) {
     else {q.jobId=int32_t(int64_t(data["job_id"]));q.workerId=int32_t(int64_t(data["worker_id"]));q.buildingId=int32_t(int64_t(data["building_id"]));q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.operation=wm::TasksOperation(int64_t(data["operation"]));q.expectedState=int8_t(int64_t(data["expected_state"]));}
     return true;
 }
+bool validateTradeDraft(const Dictionary& data,String& error) {
+    error="Invalid trade draft request";
+    const auto integer=[](const Dictionary& d,const char* key,int64_t lo,int64_t hi){return d.has(key) && d[key].get_type()==Variant::INT && int64_t(d[key])>=lo && int64_t(d[key])<=hi;};
+    if(!integer(data,"session",1,INT64_MAX) || !integer(data,"expected_revision",1,INT64_MAX) || !integer(data,"side",0,1))return false;
+    const auto action=wm::ManagementAction(int64_t(data["action"]));
+    if(action==wm::ManagementAction::TradeDraftRead){if(data.size()!=6 || !integer(data,"offset",0,UINT32_MAX) || !integer(data,"limit",1,64))return false;}
+    else {
+        if(!integer(data,"operation",0,int64_t(wm::TradeDraftOperation::Filter)))return false;
+        const auto op=wm::TradeDraftOperation(int64_t(data["operation"]));
+        if(op==wm::TradeDraftOperation::Item || op==wm::TradeDraftOperation::ExpandContainer){if(data.size()!=6 || !integer(data,"item",0,INT32_MAX))return false;}
+        else if(op==wm::TradeDraftOperation::Group || op==wm::TradeDraftOperation::ExpandGroup){if(data.size()!=7 || !integer(data,"type",0,92) || !integer(data,"subtype",-1,INT16_MAX))return false;}
+        else if(op==wm::TradeDraftOperation::Filter){if(data.size()!=6 || !data.has("query") || data["query"].get_type()!=Variant::STRING || String(data["query"]).utf8().length()>256)return false;}
+        else if(data.size()!=5)return false;
+    }
+    error=String();return true;
+}
+bool readTradeDraft(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.tradeDraft;q.session=uint64_t(int64_t(data["session"]));q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.side=int8_t(int64_t(data["side"]));
+    if(request.action==wm::ManagementAction::TradeDraftRead){q.offset=uint32_t(int64_t(data["offset"]));q.limit=uint16_t(int64_t(data["limit"]));}
+    else {q.operation=wm::TradeDraftOperation(int64_t(data["operation"]));if(data.has("item"))q.item=int32_t(int64_t(data["item"]));if(data.has("type")){q.type=int32_t(int64_t(data["type"]));q.subtype=int32_t(int64_t(data["subtype"]));}if(data.has("query"))q.query=String(data["query"]).utf8().get_data();}
+    return true;
+}
 bool validateTradeCatalog(const Dictionary& data,String& error) {
     error="Invalid trade catalog request";
     if(data.size()!=2 || !data.has("depot_id") || data["depot_id"].get_type()!=Variant::INT || int64_t(data["depot_id"])<0 || int64_t(data["depot_id"])>INT32_MAX)return false;
@@ -1315,6 +1342,7 @@ const ManagementCodec managementCodecs[] = {
     {"hunter_ammunition",validateHunterAmmunition,readHunterAmmunition},
     {"depot_goods",validateDepotGoods,readDepotGoods},
     {"trade_catalog",validateTradeCatalog,readTradeCatalog},
+    {"trade_draft",validateTradeDraft,readTradeDraft},
     {"trade_session",validateTradeSession,readTradeSession},
     {"stocks_menu",validateStocksMenu,readStocksMenu},
     {"nobles",validateNobles,readNobles},
@@ -1341,7 +1369,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::TradeSessionClose)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::TradeDraftApply)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

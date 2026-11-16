@@ -20,6 +20,17 @@ local function write(o,r)for k,v in pairs(r)do o[k]=v end end
 local units={trade.merchant_trader,trade.fortress_trader}
 local function people()
  local result={}
+local accept_mode=os.getenv('DF3D_DEPOT_TRADE_ACCEPT')
+assert(not accept_mode or accept_mode=='native' or accept_mode=='owned')
+local tracked={};for side=0,1 do for _,item in ipairs(trade.good[side])do tracked[item.id]=item end end
+local function transfers()
+ local rows={};for id,item in pairs(tracked)do
+  local owners={};for _,ref in ipairs(item.general_refs)do if ref:getType()==df.general_ref_type.ENTITY_ITEMOWNER then owners[#owners+1]=ref.entity_id end end
+  table.sort(owners);rows[#rows+1]={id=id,owners=owners,trader=item.flags.trader,owned=item.flags.owned,forbid=item.flags.forbid,stack=item:getStackSize()}
+ end
+ table.sort(rows,function(a,b)return a.id<b.id end)
+ return {items=rows,times_used=trade.bld.times_used,import_value=caravan.import_value,export_value_total=caravan.export_value_total,export_value_personal=caravan.export_value_personal,offer_value=caravan.offer_value}
+end
  for _,unit in ipairs(units)do local soul=assert(unit.status.current_soul);local r={skills={},mental={},physical={}}
   for _,s in ipairs(soul.skills)do local v=fields(s,sf);v.id=s.id;r.skills[#r.skills+1]=v end
   for i=0,12 do r.mental[i+1]=fields(soul.mental_attrs[i],af)end
@@ -45,6 +56,17 @@ local function restore_caravan(r)caravan.mood=r.mood;caravan.haggle_fail_count=r
 local original_rng=rng();local original_people=people();local original_caravan=caravan_state()
 local mass={whole=caravan.total_capacity.whole,fraction=caravan.total_capacity.fraction};local line=trade.talkline
 local result={}
+local accept_mode=os.getenv('DF3D_DEPOT_TRADE_ACCEPT')
+assert(not accept_mode or accept_mode=='native' or accept_mode=='owned')
+local tracked={};for side=0,1 do for _,item in ipairs(trade.good[side])do tracked[item.id]=item end end
+local function transfers()
+ local rows={};for id,item in pairs(tracked)do
+  local owners={};for _,ref in ipairs(item.general_refs)do if ref:getType()==df.general_ref_type.ENTITY_ITEMOWNER then owners[#owners+1]=ref.entity_id end end
+  table.sort(owners);rows[#rows+1]={id=id,owners=owners,trader=item.flags.trader,owned=item.flags.owned,forbid=item.flags.forbid,stack=item:getStackSize()}
+ end
+ table.sort(rows,function(a,b)return a.id<b.id end)
+ return {items=rows,times_used=trade.bld.times_used,import_value=caravan.import_value,export_value_total=caravan.export_value_total,export_value_personal=caravan.export_value_personal,offer_value=caravan.offer_value}
+end
 local ok,err=xpcall(function()
  click(440,694);click(900,694)
  local anvil,bar
@@ -66,11 +88,33 @@ local ok,err=xpcall(function()
  for _,unit in ipairs(units)do for _,s in ipairs(unit.status.current_soul.skills)do for _,f in ipairs(sf)do s[f]=0 end end end
  view:render(dfhack.getTickCount())
  local initial_people=people();local initial_caravan=caravan_state();local controlled=rng();controlled.cursor=0;controlled.words[1]=2147483646;controlled.words[2]=0
+ if accept_mode then for i=3,624 do controlled.words[i]=(i*104729)%2147483647 end end
  set_rng(controlled);click(508,730)
  assert(trade.counter_offer and #trade.counter_offer_item>0,'Controlled offer did not produce a native counteroffer: '..trade.talkline..'/'..tostring(trade.counter_offer)..'/'..#trade.counter_offer_item)
  result.native={dialogue=trade.talkline,items={},people=people(),caravan=caravan_state()}
  for _,item in ipairs(trade.counter_offer_item)do result.native.items[#result.native.items+1]=item.id end
  local native_rng=rng();capture('depot-trade-counteroffer')
+ if accept_mode then
+  result.accept_before=transfers()
+  if accept_mode=='native' then
+   click(508,730)
+   result.accept_conversation={dialogue=trade.talkline,counter_offer=trade.counter_offer,announcement={}}
+   for _,text in ipairs(trade.big_announce.text)do result.accept_conversation.announcement[#result.accept_conversation.announcement+1]=dfhack.df2utf(text.value)end
+   capture('depot-trade-accepted')
+  else
+   restore_people(initial_people);restore_caravan(initial_caravan);trade.counter_offer=false;trade.counter_offer_item:resize(0);trade.talkline=line
+   set_rng(controlled)
+   local output,code=dfhack.run_command_silent('df3d','trade-accept-probe',tostring(trade.bld.id),'0','','',json.encode(intents))
+   assert(code==0,output);local accepted=json.decode(output)
+   assert(accepted.accepted_executed and accepted.accept_effects_started and not accepted.unknown,output)
+   result.accept_conversation={dialogue=accepted.dialogue,counter_offer=accepted.counter_offer,announcement=accepted.announcement}
+   assert(not trade.counter_offer and trade.talkline==line,'Owned acceptance changed native menu')
+  end
+  result.accept_after=transfers();result.accept_people=people();result.accept_caravan=caravan_state();result.accept_rng=rng();result.accept_mode=accept_mode
+  assert(not result.accept_conversation.counter_offer and result.accept_after.times_used==result.accept_before.times_used+1,'Counteroffer was not accepted')
+  local changed=0;for i,item in ipairs(result.accept_after.items)do if json.encode(item)~=json.encode(result.accept_before.items[i])then changed=changed+1 end end
+  assert(changed>0,'Acceptance transferred no goods');result.changed_items=changed;result.success=true;return
+ end
  restore_people(initial_people);restore_caravan(initial_caravan);trade.counter_offer=false;trade.counter_offer_item:resize(0);trade.talkline=line
  set_rng(controlled)
  local output,code=dfhack.run_command_silent('df3d','trade-negotiate-probe',tostring(trade.bld.id),'0','','',json.encode(intents))

@@ -5215,7 +5215,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if(rows)for(const auto& row:*rows){Json::Value value;value["id"]=row.id;value["value"]=row.value;value["appraisal"]=row.appraisal;value["value_caption"]=DF2UTF(row.valueCaption);value["weight_caption"]=DF2UTF(row.weightCaption);output["rows"].append(value);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
-      if(parameters[0]=="trade-projection-probe" || parameters[0]=="trade-draft-probe" || parameters[0]=="trade-display-probe" || parameters[0]=="trade-negotiation-seed-probe" || parameters[0]=="trade-refusal-probe" || parameters[0]=="trade-negotiate-probe") {
+      if(parameters[0]=="trade-projection-probe" || parameters[0]=="trade-draft-probe" || parameters[0]=="trade-display-probe" || parameters[0]=="trade-negotiation-seed-probe" || parameters[0]=="trade-refusal-probe" || (parameters[0]=="trade-negotiate-probe" || parameters[0]=="trade-accept-probe")) {
         if(parameters.size()!=3 && parameters.size()!=5 && parameters.size()!=6)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
         int32_t values[2]={-1,-1};
@@ -5252,10 +5252,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           projection=draft->snapshot();
         }
         Json::Value output;output["available"]=bool(projection);output["sides"]=Json::arrayValue;
-        if(projection && (parameters[0]=="trade-negotiation-seed-probe" || parameters[0]=="trade-refusal-probe" || parameters[0]=="trade-negotiate-probe")) {
+        if(projection && (parameters[0]=="trade-negotiation-seed-probe" || parameters[0]=="trade-refusal-probe" || (parameters[0]=="trade-negotiate-probe" || parameters[0]=="trade-accept-probe"))) {
           df3d_production::TradeDraftCheckpoint selected{*projection,filters};
           df3d_production::TradeNegotiationNative context(df::building::find(values[0]),size_t(values[1]),selected);
-          if(parameters[0]=="trade-negotiate-probe"){
+          if((parameters[0]=="trade-negotiate-probe" || parameters[0]=="trade-accept-probe")){
             bool started=false;
             try{output["executed"]=context.negotiate(&started);}
             catch(...){output["unknown"]=started;output["effects_started"]=started;out.print("{}",Json::FastWriter().write(output));return CR_OK;}
@@ -5269,11 +5269,29 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               context.refuseOffer();const auto response=context.checkpoint();if(!response)return CR_FAILURE;output["replies"].append(response->conversation.dialogue);}
           }
           auto checkpoint=context.checkpoint();output["available"]=bool(checkpoint);
-          if(checkpoint && parameters[0]=="trade-negotiate-probe"){
+          if(checkpoint && (parameters[0]=="trade-negotiate-probe" || parameters[0]=="trade-accept-probe")){
             const auto equal=[](const auto& a,const auto& b){return a.dialogue==b.dialogue && a.counterOffer==b.counterOffer && a.requestedItems==b.requestedItems && a.announcement==b.announcement;};
             df3d_production::TradeNegotiationNative restored(df::building::find(values[0]),size_t(values[1]),checkpoint->draft);
             if(!restored.restore(*checkpoint))return CR_FAILURE;
             auto copy=restored.checkpoint();if(!copy || !equal(copy->conversation,checkpoint->conversation))return CR_FAILURE;
+            if(parameters[0]=="trade-accept-probe"){
+              // Disposable paused oracle: accept only the counteroffer produced
+              // above, never client-supplied conversation or raw pointers.
+              if(!checkpoint->conversation.counterOffer || checkpoint->conversation.requestedItems.empty())return CR_FAILURE;
+              bool started=false;
+              try{
+                output["accepted_executed"]=restored.negotiate(&started);
+                const auto accepted=restored.checkpoint();
+                if(!accepted)throw std::runtime_error("Trade outcome unavailable");
+                output["dialogue"]=accepted->conversation.dialogue;
+                output["counter_offer"]=accepted->conversation.counterOffer;
+                output["announcement"]=Json::arrayValue;
+                for(const auto& line:accepted->conversation.announcement)output["announcement"].append(DF2UTF(line));
+              }catch(...){output["unknown"]=started;}
+              output["accept_effects_started"]=started;
+              out.print("{}",Json::FastWriter().write(output));return CR_OK;
+            }
+
             output["conversation_restored"]=true;checkpoint=std::move(copy);
             df3d_production::TradeNegotiationNative invalid(df::building::find(values[0]),size_t(values[1]),checkpoint->draft);
             const auto before=invalid.checkpoint();auto missing=*checkpoint;missing.conversation.requestedItems.push_back(INT32_MAX);

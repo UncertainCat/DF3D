@@ -17,8 +17,8 @@ RNG comparison still passes. Owned DF34820 closes unsaved/source-preserved,
 30FPS, sampled60C. Bridge build and all19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_trade_conversation_restore_reference`.
 This verifies reconstruction within one safe point. Asynchronous session
-rebinding, real announcement content, Okay input and accepted transfers remain
-unfinished. Protocol243 and public Trade exposure are unchanged.
+rebinding, real announcement content and Okay input remain unfinished. Accepted
+transfers are qualified below for one controlled counteroffer. Protocol243 and public Trade exposure are unchanged.
 
 ## Owned native negotiation execution
 
@@ -45,9 +45,31 @@ pass. Evidence:
 The earlier221756 fixture offered233% profit and native accepted it;222007
 clicked the bin-group checkbox and selected extra goods. Those runs failed the
 counteroffer prerequisite and do not qualify product exchange. The corrected
-run selects one steel bar at y418 and validates103/150 values. Accepted item
-transfers, restored/subsequent counteroffers, ethical effects and announcement
-results still require qualification. Protocol243 and public exposure are unchanged.
+run selects one steel bar at y418 and validates103/150 values. Accepted counteroffer transfers are qualified below. Other subsequent
+counteroffers, ethical effects and announcement results still require qualification. Protocol243 and public exposure are unchanged.
+
+Accepted counteroffers are qualified by separate protected sessions223337
+(native DF35816) and223429 (owned DF34956) on2026-11-15. The paused
+trade-accept-probe produces a counteroffer, reconstructs it in fresh owned
+storage, then invokes native negotiation again. It accepts no client-supplied
+conversation. Both executions transfer the same eight items: two lose merchant
+ownership and six gain it. Dialogue7, empty announcement, trader skill/attribute
+fields, caravan state, depot times_used and the complete active RNG match.
+The oracle uses an identical controlled RNG seed in both disposable sessions;
+runtime negotiation does not seed or rewind RNG. Both sessions close unsaved,
+source-preserved, capped30FPS; GPU samples58–61C. Bridge builds and19 core
+checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_counteroffer_acceptance_reference`.
+
+This fixture uses a same-civilization synthetic caravan: import/export values
+stay zero. It does not qualify foreign-caravan accounting, real announcements,
+public action transport or asynchronous session rebinding. Trade remains hidden.
+The oracle removes ownership refs from the current live vector, since accepted
+trades delete the originally inserted refs, and returns sold bin contents to
+their original container. It requires fixture items to have no prior entity
+owner. This restores fixture placement for later checks, not all trade history;
+the lane must always close without saving. Initial223215 reached acceptance but
+failed container cleanup and is not acceptance evidence.
 
 ## Owned Trade refusal checks
 

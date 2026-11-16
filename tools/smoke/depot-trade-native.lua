@@ -222,16 +222,28 @@ local ok,err=xpcall(function()
   end
   restore_sources=function()
    for i=#snapshots,1,-1 do local s=snapshots[i]
-    if s.ref then assert(s.item.general_refs[#s.item.general_refs-1]==s.ref);s.item.general_refs:erase(#s.item.general_refs-1);s.ref:delete()end
+    -- Accepted trades delete/recreate ownership references. Inspect the live
+    -- vector; never dereference the fixture's potentially deleted s.ref.
+    for j=#s.item.general_refs-1,0,-1 do local current=s.item.general_refs[j]
+     if current:getType()==df.general_ref_type.ENTITY_ITEMOWNER then s.item.general_refs:erase(j);current:delete()end
+    end
     s.item.flags.in_building=false;assert(dfhack.items.moveToGround(s.item,s.pos));s.item.flags.whole=s.flags
-    for _,child in ipairs(s.children or {})do child.item.pos.x=child.pos.x;child.item.pos.y=child.pos.y;child.item.pos.z=child.pos.z;child.item.flags.whole=child.flags end
+    for _,child in ipairs(s.children or {})do
+     for j=#child.item.general_refs-1,0,-1 do local current=child.item.general_refs[j]
+      if current:getType()==df.general_ref_type.ENTITY_ITEMOWNER then child.item.general_refs:erase(j);current:delete()end
+     end
+     if dfhack.items.getContainer(child.item)~=s.item then child.item.flags.in_building=false;assert(dfhack.items.moveToContainer(child.item,s.item))end
+     child.item.pos.x=child.pos.x;child.item.pos.y=child.pos.y;child.item.pos.z=child.pos.z;child.item.flags.whole=child.flags end
    end
    assert(#b.contained_items==contained);restore_sources=nil
   end
   result.source_items={};result.appraisal_suppressed=true
   for i,item in ipairs(candidates)do
-   local s={item=item,pos={x=item.pos.x,y=item.pos.y,z=item.pos.z},flags=item.flags.whole};snapshots[#snapshots+1]=s
+   local s={item=item,pos={x=item.pos.x,y=item.pos.y,z=item.pos.z},flags=item.flags.whole}
    if result.bin and item.id==result.bin.id then s.children={};for _,id in ipairs(result.bin.children)do local child=df.item.find(id);s.children[#s.children+1]={item=child,pos={x=child.pos.x,y=child.pos.y,z=child.pos.z},flags=child.flags.whole}end end
+   for _,entry in ipairs(s.children or {})do for _,owner in ipairs(entry.item.general_refs)do assert(owner:getType()~=df.general_ref_type.ENTITY_ITEMOWNER,'Fixture child already has an entity owner')end end
+   for _,owner in ipairs(item.general_refs)do assert(owner:getType()~=df.general_ref_type.ENTITY_ITEMOWNER,'Fixture item already has an entity owner')end
+   snapshots[#snapshots+1]=s
    assert(dfhack.items.moveToBuilding(item,b,0,true))
    if i<=6 then s.ref=df.general_ref_entity_itemownerst:new();s.ref.entity_id=i==6 and -1 or added[1].entity;item.general_refs:insert('#',s.ref);item.flags.trader=true end
    if i==11 then b.contained_items[#b.contained_items-1].use_mode=2 end

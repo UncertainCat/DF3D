@@ -98269,6 +98269,411 @@
           "bridge/plugin/trade_negotiation_native.h": "764238f6112d125bc63bd2abfaa4b785475d78e68f5d4cca560acf1de1231cb4",
           "tools/smoke/depot-trade-negotiate-native.lua": "222ec426aab4707afda3ac4660940060417b678254b298c65cf009d3d0cea69a"
         }
+      },
+      "depot_trade_counteroffer_acceptance_reference": {
+        "native_lane": "build/stockpile-storage-native-farm-discovery-20261115-223337",
+        "owned_lane": "build/stockpile-storage-native-farm-discovery-20261115-223429",
+        "owned_df_pids": [
+          35816,
+          34956
+        ],
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Separate disposable native and owned acceptance from identical controlled counteroffers. Eight item ownership/flag changes, dialogue7, empty announcement, full trader skills/attributes, caravan fields, depot count and active RNG match. Same-civilization synthetic caravan: import/export values remain zero; foreign-caravan accounting, real announcements, async rebinding and public Trade workflow remain unqualified.",
+        "compared_fields": [
+          "values",
+          "native",
+          "accept_before",
+          "accept_after",
+          "accept_conversation",
+          "accept_people",
+          "accept_caravan",
+          "accept_rng",
+          "changed_items"
+        ],
+        "before": {
+          "export_value_personal": 0,
+          "export_value_total": 0,
+          "import_value": 0,
+          "items": [
+            {
+              "forbid": false,
+              "id": 296,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            },
+            {
+              "forbid": false,
+              "id": 407,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            },
+            {
+              "forbid": false,
+              "id": 408,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            },
+            {
+              "forbid": true,
+              "id": 991,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            },
+            {
+              "forbid": true,
+              "id": 992,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            },
+            {
+              "forbid": true,
+              "id": 1180,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 1494,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 1735,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 1736,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 3148,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 25085,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 25112,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 25113,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 25156,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 25157,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 25161,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 27274,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 27311,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 28650,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 28694,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            }
+          ],
+          "offer_value": 0,
+          "times_used": 0
+        },
+        "after": {
+          "export_value_personal": 0,
+          "export_value_total": 0,
+          "import_value": 0,
+          "items": [
+            {
+              "forbid": false,
+              "id": 296,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 407,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            },
+            {
+              "forbid": false,
+              "id": 408,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            },
+            {
+              "forbid": true,
+              "id": 991,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            },
+            {
+              "forbid": true,
+              "id": 992,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": true,
+              "id": 1180,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            },
+            {
+              "forbid": false,
+              "id": 1494,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            },
+            {
+              "forbid": false,
+              "id": 1735,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            },
+            {
+              "forbid": false,
+              "id": 1736,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            },
+            {
+              "forbid": false,
+              "id": 3148,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 25085,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 25112,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            },
+            {
+              "forbid": false,
+              "id": 25113,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 25156,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 25157,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 25161,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 27274,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 27311,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 28650,
+              "owned": false,
+              "owners": [],
+              "stack": 1,
+              "trader": false
+            },
+            {
+              "forbid": false,
+              "id": 28694,
+              "owned": false,
+              "owners": [
+                865
+              ],
+              "stack": 1,
+              "trader": true
+            }
+          ],
+          "offer_value": 0,
+          "times_used": 1
+        },
+        "conversation": {
+          "announcement": [],
+          "counter_offer": false,
+          "dialogue": 7
+        },
+        "changed_items": 8,
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-223337/depot-trade-native.json": "5894edcdcf24f3e36e12ac80b4b14bdb13e42464fe93473f61ea719e57bee6f4",
+          "build/stockpile-storage-native-farm-discovery-20261115-223337/result.json": "316f5f8cb3d239033c17c1c591ef5036a3ce0d6e7debf4e703c6ac613301be16",
+          "build/stockpile-storage-native-farm-discovery-20261115-223337/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-223429/depot-trade-native.json": "6fc1141704d4cbf65fec6c584bf2443bb4dcaa80dbe5aaffbca23fb9475979d4",
+          "build/stockpile-storage-native-farm-discovery-20261115-223429/result.json": "2b92f10c73e4adebda0adcf44196ad131c1d9815c43872fcdc2d9e486492a964",
+          "build/stockpile-storage-native-farm-discovery-20261115-223429/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/df3d.cpp": "3904586354a8c848d9f75ba60f4d71a5ae21979c70ff66690178ab9f7b9540f0",
+          "tools/smoke/depot-trade-native.lua": "fce776212de7ec7aa802eb355a4adac999c6b9087c4fa970121ac4d7f56db0a3",
+          "tools/smoke/depot-trade-negotiate-native.lua": "c45d3992052c5d7e7d6f4be9748522ac53047691d157a3e4d536b7a37b413aef"
+        }
       }
     },
     "pending_construction_reference": {

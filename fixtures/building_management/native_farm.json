@@ -113581,6 +113581,15 @@
           "build/stockpile-storage-native-farm-discovery-20261116-105758/result.json": "3011d3894e459ef98287c740a312a85b904ef0cff165d741360bd02f1f21cf24",
           "build/stockpile-storage-native-farm-discovery-20261116-105758/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
         }
+      },
+      "cage_picker_render_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-105758",
+        "scope": "Staged cage picker matches all271872 pixels of the native384x708 pane at32,52. Shared animal view uses cage geometry and assigned portrait highlight. Final safe-render-thread capture clean at30FPS, sampled61C. Shared area candidate headless and root19 pass. Furniture ownership is wired but not live qualified; cage header/room body and public route remain absent.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-105758/cage-assignment-open.png": "02ec2357d1e168b850a2f25e56b9332064e391df91b586e11f62e38d85578649",
+          "build/stockpile-storage-native-farm-discovery-20261116-105758/cage-picker-view.png": "8289cf2697b54ff84a83bcfeed8ec18f477f581bfa50a90c7a9bd9d7de208dd3",
+          "presentations/godot/project/tests/cage_picker_capture.gd": "16fca65b98387942d9bf52aafa295a7743e2645a32bf882ae042712954752fca"
+        }
       }
     },
     "pending_construction_reference": {

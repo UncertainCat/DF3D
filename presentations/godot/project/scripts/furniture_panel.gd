@@ -9,23 +9,32 @@ var trade_view
 var trade_mode:=false
 var links=preload("res://scripts/building_links_state.gd").new()
 var access=preload("res://scripts/door_controls_state.gd").new()
+var cage=preload("res://scripts/cage_picker_state.gd").new()
+var cage_view
+var cage_mode:=false
 # Ordinary furniture uses native header and contained-item authority.
 func _init() -> void:
 	state=preload("res://scripts/building_header_state.gd").new()
 	contents.edit_removing=true
 func _create_view():
-	var view=preload("res://scripts/depot_sheet_view.gd").new()
+	var view=preload("res://scripts/cage_sheet_view.gd").new()
 	view.building_icon="" # Native artwork is authoritative; no Box fallback for other furniture.
 	return view
 func _open_state(id: int,_season: int) -> void:
-	_retire_goods();_retire_trade();state.open(id)
+	_retire_cage();_retire_goods();_retire_trade();state.open(id)
 func _contents_supported() -> bool:return true
 func configure(world,service,host,help=null) -> void:
 	goods.configure(service)
 	trade.configure(service)
 	links.configure(service)
 	access.configure(service)
+	cage.configure(service)
 	super.configure(world,service,host,help)
+	cage_view=preload("res://scripts/area_candidates_view.gd").new();cage_view.cage_layout=true
+	canvas.add_child(cage_view);cage_view.native_help=help;cage_view.configure(world,cage)
+	cage_view.add_theme_stylebox_override("panel",cage_view.panel_style());cage_view.hide()
+	panel.cage_requested.connect(_open_cage)
+	cage.applied.connect(contents.refresh)
 	goods_view=preload("res://scripts/depot_goods_view.gd").new();canvas.add_child(goods_view)
 	goods_view.configure_goods(world,goods);goods_view.hover_help=help;goods_view.hide()
 	goods_view.input_allowed=func():return goods_mode and play_enabled and ui_host.allows_panel_input(self)
@@ -44,6 +53,7 @@ func configure(world,service,host,help=null) -> void:
 			close_panel();focus_requested.emit(tile))
 func _state_changed() -> void:
 	super._state_changed()
+	if cage_mode and (state.building_id!=cage.building_id or state.snapshot.get("removing",false)):_retire_cage()
 	if goods_mode:
 		if state.building_id!=goods.depot_id or state.building_id<0:
 			_retire_goods()
@@ -83,18 +93,41 @@ func _retire_goods() -> void:
 	goods_mode=false
 	if goods_view!=null:goods_view._closing=false;goods_view.hide()
 	goods.close()
+func _open_cage() -> void:
+	if cage_mode or not play_enabled or not ui_host.allows_panel_input(self) or not panel.contents_allowed() or state.snapshot.get("type",-1)!=28 or state.snapshot.get("removing",true):return
+	panel.finish_rename();cancel_gesture();cage_mode=true;cage_view.show();cage.open(state.building_id)
+func _retire_cage() -> void:
+	cage_mode=false
+	if cage_view!=null:cage_view.hide()
+	cage.close()
 func handle_escape() -> void:
-	if goods_mode:goods_view._finish()
+	if cage_mode:_retire_cage()
+	elif goods_mode:goods_view._finish()
 	else:super.handle_escape()
+func _input(event: InputEvent) -> void:
+	if cage_mode and play_enabled and ui_host.allows_panel_input(self):cage_view.owner_pointer(event)
+	if cage_mode and play_enabled and ui_host.allows_panel_input(self) and event is InputEventKey and event.pressed:
+		if event.keycode==KEY_ESCAPE:
+			_retire_cage();get_viewport().set_input_as_handled();return
+		if cage_view.feed_owner_key(event):get_viewport().set_input_as_handled();return
+	super._input(event)
 func close_panel() -> void:
 	# Native Trade and chooser cancellation also clear the depot selection.
-	_retire_goods();_retire_trade()
+	_retire_cage();_retire_goods();_retire_trade()
 	access.close();links.close();super.close_panel()
 func _exit_tree() -> void:
-	_retire_goods();_retire_trade();trade.dispose();goods.dispose();access.dispose();links.dispose();super._exit_tree()
+	_retire_cage();cage.dispose();_retire_goods();_retire_trade();trade.dispose();goods.dispose();access.dispose();links.dispose();super._exit_tree()
 
 func _process(delta: float) -> void:
 	super._process(delta)
+	if cage_mode:
+		cage_view.visible=play_enabled and ui_host.allows_panel_input(self)
+		cage.tick(delta);cage_view.layout(get_viewport().get_visible_rect().size/canvas.scale)
+		# Recipes are snapshot-owned; load only the visible portraits.
+		var first: int=cage_view.owner_scrollbar.first
+		for index in range(first,mini(cage_view.portrait_slots.size(),first+cage_view.page_rows())):
+			var slot: Dictionary=cage_view.portrait_slots[index]
+			if not slot.loaded:slot.view.texture=cage_view.world.candidate_icon(slot.recipe);slot.loaded=true
 	if goods_view!=null:
 		goods_view.layout(get_viewport().get_visible_rect().size/canvas.scale)
 		if goods_mode:panel.hide()

@@ -2,6 +2,7 @@ extends PanelContainer
 signal focus_requested(tile: Vector3i)
 var art = preload("res://scripts/original_ui.gd").new()
 var state
+var cage_layout:=false
 var world
 var native_help
 var body: Control
@@ -120,7 +121,7 @@ func bind_containment_help(button: Button, relation: int) -> void:
 	var target := Control.new(); target.name = "AnimalContainmentHover"
 	# Approved native bug correction: retain the native 4x3-cell bounds at the
 	# drawn indicator, instead of swapping their X/Y coordinates.
-	target.position = Vector2(240,0); target.size = Vector2(32,36)
+	target.position = Vector2(248 if cage_layout else 240,0); target.size = Vector2(32,36)
 	target.mouse_filter = Control.MOUSE_FILTER_PASS; button.add_child(target)
 	target.set_meta("relation",relation)
 	var owner := target.get_instance_id()
@@ -136,7 +137,7 @@ func style_row(button: Button, selected: bool) -> void:
 	for key in ["normal","hover","pressed","disabled","focus"]: button.add_theme_stylebox_override(key,style)
 
 func row_button(text: String) -> Button:
-	var button := Button.new(); button.custom_minimum_size = Vector2(352 if state.kind == 2 else 552,36)
+	var button := Button.new(); button.custom_minimum_size = Vector2((344 if cage_layout else 352) if state.kind == 2 else 552,36)
 	if state.kind == 3 and state.rows.size() > 10: button.custom_minimum_size.x = 536
 	if state.kind in [1,2]: button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT; button.text = text
@@ -157,6 +158,9 @@ func layout(view: Vector2) -> void:
 	if state.kind == 1: scroll.size.x = maxi(456,(viewport_columns-80)*8)
 	position=Vector2(368,52+inset) if state.kind==2 else Vector2(370,54+inset)
 	size=Vector2(576,420) if state.kind==3 else Vector2(392 if state.kind==2 else maxi(468,(viewport_columns-77)*8+4),(viewport_rows-66)*12+(708 if state.kind==2 else 704))
+	if cage_layout:
+		position.x=(viewport_columns-146)*8
+		size.x=384
 
 func page_rows() -> int:
 	return maxi(1,floori(float(viewport_rows-16)/3))
@@ -166,6 +170,7 @@ func refresh() -> void:
 		owner_selected = 0; owner_receipt = state.receipt
 		owner_scrollbar.set_rows(0); owner_scrollbar.dragging = false; scroll.scroll_vertical = 0
 	body.custom_minimum_size = Vector2(564,400) if state.kind == 3 else Vector2(376 if state.kind == 2 else maxi(456,(viewport_columns-78)*8),(viewport_rows-9)*12)
+	if cage_layout:body.custom_minimum_size.x=368
 	owner_search.position.y=(viewport_rows-12)*12
 	scroll.position.y = 36 if state.kind == 3 else 24
 	scroll.size = Vector2(360 if state.kind == 2 else maxi(456,(viewport_columns-80)*8),page_rows()*36) if state.kind in [1,2] else Vector2(536 if state.rows.size()>10 else 552,360)
@@ -268,7 +273,7 @@ func refresh() -> void:
 			if state.kind == 2:
 				var check := TextureRect.new(); check.name = "AnimalAssigned"
 				check.texture = art.texture("LABOR_WORKER_ASSIGNED" if bool(row.get("assigned",false)) else "LABOR_WORKER_UNASSIGNED")
-				check.position = Vector2(280,0); check.size = Vector2(32,36)
+				check.position = Vector2(288 if cage_layout else 280,0); check.size = Vector2(32,36)
 				check.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(check)
 				update_animal_status(button,row)
 	if state.kind == 1:
@@ -288,7 +293,7 @@ func refresh() -> void:
 		for index in choices.size():
 			style_row(choices[index],index == owner_selected)
 			var frame_style: StyleBoxTexture = owner_frames[index].get_theme_stylebox("panel")
-			frame_style.texture = picture.texture(index == owner_selected)
+			frame_style.texture = picture.texture(index == owner_selected,cage_layout and bool(state.rows[index].get("assigned",false)))
 	for button in choices:
 		button.disabled = state.busy()
 		var hover = button.get_node_or_null("AnimalContainmentHover")
@@ -470,7 +475,7 @@ func update_animal_status(button: Button, row: Dictionary) -> void:
 		elif status_kind == 4 and row.has("animal_restraint"): indicator.texture = world.animal_restraint_icon(row.animal_restraint)
 		elif status_kind == 4: indicator.texture = world.animal_container_icon(row.animal_container)
 		else: indicator.texture = art.texture(["UNIT_SELECTOR_PASTURE","UNIT_SELECTOR_PIT","UNIT_SELECTOR_POND"][status_kind-1])
-		indicator.position = Vector2(242,2); indicator.size = Vector2(32,32)
+		indicator.position = Vector2(250 if cage_layout else 242,2); indicator.size = Vector2(32,32)
 		indicator.expand_mode = TextureRect.EXPAND_IGNORE_SIZE; indicator.stretch_mode = TextureRect.STRETCH_SCALE
 		indicator.mouse_filter = Control.MOUSE_FILTER_IGNORE; indicator.show()
 

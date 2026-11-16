@@ -3187,8 +3187,20 @@ revision, unknown-effect, late-reply, epoch and native byte-filter checks, with
 only the documented separate-render-thread warning. Evidence:
 `completed_sheet_discovery_reference.cage_provider_reference`.
 
-The complete cage picker still needs native layout/art verification, selection
-effects through the assembled viewer and public map entry.
+The staged cage picker reuses the animal row renderer with native384px frame,
+344px rows, cage status/checkbox offsets and assigned portrait highlighting.
+`cage_picker_capture.gd` compares every pixel of the384x708 pane at32,52 against
+protected105758: all271872 pixels match, including names, animal/container art,
+checkboxes, filter and frame. The final30FPS safe-render-thread capture has clean
+stderr; sampled GPU61C. Shared animal headless checks and root19 pass. Evidence:
+`completed_sheet_discovery_reference.cage_picker_render_reference`.
+
+The furniture owner now holds the independent cage state, visible portrait loading,
+Escape-to-parent handling and selection/session retirement. This wiring is staged,
+not live acceptance: the cage header admission and native room-membership body
+are still missing, so no public route is enabled. Next qualify the complete parent
+and map-entry/assignment/close workflow. Room membership is visible in the native
+parent and must not be omitted when exposing it.
 Shared animal presentation components can be reused only where their semantics
 match; a zone ID must not stand in for cage authority.
 

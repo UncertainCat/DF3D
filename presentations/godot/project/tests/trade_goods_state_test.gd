@@ -2,7 +2,7 @@ extends "res://tests/trade_catalog_state_test.gd"
 const Goods=preload("res://scripts/trade_goods_state.gd")
 func page_value(side: int,query: String="",selected: bool=false,total: int=1,offset: int=0) -> Dictionary:
 	var rows: Array=[]
-	for index in range(offset,total):rows.append({"group":false,"expanded":true,"id":992+side*100+index,"parent":-1,"type":1,"subtype":-1,"amount":0,"flags":1 if selected else 0,"caption":"Synthetic item","value":10,"appraisal":1,"value_caption":"10","weight_caption":"1"})
+	for index in range(offset,total):rows.append({"group":false,"expanded":true,"id":992+side*100+index,"parent":-1,"type":1,"subtype":-1,"amount":0,"flags":1 if selected else 0,"caption":"Synthetic item","value":10,"appraisal":1,"value_caption":"10","weight_caption":"1","disposition":0,"contained_count":0,"expandable":false,"contents_caption":""})
 	return {"side":side,"offset":offset,"total":total,"query":query,"rows":rows}
 func draft_reply(service,state,page: Dictionary={},revision: int=-1,extra: Dictionary={}) -> void:
 	var call: Dictionary=service.calls[state.ticket]

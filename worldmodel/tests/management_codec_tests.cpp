@@ -21,9 +21,9 @@ TEST_CASE("Trade draft requests reject mixed authority and preserve wide identit
   }
 }
 TEST_CASE("Trade draft pages are bounded complete and owned by the read action") {
-  for(int fault=0;fault<12;++fault){
+  for(int fault=0;fault<16;++fault){
     flatbuffers::FlatBufferBuilder b;auto text=b.CreateString("Synthetic item");auto empty=b.CreateString("");
-    auto row=wire::CreateTradeDraftRow(b,false,true,fault==1?-1:992,-1,1,-1,0,1,text,12,fault==2?0:1,text,text);
+    auto row=wire::CreateTradeDraftRow(b,false,true,fault==1?-1:992,-1,1,-1,0,1,text,12,fault==2?0:1,text,text,fault==12?wire::TradeItemDisposition(5):wire::TradeItemDisposition::Local,fault==13?-1:0,fault==15,fault==14?text:empty);
     std::vector<flatbuffers::Offset<wire::TradeDraftRow>> rows{row};if(fault==3)rows.push_back(row);if(fault==4)rows.assign(65,row);
     auto page=wire::CreateTradeDraftPage(b,fault==5?2:0,fault==6?5:0,4,empty,b.CreateVector(rows));
     auto draft=wire::CreateTradeDraftState(b,fault==7?wire::TradeSessionOutcome::Rejected:wire::TradeSessionOutcome::Available,UINT64_C(9007199254740993),fault==8?0:9,fault==9?0:page);

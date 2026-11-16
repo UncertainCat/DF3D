@@ -89327,6 +89327,761 @@
           "presentations/godot/project/tests/trade_goods_state_test.gd": "2e349e9816ff42c22ef709d2d98c52a4d791c370eda3b0d1b0a836cd6d370d20",
           "presentations/godot/project/tests/trade_session_wire_live.gd": "6c4095d477ed51eca651259793cf10cd76718e615c9738e3c4fdd061b66dcf0e"
         }
+      },
+      "depot_trade_row_facts_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-201334",
+        "owned_df_pid": 40524,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Native screen foreground colors and contained-item captions compared with owned native display pages. 24 states include explicit local/imported/restricted/stolen/offered priority and merchant-side export exemption; bin has ten contained items. No viewer artwork/pixels or quantity/negotiation acceptance.",
+        "cases": [
+          {
+            "label": "single",
+            "visible_dispositions": 0,
+            "visible_contents": 0
+          },
+          {
+            "label": "speaker",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "row-facts-local",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "row-facts-imported",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "row-facts-restricted",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "row-facts-stolen-over-restricted",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "row-facts-offered-over-stolen",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "row-facts-stolen-restored",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "row-facts-restriction-restored",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "row-facts-merchant-ban",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "search-0-iron",
+            "visible_dispositions": 11,
+            "visible_contents": 1
+          },
+          {
+            "label": "search-0-boulders",
+            "visible_dispositions": 12,
+            "visible_contents": 1
+          },
+          {
+            "label": "search-0-zznomatch",
+            "visible_dispositions": 10,
+            "visible_contents": 1
+          },
+          {
+            "label": "search-1-blocks",
+            "visible_dispositions": 6,
+            "visible_contents": 0
+          },
+          {
+            "label": "search-cleared",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "bin-action-1",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "bin-action-2",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "bin-action-3",
+            "visible_dispositions": 10,
+            "visible_contents": 1
+          },
+          {
+            "label": "bin-action-4",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "bin-action-5",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "speaker-long-name",
+            "visible_dispositions": 15,
+            "visible_contents": 1
+          },
+          {
+            "label": "speaker-unloading",
+            "visible_dispositions": 0,
+            "visible_contents": 0
+          }
+        ],
+        "priority": {
+          "cases": [
+            {
+              "disposition": 0,
+              "id": 1180,
+              "label": "local"
+            },
+            {
+              "disposition": 1,
+              "id": 1180,
+              "label": "imported"
+            },
+            {
+              "disposition": 2,
+              "id": 1180,
+              "label": "restricted"
+            },
+            {
+              "disposition": 3,
+              "id": 1180,
+              "label": "stolen-over-restricted"
+            },
+            {
+              "disposition": 4,
+              "id": 1180,
+              "label": "offered-over-stolen"
+            },
+            {
+              "disposition": 3,
+              "id": 1180,
+              "label": "stolen-restored"
+            },
+            {
+              "disposition": 2,
+              "id": 1180,
+              "label": "restriction-restored"
+            }
+          ],
+          "merchant_export_ignored": true,
+          "restored": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-201334/depot-trade-native.json": "4e9f9a22a163150cd8d28c5b76fa9f30e47c49e403f3b1eee5e6ff3e62a20d7b",
+          "build/stockpile-storage-native-farm-discovery-20261115-201334/result.json": "ed7668d4caa125a56ed205ed43d942860e8fd51a58f55866cf7650314f4b4c7e",
+          "build/stockpile-storage-native-farm-discovery-20261115-201334/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-201334/capture-inputs.json": "f3d6f7720c8f26d2a6386d11daa4d9c15443dbf87e7a5d1ba3763723c3a00cf2",
+          "bridge/plugin/trade_display_native.h": "c6fdad2e422255d201915f35c654dc0bcf8788675a785fd7142a563fd26c1fda",
+          "tools/smoke/depot-trade-display-native.lua": "b2ab33816a4f9e080ea71059020d5e77b5d15b319c5fcb6d48926255cccd8db7",
+          "tools/smoke/depot-trade-row-facts-native.lua": "0f0cb95a1bcca264166106fb29f23890ca8cc33906c85ce9b5aa7782fb07f6a4"
+        }
+      },
+      "depot_trade_row_facts_transport_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-202013",
+        "protocol": 240,
+        "owned_df_pid": 41788,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Actual transport and goods controller compare native-qualified row disposition/count/expansion/captions. 87 draft receipts and11 states include a ten-item bin and successful collapse/expand on both direct transport and controller paths. Existing stale rejection, pagination/filtering, full appraisal snapshot and close/late cleanup pass. Not rendered trade UI, quantities or negotiation/exchange.",
+        "draft_receipts": 87,
+        "controller": {
+          "closes": [
+            {
+              "outcome": 3,
+              "revision": 0,
+              "session": 4
+            },
+            {
+              "outcome": 3,
+              "revision": 0,
+              "session": 5
+            }
+          ],
+          "goods_states": 11,
+          "initial_session": 4,
+          "late_open": {
+            "entry": {
+              "dialogue": 0,
+              "entity_id": 865,
+              "fortress": "Your fortress of Roderònul",
+              "fortress_trader": 988,
+              "has_speaker": false,
+              "merchant_trader": -1,
+              "place": "Dumatzas",
+              "speaker": "",
+              "title": "Merchants from Dumatzas",
+              "unloading": false
+            },
+            "outcome": 0,
+            "revision": 1,
+            "session": 5
+          }
+        },
+        "initial_pages": [
+          {
+            "offset": 0,
+            "query": "",
+            "rows": [
+              {
+                "amount": 0,
+                "appraisal": 0,
+                "caption": "Boulders",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": true,
+                "id": -1,
+                "parent": -1,
+                "subtype": -1,
+                "type": 4,
+                "value": 0,
+                "value_caption": "",
+                "weight_caption": ""
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "{bituminous coal}",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 992,
+                "parent": -1,
+                "subtype": -1,
+                "type": 4,
+                "value": 3,
+                "value_caption": "~10☼",
+                "weight_caption": "134Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "{bituminous coal}",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 991,
+                "parent": -1,
+                "subtype": -1,
+                "type": 4,
+                "value": 3,
+                "value_caption": "~10☼",
+                "weight_caption": "134Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 0,
+                "caption": "Anvils",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": true,
+                "id": -1,
+                "parent": -1,
+                "subtype": -1,
+                "type": 45,
+                "value": 0,
+                "value_caption": "",
+                "weight_caption": ""
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "(iron anvil)",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 1,
+                "expandable": false,
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 296,
+                "parent": -1,
+                "subtype": -1,
+                "type": 45,
+                "value": 100,
+                "value_caption": "~100☼",
+                "weight_caption": "78Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 0,
+                "caption": "Thread",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": true,
+                "id": -1,
+                "parent": -1,
+                "subtype": -1,
+                "type": 57,
+                "value": 0,
+                "value_caption": "",
+                "weight_caption": ""
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "giant cave spider silk web",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 408,
+                "parent": -1,
+                "subtype": -1,
+                "type": 57,
+                "value": 24,
+                "value_caption": "~20☼",
+                "weight_caption": "<1Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "giant cave spider silk web",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 407,
+                "parent": -1,
+                "subtype": -1,
+                "type": 57,
+                "value": 24,
+                "value_caption": "~20☼",
+                "weight_caption": "<1Γ"
+              }
+            ],
+            "side": 0,
+            "total": 8
+          },
+          {
+            "offset": 0,
+            "query": "",
+            "rows": [
+              {
+                "amount": 0,
+                "appraisal": 0,
+                "caption": "Blocks",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": true,
+                "id": -1,
+                "parent": -1,
+                "subtype": -1,
+                "type": 2,
+                "value": 0,
+                "value_caption": "",
+                "weight_caption": ""
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "{dolomite blocks}",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 1180,
+                "parent": -1,
+                "subtype": -1,
+                "type": 2,
+                "value": 10,
+                "value_caption": "~10☼",
+                "weight_caption": "17Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 0,
+                "caption": "Corpses",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": true,
+                "id": -1,
+                "parent": -1,
+                "subtype": -1,
+                "type": 23,
+                "value": 0,
+                "value_caption": "",
+                "weight_caption": ""
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "crundle mangled skeleton",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 1494,
+                "parent": -1,
+                "subtype": -1,
+                "type": 23,
+                "value": 0,
+                "value_caption": "0☼",
+                "weight_caption": "2Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 0,
+                "caption": "Bins",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": true,
+                "id": -1,
+                "parent": -1,
+                "subtype": -1,
+                "type": 32,
+                "value": 0,
+                "value_caption": "",
+                "weight_caption": ""
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "+Bar/Block Bin (durian wood) <#17>+",
+                "contained_count": 10,
+                "contents_caption": "Contains 10 items",
+                "disposition": 0,
+                "expandable": true,
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 3148,
+                "parent": -1,
+                "subtype": -1,
+                "type": 32,
+                "value": 18,
+                "value_caption": "~20☼",
+                "weight_caption": "478Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "steel bars",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": false,
+                "id": 28694,
+                "parent": 3148,
+                "subtype": -1,
+                "type": 0,
+                "value": 150,
+                "value_caption": "~200☼",
+                "weight_caption": "47Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "steel bars",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": false,
+                "id": 28650,
+                "parent": 3148,
+                "subtype": -1,
+                "type": 0,
+                "value": 150,
+                "value_caption": "~200☼",
+                "weight_caption": "47Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "steel bars",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": false,
+                "id": 27311,
+                "parent": 3148,
+                "subtype": -1,
+                "type": 0,
+                "value": 150,
+                "value_caption": "~200☼",
+                "weight_caption": "47Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "steel bars",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": false,
+                "id": 27274,
+                "parent": 3148,
+                "subtype": -1,
+                "type": 0,
+                "value": 150,
+                "value_caption": "~200☼",
+                "weight_caption": "47Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "steel bars",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": false,
+                "id": 25085,
+                "parent": 3148,
+                "subtype": -1,
+                "type": 0,
+                "value": 150,
+                "value_caption": "~200☼",
+                "weight_caption": "47Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "steel bars",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": false,
+                "id": 25161,
+                "parent": 3148,
+                "subtype": -1,
+                "type": 0,
+                "value": 150,
+                "value_caption": "~200☼",
+                "weight_caption": "47Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "steel bars",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": false,
+                "id": 25157,
+                "parent": 3148,
+                "subtype": -1,
+                "type": 0,
+                "value": 150,
+                "value_caption": "~200☼",
+                "weight_caption": "47Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "steel bars",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": false,
+                "id": 25156,
+                "parent": 3148,
+                "subtype": -1,
+                "type": 0,
+                "value": 150,
+                "value_caption": "~200☼",
+                "weight_caption": "47Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "steel bars",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": false,
+                "id": 25113,
+                "parent": 3148,
+                "subtype": -1,
+                "type": 0,
+                "value": 150,
+                "value_caption": "~200☼",
+                "weight_caption": "47Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "steel bars",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": false,
+                "id": 25112,
+                "parent": 3148,
+                "subtype": -1,
+                "type": 0,
+                "value": 150,
+                "value_caption": "~200☼",
+                "weight_caption": "47Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 0,
+                "caption": "Body parts",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 2,
+                "group": true,
+                "id": -1,
+                "parent": -1,
+                "subtype": -1,
+                "type": 46,
+                "value": 0,
+                "value_caption": "",
+                "weight_caption": ""
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "elk bird left antler",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 1736,
+                "parent": -1,
+                "subtype": -1,
+                "type": 46,
+                "value": 0,
+                "value_caption": "0☼",
+                "weight_caption": "1Γ"
+              },
+              {
+                "amount": 0,
+                "appraisal": 1,
+                "caption": "elk bird beak",
+                "contained_count": 0,
+                "contents_caption": "",
+                "disposition": 0,
+                "expandable": false,
+                "expanded": true,
+                "flags": 0,
+                "group": false,
+                "id": 1735,
+                "parent": -1,
+                "subtype": -1,
+                "type": 46,
+                "value": 0,
+                "value_caption": "0☼",
+                "weight_caption": "<1Γ"
+              }
+            ],
+            "side": 1,
+            "total": 19
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-202013/depot-trade-native.json": "9c033664af767de6233363246a6d5aeec02767aaf16a0c84af6a21e63a5f1917",
+          "build/stockpile-storage-native-farm-discovery-20261115-202013/trade-session-wire-expected.json": "0702b1db9c3492d7713640c64574dd8b02050b1e361c406cfbfa3d838aa7da61",
+          "build/stockpile-storage-native-farm-discovery-20261115-202013/trade-session-wire-result.json": "5a3599d30ff89c0115be58e6816b28c753772f6f4ec5bb0342917e026af850a0",
+          "build/stockpile-storage-native-farm-discovery-20261115-202013/trade-session-wire.stdout.log": "0fb41bb7cc71b68a335c01d8f84a806304e1cc6bb173f34ca02cb913d0f62013",
+          "build/stockpile-storage-native-farm-discovery-20261115-202013/trade-session-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261115-202013/result.json": "ce6ab718d7a78791dddba981f466b834e7a14350aba20d3a69ebc1ed17da8675",
+          "build/stockpile-storage-native-farm-discovery-20261115-202013/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "schema/mirror.fbs": "f880d5d7705a61b41897d95a1e16960771dc1d1289aec75ab99bd0b114a9a9b6",
+          "schema/cpp/management_util.h": "1b3006c1eac3a68767d1ed82482e0f072b392e078909af183883e3898564d547",
+          "tools/smoke/depot-trade-appraisal-native.lua": "d615e3dcb61aee844b81835df3fb8effda4f3e8ca73e9a0ef5d335192f6fcd4c",
+          "presentations/godot/project/tests/trade_session_wire_live.gd": "20de73d477d9124082f291d2f36d5eb22d8650fb5274e5e5c8eb1c768e718d6f"
+        }
       }
     },
     "pending_construction_reference": {

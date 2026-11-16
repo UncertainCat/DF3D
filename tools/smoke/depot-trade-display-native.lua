@@ -1,7 +1,7 @@
 -- Disposable oracle: compare the owned page to native vectors and visible cells.
 local trade,display=...
 local gps=df.global.gps
-local result={sides={},visible_captions=0}
+local result={sides={},visible_captions=0,visible_dispositions=0,visible_contents=0}
 local function cells(x,y,count)
  local value={};for column=x,x+count-1 do local ch=dfhack.screen.readTile(column,y).ch;value[#value+1]=ch>=32 and string.char(ch)or' 'end
  return table.concat(value)
@@ -31,6 +31,17 @@ for side=0,1 do
    local count=math.min(#text,12)
    assert(cells(x,y,count)==text:sub(1,count),'Native caption prefix differs: '..side..':'..index..' '..row.caption..' observed '..dfhack.df2utf(cells(x,y,count)))
    result.visible_captions=result.visible_captions+1
+   if not row.group then
+    local palette={[0]=6,7,5,4,2}
+    local tile=dfhack.screen.readTile(x,y)
+    assert(tile.fg==palette[row.disposition],'Native trade disposition color differs: '..row.id..' expected '..tostring(palette[row.disposition])..' observed '..tostring(tile.fg))
+    result.visible_dispositions=result.visible_dispositions+1
+    if row.contained_count>0 then
+     local caption=dfhack.utf2df(row.contents_caption)
+     assert(cells(x,y+1,#caption)==caption,'Native contents caption differs')
+     result.visible_contents=result.visible_contents+1
+    else assert(row.contents_caption=='')end
+   end
   end
  end
  result.sides[side+1]=page

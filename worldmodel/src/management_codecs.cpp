@@ -212,7 +212,7 @@ ManagementState decodeState(const m::ManagementState* s) {
   if(const auto* r=s->trade_draft()) {
     next.tradeDraft.emplace();auto& out=*next.tradeDraft;out.outcome=TradeSessionOutcome(r->outcome());out.session=r->session();out.revision=r->revision();
     if(const auto* p=r->page()){out.page.emplace();auto& page=*out.page;page.side=p->side();page.offset=p->offset();page.total=p->total();page.query=p->query()->str();
-      for(const auto* row:*p->rows())page.rows.push_back({row->group(),row->expanded(),row->id(),row->parent(),row->type(),row->subtype(),row->amount(),row->flags(),row->caption()->str(),row->value(),row->appraisal(),row->value_caption()->str(),row->weight_caption()->str()});}
+      for(const auto* row:*p->rows())page.rows.push_back({row->group(),row->expanded(),row->id(),row->parent(),row->type(),row->subtype(),row->amount(),row->flags(),row->caption()->str(),row->value(),row->appraisal(),row->value_caption()->str(),row->weight_caption()->str(),TradeItemDisposition(row->disposition()),row->contained_count(),row->expandable(),row->contents_caption()->str()});}
   }
   if(const auto* r=s->trade_session()) {
     next.tradeSession.emplace();auto& out=*next.tradeSession;out.outcome=TradeSessionOutcome(r->outcome());out.session=r->session();out.revision=r->revision();

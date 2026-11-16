@@ -251,6 +251,10 @@ local ok,err=xpcall(function()
    unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z;select_map(b);assert(main.view_sheets.active_id==b.id)
    unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z;click(480,190);assert(trade.open)
    local row=record(label);assert(row.merchant_trader==speaker.id and row.havetalker==1 and row.stillunloading==unloading)
+   if label=='speaker' and os.getenv('DF3D_DEPOT_TRADE_ROW_FACTS')=='1' then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-row-facts-native.lua')
+    result.row_facts=assert(loadfile(source))(trade,record)
+   end
    if label=='speaker' and source_probe and os.getenv('DF3D_DEPOT_TRADE_PROJECTION')=='1' then
     for _,test in ipairs{{0,'iron'},{0,'boulders'},{0,'zznomatch'},{1,'blocks'}}do
      local side,query=test[1],test[2]

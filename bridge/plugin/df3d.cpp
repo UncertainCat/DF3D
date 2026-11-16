@@ -5242,16 +5242,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if(projection && parameters[0]=="trade-display-probe"){
           output["display"]=Json::arrayValue;
           for(int32_t side=0;side<2;++side){
-            const auto page=df3d_production::tradeDisplayPage(df::building::find(values[0]),size_t(values[1]),(*projection)[side],0,64);if(!page)return CR_FAILURE;
+            const auto page=df3d_production::tradeDisplayPage(df::building::find(values[0]),size_t(values[1]),(*projection)[side],0,64,side);if(!page)return CR_FAILURE;
             Json::Value result;result["total"]=Json::UInt64(page->total);result["rows"]=Json::arrayValue;
-            for(const auto& row:page->rows){Json::Value value;value["group"]=row.group;value["expanded"]=row.expanded;value["id"]=row.id;value["parent"]=row.parent;value["type"]=row.type;value["subtype"]=row.subtype;value["flags"]=row.flags;value["amount"]=row.amount;value["caption"]=DF2UTF(row.caption);
+            for(const auto& row:page->rows){Json::Value value;value["group"]=row.group;value["expanded"]=row.expanded;value["id"]=row.id;value["parent"]=row.parent;value["type"]=row.type;value["subtype"]=row.subtype;value["flags"]=row.flags;value["amount"]=row.amount;value["caption"]=DF2UTF(row.caption);value["disposition"]=int(row.disposition);value["contained_count"]=row.containedCount;value["expandable"]=row.expandable;value["contents_caption"]=DF2UTF(row.contentsCaption);
               if(row.valuation){value["value_caption"]=DF2UTF(row.valuation->valueCaption);value["weight_caption"]=DF2UTF(row.valuation->weightCaption);value["value"]=row.valuation->value;value["appraisal"]=row.valuation->appraisal;}
               result["rows"].append(value);
             }
-            const auto offset=std::min(size_t(3),page->total);const auto partial=df3d_production::tradeDisplayPage(df::building::find(values[0]),size_t(values[1]),(*projection)[side],offset,4);
+            const auto offset=std::min(size_t(3),page->total);const auto partial=df3d_production::tradeDisplayPage(df::building::find(values[0]),size_t(values[1]),(*projection)[side],offset,4,side);
             if(!partial || partial->offset!=offset || partial->total!=page->total || partial->rows.size()!=std::min(size_t(4),page->total-offset))return CR_FAILURE;
             for(size_t i=0;i<partial->rows.size();++i)if(partial->rows[i].id!=page->rows[offset+i].id || partial->rows[i].caption!=page->rows[offset+i].caption)return CR_FAILURE;
-            if(df3d_production::tradeDisplayPage(df::building::find(values[0]),size_t(values[1]),(*projection)[side],page->total+1,4) || df3d_production::tradeDisplayPage(df::building::find(values[0]),size_t(values[1]),(*projection)[side],0,65))return CR_FAILURE;
+            if(df3d_production::tradeDisplayPage(df::building::find(values[0]),size_t(values[1]),(*projection)[side],page->total+1,4,side) || df3d_production::tradeDisplayPage(df::building::find(values[0]),size_t(values[1]),(*projection)[side],0,65,side))return CR_FAILURE;
             result["bounded_page_verified"]=true;output["display"].append(result);
           }
         }

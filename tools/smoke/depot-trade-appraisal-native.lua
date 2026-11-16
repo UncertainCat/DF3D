@@ -62,6 +62,10 @@ local ok,err=xpcall(function()
      {side=0,action='expand_group',type=item:getType(),subtype=item:getSubtype()},
      {side=1,action='mark_all'},{side=1,action='unmark_all'},
      {side=0,action='filter',query='IRON'},{side=0,action='filter',query=''}}
+    for _,item in ipairs(trade.good[1])do if item:getType()==df.item_type.BIN then
+     table.insert(intents,7,{side=1,action='expand_container',item=item.id})
+     table.insert(intents,8,{side=1,action='expand_container',item=item.id});break
+    end end
     expected.draft={};local applied={}
     for i=0,#intents do
      if i>0 then applied[#applied+1]=intents[i]end

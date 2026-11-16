@@ -46,6 +46,7 @@ func toggle_row(side: int,index: int,expand: bool=false) -> void:
 	if row.group:
 		_apply(side,C.TradeDraftOperation.ExpandGroup if expand else C.TradeDraftOperation.Group,{"type":row.type,"subtype":row.subtype})
 	elif expand:
+		if not row.expandable:return
 		_apply(side,C.TradeDraftOperation.ExpandContainer,{"item":row.id})
 	else:_apply(side,C.TradeDraftOperation.Item,{"item":row.id})
 func mark_all(side: int,selected: bool) -> void:
@@ -89,10 +90,10 @@ func _valid_page(value: Variant,side: int,offset: int,limit: int) -> bool:
 	# as well, since stale or malformed replies must never become active controls.
 	for row in value.rows:
 		if typeof(row)!=TYPE_DICTIONARY:return false
-		for key in ["group","expanded"]:
+		for key in ["group","expanded","expandable"]:
 			if typeof(row.get(key))!=TYPE_BOOL:return false
-		for key in ["id","parent","type","subtype","amount","flags","value","appraisal"]:
+		for key in ["id","parent","type","subtype","amount","flags","value","appraisal","disposition","contained_count"]:
 			if typeof(row.get(key))!=TYPE_INT:return false
-		for key in ["caption","value_caption","weight_caption"]:
+		for key in ["caption","value_caption","weight_caption","contents_caption"]:
 			if typeof(row.get(key))!=TYPE_STRING:return false
 	return true

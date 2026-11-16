@@ -2503,7 +2503,8 @@ table StocksGroupKey { type:int16 = -1; subtype:int16 = -1; subcat1:int16 = -1; 
 enum TradeSessionOutcome : uint8 { Available, Rejected, Retired, Closed, Unknown }
 enum TradeDraftOperation : uint8 { Item, Group, MarkAll, UnmarkAll, ExpandGroup, ExpandContainer, Filter }
 table TradeDraftRequest { session:uint64; expected_revision:uint64; side:int8 = -1; offset:uint32; limit:uint16; operation:TradeDraftOperation = Item; item:int32 = -1; type:int32 = -1; subtype:int32 = -1; query:string; }
-table TradeDraftRow { group:bool; expanded:bool; id:int32 = -1; parent:int32 = -1; type:int32 = -1; subtype:int32 = -1; amount:int32; flags:uint32; caption:string (required); value:int32; appraisal:int32; value_caption:string (required); weight_caption:string (required); }
+enum TradeItemDisposition : uint8 { Local, Imported, ExportRestricted, Stolen, Offered }
+table TradeDraftRow { group:bool; expanded:bool; id:int32 = -1; parent:int32 = -1; type:int32 = -1; subtype:int32 = -1; amount:int32; flags:uint32; caption:string (required); value:int32; appraisal:int32; value_caption:string (required); weight_caption:string (required); disposition:TradeItemDisposition; contained_count:int32; expandable:bool; contents_caption:string (required); }
 table TradeDraftPage { side:int8 = -1; offset:uint32; total:uint32; query:string (required); rows:[TradeDraftRow] (required); }
 table TradeDraftState { outcome:TradeSessionOutcome = Rejected; session:uint64; revision:uint64; page:TradeDraftPage; }
 table TradeSessionRequest { depot_id:int32 = -1; choice_token:uint64; session:uint64; expected_revision:uint64; }
@@ -2633,7 +2634,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 239;
+  schema_version:uint32 = 240;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2711,7 +2712,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 239;
+  schema_version:uint32 = 240;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

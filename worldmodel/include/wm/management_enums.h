@@ -2,6 +2,13 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class TradeItemDisposition : uint8_t {
+  Local = 0,
+  Imported = 1,
+  ExportRestricted = 2,
+  Stolen = 3,
+  Offered = 4,
+};
 enum class TradeDraftOperation : uint8_t {
   Item = 0,
   Group = 1,

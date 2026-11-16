@@ -1,4 +1,10 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::TradeItemDisposition::Local) == static_cast<int>(df3d::mirror::TradeItemDisposition::Local));
+static_assert(static_cast<int>(wm::TradeItemDisposition::Imported) == static_cast<int>(df3d::mirror::TradeItemDisposition::Imported));
+static_assert(static_cast<int>(wm::TradeItemDisposition::ExportRestricted) == static_cast<int>(df3d::mirror::TradeItemDisposition::ExportRestricted));
+static_assert(static_cast<int>(wm::TradeItemDisposition::Stolen) == static_cast<int>(df3d::mirror::TradeItemDisposition::Stolen));
+static_assert(static_cast<int>(wm::TradeItemDisposition::Offered) == static_cast<int>(df3d::mirror::TradeItemDisposition::Offered));
+static_assert(sizeof(df3d::mirror::EnumValuesTradeItemDisposition()) / sizeof(df3d::mirror::TradeItemDisposition) == 5);
 static_assert(static_cast<int>(wm::TradeDraftOperation::Item) == static_cast<int>(df3d::mirror::TradeDraftOperation::Item));
 static_assert(static_cast<int>(wm::TradeDraftOperation::Group) == static_cast<int>(df3d::mirror::TradeDraftOperation::Group));
 static_assert(static_cast<int>(wm::TradeDraftOperation::MarkAll) == static_cast<int>(df3d::mirror::TradeDraftOperation::MarkAll));

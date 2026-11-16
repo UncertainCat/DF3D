@@ -78,7 +78,7 @@ public:
         const auto read=access(epoch,session,revision);
         result.status=read.status;
         if(read.status!=TradeSessionStatus::Available || !read.draft || !current)return result;
-        result.page=tradeDisplayPage(df::building::find(current->depot),current->caravan,read.draft->sides[side],offset,limit);
+        result.page=tradeDisplayPage(df::building::find(current->depot),current->caravan,read.draft->sides[side],offset,limit,side);
         if(!result.page){result.status=TradeSessionStatus::Rejected;return result;}
         result.session=read.session;result.revision=read.revision;result.query=read.draft->filters[side];return result;
     }

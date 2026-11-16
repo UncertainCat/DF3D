@@ -190,8 +190,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 239;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v239";
+inline constexpr uint32_t kManagementVersion = 240;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v240";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1926,11 +1926,12 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       size_t bytes=p->query()->size();
       std::unordered_set<int32_t> ids;std::unordered_set<uint64_t> groups;
       for(const auto* row:*p->rows()){
-        if(!row || row->type()<0 || row->type()>=93 || row->subtype()<-1 || row->subtype()>INT16_MAX || row->amount()!=0 || row->flags()>255)return "invalid trade draft row";
+        if(!row || row->type()<0 || row->type()>=93 || row->subtype()<-1 || row->subtype()>INT16_MAX || row->amount()!=0 || row->flags()>255 || row->disposition()>TradeItemDisposition::Offered || row->contained_count()<0 || row->contained_count()>1048576)return "invalid trade draft row";
         if(row->group()){
-          if(row->id()!=-1 || row->parent()!=-1 || row->value() || row->appraisal() || !groups.insert((uint64_t(uint32_t(row->type()))<<32)|uint32_t(row->subtype())).second)return "invalid trade draft group row";
+          if(row->id()!=-1 || row->parent()!=-1 || row->value() || row->appraisal() || row->disposition()!=TradeItemDisposition::Local || row->contained_count() || row->expandable() || !groups.insert((uint64_t(uint32_t(row->type()))<<32)|uint32_t(row->subtype())).second)return "invalid trade draft group row";
         }else if(row->id()<0 || row->parent()<-1 || row->id()==row->parent() || row->appraisal()<1 || !ids.insert(row->id()).second)return "invalid trade draft item row";
-        for(const auto* text:{row->caption(),row->value_caption(),row->weight_caption()}){if(!text || text->size()>65536)return "invalid trade draft caption";bytes+=text->size();}
+        for(const auto* text:{row->caption(),row->value_caption(),row->weight_caption(),row->contents_caption()}){if(!text || text->size()>65536)return "invalid trade draft caption";bytes+=text->size();}
+        if(bool(row->contents_caption()->size())!=(row->contained_count()>0) || (row->expandable() && (row->type()!=32 || row->parent()!=-1)))return "invalid trade container facts";
         if(row->group() && (row->value_caption()->size() || row->weight_caption()->size()))return "unexpected group valuation";
       }
       if(bytes>384*1024)return "trade draft payload exceeded";

@@ -1667,7 +1667,7 @@ void publish() {
   flatbuffers::Offset<m::TradeDraftState> tradeDraftResult;
   if(tradeDraftReply){const auto& v=*tradeDraftReply;flatbuffers::Offset<m::TradeDraftPage> page;
     if(v.page){const auto& p=*v.page;std::vector<flatbuffers::Offset<m::TradeDraftRow>> rows;
-      for(const auto& row:p.rows)rows.push_back(m::CreateTradeDraftRow(b,row.group,row.expanded,row.id,row.parent,row.type,row.subtype,row.amount,row.flags,b.CreateString(DF2UTF(row.caption)),row.valuation?row.valuation->value:0,row.valuation?row.valuation->appraisal:0,b.CreateString(row.valuation?DF2UTF(row.valuation->valueCaption):""),b.CreateString(row.valuation?DF2UTF(row.valuation->weightCaption):"")));
+      for(const auto& row:p.rows)rows.push_back(m::CreateTradeDraftRow(b,row.group,row.expanded,row.id,row.parent,row.type,row.subtype,row.amount,row.flags,b.CreateString(DF2UTF(row.caption)),row.valuation?row.valuation->value:0,row.valuation?row.valuation->appraisal:0,b.CreateString(row.valuation?DF2UTF(row.valuation->valueCaption):""),b.CreateString(row.valuation?DF2UTF(row.valuation->weightCaption):""),m::TradeItemDisposition(row.disposition),row.containedCount,row.expandable,b.CreateString(DF2UTF(row.contentsCaption))));
       page=m::CreateTradeDraftPage(b,v.side,uint32_t(p.offset),uint32_t(p.total),b.CreateString(DF2UTF(v.query)),b.CreateVector(rows));}
     tradeDraftResult=m::CreateTradeDraftState(b,v.outcome,v.session,v.revision,page);
   }

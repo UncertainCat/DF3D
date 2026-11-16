@@ -25,10 +25,10 @@ func controller_goods(service,model,states: Array) -> void:
 				var found:=-1
 				for index in range(model.pages[side].rows.size()):
 					var row: Dictionary=model.pages[side].rows[index]
-					if intent.action=="item" and row.id==int(intent.item):found=index;break
+					if intent.action in ["item","expand_container"] and row.id==int(intent.item):found=index;break
 					if intent.action in ["group","expand_group"] and row.group and row.type==int(intent.type) and row.subtype==int(intent.subtype):found=index;break
 				if not check(found>=0,"Controller action target absent"):return
-				model.toggle_row(side,found,intent.action=="expand_group")
+				model.toggle_row(side,found,intent.action in ["expand_group","expand_container"])
 			if not await poll_controller(service,model,Model.Phase.Active):return
 		compare_goods(model,state)
 	model.read_page(0,2,2);await poll_controller(service,model,Model.Phase.Active);compare_goods(model,states.back())

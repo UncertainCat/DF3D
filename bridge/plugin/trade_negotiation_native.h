@@ -64,6 +64,17 @@ inline bool tradeGiftNativeReady(){
         return true;
     }();return ready;
 }
+inline bool tradeSeizeNativeReady(){
+    if(!tradeGiftNativeReady())return false;
+    static const bool ready=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin{size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={{0x31a6fc,0xaf6,UINT64_C(0x468cd562be8dc42e)},
+            {0xc90540,0x14e,UINT64_C(0x58919eb607da9f3e)}};
+        for(const auto& pin:pins){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<pin.length;++i){h^=base[pin.rva+i];h*=UINT64_C(1099511628211);}if(h!=pin.hash)return false;}
+        return true;
+    }();return ready;
+}
 // Safe-point lifetime only. Entry metadata and goods are independently owned;
 // no active native trade menu is read or borrowed.
 // Refusal checks retain DF's inline branch order;
@@ -260,6 +271,50 @@ public:
             owned.buildlists=1;
         }
         owned.counter_offer=false;
+        return true;
+    }
+    // Seize has its own native gates, not Trade's ethical/capacity refusal path.
+    // Native31a6fc..31b1f2 dispatches the inline action; all item ownership
+    // and artifact effects operate on this independently owned context.
+    bool seize(bool* effectsStarted=nullptr){
+        if(!valid || !tradeSeizeNativeReady())return false;
+        auto& owned=draft.owned;
+        if(!df::global::plotinfo || !df::global::world || !owned.civ || !owned.mer ||
+           !df::global::plotinfo->main.fortress_entity || owned.civ->id==df::global::plotinfo->civ_id ||
+           df::global::world->artifact_history_suppression_count==INT32_MAX)return false;
+        const auto rows=draft.snapshot();if(!rows)return false;
+        const auto values=tradeValueTotals(owned.bld,caravanIndex,*rows);if(!values)return false;
+        for(auto amount:owned.good_amount[0])if(amount)return false;
+        const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+        if(effectsStarted)*effectsStarted=true;
+        // Native empty Seize changes dialogue only, retaining the counteroffer.
+        if(values->actual[0]<=0){owned.talkline=df::talk_line_type(11);return true;}
+        owned.talkline=df::talk_line_type(9);
+        for(size_t i=0;i<owned.good[0].size();++i){
+            auto* item=owned.good[0][i];const bool selected=owned.goodflag[0][i].bits.selected;
+            {
+                struct SuppressHistory {int32_t& count;explicit SuppressHistory(int32_t& v):count(v){++count;}~SuppressHistory(){--count;}} suppression(df::global::world->artifact_history_suppression_count);
+                if(selected)reinterpret_cast<void(*)(df::item*,bool)>(base+0xc90540)(item,true);
+                bool detach=false;
+                for(auto* ref:item->general_refs)if(ref && ref->getType()==df::general_ref_type::CONTAINED_IN_ITEM){
+                    auto* parent=ref->getItem();if(parent && bool(parent->flags.bits.trader)==selected){detach=true;break;}
+                }
+                if(detach){
+                    reinterpret_cast<void(*)(df::item*)>(base+0xc88300)(item);
+                    reinterpret_cast<void(*)(df::building*,df::item*)>(base+0x54bdc0)(owned.bld,item);
+                }
+                if(selected){
+                    item->flags.bits.in_building=false;
+                    reinterpret_cast<void(*)(df::item*)>(base+0x30cbb0)(item);
+                    reinterpret_cast<void(*)(df::item*,int32_t,int32_t)>(base+0x72660)(item,int32_t(df::general_ref_type::ENTITY_STOLEN),owned.civ->id);
+                    owned.mer->flags.whole|=0x30;
+                    owned.mer->mood=0;
+                    if(owned.mer->time_remaining>501)owned.mer->time_remaining=501;
+                }
+            }
+            if(selected)reinterpret_cast<void(*)(df::trade_interfacest*,df::item*,df::historical_entity*,df::historical_entity*,bool,bool)>(base+0x36a9c0)(&owned,item,df::global::plotinfo->main.fortress_entity,owned.civ,false,true);
+        }
+        owned.buildlists=1;owned.counter_offer=false;
         return true;
     }
     std::optional<TradeNegotiationCheckpoint> checkpoint() const {

@@ -101876,6 +101876,2869 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_seize_effect_reference": {
+        "supported_df": "53.16 Steam24557528",
+        "native_run": "build/stockpile-storage-native-farm-discovery-20261116-071850",
+        "owned_run": "build/stockpile-storage-native-farm-discovery-20261116-071949",
+        "native_df_pid": 44092,
+        "owned_df_pid": 42392,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "fps_cap": 30,
+        "gpu_samples_celsius": [
+          37,
+          40,
+          42
+        ],
+        "core_checks_passed": 19,
+        "native": {
+          "after": {
+            "caravan": {
+              "export_value_personal": 0,
+              "export_value_total": 0,
+              "flags": 48,
+              "haggle": 0,
+              "import_value": 0,
+              "mood": 0,
+              "offer_value": 0,
+              "time": 501
+            },
+            "contained": [
+              {
+                "id": 296,
+                "use_mode": 0
+              },
+              {
+                "id": 407,
+                "use_mode": 0
+              },
+              {
+                "id": 408,
+                "use_mode": 0
+              },
+              {
+                "id": 991,
+                "use_mode": 0
+              },
+              {
+                "id": 992,
+                "use_mode": 0
+              },
+              {
+                "id": 1179,
+                "use_mode": 0
+              },
+              {
+                "id": 1180,
+                "use_mode": 0
+              },
+              {
+                "id": 1494,
+                "use_mode": 0
+              },
+              {
+                "id": 1735,
+                "use_mode": 0
+              },
+              {
+                "id": 1736,
+                "use_mode": 0
+              },
+              {
+                "id": 1744,
+                "use_mode": 2
+              },
+              {
+                "id": 1772,
+                "use_mode": 2
+              },
+              {
+                "id": 1773,
+                "use_mode": 2
+              },
+              {
+                "id": 1774,
+                "use_mode": 2
+              },
+              {
+                "id": 3148,
+                "use_mode": 0
+              },
+              {
+                "id": 3157,
+                "use_mode": 0
+              },
+              {
+                "id": 4536,
+                "use_mode": 0
+              },
+              {
+                "id": 4547,
+                "use_mode": 0
+              },
+              {
+                "id": 4561,
+                "use_mode": 0
+              },
+              {
+                "id": 10417,
+                "use_mode": 0
+              },
+              {
+                "id": 10441,
+                "use_mode": 0
+              },
+              {
+                "id": 10442,
+                "use_mode": 0
+              },
+              {
+                "id": 10444,
+                "use_mode": 0
+              },
+              {
+                "id": 10467,
+                "use_mode": 0
+              },
+              {
+                "id": 12862,
+                "use_mode": 0
+              },
+              {
+                "id": 12892,
+                "use_mode": 0
+              },
+              {
+                "id": 19773,
+                "use_mode": 0
+              },
+              {
+                "id": 19838,
+                "use_mode": 0
+              }
+            ],
+            "history_suppression": 0,
+            "items": [
+              {
+                "flags": 536920096,
+                "id": 296,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 407,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 408,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537428000,
+                "id": 991,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 524288,
+                "id": 992,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 43
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537395232,
+                "id": 1180,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1494,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1735,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1736,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536871008,
+                "id": 3148,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25085,
+                "position": [
+                  146,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25112,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25113,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25156,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25157,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25161,
+                "position": [
+                  119,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27274,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27311,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28650,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28694,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              }
+            ],
+            "times_used": 0
+          },
+          "announcement": [],
+          "before": {
+            "caravan": {
+              "export_value_personal": 0,
+              "export_value_total": 0,
+              "flags": 0,
+              "haggle": 0,
+              "import_value": 0,
+              "mood": 50,
+              "offer_value": 0,
+              "time": 1200
+            },
+            "contained": [
+              {
+                "id": 296,
+                "use_mode": 0
+              },
+              {
+                "id": 407,
+                "use_mode": 0
+              },
+              {
+                "id": 408,
+                "use_mode": 0
+              },
+              {
+                "id": 991,
+                "use_mode": 0
+              },
+              {
+                "id": 992,
+                "use_mode": 0
+              },
+              {
+                "id": 1179,
+                "use_mode": 0
+              },
+              {
+                "id": 1180,
+                "use_mode": 0
+              },
+              {
+                "id": 1494,
+                "use_mode": 0
+              },
+              {
+                "id": 1735,
+                "use_mode": 0
+              },
+              {
+                "id": 1736,
+                "use_mode": 0
+              },
+              {
+                "id": 1744,
+                "use_mode": 2
+              },
+              {
+                "id": 1772,
+                "use_mode": 2
+              },
+              {
+                "id": 1773,
+                "use_mode": 2
+              },
+              {
+                "id": 1774,
+                "use_mode": 2
+              },
+              {
+                "id": 3148,
+                "use_mode": 0
+              },
+              {
+                "id": 3157,
+                "use_mode": 0
+              },
+              {
+                "id": 4536,
+                "use_mode": 0
+              },
+              {
+                "id": 4547,
+                "use_mode": 0
+              },
+              {
+                "id": 4561,
+                "use_mode": 0
+              },
+              {
+                "id": 10417,
+                "use_mode": 0
+              },
+              {
+                "id": 10441,
+                "use_mode": 0
+              },
+              {
+                "id": 10442,
+                "use_mode": 0
+              },
+              {
+                "id": 10444,
+                "use_mode": 0
+              },
+              {
+                "id": 10467,
+                "use_mode": 0
+              },
+              {
+                "id": 12862,
+                "use_mode": 0
+              },
+              {
+                "id": 12892,
+                "use_mode": 0
+              },
+              {
+                "id": 19773,
+                "use_mode": 0
+              },
+              {
+                "id": 19838,
+                "use_mode": 0
+              }
+            ],
+            "history_suppression": 0,
+            "items": [
+              {
+                "flags": 536920096,
+                "id": 296,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 407,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 408,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537428000,
+                "id": 991,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537428000,
+                "id": 992,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537395232,
+                "id": 1180,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1494,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 32,
+                "id": 1735,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 32,
+                "id": 1736,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536871008,
+                "id": 3148,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25085,
+                "position": [
+                  146,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25112,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25113,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25156,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25157,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25161,
+                "position": [
+                  119,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27274,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27311,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28650,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28694,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              }
+            ],
+            "times_used": 0
+          },
+          "before_row_refresh": {
+            "caravan": {
+              "export_value_personal": 0,
+              "export_value_total": 0,
+              "flags": 48,
+              "haggle": 0,
+              "import_value": 0,
+              "mood": 0,
+              "offer_value": 0,
+              "time": 501
+            },
+            "contained": [
+              {
+                "id": 296,
+                "use_mode": 0
+              },
+              {
+                "id": 407,
+                "use_mode": 0
+              },
+              {
+                "id": 408,
+                "use_mode": 0
+              },
+              {
+                "id": 991,
+                "use_mode": 0
+              },
+              {
+                "id": 992,
+                "use_mode": 0
+              },
+              {
+                "id": 1179,
+                "use_mode": 0
+              },
+              {
+                "id": 1180,
+                "use_mode": 0
+              },
+              {
+                "id": 1494,
+                "use_mode": 0
+              },
+              {
+                "id": 1735,
+                "use_mode": 0
+              },
+              {
+                "id": 1736,
+                "use_mode": 0
+              },
+              {
+                "id": 1744,
+                "use_mode": 2
+              },
+              {
+                "id": 1772,
+                "use_mode": 2
+              },
+              {
+                "id": 1773,
+                "use_mode": 2
+              },
+              {
+                "id": 1774,
+                "use_mode": 2
+              },
+              {
+                "id": 3148,
+                "use_mode": 0
+              },
+              {
+                "id": 3157,
+                "use_mode": 0
+              },
+              {
+                "id": 4536,
+                "use_mode": 0
+              },
+              {
+                "id": 4547,
+                "use_mode": 0
+              },
+              {
+                "id": 4561,
+                "use_mode": 0
+              },
+              {
+                "id": 10417,
+                "use_mode": 0
+              },
+              {
+                "id": 10441,
+                "use_mode": 0
+              },
+              {
+                "id": 10442,
+                "use_mode": 0
+              },
+              {
+                "id": 10444,
+                "use_mode": 0
+              },
+              {
+                "id": 10467,
+                "use_mode": 0
+              },
+              {
+                "id": 12862,
+                "use_mode": 0
+              },
+              {
+                "id": 12892,
+                "use_mode": 0
+              },
+              {
+                "id": 19773,
+                "use_mode": 0
+              },
+              {
+                "id": 19838,
+                "use_mode": 0
+              }
+            ],
+            "history_suppression": 0,
+            "items": [
+              {
+                "flags": 536920096,
+                "id": 296,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 407,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 408,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537428000,
+                "id": 991,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 524288,
+                "id": 992,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 43
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537395232,
+                "id": 1180,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1494,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 32,
+                "id": 1735,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 32,
+                "id": 1736,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536871008,
+                "id": 3148,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25085,
+                "position": [
+                  146,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25112,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25113,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25156,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25157,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25161,
+                "position": [
+                  119,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27274,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27311,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28650,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28694,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              }
+            ],
+            "times_used": 0
+          },
+          "button": {
+            "x": 304,
+            "y": 730
+          },
+          "counter_offer": false,
+          "dialogue": 9,
+          "foreign": 0,
+          "item": 992,
+          "mode": "native",
+          "success": true
+        },
+        "owned": {
+          "after": {
+            "caravan": {
+              "export_value_personal": 0,
+              "export_value_total": 0,
+              "flags": 48,
+              "haggle": 0,
+              "import_value": 0,
+              "mood": 0,
+              "offer_value": 0,
+              "time": 501
+            },
+            "contained": [
+              {
+                "id": 296,
+                "use_mode": 0
+              },
+              {
+                "id": 407,
+                "use_mode": 0
+              },
+              {
+                "id": 408,
+                "use_mode": 0
+              },
+              {
+                "id": 991,
+                "use_mode": 0
+              },
+              {
+                "id": 992,
+                "use_mode": 0
+              },
+              {
+                "id": 1179,
+                "use_mode": 0
+              },
+              {
+                "id": 1180,
+                "use_mode": 0
+              },
+              {
+                "id": 1494,
+                "use_mode": 0
+              },
+              {
+                "id": 1735,
+                "use_mode": 0
+              },
+              {
+                "id": 1736,
+                "use_mode": 0
+              },
+              {
+                "id": 1744,
+                "use_mode": 2
+              },
+              {
+                "id": 1772,
+                "use_mode": 2
+              },
+              {
+                "id": 1773,
+                "use_mode": 2
+              },
+              {
+                "id": 1774,
+                "use_mode": 2
+              },
+              {
+                "id": 3148,
+                "use_mode": 0
+              },
+              {
+                "id": 3157,
+                "use_mode": 0
+              },
+              {
+                "id": 4536,
+                "use_mode": 0
+              },
+              {
+                "id": 4547,
+                "use_mode": 0
+              },
+              {
+                "id": 4561,
+                "use_mode": 0
+              },
+              {
+                "id": 10417,
+                "use_mode": 0
+              },
+              {
+                "id": 10441,
+                "use_mode": 0
+              },
+              {
+                "id": 10442,
+                "use_mode": 0
+              },
+              {
+                "id": 10444,
+                "use_mode": 0
+              },
+              {
+                "id": 10467,
+                "use_mode": 0
+              },
+              {
+                "id": 12862,
+                "use_mode": 0
+              },
+              {
+                "id": 12892,
+                "use_mode": 0
+              },
+              {
+                "id": 19773,
+                "use_mode": 0
+              },
+              {
+                "id": 19838,
+                "use_mode": 0
+              }
+            ],
+            "history_suppression": 0,
+            "items": [
+              {
+                "flags": 536920096,
+                "id": 296,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 407,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 408,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537428000,
+                "id": 991,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 524288,
+                "id": 992,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 43
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537395232,
+                "id": 1180,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1494,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1735,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1736,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536871008,
+                "id": 3148,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25085,
+                "position": [
+                  146,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25112,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25113,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25156,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25157,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25161,
+                "position": [
+                  119,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27274,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27311,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28650,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28694,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              }
+            ],
+            "times_used": 0
+          },
+          "announcement": [],
+          "before": {
+            "caravan": {
+              "export_value_personal": 0,
+              "export_value_total": 0,
+              "flags": 0,
+              "haggle": 0,
+              "import_value": 0,
+              "mood": 50,
+              "offer_value": 0,
+              "time": 1200
+            },
+            "contained": [
+              {
+                "id": 296,
+                "use_mode": 0
+              },
+              {
+                "id": 407,
+                "use_mode": 0
+              },
+              {
+                "id": 408,
+                "use_mode": 0
+              },
+              {
+                "id": 991,
+                "use_mode": 0
+              },
+              {
+                "id": 992,
+                "use_mode": 0
+              },
+              {
+                "id": 1179,
+                "use_mode": 0
+              },
+              {
+                "id": 1180,
+                "use_mode": 0
+              },
+              {
+                "id": 1494,
+                "use_mode": 0
+              },
+              {
+                "id": 1735,
+                "use_mode": 0
+              },
+              {
+                "id": 1736,
+                "use_mode": 0
+              },
+              {
+                "id": 1744,
+                "use_mode": 2
+              },
+              {
+                "id": 1772,
+                "use_mode": 2
+              },
+              {
+                "id": 1773,
+                "use_mode": 2
+              },
+              {
+                "id": 1774,
+                "use_mode": 2
+              },
+              {
+                "id": 3148,
+                "use_mode": 0
+              },
+              {
+                "id": 3157,
+                "use_mode": 0
+              },
+              {
+                "id": 4536,
+                "use_mode": 0
+              },
+              {
+                "id": 4547,
+                "use_mode": 0
+              },
+              {
+                "id": 4561,
+                "use_mode": 0
+              },
+              {
+                "id": 10417,
+                "use_mode": 0
+              },
+              {
+                "id": 10441,
+                "use_mode": 0
+              },
+              {
+                "id": 10442,
+                "use_mode": 0
+              },
+              {
+                "id": 10444,
+                "use_mode": 0
+              },
+              {
+                "id": 10467,
+                "use_mode": 0
+              },
+              {
+                "id": 12862,
+                "use_mode": 0
+              },
+              {
+                "id": 12892,
+                "use_mode": 0
+              },
+              {
+                "id": 19773,
+                "use_mode": 0
+              },
+              {
+                "id": 19838,
+                "use_mode": 0
+              }
+            ],
+            "history_suppression": 0,
+            "items": [
+              {
+                "flags": 536920096,
+                "id": 296,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 407,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 408,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537428000,
+                "id": 991,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537428000,
+                "id": 992,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537395232,
+                "id": 1180,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1494,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 32,
+                "id": 1735,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 32,
+                "id": 1736,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536871008,
+                "id": 3148,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25085,
+                "position": [
+                  146,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25112,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25113,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25156,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25157,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25161,
+                "position": [
+                  119,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27274,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27311,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28650,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28694,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              }
+            ],
+            "times_used": 0
+          },
+          "before_row_refresh": {
+            "caravan": {
+              "export_value_personal": 0,
+              "export_value_total": 0,
+              "flags": 48,
+              "haggle": 0,
+              "import_value": 0,
+              "mood": 0,
+              "offer_value": 0,
+              "time": 501
+            },
+            "contained": [
+              {
+                "id": 296,
+                "use_mode": 0
+              },
+              {
+                "id": 407,
+                "use_mode": 0
+              },
+              {
+                "id": 408,
+                "use_mode": 0
+              },
+              {
+                "id": 991,
+                "use_mode": 0
+              },
+              {
+                "id": 992,
+                "use_mode": 0
+              },
+              {
+                "id": 1179,
+                "use_mode": 0
+              },
+              {
+                "id": 1180,
+                "use_mode": 0
+              },
+              {
+                "id": 1494,
+                "use_mode": 0
+              },
+              {
+                "id": 1735,
+                "use_mode": 0
+              },
+              {
+                "id": 1736,
+                "use_mode": 0
+              },
+              {
+                "id": 1744,
+                "use_mode": 2
+              },
+              {
+                "id": 1772,
+                "use_mode": 2
+              },
+              {
+                "id": 1773,
+                "use_mode": 2
+              },
+              {
+                "id": 1774,
+                "use_mode": 2
+              },
+              {
+                "id": 3148,
+                "use_mode": 0
+              },
+              {
+                "id": 3157,
+                "use_mode": 0
+              },
+              {
+                "id": 4536,
+                "use_mode": 0
+              },
+              {
+                "id": 4547,
+                "use_mode": 0
+              },
+              {
+                "id": 4561,
+                "use_mode": 0
+              },
+              {
+                "id": 10417,
+                "use_mode": 0
+              },
+              {
+                "id": 10441,
+                "use_mode": 0
+              },
+              {
+                "id": 10442,
+                "use_mode": 0
+              },
+              {
+                "id": 10444,
+                "use_mode": 0
+              },
+              {
+                "id": 10467,
+                "use_mode": 0
+              },
+              {
+                "id": 12862,
+                "use_mode": 0
+              },
+              {
+                "id": 12892,
+                "use_mode": 0
+              },
+              {
+                "id": 19773,
+                "use_mode": 0
+              },
+              {
+                "id": 19838,
+                "use_mode": 0
+              }
+            ],
+            "history_suppression": 0,
+            "items": [
+              {
+                "flags": 536920096,
+                "id": 296,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 407,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536904224,
+                "id": 408,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537428000,
+                "id": 991,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 45
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 524288,
+                "id": 992,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  },
+                  {
+                    "id": 0,
+                    "kind": 43
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 537395232,
+                "id": 1180,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870944,
+                "id": 1494,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 32,
+                "id": 1735,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 32,
+                "id": 1736,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536871008,
+                "id": 3148,
+                "position": [
+                  111,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 54,
+                    "kind": 36
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25085,
+                "position": [
+                  146,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25112,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25113,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25156,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25157,
+                "position": [
+                  149,
+                  60,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 25161,
+                "position": [
+                  119,
+                  94,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27274,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 27311,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28650,
+                "position": [
+                  143,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              },
+              {
+                "flags": 536870920,
+                "id": 28694,
+                "position": [
+                  140,
+                  67,
+                  165
+                ],
+                "refs": [
+                  {
+                    "id": 3148,
+                    "kind": 11
+                  }
+                ],
+                "stack": 1
+              }
+            ],
+            "times_used": 0
+          },
+          "counter_offer": false,
+          "dialogue": 9,
+          "foreign": 0,
+          "item": 992,
+          "mode": "owned",
+          "success": true
+        },
+        "limits": [
+          "One ordinary whole-stack merchant item with synthetic caravan using existing foreign civilization0",
+          "Equivalent row-value reads before comparison",
+          "No session/public transport, contained units, bin detachment, empty refusal or artifact announcements qualified"
+        ]
+      },
       "depot_trade_gift_session_reference": {
         "supported_df": "53.16 Steam24557528",
         "native_run": "build/stockpile-storage-native-farm-discovery-20261115-234515",

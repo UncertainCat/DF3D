@@ -192,6 +192,37 @@ qualification. Seize remains separate unfinished work: its inline path begins
 caravan flags, mood and departure time. The Gift method must not substitute
 for that action. Trade remains hidden and protocol245 is unchanged.
 
+### Seize executor and qualification boundary
+
+The staged Seize executor follows native31a6fc..31b1f2 with an owned context.
+Unlike Gift, it requires a different civilization and does not use Trade's
+ethical or capacity refusal dispatch. Empty merchant value sets dialogue11
+without clearing the counteroffer; success sets dialogue9 and clears it.
+Nativec90540 removes merchant ownership, excluding bin contents while handling
+contained units through DF. Container detachment uses the opposite parent
+trader condition from Gift. Selected items clear in_building, gain ENTITY_STOLEN,
+and set caravan flags0x30, mood0 and remaining time at most501. Native36a9c0
+receives fortress entity then caravan entity, with false/true transfer arguments.
+The complete c90540 range includes branches outside its first unwind entry;
+its cb1510 and1396ad0 callees delete matching item/unit references and compact
+their vectors, without reading menu state.
+
+This executor is available only through the paused trade-seize-probe diagnostic.
+Protected071850 (native DF44092) and071949 (owned DF42392) on2026-11-16
+compare one merchant item992 using a synthetic caravan assigned to existing
+foreign civilization0. Native pointer input finds the visible Seize button at
+304,730. Both paths produce dialogue9, no counteroffer or announcement, replace
+ENTITY_ITEMOWNER with ENTITY_STOLEN, clear trader/in_building, and change caravan
+flags0 to48, mood50 to0 and remaining time1200 to501. All tracked item flags,
+references, positions/stacks, depot contents, caravan accounting and history
+suppression match after equivalent native row-value reads. The owned action
+leaves the native conversation untouched. Both lanes close unsaved with source
+preserved at30FPS; GPU samples37–42C. Bridge build and19 core checks pass.
+Evidence: `completed_sheet_discovery_reference.depot_trade_seize_effect_reference`.
+Container detachment, contained units, empty refusal, artifact announcements,
+session ownership after caravan state changes and public action integration
+remain unqualified. Trade remains hidden.
+
 ## Owned Trade refusal checks
 
 The owned negotiation context evaluates DF's pinned31b252..31b615 branch order:

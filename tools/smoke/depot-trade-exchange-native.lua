@@ -13,6 +13,10 @@ local function snapshot(label)
  for y=5,11 do local text={};for x=5,120 do local ch=dfhack.screen.readTile(x,y).ch;text[#text+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end;row.lines[#row.lines+1]=dfhack.df2utf(table.concat(text)):gsub('%s+$','')end
  result.cases[#result.cases+1]=row;capture('depot-trade-empty-'..label)
 end
+if os.getenv('DF3D_DEPOT_TRADE_SEIZE') then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-exchange%-native.lua$','depot-trade-seize-native.lua')
+ return {seize=assert(loadfile(source))(view,trade,click,capture,out)}
+end
 local ok,err=xpcall(function()
  if os.getenv('DF3D_DEPOT_TRADE_GIFT') then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-exchange%-native.lua$','depot-trade-gift-native.lua')

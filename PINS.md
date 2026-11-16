@@ -22,8 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Current management protocol250 adds cage-room location kind, tier and contents
-presence. Both peers must use250; older room facts cannot select location artwork.
+Current management protocol251 adds independently revisioned cage occupant pages
+and parent assignment intents. Both peers must use251. Ordered occupant rows carry
+containment, assignment, resolution, native name/status/color and optional appearance;
+they cannot be inferred from picker candidates or replayed from older recordings.
+Protocol250 added cage-room location kind, tier and contents presence; older room
+facts cannot select location artwork.
 Protocol249 adds typed cage parent-body room membership,
 justice/glass/aquarium facts and a revision-bound CageAquarium setting intent.
 That migration required249 on both peers. Old recordings cannot infer the parent facts;

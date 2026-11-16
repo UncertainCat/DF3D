@@ -503,7 +503,13 @@ struct LeverState {
   int32_t sourceMechanism=-1,targetMechanism=-1,targetId=-1,jobId=-1;
   std::string sourceName,targetName;
 };
+struct CageOccupantRow {
+  int32_t id=-1;AreaCandidateEntity entity=AreaCandidateEntity::Unknown;
+  bool contained=false,assigned=false,resolved=false;std::string name,status;uint8_t statusColor=15;
+  std::optional<SelectionAppearance> appearance;
+};
 struct CageState {
+  std::vector<CageOccupantRow> occupants;bool justiceRestraint=false;
   int32_t buildingId=-1;uint64_t revision=0;bool removing=false;
   uint8_t operation=0;int32_t candidateId=-1;AreaCandidateEntity entity=AreaCandidateEntity::Unknown;bool assigned=false;
   std::string query;uint8_t sort=0;bool descending=false;uint16_t columns=27;

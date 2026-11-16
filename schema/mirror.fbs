@@ -1533,11 +1533,17 @@ table LeverState {
   target_id:int32 = -1; job_id:int32 = -1;
 }
 // Cage ownership is independent of zone assignment, even though rows share presentation facts.
-// operation: 0 read, 1 assign. Query/cursor/revision belong to ProductionRequest.
+// operation: 0 picker read, 1 picker assign, 2 occupant read, 3 occupant assign.
+// Parent rows retain native order; query/sort are picker-only. Revision/cursor belong to ProductionRequest.
 enum FarmEditOutcome : uint8 { None, Completed, Rejected, Stale, Unknown }
 table CageRequest {
   operation:uint8; candidate_id:int32 = -1; entity:AreaCandidateEntity; assigned:bool;
   sort:uint8; descending:bool; columns:uint16 = 27;
+}
+table CageOccupantRow {
+  id:int32 = -1; entity:AreaCandidateEntity; contained:bool; assigned:bool; resolved:bool;
+  name:string (required); status:string (required); status_color:uint8 = 15;
+  appearance:SelectionAppearance;
 }
 table CageState {
   building_id:int32 = -1; revision:uint64; removing:bool;
@@ -1546,6 +1552,7 @@ table CageState {
   cursor:uint32; next_cursor:uint32; total:uint32;
   rows:[AreaCandidateRow] (required);
   outcome:FarmEditOutcome; // Unknown after effects never permits automatic replay.
+  occupants:[CageOccupantRow]; justice_restraint:bool;
 }
 table ProductionRequest {
   building_id:int32 = -1;
@@ -2666,7 +2673,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 250;
+  schema_version:uint32 = 251;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2744,7 +2751,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 250;
+  schema_version:uint32 = 251;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

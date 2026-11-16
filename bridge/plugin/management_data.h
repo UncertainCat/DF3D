@@ -245,7 +245,13 @@ struct NativeOwnerDisplay { uint16_t columns=45; std::string firstLine,secondLin
 struct NativeAnimalDisplay { uint16_t columns=27; std::string firstLine,secondLine; bool combinedFits=false; std::string warning; df3d_area::ZoneOwnerNameColor nameColor; };
 struct NativeAnimalContainer { df3d_area::ZoneAnimalContainer facts; ResidentAppearanceRecipe occupant; };
 struct NativeAreaCandidate { int32_t id=-1; std::string name,profession; int8_t sex=-1,squadUse=-1; uint8_t mood=0; bool grazer=false,assigned=false; std::optional<NativeOwnerDisplay> ownerDisplay; ResidentAppearanceRecipe sheetIcon; df3d::mirror::AreaCandidateEntity entity=df3d::mirror::AreaCandidateEntity::Unknown; std::optional<NativeAnimalDisplay> animalDisplay; std::optional<df3d_area::ZoneAnimalStatus> animalStatus; std::optional<NativeAnimalContainer> animalContainer; std::optional<df3d_area::ZoneAnimalRestraint> animalRestraint; std::optional<std::array<uint8_t,3>> animalItemColor; std::optional<std::array<uint8_t,7>> squadSymbol; };
+struct CageOccupantRow {
+  int32_t id=-1;df3d::mirror::AreaCandidateEntity entity=df3d::mirror::AreaCandidateEntity::Unknown;
+  bool contained=false,assigned=false,resolved=false;std::string name,status;uint8_t statusColor=15;
+  ResidentAppearanceRecipe appearance;
+};
 struct CageState {
+  std::vector<CageOccupantRow> occupants;bool justiceRestraint=false;
   int32_t buildingId=-1;uint64_t revision=0;bool removing=false;
   uint8_t operation=0;int32_t candidateId=-1;df3d::mirror::AreaCandidateEntity entity=df3d::mirror::AreaCandidateEntity::Unknown;bool assigned=false;
   std::string query;uint8_t sort=0;bool descending=false;uint16_t columns=27;

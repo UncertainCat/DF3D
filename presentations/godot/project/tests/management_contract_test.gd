@@ -553,6 +553,12 @@ func test_production() -> void:
 	reject_production(missing_cage_revision,"Missing management field: expected_revision")
 	var invalid_cage_target: Dictionary=cage.duplicate();invalid_cage_target.cage_candidate_id=-1
 	reject_production(invalid_cage_target,"invalid cage target")
+	var parent: Dictionary=cage.duplicate();parent.cage_operation=3;parent.query="filter"
+	reject_production(parent,"unexpected parent cage ordering")
+	parent.erase("query");parent.cage_sort=1
+	reject_production(parent,"unexpected parent cage ordering")
+	parent.erase("cage_sort");parent.action=A.ProductionInspect
+	reject_production(parent,"invalid cage intent")
 	for request in [{"action":16,"building_id":1}, {"action":17,"building_id":1,"recipe":"builtin:114:2"},
 		{"action":18,"building_id":1,"job_id":12}, {"action":19,"building_id":3,"season":0,"crop_id":-1,"expected_revision":9007199254740993}]:
 		for key in request:

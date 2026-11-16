@@ -6193,3 +6193,43 @@ TEST_CASE("cage aquarium setting requires typed header authority") {
     CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
   }
 }
+
+TEST_CASE("cage parent contract preserves ordered occupant facts without picker authority") {
+  for(int fault=0;fault<7;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto row=wire::CreateCageOccupantRow(b,5969,wire::AreaCandidateEntity::Item,true,true,true,
+      b.CreateString("Synthetic occupant"),b.CreateString("Occupant"),fault==1?16:10);
+    const auto rows=b.CreateVector(std::vector<flatbuffers::Offset<wire::AreaCandidateRow>>{});
+    const auto occupants=b.CreateVector(std::vector{row});
+    const auto cage=wire::CreateCageState(b,261,fault==4?0:9007199254740993ULL,false,fault==2?0:2,-1,wire::AreaCandidateEntity::Unknown,false,
+      b.CreateString(fault==3?"filter":""),0,false,27,0,fault==5?1:0,1,rows,wire::FarmEditOutcome::None,occupants,false);
+    wire::ProductionStateBuilder p(b);p.add_cage(cage);const auto prod=p.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_action(wire::ManagementAction::ProductionInspect);
+    root.add_status(fault==6?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);root.add_production(prod);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CAPTURE(fault);CHECK(bool(wire::validateManagementState(*state))==(fault!=0));
+    if(!fault) {
+      auto decoded=codec::decodeProduction(state->production());b.Clear();REQUIRE(decoded.cage);
+      CHECK(decoded.cage->revision==9007199254740993ULL);CHECK(decoded.cage->rows.empty());
+      REQUIRE(decoded.cage->occupants.size()==1);const auto& value=decoded.cage->occupants.front();
+      CHECK(value.id==5969);CHECK(value.contained);CHECK(value.assigned);CHECK(value.resolved);
+      CHECK(value.name=="Synthetic occupant");CHECK(value.statusColor==10);
+    }
+  }
+}
+TEST_CASE("cage parent requests distinguish reads and edits and reject picker ordering") {
+  for(int operation:{2,3})for(int fault=0;fault<5;++fault) {
+    wm::ManagementRequest r;r.action=operation==3?wm::ManagementAction::ProductionQueue:wm::ManagementAction::ProductionInspect;
+    auto& p=r.production;p.buildingId=261;p.expectedRevision=9007199254740993ULL;
+    auto& v=p.cage.emplace();v.operation=uint8_t(operation);
+    if(operation==3){v.candidateId=6960;v.entity=wm::AreaCandidateEntity::Unit;}
+    else p.cursor=64;
+    if(fault==1)p.expectedRevision=0;
+    if(fault==2)p.query="filter";
+    if(fault==3)v.sort=1;
+    if(fault==4)r.action=operation==3?wm::ManagementAction::ProductionInspect:wm::ManagementAction::ProductionQueue;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* encoded=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(operation);CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*encoded))==(fault!=0));
+  }
+}

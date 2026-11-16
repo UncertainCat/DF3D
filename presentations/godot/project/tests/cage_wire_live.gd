@@ -19,6 +19,15 @@ func run() -> void:
 	var page: Dictionary=response.get("production",{}).get("cage",{})
 	if not check(response.get("status")==C.ManagementStatus.Ok and page.get("revision",0)>0,"Cage read failed: "+str(response)):quit(1);return
 	var initial:=page.duplicate(true)
+	# Protocol migration: the parent provider remains staged; neither operation
+	# may fall through to the picker's different assignment callback.
+	for operation in [2,3]:
+		var intent={"action":C.ManagementAction.ProductionInspect if operation==2 else C.ManagementAction.ProductionQueue,
+			"building_id":int(expected.id),"expected_revision":initial.revision,"cage_operation":operation}
+		if operation==3:intent.merge({"cage_candidate_id":5969,"cage_entity":2,"cage_assigned":false})
+		var rejected:=await request("production",intent)
+		var value: Dictionary=rejected.get("production",{}).get("cage",{})
+		check(rejected.get("status")==C.ManagementStatus.Rejected and value.get("revision",-1)==0 and value.get("occupants",[1]).is_empty(),"Staged parent intent gained picker authority")
 	var parent_response:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":int(expected.id)})
 	var parent: Dictionary=parent_response.get("production",{}).get("building_header",{}).get("snapshot",{})
 	if not check(parent_response.get("status")==C.ManagementStatus.Ok and parent.get("type")==28 and parent.has("cage"),"Cage parent read failed: "+str(parent_response)):quit(1);return

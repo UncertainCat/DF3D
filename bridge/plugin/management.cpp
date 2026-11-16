@@ -1411,8 +1411,15 @@ void publish() {
   if(production.cage) {
     const auto& v=*production.cage;std::vector<flatbuffers::Offset<m::AreaCandidateRow>> rows;
     for(const auto& row:v.rows)rows.push_back(buildAreaCandidate(b,row));
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<m::CageOccupantRow>>> occupants;
+    if(v.operation>=2) {
+      std::vector<flatbuffers::Offset<m::CageOccupantRow>> values;
+      for(const auto& row:v.occupants)values.push_back(m::CreateCageOccupantRow(b,row.id,row.entity,row.contained,row.assigned,row.resolved,
+        b.CreateString(row.name),b.CreateString(row.status),row.statusColor,row.appearance.layers.empty()?0:row.appearance.build(b)));
+      occupants=b.CreateVector(values);
+    }
     cage=m::CreateCageState(b,v.buildingId,v.revision,v.removing,v.operation,v.candidateId,v.entity,v.assigned,
-      b.CreateString(v.query),v.sort,v.descending,v.columns,v.cursor,v.nextCursor,v.total,b.CreateVector(rows),v.outcome);
+      b.CreateString(v.query),v.sort,v.descending,v.columns,v.cursor,v.nextCursor,v.total,b.CreateVector(rows),v.outcome,occupants,v.justiceRestraint);
   }
   auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders,production.taskCategory?b.CreateString(*production.taskCategory):0,production.taskCategory?b.CreateVector(taskCategories):0,production.taskParent?b.CreateString(*production.taskParent):0,doorControls,pendingBuilding,buildingLinks,lever,cage);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
@@ -4313,12 +4320,13 @@ void run(color_ostream& out) {
     auto& result=production.cage.emplace();result.buildingId=q.building_id();result.operation=intent.operation();
     result.candidateId=intent.candidate_id();result.entity=intent.entity();result.assigned=intent.assigned();
     result.query=q.query()?q.query()->str():std::string{};result.sort=intent.sort();result.descending=intent.descending();result.columns=intent.columns();
-    const bool edit=intent.operation()==1;
+    const bool edit=(intent.operation()&1)!=0;
     result.outcome=edit?m::FarmEditOutcome::Rejected:m::FarmEditOutcome::None;
     const auto clearSnapshot=[&]{result.revision=0;result.removing=false;result.cursor=0;result.nextCursor=0;result.total=0;result.rows.clear();};
     bool entered=false;
     try {
       const auto execute=[&] {
+      if(intent.operation()>=2)return;
       auto* building=df::building::find(q.building_id());
       const auto before=df3d_production::observeCage(building);
       const auto order=before?cageOrder(*before,q):std::nullopt;

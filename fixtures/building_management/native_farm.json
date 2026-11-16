@@ -114253,6 +114253,24 @@
           "bridge/plugin/cage_occupants_native.h": "a9dfcce9b1018d888814357c4bd3176494a54e68511de433dc714f9a94a5b641",
           "tools/smoke/cage-occupant-effects-native.lua": "edafbfa090a3e557c65cdf33583f2cefbde9ca28d79b9cef416afac1c1335961"
         }
+      },
+      "cage_occupant_contract_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-123948",
+        "owned_df_pid": 38004,
+        "management_protocol": 251,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Protocol251 typed parent read/edit requests explicitly reject without snapshot authority before reaching picker callback. Prior picker read/search/effects/stale restoration, parent room facts and native/owned parent removals still pass. This is contract migration evidence, not a connected occupant provider or public panel. 30FPS GPU60C. Live client known separate-thread notice only; headless engine contract clean.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-123948/cage-wire-result.json": "db47d54b444a67270b1d82ccdca039830e17d77a52cda9aedf18ecaab8209cdb",
+          "build/stockpile-storage-native-farm-discovery-20261116-123948/cage-occupant-effects-native.json": "9c0e967ab22bfc81801a561a45eebff1d21fe9853bb7348f7cb105484e88a0c1",
+          "build/stockpile-storage-native-farm-discovery-20261116-123948/result.json": "2f6c6ac525bf1d815c917ce17a9a9c3c4cd6342a3d759ce6d9d25c440033a811",
+          "build/stockpile-storage-native-farm-discovery-20261116-123948/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-123948/cage-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "presentations/godot/project/tests/cage_wire_live.gd": "0385e97cff536201413709f5e7db568c2c3e0000ff44fb8ec93c80f859d010f3",
+          "schema/mirror.fbs": "fc6ed5cbebf7a287c7a8787d6718db5fb9082bf02495cf2b957dc2b14560c022",
+          "schema/cpp/management_util.h": "2f5f8aa615d664fa023123f53fa45ce2c58f2b7371f89149c2be6b6d2350dd1e"
+        }
       }
     },
     "pending_construction_reference": {

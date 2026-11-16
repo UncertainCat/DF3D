@@ -3337,6 +3337,26 @@ that the blank row's checkbox worked and is not acceptance. This evidence qualif
 removal, not contained-unit reassignment or item assignment through the parent.
 Reference: `completed_sheet_discovery_reference.cage_parent_effects_reference`.
 
+Protocol251 reserves CageRequest operations2/3 for occupant reads/assignments,
+distinct from picker operations0/1. The parent uses its own revision and ordered
+CageOccupantRow vector; picker rows, query and sort cannot supply parent authority.
+Rows retain containment, assignment, resolution, native caption/status/color and
+optional semantic appearance. Justice status belongs to the parent page. Both
+families enforce64-row/224KiB pages and4096 total rows; rejected or unknown edits
+carry no snapshot authority. Both peers must upgrade together. Older recordings
+cannot fabricate occupant facts from picker candidates. This migration only
+establishes the contract; the product provider remains staged and rejects parent
+operations before entering the picker callback.
+
+Protected123948 (DF38004) verifies that staging boundary through protocol251 and
+retains the prior picker search/edits/stale restoration, room facts and native/owned
+parent removal comparisons. Source unchanged, owned DF closes unsaved at30FPS;
+GPU60C. Bridge and extension builds pass; the safe-thread engine contract check
+is clean. The live client reports only the known separate-thread notice. Evidence:
+`completed_sheet_discovery_reference.cage_occupant_contract_reference`.
+The full core build first found an optional-access typo in the new test; the
+corrected incremental build and all19 root CTest checks pass.
+
 ### Other completed-building families
 
 Protected120249 on2026-11-15 inventories the completed building families outside

@@ -83,6 +83,13 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     v.query=s->query()->str();v.sort=s->sort();v.descending=s->descending();v.columns=s->columns();
     v.cursor=s->cursor();v.nextCursor=s->next_cursor();v.total=s->total();
     for(const auto* row:*s->rows())v.rows.push_back(decodeAreaCandidate(row));
+    v.justiceRestraint=s->justice_restraint();
+    if(s->occupants())for(const auto* row:*s->occupants()) {
+      CageOccupantRow copy;copy.id=row->id();copy.entity=AreaCandidateEntity(row->entity());
+      copy.contained=row->contained();copy.assigned=row->assigned();copy.resolved=row->resolved();
+      copy.name=row->name()->str();copy.status=row->status()->str();copy.statusColor=row->status_color();
+      if(row->appearance())copy.appearance=decodeItemRecipe(row->appearance());v.occupants.push_back(std::move(copy));
+    }
   }
   if(const auto* s=p->lever()) {
     auto& v=n.lever.emplace();v.buildingId=s->building_id();v.revision=s->revision();v.operation=s->operation();v.outcome=s->outcome();

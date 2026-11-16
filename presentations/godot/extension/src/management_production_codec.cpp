@@ -240,7 +240,17 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     d["operation"]=v.operation;d["candidate_id"]=v.candidateId;d["entity"]=int(v.entity);d["assigned"]=v.assigned;
     d["query"]=String::utf8(v.query.c_str());d["sort"]=v.sort;d["descending"]=v.descending;d["columns"]=v.columns;
     d["cursor"]=v.cursor;d["next_cursor"]=v.nextCursor;d["total"]=v.total;Array rows;
-    for(const auto& row:v.rows)rows.push_back(areaCandidateDictionary(row));d["rows"]=rows;prod["cage"]=d;
+    for(const auto& row:v.rows)rows.push_back(areaCandidateDictionary(row));d["rows"]=rows;
+    if(v.operation>=2) {
+      d["justice_restraint"]=v.justiceRestraint;Array occupants;
+      for(const auto& row:v.occupants) {
+        Dictionary r;r["id"]=row.id;r["entity"]=int(row.entity);r["contained"]=row.contained;r["assigned"]=row.assigned;
+        r["resolved"]=row.resolved;r["name"]=String::utf8(row.name.c_str());r["status"]=String::utf8(row.status.c_str());r["status_color"]=row.statusColor;
+        if(row.appearance)r["appearance"]=itemRecipeDictionary(*row.appearance);occupants.push_back(r);
+      }
+      d["occupants"]=occupants;
+    }
+    prod["cage"]=d;
   }
   if(p.lever) {
     const auto& v=*p.lever;Dictionary d;d["building_id"]=v.buildingId;d["revision"]=int64_t(v.revision);d["operation"]=v.operation;d["outcome"]=v.outcome;
@@ -759,7 +769,7 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
       if(data.has(key) && data[key].get_type()!=Variant::INT){error=String("Wrong management field type: ")+key;return false;}
     for(const char* key:{"cage_assigned","cage_descending"})
       if(data.has(key) && data[key].get_type()!=Variant::BOOL){error=String("Wrong management field type: ")+key;return false;}
-    auto& v=value.cage.emplace();v.operation=uint8_t(n("cage_operation",0,0,1));
+    auto& v=value.cage.emplace();v.operation=uint8_t(n("cage_operation",0,0,3));
     v.candidateId=int32_t(n("cage_candidate_id",-1,-1,INT32_MAX));v.entity=wm::AreaCandidateEntity(n("cage_entity",0,0,2));
     v.assigned=data.get("cage_assigned",false);v.sort=uint8_t(n("cage_sort",0,0,3));v.descending=data.get("cage_descending",false);
     v.columns=uint16_t(n("cage_columns",27,3,128));

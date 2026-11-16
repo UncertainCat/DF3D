@@ -192,8 +192,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 250;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v250";
+inline constexpr uint32_t kManagementVersion = 251;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v251";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1052,8 +1052,8 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if(!p->door_controls() && p->door_forbidden()!=-1)return "unexpected door setting";
     if(!p->pending_building() && p->pending_operation()!=-1)return "unexpected pending operation";
     if(const auto* v=p->cage()) {
-      const bool edit=v->operation()==1;
-      if(v->operation()>1 || r.action()!=(edit?ManagementAction::ProductionQueue:ManagementAction::ProductionInspect) || p->building_id()<0 ||
+      const bool parent=v->operation()>=2;const bool edit=(v->operation()&1)!=0;
+      if(v->operation()>3 || r.action()!=(edit?ManagementAction::ProductionQueue:ManagementAction::ProductionInspect) || p->building_id()<0 ||
          p->lever() || p->building_links() ||
          p->pending_building() || p->pending_operation()!=-1 || p->door_controls() || p->door_forbidden()!=-1 ||
          p->workshop_orders() || p->workshop_workers() || p->building_header() || p->contents() || p->independent_item() || p->locate_item() ||
@@ -1065,6 +1065,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
          (p->query() && p->query()->size()>128) || p->cursor()>4096 || p->expected_revision()>INT64_MAX ||
          ((edit || p->cursor()) && !p->expected_revision()) || (edit && p->cursor()) ||
          v->sort()>3 || v->columns()<3 || v->columns()>128)return "invalid cage intent";
+      if(parent && ((p->query() && p->query()->size()) || v->sort() || v->descending() || v->columns()!=27))return "unexpected parent cage ordering";
       if(edit ? (v->candidate_id()<0 || (v->entity()!=AreaCandidateEntity::Unit && v->entity()!=AreaCandidateEntity::Item)) :
                 (v->candidate_id()!=-1 || v->entity()!=AreaCandidateEntity::Unknown || v->assigned()))return "invalid cage target";
     } else if(const auto* v=p->lever()) {
@@ -2940,8 +2941,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   if(s.action()==ManagementAction::FarmEdit && s.status()==ManagementStatus::Ok && !s.production())return "missing farm edit result";
   if (const auto* p=s.production()) {
     if(const auto* v=p->cage()) {
-      const bool edit=v->operation()==1;
-      if(v->operation()>1 || s.action()!=(edit?ManagementAction::ProductionQueue:ManagementAction::ProductionInspect) || p->lever() || p->building_links() ||
+      const bool parent=v->operation()>=2;const bool edit=(v->operation()&1)!=0;
+      if(v->operation()>3 || s.action()!=(edit?ManagementAction::ProductionQueue:ManagementAction::ProductionInspect) || p->lever() || p->building_links() ||
          p->pending_building() || p->door_controls() || p->workshop_orders() || p->workshop_workers() || p->building_header() ||
          p->independent_item() || p->item() || p->item_position() || p->farm() || p->contents() || p->contents_edit() ||
          p->farm_edit_outcome()!=FarmEditOutcome::None || p->selected_building()!=-1 || p->created_job()!=-1 || p->current_season()!=-1 || p->next_cursor() ||
@@ -2952,18 +2953,22 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
          (edit ? v->outcome()==FarmEditOutcome::None : v->outcome()!=FarmEditOutcome::None) ||
          (s.status()!=ManagementStatus::Ok && s.status()!=ManagementStatus::Rejected) ||
          (edit && ((v->outcome()==FarmEditOutcome::Completed)!=(s.status()==ManagementStatus::Ok))))return "invalid cage outcome";
+      if(!v->rows() || !v->query())return "missing cage rows or query";
+      if(parent ? (!v->occupants() || v->rows()->size() || v->query()->size() || v->sort() || v->descending() || v->columns()!=27) :
+                  (v->occupants() || v->justice_restraint()))return "mixed cage row families";
+      const size_t count=parent?v->occupants()->size():v->rows()->size();
       if(s.status()==ManagementStatus::Rejected) {
-        if(v->building_id()<0 || v->revision() || v->removing() || !v->rows() || v->rows()->size() || v->cursor() || v->next_cursor() || v->total())return "cage rejection carries snapshot";
+        if(v->building_id()<0 || v->revision() || v->removing() || !v->rows() || (count || v->justice_restraint()) || v->cursor() || v->next_cursor() || v->total())return "cage rejection carries snapshot";
       } else {
       if(v->building_id()<0 || !v->revision() || v->revision()>INT64_MAX || !v->query() || v->query()->size()>128 ||
-         v->sort()>3 || v->columns()<3 || v->columns()>128 || !v->rows() || v->rows()->size()>64 || v->total()>4096 ||
-         v->cursor()>v->total() || v->rows()->size()>v->total()-v->cursor() || (edit && (v->cursor() || v->removing())))return "invalid cage page";
+         v->sort()>3 || v->columns()<3 || v->columns()>128 || !v->rows() || count>64 || v->total()>4096 ||
+         v->cursor()>v->total() || count>v->total()-v->cursor() || (edit && (v->cursor() || v->removing() || v->justice_restraint())))return "invalid cage page";
       }
       if(!v->query() || v->query()->size()>128 || v->sort()>3 || v->columns()<3 || v->columns()>128)return "invalid cage query";
       if(edit ? (v->candidate_id()<0 || (v->entity()!=AreaCandidateEntity::Unit && v->entity()!=AreaCandidateEntity::Item)) :
                 (v->candidate_id()!=-1 || v->entity()!=AreaCandidateEntity::Unknown || v->assigned()))return "invalid cage receipt";
-      const uint64_t end=uint64_t(v->cursor())+v->rows()->size();
-      if((end<v->total() && (!v->rows()->size() || v->next_cursor()!=end)) ||
+      const uint64_t end=uint64_t(v->cursor())+count;
+      if((end<v->total() && (!count || v->next_cursor()!=end)) ||
          (end==v->total() && v->next_cursor()) || (v->total() && v->cursor()==v->total()))return "invalid cage continuation";
       size_t bytes=0;std::set<std::pair<int32_t,int>> identities;
       for(const auto* row:*v->rows()) {
@@ -2971,6 +2976,14 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
            !identities.emplace(row->id(),int(row->entity())).second)return "invalid cage candidate identity";
         if(edit && row->id()==v->candidate_id() && row->entity()==v->entity() && row->assigned()!=v->assigned())return "inconsistent cage receipt";
         if(const auto* error=validateAreaCandidate(row,2,AreaOperation::CandidateList,bytes))return error;
+      }
+      if(parent)for(const auto* row:*v->occupants()) {
+        if(!row || row->id()<-1 || (row->entity()!=AreaCandidateEntity::Unit && row->entity()!=AreaCandidateEntity::Item) ||
+           (row->resolved() && row->id()<0) || (!row->resolved() && (row->entity()!=AreaCandidateEntity::Unit || !row->contained() || row->appearance())) ||
+           (!row->contained() && !row->assigned()) || !row->name() || row->name()->size()>2048 || !row->status() || row->status()->size()>128 || row->status_color()>15)return "invalid cage occupant";
+        if(edit && row->id()==v->candidate_id() && row->entity()==v->entity() && row->assigned()!=v->assigned())return "inconsistent cage occupant receipt";
+        bytes+=row->name()->size()+row->status()->size();
+        if(row->appearance())if(auto error=validateOwnerAppearance(*row->appearance(),bytes))return error;
       }
       if(bytes>224*1024)return "cage response exceeds bounded payload";
     } else if(const auto* v=p->lever()) {

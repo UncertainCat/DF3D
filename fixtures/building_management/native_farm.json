@@ -113722,6 +113722,110 @@
           "build/stockpile-storage-native-farm-discovery-20261116-114921/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
           "build/stockpile-storage-native-farm-discovery-20261116-114921/cage-glass-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
         }
+      },
+      "cage_occupant_body_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-115354",
+        "owned_df_pid": 58876,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Native parent contains pet item5969 but renders no text row. Assigning unit6960 renders Stray Drake and Assigned after the blank contained-item slot. Original assignment/flags/frame restored. Room259 is meetinghall linked to site651 location0 temple(type2), tier1. Renderer18d450 writes item to temporary1710; row branch18d959 checks separate eb8, leaving contained animal-item row blank. No correction approval assumed.",
+        "body": {
+          "cases": [
+            {
+              "items": [
+                5969
+              ],
+              "label": "contained-item",
+              "lines": [],
+              "units": []
+            },
+            {
+              "items": [
+                5969
+              ],
+              "label": "assigned-unit",
+              "lines": [
+                {
+                  "text": "       Stray Drake,   (Tame)",
+                  "y": 15
+                },
+                {
+                  "text": "       Assigned",
+                  "y": 16
+                }
+              ],
+              "units": [
+                6960
+              ]
+            },
+            {
+              "items": [
+                5969
+              ],
+              "label": "restored",
+              "lines": [],
+              "units": []
+            }
+          ],
+          "contained": [
+            {
+              "entity": 2,
+              "id": 5969
+            }
+          ],
+          "id": 261,
+          "restored": true,
+          "rooms": [
+            {
+              "id": 259,
+              "location_id": 0,
+              "location_tier": 1,
+              "location_type": 2,
+              "site_id": 651,
+              "type": 87
+            }
+          ],
+          "success": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-115354/cage-body-native.json": "44aa6826cc318b2a6ce7bb8ff675f26569d9c38ff6583d0185a38d72cf135640",
+          "build/stockpile-storage-native-farm-discovery-20261116-115354/cage-body-contained-item.png": "3fd15ba29b5b57fcf03cf83a610962c73f4a1402820dc63782af62b8346aac51",
+          "build/stockpile-storage-native-farm-discovery-20261116-115354/cage-body-assigned-unit.png": "5adfb35f0ec6f8bb2c05231c64d8f54835e277a4f7094c380a78aec9153c543d",
+          "build/stockpile-storage-native-farm-discovery-20261116-115354/cage-body-restored.png": "3fd15ba29b5b57fcf03cf83a610962c73f4a1402820dc63782af62b8346aac51",
+          "build/stockpile-storage-native-farm-discovery-20261116-115354/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
+      },
+      "cage_room_location_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-120711",
+        "owned_df_pid": 54888,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Protocol250 location kind/tier/contents facts match native room259 temple(type2), tier1. Actual parent payload renders room strip exactly27360pixels, clean safe-thread30FPS. Read/assignment/stale/restore and native body oracle pass. Known live separate-thread notice only. No whole parent or public navigation acceptance.",
+        "room": {
+          "introduction": "This furniture is a part of",
+          "location_has_contents": true,
+          "location_tier": 1,
+          "location_type": 2,
+          "name": "Unnamed memorial hall",
+          "notices": [],
+          "room_id": 259,
+          "room_type": 87
+        },
+        "render_bounds": [
+          432,
+          424,
+          456,
+          60
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-120711/cage-wire-result.json": "db47d54b444a67270b1d82ccdca039830e17d77a52cda9aedf18ecaab8209cdb",
+          "build/stockpile-storage-native-farm-discovery-20261116-120711/cage-body-native.json": "44aa6826cc318b2a6ce7bb8ff675f26569d9c38ff6583d0185a38d72cf135640",
+          "build/stockpile-storage-native-farm-discovery-20261116-120711/remaining-building-28.png": "3fd15ba29b5b57fcf03cf83a610962c73f4a1402820dc63782af62b8346aac51",
+          "build/stockpile-storage-native-farm-discovery-20261116-120711/cage-room-view.png": "f8f3aea4ff4a32d5d55332975cf0f1c38c91e6af6421f5132bab388270b3af8e",
+          "build/stockpile-storage-native-farm-discovery-20261116-120711/remaining-buildings-native.json": "204608e01e3de1aa0669f70cd2baa8225caec95f60555149b52b6d79882a67bc",
+          "build/stockpile-storage-native-farm-discovery-20261116-120711/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-120711/cage-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
+        }
       }
     },
     "pending_construction_reference": {

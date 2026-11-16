@@ -5,6 +5,8 @@
 namespace df3d_production {
 struct BuildingRoomBody {
     int32_t buildingId=-1,roomId=-1,roomType=-1;
+    int32_t siteId=-1,locationId=-1,locationType=-1,locationTier=-1;
+    bool locationHasContents=false;
     std::vector<int32_t> relevantZones;
     std::vector<std::string> notices;
     std::string introduction,name;

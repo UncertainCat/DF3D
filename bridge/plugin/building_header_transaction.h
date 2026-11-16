@@ -43,6 +43,7 @@ inline uint64_t buildingHeaderRevision(const BuildingHeaderObservation& value) {
 
     if(value.cage){const auto& v=*value.cage;number(v.flags);number(v.materialType);number(v.materialIndex);byte(v.justiceRestraint);byte(v.glass);
         number(v.room.buildingId);number(v.room.roomId);number(v.room.roomType);number(v.room.relevantZones.size());
+        number(v.room.siteId);number(v.room.locationId);number(v.room.locationType);number(v.room.locationTier);byte(v.room.locationHasContents);
         for(auto id:v.room.relevantZones)number(id);
         for(const auto* text:{&v.room.introduction,&v.room.name}){number(text->size());for(unsigned char c:*text)byte(c);}
         number(v.room.notices.size());for(const auto& text:v.room.notices){number(text.size());for(unsigned char c:text)byte(c);}}

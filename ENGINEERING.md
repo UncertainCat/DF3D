@@ -3269,6 +3269,34 @@ before this accepted run. Component evidence does not qualify the whole parent:
 Shared animal presentation components can be reused only where their semantics
 match; a zone ID must not stand in for cage authority.
 
+Protected115354 (DF58876) establishes the parent occupant/body facts. Contained
+pet5969 remains assigned but has a blank native row; assigning unit6960 produces
+Stray Drake / Assigned after that blank slot. The renderer stores the contained
+item in temporary1710 at18d450, while18d959 tests the separate eb8 item pointer.
+This explains the native blank row; it is not evidence that cages lack an occupant
+body. No correction is approved yet. The same capture resolves room259 to site651,
+location0, abstract type2 (temple), tier1: a generic meeting-hall icon is incorrect.
+Original assignment/material flags and paused frame are restored, source unchanged,
+owned DF closed unsaved at30FPS; GPU60C. Evidence:
+`completed_sheet_discovery_reference.cage_occupant_body_reference`.
+
+Protocol250 extends the independent room body with location type, tier and contents
+presence. This preserves the native distinction between absent contents (no temple/
+guild icon) and a contents object with a base tier. Peers must upgrade together.
+The owned room provider uses pinned native67e80 lookup and copies type/tier from
+semantic location contents. Header authority includes site/location identity and
+these facts. The room view follows native19fc18 type dispatch and18f418 location
+branch; it does not replace a temple icon with a generic meeting-hall icon.
+Protected120711 (DF54888) validates the actual protocol250 payload against native
+room259's temple2/tier1. Its room strip matches all27360 pixels at1200x800;
+safe-thread30FPS render diagnostics are clean, GPU63C. Assignment/stale/restore
+and body discovery still pass; source unchanged, owned DF closed unsaved. The
+live client has only the known separate-thread notice. Bridge/extension builds
+and headless header/engine-contract checks pass. The full core rebuild, incremental
+rebuild for later header changes, and all19 CTest checks pass.
+This qualifies the room component, not the occupant body or public cage route.
+Evidence: `completed_sheet_discovery_reference.cage_room_location_reference`.
+
 ### Other completed-building families
 
 Protected120249 on2026-11-15 inventories the completed building families outside

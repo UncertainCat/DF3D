@@ -52,6 +52,10 @@ for _,kind in ipairs(kinds)do
    result.cage_picker.after={units=ids(b.assigned_units),items=ids(b.assigned_items),flags=b.cage_flags.whole,jobs=#b.jobs}
    assert(json.encode(before)==json.encode(result.cage_picker.after),'Opening/cancelling cage assignment changed simulation')
    result.cage_picker.closed_context=picker.context
+   if os.getenv('DF3D_CAGE_BODY')=='1'then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','cage-body-native.lua')
+    assert(loadfile(source))(out,view,b,capture)
+   end
    if os.getenv('DF3D_CAGE_GLASS')=='1'then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','cage-glass-native.lua')
     assert(loadfile(source))(out,view,b,capture)

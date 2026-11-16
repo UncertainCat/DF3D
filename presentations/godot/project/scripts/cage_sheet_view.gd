@@ -14,12 +14,28 @@ func _gui_input(event: InputEvent) -> void:
 	super._gui_input(event)
 func _draw() -> void:
 	super._draw()
-	if removing or state.snapshot.get("type",-1)!=28 or state.snapshot.get("cage",{}).get("justice_restraint",true):return
-	var texture: Texture2D=art.texture("ZONE_PICK_ANIMALS")
-	if texture!=null:draw_texture_rect(texture,cage_rect(),false)
+	if removing or state.snapshot.get("type",-1)!=28:return
 	var body: Dictionary=state.snapshot.get("cage",{})
-	if body.get("glass",false):
+	if body.is_empty():return
+	if not body.justice_restraint:
+		var texture: Texture2D=art.texture("ZONE_PICK_ANIMALS")
+		if texture!=null:draw_texture_rect(texture,cage_rect(),false)
+	if body.glass and not body.justice_restraint:
 		for aquarium in [false,true]:
 			var rect:=aquarium_rect(aquarium)
 			_patch(art.texture("HORIZONTAL_OPTION_CONFIRM" if body.aquarium==aquarium else "HORIZONTAL_OPTION_ACTIVE"),rect)
 			_body_text("Aquarium" if aquarium else "Terrarium",rect.position+Vector2(8,24),15)
+	var room: Dictionary=body.room
+	if room.room_id>=0:
+		_body_text(room.introduction,Vector2(16,384))
+		var frame: Texture2D=art.texture("BUILDING_PLACEMENT_INACTIVE_BUTTON")
+		if frame!=null:draw_texture_rect(frame,Rect2(16,396,32,36),false)
+		var token: String=preload("res://scripts/building_room_art.gd").token(room)
+		if not token.is_empty():
+			var icon: Texture2D=art.texture(token)
+			if icon!=null:draw_texture_rect(icon,Rect2(16,398,32,32),false)
+		_body_text(room.name,Vector2(64,420))
+	else:
+		var baseline:=384
+		for notice in room.notices:
+			_body_text(notice,Vector2(16,baseline));baseline+=12

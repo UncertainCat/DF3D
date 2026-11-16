@@ -1375,7 +1375,7 @@ void publish() {
       if(f.cage){const auto& v=*f.cage;const auto& room=v.room;
         std::vector<flatbuffers::Offset<flatbuffers::String>> notices;
         for(const auto& text:room.notices)notices.push_back(b.CreateString(text));
-        const auto body=m::CreateBuildingRoomBody(b,room.roomId,room.roomType,b.CreateString(room.introduction),b.CreateString(room.name),b.CreateVector(notices));
+        const auto body=m::CreateBuildingRoomBody(b,room.roomId,room.roomType,b.CreateString(room.introduction),b.CreateString(room.name),b.CreateVector(notices),room.locationType,room.locationTier,room.locationHasContents);
         cage=m::CreateCageBodySnapshot(b,v.justiceRestraint,v.glass,(v.flags&2U)!=0,body);}
       snapshot=m::CreateBuildingHeaderSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,
         b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance),funerary,machinery,well,depot,cage);

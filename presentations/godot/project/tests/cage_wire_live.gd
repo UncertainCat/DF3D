@@ -24,6 +24,7 @@ func run() -> void:
 	if not check(parent_response.get("status")==C.ManagementStatus.Ok and parent.get("type")==28 and parent.has("cage"),"Cage parent read failed: "+str(parent_response)):quit(1);return
 	check(not parent.cage.glass and not parent.cage.justice_restraint,"Expected ordinary lead cage")
 	check(parent.cage.room.room_id==259 and parent.cage.room.room_type==87 and parent.cage.room.name=="Unnamed memorial hall" and parent.cage.room.introduction=="This furniture is a part of","Cage room facts differ from native")
+	check(parent.cage.room.location_type==2 and parent.cage.room.location_tier==1 and parent.cage.room.location_has_contents,"Cage room temple facts differ from native")
 	var unavailable:=await request("production",{"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":int(expected.id),"expected_revision":parent.revision,"farm_operation":C.FarmOperation.CageAquarium,"item_value":1})
 	check(unavailable.get("status")==C.ManagementStatus.Rejected and unavailable.get("production",{}).get("building_header",{}).get("outcome")==C.FarmEditOutcome.Rejected,"Non-glass cage setting must reject without effects")
 	check(page.rows.size()==expected.rows.size() and page.next_cursor==0,"Cage rows missing")

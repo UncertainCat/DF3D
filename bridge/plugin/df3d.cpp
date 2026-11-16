@@ -5683,6 +5683,8 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         auto* building=df::building::find(id);if(!building)return CR_FAILURE;
         const auto body=df3d_production::cageRoomBody(*building);if(!body)return CR_FAILURE;
         Json::Value result;result["building_id"]=id;result["room_id"]=body->roomId;result["room_type"]=body->roomType;
+        result["site_id"]=body->siteId;result["location_id"]=body->locationId;result["location_type"]=body->locationType;
+        result["location_tier"]=body->locationTier;result["location_has_contents"]=body->locationHasContents;
         result["introduction"]=DF2UTF(body->introduction);result["name"]=DF2UTF(body->name);
         result["rooms"]=Json::Value(Json::arrayValue);for(auto room:body->relevantZones)result["rooms"].append(room);
         result["notices"]=Json::Value(Json::arrayValue);for(const auto& text:body->notices)result["notices"].append(DF2UTF(text));

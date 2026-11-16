@@ -185,8 +185,16 @@ prohibited: it writes global graphics state and performs gameplay effects.
 Appraisal385603..3857bd is a separate one-shot phase. It searches caravan.goods
 before recording IDs. For newly inspected merchant-side goods, it calls native
 trade valuation c66c30 and skill-related routines133baf0/13d5020 with skill73;
-fortress-side goods are recorded without those calls. This is static call-path
-evidence, not a verified skill-gain calculation. A future bridge must preserve
+fortress-side goods are recorded without those calls. The native caller passes
+min(50, trunc(value/10)+1) to133baf0 and six times that amount to13d5020.
+133baf0 delegates skill gain/rust to10e8cf0; on level change it also calls
+profession update133bcf0 and may emit a skill-related thought through13eff80.
+The complete skill routine extends through10e9124, beyond its first unwind
+entry; caste learning rates can consume native RNG.13d5020 maps Appraisal73
+through775520 to mental attributes0/6/4 (Analytical Ability, Memory, Intuition),
+with no physical attributes, and delegates advancement/rust to131f610 via
+13cadc0. These are static findings on the pinned53.16 executable, not full
+qualification of the level-up/profession/thought paths. A future bridge must preserve
 these native entry effects separately from repeatable query/refresh operations;
 it must not treat rendering/menu opening as a read-only catalog API.
 
@@ -202,8 +210,23 @@ unit position, temporary job/references and caravans are restored; simulation
 frame is unchanged. Owned DF47176 closes unsaved/source-preserved at30FPS,
 sampled GPU52C. Core19 passes. Evidence:
 `completed_sheet_discovery_reference.depot_trade_lists_native_reference`.
-Merchant-side valuation/skill effects, native prices, list ownership qualification
-and negotiation remain outstanding; no trade runtime API is exposed yet.
+Protected183508 on2026-11-15 qualifies a bounded native appraisal effect case:
+five merchant items plus four fortress items enter an initially empty caravan
+history. Source-list checks first suppress appraisal; the separate oracle then
+explicitly enables the native phase. With Appraisal initialized at rating0 and
+experience0, it gains19 experience without a level change. Intuition's improve
+counter gains114; Analytical Ability and Memory also exercise existing rust/
+demotion recovery. All nine item IDs enter caravan.goods once. Re-arming the
+native phase twice leaves the complete captured skill, mental attributes and
+goods history unchanged. The oracle restores original skill/attribute state;
+the enclosing lane restores temporary goods/worker/caravans and verifies the
+paused frame. Owned DF48340 closes unsaved/source-preserved, native30FPS,
+sampled GPU48C. Evidence:
+`completed_sheet_discovery_reference.depot_trade_appraisal_native_reference`.
+This is native effect evidence, not a bridge mutation API or viewer acceptance.
+Caste-rate/RNG variants, level-up/profession/thought effects, newly arriving goods,
+container appraisal and negotiation remain outstanding. Runtime appraisal must
+stay separate from repeatable providers; the full renderer remains inadmissible.
 
 `trade_entry_native.h` now stages an owned merchant-entry provider. It checks
 pinned native initializer/name/clear routines, resolves the current fortress

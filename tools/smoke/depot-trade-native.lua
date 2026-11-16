@@ -356,6 +356,14 @@ local ok,err=xpcall(function()
   reopen('speaker-unloading',1)
   restore_speaker()
  end
+ if os.getenv('DF3D_DEPOT_TRADE_APPRAISAL')=='1' then
+  assert(source_probe,'Appraisal oracle requires isolated source goods')
+  unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z;select_map(b)
+  unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z;click(480,190)
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-appraisal-native.lua')
+  result.appraisal=assert(loadfile(source))(view,unit,trade,added[1])
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)
+ end
  if restore_sources then restore_sources()end
  caravan();unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z
  select_map(b);assert(main.view_sheets.active_id==b.id)

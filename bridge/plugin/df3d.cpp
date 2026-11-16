@@ -5286,6 +5286,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if(source)for(const auto& side:*source){Json::Value ids=Json::arrayValue;for(auto id:side)ids.append(id);output["sides"].append(ids);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="trade-dialogue-probe") {
+        if(parameters.size()!=4)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        int32_t values[3]={};for(size_t i=1;i<4;++i){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<0)return CR_WRONG_USAGE;}
+        if(values[2]>28)return CR_WRONG_USAGE;
+        const auto entry=df3d_production::tradeEntryFacts(df::building::find(values[0]),size_t(values[1]));
+        std::optional<std::string> dialogue;
+        if(entry){auto* civ=df::historical_entity::find(entry->entity);auto* caravan=df::global::plotinfo->caravans[size_t(values[1])];
+          if(civ && caravan)dialogue=df3d_production::tradeDialogue(*civ,*caravan,df::unit::find(entry->fortressTrader),int16_t(values[2]));}
+        Json::Value output;output["available"]=bool(dialogue);if(dialogue)output["dialogue"]=DF2UTF(*dialogue);
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="trade-entry-probe") {
         if(parameters.size()!=3)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;

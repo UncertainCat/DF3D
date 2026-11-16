@@ -1,3 +1,27 @@
+## Owned trade dialogue provider
+
+DF53.16 assembles trade dialogue inline in384850; there is no independent
+whole-dialogue formatter. The bridge preserves its pinned385bc8..3861cb
+branches and immutable literals while calling native75cfd0 for ethics and
+30cea0/30cf70/aa3bd0 for profession/race names. It accepts explicit owned
+dialogue state and semantic entity/caravan/broker records, uses owned strings,
+and never calls the renderer or reads its menu/announcement scratch. Literal
+ranges, switch table, helper code and relevant structure offsets are pinned.
+The Mountainhomes/outer-lands choice is plotinfo.king_arrived. Unsupported
+states, including announcement state-1, fail closed; exchange must eventually
+supply its own announcement result. This is a staged provider, not public UI.
+
+Protected211514 on2026-11-15 compares45 paused native dialogue states against
+the provider, after whitespace normalization: all29 switch values, ethical
+replies, offense, both ethics inputs and the greeting/race variants. Native
+profession naming is exercised by the craftsdwarf greeting. Owned DF16428
+closes unsaved/source-preserved at30FPS, sampled GPU60C. Bridge build and all19
+core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_dialogue_reference`.
+This does not qualify exact wrapping/spacing, alternative caste profession
+fallbacks, public transport, Godot speaker/header rendering or exchange effects.
+Protocol242 is unchanged. Trade remains hidden pending its complete workflow.
+
 ## Staged trade footer rendering
 
 The footer component displays native summary headings, value/profit/capacity

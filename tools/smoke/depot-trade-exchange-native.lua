@@ -14,6 +14,22 @@ local function snapshot(label)
  result.cases[#result.cases+1]=row;capture('depot-trade-empty-'..label)
 end
 local ok,err=xpcall(function()
+ if os.getenv('DF3D_DEPOT_TRADE_NEGOTIATION_SEED')=='1' then
+  local json=require('json');result.seeds={}
+  for iteration=1,2 do
+   local intents=iteration==1 and {} or {{side=0,item=trade.good[0][0].id}}
+   if iteration==2 then click(468,238)end
+   local before={talkline=trade.talkline,buildlists=trade.buildlists,appraisal=trade.handle_appraisal,title=trade.title}
+   local output,code=dfhack.run_command_silent('df3d','trade-negotiation-seed-probe',tostring(trade.bld.id),'0','','',json.encode(intents))
+   assert(code==0,output);local seed=json.decode(output);assert(seed.available and seed.dialogue==trade.talkline and seed.counter_offer==trade.counter_offer and #seed.requested_items==0 and #seed.announcement==0)
+   for side=0,1 do local rows=seed.sides[side+1];assert(#rows.items==#trade.good[side] and rows.height==trade.i_height[side])
+    for i,item in ipairs(trade.good[side])do assert(rows.items[i+1]==item.id and rows.flags[i+1]==trade.goodflag[side][i].whole and rows.amounts[i+1]==trade.good_amount[side][i])end
+   end
+   assert(trade.talkline==before.talkline and trade.buildlists==before.buildlists and trade.handle_appraisal==before.appraisal and trade.title==before.title)
+   result.seeds[#result.seeds+1]=seed
+   if iteration==2 then click(468,238)end
+  end
+ end
  mass.whole=100000;mass.fraction=0;view:render(dfhack.getTickCount());snapshot('before')
  click(508,730);snapshot('trade')
  click(735,730);snapshot('gift')

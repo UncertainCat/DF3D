@@ -1,3 +1,21 @@
+## Owned trade negotiation context
+
+TradeNegotiationNative builds safe-point-owned storage from a freshly resolved
+TradeDraftNative and a server-owned checkpoint, then calls the pinned native
+merchant initializer36b590 with the depot/site/caravan. Native menu state is not
+an input. Its checkpoint copies dialogue, counteroffer item IDs and announcement
+strings into pointer-free values. Explicit cleanup owns the native text box's
+string pointers. The class currently exposes initialization/readback only;
+refusal gates, conversation restoration and negotiation execution remain next.
+
+Protected220705 on2026-11-15 verifies initial and selected merchant drafts against
+native IDs, flags, amounts and list heights. Native dialogue/buildlists/appraisal
+pending flag/title stay unchanged. Owned DF47660 closes unsaved/source-preserved
+at30FPS, sampled60C. Bridge build and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_negotiation_seed_reference`.
+This does not qualify counteroffers, announcements or actual exchange effects.
+Protocol243 and public Trade exposure are unchanged.
+
 ## Trade stack selection and exchange boundary
 
 Native DF53.16's seven direct callers of selection helper36a840 all pass

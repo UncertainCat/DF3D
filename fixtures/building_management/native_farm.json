@@ -95495,6 +95495,391 @@
           "build/stockpile-storage-native-farm-discovery-20261115-220017/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
           "tools/smoke/depot-trade-exchange-native.lua": "68b5c590e16df73b80f59307c1c5a1090dca00bb03db8a7072d01dd56231be67"
         }
+      },
+      "depot_trade_negotiation_seed_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-220705",
+        "owned_df_pid": 47660,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Owned negotiation context initialization preserves native goods IDs, selection flags, amounts and heights on initial and selected drafts. Native dialogue/list/appraisal/title remain unchanged. Conversation export is pointer-free. No execution, counteroffer restoration, announcement content, exchange effects or public UI acceptance.",
+        "seeds": [
+          {
+            "announcement": [],
+            "available": true,
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                51,
+                52,
+                56,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 0,
+              "whole": -348
+            },
+            "counter_offer": false,
+            "dialogue": 0,
+            "requested_items": [],
+            "sides": [
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 4
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 45
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 57
+                  }
+                ],
+                "height": 24,
+                "items": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ]
+              },
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 2
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 23
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 46
+                  }
+                ],
+                "height": 21,
+                "items": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ]
+              }
+            ],
+            "value_totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 6,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            }
+          },
+          {
+            "announcement": [],
+            "available": true,
+            "capacity": {
+              "caption": [
+                69,
+                120,
+                99,
+                101,
+                115,
+                115,
+                32,
+                87,
+                101,
+                105,
+                103,
+                104,
+                116,
+                58,
+                32,
+                50,
+                49,
+                52,
+                226
+              ],
+              "color": 4,
+              "excess": true,
+              "fraction": 600000,
+              "whole": -214
+            },
+            "counter_offer": false,
+            "dialogue": 0,
+            "requested_items": [],
+            "sides": [
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 4
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 45
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 57
+                  }
+                ],
+                "height": 24,
+                "items": [
+                  992,
+                  991,
+                  296,
+                  408,
+                  407
+                ]
+              },
+              {
+                "amounts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "flags": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "groups": [
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 2
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 23
+                  },
+                  {
+                    "expanded": true,
+                    "flags": 2,
+                    "on": true,
+                    "subtype": -1,
+                    "type": 46
+                  }
+                ],
+                "height": 21,
+                "items": [
+                  1180,
+                  1494,
+                  1736,
+                  1735
+                ]
+              }
+            ],
+            "value_totals": {
+              "actual": [
+                3,
+                0
+              ],
+              "actual_profit": -3,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_caption": [
+                84,
+                114,
+                97,
+                100,
+                101,
+                114,
+                32,
+                80,
+                114,
+                111,
+                102,
+                105,
+                116,
+                58,
+                32,
+                48,
+                15
+              ],
+              "profit_color": 4,
+              "value_captions": [
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ],
+                [
+                  86,
+                  97,
+                  108,
+                  117,
+                  101,
+                  58,
+                  32,
+                  48,
+                  15
+                ]
+              ]
+            }
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-220705/depot-trade-native.json": "8f0fd2293f62eb68983fe45a5011d9dd0f3dae8ec6992c8474841da7f8bccd8c",
+          "build/stockpile-storage-native-farm-discovery-20261115-220705/result.json": "a3704f7c5f53464be86a356e969f21238d2c4037859460789a15512a442a7a30",
+          "build/stockpile-storage-native-farm-discovery-20261115-220705/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/trade_negotiation_native.h": "1de4dae7ab44347d47c687fd45128e1a5ab5fe96127583b38cf1d9bbd5e73e84",
+          "bridge/plugin/trade_projection_native.h": "a177b196e136cf3be1c75275dc00dff2d4ca5a4139f75c1594f221b9809bdd80",
+          "tools/smoke/depot-trade-exchange-native.lua": "c8dfe7e353fcbc26242ca22ea0dd60030ca4fb67e01609db2cd427519b122138"
+        }
       }
     },
     "pending_construction_reference": {

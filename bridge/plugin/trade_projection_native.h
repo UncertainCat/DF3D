@@ -44,6 +44,7 @@ inline bool tradeProjectionNativeReady() {
     }();return ready;
 }
 class TradeDraftNative {
+    friend class TradeNegotiationNative;
     df::trade_interfacest owned{};
     bool valid=false;
 public:

@@ -100,6 +100,7 @@
 #include "trade_capacity_native.h"
 #include "trade_appraisal_native.h"
 #include "trade_session_native.h"
+#include "trade_catalog_native.h"
 #include "depot_goods_native.h"
 #include "depot_selection_native.h"
 #include "depot_goods_read.h"
@@ -5099,6 +5100,27 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         for(const auto& row:*rows){Json::Value value;value["id"]=row.id;value["distance"]=row.distance;output["rows"].append(value);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="trade-catalog-probe") {
+        if(parameters.size()!=3 && parameters.size()!=4)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        int32_t depot=-1;const auto& raw=parameters[2];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),depot);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || depot<0)return CR_WRONG_USAGE;
+        auto& catalog=df3d_production::tradeDiagnosticCatalog();Json::Value output;
+        if(parameters[1]=="read" && parameters.size()==3) {
+          const auto facts=catalog.refresh(state.terrain.epoch(),df::building::find(depot));output["available"]=bool(facts);output["choices"]=Json::arrayValue;
+          if(facts){output["title"]=DF2UTF(facts->title);output["from"]=DF2UTF(facts->from);
+            for(const auto& choice:facts->choices){Json::Value row;row["token"]=Json::UInt64(choice.token);row["entity"]=choice.entity;row["race"]=DF2UTF(choice.race);row["name"]=DF2UTF(choice.name);output["choices"].append(row);}}
+        }else if((parameters[1]=="choose" || parameters[1]=="epoch") && parameters.size()==4) {
+          uint64_t token=0;const auto& value=parameters[3];const auto number=std::from_chars(value.data(),value.data()+value.size(),token);
+          if(number.ec!=std::errc{} || number.ptr!=value.data()+value.size() || !token)return CR_WRONG_USAGE;
+          const auto index=catalog.take(state.terrain.epoch()+(parameters[1]=="epoch"?1:0),depot,token);output["available"]=bool(index);
+          if(index){const auto entry=df3d_production::tradeEntryFacts(df::building::find(depot),*index);if(!entry)return CR_FAILURE;
+            const auto session=df3d_production::tradeDiagnosticSession().open(state.terrain.epoch(),df::building::find(depot),*index);
+            output["available"]=session.status==df3d_production::TradeSessionStatus::Available;
+            output["entity"]=entry->entity;output["session"]=Json::UInt64(session.session);output["revision"]=Json::UInt64(session.revision);}
+        }else return CR_WRONG_USAGE;
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="trade-session-probe") {
         if(parameters.size()<3)return CR_WRONG_USAGE;
         if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
@@ -5897,6 +5919,7 @@ DFhackCExport command_result plugin_onstatechange(color_ostream& out,
         out.print("df3d: map loaded; mirroring every simulated frame\n");
         break;
     case SC_MAP_UNLOADED:
+        df3d_production::tradeDiagnosticCatalog().reset();
         df3d_production::tradeDiagnosticSession().reset();
         df3d_contact::setEnabled(false);
         df3d_contact::reset();
@@ -5913,6 +5936,7 @@ DFhackCExport command_result plugin_onstatechange(color_ostream& out,
         ent::reset();
         break;
     case SC_WORLD_UNLOADED:
+        df3d_production::tradeDiagnosticCatalog().reset();
         df3d_production::tradeDiagnosticSession().reset();
         df3d_contact::setEnabled(false);
         stopRecording(out, true);

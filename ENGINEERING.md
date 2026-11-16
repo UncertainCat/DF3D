@@ -395,6 +395,40 @@ sampled GPU48C. Bridge build and all19 core checks pass. Evidence:
 Advancing-simulation behavior, anonymous caravan catalog/lifetime, transport,
 negotiation and the viewer remain unfinished; public trade routes stay hidden.
 
+`trade_catalog_native.h` supplies scoped opaque choices for that next boundary.
+It preserves native opener36b9df..36ba49 order and eligibility (AtDepot and not
+tribute), without calling the opener's global-menu teardown. Native aa3bd0,
+52d650 and a94030 produce the plural/capitalized race and civilization name.
+The header and joining text are pinned installed strings at162a938/15ed97c:
+"Select a merchant group to trade with:" and " from ". Rendering can retain
+native separate color spans for race/joiner versus civilization name.
+
+Each catalog refresh issues new opaque tokens. Choice consumption checks the
+epoch/depot, token and a freshly read catalog fingerprint, then returns an index
+only to the same-safe-point bridge caller. The response exposes no positional
+selector or object address. Consumption invalidates the catalog, preventing
+replay; stale tokens cannot consume a refreshed catalog. The fingerprint binds
+observed caravan order/identity, eligibility, names, history and selected trade
+facts, with addresses hashed locally. This is entry selection rather than a
+permanent native caravan identity or exchange authorization. Public transport
+must wire these tokens and connection retirement; appraisal and negotiated
+effects still require their separate transition/validation paths.
+
+Protected185646 on2026-11-15 compares ten catalog states against native. Two
+same-civilization caravans have distinct tokens and native "Dwarves from
+Dumatzas" captions; the native second row selects the second caravan. Refresh,
+one-shot consumption, wrong depot, injected epoch mismatch, reordered caravan
+records and changed eligibility reject old choices. Native enumeration excludes
+states0/1/3/4 and tribute, retaining only the first eligible caravan, then returns
+both after restoration. Choosing through the bridge opens only its internal
+selection session and leaves the native chooser unchanged. Owned DF45624 closes
+unsaved/source-preserved at30FPS, sampled GPU48C; bridge build and all19 core
+checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_catalog_reference`.
+This does not qualify different civilization/race captions, advancing simulation,
+allocator reuse, actual disconnect/reload, entry appraisal integration, viewer
+layout/input or negotiation. Public trade routes remain hidden.
+
 Protected180336 on2026-11-15 compares all those fields against native, twice
 per state, on the twelve-item source fixture. Native pointer/keyboard input
 exercises merchant-side item-name IRON, category-name BOULDERS, unmatched

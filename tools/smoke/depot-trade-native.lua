@@ -388,6 +388,10 @@ local ok,err=xpcall(function()
  unit.pos.x=b.centerx;unit.pos.y=b.centery;unit.pos.z=b.z
  click(480,190);assert(trade.open and trade.choosing_merchant)
  local multiple=record('merchants');assert(multiple.merchants==2)
+ if os.getenv('DF3D_DEPOT_TRADE_CATALOG')=='1' then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-catalog-native.lua')
+  result.catalog=assert(loadfile(source))(view,b,unit,position,trade,added,click,select_map)
+ end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not trade.open)
 end,debug.traceback)
 if not ok then local file=assert(io.open(out..'/depot-trade-failure.txt','w'));file:write(tostring(err));file:close()end

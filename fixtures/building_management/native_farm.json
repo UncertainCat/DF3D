@@ -74249,6 +74249,222 @@
           "bridge/plugin/trade_session_native.h": "99fd154d54167c99c5cfc754a23eb0b3d4562416823894597b58403af729f09d",
           "bridge/plugin/df3d.cpp": "29e71105511636b8bdb9c06d335cba013749ffad7298577926970b4afd8e8cda"
         }
+      },
+      "depot_trade_catalog_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-185646",
+        "owned_df_pid": 45624,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Ten catalog states vs native: two same-civ caravans, captions/header, native second-row selection, states0/1/3/4 excluded, tribute excluded, restore. Opaque token refresh/consume-once, wrong depot/epoch, reordered records and changed eligibility reject. Bridge choose leaves native chooser unchanged and opens owned selection session. Not distinct races/civilizations, advancing simulation, allocator reuse, real disconnect/reload, entry appraisal, transport/viewer or negotiation.",
+        "catalog": {
+          "cases": [
+            {
+              "catalog": {
+                "available": true,
+                "choices": [
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 1
+                  },
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 2
+                  }
+                ],
+                "from": " from ",
+                "title": "Select a merchant group to trade with:"
+              },
+              "label": "two-groups"
+            },
+            {
+              "catalog": {
+                "available": true,
+                "choices": [
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 3
+                  },
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 4
+                  }
+                ],
+                "from": " from ",
+                "title": "Select a merchant group to trade with:"
+              },
+              "label": "refreshed"
+            },
+            {
+              "catalog": {
+                "available": true,
+                "choices": [
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 5
+                  },
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 6
+                  }
+                ],
+                "from": " from ",
+                "title": "Select a merchant group to trade with:"
+              },
+              "label": "before-reorder"
+            },
+            {
+              "catalog": {
+                "available": true,
+                "choices": [
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 7
+                  },
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 8
+                  }
+                ],
+                "from": " from ",
+                "title": "Select a merchant group to trade with:"
+              },
+              "label": "before-eligibility-change"
+            },
+            {
+              "catalog": {
+                "available": true,
+                "choices": [
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 9
+                  }
+                ],
+                "from": " from ",
+                "title": "Select a merchant group to trade with:"
+              },
+              "label": "state-0"
+            },
+            {
+              "catalog": {
+                "available": true,
+                "choices": [
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 10
+                  }
+                ],
+                "from": " from ",
+                "title": "Select a merchant group to trade with:"
+              },
+              "label": "state-1"
+            },
+            {
+              "catalog": {
+                "available": true,
+                "choices": [
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 11
+                  }
+                ],
+                "from": " from ",
+                "title": "Select a merchant group to trade with:"
+              },
+              "label": "state-3"
+            },
+            {
+              "catalog": {
+                "available": true,
+                "choices": [
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 12
+                  }
+                ],
+                "from": " from ",
+                "title": "Select a merchant group to trade with:"
+              },
+              "label": "state-4"
+            },
+            {
+              "catalog": {
+                "available": true,
+                "choices": [
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 13
+                  }
+                ],
+                "from": " from ",
+                "title": "Select a merchant group to trade with:"
+              },
+              "label": "tribute-excluded"
+            },
+            {
+              "catalog": {
+                "available": true,
+                "choices": [
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 14
+                  },
+                  {
+                    "entity": 865,
+                    "name": "Dumatzas",
+                    "race": "Dwarves",
+                    "token": 15
+                  }
+                ],
+                "from": " from ",
+                "title": "Select a merchant group to trade with:"
+              },
+              "label": "restored"
+            }
+          ],
+          "consumed_once": true,
+          "eligibility_rejected": true,
+          "epoch_rejected": true,
+          "reorder_rejected": true,
+          "token_refresh_rejected": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-185646/depot-trade-native.json": "283ac5262c97b1848d7050cadeb7c83f73b30d6ac09d8ce6340b09f767863103",
+          "build/stockpile-storage-native-farm-discovery-20261115-185646/result.json": "d933db0f1825f1338afb25d7a9fb52818e0cb962859cf7c7cc5c21b7faaebf31",
+          "build/stockpile-storage-native-farm-discovery-20261115-185646/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-185646/capture-inputs.json": "ba956057a545acb39b4502b93b1c1e51547cb3f38edf2f90a3edeeda1a4d557a",
+          "tools/smoke/depot-trade-native.lua": "c9b1da045e2c224254dc410b7a164d18f4506f2fa5b42a9d536d63d431fffde2",
+          "tools/smoke/depot-trade-catalog-native.lua": "c011ab551aaff582ba39583c7806d41ff44d5ddc0f23eae48d968ef232d9c451",
+          "bridge/plugin/trade_catalog_native.h": "9a1f70842575f498859ff07d04b50af0d1d7ddac195ae194e6407607e4b72e2f",
+          "bridge/plugin/df3d.cpp": "6eb400f9bf8ce063c748bb5e45fc1170ec564be2caf41f4a163d13f3f783ee4d"
+        }
       }
     },
     "pending_construction_reference": {

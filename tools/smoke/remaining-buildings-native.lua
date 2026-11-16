@@ -68,6 +68,15 @@ for _,kind in ipairs(kinds)do
     local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','cage-glass-native.lua')
     assert(loadfile(source))(out,view,b,capture)
    end
+   if os.getenv('DF3D_CAGE_SCENE')=='1'then
+    local f=assert(io.open(out..'/cage-scene-expected.json','w'));f:write(json.encode(row));f:close()
+    capture('cage-scene')
+    f=assert(io.open(out..'/cage-scene-result.json'));result.cage_scene=json.decode(f:read('*a'));f:close()
+    assert(result.cage_scene.success,'Cage main scene failed')
+    assert(b.cage_flags.whole==(before.flags|4),'Cage scene removal flag differs')
+    b.cage_flags.whole=before.flags
+    assert(json.encode(before.units)==json.encode(ids(b.assigned_units)) and json.encode(before.items)==json.encode(ids(b.assigned_items)))
+   end
    select_map(b);view:render(dfhack.getTickCount())
   end
   if kind==6 and os.getenv('DF3D_DEPOT_NATIVE')=='1' then

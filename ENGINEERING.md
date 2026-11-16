@@ -3229,11 +3229,11 @@ checkboxes, filter and frame. The final30FPS safe-render-thread capture has clea
 stderr; sampled GPU61C. Shared animal headless checks and root19 pass. Evidence:
 `completed_sheet_discovery_reference.cage_picker_render_reference`.
 
-The furniture owner holds the independent cage picker state, visible portrait
-loading, Escape-to-parent handling and selection/session retirement. The typed
-parent header and room component are connected and qualified below. The occupant
-body and composed map-entry/assignment/close workflow still need completion;
-no public cage route is enabled.
+The furniture owner holds independent cage picker and occupant states, visible
+portrait loading, Escape-to-parent handling and selection/session retirement.
+The typed parent header, room component and occupant body are connected.
+Public map and holder entry use native Cage28/mirror kind29; composed workflow
+qualification is recorded below.
 `building_room_native.h` shares the native54bb10 room predicate with the coffin
 provider. Cage renderer18edc1..18ee88 filters its semantic relations using this
 predicate; the owned reader copies only IDs, type and native name/copy. It never
@@ -3250,9 +3250,9 @@ The cage body hides its assignment/options when native isJusticeRestraint
 (vtable slot60) is true. Otherwise material predicate145bee0 with flag49
 (IS_GLASS) gates Terrarium/Aquarium controls. Native input1af04f..1af064 clears
 cage_flags bit1 and sets bit2 for Terrarium;1af0a2 sets bits1/2 for Aquarium.
-The parent transport and staged justice gate are connected. Room/location icons,
-occupant body, composed rendering and public navigation still need qualification; ordinary lead-cage evidence does not authorize omitting them
-from a public cage UI.
+The parent transport and justice gate are connected. Room/location icons,
+occupant body and public navigation have separate qualification below; ordinary
+lead-cage evidence alone does not establish glass or justice-restraint behavior.
 
 Protected114921 (DF59964) uses a paused, controlled green-glass building material
 and restores its original material and flags. Native clicks set flags6 for
@@ -3304,7 +3304,7 @@ unit description context and the shared native item formatter. Status copy and
 colors come from the pinned renderer branch. No native list, scroll or selection
 storage is read. `cage-occupants-read` exposes the diagnostic; protocol251 now
 connects this provider and its edits to production transport. The occupant
-presentation remains pending.
+presentation consumes these independent parent facts.
 
 Protected121722 (DF37056) compares contained pet5969 and assigned unit6960 against
 the native parent. Reads leave gps/main_interface byte-identical; ordered facts
@@ -3371,6 +3371,32 @@ separate instances for parent/picker authority; parent instances reject ordering
 controls, use operations2/3 and share retirement/unknown handling. Its headless
 checks are clean. This does not qualify rendered occupant rows or public navigation.
 Evidence: `completed_sheet_discovery_reference.cage_occupant_transport_reference`.
+
+The cage parent reuses the picker state machine with a separate instance and
+revision. One-second background reads retain usable input while unchanged;
+edits, close and selection/session retirement detach older reads. The headless
+owner check verifies a late refresh cannot overwrite an edit. Picker edits
+refresh parent occupants and contents; parent edits refresh contents and any
+open picker. Cage contents use the existing native item appearance provider.
+The parent draws seven occupant slots, native status/portrait/checkbox artwork
+and the shared scrollbar. Contained animal items preserve native's blank,
+inactive slot; no correction is approved. Justice restraints disable assignment.
+An isolated456x252 body comparison against125325 matches all114912 pixels.
+Long-list scrolling and contained-unit reassignment remain unqualified variants.
+
+Protected131602 (DF17388) qualifies the public cage route through the actual
+main scene: projected map click, picker assignment of unit6960, Escape to parent,
+inactive contained-item slot, parent checkbox removal, close and holder reopen.
+Initial, assigned and removed full488x708 panels match native exactly:1036512
+pixels across three captures. Native membership and CHECKOCCUPANTS restoration
+pass. Source is unchanged and owned DF closes unsaved at30FPS, sampled GPU60–62C.
+Main-scene diagnostics are clean; the separate wire check has only the known
+rendering-thread notice. Bridge build, shared owner headless check and core19
+pass. Evidence: `completed_sheet_discovery_reference.cage_public_workflow_reference`.
+Earlier130218/130542 exposed missing cage contents appearance and harness timing;
+131104 captured contents before their edit-triggered refresh completed. Run131355
+passes scene assertions but times out in the outer capture harness before final
+restoration. These runs do not establish complete live acceptance.
 
 ### Other completed-building families
 
@@ -3871,6 +3897,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Cage parent loses contained animal-item rows, leaving blank inactive slots. | No correction approved; preserve the blank slot and inactive checkbox. | Protected121722/122728 on2026-11-16: contained pet5969 is enumerated, but renderer18d450 writes its pointer to temporary1710 and18d959 checks eb8. Native checkbox clicks on that slot have no effect. Assigned-only items render and can be removed; controlled reference removal/restoration verifies the distinction. `completed_sheet_discovery_reference.cage_parent_effects_reference`. |
 | Long linked-building lists omit their scrollbar, leaving later links inaccessible through the tested controls. | Maintainer approved keeping a working scrollbar on2026-11-15. Implemented and verified through the actual main scene in protected081041: arrow/wheel scrolling reaches the last of12 links, with native row order/artwork and working recenter/reopen. Preserve native row order, captions and actions. | Protected070239 on2026-11-15: paused floodgate39 with12 links on separate mechanisms shows5 rows and no scrollbar. Expected-arrow clicks and STANDARDSCROLL_DOWN leave native offset0. Native renderer19cd9c skips the scrollbar path19e05c..19e12f; building input reads1d54 at1b028f but has no matching scrollbar handler. Controlled reproduction and limits below. |
 | Cancelling demolition of a controlled partly constructed farm leaves it unfinished with no construction job. | No correction authorized or implemented; represent the native idle state when completing this panel. | Protected221104 on2026-11-14: stage1 FarmPlot1490, Remove building, then Cancel removal. Stage remains1/3 and jobs becomes empty. Native54c130 deletes jobs without recreating ConstructBuilding. Repro and limits below in pending_construction_reference.removal_return_reference. |
 | Craftsdwarf's Bone page creates wood jobs for qualifying bone tools. | No correction approved; preserve native's wood category and input requirement. | Controlled native223829 on2026-11-12 temporarily enables BONE_MAT on civilization tool10 ITEM_TOOL_NEST_BOX. Bone page shows Make wooden nest box; clicking creates job216/category2 with WOOD5 input. Native8c9061 writes2 after testing BONE_MAT16. Viewer224539 matches. Flag and queues restored, source saves preserved. `native_workshop.json.craft_runtime_reference`. |

@@ -114290,6 +114290,28 @@
           "presentations/godot/project/scripts/cage_picker_state.gd": "a79c9869c0b4df76acd9b29d704d7977caa2f61c0a578466567dd2b39c9662a2",
           "bridge/plugin/management.cpp": "f08d3d7589f07a7d6dd085a05a465f803f46ce5deee01a5f9448654c14c08bb6"
         }
+      },
+      "cage_public_workflow_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-131602",
+        "owned_df_pid": 17388,
+        "management_protocol": 251,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Actual main-scene map entry, picker assignment unit6960, Escape to parent, inactive contained-item slot, parent checkbox removal, close and holder reopen pass. Three entire488x708 panels match native (1036512 pixels). Original membership and CHECKOCCUPANTS flag restored. Cage contents artwork uses existing native appearance provider. Parent/picker independent authority with shared request owner and background-read retirement. Headless state and root19 checks pass. 30FPS, sampled GPU60-62C. Main-scene stderr clean; separate wire client known rendering-thread notice. Long-list and contained-unit reassignment not qualified.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-131602/cage-scene-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261116-131602/remaining-buildings-native.json": "5f93472729a00538783a375e86e2dece1af574d074355485390fe26a6207ef7d",
+          "build/stockpile-storage-native-farm-discovery-20261116-131602/cage-scene.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261116-131602/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-131602/chest-scene-cage-initial.png": "14791dcc5b9096729cf6cab750b4321d7b2c77dfca536b53902ea8b370eb8814",
+          "build/stockpile-storage-native-farm-discovery-20261116-131602/chest-scene-cage-assigned.png": "97546dd533ffa846a2261c96ae4e88f729bc0bf71936ed26b38ddb4e0f2498af",
+          "build/stockpile-storage-native-farm-discovery-20261116-131602/chest-scene-cage-removed.png": "14791dcc5b9096729cf6cab750b4321d7b2c77dfca536b53902ea8b370eb8814",
+          "presentations/godot/project/tests/cage_scene_live.gd": "65c5592e099359c39a69ec1ada1f56cac417d29eef53e81df3b4cd0803ccfba0",
+          "presentations/godot/project/scripts/cage_sheet_view.gd": "a7a852d34b623254e777e5ec8432c87e0dd0e1b797b7654a0f4a7d004eee318e",
+          "presentations/godot/project/scripts/cage_picker_state.gd": "b251d62de43eb8b71630f0b1a59292ff8716b191084af875fa6134b755257fd0",
+          "presentations/godot/project/scripts/furniture_panel.gd": "21e302f4c82ca3de1d30c1b75771a758389584ce03ded482bc6bdb675410cc81",
+          "bridge/plugin/building_item_native.h": "f0923e3122ea5cc4dc52b59bb4388983fe810fe7f8c4226a66a6373faa41bbe2"
+        }
       }
     },
     "pending_construction_reference": {

@@ -47,7 +47,11 @@ func _initialize() -> void:
 	check(parent.phase==State.Phase.Ready and service.calls[service.serial].intent.cage_operation==2,"Parent reads ordered occupant family")
 	count=service.serial;parent.order(1);parent.queue_owner_search(PackedByteArray([65]))
 	check(parent.sort==0 and parent.query.is_empty() and service.serial==count,"Parent cannot borrow picker ordering")
+	parent.poll_refresh(1.1);var refresh: int=parent.refresh_ticket
+	check(refresh>0 and parent.phase==State.Phase.Ready,"Parent watches simulation without reserving controls")
 	parent.toggle_animal(1,9);pending=parent.ticket
+	service.reply(refresh,{"revision":123})
+	check(parent.ticket==pending and parent.revision==9007199254740993 and service.detached.has(refresh),"Parent edit retires older automatic read")
 	check(service.calls[pending].intent.cage_operation==3 and service.calls[pending].intent.expected_revision==parent.revision,"Parent edit owns its revision and operation")
 	service.reply(pending,{"outcome":C.FarmEditOutcome.Unknown});count=service.serial;parent.toggle_animal(1,9)
 	check(parent.phase==State.Phase.Unknown and service.serial==count,"Parent unknown never replays")

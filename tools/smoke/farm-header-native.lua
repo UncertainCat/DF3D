@@ -195,7 +195,7 @@ local function selection_shot(name,while_waiting)
  -- Combined Labor visits multiple creature/zone sheets and waits for fresh receipts.
  local labor_navigation=name=='farm-item-carrier-unit-scene' and os.getenv('DF3D_UNIT_LABOR_ANIMALS')=='1'
  -- Match the launcher's90-second rendered-client budget at the30 FPS cap.
- local rendered_carrier=name=='farm-item-carrier-scene' or name=='farm-item-carrier-unit-scene'
+ local rendered_carrier=name=='farm-item-carrier-scene' or name=='farm-item-carrier-unit-scene' or name=='cage-scene'
  local furniture=name=='workshop-wire' and os.getenv('DF3D_FURNITURE_RUNTIME')=='1'
  -- The four furniture workflows may use the launcher's full45-second budget.
  local limit=dfhack.getTickCount()+(furniture and os.getenv('DF3D_FURNITURE_GENERIC_DISCOVERY')=='1' and 95000 or furniture and 60000 or rendered_carrier and 95000 or lifecycle and 85000 or (blink or contents_refresh or labor_navigation) and 60000 or 30000)

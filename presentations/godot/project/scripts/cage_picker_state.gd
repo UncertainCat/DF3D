@@ -10,6 +10,8 @@ enum Phase { Closed, Reading, Ready, Applying, Rejected, Stale, Unknown, Unavail
 var phase:=Phase.Closed
 var service
 var parent_body:=false
+var refresh_ticket:=0
+var refresh_age:=0.0
 var building_id: int=-1
 var snapshot: Dictionary={}
 var rows: Array=[]
@@ -40,9 +42,28 @@ func dispose() -> void:
 	if service!=null and service.session_changed.is_connected(_session_changed):service.session_changed.disconnect(_session_changed)
 	service=null
 func _retire() -> void:
+	_retire_refresh()
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
+func _retire_refresh() -> void:
+	var previous:=refresh_ticket;refresh_ticket=0;refresh_age=0.0
+	if service!=null and previous!=0:service.detach(previous)
+func poll_refresh(delta: float) -> void:
+	if not parent_body or phase!=Phase.Ready or ticket!=0 or service==null:return
+	refresh_age+=maxf(0,delta)
+	if refresh_ticket!=0 or refresh_age<1.0:return
+	refresh_age=0.0
+	var owner:=generation
+	var intent={"action":C.ManagementAction.ProductionInspect,"building_id":building_id,"cage_operation":2,
+		"query":"","cage_sort":0,"cage_descending":false,"cursor":0}
+	refresh_ticket=service.submit("production",intent,func(received,result,sent):
+		if owner!=generation or received!=refresh_ticket:return
+		refresh_ticket=0
+		var page: Dictionary=result.get("production",{}).get("cage",{})
+		if result.get("status")==C.ManagementStatus.Ok and page.get("revision")==revision:return
+		_receive(result,sent))
+	if refresh_ticket==0:_fail(Phase.Unavailable)
 func close() -> void:
 	_retire();building_id=-1;area={};snapshot={};rows=[];revision=0;cursor=0
 	query="";query_bytes=PackedByteArray();sort=0 if parent_body else 2;descending=false;directions=[false,false,false,false]
@@ -96,12 +117,14 @@ func toggle_animal(entity: int,id: int) -> void:
 			"cage_candidate_id":id,"cage_entity":entity,"cage_assigned":not row.assigned})
 		return
 func _send(intent: Dictionary) -> void:
+	_retire_refresh()
 	var owner:=generation
 	ticket=service.submit("production",intent,func(received,result,sent):
 		if owner==generation and received==ticket:_receive(result,sent))
 	if ticket==0:_fail(Phase.Unavailable);return
 	changed.emit()
 func _fail(value: Phase) -> void:
+	_retire_refresh()
 	phase=value;failed=true;mutating=false;cursor=0;snapshot={};revision=0;changed.emit()
 func _receive(result: Dictionary,sent: Dictionary) -> void:
 	ticket=0

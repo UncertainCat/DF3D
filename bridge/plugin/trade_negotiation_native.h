@@ -18,6 +18,22 @@ struct TradeNegotiationCheckpoint {
     TradeDraftCheckpoint draft;
     TradeConversation conversation;
 };
+enum class TradeButtonKind {Seize,Exchange,Gift};
+struct TradeActionButton {TradeButtonKind kind;std::string caption;bool enabled=false;};
+inline bool tradeActionButtonsNativeReady(){
+    if(!tradeEntryNativeReady())return false;
+    static const bool ready=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin{size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={{0x389b7b,0x6b2,UINT64_C(0x834c36fa90e74940)},
+            {0x38914b,0x24,UINT64_C(0xcacf7ad9e832af51)}};
+        for(const auto& pin:pins){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<pin.length;++i){h^=base[pin.rva+i];h*=UINT64_C(1099511628211);}if(h!=pin.hash)return false;}
+        return std::strcmp(reinterpret_cast<const char*>(base+0x162b2c4),"Seize")==0 &&
+            std::strcmp(reinterpret_cast<const char*>(base+0x162b2b0),"Accept Counteroffer")==0 &&
+            std::strcmp(reinterpret_cast<const char*>(base+0x15f70a8),"Trade")==0 &&
+            std::strcmp(reinterpret_cast<const char*>(base+0x162b2e0),"Offer as gift")==0;
+    }();return ready;
+}
 enum class TradeOfferDisposition {Unavailable,Refused,Ready};
 struct TradeOfferCheck {TradeOfferDisposition disposition=TradeOfferDisposition::Unavailable;int16_t reply=-1;bool alternating=false,ethical=false;};
 inline bool tradeRefusalNativeReady(){
@@ -272,6 +288,22 @@ public:
         }
         owned.counter_offer=false;
         return true;
+    }
+    // Native renderer389b7b..38a22d: eligibility is independent of offer value
+    // and capacity. Those may produce a refusal only after an enabled click.
+    std::optional<std::array<TradeActionButton,3>> actionButtons() const {
+        if(!valid || !tradeActionButtonsNativeReady() || !df::global::plotinfo)return {};
+        const auto& owned=draft.owned;
+        if(!owned.civ || !owned.mer)return {};
+        const bool local=owned.civ->id==df::global::plotinfo->civ_id;
+        const bool trading=(owned.mer->flags.whole&0x20)==0;
+        bool imported=false;
+        for(size_t i=0;i<owned.good[1].size();++i)if(owned.goodflag[1][i].bits.selected && owned.good[1][i]->flags.bits.foreign){imported=true;break;}
+        const auto* base=reinterpret_cast<const char*>(GetModuleHandleW(nullptr));
+        return std::array<TradeActionButton,3>{{
+            {TradeButtonKind::Seize,base+0x162b2c4,!local},
+            {TradeButtonKind::Exchange,base+(owned.counter_offer?0x162b2b0:0x15f70a8),trading},
+            {TradeButtonKind::Gift,base+0x162b2e0,trading && !imported && !(local && df::global::plotinfo->king_arrived)}}};
     }
     // Seize has its own native gates, not Trade's ethical/capacity refusal path.
     // Native31a6fc..31b1f2 dispatches the inline action; all item ownership

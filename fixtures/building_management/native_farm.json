@@ -101876,6 +101876,148 @@
           "No persistent session, transport, ethical refusal, cages, artifact announcements or foreign-caravan acceptance"
         ]
       },
+      "depot_trade_action_buttons_reference": {
+        "supported_df": "53.16 Steam24557528",
+        "native_run": "build/stockpile-storage-native-farm-discovery-20261116-074104",
+        "df_pid": 46300,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "fps_cap": 30,
+        "gpu_samples_celsius": [
+          56,
+          60,
+          61
+        ],
+        "cases": [
+          {
+            "actions": [
+              {
+                "caption": "Seize",
+                "enabled": false,
+                "kind": 0
+              },
+              {
+                "caption": "Trade",
+                "enabled": true,
+                "kind": 1
+              },
+              {
+                "caption": "Offer as gift",
+                "enabled": true,
+                "kind": 2
+              }
+            ],
+            "label": "local"
+          },
+          {
+            "actions": [
+              {
+                "caption": "Seize",
+                "enabled": true,
+                "kind": 0
+              },
+              {
+                "caption": "Trade",
+                "enabled": true,
+                "kind": 1
+              },
+              {
+                "caption": "Offer as gift",
+                "enabled": true,
+                "kind": 2
+              }
+            ],
+            "label": "foreign"
+          },
+          {
+            "actions": [
+              {
+                "caption": "Seize",
+                "enabled": true,
+                "kind": 0
+              },
+              {
+                "caption": "Trade",
+                "enabled": false,
+                "kind": 1
+              },
+              {
+                "caption": "Offer as gift",
+                "enabled": false,
+                "kind": 2
+              }
+            ],
+            "label": "stopped"
+          },
+          {
+            "actions": [
+              {
+                "caption": "Seize",
+                "enabled": false,
+                "kind": 0
+              },
+              {
+                "caption": "Trade",
+                "enabled": true,
+                "kind": 1
+              },
+              {
+                "caption": "Offer as gift",
+                "enabled": false,
+                "kind": 2
+              }
+            ],
+            "label": "king"
+          },
+          {
+            "actions": [
+              {
+                "caption": "Seize",
+                "enabled": false,
+                "kind": 0
+              },
+              {
+                "caption": "Trade",
+                "enabled": true,
+                "kind": 1
+              },
+              {
+                "caption": "Offer as gift",
+                "enabled": false,
+                "kind": 2
+              }
+            ],
+            "label": "imported"
+          }
+        ],
+        "counter_visual": {
+          "actions": [
+            {
+              "caption": "Seize",
+              "enabled": true,
+              "kind": 0
+            },
+            {
+              "caption": "Accept Counteroffer",
+              "enabled": true,
+              "kind": 1
+            },
+            {
+              "caption": "Offer as gift",
+              "enabled": true,
+              "kind": 2
+            }
+          ],
+          "label": "counter",
+          "native_image": "C:/Users/Josh/Documents/DF3D/build/stockpile-storage-native-farm-discovery-20261115-222057/depot-trade-counteroffer.png"
+        },
+        "visual": "All three full button rectangles pixel-exact at1200x800 for five native provider cases and retained native222057 counteroffer; pointer enabled/disabled dispatch passes",
+        "limits": [
+          "Staged view; no runtime summary transport or main-route integration",
+          "Counteroffer caption/layout uses retained native image and pinned native literal; provider counter branch not live exercised here",
+          "Minimum width/height and absent civilization not qualified"
+        ]
+      },
       "depot_trade_transfer_transport_reference": {
         "supported_df": "53.16 Steam24557528",
         "protocol": 246,

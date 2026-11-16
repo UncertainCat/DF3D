@@ -5308,6 +5308,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               context.refuseOffer();const auto response=context.checkpoint();if(!response)return CR_FAILURE;output["replies"].append(response->conversation.dialogue);}
           }
           auto checkpoint=context.checkpoint();output["available"]=bool(checkpoint);
+          if(const auto buttons=context.actionButtons()){
+            output["actions"]=Json::arrayValue;
+            for(const auto& button:*buttons){Json::Value row;row["kind"]=int(button.kind);row["caption"]=DF2UTF(button.caption);row["enabled"]=button.enabled;output["actions"].append(row);}
+          }
+
           if(checkpoint && (parameters[0]=="trade-negotiate-probe" || parameters[0]=="trade-accept-probe")){
             const auto equal=[](const auto& a,const auto& b){return a.dialogue==b.dialogue && a.counterOffer==b.counterOffer && a.requestedItems==b.requestedItems && a.announcement==b.announcement;};
             df3d_production::TradeNegotiationNative restored(df::building::find(values[0]),size_t(values[1]),checkpoint->draft);

@@ -118,7 +118,7 @@ source-preserved, capped30FPS; GPU samples58–61C. Bridge builds and19 core
 checks pass. Evidence:
 `completed_sheet_discovery_reference.depot_trade_counteroffer_acceptance_reference`.
 
-This fixture uses a same-civilization synthetic caravan: import/export values
+This fixture assigns the synthetic caravan to the fortress entity: import/export values
 stay zero. It does not qualify foreign-caravan accounting, real announcements,
 public action transport or asynchronous session rebinding. Trade remains hidden.
 The oracle removes ownership refs from the current live vector, since accepted
@@ -150,7 +150,7 @@ independent retained list. The executor marks effects started before mutation;
 callers must treat post-effect failure as uncertainty, never a retry.
 
 Protected233746 (native DF52204) and233842 (owned DF46516) on2026-11-15
-donate steel bar28694 from bin3148 to the same-civilization fixture caravan865.
+donate steel bar28694 from bin3148 to the fortress-entity fixture caravan865.
 After equivalent native row-value reads, all tracked item flags, references,
 positions and stacks, depot contents, caravan fields, depot use count and
 artifact-history suppression agree exactly. The bar gains trader ownership and
@@ -314,6 +314,38 @@ Trade/gift/Seize effects remain unfinished.
 
 
 ## Trade session transport
+
+### Native action row
+
+TradeNegotiationNative.actionButtons reads only its owned draft and resolved
+caravan/civilization. Pinned renderer389b7b..38a22d and selected-item check38914b
+provide the inline enablement contract. Seize is disabled for the parent
+civilization; Trade is disabled by caravan flag0x20; Gift additionally rejects
+selected imported goods and king-arrived trading with the parent civilization.
+Offer value and capacity do not disable these buttons; native refusals occur
+after a click. Captions come from checked native literals, including the wider
+Accept Counteroffer caption when the owned counteroffer flag is set.
+
+Protected074104 (DF46300) on2026-11-16 checks local/foreign civilizations,
+stopped trading, king-arrived and selected-imported-item cases. It restores all
+controlled inputs and closes unsaved/source-preserved at30FPS, sampled56C.
+The staged trade_action_view matches every full button rectangle at1200x800
+for those five captures. A sixth visual case reuses native222057's counteroffer
+image and the pinned caption; it qualifies the wider button, not a new live
+provider counteroffer read. Enabled/disabled pointer dispatch passes. Rendered
+Godot runs are serial/capped30FPS and exit cleanly; post-run samples60–61C.
+Disabled buttons use HORIZONTAL_OPTION_ACTIVE with black text, as native does,
+not the similarly named INACTIVE asset. Bridge build and19 core checks pass.
+Evidence: `completed_sheet_discovery_reference.depot_trade_action_buttons_reference`.
+
+The fortress entity used by older synthetic caravan fixtures is distinct from
+the parent civilization in plotinfo.civ_id. Those fixtures did not qualify the
+same-civilization king restriction; the local case above uses that actual
+parent entity. Action facts still need public summary transport and main-screen
+integration. Minimum dimensions and absent-civilization rendering remain
+unqualified. Trade stays hidden.
+
+### Action transport
 
 Protocol246 adds TradeSessionGift and TradeSessionSeize with the same
 session/expected-revision-only request and action receipt as Trade. The bridge

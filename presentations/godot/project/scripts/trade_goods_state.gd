@@ -86,14 +86,14 @@ func _read_side(side: int,offset: int) -> void:
 	if ticket==0:phase=Phase.Unavailable;changed.emit()
 func _read_summary() -> void:
 	var owner:=generation
-	var intent: Dictionary={"action":C.ManagementAction.TradeSessionRead,"session":session,"expected_revision":revision}
+	var intent: Dictionary={"action":C.ManagementAction.TradeSessionRead,"session":session,"expected_revision":revision,"columns":header_columns}
 	ticket=service.submit("trade_session",intent,func(received,result,_sent):
 		if owner!=generation or received!=ticket:return
 		ticket=0
 		var value: Variant=result.get("trade_session")
-		if not _receipt(result,value,intent.action,revision) or not _valid_footer(value.get("footer")):
+		if not _receipt(result,value,intent.action,revision) or not _valid_footer(value.get("footer")) or not _valid_header(value.get("header"),header_columns):
 			_fail_goods(result);return
-		footer=value.footer.duplicate(true);pages=_pending_pages;_pending_pages=[{},{}]
+		footer=value.footer.duplicate(true);header=value.header.duplicate(true);pages=_pending_pages;_pending_pages=[{},{}]
 		phase=Phase.Active;changed.emit();_drain_filter())
 	if ticket==0:phase=Phase.Unavailable;changed.emit()
 func toggle_row(side: int,index: int,expand: bool=false) -> void:

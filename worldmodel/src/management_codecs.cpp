@@ -216,6 +216,10 @@ ManagementState decodeState(const m::ManagementState* s) {
   }
   if(const auto* r=s->trade_session()) {
     next.tradeSession.emplace();auto& out=*next.tradeSession;out.outcome=TradeSessionOutcome(r->outcome());out.session=r->session();out.revision=r->revision();
+    if(const auto* h=r->header()){out.header.emplace();auto& v=*out.header;v.speaker=h->speaker();v.columns=h->columns();v.name=h->name()->str();v.mood=h->mood()->str();v.moodColor=h->mood_color();v.statusColor=h->status_color();
+      for(const auto* line:*h->lines())v.lines.push_back(line->str());for(const auto* line:*h->status())v.status.push_back(line->str());
+      if(const auto* c=h->name_color())v.nameColor=AreaNameColor{{c->foreground(),c->background(),c->bright()},{c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
+      if(h->appearance())v.appearance=decodeItemRecipe(h->appearance());}
     if(const auto* f=r->footer())out.footer=TradeFooter{f->merchant_value()->str(),f->fortress_value()->str(),f->profit()->str(),f->profit_color(),f->capacity()->str(),f->capacity_color()};
     if(const auto* e=r->entry())out.entry=TradeSessionEntry{e->entity_id(),e->fortress_trader(),e->merchant_trader(),e->dialogue(),e->unloading(),e->has_speaker(),e->title()->str(),e->speaker()->str(),e->fortress()->str(),e->place()->str()};
   }
@@ -570,7 +574,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
         return m::CreateDepotGoodsRequest(b,q.depotId,q.category,b.CreateString(q.query),q.sortByDistance,q.pendingOnTop,q.excludeProhibited,b.CreateVector(q.itemIds),q.expectedRevision,changes(q.draft),changes(q.sortDraft),q.containerId,q.containerOffset,q.containerLimit);}():flatbuffers::Offset<m::DepotGoodsRequest>{},
       r.action==ManagementAction::DepotGoodsCommit?[&](){std::vector<m::DepotGoodsChange> changes;for(const auto& row:r.depotCommit.changes)changes.emplace_back(row.id,uint8_t(row.desired));return m::CreateDepotGoodsCommitRequest(b,r.depotCommit.depotId,r.depotCommit.expectedRevision,b.CreateVectorOfStructs(changes));}():flatbuffers::Offset<m::DepotGoodsCommitRequest>{},
       r.action==ManagementAction::TradeCatalogRead?m::CreateTradeCatalogRequest(b,r.tradeCatalog.depotId):flatbuffers::Offset<m::TradeCatalogRequest>{},
-      r.action>=ManagementAction::TradeSessionOpen && r.action<=ManagementAction::TradeSessionClose?m::CreateTradeSessionRequest(b,r.tradeSession.depotId,r.tradeSession.choiceToken,r.tradeSession.session,r.tradeSession.expectedRevision):flatbuffers::Offset<m::TradeSessionRequest>{},
+      r.action>=ManagementAction::TradeSessionOpen && r.action<=ManagementAction::TradeSessionClose?m::CreateTradeSessionRequest(b,r.tradeSession.depotId,r.tradeSession.choiceToken,r.tradeSession.session,r.tradeSession.expectedRevision,r.tradeSession.columns):flatbuffers::Offset<m::TradeSessionRequest>{},
       r.action==ManagementAction::TradeDraftRead || r.action==ManagementAction::TradeDraftApply?m::CreateTradeDraftRequest(b,r.tradeDraft.session,r.tradeDraft.expectedRevision,r.tradeDraft.side,r.tradeDraft.offset,r.tradeDraft.limit,m::TradeDraftOperation(r.tradeDraft.operation),r.tradeDraft.item,r.tradeDraft.type,r.tradeDraft.subtype,b.CreateString(r.tradeDraft.query)):flatbuffers::Offset<m::TradeDraftRequest>{});
   b.Finish(request);
 }

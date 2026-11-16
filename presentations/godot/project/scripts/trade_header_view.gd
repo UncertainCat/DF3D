@@ -6,6 +6,7 @@ var art=preload("res://scripts/original_ui.gd").new()
 var colors: Array[Color]=[]
 var facts: Dictionary={}
 var speaker: Texture2D
+var ticks_override: int=-1
 func configure_header(source) -> void:
 	world=source;art.configure(source);theme=art.theme
 	colors=art.installed_palette(source.assets_root())
@@ -13,7 +14,9 @@ func configure_header(source) -> void:
 func set_header(value: Dictionary) -> void:
 	facts=value.duplicate(true);speaker=null
 	if facts.has("appearance"):speaker=world.candidate_icon(facts.appearance)
+	set_process(int(facts.get("name_color",{}).get("effect",0))!=0)
 	queue_redraw()
+func _process(_delta: float) -> void:queue_redraw()
 func layout(panel_size: Vector2) -> void:
 	size=Vector2(panel_size.x-16,72);queue_redraw()
 func text(value: String,point: Vector2,color: int) -> void:
@@ -28,7 +31,8 @@ func _draw() -> void:
 	# before this staged component is connected to the public trade route.
 	if speaker!=null and speaker.get_size()==Vector2(32,32):
 		draw_texture_rect(speaker,Rect2(34,38,32,32),false)
-	var color: Array=facts.get("name_color",[7,0,0])
+	var color: Array=preload("res://scripts/native_name_color.gd").choose(facts.get("name_color",{}),ticks_override if ticks_override>=0 else Time.get_ticks_msec(),0 if ticks_override>=0 else randi_range(0,1))
+	if color.is_empty():color=[7,0,0]
 	text(facts.get("name",""),Vector2(96,12),int(color[0])+8*int(color[2]))
 	var lines: Array=facts.get("status",[])
 	var ink: int=int(facts.get("status_color",7))

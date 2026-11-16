@@ -10,6 +10,7 @@ func run() -> void:
 	for sample in native_data.cases:
 		if not sample.has("header"):continue
 		var header: Dictionary=sample.header.cases[0].header.duplicate(true)
+		if header.has("name_color"):header.name_color={"color":header.name_color,"alternate":header.name_color,"effect":header.name_effect}
 		if header.has("appearance"):
 			header.appearance.tile_pages=header.appearance.pages;header.appearance.erase("pages")
 		view.set_header(header)

@@ -603,7 +603,7 @@ std::optional<df3d_production::TradeCaravanCatalog> tradeCatalogReply;
 int32_t tradeCatalogDepot=-1;
 uint64_t tradeCatalogClient=0;
 df3d_production::TradeOwner tradeCatalogOwner;
-struct TradeSessionReply {m::TradeSessionOutcome outcome=m::TradeSessionOutcome::Rejected;uint64_t session=0,revision=0;std::optional<df3d_production::TradeEntryFacts> entry;std::optional<df3d_production::TradeValueTotals> values;std::optional<df3d_production::TradeCapacity> capacity;};
+struct TradeSessionReply {m::TradeSessionOutcome outcome=m::TradeSessionOutcome::Rejected;uint64_t session=0,revision=0;std::optional<df3d_production::TradeEntryFacts> entry;std::optional<df3d_production::TradeValueTotals> values;std::optional<df3d_production::TradeCapacity> capacity;std::optional<df3d_production::TradeHeader> header;std::vector<std::string> lines;uint16_t columns=0;};
 std::optional<TradeSessionReply> tradeSessionReply;
 struct TradeDraftReply {m::TradeSessionOutcome outcome=m::TradeSessionOutcome::Rejected;uint64_t session=0,revision=0;int8_t side=-1;std::string query;std::optional<df3d_production::TradeDisplayPage> page;};
 std::optional<TradeDraftReply> tradeDraftReply;
@@ -1676,7 +1676,13 @@ void publish() {
     if(v.entry){const auto& e=*v.entry;entry=m::CreateTradeSessionEntry(b,e.entity,e.fortressTrader,e.merchantTrader,e.dialogue,e.unloading,e.hasSpeaker,b.CreateString(DF2UTF(e.title)),b.CreateString(DF2UTF(e.speaker)),b.CreateString(DF2UTF(e.fortress)),b.CreateString(DF2UTF(e.place)));}
     flatbuffers::Offset<m::TradeFooter> footer;
     if(v.values && v.capacity){const auto& f=*v.values;const auto& c=*v.capacity;footer=m::CreateTradeFooter(b,b.CreateString(DF2UTF(f.valueCaptions[0])),b.CreateString(DF2UTF(f.valueCaptions[1])),b.CreateString(DF2UTF(f.profitCaption)),int8_t(f.profitColor),b.CreateString(DF2UTF(c.caption)),int8_t(c.color));}
-    tradeSessionResult=m::CreateTradeSessionState(b,v.outcome,v.session,v.revision,entry,footer);
+    flatbuffers::Offset<m::TradeHeader> header;
+    if(v.header){const auto& h=*v.header;flatbuffers::Offset<m::AreaNameColor> color;
+      if(h.nameColor){const auto& c=*h.nameColor;color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);}
+      std::vector<flatbuffers::Offset<flatbuffers::String>> lines,status;
+      for(const auto& line:v.lines)lines.push_back(b.CreateString(DF2UTF(line)));for(const auto& line:h.status)status.push_back(b.CreateString(DF2UTF(line)));
+      header=m::CreateTradeHeader(b,h.speaker,v.columns,b.CreateString(DF2UTF(h.name)),b.CreateVector(lines),b.CreateString(DF2UTF(h.mood)),h.moodColor,b.CreateVector(status),h.statusColor,color,encodeItemRecipe(h.appearance));}
+    tradeSessionResult=m::CreateTradeSessionState(b,v.outcome,v.session,v.revision,entry,footer,header);
   }
   if(tradeCatalogReply){const auto& v=*tradeCatalogReply;std::vector<flatbuffers::Offset<m::TradeCatalogChoice>> choices;
     for(const auto& row:v.choices)choices.push_back(m::CreateTradeCatalogChoice(b,row.token,row.entity,b.CreateString(DF2UTF(row.race)),b.CreateString(DF2UTF(row.name))));
@@ -5353,8 +5359,8 @@ void run(color_ostream& out) {
         if(reply.outcome==m::TradeSessionOutcome::Available){reply.session=result.selection.session;reply.revision=result.selection.revision;reply.entry=std::move(result.entry);}
       }
     }else if(r->action()==m::ManagementAction::TradeSessionRead) {
-      auto result=tradeCatalogOwner.summary(epoch,q.session(),q.expected_revision());
-      if(result.status==df3d_production::TradeSessionStatus::Available){reply.outcome=m::TradeSessionOutcome::Available;reply.session=result.session;reply.revision=result.revision;reply.values=std::move(result.values);reply.capacity=std::move(result.capacity);}
+      auto result=tradeCatalogOwner.summary(epoch,q.session(),q.expected_revision(),q.columns());
+      if(result.status==df3d_production::TradeSessionStatus::Available){reply.outcome=m::TradeSessionOutcome::Available;reply.session=result.session;reply.revision=result.revision;reply.values=std::move(result.values);reply.capacity=std::move(result.capacity);reply.header=std::move(result.header);reply.lines=std::move(result.dialogueLines);reply.columns=result.columns;}
       else if(result.status==df3d_production::TradeSessionStatus::Retired)reply.outcome=m::TradeSessionOutcome::Retired;
     }else {
       const auto result=tradeCatalogOwner.close(q.session());

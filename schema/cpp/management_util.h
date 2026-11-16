@@ -192,8 +192,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 242;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v242";
+inline constexpr uint32_t kManagementVersion = 243;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v243";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -830,6 +830,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   }else if(r.trade_draft())return "unexpected trade draft request";
   if(r.action()>=ManagementAction::TradeSessionOpen && r.action()<=ManagementAction::TradeSessionClose){
     const auto* q=r.trade_session();if(!q)return "missing trade session request";
+    if(r.action()==ManagementAction::TradeSessionRead ? (q->columns()<1 || q->columns()>512) : q->columns()!=0)return "invalid trade header width";
     if(r.action()==ManagementAction::TradeSessionOpen){
       if(q->depot_id()<0 || !q->choice_token() || q->choice_token()>INT64_MAX || q->session() || q->expected_revision())return "invalid trade open request";
     }else if(q->depot_id()!=-1 || q->choice_token() || !q->session() || q->session()>INT64_MAX || q->expected_revision()>INT64_MAX || (r.action()==ManagementAction::TradeSessionRead?!q->expected_revision():q->expected_revision()!=0))return "invalid trade session request";
@@ -1943,11 +1944,22 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if(s.action()<ManagementAction::TradeSessionOpen || s.action()>ManagementAction::TradeSessionClose || s.status()!=ManagementStatus::Ok || r->outcome()>TradeSessionOutcome::Unknown || r->session()>INT64_MAX || r->revision()>INT64_MAX)return "invalid trade session result";
     const auto outcome=r->outcome();
     if(outcome==TradeSessionOutcome::Available){
-      if(s.action()==ManagementAction::TradeSessionClose || !r->session() || !r->revision() || (bool(r->entry())!=(s.action()==ManagementAction::TradeSessionOpen)) || (bool(r->footer())!=(s.action()==ManagementAction::TradeSessionRead)))return "invalid available trade session";
+      if(s.action()==ManagementAction::TradeSessionClose || !r->session() || !r->revision() || (bool(r->entry())!=(s.action()==ManagementAction::TradeSessionOpen)) || (bool(r->footer())!=(s.action()==ManagementAction::TradeSessionRead)) || (bool(r->header())!=(s.action()==ManagementAction::TradeSessionRead)))return "invalid available trade session";
     }else{
-      if(r->entry() || r->footer() || r->revision() || (outcome==TradeSessionOutcome::Closed ? (!r->session() || s.action()!=ManagementAction::TradeSessionClose):r->session()!=0))return "invalid terminal trade session";
+      if(r->entry() || r->footer() || r->header() || r->revision() || (outcome==TradeSessionOutcome::Closed ? (!r->session() || s.action()!=ManagementAction::TradeSessionClose):r->session()!=0))return "invalid terminal trade session";
       if(outcome==TradeSessionOutcome::Unknown && s.action()!=ManagementAction::TradeSessionOpen)return "unexpected trade open uncertainty";
       if(outcome==TradeSessionOutcome::Retired && s.action()!=ManagementAction::TradeSessionRead)return "unexpected retired trade session";
+    }
+    if(const auto* h=r->header()){
+      if(h->speaker()<-1 || h->columns()<1 || h->columns()>512 || !h->name() || h->name()->size()>2048 || !h->mood() || h->mood()->size()>2048 || !h->lines() || h->lines()->size()>2049 || !h->status() || h->status()->size()>2)return "invalid trade header";
+      size_t bytes=h->name()->size()+h->mood()->size();
+      for(const auto* lines:{h->lines(),h->status()})for(const auto* line:*lines){if(!line || line->size()>2048)return "invalid trade header line";bytes+=line->size();}
+      if(bytes>16384 || (h->mood()->size()? (h->mood_color()<9 || h->mood_color()>15):h->mood_color()!=-1) || (h->status()->size()?(h->status_color()!=7 && h->status_color()!=14):h->status_color()!=-1))return "invalid trade header text";
+      if(bool(h->name_color())!=(h->speaker()>=0) || (h->speaker()<0 && (h->name()->size() || h->appearance())))return "invalid trade speaker";
+      if(const auto* c=h->name_color()){
+        if(c->foreground()>7 || c->background()>7 || c->bright()>1 || c->alternate_foreground()>7 || c->alternate_background()>7 || c->alternate_bright()>1 || c->effect()>3 || (!c->effect() && (c->foreground()!=c->alternate_foreground() || c->background()!=c->alternate_background() || c->bright()!=c->alternate_bright())))return "invalid trade name color";
+      }
+      if(const auto* a=h->appearance()){size_t bytes=0;if(auto error=validateOwnerAppearance(*a,bytes))return error;if(bytes>131072 || !a->layers()->size())return "invalid trade artwork";}
     }
     if(const auto* f=r->footer()){
       for(const auto* text:{f->merchant_value(),f->fortress_value(),f->profit(),f->capacity()})if(!text || !text->size() || text->size()>2048)return "invalid trade footer caption";

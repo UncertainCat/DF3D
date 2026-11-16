@@ -2507,10 +2507,11 @@ enum TradeItemDisposition : uint8 { Local, Imported, ExportRestricted, Stolen, O
 table TradeDraftRow { group:bool; expanded:bool; id:int32 = -1; parent:int32 = -1; type:int32 = -1; subtype:int32 = -1; amount:int32; flags:uint32; caption:string (required); value:int32; appraisal:int32; value_caption:string (required); weight_caption:string (required); disposition:TradeItemDisposition; contained_count:int32; expandable:bool; contents_caption:string (required); }
 table TradeDraftPage { side:int8 = -1; offset:uint32; total:uint32; query:string (required); rows:[TradeDraftRow] (required); }
 table TradeDraftState { outcome:TradeSessionOutcome = Rejected; session:uint64; revision:uint64; page:TradeDraftPage; }
-table TradeSessionRequest { depot_id:int32 = -1; choice_token:uint64; session:uint64; expected_revision:uint64; }
+table TradeSessionRequest { depot_id:int32 = -1; choice_token:uint64; session:uint64; expected_revision:uint64; columns:uint16; }
 table TradeSessionEntry { entity_id:int32 = -1; fortress_trader:int32 = -1; merchant_trader:int32 = -1; dialogue:int16 = -1; unloading:bool; has_speaker:bool; title:string (required); speaker:string (required); fortress:string (required); place:string (required); }
 table TradeFooter { merchant_value:string; fortress_value:string; profit:string; profit_color:int8; capacity:string; capacity_color:int8; }
-table TradeSessionState { outcome:TradeSessionOutcome = Rejected; session:uint64; revision:uint64; entry:TradeSessionEntry; footer:TradeFooter; }
+table TradeHeader { speaker:int32 = -1; columns:uint16; name:string (required); lines:[string] (required); mood:string (required); mood_color:int8 = -1; status:[string] (required); status_color:int8 = -1; name_color:AreaNameColor; appearance:SelectionAppearance; }
+table TradeSessionState { outcome:TradeSessionOutcome = Rejected; session:uint64; revision:uint64; entry:TradeSessionEntry; footer:TradeFooter; header:TradeHeader; }
 table TradeCatalogRequest { depot_id:int32 = -1; }
 table TradeCatalogChoice { token:uint64; entity_id:int32 = -1; race:string (required); name:string (required); }
 table TradeCatalogState { depot_id:int32 = -1; title:string (required); from_text:string (required); choices:[TradeCatalogChoice] (required); }
@@ -2635,7 +2636,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 242;
+  schema_version:uint32 = 243;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2713,7 +2714,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 242;
+  schema_version:uint32 = 243;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

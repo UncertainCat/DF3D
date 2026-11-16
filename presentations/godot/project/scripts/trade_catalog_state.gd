@@ -18,6 +18,8 @@ var session: int=0
 var revision: int=0
 var entry: Dictionary={}
 var footer: Dictionary={}
+var header: Dictionary={}
+var header_columns: int=102
 var _open_ticket:=0
 func configure(source) -> void:
 	dispose();service=source
@@ -32,7 +34,7 @@ func close() -> void:
 		if _open_ticket!=0:service.retire_trade_open(_open_ticket)
 		if ticket!=0 and ticket!=_open_ticket:service.detach(ticket)
 		if session>0:service.submit("trade_session",{"action":C.ManagementAction.TradeSessionClose,"session":session},Callable())
-	_open_ticket=0;session=0;revision=0;entry={};footer={}
+	_open_ticket=0;session=0;revision=0;entry={};footer={};header={}
 	ticket=0;depot_id=-1;title="";from_text="";choices=[];phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:close();phase=Phase.Unavailable;changed.emit()
 func open(id: int) -> void:
@@ -79,17 +81,33 @@ func refresh_session() -> void:
 	if phase!=Phase.Active or service==null:return
 	phase=Phase.Checking
 	var owner:=generation
-	ticket=service.submit("trade_session",{"action":C.ManagementAction.TradeSessionRead,"session":session,"expected_revision":revision},func(received,result,_sent):
+	ticket=service.submit("trade_session",{"action":C.ManagementAction.TradeSessionRead,"session":session,"expected_revision":revision,"columns":header_columns},func(received,result,_sent):
 		if owner!=generation or received!=ticket:return
 		ticket=0
 		var value: Variant=result.get("trade_session")
 		if result.get("outcome")=="unknown":phase=Phase.Unknown
-		elif result.get("status")==C.ManagementStatus.Ok and result.get("action")==C.ManagementAction.TradeSessionRead and typeof(value)==TYPE_DICTIONARY and value.get("outcome")==C.TradeSessionOutcome.Available and typeof(value.get("session"))==TYPE_INT and typeof(value.get("revision"))==TYPE_INT and value.session==session and value.revision==revision and not value.has("entry") and _valid_footer(value.get("footer")):
-			footer=value.footer.duplicate(true);phase=Phase.Active
+		elif result.get("status")==C.ManagementStatus.Ok and result.get("action")==C.ManagementAction.TradeSessionRead and typeof(value)==TYPE_DICTIONARY and value.get("outcome")==C.TradeSessionOutcome.Available and typeof(value.get("session"))==TYPE_INT and typeof(value.get("revision"))==TYPE_INT and value.session==session and value.revision==revision and not value.has("entry") and _valid_footer(value.get("footer")) and _valid_header(value.get("header"),header_columns):
+			footer=value.footer.duplicate(true);header=value.header.duplicate(true);phase=Phase.Active
 		else:phase=Phase.Rejected
 		changed.emit())
 	if ticket==0:phase=Phase.Unavailable
 	changed.emit()
+static func _valid_header(value: Variant,columns: int) -> bool:
+	if typeof(value)!=TYPE_DICTIONARY or typeof(value.get("columns"))!=TYPE_INT or value.columns!=columns or columns<1 or columns>512:return false
+	if typeof(value.get("speaker"))!=TYPE_INT or value.speaker < -1 or value.speaker>2147483647:return false
+	for key in ["name","mood"]:
+		if typeof(value.get(key))!=TYPE_STRING or value[key].to_utf8_buffer().size()>2048:return false
+	for key in ["lines","status"]:
+		if typeof(value.get(key))!=TYPE_ARRAY or value[key].size()>(2049 if key=="lines" else 2):return false
+		for line in value[key]:
+			if typeof(line)!=TYPE_STRING or line.to_utf8_buffer().size()>2048:return false
+	for key in ["mood_color","status_color"]:
+		if typeof(value.get(key))!=TYPE_INT:return false
+	if value.mood_color not in ([-1] if value.mood.is_empty() else [9,10,11,12,13,14,15]) or value.status_color not in ([-1] if value.status.is_empty() else [7,14]):return false
+	if value.speaker>=0:
+		if typeof(value.get("name_color"))!=TYPE_DICTIONARY or preload("res://scripts/native_name_color.gd").choose(value.name_color,0,0).is_empty():return false
+	elif value.has("name_color") or value.has("appearance") or not value.name.is_empty():return false
+	return not value.has("appearance") or typeof(value.appearance)==TYPE_DICTIONARY
 static func _valid_footer(value: Variant) -> bool:
 	if typeof(value)!=TYPE_DICTIONARY or value.size()!=6:return false
 	for key in ["merchant_value","fortress_value","profit","capacity"]:

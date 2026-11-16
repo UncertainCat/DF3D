@@ -8,6 +8,9 @@ func poll_controller(service,model,terminal: int) -> bool:
 	return check(model.phase==terminal,"Trade controller did not reach expected phase: "+str(model.phase))
 func compare_goods(model,state: Dictionary) -> void:
 	check(model.goods_ready(),"Controller goods are not ready")
+	for key in ["speaker","columns","name","mood","mood_color","status_color","lines","status"]:
+		var expected: Variant=int(state.header[key]) if key in ["speaker","columns","mood_color","status_color"] else state.header[key]
+		check(model.header.get(key)==expected,"Controller native header differs: "+key)
 	for key in state.footer:
 		var expected: Variant=int(state.footer[key]) if key.ends_with("_color") else state.footer[key]
 		check(model.footer.get(key)==expected,"Controller native footer differs: "+str([key,model.footer.get(key),expected]))
@@ -115,7 +118,7 @@ func draft_workflow(session: int,states: Array) -> void:
 			await draft_request(query,C.TradeSessionOutcome.Rejected)
 	# Valid transport shape, but nonexistent source item: no revision advance.
 	await draft_request({"action":C.ManagementAction.TradeDraftApply,"session":session,"expected_revision":revision,"side":0,"operation":C.TradeDraftOperation.Item,"item":2147483647},C.TradeSessionOutcome.Rejected)
-	await session_request({"action":C.ManagementAction.TradeSessionRead,"session":session,"expected_revision":revision},C.TradeSessionOutcome.Available)
+	await session_request({"action":C.ManagementAction.TradeSessionRead,"columns":102,"session":session,"expected_revision":revision},C.TradeSessionOutcome.Available)
 	for malformed in [{"action":C.ManagementAction.TradeDraftRead,"session":session,"expected_revision":revision,"side":0,"offset":0,"limit":65},{"action":C.ManagementAction.TradeDraftApply,"session":session,"expected_revision":revision,"side":0,"operation":C.TradeDraftOperation.Item,"item":992,"query":"mixed"},{"action":C.ManagementAction.TradeDraftApply,"session":session,"expected_revision":0,"side":0,"operation":C.TradeDraftOperation.MarkAll}]:
 		check(world.management_request("trade_draft",malformed)==0,"Malformed draft request reached transport")
 func run() -> void:
@@ -132,7 +135,7 @@ func run() -> void:
 	var expected: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/trade-session-wire-expected.json"))
 	var depot:=int(expected.depot_id)
 	var token:=await catalog_token(depot)
-	for intent in [{"action":C.ManagementAction.TradeSessionOpen,"depot_id":depot,"choice_token":0},{"action":C.ManagementAction.TradeSessionOpen,"depot_id":depot,"choice_token":1.5},{"action":C.ManagementAction.TradeSessionRead,"session":1,"expected_revision":0},{"action":C.ManagementAction.TradeSessionClose,"session":1,"extra":0}]:
+	for intent in [{"action":C.ManagementAction.TradeSessionOpen,"depot_id":depot,"choice_token":0},{"action":C.ManagementAction.TradeSessionOpen,"depot_id":depot,"choice_token":1.5},{"action":C.ManagementAction.TradeSessionRead,"columns":102,"session":1,"expected_revision":0},{"action":C.ManagementAction.TradeSessionClose,"session":1,"extra":0}]:
 		check(world.management_request("trade_session",intent)==0,"Malformed trade request reached transport")
 	await session_request({"action":C.ManagementAction.TradeSessionOpen,"depot_id":depot,"choice_token":token+999},C.TradeSessionOutcome.Rejected)
 	var sessions: Array=[]
@@ -143,10 +146,10 @@ func run() -> void:
 		check(not sessions.has(opened.session),"Session identity reused");sessions.append(opened.session)
 		var entry: Dictionary=opened.entry
 		check(entry.title==expected.title and entry.entity_id==expected.entity_id and entry.fortress_trader==expected.fortress_trader,"Native entry changed across transport")
-		var read: Dictionary={"action":C.ManagementAction.TradeSessionRead,"session":opened.session,"expected_revision":1}
+		var read: Dictionary={"action":C.ManagementAction.TradeSessionRead,"columns":102,"session":opened.session,"expected_revision":1}
 		await session_request(read,C.TradeSessionOutcome.Available)
 		await session_request({"action":C.ManagementAction.TradeSessionOpen,"depot_id":depot,"choice_token":token},C.TradeSessionOutcome.Rejected)
-		await session_request({"action":C.ManagementAction.TradeSessionRead,"session":opened.session,"expected_revision":2},C.TradeSessionOutcome.Rejected)
+		await session_request({"action":C.ManagementAction.TradeSessionRead,"columns":102,"session":opened.session,"expected_revision":2},C.TradeSessionOutcome.Rejected)
 		await session_request(read,C.TradeSessionOutcome.Available)
 		if iteration==0 and expected.has("draft"):await draft_workflow(opened.session,expected.draft)
 		if iteration==1:

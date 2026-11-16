@@ -66,6 +66,12 @@ local ok,err=xpcall(function()
      table.insert(intents,7,{side=1,action='expand_container',item=item.id})
      table.insert(intents,8,{side=1,action='expand_container',item=item.id});break
     end end
+    local header_output,header_code=dfhack.run_command_silent('df3d','trade-header-probe',tostring(trade.bld.id),'0',tostring(math.max(0,trade.talkline)),'102')
+    assert(header_code==0,header_output);local header=json.decode(header_output);assert(header.available)
+    header.available=nil;header.dialogue=nil;header.columns=102
+    if header.name_color then header.name_color={color=header.name_color,alternate=header.name_color,effect=header.name_effect}end;header.name_effect=nil
+    if header.appearance then header.appearance.tile_pages=header.appearance.pages;header.appearance.pages=nil end
+    expected.header=header
     expected.draft={};local applied={}
     for i=0,#intents do
      if i>0 then applied[#applied+1]=intents[i]end
@@ -73,7 +79,7 @@ local ok,err=xpcall(function()
      local facts=json.decode(output);assert(facts.available)
      local function caption(bytes)local parts={};for _,ch in ipairs(bytes)do parts[#parts+1]=string.char(ch)end;return dfhack.df2utf(table.concat(parts))end
       local t,c=facts.value_totals,facts.capacity
-      expected.draft[#expected.draft+1]={intent=i>0 and intents[i] or nil,display=facts.display,footer={merchant_value=caption(t.value_captions[1]),fortress_value=caption(t.value_captions[2]),profit=caption(t.profit_caption),profit_color=t.profit_color,capacity=caption(c.caption),capacity_color=c.color}}
+      expected.draft[#expected.draft+1]={intent=i>0 and intents[i] or nil,display=facts.display,header=header,footer={merchant_value=caption(t.value_captions[1]),fortress_value=caption(t.value_captions[2]),profit=caption(t.profit_caption),profit_color=t.profit_color,capacity=caption(c.caption),capacity_color=c.color}}
     end
    end
    local file=assert(io.open(out..'/trade-session-wire-expected.json','w'));file:write(json.encode(expected));file:close()

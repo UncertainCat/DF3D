@@ -9,12 +9,34 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Trade header reads preserve native lines and reject malformed summaries") {
+  for(int fault=0;fault<7;++fault){
+    flatbuffers::FlatBufferBuilder b;auto empty=b.CreateString("");auto caption=b.CreateString("Synthetic caption");
+    std::vector<flatbuffers::Offset<flatbuffers::String>> lines{caption},none;
+    auto footer=wire::CreateTradeFooter(b,caption,caption,caption,6,caption,7);
+    auto header=wire::CreateTradeHeader(b,fault==4?12:-1,fault==2?0:fault==3?513:102,empty,b.CreateVector(lines),empty,fault==5?10:-1,b.CreateVector(none),fault==6?7:-1);
+    auto result=wire::CreateTradeSessionState(b,wire::TradeSessionOutcome::Available,91,3,0,footer,fault==1?0:header);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);
+    state.add_action(wire::ManagementAction::TradeSessionRead);state.add_trade_session(result);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeState(value);REQUIRE(decoded.tradeSession);REQUIRE(decoded.tradeSession->header);CHECK(decoded.tradeSession->header->columns==102);CHECK(decoded.tradeSession->header->lines==std::vector<std::string>{"Synthetic caption"});}
+  }
+  for(uint16_t columns:{0,1,512,513}){
+    wm::ManagementRequest r;r.action=wm::ManagementAction::TradeSessionRead;r.tradeSession.session=91;r.tradeSession.expectedRevision=3;r.tradeSession.columns=columns;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(columns==0 || columns==513));
+  }
+}
+
 TEST_CASE("Trade session reads require bounded native footer captions") {
   for(int fault=0;fault<8;++fault){
     flatbuffers::FlatBufferBuilder b;auto text=b.CreateString("Native fixture caption");
     auto oversized=b.CreateString(std::string(2049,'x'));
     auto footer=wire::CreateTradeFooter(b,fault==1?0:fault==2?oversized:text,text,text,fault==3?7:6,text,fault==4?6:7);
-    auto result=wire::CreateTradeSessionState(b,fault==5?wire::TradeSessionOutcome::Rejected:wire::TradeSessionOutcome::Available,91,3,0,fault==6?0:footer);
+    auto empty=b.CreateString("");std::vector<flatbuffers::Offset<flatbuffers::String>> lines;auto header=wire::CreateTradeHeader(b,-1,102,empty,b.CreateVector(lines),empty,-1,b.CreateVector(lines),-1);
+    auto result=wire::CreateTradeSessionState(b,fault==5?wire::TradeSessionOutcome::Rejected:wire::TradeSessionOutcome::Available,91,3,0,fault==6?0:footer,header);
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);
     state.add_action(fault==7?wire::ManagementAction::TradeSessionClose:wire::ManagementAction::TradeSessionRead);state.add_trade_session(result);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
@@ -52,7 +74,7 @@ TEST_CASE("Trade session transport binds explicit open read and close intents") 
   for(auto action:{wm::ManagementAction::TradeSessionOpen,wm::ManagementAction::TradeSessionRead,wm::ManagementAction::TradeSessionClose})for(int fault=0;fault<4;++fault){
     wm::ManagementRequest r;r.action=action;
     if(action==wm::ManagementAction::TradeSessionOpen){r.tradeSession.depotId=54;r.tradeSession.choiceToken=token;if(fault==1)r.tradeSession.choiceToken=0;if(fault==2)r.tradeSession.session=1;if(fault==3)r.tradeSession.choiceToken=UINT64_MAX;}
-    else {r.tradeSession.session=token;if(action==wm::ManagementAction::TradeSessionRead)r.tradeSession.expectedRevision=1;if(fault==1)r.tradeSession.session=0;if(fault==2)r.tradeSession.depotId=54;if(fault==3)r.tradeSession.choiceToken=1;}
+    else {r.tradeSession.session=token;if(action==wm::ManagementAction::TradeSessionRead){r.tradeSession.expectedRevision=1;r.tradeSession.columns=102;}if(fault==1)r.tradeSession.session=0;if(fault==2)r.tradeSession.depotId=54;if(fault==3)r.tradeSession.choiceToken=1;}
     flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
     CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
     if(!fault)CHECK((action==wm::ManagementAction::TradeSessionOpen?value->trade_session()->choice_token():value->trade_session()->session())==token);

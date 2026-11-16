@@ -95216,6 +95216,53 @@
           "bridge/plugin/trade_owner_native.h": "e672eb2877dbea6130d0c8fbfc5b4ec6b35dc0061477edb5f4740fc4a1ec89b0",
           "tools/smoke/depot-trade-session-native.lua": "d5deb8006b9e6ec65ad3177a46194597915fb5d84d17db80032a952d80a0e3da"
         }
+      },
+      "depot_trade_header_transport_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-215023",
+        "owned_df_pid": 39256,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "protocol": 243,
+        "scope": "Actual bridge/model/Godot controller header and footer publication with both goods pages, eleven draft states and 87 receipts. This run has no merchant speaker: name-color/artwork wire behavior is not live-qualified. Existing four staged header renders remain pixel-exact after name-color dictionary adaptation. Partial quantities, exchange and integrated public Trade remain unfinished.",
+        "controller": {
+          "closes": [
+            {
+              "outcome": 3,
+              "revision": 0,
+              "session": 4
+            },
+            {
+              "outcome": 3,
+              "revision": 0,
+              "session": 5
+            }
+          ],
+          "goods_states": 11,
+          "initial_session": 4,
+          "late_open": {
+            "entry": {
+              "dialogue": 0,
+              "entity_id": 865,
+              "fortress": "Your fortress of RoderÃ²nul",
+              "fortress_trader": 988,
+              "has_speaker": false,
+              "merchant_trader": -1,
+              "place": "Dumatzas",
+              "speaker": "",
+              "title": "Merchants from Dumatzas",
+              "unloading": false
+            },
+            "outcome": 0,
+            "revision": 1,
+            "session": 5
+          }
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-215023/trade-session-wire-result.json": "2bac2eee02be9a91bbba3b86ffc4d3ac13d776742999ee3b9d9c51032aecd488",
+          "build/stockpile-storage-native-farm-discovery-20261115-215023/trade-session-wire-expected.json": "3f49f1ea539c607a0bf3cc3578480054eed4ab4d7fab83059beabdc891a3ba97",
+          "build/stockpile-storage-native-farm-discovery-20261115-215023/result.json": "adc178c310e03888100a0e12f75b5b15198310d81c5c6c971dfc4c3581ca3656",
+          "build/stockpile-storage-native-farm-discovery-20261115-215023/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
       }
     },
     "pending_construction_reference": {

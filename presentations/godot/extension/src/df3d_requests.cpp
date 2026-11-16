@@ -364,6 +364,10 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
     if(s.tradeSession){const auto& v=*s.tradeSession;Dictionary value;value["outcome"]=int(v.outcome);value["session"]=int64_t(v.session);value["revision"]=int64_t(v.revision);
         if(v.entry){const auto& e=*v.entry;Dictionary entry;entry["entity_id"]=e.entityId;entry["fortress_trader"]=e.fortressTrader;entry["merchant_trader"]=e.merchantTrader;entry["dialogue"]=e.dialogue;entry["unloading"]=e.unloading;entry["has_speaker"]=e.hasSpeaker;entry["title"]=String::utf8(e.title.c_str());entry["speaker"]=String::utf8(e.speaker.c_str());entry["fortress"]=String::utf8(e.fortress.c_str());entry["place"]=String::utf8(e.place.c_str());value["entry"]=entry;}
         if(v.footer){const auto& f=*v.footer;Dictionary footer;footer["merchant_value"]=String::utf8(f.merchantValue.c_str());footer["fortress_value"]=String::utf8(f.fortressValue.c_str());footer["profit"]=String::utf8(f.profit.c_str());footer["profit_color"]=f.profitColor;footer["capacity"]=String::utf8(f.capacity.c_str());footer["capacity_color"]=f.capacityColor;value["footer"]=footer;}
+        if(v.header){const auto& h=*v.header;Dictionary header;header["speaker"]=h.speaker;header["columns"]=h.columns;header["name"]=String::utf8(h.name.c_str());header["mood"]=String::utf8(h.mood.c_str());header["mood_color"]=h.moodColor;header["status_color"]=h.statusColor;Array lines,status;
+          for(const auto& line:h.lines)lines.push_back(String::utf8(line.c_str()));for(const auto& line:h.status)status.push_back(String::utf8(line.c_str()));header["lines"]=lines;header["status"]=status;
+          if(h.nameColor){const auto& c=*h.nameColor;Dictionary color;Array primary,alternate;for(auto v:c.color)primary.push_back(v);for(auto v:c.alternate)alternate.push_back(v);color["color"]=primary;color["alternate"]=alternate;color["effect"]=c.effect;header["name_color"]=color;}
+          if(h.appearance)header["appearance"]=management::itemRecipeDictionary(*h.appearance);value["header"]=header;}
         result["trade_session"]=value;if(v.outcome==wm::TradeSessionOutcome::Unknown)result["outcome"]="unknown";
     }
     if(s.depotGoods){const auto& v=*s.depotGoods;Dictionary value;Array categories,groups,items;
@@ -929,13 +933,13 @@ bool validateTradeSession(const Dictionary& data,String& error) {
     const auto integer=[](const Dictionary& d,const char* key,int64_t lo,int64_t hi){return d.has(key) && d[key].get_type()==Variant::INT && int64_t(d[key])>=lo && int64_t(d[key])<=hi;};
     const auto action=wm::ManagementAction(int64_t(data["action"]));
     if(action==wm::ManagementAction::TradeSessionOpen){if(data.size()!=3 || !integer(data,"depot_id",0,INT32_MAX) || !integer(data,"choice_token",1,INT64_MAX))return false;}
-    else if(!integer(data,"session",1,INT64_MAX) || (action==wm::ManagementAction::TradeSessionRead ? (data.size()!=3 || !integer(data,"expected_revision",1,INT64_MAX)):data.size()!=2))return false;
+    else if(!integer(data,"session",1,INT64_MAX) || (action==wm::ManagementAction::TradeSessionRead ? (data.size()!=4 || !integer(data,"expected_revision",1,INT64_MAX) || !integer(data,"columns",1,512)):data.size()!=2))return false;
     error=String();return true;
 }
 bool readTradeSession(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.tradeSession;
     if(request.action==wm::ManagementAction::TradeSessionOpen){q.depotId=int32_t(int64_t(data["depot_id"]));q.choiceToken=uint64_t(int64_t(data["choice_token"]));}
-    else {q.session=uint64_t(int64_t(data["session"]));if(request.action==wm::ManagementAction::TradeSessionRead)q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));}
+    else {q.session=uint64_t(int64_t(data["session"]));if(request.action==wm::ManagementAction::TradeSessionRead){q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.columns=uint16_t(int64_t(data["columns"]));}}
     return true;
 }
 bool readTradeCatalog(const Dictionary& data,wm::ManagementRequest& request,String&) {

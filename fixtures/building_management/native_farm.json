@@ -114271,6 +114271,25 @@
           "schema/mirror.fbs": "fc6ed5cbebf7a287c7a8787d6718db5fb9082bf02495cf2b957dc2b14560c022",
           "schema/cpp/management_util.h": "2f5f8aa615d664fa023123f53fa45ce2c58f2b7371f89149c2be6b6d2350dd1e"
         }
+      },
+      "cage_occupant_transport_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-125325",
+        "owned_df_pid": 47548,
+        "management_protocol": 251,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Connected ordered occupants match native diagnostic facts, item/unit artwork present. Picker adds unit6960 then parent removes it with own revision; stale reversal rejects. CHECKOCCUPANTS verified and restored by oracle. Existing native/owned parent removals still pass. Separate parent/picker state owners share lifetime/outcome machinery, headless checks clean. No rendered occupant/public workflow qualification. 30FPS GPU59C. Live client known separate-thread notice only.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-125325/cage-wire-result.json": "6df185da62f267b74cbcd09d32128f784c480f77a52b420cbd6831599246c8e6",
+          "build/stockpile-storage-native-farm-discovery-20261116-125325/cage-occupant-effects-native.json": "9c0e967ab22bfc81801a561a45eebff1d21fe9853bb7348f7cb105484e88a0c1",
+          "build/stockpile-storage-native-farm-discovery-20261116-125325/remaining-buildings-native.json": "e15ada577c0aed0f281ca4d1c6a9b3ea35df3c624fcbbaa784f87fc86834e5cc",
+          "build/stockpile-storage-native-farm-discovery-20261116-125325/result.json": "28d6696cee4437ee9242cf5f9a5e8e69eaea90d9491e144e8d2057d9d430dd05",
+          "build/stockpile-storage-native-farm-discovery-20261116-125325/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-125325/cage-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a",
+          "presentations/godot/project/tests/cage_wire_live.gd": "ac92366a622d549aab912dea05073b32b7795171067d851885475462f926b0d5",
+          "presentations/godot/project/scripts/cage_picker_state.gd": "a79c9869c0b4df76acd9b29d704d7977caa2f61c0a578466567dd2b39c9662a2",
+          "bridge/plugin/management.cpp": "f08d3d7589f07a7d6dd085a05a465f803f46ce5deee01a5f9448654c14c08bb6"
+        }
       }
     },
     "pending_construction_reference": {

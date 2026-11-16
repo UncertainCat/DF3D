@@ -3302,8 +3302,9 @@ those references. Unresolved units retain slots; non-animal item references stil
 suppress duplicate assigned-item rows. Captions use native1330c30 with an owned
 unit description context and the shared native item formatter. Status copy and
 colors come from the pinned renderer branch. No native list, scroll or selection
-storage is read. `cage-occupants-read` exposes the diagnostic; product transport
-and the occupant presentation remain pending.
+storage is read. `cage-occupants-read` exposes the diagnostic; protocol251 now
+connects this provider and its edits to production transport. The occupant
+presentation remains pending.
 
 Protected121722 (DF37056) compares contained pet5969 and assigned unit6960 against
 the native parent. Reads leave gps/main_interface byte-identical; ordered facts
@@ -3322,7 +3323,7 @@ its CAGE reference; it sets CHECKOCCUPANTS. Assignment uses the pinned cage/zone
 detach helpers and independently owned chain-job cleanup before adding the new
 membership. The picker callback is not reused. Once effects begin, failures return
 Unknown and cannot authorize replay. `cage-occupants-probe` is the paused diagnostic;
-the parent product transport remains pending.
+protocol251 routes parent edits to this provider with independent revision authority.
 
 Protected122728 (DF60488) matches native and owned removal for unit6960 and item5969,
 including cage flags/membership/jobs, unit flags/job/references and item flags/references.
@@ -3344,11 +3345,12 @@ Rows retain containment, assignment, resolution, native caption/status/color and
 optional semantic appearance. Justice status belongs to the parent page. Both
 families enforce64-row/224KiB pages and4096 total rows; rejected or unknown edits
 carry no snapshot authority. Both peers must upgrade together. Older recordings
-cannot fabricate occupant facts from picker candidates. This migration only
-establishes the contract; the product provider remains staged and rejects parent
-operations before entering the picker callback.
+cannot fabricate occupant facts from picker candidates. The connected provider
+pages the ordered semantic rows and shares the existing unit/critter appearance
+resolvers. It converts native captions to UTF-8 and bounds the complete text/art
+payload before publishing. Parent edits never enter the picker callback.
 
-Protected123948 (DF38004) verifies that staging boundary through protocol251 and
+Protected123948 (DF38004) verified the migration's initial staging boundary and
 retains the prior picker search/edits/stale restoration, room facts and native/owned
 parent removal comparisons. Source unchanged, owned DF closes unsaved at30FPS;
 GPU60C. Bridge and extension builds pass; the safe-thread engine contract check
@@ -3356,6 +3358,19 @@ is clean. The live client reports only the known separate-thread notice. Evidenc
 `completed_sheet_discovery_reference.cage_occupant_contract_reference`.
 The full core build first found an optional-access typo in the new test; the
 corrected incremental build and all19 root CTest checks pass.
+
+Protected125325 (DF47548) verifies the connected provider through the viewer wire:
+contained pet5969 matches diagnostic facts and carries one artwork layer; assigning
+unit6960 through the picker adds its native caption/status and unit artwork. Parent
+removal confirms the remaining pet row, sets CHECKOCCUPANTS and rejects the stale
+request before effects. The oracle restores the original flag after checking it;
+source unchanged, owned DF closes unsaved at30FPS, GPU59C. Existing native/owned
+removal comparisons still pass. The live client reports only the known separate-
+thread notice. Bridge build and core19 pass. The shared cage state machine uses
+separate instances for parent/picker authority; parent instances reject ordering
+controls, use operations2/3 and share retirement/unknown handling. Its headless
+checks are clean. This does not qualify rendered occupant rows or public navigation.
+Evidence: `completed_sheet_discovery_reference.cage_occupant_transport_reference`.
 
 ### Other completed-building families
 

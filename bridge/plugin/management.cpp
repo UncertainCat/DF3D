@@ -67,6 +67,7 @@
 #include "LuaTools.h"
 #include "management_data.h"
 #include "cage_native.h"
+#include "cage_occupants_native.h"
 #include "lua_fields.h"
 #include "management_util.h"
 #include "management_helpers.h"
@@ -454,6 +455,40 @@ bool fillCagePage(CageState& result,const df3d_production::CageSnapshot& snapsho
   result.total=uint32_t(order.rows.size());result.nextCursor=cursor+uint32_t(rows.size());
   if(result.nextCursor==result.total)result.nextCursor=0;
   result.rows=std::move(rows);return true;
+}
+m::FarmEditOutcome cageOutcome(df3d_production::CageOutcome outcome) {
+  using O=df3d_production::CageOutcome;
+  return outcome==O::Completed?m::FarmEditOutcome::Completed:outcome==O::Stale?m::FarmEditOutcome::Stale:
+    outcome==O::Unknown?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected;
+}
+bool fillCageOccupants(CageState& result,const df3d_production::CageOccupants& snapshot,uint32_t cursor) {
+  if(cursor>snapshot.rows.size() || (cursor && cursor==snapshot.rows.size()))return false;
+  std::vector<CageOccupantRow> rows;size_t bytes=0;
+  for(size_t i=cursor;i<snapshot.rows.size() && rows.size()<64;++i) {
+    const auto& source=snapshot.rows[i];CageOccupantRow row;
+    row.id=source.id;row.entity=m::AreaCandidateEntity(source.entity);row.contained=source.contained;
+    row.assigned=source.assigned;row.resolved=source.resolved;row.name=DF2UTF(source.name);
+    row.status=DF2UTF(source.status);row.statusColor=source.statusColor;
+    if(source.resolved) {
+      if(source.entity==1)row.appearance.collect(df::unit::find(source.id),true);
+      else {
+        df3d_appearance::Result icon;
+        if(!df3d_appearance::resolveCritterItemSelector(df::item::find(source.id),icon))return false;
+        for(const auto& layer:icon.layers)appendAppearanceLayer(row.appearance.pages,row.appearance.palettes,row.appearance.layers,layer);
+      }
+    }
+    size_t rowBytes=row.name.size()+row.status.size();
+    if(!row.appearance.layers.empty()) {
+      flatbuffers::FlatBufferBuilder buffer;buffer.Finish(row.appearance.build(buffer));
+      if(m::validateOwnerAppearance(*flatbuffers::GetRoot<m::SelectionAppearance>(buffer.GetBufferPointer()),rowBytes))return false;
+    }
+    if(rowBytes>224*1024-bytes){if(rows.empty())return false;break;}
+    bytes+=rowBytes;rows.push_back(std::move(row));
+  }
+  result.revision=snapshot.revision;result.removing=snapshot.removing;result.justiceRestraint=snapshot.justiceRestraint;
+  result.cursor=cursor;result.total=uint32_t(snapshot.rows.size());result.nextCursor=cursor+uint32_t(rows.size());
+  if(result.nextCursor==result.total)result.nextCursor=0;
+  result.occupants=std::move(rows);return true;
 }
 struct NativeAreaLink { int32_t id=-1; uint8_t kind=0,direction=0; std::string name; };
 struct NativeLocationNamePage {
@@ -4322,12 +4357,26 @@ void run(color_ostream& out) {
     result.query=q.query()?q.query()->str():std::string{};result.sort=intent.sort();result.descending=intent.descending();result.columns=intent.columns();
     const bool edit=(intent.operation()&1)!=0;
     result.outcome=edit?m::FarmEditOutcome::Rejected:m::FarmEditOutcome::None;
-    const auto clearSnapshot=[&]{result.revision=0;result.removing=false;result.cursor=0;result.nextCursor=0;result.total=0;result.rows.clear();};
+    const auto clearSnapshot=[&]{result.revision=0;result.removing=false;result.justiceRestraint=false;result.cursor=0;result.nextCursor=0;result.total=0;result.rows.clear();result.occupants.clear();};
     bool entered=false;
     try {
       const auto execute=[&] {
-      if(intent.operation()>=2)return;
       auto* building=df::building::find(q.building_id());
+      if(intent.operation()>=2) {
+        const auto before=df3d_production::observeCageOccupants(building);if(!before)return;
+        if(q.expected_revision() && q.expected_revision()!=before->revision) {
+          if(edit)result.outcome=m::FarmEditOutcome::Stale;return;
+        }
+        if(edit) {
+          const auto applied=df3d_production::setCageOccupantAssignment(building,before->revision,intent.candidate_id(),intent.entity()==m::AreaCandidateEntity::Item,intent.assigned());
+          entered=applied.effectsStarted;mutated=entered;result.outcome=cageOutcome(applied.outcome);
+          if(applied.outcome==df3d_production::CageOutcome::Completed && applied.receipt) {
+            if(fillCageOccupants(result,*applied.receipt,0))status=m::ManagementStatus::Ok;
+            else {clearSnapshot();result.outcome=entered?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected;}
+          }
+        } else if(fillCageOccupants(result,*before,q.cursor()))status=m::ManagementStatus::Ok;
+        return;
+      }
       const auto before=df3d_production::observeCage(building);
       const auto order=before?cageOrder(*before,q):std::nullopt;
       if(!before || !order){return;}
@@ -4337,10 +4386,8 @@ void run(color_ostream& out) {
       if(edit) {
         const auto applied=df3d_production::setCageAssignment(building,before->revision,intent.candidate_id(),intent.entity()==m::AreaCandidateEntity::Item,intent.assigned());
         entered=applied.effectsStarted;mutated=entered;
-        using O=df3d_production::CageOutcome;
-        result.outcome=applied.outcome==O::Completed?m::FarmEditOutcome::Completed:applied.outcome==O::Stale?m::FarmEditOutcome::Stale:
-          applied.outcome==O::Unknown?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected;
-        if(applied.outcome==O::Completed && applied.receipt) {
+        result.outcome=cageOutcome(applied.outcome);
+        if(applied.outcome==df3d_production::CageOutcome::Completed && applied.receipt) {
           const auto after=cageOrder(*applied.receipt,q);
           if(after && fillCagePage(result,*applied.receipt,*after,0))status=m::ManagementStatus::Ok;
           else {clearSnapshot();result.outcome=mutated?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected;}

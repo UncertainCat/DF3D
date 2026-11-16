@@ -19,15 +19,16 @@ func run() -> void:
 	var page: Dictionary=response.get("production",{}).get("cage",{})
 	if not check(response.get("status")==C.ManagementStatus.Ok and page.get("revision",0)>0,"Cage read failed: "+str(response)):quit(1);return
 	var initial:=page.duplicate(true)
-	# Protocol migration: the parent provider remains staged; neither operation
-	# may fall through to the picker's different assignment callback.
-	for operation in [2,3]:
-		var intent={"action":C.ManagementAction.ProductionInspect if operation==2 else C.ManagementAction.ProductionQueue,
-			"building_id":int(expected.id),"expected_revision":initial.revision,"cage_operation":operation}
-		if operation==3:intent.merge({"cage_candidate_id":5969,"cage_entity":2,"cage_assigned":false})
-		var rejected:=await request("production",intent)
-		var value: Dictionary=rejected.get("production",{}).get("cage",{})
-		check(rejected.get("status")==C.ManagementStatus.Rejected and value.get("revision",-1)==0 and value.get("occupants",[1]).is_empty(),"Staged parent intent gained picker authority")
+	var occupant_read={"action":C.ManagementAction.ProductionInspect,"building_id":int(expected.id),"cage_operation":2}
+	var occupant_response:=await request("production",occupant_read)
+	var occupants: Dictionary=occupant_response.get("production",{}).get("cage",{})
+	if not check(occupant_response.get("status")==C.ManagementStatus.Ok and occupants.get("revision",0)>0,"Occupant read failed: "+str(occupant_response)):quit(1);return
+	check(occupants.rows.is_empty() and occupants.occupants.size()==expected.occupants.rows.size(),"Occupant family/order missing")
+	for i in expected.occupants.rows.size():
+		var actual: Dictionary=occupants.occupants[i]
+		for key in expected.occupants.rows[i]:check(actual.get(key)==expected.occupants.rows[i][key],"Occupant fact differs: "+str(key))
+		check(actual.get("appearance",{}).get("layers",[]).size()>0,"Occupant artwork missing")
+	var initial_occupants: Dictionary=occupants.duplicate(true)
 	var parent_response:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":int(expected.id)})
 	var parent: Dictionary=parent_response.get("production",{}).get("building_header",{}).get("snapshot",{})
 	if not check(parent_response.get("status")==C.ManagementStatus.Ok and parent.get("type")==28 and parent.has("cage"),"Cage parent read failed: "+str(parent_response)):quit(1);return
@@ -58,8 +59,24 @@ func run() -> void:
 		check(rejected.get("status")==C.ManagementStatus.Rejected and rejected.get("production",{}).get("cage",{}).get("outcome")==C.FarmEditOutcome.Stale,"Stale cage edit was not refused")
 		page=receipt;receipts.append(receipt)
 	check(page.rows==initial.rows and page.revision==initial.revision,"Cage wire toggles did not restore original facts")
+	# Set up an assigned-only unit through the picker, then remove it through
+	# the parent's distinct inline effect. The Lua oracle restores CHECKOCCUPANTS.
+	var setup:=await request("production",{"action":C.ManagementAction.ProductionQueue,"cage_operation":1,
+		"building_id":int(expected.id),"cage_sort":2,"expected_revision":page.revision,"cage_candidate_id":6960,"cage_entity":1,"cage_assigned":true})
+	if not check(setup.get("status")==C.ManagementStatus.Ok,"Parent setup failed"):quit(1);return
+	occupant_response=await request("production",occupant_read);occupants=occupant_response.get("production",{}).get("cage",{})
+	if not check(occupants.get("occupants",[]).size()==initial_occupants.occupants.size()+1,"Assigned parent row absent"):quit(1);return
+	var assigned_occupants: Dictionary=occupants.duplicate(true)
+	var remove={"action":C.ManagementAction.ProductionQueue,"cage_operation":3,"building_id":int(expected.id),
+		"expected_revision":occupants.revision,"cage_candidate_id":6960,"cage_entity":1,"cage_assigned":false}
+	var applied:=await request("production",remove)
+	var removed: Dictionary=applied.get("production",{}).get("cage",{})
+	if not check(applied.get("status")==C.ManagementStatus.Ok and removed.get("outcome")==C.FarmEditOutcome.Completed,"Parent removal uncertain; no replay: "+str(applied)):quit(1);return
+	check(removed.occupants==initial_occupants.occupants,"Parent removal changed remaining occupants")
+	var stale:=await request("production",remove)
+	check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("production",{}).get("cage",{}).get("outcome")==C.FarmEditOutcome.Stale,"Parent stale request was not refused")
 	var file:=FileAccess.open(directory+"/cage-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"parent":parent,"initial":initial,"search":search,"receipts":receipts}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"parent":parent,"initial":initial,"search":search,"receipts":receipts,"occupants":initial_occupants,"assigned_occupants":assigned_occupants,"removed_occupants":removed}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)
 
 func glass_settings(id: int) -> void:

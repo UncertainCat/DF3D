@@ -96,6 +96,7 @@
 #include "trade_goods_native.h"
 #include "trade_projection_native.h"
 #include "trade_row_values_native.h"
+#include "trade_value_totals_native.h"
 #include "depot_goods_native.h"
 #include "depot_selection_native.h"
 #include "depot_goods_read.h"
@@ -5126,6 +5127,12 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             selections.push_back(draft);}}
         const auto projection=df3d_production::tradeProjection(df::building::find(values[0]),size_t(values[1]),filters,selections);
         Json::Value output;output["available"]=bool(projection);output["sides"]=Json::arrayValue;
+        if(projection){const auto totals=df3d_production::tradeValueTotals(df::building::find(values[0]),size_t(values[1]),*projection);
+          if(!totals)return CR_FAILURE;
+          auto& value=output["value_totals"];value["broker_appraisal"]=totals->brokerAppraisal;value["actual"]=value["estimated"]=Json::arrayValue;
+          for(auto number:totals->actual)value["actual"].append(number);for(auto number:totals->estimated)value["estimated"].append(number);
+          value["actual_profit"]=totals->actualProfit;value["estimated_profit"]=totals->estimatedProfit;value["profit_color"]=totals->profitColor;
+        }
         if(projection)for(const auto& side:*projection){Json::Value row;row["height"]=side.height;row["items"]=row["flags"]=row["amounts"]=row["groups"]=Json::arrayValue;
           for(auto id:side.items)row["items"].append(id);for(auto flag:side.flags)row["flags"].append(flag);for(auto amount:side.amounts)row["amounts"].append(amount);
           for(const auto& group:side.groups){Json::Value g;g["type"]=group.type;g["subtype"]=group.subtype;g["expanded"]=group.expanded;g["on"]=group.on;g["flags"]=group.flags;row["groups"].append(g);}output["sides"].append(row);}

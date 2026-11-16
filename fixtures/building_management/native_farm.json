@@ -64204,6 +64204,461 @@
           "tools/smoke/depot-trade-native.lua": "662581464988e421f5a23d7fa34adae9a06f54769d30b2e34527aa099ddb3dd4",
           "bridge/plugin/trade_row_values_native.h": "e39917e83baa245531f85594ceee5e890e89003b59bb29297acb8a0d2ed72d96"
         }
+      },
+      "depot_trade_value_totals_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-182523",
+        "owned_df_pid": 48076,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Twenty-five native states, two owned value total comparisons each. Native displayed values, profit/loss text and profit color; broker ratings0/5/15, both sides selected separately/together/cleared, bin plus ten children, and missing broker. Fixture assignment/skill and simulation prerequisites restore. Appraisal entry effects suppressed. Not partial quantity/overflow/agreement/weight/training/exchange/public viewer acceptance.",
+        "cases": [
+          {
+            "label": "speaker",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "search-0-iron",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "search-0-boulders",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "search-0-zznomatch",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "search-1-blocks",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "search-cleared",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "totals-merchant-0",
+            "totals": {
+              "actual": [
+                154,
+                0
+              ],
+              "actual_profit": -154,
+              "broker_appraisal": 1,
+              "estimated": [
+                160,
+                0
+              ],
+              "estimated_profit": -160,
+              "profit_color": 4
+            }
+          },
+          {
+            "label": "totals-both-0",
+            "totals": {
+              "actual": [
+                154,
+                1528
+              ],
+              "actual_profit": 1374,
+              "broker_appraisal": 1,
+              "estimated": [
+                160,
+                2030
+              ],
+              "estimated_profit": 1870,
+              "profit_color": 2
+            }
+          },
+          {
+            "label": "totals-fortress-0",
+            "totals": {
+              "actual": [
+                0,
+                1528
+              ],
+              "actual_profit": 1528,
+              "broker_appraisal": 1,
+              "estimated": [
+                0,
+                2030
+              ],
+              "estimated_profit": 2030,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "totals-cleared-0",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 1,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "totals-merchant-5",
+            "totals": {
+              "actual": [
+                154,
+                0
+              ],
+              "actual_profit": -154,
+              "broker_appraisal": 6,
+              "estimated": [
+                154,
+                0
+              ],
+              "estimated_profit": -154,
+              "profit_color": 4
+            }
+          },
+          {
+            "label": "totals-both-5",
+            "totals": {
+              "actual": [
+                154,
+                1528
+              ],
+              "actual_profit": 1374,
+              "broker_appraisal": 6,
+              "estimated": [
+                154,
+                1528
+              ],
+              "estimated_profit": 1374,
+              "profit_color": 2
+            }
+          },
+          {
+            "label": "totals-fortress-5",
+            "totals": {
+              "actual": [
+                0,
+                1528
+              ],
+              "actual_profit": 1528,
+              "broker_appraisal": 6,
+              "estimated": [
+                0,
+                1528
+              ],
+              "estimated_profit": 1528,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "totals-cleared-5",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 6,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "totals-merchant-15",
+            "totals": {
+              "actual": [
+                154,
+                0
+              ],
+              "actual_profit": -154,
+              "broker_appraisal": 16,
+              "estimated": [
+                154,
+                0
+              ],
+              "estimated_profit": -154,
+              "profit_color": 4
+            }
+          },
+          {
+            "label": "totals-both-15",
+            "totals": {
+              "actual": [
+                154,
+                1528
+              ],
+              "actual_profit": 1374,
+              "broker_appraisal": 16,
+              "estimated": [
+                154,
+                1528
+              ],
+              "estimated_profit": 1374,
+              "profit_color": 2
+            }
+          },
+          {
+            "label": "totals-fortress-15",
+            "totals": {
+              "actual": [
+                0,
+                1528
+              ],
+              "actual_profit": 1528,
+              "broker_appraisal": 16,
+              "estimated": [
+                0,
+                1528
+              ],
+              "estimated_profit": 1528,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "totals-cleared-15",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 16,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "totals-no-broker",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "bin-action-1",
+            "totals": {
+              "actual": [
+                0,
+                1518
+              ],
+              "actual_profit": 1518,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "bin-action-2",
+            "totals": {
+              "actual": [
+                0,
+                1368
+              ],
+              "actual_profit": 1368,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "bin-action-3",
+            "totals": {
+              "actual": [
+                0,
+                1368
+              ],
+              "actual_profit": 1368,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "bin-action-4",
+            "totals": {
+              "actual": [
+                0,
+                1368
+              ],
+              "actual_profit": 1368,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "bin-action-5",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          },
+          {
+            "label": "speaker-long-name",
+            "totals": {
+              "actual": [
+                0,
+                0
+              ],
+              "actual_profit": 0,
+              "broker_appraisal": 0,
+              "estimated": [
+                0,
+                0
+              ],
+              "estimated_profit": 0,
+              "profit_color": 6
+            }
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-native.json": "633d1f269504ca664313b0ac56dac08069cd06264ae132eb6b1c7e7277cdf3e4",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/result.json": "7d8307d739878ec5e448b33febc27e045de2da2456f560a1abfc6494cdaaf099",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/capture-inputs.json": "821312518bcaf6d083415d3f36f976344d62b5c14d7cb00fde18337d00720078",
+          "tools/smoke/depot-trade-native.lua": "110b5ff5240a8b5177bd807ff52da34431f1f876b69a37070e75567af4eb166a",
+          "bridge/plugin/trade_value_totals_native.h": "cac2293ad14ab9d412921f16c8769fc86aa4be5d4b5e374b00430f8d43893bbb",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-both-0.png": "573304e1a7bff07b79329c0a07f1508e3435094b1243848a876862711396aa77",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-both-15.png": "f5efc48332ba8a10c672c6a06eff776440ef7459467051404cc74c84a0d626e0",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-both-5.png": "f5efc48332ba8a10c672c6a06eff776440ef7459467051404cc74c84a0d626e0",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-cleared-0.png": "4ef4dff1dee11ab1bf60810d4a12e515b02324b5a68f1fdb73898781b23703de",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-cleared-15.png": "aca35fa3246cf3b2188f2f9a876db19e6813bed4df5220602b93fd28f07aa2a2",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-cleared-5.png": "aca35fa3246cf3b2188f2f9a876db19e6813bed4df5220602b93fd28f07aa2a2",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-fortress-0.png": "13a1e7c626e0c718400a8b651292278e158c7f61dfad969c036599b8fb4bae1a",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-fortress-15.png": "009ce04f1596d20e665be0f823961c042d550af38126890cc4afb9e251418d3f",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-fortress-5.png": "009ce04f1596d20e665be0f823961c042d550af38126890cc4afb9e251418d3f",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-merchant-0.png": "860e4bb3c87872d87223fb0ea4995efef32b3929bc4e365527806b63aa1d57cf",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-merchant-15.png": "20837f9ffe63da2ca490d28357b5f9548beb9f6732a8b7cc37878ecc3e79eb48",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-merchant-5.png": "20837f9ffe63da2ca490d28357b5f9548beb9f6732a8b7cc37878ecc3e79eb48",
+          "build/stockpile-storage-native-farm-discovery-20261115-182523/depot-trade-totals-no-broker.png": "4ef4dff1dee11ab1bf60810d4a12e515b02324b5a68f1fdb73898781b23703de"
+        }
       }
     },
     "pending_construction_reference": {

@@ -12,6 +12,7 @@ local position={x=unit.pos.x,y=unit.pos.y,z=unit.pos.z};local unit_flags=unit.fl
 local job=df.job:new();job.job_type=df.job_type.TradeAtDepot
 local ref=df.general_ref_unit_workerst:new();ref.unit_id=unit.id;job.general_refs:insert('#',ref)
 local restore_speaker
+local restore_broker
 local restore_item
 local restore_sources
 local source_probe=os.getenv('DF3D_DEPOT_TRADE_SOURCES')=='1'
@@ -110,6 +111,15 @@ local function record(label)
     end
     assert(json.encode(ids())==before and trade.handle_appraisal==appraisal and trade.buildlists==lists and #added[1].goods==0)
     row.projection_provider=facts
+    if os.getenv('DF3D_DEPOT_TRADE_TOTALS')=='1' and trade.havetalker==1 and trade.stillunloading==0 then
+     local totals=assert(facts.value_totals);local values={}
+     for value in row.lines[58]:gmatch('Value: (%-?%d+)')do values[#values+1]=tonumber(value)end
+     assert(#values==2 and values[1]==totals.estimated[1] and values[2]==totals.estimated[2],'Native footer values differ: '..row.lines[58])
+     local label=totals.estimated_profit<0 and 'Trader Loss: ' or 'Trader Profit: '
+     assert(row.lines[59]:find(label..tostring(math.abs(totals.estimated_profit)),1,true),'Native footer profit differs: '..row.lines[59])
+     assert(dfhack.screen.readTile(6,58).fg==totals.profit_color,'Native footer profit color differs')
+     row.value_totals=totals
+    end
     row.filters={trade.item_filter[0],trade.item_filter[1]}
     row.selection_intents=json.decode(json.encode(selection_intents))
    end
@@ -240,6 +250,29 @@ local ok,err=xpcall(function()
      click(side==0 and 100 or 570,166)
     end
     record('search-cleared')
+    if os.getenv('DF3D_DEPOT_TRADE_TOTALS')=='1' then
+     local assignments=df.global.plotinfo.main.fortress_entity.assignments_by_type[df.entity_position_responsibility.TRADE]
+     assert(#assignments==0 and unit.hist_figure_id>=0)
+     local skill;local created=false;local skills=unit.status.current_soul.skills
+     for _,s in ipairs(skills)do if s.id==df.job_skill.APPRAISAL then skill=s;break end end
+     if not skill then skill=df.unit_skill:new();skill.id=df.job_skill.APPRAISAL;require('utils').insert_sorted(skills,skill,'id');created=true end
+     local rating,rusty=skill.rating,skill.rusty
+     local assignment=df.entity_position_assignment:new();assignment.histfig=unit.hist_figure_id;assignments:insert('#',assignment)
+     restore_broker=function()
+      assignments:erase(#assignments-1);assignment:delete();skill.rating=rating;skill.rusty=rusty
+      if created then for i,s in ipairs(skills)do if s==skill then skills:erase(i);break end end;skill:delete()end
+      restore_broker=nil
+     end
+     for _,level in ipairs{0,5,15}do
+      skill.rating=level;skill.rusty=0
+      selection_intents={{side=0,action='mark_all'}};click(310,694);record('totals-merchant-'..level)
+      selection_intents[#selection_intents+1]={side=1,action='mark_all'};click(780,694);record('totals-both-'..level)
+      selection_intents[#selection_intents+1]={side=0,action='unmark_all'};click(440,694);record('totals-fortress-'..level)
+      selection_intents[#selection_intents+1]={side=1,action='unmark_all'};click(900,694);record('totals-cleared-'..level)
+      selection_intents={}
+     end
+     restore_broker();record('totals-no-broker')
+    end
     if result.bin then
      local index;for i,item in ipairs(trade.good[1])do if item.id==result.bin.id then index=i;break end end
      assert(index and trade.goodflag[1][index+1].contained)
@@ -320,6 +353,7 @@ if trade.open then gui.simulateInput(view,'LEAVESCREEN')end
 if restore_item then restore_item()end
 if restore_sources then restore_sources()end
 if restore_speaker then restore_speaker()end
+if restore_broker then restore_broker()end
 if added_job then b.jobs:erase(#b.jobs-1)end
 unit.pos.x=position.x;unit.pos.y=position.y;unit.pos.z=position.z
 job.general_refs:erase(0);ref:delete();job:delete()

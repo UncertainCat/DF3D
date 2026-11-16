@@ -404,6 +404,35 @@ transaction totals, appraisal training, exchange and public transport/viewer
 integration remain unfinished; do not derive transaction totals by summing
 formatted approximations.
 
+`trade_value_totals_native.h` projects the value-only footer from the owned
+selection. Native38886a..38896f and389076..38916f call c66020 on each selected
+row (bin contents excluded from the parent), then77f740 with broker Appraisal
+minus1 before summing. This differs from row-caption knowledge: the present
+trader controls footer visibility, but does not replace the broker estimate
+input. The full estimator and its jump table are pinned. The provider preserves
+native32-bit accumulation and3891b4..3894fa profit/loss color decisions without
+reading native menu state. It rejects nonzero amount drafts; no temporary
+simulation stack-size changes are introduced. Carrying weight/capacity,
+negotiation eligibility, labels/number formatting and public integration are
+separate unfinished contracts. The renderer's weight branch contains absolute
+native-menu accesses, so an owned context does not make that renderer callable.
+
+Protected182523 on2026-11-15 verifies both displayed value totals, signed
+profit/loss text and profit color on25 native states, twice per state. A temporary
+broker assignment and Appraisal ratings0/5/15 exercise merchant-only, both-side,
+fortress-only and cleared selections, with a populated bin and ten children.
+At rating0 the native estimates are160/2030 with profit1870; rating5/15 yields
+154/1528 and profit1374. Unassigned-broker states preserve native zero estimates
+even when the present trader permits footer display. Group/bin projection checks
+also pass. The native both-side footer PNG was inspected as a reference, not
+viewer pixel acceptance. Broker assignment/skill, bin/children and all fixture
+prerequisites restore; frame stays unchanged and owned DF48076 closes unsaved/
+source-preserved at30FPS, sampled GPU49C. Bridge and all19 core checks pass.
+Evidence: `completed_sheet_discovery_reference.depot_trade_value_totals_reference`.
+This does not qualify partial quantities, overflow cases, pricing agreements,
+carrying weight/capacity, appraisal training, negotiation/exchange or the public
+viewer. Appraisal entry effects remain suppressed in this diagnostic.
+
 ## Depot goods value transport migration
 
 Management protocol235 adds required appraisal knowledge to depot goods replies

@@ -378,6 +378,32 @@ Appraisal remains suppressed in this oracle. Nested/empty bins, merchant-side
 containers, subtype groups, quantity UI availability, prices/totals, appraisal
 effects, exchange and public viewer integration remain unfinished.
 
+`trade_row_values_native.h` supplies bounded (at most64) projected-row pages.
+Native386df3..386f64 and387d6c..387ee1 establish the call contract: the physically
+present trader's effective Appraisal73 overrides the broker fallback; displayed
+row value calls c66020(item,caravan,civilization,false,true), then77f920 for native
+approximation/currency formatting. The last argument excludes bin contents from
+the parent's value. Weight uses existing native14d8e0. Skill/weight calls may
+refresh semantic caches, as in existing item/Nobles providers; this does not
+perform appraisal training/history or use native menu/graphics storage.
+
+Protected182040 on2026-11-15 returns20 identified rows (five merchant and fifteen
+fortress, including a bin and ten children). Value/weight captions match native
+text cells on all15 visible rows. The text-cell comparison uses the existing
+control-character normalization, so this is not currency-glyph pixel acceptance.
+The current trader has effective Appraisal0 (knowledge1). Native raw values
+include bin18 separately from child steel-bar150; the visible approximations are
+~20 and~200. Numeric values themselves are native-provider output, not an
+independent exact-value oracle. Prior projection/bin states also pass. Fixture
+restores and owned DF11132 closes unsaved/source-preserved with frame unchanged,
+30FPS and sampled GPU49C. Bridge and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_row_values_reference`.
+The diagnostic still suppresses appraisal entry effects. Different appraisal
+levels, caravan pricing agreements, offscreen caption rendering, paging edges,
+transaction totals, appraisal training, exchange and public transport/viewer
+integration remain unfinished; do not derive transaction totals by summing
+formatted approximations.
+
 ## Depot goods value transport migration
 
 Management protocol235 adds required appraisal knowledge to depot goods replies

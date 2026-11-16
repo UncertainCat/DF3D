@@ -95,6 +95,7 @@
 #include "trade_entry_native.h"
 #include "trade_goods_native.h"
 #include "trade_projection_native.h"
+#include "trade_row_values_native.h"
 #include "depot_goods_native.h"
 #include "depot_selection_native.h"
 #include "depot_goods_read.h"
@@ -5092,6 +5093,15 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         output["available"]=Json::arrayValue;
         for(const auto& row:*available)output["available"].append(row.id);
         for(const auto& row:*rows){Json::Value value;value["id"]=row.id;value["distance"]=row.distance;output["rows"].append(value);}
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
+      if(parameters[0]=="trade-row-values-probe") {
+        if(parameters.size()!=6)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        int32_t values[5]={};for(size_t i=1;i<6;++i){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<0)return CR_WRONG_USAGE;}
+        const auto rows=df3d_production::tradeRowValues(df::building::find(values[0]),size_t(values[1]),values[2],size_t(values[3]),size_t(values[4]));
+        Json::Value output;output["available"]=bool(rows);output["rows"]=Json::arrayValue;
+        if(rows)for(const auto& row:*rows){Json::Value value;value["id"]=row.id;value["value"]=row.value;value["appraisal"]=row.appraisal;value["value_caption"]=DF2UTF(row.valueCaption);value["weight_caption"]=DF2UTF(row.weightCaption);output["rows"].append(value);}
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="trade-projection-probe") {

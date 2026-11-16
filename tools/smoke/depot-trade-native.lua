@@ -52,6 +52,38 @@ local function record(label)
   end
  end
  result.cases[#result.cases+1]=row
+ if label=='speaker' and os.getenv('DF3D_DEPOT_TRADE_ROW_VALUES')=='1' then
+  row.value_rows={};row.visible_value_rows=0
+  for side=0,1 do
+   local output,code=dfhack.run_command_silent('df3d','trade-row-values-probe',tostring(b.id),'0',tostring(side),'0','64');assert(code==0,output)
+   local facts=json.decode(output);assert(facts.available and #facts.rows==#trade.good[side],output)
+   local values={};for i,value in ipairs(facts.rows)do assert(value.id==trade.good[side][i-1].id);values[value.id]=value end
+   local cursor=16
+   for group,kind in ipairs(trade.current_type_a_type[side])do if trade.current_type_a_on[side][group]then
+    cursor=cursor+3
+    if trade.current_type_a_expanded[side][group]then
+     local children=false
+     for i,item in ipairs(trade.good[side])do
+      local flags=trade.goodflag[side][i];local visible
+      if flags.contained then visible=children
+      else visible=item:getType()==kind and item:getSubtype()==trade.current_type_a_subtype[side][group];children=visible and not flags.container_collapsed end
+      if visible then
+       if cursor>=16 and cursor+1<=54 then
+        local function cell_text(text)return dfhack.df2utf(dfhack.utf2df(text):gsub('[%z\1-\31]',' ')):gsub('%s+$','')end
+        local value=assert(values[item.id]);local caption='Value: '..cell_text(value.value_caption);local weight='Weight: '..cell_text(value.weight_caption)
+        assert(row.lines[cursor+1]:find(caption,1,true),'Native row value differs: '..item.id..' '..caption..' line '..row.lines[cursor+1])
+        assert(row.lines[cursor+2]:find(weight,1,true),'Native row weight differs: '..item.id..' '..weight..' line '..row.lines[cursor+2])
+        row.visible_value_rows=row.visible_value_rows+1
+       end
+       cursor=cursor+3
+      end
+     end
+    end
+   end end
+   row.value_rows[side+1]=facts.rows
+  end
+  assert(row.visible_value_rows>=8 and #added[1].goods==0)
+ end
  if source_probe and trade.open and not trade.choosing_merchant then
   local function ids()local sides={{},{}};for side=0,1 do for _,item in ipairs(trade.good[side])do table.insert(sides[side+1],item.id)end end;return sides end
   local expected=ids();local before=json.encode(expected);local appraisal=trade.handle_appraisal;local lists=trade.buildlists

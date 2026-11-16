@@ -64081,6 +64081,129 @@
           "build/stockpile-storage-native-farm-discovery-20261115-181638/depot-trade-bin-action-4.png": "ead6724b66cb50e2fc4eb090a42c795f4106b7464ceaf1d43e14f10b2648e8b4",
           "build/stockpile-storage-native-farm-discovery-20261115-181638/depot-trade-bin-action-5.png": "4ef4dff1dee11ab1bf60810d4a12e515b02324b5a68f1fdb73898781b23703de"
         }
+      },
+      "depot_trade_row_values_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-182040",
+        "owned_df_pid": 11132,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Twenty identified row values; fifteen visible value/weight captions compared to native text cells with existing control-character normalization. Current trader Appraisal0. Bin own value excludes contents, child values separate. Numeric values are provider output, not an independent exact-value oracle. Appraisal effects suppressed. No glyph pixel, other skill/agreement, offscreen/page edge, totals, training, exchange or public viewer acceptance.",
+        "visible_row_count": 15,
+        "rows": [
+          [
+            {
+              "id": 992,
+              "native_value": 3,
+              "appraisal": 1
+            },
+            {
+              "id": 991,
+              "native_value": 3,
+              "appraisal": 1
+            },
+            {
+              "id": 296,
+              "native_value": 100,
+              "appraisal": 1
+            },
+            {
+              "id": 408,
+              "native_value": 24,
+              "appraisal": 1
+            },
+            {
+              "id": 407,
+              "native_value": 24,
+              "appraisal": 1
+            }
+          ],
+          [
+            {
+              "id": 1180,
+              "native_value": 10,
+              "appraisal": 1
+            },
+            {
+              "id": 1494,
+              "native_value": 0,
+              "appraisal": 1
+            },
+            {
+              "id": 3148,
+              "native_value": 18,
+              "appraisal": 1
+            },
+            {
+              "id": 28694,
+              "native_value": 150,
+              "appraisal": 1
+            },
+            {
+              "id": 28650,
+              "native_value": 150,
+              "appraisal": 1
+            },
+            {
+              "id": 27311,
+              "native_value": 150,
+              "appraisal": 1
+            },
+            {
+              "id": 27274,
+              "native_value": 150,
+              "appraisal": 1
+            },
+            {
+              "id": 25085,
+              "native_value": 150,
+              "appraisal": 1
+            },
+            {
+              "id": 25161,
+              "native_value": 150,
+              "appraisal": 1
+            },
+            {
+              "id": 25157,
+              "native_value": 150,
+              "appraisal": 1
+            },
+            {
+              "id": 25156,
+              "native_value": 150,
+              "appraisal": 1
+            },
+            {
+              "id": 25113,
+              "native_value": 150,
+              "appraisal": 1
+            },
+            {
+              "id": 25112,
+              "native_value": 150,
+              "appraisal": 1
+            },
+            {
+              "id": 1736,
+              "native_value": 0,
+              "appraisal": 1
+            },
+            {
+              "id": 1735,
+              "native_value": 0,
+              "appraisal": 1
+            }
+          ]
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-182040/depot-trade-native.json": "69e94ef9dd8f36c9a8ec5a66490b4da7b01a9bc797e8d5d8b8f3007155bcac2e",
+          "build/stockpile-storage-native-farm-discovery-20261115-182040/result.json": "469d8aab72bba0345abbb65911e7f571e32628cb2850c4d406b27219020287e3",
+          "build/stockpile-storage-native-farm-discovery-20261115-182040/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-182040/capture-inputs.json": "bf946b5af197a2438dfccccda231612b81fadabe72e85a7aeed471ac59bd0c88",
+          "build/stockpile-storage-native-farm-discovery-20261115-182040/depot-trade-speaker.png": "4ef4dff1dee11ab1bf60810d4a12e515b02324b5a68f1fdb73898781b23703de",
+          "tools/smoke/depot-trade-native.lua": "662581464988e421f5a23d7fa34adae9a06f54769d30b2e34527aa099ddb3dd4",
+          "bridge/plugin/trade_row_values_native.h": "e39917e83baa245531f85594ceee5e890e89003b59bb29297acb8a0d2ed72d96"
+        }
       }
     },
     "pending_construction_reference": {

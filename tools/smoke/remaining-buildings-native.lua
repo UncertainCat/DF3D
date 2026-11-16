@@ -38,6 +38,10 @@ for _,kind in ipairs(kinds)do
    assert(picker.context==df.unit_selector_context_type.CAGE_ASSIGNMENT and sheet.active_id==b.id,'Cage picker or parent selection did not open')
    capture('cage-assignment-open')
    result.cage_picker={context=picker.context,building_id=b.id,legacy_selector_building_id=picker.bld_id,before=before}
+   if os.getenv('DF3D_CAGE_CANDIDATES')=='1'then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','cage-candidates-native.lua')
+    result.cage_picker.candidates=assert(loadfile(source))(view,b)
+   end
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());capture('cage-assignment-closed')
    result.cage_picker.after={units=ids(b.assigned_units),items=ids(b.assigned_items),flags=b.cage_flags.whole,jobs=#b.jobs}
    assert(json.encode(before)==json.encode(result.cage_picker.after),'Opening/cancelling cage assignment changed simulation')

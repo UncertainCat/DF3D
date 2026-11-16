@@ -3113,11 +3113,42 @@ Escape, so neither field is sufficient to determine open state. Earlier094602
 and095708 probes failed an incorrect bld_id assertion despite opening the picker;
 these failures are not native/product bugs.
 
-The builder3a5940 retains assigned units/items, then calls candidate predicates
-576df0 for units and576f50 for critter race/caste before appending new entries.
-These are audit leads, not yet accepted runtime entry points. The widget builder
-itself must not become a runtime dependency. Candidate ownership, assignment
-callbacks/effects, main-scene presentation and public Cage controls remain open.
+`cage_native.h` owns candidate results while invoking native eligibility576df0
+for units and576f50 for critter race/caste. Existing assignments precede fresh
+admissions even when no longer eligible; missing IDs are skipped. Fresh units
+exclude inactive/trade-locked entries; fresh critters exclude trader items and
+pass their material virtual getters to DF's predicate. The pinned widget producer
+3a5940 establishes this iteration contract but is neither called nor read.
+Outputs contain copied IDs, entity kinds and assignment bits, bounded at4096.
+
+The native assignment callback3cdd20 receives an owned cage-pointer context and
+16-byte unit/item entry. It supplies cage/zone membership and reference effects.
+For units, shared `nativeDetachAnimalRestraints` first performs the already-used
+zone semantic cage/chain cleanup, removing holder relationships before native
+chain-job destruction. The callback then finds no assigned chain, avoiding its
+menu-dependent job-detach branch. This extraction preserves the zone statements
+and ordering. Effects can partially complete; future request owners must validate
+current epoch/revision and treat post-entry failure as unknown without replay.
+Diagnostic `cage-assign-probe` requires a paused, loaded, non-saving session;
+there is no public transport or viewer action yet.
+
+Protected100524 on2026-11-16 first qualifies the read provider. Native100903
+(DF41556) and owned101004 (DF52068) then match all seven raw candidate IDs/order
+and assignment bits, with native main-interface and GPS bytes unchanged by reads.
+Actual native row clicks and the owned callback each select/remove unit6960 and
+remove/reassign critter5969. All six before/after snapshots match exactly for
+cage/zone/chain membership, references, flags and current job. The ordinary unit
+has no initial zone/chain assignment; this does not qualify those transfer paths,
+aquarium eligibility, sorting/filtering, transport or a DF3D picker. Native and
+owned toggles restore the fixture's original state. Both protected lanes preserve
+the source manifest and close unsaved at30FPS; sampled GPU59–61C. The bridge
+build/install and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.cage_semantic_reference`.
+
+Next is the revisioned semantic request/reply owner and the complete cage picker,
+including native sorting/text/artwork, selection effects and public map entry.
+Shared animal presentation components can be reused only where their semantics
+match; a zone ID must not stand in for cage authority.
 
 ### Other completed-building families
 

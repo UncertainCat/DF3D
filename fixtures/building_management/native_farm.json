@@ -113346,6 +113346,198 @@
           "build/stockpile-storage-native-farm-discovery-20261116-095820/cage-assignment-closed.png": "3fd15ba29b5b57fcf03cf83a610962c73f4a1402820dc63782af62b8346aac51",
           "tools/smoke/remaining-buildings-native.lua": "401309abb537bc96babb4c9523fbff76064f0abcbd3850380afa5cce161d7aae"
         }
+      },
+      "cage_semantic_reference": {
+        "native_lane": "build/stockpile-storage-native-farm-discovery-20261116-100903",
+        "owned_lane": "build/stockpile-storage-native-farm-discovery-20261116-101004",
+        "owned_df_pids": [
+          41556,
+          52068
+        ],
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Seven raw native candidate rows/order/assignment bits match; candidate reads preserve native main-interface and gps bytes. Unit6960 select/remove and critter5969 remove/select match all six snapshots including cage/zone/chain assignments, refs, flags and current job. No initial chain/zone assignment transfer, aquarium, transport, sorting/filtering, uncertainty or viewer acceptance.",
+        "observations": {
+          "effects": {
+            "item_assigned": {
+              "cages": [
+                261
+              ],
+              "chains": [],
+              "flags": 16392,
+              "id": 5969,
+              "kind": 1,
+              "refs": [
+                {
+                  "kind": "CONTAINED_IN_ITEM"
+                },
+                {
+                  "building_id": 261,
+                  "kind": "BUILDING_CAGED"
+                }
+              ],
+              "zones": []
+            },
+            "item_before": {
+              "cages": [
+                261
+              ],
+              "chains": [],
+              "flags": 16392,
+              "id": 5969,
+              "kind": 1,
+              "refs": [
+                {
+                  "kind": "CONTAINED_IN_ITEM"
+                },
+                {
+                  "building_id": 261,
+                  "kind": "BUILDING_CAGED"
+                }
+              ],
+              "zones": []
+            },
+            "item_removed": {
+              "cages": [],
+              "chains": [],
+              "flags": 16392,
+              "id": 5969,
+              "kind": 1,
+              "refs": [
+                {
+                  "kind": "CONTAINED_IN_ITEM"
+                }
+              ],
+              "zones": []
+            },
+            "unit_assigned": {
+              "cages": [
+                261
+              ],
+              "chains": [],
+              "flags1": 109051904,
+              "flags2": 301989936,
+              "id": 6960,
+              "job": -1,
+              "kind": 0,
+              "refs": [
+                {
+                  "kind": "CONTAINED_IN_ITEM"
+                }
+              ],
+              "zones": []
+            },
+            "unit_before": {
+              "cages": [],
+              "chains": [],
+              "flags1": 109051904,
+              "flags2": 301989936,
+              "id": 6960,
+              "job": -1,
+              "kind": 0,
+              "refs": [
+                {
+                  "kind": "CONTAINED_IN_ITEM"
+                }
+              ],
+              "zones": []
+            },
+            "unit_removed": {
+              "cages": [],
+              "chains": [],
+              "flags1": 109051904,
+              "flags2": 301989936,
+              "id": 6960,
+              "job": -1,
+              "kind": 0,
+              "refs": [
+                {
+                  "kind": "CONTAINED_IN_ITEM"
+                }
+              ],
+              "zones": []
+            }
+          },
+          "flags": 0,
+          "native": [
+            {
+              "id": 5969,
+              "kind": 1
+            },
+            {
+              "id": 6960,
+              "kind": 0
+            },
+            {
+              "id": 6961,
+              "kind": 0
+            },
+            {
+              "id": 7122,
+              "kind": 0
+            },
+            {
+              "id": 7264,
+              "kind": 0
+            },
+            {
+              "id": 7277,
+              "kind": 0
+            },
+            {
+              "id": 7346,
+              "kind": 0
+            }
+          ],
+          "owned": [
+            {
+              "assigned": true,
+              "id": 5969,
+              "kind": 1
+            },
+            {
+              "assigned": false,
+              "id": 6960,
+              "kind": 0
+            },
+            {
+              "assigned": false,
+              "id": 6961,
+              "kind": 0
+            },
+            {
+              "assigned": false,
+              "id": 7122,
+              "kind": 0
+            },
+            {
+              "assigned": false,
+              "id": 7264,
+              "kind": 0
+            },
+            {
+              "assigned": false,
+              "id": 7277,
+              "kind": 0
+            },
+            {
+              "assigned": false,
+              "id": 7346,
+              "kind": 0
+            }
+          ],
+          "ui_unchanged": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-100903/remaining-buildings-native.json": "0a0650cd5203782ebd8708cf59463ee1130acc0091c2a55a7ca59fa275fe08b9",
+          "build/stockpile-storage-native-farm-discovery-20261116-100903/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-101004/remaining-buildings-native.json": "0a0650cd5203782ebd8708cf59463ee1130acc0091c2a55a7ca59fa275fe08b9",
+          "build/stockpile-storage-native-farm-discovery-20261116-101004/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/cage_native.h": "de7f9058a3ee4d71dcd64073b0dfdd656351597b9248a4c143f8faa6fd4a404e",
+          "bridge/plugin/zone_native.cpp": "03417f1ab077e04d4909674145c104bf045f2cc9f488c4a8ea164bf80f95bf82",
+          "tools/smoke/cage-candidates-native.lua": "71874dd20280e953ec82dbc36d5905bb5904b4c1c5ea348386f0a13b2364c509",
+          "tools/smoke/cage-assignment-native.lua": "f1bb6307bd38ea913759b3250c2eeed6cb4919104ac240db2e463e157067680d"
+        }
       }
     },
     "pending_construction_reference": {

@@ -141,6 +141,10 @@ std::optional<std::string> nativeZoneAnimalItemText(df::item& item);
 std::optional<std::array<uint8_t,3>> nativeZoneAnimalItemColor(df::item& item);
 bool nativeZoneItemEligible(const df::building_civzonest& zone,const df::item& item);
 bool nativeZoneAssignItem(df::building_civzonest& zone,df::item& item,bool assign);
+// Shared semantic cage/chain cleanup. Native job deletion receives no building
+// holder references, avoiding its menu-dependent detach branch. Effects begin
+// inside this call; callers must not retry an uncertain outcome.
+bool nativeDetachAnimalRestraints(df::unit& unit);
 bool nativeZoneAssignUnit(df::building_civzonest& zone,df::unit& unit,bool assign);
 bool nativeZoneCreateReady();
 bool nativeZoneMultiReady();

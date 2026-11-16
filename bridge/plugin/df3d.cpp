@@ -91,6 +91,7 @@
 #include "funerary_native.h"
 #include "machinery_native.h"
 #include "well_native.h"
+#include "cage_native.h"
 #include "depot_native.h"
 #include "trade_entry_native.h"
 #include "trade_goods_native.h"
@@ -5645,6 +5646,38 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         const auto ids=df3d_area::nativeZoneSquadCandidates();
         if(!ids)return CR_FAILURE;
         Json::Value output(Json::arrayValue);for(auto id:*ids)output.append(id);
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
+      if(parameters[0]=="cage-assign-probe") {
+        if(parameters.size()!=5)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        std::array<int32_t,4> values{};
+        for(size_t i=0;i<values.size();++i) {
+          const auto& arg=parameters[i+1];const auto parsed=std::from_chars(arg.data(),arg.data()+arg.size(),values[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=arg.data()+arg.size())return CR_WRONG_USAGE;
+        }
+        if(values[2]<0 || values[2]>1 || values[3]<0 || values[3]>1)return CR_WRONG_USAGE;
+        auto* cage=virtual_cast<df::building_cagest>(df::building::find(values[0]));
+        if(!cage || !df3d_production::cageAssignmentReady())return CR_FAILURE;
+        Json::Value output;output["effects_started"]=true;
+        try {output["success"]=df3d_production::cageAssign(*cage,values[1],values[2]!=0,values[3]!=0);}
+        catch(...) {output["success"]=false;output["outcome_unknown"]=true;}
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
+      if(parameters[0]=="cage-candidates-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& value=parameters[1];
+        const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        auto* cage=virtual_cast<df::building_cagest>(df::building::find(id));
+        if(!cage)return CR_FAILURE;
+        const auto candidates=df3d_production::cageCandidates(*cage);
+        if(!candidates)return CR_FAILURE;
+        Json::Value output(Json::arrayValue);
+        for(const auto& candidate:*candidates) {
+          Json::Value row;row["id"]=candidate.id;row["kind"]=candidate.item?1:0;row["assigned"]=candidate.assigned;
+          output.append(row);
+        }
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
       if(parameters[0]=="zone-animal-candidates-read" || parameters[0]=="zone-animal-picker-read") {

@@ -733,7 +733,7 @@ TEST_CASE("cage aquarium receipts require the native check-occupants effect") {
     before.cage->room.buildingId=before.id;before.cage->glass=true;
     before.revision=buildingHeaderRevision(before);
     int calls=0;
-    auto after=before;after.cage->flags=4;after.revision=buildingHeaderRevision(after);
+    auto after=before;after.cage->flags=4;after.nativeName=after.headerName="Terrarium";after.revision=buildingHeaderRevision(after);
     auto apply=[&]{++calls;return true;};auto observe=[&]{return std::optional<BuildingHeaderObservation>{after};};
     auto result=finishBuildingHeaderEdit(before,before.revision,BuildingHeaderOperation::CageAquarium,"",apply,observe,0);
     CHECK(result.outcome==BuildingHeaderOutcome::Completed);CHECK(calls==1);CHECK(result.mutated);

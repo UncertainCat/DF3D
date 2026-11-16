@@ -3180,9 +3180,12 @@ glass cage. The connected parent provider owns the room facts and includes cage
 flags, material, justice status and room relations/copy in edit authority. The
 pinned native material predicate supplies the glass gate; the setting reproduces
 the pinned inline WATER/CHECKOCCUPANTS update without borrowing UI state.
+Native getName also derives Cage/Terrarium/Aquarium from these flags, so mode
+receipts permit those freshly observed display-name changes while preserving the
+custom name and unrelated facts.
 Assignments reject justice restraints, and the staged picker retires when that
 status changes. Both peers must upgrade together; older recordings cannot infer
-these new facts. Glass effect/render acceptance remains unfinished.
+these new facts. Glass effect/control-strip acceptance is recorded below.
 Protected112659 (DF52300) verifies the new intent reaches the bridge and rejects
 without effects while retaining prior cage reads/assignments/stale reversals and
 restoration. Source unchanged and unsaved cleanup pass at30FPS; sampled GPU59C.
@@ -3248,10 +3251,20 @@ The cage body hides its assignment/options when native isJusticeRestraint
 (vtable slot60) is true. Otherwise material predicate145bee0 with flag49
 (IS_GLASS) gates Terrarium/Aquarium controls. Native input1af04f..1af064 clears
 cage_flags bit1 and sets bit2 for Terrarium;1af0a2 sets bits1/2 for Aquarium.
-The parent transport and staged justice gate are connected. Glass setting effects,
-room/location icons, occupant body, composed rendering and public navigation still
-need qualification; ordinary lead-cage evidence does not authorize omitting them
+The parent transport and staged justice gate are connected. Room/location icons,
+occupant body, composed rendering and public navigation still need qualification; ordinary lead-cage evidence does not authorize omitting them
 from a public cage UI.
+
+Protected114921 (DF59964) uses a paused, controlled green-glass building material
+and restores its original material and flags. Native clicks set flags6 for
+Aquarium and4 for Terrarium; typed bridge edits match and return the native
+derived names. The staged control strip uses installed CONFIRM/ACTIVE artwork
+and matches all16992 pixels for each state at1200x800. The safe-thread30FPS render
+has clean diagnostics; sampled GPU63C. Source unchanged and unsaved cleanup pass.
+Bridge build and core19 pass. The first probe exposed a reused capture
+acknowledgement; the next exposed derived-name receipt rejection. Both were fixed
+before this accepted run. Component evidence does not qualify the whole parent:
+`completed_sheet_discovery_reference.cage_glass_reference`.
 
 Shared animal presentation components can be reused only where their semantics
 match; a zone ID must not stand in for cage authority.

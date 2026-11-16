@@ -12,6 +12,8 @@ func run() -> void:
 		await create_timer(0.01).timeout
 	var catalog:=await request("construction",{"action":C.ManagementAction.Catalog})
 	if not check(catalog.get("status")==C.ManagementStatus.Ok,"Cage catalog failed"):quit(1);return
+	if expected.get("glass",false):
+		await glass_settings(int(expected.id));return
 	var read={"action":C.ManagementAction.ProductionInspect,"cage_operation":0,"building_id":int(expected.id),"cage_sort":2}
 	var response:=await request("production",read)
 	var page: Dictionary=response.get("production",{}).get("cage",{})
@@ -48,4 +50,19 @@ func run() -> void:
 	check(page.rows==initial.rows and page.revision==initial.revision,"Cage wire toggles did not restore original facts")
 	var file:=FileAccess.open(directory+"/cage-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"parent":parent,"initial":initial,"search":search,"receipts":receipts}));file.close()
+	world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func glass_settings(id: int) -> void:
+	var response:=await request("production",{"action":C.ManagementAction.ProductionInspect,"building_header":true,"building_id":id})
+	var parent: Dictionary=response.get("production",{}).get("building_header",{}).get("snapshot",{})
+	if not check(parent.get("cage",{}).get("glass",false),"Glass parent absent"):quit(1);return
+	var receipts: Array=[]
+	for aquarium in [true,false]:
+		response=await request("production",{"action":C.ManagementAction.FarmEdit,"building_header":true,"building_id":id,"expected_revision":parent.revision,"farm_operation":C.FarmOperation.CageAquarium,"item_value":int(aquarium)})
+		var header: Dictionary=response.get("production",{}).get("building_header",{})
+		if not check(response.get("status")==C.ManagementStatus.Ok and header.get("outcome")==C.FarmEditOutcome.Completed,"Glass setting failed: "+str(response)):quit(1);return
+		parent=header.snapshot
+		check(parent.cage.aquarium==aquarium,"Glass receipt differs");receipts.append(parent)
+	var file:=FileAccess.open(directory+"/cage-glass-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"receipts":receipts}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)

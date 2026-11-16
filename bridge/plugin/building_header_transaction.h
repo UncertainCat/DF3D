@@ -137,6 +137,9 @@ BuildingHeaderEdit finishBuildingHeaderEdit(const BuildingHeaderObservation& bef
         } else if(cage) {
             if(!after->cage || after->cage->flags!=cageFlags)return result;
             unchanged.cage->flags=before.cage->flags;
+            // Native getName derives Cage/Terrarium/Aquarium from these flags.
+            // The custom name remains an independently checked semantic fact.
+            unchanged.nativeName=before.nativeName;unchanged.headerName=before.headerName;
         } else if(pump) {
             if(!after->machinery || after->machinery->pumpManual!=pumpValue)return result;
             unchanged.machinery->pumpManual=before.machinery->pumpManual;

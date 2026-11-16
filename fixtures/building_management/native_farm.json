@@ -113689,6 +113689,39 @@
           "build/stockpile-storage-native-farm-discovery-20261116-114212/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
           "build/stockpile-storage-native-farm-discovery-20261116-114212/cage-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
         }
+      },
+      "cage_glass_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-114921",
+        "owned_df_pid": 59964,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Paused controlled green-glass building material with original material/flags restored. Native Aquarium6/Terrarium4 flags match typed bridge effects and derived-name receipts. Both control strips match16992pixels, safe-thread30FPS renderer clean. Room/occupant body and public navigation remain unqualified. Live wire has only known separate-thread notice.",
+        "native": [
+          {
+            "aquarium": true,
+            "flags": 6
+          },
+          {
+            "aquarium": false,
+            "flags": 4
+          }
+        ],
+        "render_bounds": [
+          432,
+          388,
+          472,
+          36
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-114921/cage-glass-native.json": "900aecc1c0ec43e3aa6bb4a4cfeafd51854a99e29cebd1284ab0f7a87ef16025",
+          "build/stockpile-storage-native-farm-discovery-20261116-114921/cage-glass-wire-result.json": "8e9eba5ca21cd9262d68594128dcddad633eec45e11638ae0bf5787f140c9f85",
+          "build/stockpile-storage-native-farm-discovery-20261116-114921/cage-glass-aquarium.png": "a302b2997c68107e1cbbb700bf33c866f37cece0ceb4021da0b14a069438b8a2",
+          "build/stockpile-storage-native-farm-discovery-20261116-114921/cage-glass-terrarium.png": "e893fb5952403c1c9af1bb15d67d5131d2677ad51530004988e31841d1e9398d",
+          "build/stockpile-storage-native-farm-discovery-20261116-114921/cage-glass-view-aquarium.png": "0d172f9331b026271497aac57fd8d7626573011f5ac451ca9de49e4bbfe5fd36",
+          "build/stockpile-storage-native-farm-discovery-20261116-114921/cage-glass-view-terrarium.png": "c0d1e4a0a603b409eb47de578c189082928c9f888891d186e606a3246df6e7f3",
+          "build/stockpile-storage-native-farm-discovery-20261116-114921/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-114921/cage-glass-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
+        }
       }
     },
     "pending_construction_reference": {

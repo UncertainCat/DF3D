@@ -413,7 +413,7 @@ try {
      if(-not $client.WaitForExit(60000)){$client.Kill();$client.WaitForExit();throw 'Work order client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/$name-result.json")){throw 'Work order client failed'}
     }
-    if($FarmItemCarriers -and ($name -in @('cage-wire','workshop-wire','workshop-order-wire','lever-warning-wire','machinery-wire','machinery-scene','barrier-wire','barrier-scene','simple-building-wire','depot-wire','depot-scene','depot-goods-scene','trade-catalog-wire','trade-session-wire','trade-goods-art-wire','trade-exchange-wire','trade-transfer-wire') -or $name -like 'depot-scene-gate-*' -or $name -like 'depot-goods-wire-*' -or $name -like 'door-mode-wire-*' -or $name -like 'well-wire-*' -or $name -like 'barrier-variant-wire-*' -or $name -like 'machinery-variant-wire-*' -or $name -like 'trap-sheet-wire-*' -or $name -eq 'machinery-contract-wire')) {
+    if($FarmItemCarriers -and ($name -in @('cage-wire','cage-glass-wire','workshop-wire','workshop-order-wire','lever-warning-wire','machinery-wire','machinery-scene','barrier-wire','barrier-scene','simple-building-wire','depot-wire','depot-scene','depot-goods-scene','trade-catalog-wire','trade-session-wire','trade-goods-art-wire','trade-exchange-wire','trade-transfer-wire') -or $name -like 'depot-scene-gate-*' -or $name -like 'depot-goods-wire-*' -or $name -like 'door-mode-wire-*' -or $name -like 'well-wire-*' -or $name -like 'barrier-variant-wire-*' -or $name -like 'machinery-variant-wire-*' -or $name -like 'trap-sheet-wire-*' -or $name -eq 'machinery-contract-wire')) {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $env:DF3D_DOOR_CAPTURE=$name
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
@@ -447,7 +447,7 @@ try {
      if($env:DF3D_FLOODGATE_MAP -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/floodgate_map_scene_live.gd')}
      if($env:DF3D_BUILDING_LINKS_ART -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/building_links_art_live.gd')}
      if($name -like 'trap-sheet-wire-*'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/trap_sheet_scene_live.gd')}
-     if($name -eq 'cage-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/cage_wire_live.gd')}
+     if($name -in @('cage-wire','cage-glass-wire')){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/cage_wire_live.gd')}
      if($name -eq 'machinery-contract-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/machinery_contract_wire_live.gd')}
      if($name -like 'machinery-variant-wire-*'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/machinery_variants_scene_live.gd')}
      if($name -eq 'machinery-scene'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/machinery_scene_live.gd')}

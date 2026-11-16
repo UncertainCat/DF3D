@@ -94090,6 +94090,44 @@
           "build/stockpile-storage-native-farm-discovery-20261115-212946/trade-speaker-recipe-2.ppm": "dfa68c774a6c87dd988ec1aded585a524f90857633c9a95d8529cce171a87821",
           "build/stockpile-storage-native-farm-discovery-20261115-212946/trade-speaker-recipe-1.ppm": "0166012ab6cf6bf6eabec635c491be58e10daeec5423c84696ecaa4e16a82abe"
         }
+      },
+      "depot_trade_header_view_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-213438",
+        "owned_df_pid": 49184,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "viewport": [
+          1200,
+          800
+        ],
+        "region": [
+          40,
+          64,
+          928,
+          72
+        ],
+        "scope": "Staged Godot header region pixel-exact in four native states using original installed artwork and independently resolved selector recipe. Native header text/mood provider also reruns17 cases. Public header transport, alternate shapes/sizes, animated names, rendered mood thresholds and complete trade integration remain unfinished.",
+        "cases": [
+          "single",
+          "speaker",
+          "speaker-long-name",
+          "speaker-unloading"
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-213438/depot-trade-native.json": "9ab060d21807dcce1dd06bf155d4bc85dd22096d94daacb366cd5c95c40d07dc",
+          "build/stockpile-storage-native-farm-discovery-20261115-213438/result.json": "4fe3ab06d2e7a5930711f845369b15db3894703b47777e89c2dff140cbd06e50",
+          "build/stockpile-storage-native-farm-discovery-20261115-213438/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-213438/depot-trade-single.png": "41f0af6a49d55cb4d24e52cd1ad76dec2d1a1c4d1ba1608afc2143d8d7a3d221",
+          "build/stockpile-storage-native-farm-discovery-20261115-213438/trade-header-view-single.png": "b5558977793a5afb4a6a17d9df2724bdc9db1ee285fee22c3179090429a4697a",
+          "build/stockpile-storage-native-farm-discovery-20261115-213438/depot-trade-speaker.png": "fe23e3bfc22d4fd722a4813c127f3c260959c53e8b194fbf1565707bbb28998f",
+          "build/stockpile-storage-native-farm-discovery-20261115-213438/trade-header-view-speaker.png": "4c0ebc78ee6ff149bd98af593d27117d76b70b5e69feca340f57ec316143ed9e",
+          "build/stockpile-storage-native-farm-discovery-20261115-213438/depot-trade-speaker-long-name.png": "6c860f0aa0d24a3af0901aa8579eae6a73052ef93d01d173f0bcb0405b703581",
+          "build/stockpile-storage-native-farm-discovery-20261115-213438/trade-header-view-speaker-long-name.png": "0b8dfb38b035333f3c51f7b8afed9323d787cf6ef9bd5fe20c62d2e8ecf49d51",
+          "build/stockpile-storage-native-farm-discovery-20261115-213438/depot-trade-speaker-unloading.png": "42f8ee2584060ea42cb576989005c52edc0cf73ddd79e8810229b02c5b1e027f",
+          "build/stockpile-storage-native-farm-discovery-20261115-213438/trade-header-view-speaker-unloading.png": "67629bc8aa1f5383c174b221e64e775013b4f1b9adbfdcc3f850929a472330ae",
+          "presentations/godot/project/scripts/trade_header_view.gd": "fc6f6fca36f81cd078c8bcd4cee45f139d8ae7de20a2f5dd2b37c5870c498a6f",
+          "presentations/godot/project/tests/trade_header_view_capture.gd": "286656348de7c036adca5d98bd69c97b3cdcba29c3d9d68b7e06b9464018f789"
+        }
       }
     },
     "pending_construction_reference": {

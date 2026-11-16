@@ -11,7 +11,7 @@ local function color(x,y)
 end
 local function check(label)
  view:render(dfhack.getTickCount())
- local output,code=dfhack.run_command_silent('df3d','trade-header-probe',tostring(building.id),'0',tostring(math.max(0,trade.talkline)))
+ local output,code=dfhack.run_command_silent('df3d','trade-header-probe',tostring(building.id),'0',tostring(math.max(0,trade.talkline)),'102')
  assert(code==0,output);local h=json.decode(output);assert(h.available,output)
  if h.speaker>=0 then
   assert(h.name==row(5),'Header name differs: '..h.name..' != '..row(5))

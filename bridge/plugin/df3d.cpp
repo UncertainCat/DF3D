@@ -5298,6 +5298,12 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(parameters.size()==5){int32_t columns=0;const auto& raw=parameters[4];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),columns);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
               const auto lines=df3d_production::tradeDialogueLines(header->dialogue,columns);if(!lines)return CR_FAILURE;output["lines"]=Json::arrayValue;for(const auto& line:*lines)output["lines"].append(DF2UTF(line));}
             if(header->nameColor){const auto& c=*header->nameColor;output["name_color"]=Json::arrayValue;for(auto v:c.color)output["name_color"].append(v);output["name_effect"]=c.effect;}}
+          if(header && header->speaker>=0){df3d_appearance::Result resolved;
+            if(df3d_appearance::resolveUnitSelector(df::unit::find(header->speaker),resolved)){
+              const auto recipe=df3d_production::ownedItemRecipe(resolved);if(!recipe)return CR_FAILURE;
+              auto& art=output["appearance"];art["pages"]=art["palettes"]=art["layers"]=Json::arrayValue;
+              for(const auto& page:recipe->pages)art["pages"].append(page);for(const auto& palette:recipe->palettes)art["palettes"].append(palette);
+              for(const auto& layer:recipe->layers){Json::Value values(Json::arrayValue);for(auto v:layer)values.append(v);art["layers"].append(values);}}}
           out.print("{}",Json::FastWriter().write(output));return CR_OK;
         }
         const auto entry=df3d_production::tradeEntryFacts(df::building::find(values[0]),size_t(values[1]));

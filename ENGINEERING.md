@@ -1,3 +1,23 @@
+## Staged trade header rendering
+
+The Godot header draws provider-supplied names, dialogue lines, status and mood;
+it does not reconstruct dialogue or wrap its prose. Original installed artwork
+is composed from the owned selector recipe. For the qualified32x32 merchant,
+native drawing places the96x64 sheet at2,6 inside the header without stretching,
+so the recipe's32,32 sheet offset becomes34,38. This corrects the initial scaling
+assumption; other shapes need their native placement qualified before exposure.
+
+Protected213438 on2026-11-15 captures four states (no merchant, speaker, long
+name and unloading) with owned artwork metadata. A serial30FPS Godot render
+matches the full928x72 header region pixel-for-pixel at1200x800. Final logs are
+clean; sampled GPU63C. Native DF49184 closes unsaved/source-preserved, sampled
+59C; its17 header text/mood checks still pass. Bridge build, headless capture
+check and all19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_header_view_reference`.
+This remains a staged component: public header transport, animated names,
+other speaker shapes, responsive layouts, rendered mood thresholds and complete
+Trade integration remain unfinished. Protocol242 is unchanged; Trade is hidden.
+
 ## Owned trade header text
 
 The staged header provider composes the merchant's native full name using an

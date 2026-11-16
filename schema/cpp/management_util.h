@@ -192,8 +192,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 251;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v251";
+inline constexpr uint32_t kManagementVersion = 252;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v252";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1143,16 +1143,21 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const bool pumpEdit=p->farm_operation()==FarmOperation::PumpManual;
     const bool depotEdit=p->farm_operation()==FarmOperation::DepotMode;
     const bool cageEdit=p->farm_operation()==FarmOperation::CageAquarium;
+    const bool trapEdit=p->farm_operation()==FarmOperation::TrapBait;
+    const bool hiveEdit=p->farm_operation()==FarmOperation::HiveInstall || p->farm_operation()==FarmOperation::HiveGather;
+    const bool specialEdit=trapEdit || hiveEdit;
+    if(specialEdit && (!p->building_header() || r.action()!=ManagementAction::FarmEdit ||
+       (trapEdit ? (p->item_value()!=-1 && p->item_value()!=44 && p->item_value()!=48 && p->item_value()!=49) : (p->item_value()<0 || p->item_value()>1))))return "invalid specialized building intent";
     if(cageEdit && (!p->building_header() || r.action()!=ManagementAction::FarmEdit || p->item_value()<0 || p->item_value()>1))return "invalid cage setting intent";
     if(depotEdit && (!p->building_header() || r.action()!=ManagementAction::FarmEdit || p->item_value()<0 || p->item_value()>2))return "invalid depot setting intent";
     if(pumpEdit && (!p->building_header() || r.action()!=ManagementAction::FarmEdit || p->item_value()<0 || p->item_value()>1))return "invalid pump setting intent";
-    if(p->worker_id()!=-1 || p->worker_value()!=-1 || p->worker_list_revision() || (p->farm_operation()>=FarmOperation::WorkerSelect && !pumpEdit && !depotEdit && !cageEdit))return "unexpected workshop worker intent";
+    if(p->worker_id()!=-1 || p->worker_value()!=-1 || p->worker_list_revision() || (p->farm_operation()>=FarmOperation::WorkerSelect && !pumpEdit && !depotEdit && !cageEdit && !specialEdit))return "unexpected workshop worker intent";
     if(p->building_header() && (p->building_id()<0 || p->independent_item() || p->locate_item() || p->contents() ||
-       p->item_id()!=-1 || (!pumpEdit && !depotEdit && !cageEdit && p->item_value()!=-1) || p->season()!=-1 || p->crop_id()!=-1 || p->seasonal_fertilization()!=-1 ||
+       p->item_id()!=-1 || (!pumpEdit && !depotEdit && !cageEdit && !specialEdit && p->item_value()!=-1) || p->season()!=-1 || p->crop_id()!=-1 || p->seasonal_fertilization()!=-1 ||
        p->job_id()!=-1 || p->cursor() || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() ||
        (p->recipe() && p->recipe()->size()) || (p->query() && p->query()->size()) ||
        (r.action()!=ManagementAction::ProductionInspect && r.action()!=ManagementAction::FarmEdit) ||
-       (r.action()==ManagementAction::FarmEdit && !pumpEdit && !depotEdit && !cageEdit && (p->farm_operation()<FarmOperation::Rename || p->farm_operation()>FarmOperation::CancelRemoval))))return "invalid building header intent";
+       (r.action()==ManagementAction::FarmEdit && !pumpEdit && !depotEdit && !cageEdit && !specialEdit && (p->farm_operation()<FarmOperation::Rename || p->farm_operation()>FarmOperation::CancelRemoval))))return "invalid building header intent";
     if(p->contents_item_id()<-1 || (p->contents_item_id()>=0 && (!p->independent_item() || r.action()!=ManagementAction::FarmEdit || p->contents_item_id()==p->item_id())))return "invalid item contents intent";
     if(p->independent_item() && (p->building_id()!=-1 || p->item_id()<0 || p->locate_item() ||
        (r.action()!=ManagementAction::ProductionInspect && r.action()!=ManagementAction::FarmEdit) ||
@@ -1163,7 +1168,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if (r.action()==ManagementAction::ProductionJobEdit && (p->job_id()<0 ||
         (p->cancel() && (p->repeat()!=-1 || p->suspend()!=-1)) ||
         (!p->cancel() && p->repeat()==-1 && p->suspend()==-1 && p->priority()==-1 && p->expected_previous_job_id()==-1))) return "invalid job edit";
-    if((static_cast<uint8_t>(p->farm_operation())>9 && !pumpEdit && !depotEdit && !cageEdit) || p->seasonal_fertilization() < -1 || p->seasonal_fertilization()>1)return "invalid farm operation";
+    if((static_cast<uint8_t>(p->farm_operation())>9 && !pumpEdit && !depotEdit && !cageEdit && !specialEdit) || p->seasonal_fertilization() < -1 || p->seasonal_fertilization()>1)return "invalid farm operation";
     if(p->farm_operation()==FarmOperation::Rename) {
       if(!p->farm_name() || p->farm_name()->size()>90 || p->farm_name()->str().find('\0')!=std::string::npos)return "invalid farm name";
     } else if(p->farm_name())return "unexpected farm name";
@@ -1176,7 +1181,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if(itemEdit) {
       if(r.action()!=ManagementAction::FarmEdit || p->item_id()<0 || p->item_value()<0 || p->item_value()>1 ||
          p->season()!=-1 || p->contents())return "invalid contained item intent";
-    } else if(!itemInspect && (p->item_id()!=-1 || (!pumpEdit && !depotEdit && !cageEdit && p->item_value()!=-1)))return "unexpected contained item intent";
+    } else if(!itemInspect && (p->item_id()!=-1 || (!pumpEdit && !depotEdit && !cageEdit && !specialEdit && p->item_value()!=-1)))return "unexpected contained item intent";
     if(r.action()==ManagementAction::FarmEdit) {
       if(!itemEdit && !p->building_header() && p->season()<0)return "season required";
       if(p->farm_operation()!=FarmOperation::Crop && p->crop_id()!=-1)return "unexpected farm crop";
@@ -3135,7 +3140,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         switch(type) {
         case 0:case 1:case 2:case 3:case 5:case 6:case 8:case 9:case 10:case 11:
         case 12:case 13:case 14:case 15:case 16:case 17:case 18:case 19:case 20:case 21:
-        case 23:case 25:case 28:case 31:case 32:case 45:case 46:case 51:case 52:case 54:return true;
+        case 23:case 24:case 25:case 28:case 48:case 49:case 31:case 32:case 45:case 46:case 51:case 52:case 54:return true;
         default:return false;
         }
       };
@@ -3145,6 +3150,17 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
            !text(f->custom_name(),true) || !text(f->native_name(),false) || !text(f->header_name(),false) ||
            (f->forbidden()<0 || f->forbidden()>1) || (!f->removing() && (f->suspended() || f->has_worker())))return "invalid building header snapshot";
         if(f->appearance()){size_t bytes=0;if(auto error=validateOwnerAppearance(*f->appearance(),bytes))return error;if(!f->appearance()->layers()->size() || bytes>131072)return "invalid building header artwork";}
+        if((f->type()==48)!=(f->nest()!=nullptr) || (f->type()==24)!=(f->trap()!=nullptr) || (f->type()==49)!=(f->hive()!=nullptr))return "missing or unexpected specialized building body";
+        if(const auto* v=f->nest()) {
+          if(v->claimant_id()<-1 || !text(v->status(),false) || !v->name() || v->name()->size()>6144 || v->name()->str().find('\0')!=std::string::npos || ((v->claimant_id()>=0)!=(v->name_color()!=nullptr)) || (v->claimant_id()<0 && v->name()->size()))return "invalid nest claim";
+          if(const auto* c=v->name_color())if(c->foreground()>7 || c->background()>7 || c->bright()>1 || c->alternate_foreground()>7 || c->alternate_background()>7 || c->alternate_bright()>1 || c->effect()>3)return "invalid nest name color";
+        }
+        if(const auto* v=f->trap()) {
+          if(v->state()>3 || v->item_id()<-1 || !text(v->status(),v->state()==0) || !v->name() || v->name()->size()>6144 || v->name()->str().find('\0')!=std::string::npos ||
+             ((v->state()>=2)!=(v->item_id()>=0)) || (v->state()<2 && v->name()->size()) || (v->state()==0 && v->status()->size()))return "invalid animal trap body";
+        }
+        if(const auto* v=f->hive())if(v->crowding()>2 || v->colony_race()<-1 || v->matching_colonies()<0 || v->matching_colonies()>100000 ||
+           (v->colony_race()<0 && (v->matching_colonies() || v->crowding())))return "invalid hive body";
         if((f->type()==28)!=(f->cage()!=nullptr))return "missing or unexpected cage body";
         if(const auto* v=f->cage()) {
           const auto* room=v->room();
@@ -3202,7 +3218,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if(f && !headerType(f->type()))return "unsupported building header edit target";
         if(outcome==FarmEditOutcome::None)return "missing building header outcome";
         if(outcome==FarmEditOutcome::Completed) {
-          if(s.status()!=ManagementStatus::Ok || !f || f->stage()!=f->max_stage() || ((op<FarmOperation::Rename || op>FarmOperation::CancelRemoval) && op!=FarmOperation::PumpManual && op!=FarmOperation::DepotMode && op!=FarmOperation::CageAquarium) || (op==FarmOperation::PumpManual && f->type()!=33) || (op==FarmOperation::DepotMode && f->type()!=6) || (op==FarmOperation::CageAquarium && (f->type()!=28 || !f->cage() || f->cage()->justice_restraint() || !f->cage()->glass())) ||
+          if(s.status()!=ManagementStatus::Ok || !f || f->stage()!=f->max_stage() || ((op<FarmOperation::Rename || op>FarmOperation::CancelRemoval) && op!=FarmOperation::PumpManual && op!=FarmOperation::DepotMode && op!=FarmOperation::CageAquarium && op!=FarmOperation::TrapBait && op!=FarmOperation::HiveInstall && op!=FarmOperation::HiveGather) || (op==FarmOperation::TrapBait && (f->type()!=24 || !f->trap() || f->trap()->state()!=1)) || ((op==FarmOperation::HiveInstall || op==FarmOperation::HiveGather) && f->type()!=49) || (op==FarmOperation::PumpManual && f->type()!=33) || (op==FarmOperation::DepotMode && f->type()!=6) || (op==FarmOperation::CageAquarium && (f->type()!=28 || !f->cage() || f->cage()->justice_restraint() || !f->cage()->glass())) ||
              f->removing()!=(op==FarmOperation::Remove))return "invalid building header completion";
         } else if(s.status()==ManagementStatus::Ok || f || op!=FarmOperation::Crop)return "unconfirmed building header authority";
       } else return "unexpected building header response";

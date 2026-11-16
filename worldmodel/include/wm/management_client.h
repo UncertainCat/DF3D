@@ -460,6 +460,15 @@ struct CageBodySnapshot {
   bool justiceRestraint=false,glass=false,aquarium=false;
   BuildingRoomBody room;
 };
+struct NestBoxBodySnapshot {
+  int32_t claimantId=-1;std::string status,name;std::optional<AreaNameColor> nameColor;
+};
+struct AnimalTrapBodySnapshot {
+  uint8_t state=0;int16_t baitType=-1;int32_t itemId=-1;std::string status,name;
+};
+struct HiveBodySnapshot {
+  uint32_t flags=0;bool outdoorAccess=false;uint8_t crowding=0;int32_t colonyRace=-1,matchingColonies=0;
+};
 struct BuildingHeaderSnapshot {
   int32_t id=-1,type=-1,stage=-1,maxStage=-1;uint64_t revision=0;
   std::string customName,nativeName,headerName;
@@ -471,6 +480,9 @@ struct BuildingHeaderSnapshot {
   std::optional<WellBodySnapshot> well;
   std::optional<DepotBodySnapshot> depot;
   std::optional<CageBodySnapshot> cage;
+  std::optional<NestBoxBodySnapshot> nest;
+  std::optional<AnimalTrapBodySnapshot> trap;
+  std::optional<HiveBodySnapshot> hive;
 };
 struct BuildingHeaderState {
   std::optional<BuildingHeaderSnapshot> snapshot;

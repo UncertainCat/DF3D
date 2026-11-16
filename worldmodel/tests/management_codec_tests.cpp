@@ -6233,3 +6233,37 @@ TEST_CASE("cage parent requests distinguish reads and edits and reject picker or
     CAPTURE(operation);CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*encoded))==(fault!=0));
   }
 }
+
+TEST_CASE("special building bodies retain owned facts and require exact target types") {
+  for(int kind:{24,48,49})for(int fault=0;fault<5;++fault) {
+    flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");const auto label=b.CreateString("Synthetic body");
+    const auto color=wire::CreateAreaNameColor(b,fault==3?8:2,0,0,2,0,0,0);
+    const auto nest=wire::CreateNestBoxBodySnapshot(b,6960,label,label,color);
+    const auto trap=wire::CreateAnimalTrapBodySnapshot(b,fault==3?4:1,48,-1,label,empty);
+    const auto hive=wire::CreateHiveBodySnapshot(b,7,true,fault==3?3:0,-1,0);
+    wire::BuildingHeaderSnapshotBuilder h(b);h.add_id(1491);h.add_type(fault==1?15:kind);h.add_revision(9007199254740993ULL);
+    h.add_stage(1);h.add_max_stage(1);h.add_custom_name(empty);h.add_native_name(label);h.add_header_name(label);h.add_forbidden(0);
+    if(fault!=2){if(kind==24)h.add_trap(trap);if(kind==48)h.add_nest(nest);if(kind==49)h.add_hive(hive);}
+    const auto snapshot=h.Finish();const auto header=wire::CreateBuildingHeaderState(b,snapshot);
+    wire::ProductionStateBuilder prod(b);prod.add_building_header(header);const auto payload=prod.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_schema_version(fault==4?251:wire::kManagementVersion);
+    root.add_action(wire::ManagementAction::ProductionInspect);root.add_status(wire::ManagementStatus::Ok);root.add_production(payload);b.Finish(root.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CAPTURE(kind);CAPTURE(fault);
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeProduction(value->production());b.Clear();const auto& f=*decoded.buildingHeader->snapshot;
+      CHECK(f.revision==9007199254740993ULL);
+      if(kind==24){REQUIRE(f.trap);CHECK(f.trap->baitType==48);CHECK(f.trap->status=="Synthetic body");}
+      if(kind==48){REQUIRE(f.nest);CHECK(f.nest->claimantId==6960);REQUIRE(f.nest->nameColor);CHECK(f.nest->nameColor->color[0]==2);}
+      if(kind==49){REQUIRE(f.hive);CHECK(f.hive->flags==7);CHECK(f.hive->outdoorAccess);}
+    }
+  }
+}
+TEST_CASE("special building edits require header revisions and native value domains") {
+  for(auto op:{wm::FarmOperation::TrapBait,wm::FarmOperation::HiveInstall,wm::FarmOperation::HiveGather})for(int fault=0;fault<5;++fault) {
+    wm::ManagementRequest r;r.action=fault==4?wm::ManagementAction::ProductionInspect:wm::ManagementAction::FarmEdit;
+    auto& p=r.production;p.buildingId=1491;p.buildingHeader=fault!=1;p.expectedRevision=fault==2?0:9007199254740993ULL;
+    p.farmOperation=op;p.itemValue=fault==3?2:op==wm::FarmOperation::TrapBait?48:1;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);CAPTURE(int(op));CAPTURE(fault);
+    CHECK(bool(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+  }
+}

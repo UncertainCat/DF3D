@@ -120,6 +120,12 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     state.operation=static_cast<FarmOperation>(source->operation());
     if(const auto* f=source->snapshot())state.snapshot=BuildingHeaderSnapshot{f->id(),f->type(),f->stage(),f->max_stage(),f->revision(),
       str(f->custom_name()),str(f->native_name()),str(f->header_name()),f->removing(),f->suspended(),f->has_worker(),f->forbidden(),f->appearance()?std::optional<SelectionAppearance>(decodeItemRecipe(f->appearance())):std::nullopt};
+    if(const auto* f=source->snapshot()) {
+      if(const auto* v=f->nest()){auto& d=state.snapshot->nest.emplace();d.claimantId=v->claimant_id();d.status=str(v->status());d.name=str(v->name());
+        if(const auto* c=v->name_color())d.nameColor=AreaNameColor{{c->foreground(),c->background(),c->bright()},{c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};}
+      if(const auto* v=f->trap())state.snapshot->trap=AnimalTrapBodySnapshot{v->state(),v->bait_type(),v->item_id(),str(v->status()),str(v->name())};
+      if(const auto* v=f->hive())state.snapshot->hive=HiveBodySnapshot{v->flags(),v->outdoor_access(),v->crowding(),v->colony_race(),v->matching_colonies()};
+    }
     if(source->snapshot() && source->snapshot()->cage()) {
       const auto* f=source->snapshot()->cage();auto& v=state.snapshot->cage.emplace();
       v.justiceRestraint=f->justice_restraint();v.glass=f->glass();v.aquarium=f->aquarium();

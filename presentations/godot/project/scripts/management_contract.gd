@@ -268,6 +268,9 @@ enum FarmOperation {
 	PumpManual = 13,
 	DepotMode = 14,
 	CageAquarium = 15,
+	TrapBait = 16,
+	HiveInstall = 17,
+	HiveGather = 18,
 }
 enum ManagementAction {
 	Catalog = 0,

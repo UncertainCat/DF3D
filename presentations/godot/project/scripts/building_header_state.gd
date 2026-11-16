@@ -3,7 +3,7 @@ extends RefCounted
 signal changed
 signal applied
 const C=preload("res://scripts/management_contract.gd")
-const SUPPORTED_TYPES=[0,1,2,3,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,25,28,31,32,33,35,36,37,38,39,40,41,42,43,44,45,46,50,51,52,54]
+const SUPPORTED_TYPES=[0,1,2,3,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,24,25,28,31,32,33,35,36,37,38,39,40,41,42,43,44,45,46,48,49,50,51,52,54]
 enum Phase { Closed, Reading, Ready, Applying, Rejected, Stale, Unknown, Unavailable }
 var service
 var phase:=Phase.Closed
@@ -111,6 +111,14 @@ func set_pump_manual(desired: bool) -> void:
 	if snapshot.get("type",-1)!=33 or not snapshot.has("machinery"):return
 	_edit(C.FarmOperation.PumpManual,{"item_value":int(desired)})
 
+func set_trap_bait(bait: int) -> void:
+	if snapshot.get("type",-1)!=24 or snapshot.get("trap",{}).get("state",-1)!=1 or bait not in [-1,44,48,49]:return
+	_edit(C.FarmOperation.TrapBait,{"item_value":bait})
+
+func set_hive_setting(install: bool,enabled: bool) -> void:
+	if snapshot.get("type",-1)!=49:return
+	_edit(C.FarmOperation.HiveInstall if install else C.FarmOperation.HiveGather,{"item_value":int(enabled)})
+
 func _edit(operation: int,fields: Dictionary) -> void:
 	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in SUPPORTED_TYPES or snapshot.stage!=snapshot.max_stage:return
 	if snapshot.removing!=(operation==C.FarmOperation.CancelRemoval):return
@@ -140,8 +148,46 @@ static func valid_snapshot(value: Dictionary,id: int) -> bool:
 	for field in ["removing","suspended","has_worker","forbidden"]:
 		if typeof(value.get(field))!=TYPE_BOOL:return false
 	if value.has("appearance") and not preload("res://scripts/item_sheet_state.gd")._valid_recipe(value.appearance):return false
-	if not valid_cage(value) or not valid_funerary(value) or not valid_machinery(value) or not valid_well(value) or not valid_depot(value):return false
+	if not valid_special(value) or not valid_cage(value) or not valid_funerary(value) or not valid_machinery(value) or not valid_well(value) or not valid_depot(value):return false
 	return value.removing or (not value.suspended and not value.has_worker)
+
+static func valid_special(value: Dictionary) -> bool:
+	for pair in [[24,"trap"],[48,"nest"],[49,"hive"]]:
+		if (value.type==pair[0])!=value.has(pair[1]):return false
+		if value.has(pair[1]) and typeof(value[pair[1]])!=TYPE_DICTIONARY:return false
+	if value.has("nest"):
+		var body: Dictionary=value.nest
+		if typeof(body.get("claimant_id"))!=TYPE_INT or body.claimant_id< -1 or body.claimant_id>2147483647:return false
+		if not _special_text(body,"status",false) or not _special_text(body,"name",true):return false
+		if (body.claimant_id>=0)!=body.has("name_color") or (body.claimant_id<0 and not body.name.is_empty()):return false
+		if body.has("name_color"):
+			if typeof(body.name_color)!=TYPE_DICTIONARY:return false
+			var color: Dictionary=body.name_color
+			if typeof(color.get("effect"))!=TYPE_INT or color.effect<0 or color.effect>3:return false
+			for key in ["color","alternate"]:
+				if typeof(color.get(key))!=TYPE_ARRAY or color[key].size()!=3:return false
+				for i in range(3):
+					if typeof(color[key][i])!=TYPE_INT or color[key][i]<0 or color[key][i]>(1 if i==2 else 7):return false
+	if value.has("trap"):
+		var body: Dictionary=value.trap
+		for key in ["state","bait_type","item_id"]:
+			if typeof(body.get(key))!=TYPE_INT:return false
+		if body.state<0 or body.state>3 or body.bait_type< -32768 or body.bait_type>32767 or body.item_id< -1 or body.item_id>2147483647:return false
+		if not _special_text(body,"status",body.state==0) or not _special_text(body,"name",true):return false
+		if (body.state>=2)!=(body.item_id>=0) or (body.state<2 and not body.name.is_empty()) or (body.state==0 and not body.status.is_empty()):return false
+	if value.has("hive"):
+		var body: Dictionary=value.hive
+		for key in ["flags","crowding","colony_race","matching_colonies"]:
+			if typeof(body.get(key))!=TYPE_INT:return false
+		if typeof(body.get("outdoor_access"))!=TYPE_BOOL or body.flags<0 or body.flags>4294967295 or body.crowding<0 or body.crowding>2:return false
+		if body.colony_race< -1 or body.colony_race>2147483647 or body.matching_colonies<0 or body.matching_colonies>100000:return false
+		if body.colony_race<0 and (body.matching_colonies!=0 or body.crowding!=0):return false
+	return true
+
+static func _special_text(body: Dictionary,key: String,empty: bool) -> bool:
+	if typeof(body.get(key))!=TYPE_STRING:return false
+	var bytes: PackedByteArray=body[key].to_utf8_buffer()
+	return bytes.size()<=6144 and not bytes.has(0) and (empty or not bytes.is_empty())
 
 static func valid_cage(value: Dictionary) -> bool:
 	if value.type!=28:return not value.has("cage")
@@ -254,6 +300,8 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 			(operation==C.FarmOperation.Rename and observed.custom_name!=sent.farm_name) or \
 			(operation==C.FarmOperation.PumpManual and (observed.type!=33 or observed.machinery.pump_manual!=sent.item_value)) or \
 			(operation==C.FarmOperation.CageAquarium and (observed.type!=28 or observed.cage.justice_restraint or not observed.cage.glass or observed.cage.aquarium!=(sent.item_value==1))) or \
+			(operation==C.FarmOperation.TrapBait and (observed.type!=24 or observed.trap.state!=1 or observed.trap.bait_type!=sent.item_value)) or \
+			(operation in [C.FarmOperation.HiveInstall,C.FarmOperation.HiveGather] and (observed.type!=49 or bool(observed.hive.flags & (1 if operation==C.FarmOperation.HiveInstall else 2))!=(sent.item_value==1))) or \
 			(operation==C.FarmOperation.DepotMode and (observed.type!=6 or observed.depot.requested!=(sent.item_value!=2) or (sent.item_value!=2 and observed.depot.anyone!=(sent.item_value==1)))):
 			_fail(Phase.Unknown);return
 	var different: bool=phase!=Phase.Ready or snapshot!=observed

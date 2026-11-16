@@ -228,6 +228,23 @@ func run() -> void:
 		model.cancel_removal();service.poll();reply(production,1,C.FarmOperation.CancelRemoval)
 		check(model.phase==Model.Phase.Ready and not model.snapshot.removing,"production cancellation accepted "+str(kind))
 		await process_frame
+	for operation in [C.FarmOperation.TrapBait,C.FarmOperation.HiveInstall,C.FarmOperation.HiveGather]:
+		setup();model.open(278);service.poll();var special:=snapshot();special.type=24 if operation==C.FarmOperation.TrapBait else 49
+		if special.type==24:special.trap={"state":1,"bait_type":-1,"item_id":-1,"status":"Synthetic bait","name":""}
+		else:special.hive={"flags":12,"outdoor_access":false,"crowding":0,"colony_race":-1,"matching_colonies":0}
+		reply(special);check(model.phase==Model.Phase.Ready,"special body accepted")
+		if special.type==24:model.set_trap_bait(48)
+		else:model.set_hive_setting(operation==C.FarmOperation.HiveInstall,true)
+		service.poll();check(world.calls[-1].request.farm_operation==operation and world.calls[-1].request.expected_revision==special.revision,"special edit preserves typed authority")
+		var changed:=special.duplicate(true);changed.revision+=1
+		if special.type==24:changed.trap.bait_type=48
+		else:changed.hive.flags|=1 if operation==C.FarmOperation.HiveInstall else 2
+		reply(changed,1,operation);check(model.phase==Model.Phase.Ready,"special receipt accepted")
+		if special.type==24:model.set_trap_bait(-1)
+		else:model.set_hive_setting(operation==C.FarmOperation.HiveInstall,false)
+		service.poll();model.close();reply(special,1,operation)
+		check(model.phase==Model.Phase.Closed and model.snapshot.is_empty(),"late special receipt cannot reopen owner")
+		await process_frame
 	model.dispose();service.free()
 	if failures==0:print("BUILDING_HEADER_STATE_PASS")
 	quit(0 if failures==0 else 1)

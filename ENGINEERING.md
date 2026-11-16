@@ -3097,6 +3097,27 @@ render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
 
 ### Nest box, animal trap and hive observations
 
+Protocol252 adds typed nest/trap/hive bodies to the shared building header and
+TrapBait/HiveInstall/HiveGather operations. A header revision incorporates the
+specialized control revision (contents and jobs included); the safe-point handler
+checks that displayed header revision before invoking the specialized provider.
+Nest claims retain native name color/effect facts. Invalid/missing bodies, mixed
+target types and out-of-domain setting intents reject at the wire boundary.
+
+Migration: rebuild and deploy bridge and clients together. Both management
+schema defaults and the version guard are252; the mailbox is
+`Local\df3d_management_v252`. Protocol251 peers/recordings do not supply these
+bodies and must not have claim, bait or hive facts synthesized. Regenerate the
+management contracts from the schema. Protected142907 on2026-11-16 (DF51396)
+verifies every body field through the actual bridge/model/extension, setting
+edit/restore with stale rejection, and rename/restore/removal/cancellation for
+all three types. Original complete snapshots are restored. Source saves remain
+unchanged and owned DF closes unsaved at30FPS, sampled59-60C. Headless transport
+stderr is clean; shared state checks include typed edits and late-reply retirement.
+Bridge/core/extension builds and all19 root checks pass. Public routes and
+new visual body views remain unfinished. Evidence:
+`completed_sheet_discovery_reference.special_building_transport_reference`.
+
 `special_building_native.cpp` supplies owned semantic bodies for NestBox48,
 AnimalTrap24 and Hive49. Nest claims resolve the unit and reuse the native name
 formatter with independently owned inventory context and the existing semantic

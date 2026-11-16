@@ -48,6 +48,21 @@ inline bool tradeNegotiationNativeReady(){
         return true;
     }();return ready;
 }
+inline bool tradeGiftNativeReady(){
+    if(!tradeNegotiationNativeReady())return false;
+    static const bool ready=[] {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin{size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={{0x31b61c,0xc75,UINT64_C(0xf26de1911580f308)},
+            {0xc90690,0x191,UINT64_C(0xcdaf6397bb0e22cd)},
+            {0xc88300,0xdd,UINT64_C(0xe270d2ba3f4072a3)},
+            {0x54bdc0,0x134,UINT64_C(0x4fb33b5d7f53a49a)},
+            {0x30cbb0,0xc0,UINT64_C(0x844796c1331a0efa)},
+            {0x72660,0x7d,UINT64_C(0x2414953f9e9e9670)}};
+        for(const auto& pin:pins){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<pin.length;++i){h^=base[pin.rva+i];h*=UINT64_C(1099511628211);}if(h!=pin.hash)return false;}
+        return true;
+    }();return ready;
+}
 // Safe-point lifetime only. Entry metadata and goods are independently owned;
 // no active native trade menu is read or borrowed.
 // Refusal checks retain DF's inline branch order;
@@ -189,6 +204,57 @@ public:
         const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
         if(effectsStarted)*effectsStarted=true;
         reinterpret_cast<void(*)(df::trade_interfacest*,int32_t,int32_t,df::massst*)>(base+0x369490)(&owned,values->actual[0],values->actual[1],&remaining);
+        return true;
+    }
+    // Native Gift is inline in input31b61c..31c291. Keep its dispatch order
+    // here; ownership, container detachment, depot insertion, reference and
+    // artifact-history effects use DF routines with this owned context.
+    bool offerGift(bool* effectsStarted=nullptr){
+        if(!valid || !tradeGiftNativeReady())return false;
+        auto& owned=draft.owned;
+        static_assert(offsetof(df::plotinfost,king_arrived)==0xaa);
+        if(df::global::plotinfo->king_arrived && owned.civ->id==df::global::plotinfo->civ_id)return false;
+        const auto check=checkOffer();if(check.disposition==TradeOfferDisposition::Unavailable)return false;
+        const auto rows=draft.snapshot();if(!rows)return false;
+        const auto values=tradeValueTotals(owned.bld,caravanIndex,*rows);
+        const auto capacity=tradeCapacity(owned.bld,caravanIndex,*rows);
+        if(!values || !capacity || !df::global::world || df::global::world->artifact_history_suppression_count==INT32_MAX)return false;
+        // Native exposed selection uses whole stacks; reject a foreign draft
+        // rather than introducing a partial-stack interface that DF does not use.
+        for(auto amount:owned.good_amount[1])if(amount)return false;
+        const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+        if(effectsStarted)*effectsStarted=true;
+        if(check.ethical)refuseOffer();
+        else if(capacity->whole<0){
+            const auto previous=int16_t(owned.talkline);
+            owned.talkline=df::talk_line_type(previous==3?4:previous==4?3:3+reinterpret_cast<int32_t(*)(int32_t)>(base+0x71f30)(2));
+        }else if(values->actual[1]<=0)owned.talkline=df::talk_line_type(10);
+        else{
+            owned.talkline=df::talk_line_type(8);
+            for(size_t i=0;i<owned.good[1].size();++i){
+                auto* item=owned.good[1][i];const bool selected=owned.goodflag[1][i].bits.selected;
+                {
+                    struct SuppressHistory {int32_t& count;explicit SuppressHistory(int32_t& v):count(v){++count;}~SuppressHistory(){--count;}} suppression(df::global::world->artifact_history_suppression_count);
+                    if(selected)reinterpret_cast<void(*)(df::item*,df::historical_entity*,bool)>(base+0xc90690)(item,owned.civ,true);
+                    bool detach=false;
+                    for(auto* ref:item->general_refs)if(ref && ref->getType()==df::general_ref_type::CONTAINED_IN_ITEM){
+                        auto* parent=ref->getItem();if(parent && bool(parent->flags.bits.trader)!=selected){detach=true;break;}
+                    }
+                    if(detach){
+                        reinterpret_cast<void(*)(df::item*)>(base+0xc88300)(item);
+                        reinterpret_cast<void(*)(df::building*,df::item*)>(base+0x54bdc0)(owned.bld,item);
+                        item->flags.bits.in_building=true;
+                    }
+                    if(selected){
+                        reinterpret_cast<void(*)(df::item*)>(base+0x30cbb0)(item);
+                        reinterpret_cast<void(*)(df::item*,int32_t,int32_t)>(base+0x72660)(item,int32_t(df::general_ref_type::ENTITY_OFFERED),owned.civ->id);
+                    }
+                }
+                if(selected)reinterpret_cast<void(*)(df::trade_interfacest*,df::item*,df::historical_entity*,df::historical_entity*,bool,bool)>(base+0x36a9c0)(&owned,item,owned.civ,df::global::plotinfo->main.fortress_entity,true,false);
+            }
+            owned.buildlists=1;
+        }
+        owned.counter_offer=false;
         return true;
     }
     std::optional<TradeNegotiationCheckpoint> checkpoint() const {

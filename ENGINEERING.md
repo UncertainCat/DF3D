@@ -128,6 +128,51 @@ owner. This restores fixture placement for later checks, not all trade history;
 the lane must always close without saving. Initial223215 reached acceptance but
 failed container cleanup and is not acceptance evidence.
 
+## Owned native Gift execution
+
+Gift lives inline in native input31b61c..31c291, so the bridge preserves that
+branch order over its owned TradeNegotiationNative context. It checks the
+king-arrived/same-civilization restriction, ordinary trade prerequisites,
+ethical refusal, capacity and offered value. It does not call the global input
+handler or borrow the active menu. Whole-stack selection remains the supported
+native interface; nonzero draft amounts reject before effects.
+
+Actual ownership uses nativec90690 with its exclude-bin-contents argument.
+Nativec88300 detaches items whose container has the opposite trader state;
+54bdc0 inserts them into the depot. Native30cbb0 removes old stolen/offered
+references and72660 adds ENTITY_OFFERED. Per-item artifact-history suppression
+matches the native scopes;36a9c0 receives the owned context and native gift
+arguments after suppression ends. Successful gifts request a fresh goods list.
+All processed outcomes clear the counteroffer flag without clearing its
+independent retained list. The executor marks effects started before mutation;
+callers must treat post-effect failure as uncertainty, never a retry.
+
+Protected233746 (native DF52204) and233842 (owned DF46516) on2026-11-15
+donate steel bar28694 from bin3148 to the same-civilization fixture caravan865.
+After equivalent native row-value reads, all tracked item flags, references,
+positions and stacks, depot contents, caravan fields, depot use count and
+artifact-history suppression agree exactly. The bar gains trader ownership and
+ENTITY_OFFERED and moves into depot54; dialogue8, counteroffer false and empty
+announcement agree. Two other items only gain computed-weight cache flags.
+The owned action leaves the native conversation unchanged. Both lanes close
+unsaved/source-preserved at30FPS; GPU samples49–50C. Bridge build and19 core
+checks pass. Evidence:
+`completed_sheet_discovery_reference.depot_trade_gift_effect_reference`.
+
+The initial233505/233602 comparison sampled native after redraw but owned before
+row refresh, differing only in bin3148's weight_computed cache flag. The final
+oracle retains that pre-refresh snapshot and compares both paths after the same
+native semantic reads; runtime code does not force cache flags to match. This
+evidence covers one whole-stack ordinary item, not every Gift branch.
+
+The implementation is reachable only through the paused trade-gift-probe
+diagnostic. Persistent session rebinding, public transport, Gift refusal
+effects, cages, artifact announcements and foreign-caravan behavior still need
+qualification. Seize remains separate unfinished work: its inline path begins
+31a7be, usesc90540 for ownership removal and ENTITY_STOLEN references, and changes
+caravan flags, mood and departure time. The Gift method must not substitute
+for that action. Trade remains hidden and protocol245 is unchanged.
+
 ## Owned Trade refusal checks
 
 The owned negotiation context evaluates DF's pinned31b252..31b615 branch order:

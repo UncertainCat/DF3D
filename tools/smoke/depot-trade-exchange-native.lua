@@ -14,6 +14,10 @@ local function snapshot(label)
  result.cases[#result.cases+1]=row;capture('depot-trade-empty-'..label)
 end
 local ok,err=xpcall(function()
+ if os.getenv('DF3D_DEPOT_TRADE_GIFT') then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-exchange%-native.lua$','depot-trade-gift-native.lua')
+  result.gift=assert(loadfile(source))(view,trade,click,capture,out)
+ end
  if os.getenv('DF3D_DEPOT_TRADE_NEGOTIATE')=='1' then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-exchange%-native.lua$','depot-trade-negotiate-native.lua')
   result.negotiation=assert(loadfile(source))(view,trade,click,capture,out)

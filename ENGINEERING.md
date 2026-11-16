@@ -3297,6 +3297,25 @@ rebuild for later header changes, and all19 CTest checks pass.
 This qualifies the room component, not the occupant body or public cage route.
 Evidence: `completed_sheet_discovery_reference.cage_room_location_reference`.
 
+`cage_occupants_native.h` owns the parent's ordered semantic occupant rows:
+contained unit/live-animal-item references first, then assignments absent from
+those references. Unresolved units retain slots; non-animal item references still
+suppress duplicate assigned-item rows. Captions use native1330c30 with an owned
+unit description context and the shared native item formatter. Status copy and
+colors come from the pinned renderer branch. No native list, scroll or selection
+storage is read. `cage-occupants-read` exposes the diagnostic; product transport
+and the occupant presentation remain pending.
+
+Protected121722 (DF37056) compares contained pet5969 and assigned unit6960 against
+the native parent. Reads leave gps/main_interface byte-identical; ordered facts
+and revision return to their baseline after restoration. Native parent checkbox
+removal changes only cage membership/check flag in this ordinary case, preserving
+unit flags, current job and general references. Its inline input branch differs
+from the picker callback's broader detach path; do not substitute picker effects
+for parent-row actions. Parent-edit provider qualification remains required.
+Bridge build and core19 pass; source unchanged, owned DF closed unsaved at30FPS,
+GPU60C. Evidence: `completed_sheet_discovery_reference.cage_occupant_provider_reference`.
+
 ### Other completed-building families
 
 Protected120249 on2026-11-15 inventories the completed building families outside

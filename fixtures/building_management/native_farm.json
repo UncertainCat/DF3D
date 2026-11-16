@@ -113826,6 +113826,172 @@
           "build/stockpile-storage-native-farm-discovery-20261116-120711/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
           "build/stockpile-storage-native-farm-discovery-20261116-120711/cage-wire.stderr.log": "244db32c63cb5c412fd6b2fc3f6c6851898fa0ece91ffbc018d1c4d47a73fe8a"
         }
+      },
+      "cage_occupant_provider_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261116-121722",
+        "owned_df_pid": 37056,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Owned ordered occupant read matches contained pet5969 then assigned unit6960, native names/status/colors; semantic revisions change and restore. Each read leaves gps/main_interface byte-identical. Native parent checkbox removes unit membership, sets CHECKOCCUPANTS and preserves unit flags/current job/refs. No parent edit provider, transport or occupant render acceptance.",
+        "body": {
+          "cases": [
+            {
+              "items": [
+                5969
+              ],
+              "label": "contained-item",
+              "lines": [],
+              "provider": {
+                "building_id": 261,
+                "justice_restraint": false,
+                "removing": false,
+                "revision": 3012827996673718818,
+                "rows": [
+                  {
+                    "assigned": true,
+                    "contained": true,
+                    "entity": 2,
+                    "id": 5969,
+                    "name": "(tame masked lovebird)",
+                    "resolved": true,
+                    "status": "Occupant",
+                    "status_color": 10
+                  }
+                ]
+              },
+              "units": []
+            },
+            {
+              "items": [
+                5969
+              ],
+              "label": "assigned-unit",
+              "lines": [
+                {
+                  "text": "       Stray Drake,   (Tame)",
+                  "y": 15
+                },
+                {
+                  "text": "       Assigned",
+                  "y": 16
+                }
+              ],
+              "provider": {
+                "building_id": 261,
+                "justice_restraint": false,
+                "removing": false,
+                "revision": 1219406902373000577,
+                "rows": [
+                  {
+                    "assigned": true,
+                    "contained": true,
+                    "entity": 2,
+                    "id": 5969,
+                    "name": "(tame masked lovebird)",
+                    "resolved": true,
+                    "status": "Occupant",
+                    "status_color": 10
+                  },
+                  {
+                    "assigned": true,
+                    "contained": false,
+                    "entity": 1,
+                    "id": 6960,
+                    "name": "Stray Drake, ♂ (Tame)",
+                    "resolved": true,
+                    "status": "Assigned",
+                    "status_color": 15
+                  }
+                ]
+              },
+              "units": [
+                6960
+              ]
+            },
+            {
+              "items": [
+                5969
+              ],
+              "label": "restored",
+              "lines": [],
+              "provider": {
+                "building_id": 261,
+                "justice_restraint": false,
+                "removing": false,
+                "revision": 3012827996673718818,
+                "rows": [
+                  {
+                    "assigned": true,
+                    "contained": true,
+                    "entity": 2,
+                    "id": 5969,
+                    "name": "(tame masked lovebird)",
+                    "resolved": true,
+                    "status": "Occupant",
+                    "status_color": 10
+                  }
+                ]
+              },
+              "units": []
+            }
+          ],
+          "contained": [
+            {
+              "entity": 2,
+              "id": 5969
+            }
+          ],
+          "id": 261,
+          "parent_remove": {
+            "after": {
+              "flags1": 109051904,
+              "flags2": 301989936,
+              "flags3": 258,
+              "flags4": 8,
+              "job": -1,
+              "refs": [
+                {
+                  "id": 28448,
+                  "type": 11
+                }
+              ]
+            },
+            "before": {
+              "flags1": 109051904,
+              "flags2": 301989936,
+              "flags3": 258,
+              "flags4": 8,
+              "job": -1,
+              "refs": [
+                {
+                  "id": 28448,
+                  "type": 11
+                }
+              ]
+            },
+            "flags": 4,
+            "id": 6960
+          },
+          "restored": true,
+          "rooms": [
+            {
+              "id": 259,
+              "location_id": 0,
+              "location_tier": 1,
+              "location_type": 2,
+              "site_id": 651,
+              "type": 87
+            }
+          ],
+          "success": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261116-121722/cage-body-native.json": "c6ed04414f50baa620f3fcd46752470dda10b4532f5055991fbfadf3ea86f398",
+          "build/stockpile-storage-native-farm-discovery-20261116-121722/cage-body-assigned-unit.png": "5adfb35f0ec6f8bb2c05231c64d8f54835e277a4f7094c380a78aec9153c543d",
+          "build/stockpile-storage-native-farm-discovery-20261116-121722/cage-body-parent-removed.png": "3fd15ba29b5b57fcf03cf83a610962c73f4a1402820dc63782af62b8346aac51",
+          "build/stockpile-storage-native-farm-discovery-20261116-121722/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261116-121722/remaining-buildings-native.json": "204608e01e3de1aa0669f70cd2baa8225caec95f60555149b52b6d79882a67bc"
+        }
       }
     },
     "pending_construction_reference": {

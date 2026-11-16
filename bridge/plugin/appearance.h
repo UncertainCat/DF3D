@@ -122,6 +122,9 @@ void dumpPages(DFHack::color_ostream& out);
 // Read-only runtime texture diagnostic. Writes bounded RGBA, JSON dimensions
 // and a magenta-backed PPM to an absolute prefix in an existing directory.
 bool dumpTexture(DFHack::color_ostream& out, int32_t texpos, const std::string& prefix);
+// Paused diagnostic: composite an independently resolved recipe (0 map,
+// 1 portrait, 2 selector). Native cache pixels are not inputs to resolution.
+bool dumpUnitRecipe(DFHack::color_ostream& out, df::unit* unit, int mode, const std::string& prefix);
 // Corpse diagnostics (`df3d corpse ...`). dumpCorpse prints the
 //   item's creature / caste / corpse flags, the resolved stack, DF's own
 //   cached corpse texpos (item_corpsest::texpos) and the viewport's item

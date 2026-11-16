@@ -5738,6 +5738,12 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         if (parameters.size() < 2) return CR_WRONG_USAGE;
         const string& what = parameters[1];
+        if (what == "recipe") {
+            if(parameters.size()!=5)return CR_WRONG_USAGE;
+            if(!df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+            int32_t values[2]={};for(size_t i=2;i<4;++i){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-2]);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;}
+            return app::dumpUnitRecipe(out,df::unit::find(values[0]),values[1],parameters[4])?CR_OK:CR_FAILURE;
+        }
         if (what == "texture") {
             if (parameters.size() != 4) return CR_WRONG_USAGE;
             if (!df::global::pause_state || !*df::global::pause_state || df3d_session::saving()) {

@@ -94056,6 +94056,40 @@
           "bridge/plugin/trade_header_native.h": "8fbc37f1ff7ad52ebfb20c8258c3fb056ce34d3e172024f7c4648e2c7e6f1074",
           "tools/smoke/depot-trade-dialogue-native.lua": "5dbc61c170bcd9888113cb9c808cf6467672eebba0266d26ef70202827ed159f"
         }
+      },
+      "depot_trade_speaker_art_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261115-212946",
+        "owned_df_pid": 48704,
+        "closed_unsaved": true,
+        "source_preserved": true,
+        "scope": "Single native merchant996. Independently resolved selector recipe32x32 matches all pixels of native96x64 sheet canvas after placement at32,32 on transparent background (compared over magenta). Native face portrait cache0 while independent face portrait96x96 exists; Trade uses sheet_icon_texpos, not portrait_texpos. Other creatures, large/small-sheet branches, native cache timing, missing anatomy and Godot rendering remain unqualified.",
+        "source": {
+          "portrait": 0,
+          "recipes": [
+            "32x32 20 layers\n",
+            "96x96 12 layers\n",
+            "32x32 20 layers\n"
+          ],
+          "sheet": 162809,
+          "unit": 996
+        },
+        "canvas": [
+          96,
+          64
+        ],
+        "offset": [
+          32,
+          32
+        ],
+        "different_pixels": 0,
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261115-212946/depot-trade-native.json": "eb58c256005a84f451662277c5a8a3c3c455b189af70b63e28cb8d850d3ea6f3",
+          "build/stockpile-storage-native-farm-discovery-20261115-212946/result.json": "ffe1bbcc91c5c2b52d5f1171ab366fcac5a7e2b15ae766371e789aef51f516ea",
+          "build/stockpile-storage-native-farm-discovery-20261115-212946/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261115-212946/trade-speaker-native-sheet.ppm": "c24bbf5652260f14b867dcb50d5ad280a5517322917914bb4fe102115900263f",
+          "build/stockpile-storage-native-farm-discovery-20261115-212946/trade-speaker-recipe-2.ppm": "dfa68c774a6c87dd988ec1aded585a524f90857633c9a95d8529cce171a87821",
+          "build/stockpile-storage-native-farm-discovery-20261115-212946/trade-speaker-recipe-1.ppm": "0166012ab6cf6bf6eabec635c491be58e10daeec5423c84696ecaa4e16a82abe"
+        }
       }
     },
     "pending_construction_reference": {

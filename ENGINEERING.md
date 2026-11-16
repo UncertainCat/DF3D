@@ -29,6 +29,21 @@ Bridge build and all19 core checks pass. Evidence:
 This qualifies native wrapping at that viewport, not other sizes, portrait
 selection or the pending public header transport/Godot integration.
 
+Trade speaker artwork uses the full-body sheet image, not the face portrait.
+Native6d7704 tests flag800 and returns unit.sheet_icon_texpos at1420; the face
+portrait is at142c. These cached textures are diagnostic references only.
+Protected212946 on2026-11-15 finds merchant996's independently resolved selector
+recipe32x32 pixel-exact against the native96x64 sheet when placed at32,32 on a
+transparent canvas. Its face portrait cache is0 even though a96x96 face recipe
+exists, so selecting resolvePortrait would produce the wrong Trade image.
+Evidence: `completed_sheet_discovery_reference.depot_trade_speaker_art_reference`.
+Owned DF48704 closes unsaved/source-preserved,30FPS, sampled60C. This establishes
+one merchant's recipe and placement, not other creature shapes, missing anatomy,
+cache timing or rendered Godot header acceptance. The paused
+`df3d appearance recipe <unit> <0|1|2> <absolute-prefix>` diagnostic exports map,
+face-portrait or selector recipes from original installed layers, independently
+of cached DF pixels; exports stay in ignored build output.
+
 ## Owned trade dialogue provider
 
 DF53.16 assembles trade dialogue inline in384850; there is no independent

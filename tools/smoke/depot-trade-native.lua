@@ -53,6 +53,17 @@ local function record(label)
   end
  end
  result.cases[#result.cases+1]=row
+ if label=='speaker' and os.getenv('DF3D_DEPOT_TRADE_ART_RECIPE')=='1' then
+  local speaker=assert(trade.merchant_trader);row.art_recipe={unit=speaker.id,sheet=speaker.sheet_icon_texpos,portrait=speaker.portrait_texpos,recipes={}}
+  for mode=0,2 do
+   local output,code=dfhack.run_command_silent('df3d','appearance','recipe',tostring(speaker.id),tostring(mode),out..'/trade-speaker-recipe-'..mode)
+   assert(code==0,output);row.art_recipe.recipes[#row.art_recipe.recipes+1]=output
+  end
+  for _,kind in ipairs{'sheet','portrait'}do
+   local texpos=row.art_recipe[kind]
+   if texpos>0 then local output,code=dfhack.run_command_silent('df3d','appearance','texture',tostring(texpos),out..'/trade-speaker-native-'..kind);assert(code==0,output)end
+  end
+ end
  if os.getenv('DF3D_DEPOT_TRADE_HEADER')=='1' and trade.open and not trade.choosing_merchant then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('depot%-trade%-native.lua$','depot-trade-header-native.lua')
   row.header=assert(loadfile(source))(view,trade,b,label=='speaker')

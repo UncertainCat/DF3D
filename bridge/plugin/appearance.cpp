@@ -1435,6 +1435,20 @@ void trace(color_ostream& out, df::unit* u, const std::string& token) {
     out.print("  ({} layers resolved)\n", r.layers.size());
 }
 
+bool dumpUnitRecipe(color_ostream& out, df::unit* unit, int mode, const std::string& prefix) {
+    if(!unit || mode<0 || mode>2)return false;
+    const std::filesystem::path path(prefix);std::error_code ec;
+    if(prefix.empty() || prefix.size()>4096 || !path.is_absolute() || path.filename().empty() ||
+       !std::filesystem::is_directory(path.parent_path(),ec) || ec || std::filesystem::exists(prefix+".ppm",ec) || ec)return false;
+    Result recipe;
+    const bool available=mode==0?resolve(unit,recipe):mode==1?resolvePortrait(unit,recipe):resolveUnitSelector(unit,recipe);
+    if(!available || recipe.layers.empty()){out.print("no recipe\n");return true;}
+    Canvas canvas;std::string why;
+    if(!composite(recipe,recipe.layers[0].cellsX,recipe.layers[0].cellsY,canvas,why)){out.printerr("{}\n",why);return false;}
+    writePpm(prefix+".ppm",canvas.w,canvas.h,[&](int x,int y,Rgba& pixel){pixel=canvas.at(x,y);return true;});
+    out.print("{}x{} {} layers\n",canvas.w,canvas.h,recipe.layers.size());return true;
+}
+
 void dump(color_ostream& out, df::unit* u, bool verify, const std::string& imageDir) {
     g_imageDir = imageDir;
     Result r;

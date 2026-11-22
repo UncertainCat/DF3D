@@ -145,6 +145,10 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
     f=assert(io.open(out..'/pet-controls-provider.json','w'));f:write(json.encode(samples));f:close()
     assert(#samples==#observed.rows,'Pet control row count differs')
     for _,sample in ipairs(samples)do assert(sample.matches and sample.unchanged,'Pet controls differ '..sample.kind..':'..sample.id)end
+    if os.getenv('DF3D_PET_EDITS_PROVIDER')=='1' then
+     local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','pet-edits-native.lua')
+     assert(loadfile(path))(out,view,active_list,samples,callbacks)
+    end
    end
   end
   assert(loadfile(source))(out..'/'..name..'-widgets.json','templates')

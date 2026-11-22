@@ -12458,7 +12458,8 @@ and19 core checks pass. Evidence:
 It copies ownership captions/owner IDs and maps the generated callbacks to
 semantic slaughter/adoption-availability/gelding operations. The temporary row
 is never arranged, rendered, fed or activated. `pet-controls-probe kind id`
-exposes this read-only diagnostic; no public pet edit is implemented yet.
+exposes this read-only diagnostic. The edit provider below remains diagnostic;
+no public pet edit is exposed yet.
 
 Protected092054 captures the complete native Pets/Livestock control tree with
 `DF3D_CREATURE_CONTROL_REFERENCE=1`;092607 adds `DF3D_PET_CONTROLS_PROVIDER=1`
@@ -12473,10 +12474,29 @@ Native actions are unit slaughter3d0ca0, adoption availability3d0e50,
 gelding3d0c40 and item availability3d0a90. Slaughter/availability callbacks
 also enqueue a row refresh through142c110/142c200, which dereferences list
 storage even when the captured row is absent. They must not be called with a
-null list or a borrowed native list. An owned refresh context and live effect
-comparison remain necessary. Overall Training routes through3d15c0 to36cf90;
-training choices/actions, tooltip and color extraction, animal edit effects,
-typed transport and public sibling views remain unqualified or unimplemented.
+null list or a borrowed native list. `pet_edits_native.h` supplies an owned
+refresh vector at0x6a0 with capacity reserved before mutation, and owned weak
+captures. Gelding writes only to local glyph scratch in addition to the unit.
+Edits re-resolve typed IDs, check current native Pets membership and action
+availability, and reject stale revisions or an already-current desired value.
+Native calls are pinned; an exception or inconsistent receipt after invocation
+returns Unknown and must not be replayed. The enclosing transport still needs
+session/epoch ownership before this can be publicly exposed.
+
+Protected093033 on2026-11-22 adds `DF3D_PET_EDITS_PROVIDER=1`. Native clicks and
+owned callbacks match both toggle directions for unit6548 gelding, unit6960
+adoption/slaughter, and item5969 adoption. All eight edits return Applied;
+stale and duplicate requests reject without additional effects. Compared unit
+flags1/2/3 and item flags/pet_flags/owner_id match, and toggle pairs restore the
+original values. Viewport positioning is controlled oracle setup; scrolling is
+not qualified by this run. Owned DF32712 closes unsaved/source-preserved at30FPS,
+sampled60C. Bridge build and19 core checks pass. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-093033`.
+
+Overall Training routes through3d15c0 to36cf90; training choices/actions,
+tooltip and color extraction, typed transport and public sibling views remain
+unqualified or unimplemented. Paused toggle parity does not qualify subsequent
+simulation job execution or broader animal lifecycle behavior.
 
 
 Residents Activity has distinct job-settings and event-description routes.

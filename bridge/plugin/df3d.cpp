@@ -148,6 +148,7 @@
 #include "residents_order_native.h"
 #include "creature_lists_native.h"
 #include "pet_controls_native.h"
+#include "pet_edits_native.h"
 #include "residents_activity_native.h"
 #include "tasks_native.h"
 #include "places_native.h"
@@ -3427,6 +3428,25 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!ids)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["ids"]=Json::Value(Json::arrayValue);
           for(auto id:*ids)result["ids"].append(id);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="pet-edit-probe") {
+          if(parameters.size()!=3 && parameters.size()!=6)return CR_WRONG_USAGE;
+          int64_t values[5]{};
+          for(size_t i=1;i<parameters.size();++i) {
+            const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          }
+          if(values[0]<0 || values[0]>1 || values[1]<0 || values[1]>INT32_MAX)return CR_WRONG_USAGE;
+          Json::Value result(Json::objectValue);
+          if(parameters.size()==6) {
+            if(values[2]<1 || values[3]<0 || values[3]>2 || values[4]<0 || values[4]>1)return CR_WRONG_USAGE;
+            result["outcome"]=int(df3d_residents::setPetAction(int(values[0]),int(values[1]),uint64_t(values[2]),int(values[3]),values[4]!=0));
+          }
+          const auto state=df3d_residents::petEditState(int(values[0]),int(values[1]));if(!state)return CR_FAILURE;
+          result["revision"]=std::to_string(state->revision);result["values"]=Json::Value(Json::arrayValue);result["actions"]=Json::Value(Json::arrayValue);
+          for(bool value:state->values)result["values"].append(value);
+          for(auto action:state->controls.actions)result["actions"].append(action);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="pet-controls-probe") {

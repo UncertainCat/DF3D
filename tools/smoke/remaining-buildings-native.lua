@@ -174,7 +174,7 @@ for _,kind in ipairs(kinds)do
    local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','well-status-native.lua')
    result.well_status=assert(loadfile(source))(out,view,b,capture)
   end
-  if os.getenv('DF3D_SIMPLE_BUILDING_SCENE')=='1' or default_families or (os.getenv('DF3D_SPECIAL_BUILDINGS_SCENE')=='1' and (kind==24 or kind==48 or kind==49))then
+  if (kind==27 and os.getenv('DF3D_CHAIN_SCENE')=='1') or os.getenv('DF3D_SIMPLE_BUILDING_SCENE')=='1' or default_families or (os.getenv('DF3D_SPECIAL_BUILDINGS_SCENE')=='1' and (kind==24 or kind==48 or kind==49))then
    local original=b.name;assert(#b.jobs==0)
    local function click(x,y)
     g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
@@ -187,6 +187,13 @@ for _,kind in ipairs(kinds)do
    click(800,82);gui.simulateInput(view,'STRING_A000');gui.simulateInput(view,'SELECT');assert(b.name==original);shot('restored')
    click(832,82);assert(#b.jobs==1 and b.jobs[0].job_type==df.job_type.DestroyBuilding);shot('removing')
    click(520,202);assert(#b.jobs==0);shot('cancelled')
+  end
+  if kind==27 and os.getenv('DF3D_CHAIN_SCENE')=='1' then
+   row.unit_id=result.chain.selection.unit_id
+   local f=assert(io.open(out..'/chain-scene-expected.json','w'));f:write(json.encode(row));f:close()
+   capture('chain-scene')
+   f=assert(io.open(out..'/chain-scene-result.json'));result.chain_scene=json.decode(f:read('*a'));f:close()
+   assert(result.chain_scene.success and not b.assigned and not b.chained and #b.jobs==0 and dfhack.df2utf(b.name)==row.custom_name)
   end
   result.buildings[#result.buildings+1]=row
  else result.missing[#result.missing+1]=kind end

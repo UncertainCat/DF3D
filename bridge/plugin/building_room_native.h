@@ -45,7 +45,7 @@ inline std::optional<std::vector<df::building_civzonest*>> relevantBuildingRooms
     return result;
 }
 inline std::optional<BuildingRoomBody> cageRoomBody(df::building& building) {
-    if(building.getType()!=df::building_type::Cage)return {};
+    if(building.getType()!=df::building_type::Cage && building.getType()!=df::building_type::Chain)return {};
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     static const bool ready=[base] {
         // Cage renderer's owned relation filter. Calling it would borrow UI;

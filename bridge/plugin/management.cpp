@@ -68,6 +68,7 @@
 #include "management_data.h"
 #include "cage_native.h"
 #include "cage_occupants_native.h"
+#include "chain_occupants_native.h"
 #include "lua_fields.h"
 #include "management_util.h"
 #include "management_helpers.h"
@@ -391,7 +392,8 @@ struct CageOrder {
   uint64_t revision=0;
   std::vector<df3d_area::ZoneAnimalCandidate> rows;
 };
-std::optional<CageOrder> cageOrder(const df3d_production::CageSnapshot& snapshot,const m::ProductionRequest& request) {
+template<class Snapshot>
+std::optional<CageOrder> cageOrder(const Snapshot& snapshot,const m::ProductionRequest& request) {
   const auto& q=*request.cage();const std::string query=request.query()?request.query()->str():std::string{};
   auto rows=df3d_area::nativeAnimalPickerOrder(snapshot.candidates,q.sort(),q.descending(),UTF2DF(query));
   if(!rows)return {};
@@ -441,7 +443,8 @@ std::optional<NativeAreaCandidate> cageRow(const df3d_area::ZoneAnimalCandidate&
   }
   return row;
 }
-bool fillCagePage(CageState& result,const df3d_production::CageSnapshot& snapshot,const CageOrder& order,uint32_t cursor) {
+template<class Snapshot>
+bool fillCagePage(CageState& result,const Snapshot& snapshot,const CageOrder& order,uint32_t cursor) {
   if(cursor>order.rows.size() || (cursor && cursor==order.rows.size()))return false;
   std::vector<NativeAreaCandidate> rows;size_t bytes=0;
   for(size_t i=cursor;i<order.rows.size() && rows.size()<64;++i) {
@@ -3676,7 +3679,7 @@ df::building_actual* contentsBuilding(int32_t id,bool editing=false) {
   if(!building)return nullptr;
   const auto type=building->getType();
   const bool lever=type==df::building_type::Trap && (building->getSubtype()==0 || building->getSubtype()==1);
-  if(!df3d_production::specialFurnitureType(type) && type!=df::building_type::Cage && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
+  if(!df3d_production::specialFurnitureType(type) && type!=df::building_type::Cage && type!=df::building_type::Chain && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
      !lever && (editing || !df3d_production::productionProfileBuilding(building)) &&
      !df3d_production::observePendingBuilding(building))return nullptr;
   auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
@@ -4371,6 +4374,41 @@ void run(color_ostream& out) {
     try {
       const auto execute=[&] {
       auto* building=df::building::find(q.building_id());
+      if(building && building->getType()==df::building_type::Chain) {
+        const auto authority=df3d_production::observeChain(building);if(!authority)return;
+        const auto body=intent.operation()>=2?df3d_production::observeChainOccupants(building):std::nullopt;
+        const auto order=intent.operation()<2?cageOrder(*authority,q):std::nullopt;
+        if(!body && !order)return;
+        const auto revision=body?body->revision:order->revision;
+        if(q.expected_revision() && q.expected_revision()!=revision) {
+          if(edit)result.outcome=m::FarmEditOutcome::Stale;return;
+        }
+        if(edit) {
+          if(intent.entity()!=m::AreaCandidateEntity::Unit || authority->justiceRestraint)return;
+          // Chain picker selects and closes; body intent explicitly reflects
+          // the clicked row's desired assignment, preventing accidental toggles.
+          if(body) {
+            const auto row=std::find_if(body->rows.begin(),body->rows.end(),[&](const auto& value){return value.id==intent.candidate_id();});
+            if(row==body->rows.end() || row->assigned==intent.assigned())return;
+          } else if(!intent.assigned())return;
+          const auto applied=df3d_production::setChainAssignment(building,authority->revision,intent.candidate_id(),bool(body));
+          entered=applied.effectsStarted;mutated=entered;
+          using O=df3d_production::ChainOutcome;
+          result.outcome=applied.outcome==O::Completed?m::FarmEditOutcome::Completed:applied.outcome==O::Stale?m::FarmEditOutcome::Stale:
+            applied.outcome==O::Unknown?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected;
+          if(applied.outcome==O::Completed && applied.receipt) {
+            if(body) {
+              const auto after=df3d_production::observeChainOccupants(building);
+              if(after && fillCageOccupants(result,*after,0))status=m::ManagementStatus::Ok;
+            } else {
+              const auto after=cageOrder(*applied.receipt,q);
+              if(after && fillCagePage(result,*applied.receipt,*after,0))status=m::ManagementStatus::Ok;
+            }
+            if(status!=m::ManagementStatus::Ok){clearSnapshot();result.outcome=entered?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected;}
+          }
+        } else if(body?fillCageOccupants(result,*body,q.cursor()):fillCagePage(result,*authority,*order,q.cursor()))status=m::ManagementStatus::Ok;
+        return;
+      }
       if(intent.operation()>=2) {
         const auto before=df3d_production::observeCageOccupants(building);if(!before)return;
         if(q.expected_revision() && q.expected_revision()!=before->revision) {
@@ -4561,7 +4599,7 @@ void run(color_ostream& out) {
         auto* building=df::building::find(q->building_id());
         if(!building)return nullptr;
         const auto type=building->getType();
-        if(!df3d_production::specialFurnitureType(type) && type!=df::building_type::Cage && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && !df3d_production::productionProfileBuilding(building))return nullptr;
+        if(!df3d_production::specialFurnitureType(type) && type!=df::building_type::Cage && type!=df::building_type::Chain && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && !df3d_production::productionProfileBuilding(building))return nullptr;
         auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
         return tile && !tile->bits.hidden?building:nullptr;
       };
@@ -4707,7 +4745,7 @@ void run(color_ostream& out) {
         const auto contentsType=contentsBuilding(q->building_id())->getType();
         const bool editRemoving=df3d_production::ordinaryTrapBuilding(contentsBuilding(q->building_id())) || unfinished || contentsType==df::building_type::Box ||
           (contentsType==df::building_type::Trap && (contentsBuilding(q->building_id())->getSubtype()==0 || contentsBuilding(q->building_id())->getSubtype()==1)) ||
-          df3d_production::specialFurnitureType(contentsType) || contentsType==df::building_type::Cage || contentsType==df::building_type::TradeDepot || contentsType==df::building_type::Well || df3d_production::machineryBuildingType(contentsType) || df3d_production::plainFurnitureType(contentsType) || df3d_production::funeraryFurnitureType(contentsType) || df3d_production::linkedFurnitureType(contentsType);
+          df3d_production::specialFurnitureType(contentsType) || contentsType==df::building_type::Cage || contentsType==df::building_type::Chain || contentsType==df::building_type::TradeDepot || contentsType==df::building_type::Well || df3d_production::machineryBuildingType(contentsType) || df3d_production::plainFurnitureType(contentsType) || df3d_production::funeraryFurnitureType(contentsType) || df3d_production::linkedFurnitureType(contentsType);
         auto edit=df3d_production::finishBuildingItemEdit(*before,q->expected_revision(),q->item_id(),action,q->item_value()!=0,[&] {
           auto* building=contentsBuilding(q->building_id(),true);
           if(!building)return false;

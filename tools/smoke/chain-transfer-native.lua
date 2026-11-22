@@ -55,6 +55,7 @@ local function scenario(owned)
  if owned then
   local before=probe();local edit=probe(before.revision,animal.id,0)
   assert(edit.outcome==1 and edit.effects_started)
+  assert(#edit.occupants==1 and edit.occupants[1].assigned and edit.occupants[1].contained and edit.occupants[1].status=='Assigned and chained')
  else native_select()end
  local result={assigned=target.assigned and target.assigned.id or -1,chained=target.chained and target.chained.id or -1,
   source_assigned=source.assigned and source.assigned.id or -1,source_chained=source.chained and source.chained.id or -1,

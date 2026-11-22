@@ -36,6 +36,19 @@ inline bool cageOccupantsReady() {
             std::strcmp(reinterpret_cast<const char*>(base+0x16018d0),"Unassigned occupant")==0;
     }();return ready;
 }
+// Independently owned inventory context for the native body-name routine.
+// Cage rows request containment wording; chain rows use the ordinary unit name.
+inline std::optional<std::string> restraintUnitName(df::unit& subject,bool cage) {
+    if(subject.inventory.size()>10000 || !subject.body.body_plan)return {};
+    for(auto* held:subject.inventory)if(!held || !held->item)return {};
+    df3d_creature::InventoryDescriptionContext owned(subject);
+    using Name=void(*)(df::unit*,std::string*,bool);
+    const auto base=reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
+    std::string name;
+    reinterpret_cast<Name>(base+0x1330c30)(owned.unit(),&name,cage);
+    if(name.size()>2048)return {};
+    return name;
+}
 inline std::optional<CageOccupants> observeCageOccupants(df::building* building) {
     if(!building || building->getType()!=df::building_type::Cage || !cageOccupantsReady())return {};
     auto& cage=*static_cast<df::building_cagest*>(building);
@@ -54,11 +67,8 @@ inline std::optional<CageOccupants> observeCageOccupants(df::building* building)
                 row.name=*name;row.resolved=true;
             }
         } else if(auto* subject=df::unit::find(id)) {
-            if(subject->inventory.size()>10000 || !subject->body.body_plan)return false;
-            for(auto* held:subject->inventory)if(!held || !held->item)return false;
-            df3d_creature::InventoryDescriptionContext owned(*subject);
-            using Name=void(*)(df::unit*,std::string*,bool);
-            reinterpret_cast<Name>(const_cast<uint8_t*>(base+0x1330c30))(owned.unit(),&row.name,true);
+            const auto name=restraintUnitName(*subject,true);if(!name)return {};
+            row.name=*name;
             row.resolved=true;
         }
         if(row.name.size()>2048)return false;

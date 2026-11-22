@@ -3,7 +3,7 @@ extends RefCounted
 signal changed
 signal applied
 const C=preload("res://scripts/management_contract.gd")
-const SUPPORTED_TYPES=[0,1,2,3,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,24,25,26,28,31,32,33,35,36,37,38,39,40,41,42,43,44,45,46,48,49,50,51,52,54]
+const SUPPORTED_TYPES=[0,1,2,3,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,24,25,26,27,28,31,32,33,35,36,37,38,39,40,41,42,43,44,45,46,48,49,50,51,52,54]
 enum Phase { Closed, Reading, Ready, Applying, Rejected, Stale, Unknown, Unavailable }
 var service
 var phase:=Phase.Closed
@@ -190,9 +190,10 @@ static func _special_text(body: Dictionary,key: String,empty: bool) -> bool:
 	return bytes.size()<=6144 and not bytes.has(0) and (empty or not bytes.is_empty())
 
 static func valid_cage(value: Dictionary) -> bool:
-	if value.type!=28:return not value.has("cage")
+	if value.type not in [27,28]:return not value.has("cage")
 	if typeof(value.get("cage"))!=TYPE_DICTIONARY:return false
 	var body: Dictionary=value.cage
+	if value.type==27 and (body.get("glass",false) or body.get("aquarium",false)):return false
 	for field in ["justice_restraint","glass","aquarium"]:
 		if typeof(body.get(field))!=TYPE_BOOL:return false
 	if typeof(body.get("room"))!=TYPE_DICTIONARY:return false

@@ -3,6 +3,7 @@ signal focus_requested(tile: Vector3i)
 var art = preload("res://scripts/original_ui.gd").new()
 var state
 var cage_layout:=false
+var chain_layout:=false
 var world
 var native_help
 var body: Control
@@ -121,7 +122,7 @@ func bind_containment_help(button: Button, relation: int) -> void:
 	var target := Control.new(); target.name = "AnimalContainmentHover"
 	# Approved native bug correction: retain the native 4x3-cell bounds at the
 	# drawn indicator, instead of swapping their X/Y coordinates.
-	target.position = Vector2(248 if cage_layout else 240,0); target.size = Vector2(32,36)
+	target.position = Vector2(216 if chain_layout else (248 if cage_layout else 240),0); target.size = Vector2(32,36)
 	target.mouse_filter = Control.MOUSE_FILTER_PASS; button.add_child(target)
 	target.set_meta("relation",relation)
 	var owner := target.get_instance_id()
@@ -274,6 +275,7 @@ func refresh() -> void:
 				var check := TextureRect.new(); check.name = "AnimalAssigned"
 				check.texture = art.texture("LABOR_WORKER_ASSIGNED" if bool(row.get("assigned",false)) else "LABOR_WORKER_UNASSIGNED")
 				check.position = Vector2(288 if cage_layout else 280,0); check.size = Vector2(32,36)
+				check.visible=not chain_layout
 				check.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(check)
 				update_animal_status(button,row)
 	if state.kind == 1:
@@ -475,7 +477,7 @@ func update_animal_status(button: Button, row: Dictionary) -> void:
 		elif status_kind == 4 and row.has("animal_restraint"): indicator.texture = world.animal_restraint_icon(row.animal_restraint)
 		elif status_kind == 4: indicator.texture = world.animal_container_icon(row.animal_container)
 		else: indicator.texture = art.texture(["UNIT_SELECTOR_PASTURE","UNIT_SELECTOR_PIT","UNIT_SELECTOR_POND"][status_kind-1])
-		indicator.position = Vector2(250 if cage_layout else 242,2); indicator.size = Vector2(32,32)
+		indicator.position = Vector2(218 if chain_layout else (250 if cage_layout else 242),2); indicator.size = Vector2(32,32)
 		indicator.expand_mode = TextureRect.EXPAND_IGNORE_SIZE; indicator.stretch_mode = TextureRect.STRETCH_SCALE
 		indicator.mouse_filter = Control.MOUSE_FILTER_IGNORE; indicator.show()
 

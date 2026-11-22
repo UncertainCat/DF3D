@@ -3140,7 +3140,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         switch(type) {
         case 0:case 1:case 2:case 3:case 5:case 6:case 8:case 9:case 10:case 11:
         case 12:case 13:case 14:case 15:case 16:case 17:case 18:case 19:case 20:case 21:
-        case 23:case 24:case 25:case 26:case 28:case 48:case 49:case 31:case 32:case 45:case 46:case 51:case 52:case 54:return true;
+        case 23:case 24:case 25:case 26:case 27:case 28:case 48:case 49:case 31:case 32:case 45:case 46:case 51:case 52:case 54:return true;
         default:return false;
         }
       };
@@ -3161,8 +3161,9 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         }
         if(const auto* v=f->hive())if(v->crowding()>2 || v->colony_race()<-1 || v->matching_colonies()<0 || v->matching_colonies()>100000 ||
            (v->colony_race()<0 && (v->matching_colonies() || v->crowding())))return "invalid hive body";
-        if((f->type()==28)!=(f->cage()!=nullptr))return "missing or unexpected cage body";
+        if((f->type()==27 || f->type()==28)!=(f->cage()!=nullptr))return "missing or unexpected cage body";
         if(const auto* v=f->cage()) {
+          if(f->type()==27 && (v->glass() || v->aquarium()))return "unexpected chain aquarium controls";
           const auto* room=v->room();
           if(!room || room->room_id()<-1 || !text(room->introduction(),true) || !text(room->name(),true) || !room->notices() || room->notices()->size()>3)return "invalid cage room body";
           const bool single=room->room_id()>=0;

@@ -27,7 +27,8 @@ inline bool chainCandidatesReady() {
     }();return ready;
 }
 inline std::optional<std::vector<df3d_area::ZoneAnimalCandidate>> chainCandidates(df::building_chainst& chain) {
-    if(!chainCandidatesReady() || chain.getBuildStage()!=chain.getMaxBuildStage() || chain.isJusticeRestraint())return {};
+    if(!chainCandidatesReady() || chain.getBuildStage()!=chain.getMaxBuildStage())return {};
+    if(chain.isJusticeRestraint())return std::vector<df3d_area::ZoneAnimalCandidate>{};
     // The pinned exclusion predicate reads only the semantic chain and unit.
     // Supply its capture layout independently; no widget, filter or selection
     // storage is read or borrowed. Search and display ordering are separate.
@@ -90,7 +91,7 @@ inline bool chainAssign(df::building_chainst& chain,int32_t id,bool toggleRow) {
 struct ChainSnapshot {
     int32_t buildingId=-1,assignedId=-1,chainedId=-1;
     uint64_t revision=0;
-    bool removing=false;
+    bool removing=false,justiceRestraint=false;
     std::vector<df3d_area::ZoneAnimalCandidate> candidates;
 };
 // Revisions include memberships and jobs that a transfer would retire, not
@@ -117,6 +118,7 @@ inline std::optional<ChainSnapshot> observeChain(df::building* building) {
     };
     add(chain.id);add(chain.centerx);add(chain.centery);add(chain.z);
     add(chain.getBuildStage());add(chain.getMaxBuildStage());add(chain.chain_flags.whole);
+    result.justiceRestraint=chain.isJusticeRestraint();add(result.justiceRestraint);
     add(result.assignedId);add(result.chainedId);
     if(!jobs(chain))return {};
     for(auto* job:chain.jobs)if(job->job_type==df::job_type::DestroyBuilding)result.removing=true;
@@ -161,7 +163,7 @@ inline ChainEdit setChainAssignment(df::building* building,uint64_t expected,int
         const auto before=observeChain(building);
         if(!before || id<0 || !expected || expected>INT64_MAX || !chainAssignmentReady())return result;
         if(before->revision!=expected){result.outcome=ChainOutcome::Stale;return result;}
-        if(before->removing)return result;
+        if(before->removing || before->justiceRestraint)return result;
         if(toggleRow) {
             if(before->assignedId!=id && before->chainedId!=id)return result;
         } else if(std::none_of(before->candidates.begin(),before->candidates.end(),

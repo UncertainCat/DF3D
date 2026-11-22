@@ -92,7 +92,7 @@
 #include "machinery_native.h"
 #include "well_native.h"
 #include "cage_native.h"
-#include "chain_native.h"
+#include "chain_occupants_native.h"
 #include "cage_occupants_native.h"
 #include "special_building_native.h"
 #include "depot_native.h"
@@ -5754,6 +5754,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         result["revision"]=std::to_string(snapshot->revision);
         result["assigned_id"]=snapshot->assignedId;result["chained_id"]=snapshot->chainedId;
         result["removing"]=snapshot->removing;
+        result["justice_restraint"]=snapshot->justiceRestraint;
+        if(const auto body=df3d_production::observeChainOccupants(building)) {
+          result["occupants"]=Json::Value(Json::arrayValue);
+          for(const auto& row:body->rows){Json::Value value;value["id"]=row.id;value["name"]=DF2UTF(row.name);value["status"]=row.status;value["assigned"]=row.assigned;value["contained"]=row.contained;result["occupants"].append(value);}
+        } else return CR_FAILURE;
         out.print("{}",Json::FastWriter().write(result));return CR_OK;
       }
       if(parameters[0]=="chain-candidates-read") {

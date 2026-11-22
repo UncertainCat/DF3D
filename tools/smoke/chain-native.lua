@@ -110,17 +110,26 @@ if os.getenv('DF3D_CHAIN_EFFECTS')=='1' then
     return json.decode(text)
    end)
   end
-  local initial=probe()
+  local initial=probe();assert(#initial.occupants==0)
   local invalid=probe(initial.revision,-1,0);assert(invalid.outcome==0 and not invalid.effects_started)
   local selected=probe(initial.revision,unit.id,0)
   assert(selected.outcome==1 and selected.effects_started and selected.assigned_id==unit.id)
+  assert(#selected.occupants==1 and selected.occupants[1].id==unit.id and selected.occupants[1].status=='Assigned' and #selected.occupants[1].name>0 and selected.occupants[1].assigned and not selected.occupants[1].contained)
   assert(json.encode(snapshot())==json.encode(result.selection.after),'Owned chain selection differs from native')
   local stale=probe(initial.revision,unit.id,1);assert(stale.outcome==2 and not stale.effects_started and chain.assigned==unit)
   local removed=probe(selected.revision,unit.id,1)
-  assert(removed.outcome==1 and removed.effects_started and removed.assigned_id==-1)
+  assert(removed.outcome==1 and removed.effects_started and removed.assigned_id==-1 and #removed.occupants==0)
   assert(json.encode(snapshot())==json.encode(before),'Owned chain removal differs from native')
   assert(unit.flags1.whole==flags1 and unit.flags2.whole==flags2 and unassigned(unit),'Owned chain roundtrip changed original unit facts')
   result.owned_effects={initial=initial,invalid=invalid,selected=selected,stale=stale,removed=removed,ui_unchanged=true}
+  if os.getenv('DF3D_CHAIN_WIRE')=='1' then
+   local order={};for _,row in ipairs(visible)do order[#order+1]=row.id end
+   local file=assert(io.open(out..'/chain-wire-expected.json','w'));file:write(json.encode({id=chain.id,unit_id=unit.id,name=selected.occupants[1].name,order=order}));file:close()
+   capture('chain-wire')
+   file=assert(io.open(out..'/chain-wire-result.json'));result.wire=json.decode(file:read('*a'));file:close()
+   assert(result.wire.success and json.encode(snapshot())==json.encode(before),'Chain wire workflow failed')
+   assert(unit.flags1.whole==flags1 and unit.flags2.whole==flags2 and unassigned(unit),'Chain wire changed original unit facts')
+  end
   if os.getenv('DF3D_CHAIN_TRANSFER')=='1' then
    local function native_select()
     view:render(dfhack.getTickCount());click(448,190);view:render(dfhack.getTickCount())

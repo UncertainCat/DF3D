@@ -65,7 +65,7 @@ inline bool validBuildingHeader(const BuildingHeaderObservation& value) {
         (value.removing || (!value.suspended && !value.hasWorker)) &&
         (value.type==18)==value.wellStatus.has_value() && (!value.wellStatus || *value.wellStatus<=3) &&
         (value.type==6)==value.depot.has_value() && (!value.depot || validDepotBody(*value.depot)) &&
-        (value.type==28)==bool(value.cage) && (!value.cage || value.cage->room.buildingId==value.id) &&
+        (value.type==27 || value.type==28)==bool(value.cage) && (!value.cage || value.cage->room.buildingId==value.id) &&
         (value.type==48)==bool(value.nest) && (value.type==24)==bool(value.trap) && (value.type==49)==bool(value.hive) &&
         ((value.type==24 || value.type==49)==(value.specialRevision>0)) &&
         machineryType(value.type)==bool(value.machinery) &&

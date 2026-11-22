@@ -115154,6 +115154,39 @@
           "tools/smoke/chain-native.lua": "eef818c5d731de3fd0198dd446356d044ab5a1a56969d4832bc9d63fed72f83f",
           "tools/smoke/chain-transfer-native.lua": "1c79c3f80d800666d5e8e3e68c1ffdf10b2bcaa7c8d5923b01b4fd472aa8c676"
         }
+      },
+      "chain_workflow_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261122-054701",
+        "wire_lane": "build/stockpile-storage-native-farm-discovery-20261122-054515",
+        "owned_df_pid": 51260,
+        "wire_df_pid": 56948,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Actual public map and holder chain workflow: empty parent, pointer opens picker, assignment closes picker and refreshes parent, inline removal, rename/restore, remove/cancel, close/holder reopen. Six full488x708 panels pixel-exact against native. Separate384x708 picker and456x364 body/room captures exact. Native Category ordering and26-column names; shared transport select/parentremove/stale/restore passes. Bridge/core/extension builds and root19pass. Source saves preserved and owned sessions close unsaved; serial30FPS GPU48-50C sampled. Clean scene stderr. Search variants, justice display, distinct chained-only row toggle and narrow widths not independently qualified.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261122-054701/chain-scene-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261122-054701/chain-native.json": "e46428bff88b0417520295dd24e229b6e87797d24c8f64316a3c6fbfe85db4b2",
+          "build/stockpile-storage-native-farm-discovery-20261122-054701/remaining-buildings-native.json": "748724a52e61c74b3d175204982a27b1afdd3c524a4034bcc0cb1184755ad1a3",
+          "build/stockpile-storage-native-farm-discovery-20261122-054701/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261122-054701/chain-scene.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "build/stockpile-storage-native-farm-discovery-20261122-054515/chain-wire-result.json": "48ac945fb882fe1def226d4f8c157187608c7d1f63131952ab8ba91256c1eec8",
+          "build/stockpile-storage-native-farm-discovery-20261122-054515/chain-native.json": "7177ad5c7cd7adec276c52f56b87b2589db1078a26293a86ea237d0a9d682e6e",
+          "build/stockpile-storage-native-farm-discovery-20261122-054515/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/chain_body_native.h": "5b0505dba11a918ec3fe3d2568cf5d1e116434713cf44db161389f1879378efe",
+          "bridge/plugin/chain_occupants_native.h": "2d6bd1475d7fff0f6647734965945c616858925610f386e40aa3324e776746b6",
+          "bridge/plugin/chain_native.h": "e25ecc082aac52de8e66b0c9f4b516e6af2468dc9055edce682f958f1f309a25",
+          "bridge/plugin/management.cpp": "f4a275173a9905cebc3944cef6abf77dcbe6bcd3e8182dc21e97441fac538869",
+          "schema/cpp/management_util.h": "d5734eff849b67ae799f2fafae7004ebc1d091ca56c98d3769192bf71e306b6b",
+          "presentations/godot/project/scripts/fortress_ui.gd": "b6820781b5ceb3762fad0f155b7489632c49ecab919875980c61fb544eab4f0b",
+          "presentations/godot/project/scripts/cage_sheet_view.gd": "b08f7ef95920e40bfde0b9a11c04fb06682911eeacb515e457d2ef32b691234c",
+          "presentations/godot/project/scripts/furniture_panel.gd": "405e3a5333884750a0abd2ee26db9f1bc12bf685fda47ef2befa1d682415be42",
+          "presentations/godot/project/scripts/cage_picker_state.gd": "bd0410e91772338224e3a85c53b3803a785c51f08cb546d7cdb6eff8b3925b81",
+          "presentations/godot/project/scripts/area_candidates_view.gd": "e2c6e27e43367e238a3d63b748ca947a27f2da9d8a2cb898ef38f3ceb6a82f88",
+          "presentations/godot/project/tests/chain_scene_live.gd": "35c12594133de5cb6c716cee4d4c0f08a9fb8ac1f93805796d2367d75c152058",
+          "presentations/godot/project/tests/chain_wire_live.gd": "7d28f7a9d58b2f8224aebc540929ebd31658d78d3ceef33b9cd5f875d8edaaab",
+          "presentations/godot/project/tests/chain_capture.gd": "0e2f79f1266e4a1b0858eaec12008d6cabb40b100ecf18c9b168e7b61cc6d6d5",
+          "tools/smoke/chain-native.lua": "2220a4694e439ab387c8a56d822d07d782e46b37ae442ba53398c4b0319b77de"
+        }
       }
     },
     "pending_construction_reference": {

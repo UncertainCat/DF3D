@@ -39,7 +39,8 @@ func configure(world,service,host,help=null) -> void:
 	panel.cage_requested.connect(_open_cage)
 	cage.applied.connect(contents.refresh)
 	cage.applied.connect(func():
-		if state.snapshot.get("type",-1)==28:cage_occupants.open(state.building_id))
+		if state.snapshot.get("type",-1) in [27,28]:cage_occupants.open(state.building_id)
+		if state.snapshot.get("type",-1)==27:_retire_cage())
 	cage_occupants.applied.connect(func():
 		contents.refresh()
 		if cage_mode:cage.open(state.building_id))
@@ -61,7 +62,7 @@ func configure(world,service,host,help=null) -> void:
 			close_panel();focus_requested.emit(tile))
 func _state_changed() -> void:
 	super._state_changed()
-	if state.snapshot.get("type",-1)==28 and not state.snapshot.get("removing",true):
+	if state.snapshot.get("type",-1) in [27,28] and not state.snapshot.get("removing",true):
 		if cage_occupants.building_id!=state.building_id or (cage_occupants.phase==cage_occupants.Phase.Ready and cage_occupants.snapshot.get("justice_restraint")!=state.snapshot.cage.justice_restraint):cage_occupants.open(state.building_id)
 	elif cage_occupants.building_id>=0:cage_occupants.close()
 	if cage_mode and (state.building_id!=cage.building_id or state.snapshot.get("removing",false) or state.snapshot.get("cage",{}).get("justice_restraint",false)):_retire_cage()
@@ -105,7 +106,9 @@ func _retire_goods() -> void:
 	if goods_view!=null:goods_view._closing=false;goods_view.hide()
 	goods.close()
 func _open_cage() -> void:
-	if cage_mode or not play_enabled or not ui_host.allows_panel_input(self) or not panel.contents_allowed() or state.snapshot.get("type",-1)!=28 or state.snapshot.get("removing",true) or state.snapshot.get("cage",{}).get("justice_restraint",true):return
+	if cage_mode or not play_enabled or not ui_host.allows_panel_input(self) or not panel.contents_allowed() or state.snapshot.get("type",-1) not in [27,28] or state.snapshot.get("removing",true) or state.snapshot.get("cage",{}).get("justice_restraint",true):return
+	cage_view.chain_layout=state.snapshot.get("type",-1)==27
+	cage.picker_columns=26 if cage_view.chain_layout else 27
 	panel.finish_rename();cancel_gesture();cage_mode=true;cage_view.show();cage.open(state.building_id)
 func _retire_cage() -> void:
 	cage_mode=false

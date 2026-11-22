@@ -10,6 +10,7 @@ enum Phase { Closed, Reading, Ready, Applying, Rejected, Stale, Unknown, Unavail
 var phase:=Phase.Closed
 var service
 var parent_body:=false
+var picker_columns:=27
 var refresh_ticket:=0
 var refresh_age:=0.0
 var building_id: int=-1
@@ -117,6 +118,7 @@ func toggle_animal(entity: int,id: int) -> void:
 			"cage_candidate_id":id,"cage_entity":entity,"cage_assigned":not row.assigned})
 		return
 func _send(intent: Dictionary) -> void:
+	intent.cage_columns=27 if parent_body else picker_columns
 	_retire_refresh()
 	var owner:=generation
 	ticket=service.submit("production",intent,func(received,result,sent):
@@ -136,7 +138,7 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 	if result.get("status")!=C.ManagementStatus.Ok:
 		_fail(Phase.Stale if outcome==C.FarmEditOutcome.Stale else Phase.Rejected);return
 	var offset: int=sent.get("cursor",0)
-	if result.get("action")!=sent.action or page.get("building_id")!=building_id or page.get("operation")!=sent.cage_operation or page.get("query")!=query or page.get("sort")!=sort or page.get("descending")!=descending or page.get("columns")!=27 or page.get("revision",0)<=0 or page.get("cursor")!=offset or not page.get(row_key) is Array or outcome!=(C.FarmEditOutcome.Completed if edit else C.FarmEditOutcome.None):
+	if result.get("action")!=sent.action or page.get("building_id")!=building_id or page.get("operation")!=sent.cage_operation or page.get("query")!=query or page.get("sort")!=sort or page.get("descending")!=descending or page.get("columns")!=(27 if parent_body else picker_columns) or page.get("revision",0)<=0 or page.get("cursor")!=offset or not page.get(row_key) is Array or outcome!=(C.FarmEditOutcome.Completed if edit else C.FarmEditOutcome.None):
 		_fail(Phase.Unknown if edit else Phase.Rejected);return
 	if parent_body and (not page.get("justice_restraint") is bool or not page.get("rows",[1]).is_empty()):_fail(Phase.Unknown if edit else Phase.Rejected);return
 	if edit and (page.get("candidate_id")!=sent.cage_candidate_id or page.get("entity")!=sent.cage_entity or page.get("assigned")!=sent.cage_assigned):_fail(Phase.Unknown);return

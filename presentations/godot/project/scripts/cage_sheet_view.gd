@@ -33,7 +33,7 @@ func _occupant_visible(row: Dictionary) -> bool:
 	# slot and inactive input until a maintainer approves correcting that bug.
 	return row.get("resolved",false) and not (row.entity==2 and row.contained)
 func _process(_delta: float) -> void:
-	if not is_visible_in_tree() or occupants==null or state.snapshot.get("type",-1)!=28:return
+	if not is_visible_in_tree() or occupants==null or state.snapshot.get("type",-1) not in [27,28]:return
 	for i in range(occupant_scroll.first,mini(occupants.rows.size(),occupant_scroll.first+7)):
 		if not occupant_textures.has(i) and _occupant_visible(occupants.rows[i]):
 			var recipe: Dictionary=occupants.rows[i].get("appearance",{})
@@ -43,11 +43,13 @@ func occupant_rect(index: int) -> Rect2:
 func occupant_check(index: int) -> Rect2:
 	var row:=occupant_rect(index);return Rect2(row.end.x-40,row.position.y,32,36)
 # Native Cage28 assignment control, protected105758 at1200x800.
-func cage_rect() -> Rect2:return Rect2(16,336,32,36)
+func cage_rect() -> Rect2:
+	var count: int=occupants.rows.size() if occupants!=null and occupants.building_id==state.building_id else 0
+	return Rect2(16,84+36*count if state.snapshot.get("type",-1)==27 else 336,32,36)
 func aquarium_rect(aquarium: bool) -> Rect2:return Rect2(392 if aquarium else 304,336,80 if aquarium else 88,36)
 func _gui_input(event: InputEvent) -> void:
-	if occupants_allowed() and state.snapshot.get("type",-1)==28 and event is InputEventMouseButton and event.pressed:
-		if Rect2(16,84,size.x-32,252).has_point(event.position) and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+	if occupants_allowed() and state.snapshot.get("type",-1) in [27,28] and event is InputEventMouseButton and event.pressed:
+		if state.snapshot.get("type",-1)==28 and Rect2(16,84,size.x-32,252).has_point(event.position) and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 			occupant_scroll.move_to(occupant_scroll.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));accept_event();return
 		if event.button_index==MOUSE_BUTTON_LEFT and not state.snapshot.get("cage",{}).get("justice_restraint",true) and not occupants.snapshot.get("justice_restraint",true):
 			for i in range(occupant_scroll.first,mini(occupants.rows.size(),occupant_scroll.first+7)):
@@ -58,12 +60,12 @@ func _gui_input(event: InputEvent) -> void:
 		if body.get("glass",false) and not body.get("justice_restraint",true):
 			for aquarium in [false,true]:
 				if aquarium_rect(aquarium).has_point(event.position):state.set_cage_aquarium(aquarium);accept_event();return
-	if not removing and state.snapshot.get("type",-1)==28 and not state.snapshot.get("cage",{}).get("justice_restraint",true) and contents_allowed() and event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and cage_rect().has_point(event.position):
+	if not removing and state.snapshot.get("type",-1) in [27,28] and not state.snapshot.get("cage",{}).get("justice_restraint",true) and contents_allowed() and event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and cage_rect().has_point(event.position):
 		cage_requested.emit();accept_event();return
 	super._gui_input(event)
 func _draw() -> void:
 	super._draw()
-	if removing or state.snapshot.get("type",-1)!=28:return
+	if removing or state.snapshot.get("type",-1) not in [27,28]:return
 	var body: Dictionary=state.snapshot.get("cage",{})
 	if body.is_empty():return
 	if occupants!=null and occupants.building_id==state.building_id:
@@ -71,17 +73,19 @@ func _draw() -> void:
 			var row: Dictionary=occupants.rows[i]
 			if not _occupant_visible(row):continue
 			var rect:=occupant_rect(i)
-			_patch(art.texture("BUTTON_RECTANGLE"),rect)
-			_patch(picture.texture(false,false),Rect2(rect.position,Vector2(40,36)))
+			var chain: bool=state.snapshot.get("type",-1)==27
+			if not chain:
+				_patch(art.texture("BUTTON_RECTANGLE"),rect)
+				_patch(picture.texture(false,false),Rect2(rect.position,Vector2(40,36)))
 			var portrait: Texture2D=occupant_textures.get(i)
 			if portrait!=null:draw_texture_rect(portrait,Rect2(rect.position+Vector2(2,2),Vector2(32,32)),false)
 			var caption: String=row.name
 			var limit:=int(rect.size.x/8)-16
 			if caption.length()>=limit+1:caption=caption.left(limit);caption=caption.left(maxi(0,caption.length()-3))+"..." if limit>3 else caption
-			_body_text(caption,rect.position+Vector2(56,24),15)
-			_body_text(row.status,rect.position+Vector2(56,36),row.status_color)
+			_body_text(caption,rect.position+Vector2(48,24) if chain else rect.position+Vector2(56,24),15)
+			_body_text(row.status,rect.position+Vector2(48,36) if chain else rect.position+Vector2(56,36),row.status_color)
 			var check: Texture2D=art.texture("LABOR_WORKER_ASSIGNED" if row.assigned else "LABOR_WORKER_UNASSIGNED")
-			if check!=null:draw_texture_rect(check,occupant_check(i),false)
+			if check!=null and (not chain or not body.justice_restraint):draw_texture_rect(check,occupant_check(i),false)
 	if not body.justice_restraint:
 		var texture: Texture2D=art.texture("ZONE_PICK_ANIMALS")
 		if texture!=null:draw_texture_rect(texture,cage_rect(),false)

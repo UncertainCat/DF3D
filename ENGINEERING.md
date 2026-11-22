@@ -3097,6 +3097,31 @@ render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
 
 ### Chain candidates and native actions
 
+Chain27 is admitted through public map selection and holder navigation. It reuses
+the independently owned parent/picker lifecycle, native animal ordering and bounded
+paging, room/footer facts, building header/contents and guarded edits. The existing
+restraint transport shape carries chain rows; no wire format change is required.
+Chain header facts prohibit glass/aquarium controls. Justice chains return no
+picker candidates and reject edits while retaining read-only body support.
+The shared name context passes false for chains and true for cages. The picker
+uses native26-column names, no assignment checkboxes, and closes only after a
+successful selection receipt. Chain body rows omit cage frames, position the plus
+button after the occupants and keep the room footer at its native position.
+
+Protected054515 on2026-11-22 (DF56948) verifies native Category order, chain
+header/occupant artwork, picker selection, parent removal, stale rejection and exact
+restoration through the viewer transport. The384x708 picker and456x364 occupant/
+room regions match native pixels after correcting name width, containment indicator
+position and body text baseline. Protected054701 (DF51260) exercises the actual
+main scene: map entry, pointer selection/automatic picker closure, parent removal,
+rename/restore, remove/cancel, close and holder reopen. All six488x708 panel captures
+match native exactly. Source saves remain unchanged and owned sessions close
+unsaved at30FPS, sampled48-50C. Scene stderr is clean; bridge/core/extension builds
+and all19 core checks pass. Evidence:
+completed_sheet_discovery_reference.chain_workflow_reference.
+Search variants, justice display, distinct chained-only row toggle and narrow
+widths are not independently qualified by these ordinary-workflow captures.
+
 The revisioned chain edit owner rejects invalid candidates, stale revisions,
 justice restraints and pending demolition. Its revision includes destination
 occupants/jobs and prior cage, zone and chain memberships that a transfer retires.
@@ -3124,7 +3149,8 @@ release worker/item reservations while retaining unrelated UnchainAnimal work an
 both chained pointers. Owned edits preserve GPS/main_interface bytes. The fixture
 is restored; owned DF closes unsaved/source-preserved at30FPS, sampled55-56C.
 Evidence: completed_sheet_discovery_reference.chain_transfer_reference.
-Chained-only body toggle, ordering/search, transport and public workflow remain open.
+The later public-workflow evidence above qualifies transport and default ordering;
+chained-only body toggle and search variants remain outside the live evidence.
 
 `chain_native.h` invokes native exclusion predicate3d5550 with an independently
 owned capture containing the semantic chain pointer and a16-byte unit entry.
@@ -3141,7 +3167,7 @@ unit's original flags and lack of assigned cage/zone/chain membership are restor
 The newly assigned unit disappears from the owned candidate result. Native raw
 list storage contains340 entries (339units, one item), so raw entries must not be
 mistaken for the filtered visible choices. This comparison qualifies membership;
-owned sorting, search, body transport and public admission remain open.
+sorting, search and later workflow qualification have separate evidence above.
 Ordinary editing is qualified by052710 above.
 The temporary fixture and source save are preserved/removed as appropriate; owned
 DF closes unsaved at30FPS, sampled58-59C. Bridge build and all19 root checks pass.

@@ -12513,7 +12513,7 @@ checks pass. Run with `DF3D_PET_TRAINING_REFERENCE=1` and
 `DF3D_PET_TRAINING_PROVIDER=1` through the existing creature-tab oracle. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-093702`.
 
-Per-animal trainer assignment, war/hunting controls, tooltip and row-color
+Per-animal trainer assignment, tooltip and row-color
 extraction, typed transport and public sibling views remain unqualified or
 unimplemented. Paused toggle parity does not qualify subsequent simulation job
 execution or broader animal lifecycle behavior.
@@ -12525,15 +12525,16 @@ and Domesticated level are restored. This is a controlled visibility fixture,
 not evidence of a naturally unowned animal or a completed training job.
 The owned control provider matches all six native actions in order: trainer
 selection, war, hunting, adoption, slaughter and gelding. New semantic action
-IDs3/4/5 describe availability only; `setPetAction` still accepts only0..2.
+IDs3/4/5 identify those controls; trainer selection remains read-only,
+while war/hunting edits have the separate acceptance below.
 All17 pet control rows match and compared flags remain unchanged. Native
 trainer-picker capture adds `DF3D_PET_TRAINER_REFERENCE=1`; it offers Any trainer,
 Any unassigned trainer, None and individual trainers with native skill text.
 
 Trainer activation3d1700 enters36de70. War3d1460 and hunting3d1280 create or
-update `training_assignment`, clear the opposite training flag, and scan active
-units' related activity entries. Their effects are broader than a target flag;
-owned execution must preserve those native effects and still needs acceptance.
+update `training_assignment`, clear the opposite training flag, and remove the
+first AnimalTrainCheck miscellaneous trait from each active unit. These are
+cached training checks, not activity events. Their effects exceed a target flag.
 Native generic selector actions are3d1a90/3d19d0/3d1910, individual3d1850.
 Owned DF57688 closes unsaved/source-preserved at30FPS, sampled61C; bridge build
 and19 core checks pass. Evidence:
@@ -12555,6 +12556,25 @@ captions match. Owned DF61468 closes unsaved with source preserved, at30FPS;
 sampled GPU60C. Bridge build and19 core checks pass. Add
 `DF3D_PET_TRAINERS_PROVIDER=1` to the trainer-reference lane to repeat. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-094804`.
+
+`setPetAction` accepts war4 and hunting5 through native3d1460/3d1280 with an
+owned callback input and glyph scratch. The native routines own assignment
+allocation and global AnimalTrainCheck invalidation. Revisions include assignment
+presence, trainer ID and flags; membership, control availability, stale revisions
+and duplicate desired values are checked before mutation. Post-call failure stays
+Unknown and must not be replayed. Trainer selection3 is still rejected.
+
+Protected095231 on2026-11-22 matches six native clicks on controlled dog6548:
+each training mode creates an absent assignment, toggles off, and replaces the
+opposite mode. All active units' miscellaneous traits are compared, including
+controlled AnimalTrainCheck entries on two other units. Native and provider
+effects match; stale and duplicate requests leave state unchanged. The oracle
+restores assignment absence, traits and animal flags, then the parent restores
+ownership/training level. This qualifies immediate paused effects, not later
+training jobs. Owned DF50856 closes unsaved/source-preserved at30FPS, sampled60C;
+bridge build and19 core checks pass. Set `DF3D_PET_TRAINING_EDITS=1` with
+`DF3D_PET_EDITS_PROVIDER=1` and the controlled trainer/control-provider flags.
+Evidence: `build/stockpile-storage-native-farm-discovery-20261122-095231`.
 
 
 Residents Activity has distinct job-settings and event-description routes.

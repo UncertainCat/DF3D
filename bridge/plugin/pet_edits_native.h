@@ -1,10 +1,11 @@
 #pragma once
 #include "pet_controls_native.h"
 #include "df/item_petst.h"
+#include "df/training_assignment.h"
 
 namespace df3d_residents {
 enum class PetEditOutcome {Applied,Rejected,Stale,Unavailable,Unknown};
-struct PetEditState {PetControls controls;std::array<bool,3> values{};uint64_t revision=0;};
+struct PetEditState {PetControls controls;std::array<bool,6> values{};uint64_t revision=0;};
 inline bool petEditsSupported() {
     static const bool ready=[] {
         if(!petControlsSupported())return false;
@@ -15,6 +16,8 @@ inline bool petEditsSupported() {
             {0x3d0e50,0xdb,UINT64_C(0x84921bf0fa440e9c)},
             {0x3d0c40,0x2e,UINT64_C(0x798f77116b6b9de1)},
             {0x3d0a90,0xd8,UINT64_C(0x9a213ac9057a0a78)},
+            {0x3d1280,0x130,UINT64_C(0x54ace1e60ce1a7b5)},
+            {0x3d1460,0x130,UINT64_C(0xc5101784dd2aac24)},
             {0x142c110,0xe2,UINT64_C(0x56672cf6b85a16ac)},
             {0x142c200,0xe2,UINT64_C(0x3df11a9d7aa026a8)},
         };
@@ -41,6 +44,13 @@ inline std::optional<PetEditState> petEditState(int kind,int32_t id) {
         result.values={bool(unit->flags2.bits.slaughter),bool(unit->flags3.bits.available_for_adoption),bool(unit->flags3.bits.marked_for_gelding)};
         add(unit->hist_figure_id);add(unit->race);add(unit->caste);
         add(unit->flags1.whole);add(unit->flags2.whole);add(unit->flags3.whole);
+        const auto* training=df::training_assignment::find(id);
+        add(training!=nullptr);
+        if(training) {
+            add(training->trainer_id);add(training->flags.whole);
+            result.values[4]=training->flags.bits.train_war;
+            result.values[5]=training->flags.bits.train_hunt;
+        }
     } else {
         auto* pet=virtual_cast<df::item_petst>(entry.item);if(!pet)return std::nullopt;
         result.values[1]=pet->pet_flags.bits.available_for_adoption;
@@ -63,7 +73,7 @@ static_assert(offsetof(Input,target)==8 && offsetof(Input,list)==0x10 && offseto
 }
 inline PetEditOutcome setPetAction(int kind,int32_t id,uint64_t revision,int action,bool desired) {
     if(!petEditsSupported())return PetEditOutcome::Unavailable;
-    if(action<0 || action>2 || !revision)return PetEditOutcome::Rejected;
+    if(action<0 || action>5 || action==3 || (kind==1 && action!=1) || !revision)return PetEditOutcome::Rejected;
     const auto members=orderedCreatures(1,0,false);if(!members)return PetEditOutcome::Unavailable;
     if(std::none_of(members->begin(),members->end(),[&](const auto& row){return row.kind==kind && row.id==id;}))return PetEditOutcome::Rejected;
     const auto before=petEditState(kind,id);if(!before)return PetEditOutcome::Rejected;
@@ -77,13 +87,16 @@ inline PetEditOutcome setPetAction(int kind,int32_t id,uint64_t revision,int act
     input.list=refresh;
     alignas(16) std::array<std::byte,0x158> glyphScratch{};
     auto* glyphPointer=glyphScratch.data();
-    constexpr size_t unitActions[]={0x3d0ca0,0x3d0e50,0x3d0c40};
+    // Training routines update assignments and invalidate native training activity
+    // caches across active units. Their only presentation output is this owned
+    // glyph scratch; do not replace the call with an assignment flag write.
+    constexpr size_t unitActions[]={0x3d0ca0,0x3d0e50,0x3d0c40,0,0x3d1460,0x3d1280};
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     using Apply=bool (*)(pet_detail::Input*,void*);
     try {
         const bool applied=reinterpret_cast<Apply>(const_cast<uint8_t*>(base+(kind==1?0x3d0a90:unitActions[action])))(&input,&glyphPointer);
         const auto after=petEditState(kind,id);
-        const bool refreshValid=action==2?refresh->pending.empty():
+        const bool refreshValid=action>=2?refresh->pending.empty():
             refresh->pending.size()==1 && refresh->pending[0].target.kind==kind &&
             (kind==0?static_cast<void*>(refresh->pending[0].target.unit):static_cast<void*>(refresh->pending[0].target.item))==input.target;
         return applied && refreshValid && after && after->values[action]==desired?PetEditOutcome::Applied:PetEditOutcome::Unknown;

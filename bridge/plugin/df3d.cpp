@@ -3462,7 +3462,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(values[0]<0 || values[0]>1 || values[1]<0 || values[1]>INT32_MAX)return CR_WRONG_USAGE;
           Json::Value result(Json::objectValue);
           if(parameters.size()==6) {
-            if(values[2]<1 || values[3]<0 || values[3]>2 || values[4]<0 || values[4]>1)return CR_WRONG_USAGE;
+            if(values[2]<1 || values[3]<0 || values[3]>5 || values[3]==3 || values[4]<0 || values[4]>1)return CR_WRONG_USAGE;
             result["outcome"]=int(df3d_residents::setPetAction(int(values[0]),int(values[1]),uint64_t(values[2]),int(values[3]),values[4]!=0));
           }
           const auto state=df3d_residents::petEditState(int(values[0]),int(values[1]));if(!state)return CR_FAILURE;

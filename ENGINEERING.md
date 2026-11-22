@@ -12539,6 +12539,23 @@ Owned DF57688 closes unsaved/source-preserved at30FPS, sampled61C; bridge build
 and19 core checks pass. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-094148`.
 
+`pet_trainers_native.h` supplies individual trainer choices from owned data.
+The native picker has inline inactive/labor gates around membership predicate
+138ed20; the provider retains those gates and calls the predicate. Native sorter
+3c7bf0 receives an owned candidate vector, preserving skill ordering and ties.
+Native skill producer1429ef0 receives an owned row and Animal Training weight;
+only its resulting text is extracted. No native menu or staged selection is used.
+`pet-trainers-probe` exposes this read-only provider; it requires current trainer
+control availability. Generic selection actions and assignment effects remain
+separate unfinished work.
+
+Protected094804 on2026-11-22 compares a cold provider read against the native
+picker in the controlled dog fixture: all122 trainer IDs, ordering and skill
+captions match. Owned DF61468 closes unsaved with source preserved, at30FPS;
+sampled GPU60C. Bridge build and19 core checks pass. Add
+`DF3D_PET_TRAINERS_PROVIDER=1` to the trainer-reference lane to repeat. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-094804`.
+
 
 Residents Activity has distinct job-settings and event-description routes.
 The job-details widget1423130 uses native eligibility d15ef0 and opens213420

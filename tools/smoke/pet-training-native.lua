@@ -15,6 +15,11 @@ local function find(widget)
 end
 find(info.creatures);assert(button,'Overall Training button missing')
 local provider
+local trainer_provider
+if trainer and os.getenv('DF3D_PET_TRAINERS_PROVIDER')=='1' then
+ local f=assert(io.open(out..'/pet-trainer-fixture.json'));local fixture=json.decode(f:read('*a'));f:close()
+ local text,rc=dfhack.run_command_silent('df3d','pet-trainers-probe',tostring(fixture.id));assert(rc==0,text);trainer_provider=json.decode(text).rows
+end
 if not trainer and os.getenv('DF3D_PET_TRAINING_PROVIDER')=='1' then
  local text,rc=dfhack.run_command_silent('df3d','pet-training-probe');assert(rc==0,text);provider=json.decode(text).rows
 end
@@ -27,7 +32,7 @@ for _=1,3 do script.sleep(1,'frames')end
 view:render(dfhack.getTickCount())
 local source=debug.getinfo(1,'S').source:sub(2):gsub('smoke/pet%-training%-native.lua$','ui_bake/capture_widgets.lua')
 assert(loadfile(source))(out..'/'..prefix..'-widgets.json','all')
-local controls={};local knowledge={};local base=dfhack.internal.getImageBase()
+local controls={};local knowledge={};local trainers={};local base=dfhack.internal.getImageBase()
 local function collect(widget,path)
  if (widget.flag.whole&1)==0 then return end
  assert(#controls<4096,'Training tree exceeds bound')
@@ -37,6 +42,18 @@ local function collect(widget,path)
   activated=callbacks(widget.custom_activated,64),feed=callbacks(widget.custom_feed,64)}
  if df.widget_text:is_instance(widget)then value.text=dfhack.df2utf(widget.str);value.color={widget.fg,widget.bg,widget.bright}end
  if df.widget_unit_name:is_instance(widget) and widget.u then value.unit=widget.u.id end
+ if trainer and df.widget_unit_name:is_instance(widget) and widget.u then
+  local selectable=false
+  for _,target in ipairs(callbacks(widget.parent.custom_activated,64))do if target==0x3d1850 then selectable=true end end
+  if selectable then
+   local row={id=widget.u.id,skills={}}
+   local function text(child)
+    if df.widget_text:is_instance(child)then row.skills[#row.skills+1]=dfhack.df2utf(child.str)end
+    if df.widget_container:is_instance(child)then for _,nested in ipairs(dfhack.gui.getWidgetChildren(child))do text(nested)end end
+   end
+   text(widget.parent);trainers[#trainers+1]=row
+  end
+ end
  if df.widget_unit_list:is_instance(widget)then
   value.filters=callbacks(widget.filter_func,64);value.sorting={};value.ids={}
   for _,entry in ipairs(widget.sorting_by)do value.sorting[#value.sorting+1]=entry.ident end
@@ -58,6 +75,11 @@ local function collect(widget,path)
 end
 collect(info.creatures,'creatures')
 local f=assert(io.open(out..'/'..prefix..'-controls.json','w'));f:write(json.encode(controls));f:close()
+if trainer_provider then
+ local matches=json.encode(trainer_provider)==json.encode(trainers)
+ f=assert(io.open(out..'/pet-trainers-reference.json','w'));f:write(json.encode({native=trainers,provider=trainer_provider,matches=matches}));f:close()
+ assert(matches and #trainers>0,'Native trainer choices differ')
+end
 local matches=not provider or json.encode(provider)==json.encode(knowledge)
 f=assert(io.open(out..'/'..prefix..'-reference.json','w'));f:write(json.encode({native=knowledge,provider=provider,matches=matches}));f:close()
 assert(trainer or (#knowledge>0 and matches),'Overall Training provider differs')

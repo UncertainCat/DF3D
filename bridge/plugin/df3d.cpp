@@ -150,6 +150,7 @@
 #include "pet_controls_native.h"
 #include "pet_edits_native.h"
 #include "pet_training_native.h"
+#include "pet_trainers_native.h"
 #include "residents_activity_native.h"
 #include "tasks_native.h"
 #include "places_native.h"
@@ -3429,6 +3430,15 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!ids)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["ids"]=Json::Value(Json::arrayValue);
           for(auto id:*ids)result["ids"].append(id);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="pet-trainers-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          const auto rows=df3d_residents::petTrainers(id);if(!rows)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["rows"]=Json::Value(Json::arrayValue);
+          for(const auto& row:*rows){Json::Value value(Json::objectValue);value["id"]=row.id;value["skills"]=Json::Value(Json::arrayValue);for(const auto& caption:row.skills)value["skills"].append(DF2UTF(caption));result["rows"].append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="pet-training-probe") {

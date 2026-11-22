@@ -458,4 +458,8 @@ if os.getenv('DF3D_STOCKS_SKIN_SHEETS')=='1' then
   return run()
  end)
 end
+if os.getenv('DF3D_STOCKS_UNITLESS_CORPSE')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-unitless-corpse-native.lua')
+ return assert(loadfile(source))(out,probe,run)
+end
 return run()

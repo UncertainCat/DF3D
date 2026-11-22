@@ -8970,8 +8970,9 @@ compared and visually inspected. Core19, extension, Stocks/item-sheet state and
 MSVC pass. Source preserved; DF40044 exits unsaved, both applications capped30FPS;
 GPU60C/2% sample is not a peak. Only documented Godot diagnostics occur.
 `native_stocks.json.corpse_skeleton_selector_reference` records facts, recipes,
-hashes and bounded acceptance. Unitless non-skeleton generic71a410, unobserved
-anatomy/custom graphics and full Stocks resize/lifecycle remain incomplete.
+hashes and bounded acceptance. Unitless non-skeleton generic71a410 has the bounded
+acceptance below. Unobserved anatomy/custom graphics and full Stocks resize/lifecycle
+remain incomplete.
 
 
 Management173 appends an optional independent corpse-selector recipe to item
@@ -8989,8 +8990,14 @@ the small item selector, without portrait framing or map residency. The
 item-specific provider keeps anatomy/colors on the corpse and uses the resolved
 unit's profession and random_appearance_number, following c7f500/6d70a5/71f220;
 it does not enable worn inventory or borrow cached native textures. Unitless
-generic71a410 selection remains unadmitted rather than using the map provider's
-historical-figure profession fallback or guessed random hash.
+generic71a410 selection uses a separate context: caste0 predicates, profession102,
+seed0, first color choices at native default age5040 and appearance modifiers100.
+It shares the existing predicate/recipe resolver and pins71a410; it does not use
+the map provider's historical-figure profession fallback or guessed random hash.
+Native appearance-dependent swaps are skipped for this null-appearance context.
+Unqualified templates, group/body-part predicates and body-size restrictions
+remain guarded. Graphics selection retains the item's caste override separately
+from the generic predicate caste. The skeleton override remains unchanged.
 
 Protected unitless-corpse-selector174138 on2026-11-22 confirms the visible
 consequence: temporarily replacing corpse47852's unit7295 with an unresolved ID
@@ -9002,11 +9009,26 @@ missing-record fixture, not a naturally occurring unresolved corpse. The precedi
 174017 inventory found103 corpses and one unresolved unit, skeleton7820, whose
 separate native skeleton path already has acceptance. The diagnostic item-inspect
 JSON omits selector recipes and cannot itself establish their absence. Use the
-typed item snapshot and rendered comparison for that claim. Runtime support for
-the non-skeleton unitless path remains unfinished. Graphics were capped30FPS;
+typed item snapshot and rendered comparison for that claim. This is the pre-fix
+reference. Graphics were capped30FPS;
 sampled GPU temperature42C is not a peak. The viewer emitted the documented
 separate-thread, render-device finalize and ObjectDB shutdown diagnostics, so
 this evidence is passed_with_known_issues rather than a clean client run.
+
+Protected175155 on2026-11-22 verifies the fix through the reusable Stocks lane
+(`DF3D_STOCKS_UNITLESS_CORPSE=1`, with rendered corpse sheets and list artwork).
+The complete488x708 corpse and tooth panels are RGB-identical to native; the
+unitless corpse47852 icon also matches in Stocks. Both panels and the two Stocks
+screenshots were inspected. The owned provider leaves native unitless graphics
+cache vectors and template metadata unchanged. The fixture restores unit7295,
+the source save is unchanged, owned DF57000 closes unsaved, and client stderr is
+empty with safe rendering and30FPS; sampled GPU61C. Core19 and Stocks/item-sheet/
+Residents state checks pass. Earlier174936 qualifies the same exact item panels.
+The installed-raw inventory174525 contains15 CORPSE layer sets; this inventory
+does not establish rendered acceptance for every species or custom definition.
+Of16 visible Stocks corpse icons,15 match. Resolved-unit corpse23840 (unit6680,
+race176) retains a separate259-pixel mismatch: native has no icon while DF3D draws
+one. It does not enter the new unitless path and remains an open artwork defect.
 
 Core19, extension/item-state and MSVC pass (`corpse-selector-wired`). Protected
 101742 on2026-11-10 verifies actual View/close, exact description/Uses and full

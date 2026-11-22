@@ -28,6 +28,7 @@ local function appearance_facts(item)
  return row
 end
 local kinds=os.getenv('DF3D_STOCKS_EQUIPMENT_ART')=='1' and {24,25,26,27,28,29,60} or {0,2,4,5,30,32}
+if os.getenv('DF3D_STOCKS_UNITLESS_CORPSE')=='1' then kinds={23}end
 if os.getenv('DF3D_STOCKS_HOUSEHOLD_ART')=='1' then kinds={6,7,10,11,12,18,22,45}end
 if os.getenv('DF3D_STOCKS_EXTENDED_ART')=='1' then kinds={23,46,55,69,70,72,74,87}end
 if os.getenv('DF3D_STOCKS_DOOR_STATES')=='1' then kinds={6}end

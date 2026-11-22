@@ -182,11 +182,12 @@ func run() -> void:
 			var kinds: Array=[24,25,26,27,28,29,60] if OS.get_environment("DF3D_STOCKS_EQUIPMENT_ART")=="1" else [0,2,4,5,30,32]
 			if OS.get_environment("DF3D_STOCKS_HOUSEHOLD_ART")=="1":kinds=[6,7,10,11,12,18,22,45]
 			if OS.get_environment("DF3D_STOCKS_EXTENDED_ART")=="1":kinds=[23,46,55,69,70,72,74,87]
+			if OS.get_environment("DF3D_STOCKS_UNITLESS_CORPSE")=="1":kinds=[23]
 			if OS.get_environment("DF3D_STOCKS_DOOR_STATES")=="1":kinds=[6]
 			for kind in kinds:
 				state.select_category(kind)
 				if not await ready_state(state):quit(1);return
-				if OS.get_environment("DF3D_STOCKS_EXTENDED_ART")=="1" and not state.groups.is_empty() and not state.expanded(state.groups[0]):
+				if (OS.get_environment("DF3D_STOCKS_EXTENDED_ART")=="1" or OS.get_environment("DF3D_STOCKS_UNITLESS_CORPSE")=="1") and not state.groups.is_empty() and not state.expanded(state.groups[0]):
 					state.toggle_expansion(state.key(state.groups[0]))
 					if not await ready_state(state):quit(1);return
 				var visible_ids: Array=[]
@@ -196,6 +197,7 @@ func run() -> void:
 				for id in visible_ids:
 					if kind==23 and not state.items.get(id,{}).get("appearance",{}).has("corpse_selector"):unsupported.append(id)
 				check(not visible_ids.is_empty() and visible_ids.all(func(id):return state.items.has(id) and (unsupported.has(id) or (view.icons.has(id) and view.icons[id].texture!=null))),"Stocks category artwork unavailable: "+str(kind))
+				if OS.get_environment("DF3D_STOCKS_UNITLESS_CORPSE")=="1":check(unsupported.is_empty() and visible_ids.has(47852),"Unitless corpse recipe missing from Stocks")
 				if kind==6 and OS.get_environment("DF3D_STOCKS_DOOR_STATES")=="1":
 					var door_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/stocks-door-states.json"))
 					for expected in door_reference.cases:

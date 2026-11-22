@@ -166,6 +166,7 @@ struct Ctx {
     int32_t seedId = 0;        // Legacy corpse fallback, still awaiting native parity.
     uint32_t randomAppearanceNumber = 0;
     bool itemCorpse = false;
+    bool unitlessSelector = false;
     int32_t profession = -1;   // df::profession of the unit (or the dead unit)
     bool child = false, baby = false, ghost = false, undead = false;
     int32_t haulCount = 0;
@@ -302,7 +303,7 @@ void tissueColors(const Ctx& c, int16_t bp, int16_t tl, std::vector<int16_t>& ou
     const auto& sel = *c.colors;
     // Later effective modifiers replace earlier colors. Corpse age has no
     // verified source here; preserve that separate legacy path for now.
-    const double ageDays = c.u && df::global::cur_year && df::global::cur_year_tick
+    const double ageDays = c.unitlessSelector ? 5040.0 : c.u && df::global::cur_year && df::global::cur_year_tick
         ? df3d_appearance::nativeAgeDays(*df::global::cur_year,*df::global::cur_year_tick,
                                        c.u->birth_year,c.u->birth_time) : -1.0;
     for (size_t n = 0; n < cms.size(); ++n) {
@@ -374,6 +375,8 @@ bool tissueEntryPasses(const Ctx& c, const df::cgl_tissue_layer_conditionst& con
             std::find(cond.required_shape.begin(), cond.required_shape.end(), style) == cond.required_shape.end())
             return false;
     }
+    // Generic71ccca skips appearance-dependent swaps when its appearance is null.
+    if(c.unitlessSelector)return true;
     for (const df::cgl_tissue_layer_swapst* sw : cond.swap) {
         if (!sw) continue;
         if (sw->swap_condition == df::creature_graphics_tissue_layer_swap_condition_type::IF_MIN_CURLY) {
@@ -790,16 +793,19 @@ bool resolveUnitSelector(df::unit* u, Result& out) {
     return buildCtx(u,c) && resolveCtx(c,out,false,false);
 }
 
-bool resolveSpeciesLayeredSelector(int32_t race,Result& out) {
-    out=Result{};Ctx c;c.raw=df::creature_raw::find(race);
-    if(!c.raw || c.raw->caste.empty() || !c.raw->caste[0])return false;
+static bool unitlessSelectorPinned() {
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     static const bool pinned=[base] {
         uint64_t hash=UINT64_C(14695981039346656037);
         for(size_t i=0;i<0x3c25;++i){hash^=base[0x71a410+i];hash*=UINT64_C(1099511628211);}
         return hash==UINT64_C(0x046ecd4b168fb74a);
     }();
-    if(!pinned)return false;
+    return pinned;
+}
+
+bool resolveSpeciesLayeredSelector(int32_t race,Result& out) {
+    out=Result{};Ctx c;c.raw=df::creature_raw::find(race);
+    if(!c.raw || c.raw->caste.empty() || !c.raw->caste[0] || !unitlessSelectorPinned())return false;
     c.caste=c.raw->caste[0];c.casteIdx=0;c.profession=102;c.g=c.raw->graphics;
     if(!c.g)for(const auto* caste:c.raw->caste)if(caste && caste->caste_graphics){c.g=caste->caste_graphics;break;}
     if(!c.g)return false;
@@ -922,9 +928,29 @@ bool resolveCorpseItemSelector(df::item* it, Result& out) {
     if(!it || it->getType()!=df::item_type::CORPSE)return false;
     auto* corpse=static_cast<df::item_body_component*>(it);
     auto* unit=df::unit::find(corpse->unit_id);
-    // Native c7f500 supplies the resolved unit to 6d6560/71e040. The
-    // unitless generic71a410 path is separate and not yet admitted here.
-    if(!unit)return false;
+    // Native6d7034 selects generic71a410 when no unit record remains. Its
+    // predicate inputs are caste0/profession102/seed0, not corpse map fallbacks.
+    if(!unit) {
+        if(!unitlessSelectorPinned())return false;
+        Ctx c;
+        if(!buildCasteCtx(c,corpse->race,0))return false;
+        const auto* sourceCaste=corpse->caste>=0 && size_t(corpse->caste)<c.raw->caste.size()?c.raw->caste[corpse->caste]:nullptr;
+        if(!sourceCaste)return false;
+        c.g=sourceCaste->caste_graphics?sourceCaste->caste_graphics:c.raw->graphics;
+        if(!c.g)return false;
+        c.corpse=corpse;c.itemCorpse=true;c.unitlessSelector=true;c.profession=102;
+        const std::vector<int32_t> colors(c.caste->color_modifiers.size(),0);
+        const std::vector<int32_t> modifiers(c.caste->bp_appearance.modifier_idx.size(),100);
+        const std::vector<df::tissue_style_type> styles;
+        const std::vector<df::body_part_status> status;
+        c.colors=&colors;c.bpModifiers=&modifiers;c.tissueStyle=&styles;c.bpStatus=&status;
+        int32_t role=-1,prof=-1;const auto* set=chooseSet(c,role,prof);
+        // Do not expand templates or admit unqualified body/group predicates.
+        if(set && (!set->layer_set_template_token.empty() || !set->lg_bp_condition.empty()))return false;
+        if(set)for(const auto* layer:set->graphics_layer)
+            if(!layer || !layer->bp_condition.empty() || layer->body_size_min!=-1)return false;
+        return resolveCtx(c,out,false,false,set) && !out.layers.empty();
+    }
     Ctx c;
     if(!buildCorpseCtx(corpse,c))return false;
     c.itemCorpse=true;

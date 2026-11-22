@@ -4,6 +4,31 @@ const Contract = preload("res://scripts/management_contract.gd")
 var world
 var service
 var directory: String
+var management_models: Array=[]
+const MANAGEMENT_KEYS=["job_id","artifact_id","crime_id"]
+
+func management_membership() -> Array:
+	var result: Array=[]
+	for index in management_models.size():
+		var key: String=MANAGEMENT_KEYS[index]
+		result.append(management_models[index].rows.map(func(row):return row.get(key,-1)))
+	return result
+
+func open_management() -> bool:
+	for state in management_models:state.open()
+	var deadline:=Time.get_ticks_msec()+60000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();service.poll()
+		if management_models.all(func(state):return state.phase==state.Phase.Ready):return true
+		await create_timer(0.02).timeout
+	return false
+
+func fresh_claim() -> bool:
+	var ticket: int=service.submit("construction",{"action":0},Callable())
+	var deadline:=Time.get_ticks_msec()+60000
+	while service.result(ticket).is_empty() and Time.get_ticks_msec()<deadline:
+		world.poll();service.poll();await create_timer(0.02).timeout
+	return service.result(ticket).get("status",-1)==Contract.ManagementStatus.Ok
 
 func _initialize() -> void:
 	call_deferred("run")
@@ -25,6 +50,9 @@ func run() -> void:
 	# The handshake owns the pause in submissions. Poll the service explicitly
 	# only outside it, so recovery cannot send its automatic catalog claim early.
 	service.set_process(false)
+	if OS.get_environment("DF3D_MANAGEMENT_RELOAD")=="1":
+		management_models=[preload("res://scripts/tasks_state.gd").new(),preload("res://scripts/objects_state.gd").new(),preload("res://scripts/justice_state.gd").new()]
+		for state in management_models:state.configure(service)
 	var initial_deadline := Time.get_ticks_msec() + 60000
 	while not world.terrain_loaded() or not world.poll_management().get("transport_alive", false):
 		world.poll()
@@ -40,6 +68,9 @@ func run() -> void:
 			await create_timer(0.02).timeout
 		if int(service.result(seed).get("status", 0)) != Contract.ManagementStatus.Ok:
 			finish("failed", "fresh catalog claim failed"); return
+		if not await open_management():finish("failed","pre-reload management read failed");return
+		var membership:=management_membership()
+		var generations: Array=management_models.map(func(state):return state.generation)
 		var previous: Dictionary = world.poll_session()
 		var old_epoch := int(previous.get("fortress_epoch", 0))
 		var ticket: int = service.submit("work_orders", {"action":27}, Callable())
@@ -86,5 +117,13 @@ func run() -> void:
 			finish("failed", "reload left an active or queued old ticket"); return
 		if int(outcome.get("status", 0)) in [Contract.ManagementStatus.Idle, Contract.ManagementStatus.Pending]:
 			finish("failed", "pre-reload ticket has no terminal/unknown outcome"); return
+		for index in management_models.size():
+			var state=management_models[index]
+			if state.generation<=generations[index] or state.ticket!=0 or not state.rows.is_empty() or state.phase==state.Phase.Ready:
+				finish("failed","world replacement retained management authority: "+str(index));return
+		if not management_models.is_empty():
+			if not await fresh_claim() or not await open_management():finish("failed","post-reload management read failed");return
+			if management_membership()!=membership:finish("failed","save-free reload changed management membership");return
+			print("MANAGEMENT_RELOAD_PASS round=",round_index," counts=",membership.map(func(rows):return rows.size()))
 		print("RELOAD_ROUND_PASS round=", round_index, " epoch=", epoch, " outcome=", outcome.get("outcome", "terminal"))
 	finish("passed", "two save-free reloads verified")

@@ -8612,6 +8612,21 @@ outstanding read authority in these three main-scene workflows. It does not
 establish a changed native world epoch or unknown sent-mutation handling; those
 remain separate from producer recovery and from the prior close/reopen tests.
 
+`DF3D_MANAGEMENT_RELOAD=1` extends `reload_lane_test.ps1` with Tasks, Objects
+and Justice controller reads before and after each world replacement. Protected
+`reload-lane-20261122-154406` passes two in-process, save-free fortress reloads:
+PID4656 is retained while epochs advance to19997367730178 and19997367730179.
+Each controller retires its generation, ticket and rows; explicit reopening
+reads the same ordered membership (41 Tasks,10 Objects,7 Justice cases). A held
+Work orders read ends unknown and leaves no active or queued old request.
+The native fixture also verifies that an unsaved unit-name marker disappears.
+All684 source-save files retain their hashes, the owned process closes unsaved,
+and the headless Godot log has no engine diagnostics. Native graphics are capped
+at30FPS; sampled GPU temperatures are60–61C. This is controller/transport evidence
+across actual world replacement, not main-scene graphical reload acceptance or
+proof of unknown sent-mutation handling. The main-scene producer-recovery evidence
+above remains separate.
+
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can
 return fewer rows to keep the text/recipe payload below384KiB within the512KiB

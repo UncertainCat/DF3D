@@ -13036,6 +13036,28 @@ attached during this render. Serial30FPS rendering exits cleanly; GPU samples
 46–50C, Residents headless checks and all19 core tests pass. This establishes
 the recorded first viewport, not scrolling, resize or public trainer integration.
 
+### Creature and training scrollbar artwork
+
+The sibling creature lists and trainer/knowledge panes use native init.scrollbar
+art from installed data/art/scrollbar.png. The similar INTERFACE_BITS scrollbar
+has different arrow-edge and scroller pixels; it caused the previously recorded
+26-pixel residual. ResidentsView selects the classic artwork for Pets, Other and
+Dead/Missing; PetManagementView selects it for both training panes. Ordinary
+Residents and unrelated inherited views retain their existing artwork choice.
+Input geometry, paging and drag semantics are unchanged.
+
+Recorded-wire rendering on2026-11-22 now matches all nine full944x708 native
+panels with zero RGB differences: Pets, Other and Dead/Missing against143703;
+trainer against094804; and knowledge offsets0/10/20/30/35 against143755. It uses
+143703's wire rows and installed assets, without a live DF session. The final
+knowledge viewport was inspected. Both capture scripts exit0 with empty stderr,
+serial30FPS and GPU samples60–61C; Residents and Work Details headless checks
+pass. Evidence: build/notes/pm/creature-classic-scrollbar-comparison.json and the
+pet_panes_capture/creature_roster_capture classic-scrollbar logs. This resolves
+the recorded26-pixel scrollbar residual; it does not qualify unsupported complex
+species recipes or new portrait variants. The earlier packaged candidate lacks
+this correction and must be rebuilt before final publication.
+
 ### Species knowledge artwork
 
 species_art_native.h calls pinned6d6560 with independently owned raw flags,

@@ -112,6 +112,7 @@ func refresh() -> void:
 		else:retained[RosterState.row_key(row)]={"recipe":row.sheet_icon.duplicate(true),"texture":world.candidate_icon(row.sheet_icon)}
 	portraits=retained
 	if scrollbar!=null:
+		scrollbar.use_classic_art=state is RosterState and state.tab>0
 		if showing_activity!=state.activity_open():scrollbar.dragging=false
 		if state.activity_open():
 			scrollbar.position=Vector2(size.x-32,list_top()-24);scrollbar.size=Vector2(16,maxi(36,activity_rows()*12));scrollbar.page=activity_rows()

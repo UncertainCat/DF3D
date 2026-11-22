@@ -9,6 +9,7 @@ func configure_pets(source,model) -> void:
 	configure(source);state=model;colors=art.installed_palette(source.assets_root());picture.configure(source)
 	mouse_filter=Control.MOUSE_FILTER_STOP;state.changed.connect(refresh)
 	scrollbar.input_allowed=allowed
+	scrollbar.use_classic_art=true
 	scrollbar.row_changed.connect(func(value):state.seek(value,visible_count(value)))
 	refresh()
 func is_trainers() -> bool:return state!=null and state.pane==state.Pane.Trainers

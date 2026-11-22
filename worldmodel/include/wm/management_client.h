@@ -1147,6 +1147,8 @@ struct ManagementRequest {
   AreaRequest area;
   ProductionRequest production;
   // Internal byte continuation, never a repeat of the original semantic action.
+  uint64_t displayReplyRequest=0;
+  uint32_t displayReplyOffset=0;
   uint64_t productionReplyRequest=0;
   uint32_t productionReplyOffset=0;
   WorkOrderRequest workOrder;

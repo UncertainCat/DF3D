@@ -173,8 +173,22 @@ if os.getenv('DF3D_DISPLAY_SCENE')=='1' then
 end
 if os.getenv('DF3D_DISPLAY_WIRE')=='1' then
  local expected={tile={building.centerx,building.centery,building.z},custom_name=dfhack.df2utf(building.name),id=building.id,item_id=result.selection.id,picker=result.picker_comparisons[2].owned}
+ local large=os.getenv('DF3D_DISPLAY_LARGE_REPLY')=='1'
+ local saved=values(building.displayed_items)
+ if large then
+  expected.large_ids={}
+  for _,candidate in ipairs(df.global.world.items.all)do
+   expected.large_ids[#expected.large_ids+1]=candidate.id
+   if #expected.large_ids>=20000 then break end
+  end
+  assert(#expected.large_ids>=12000,'Large Display oracle requires enough existing items')
+  building.displayed_items:resize(0)
+  for _,id in ipairs(expected.large_ids)do building.displayed_items:insert('#',id)end
+ end
  local f=assert(io.open(out..'/display-wire-expected.json','w'));f:write(json.encode(expected));f:close()
- capture('display-wire')
+ local ok,err=pcall(capture,'display-wire')
+ if large then building.displayed_items:resize(0);for _,id in ipairs(saved)do building.displayed_items:insert('#',id)end end
+ assert(ok,err)
  f=assert(io.open(out..'/display-wire-result.json'));result.wire=json.decode(f:read('*a'));f:close()
  assert(result.wire.success and #building.displayed_items==#before.displayed and #building.jobs==before.jobs,'Display wire failed to restore')
 end

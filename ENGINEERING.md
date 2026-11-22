@@ -3478,10 +3478,28 @@ Display as its own family under the shared64MiB budget and256KiB page size.
 
 Both schema defaults and the mailbox move to255 (`Local\\df3d_management_v255`).
 Version254 messages are rejected; older captures imply no Display page transfer.
-Rebuild bridge and clients together. This is the contract migration; bridge capture
-and client reassembly must be wired and live-verified before oversized Display
-replies can be claimed supported. The ordinary Display fields introduced by254
-below retain their semantics.
+Rebuild bridge and clients together. The bridge retains one serialized Display
+receipt; continuations bypass semantic dispatch and cannot replay an edit. The
+model assembles the full receipt before exposing any rows, validates its original
+action/identity/epoch and preserves Unknown on interrupted edit transfers. The
+ordinary Display fields introduced by254 below retain their semantics.
+
+Protected090127 on2026-11-22 (DF55152) passes the actual main-scene assignment,
+removal, rename and building-removal/cancel workflow with protocol255. Protected
+090348 (DF53112) temporarily substitutes all13362 existing item IDs into the
+paused clone's Display list and returns every ID in order through three reply
+continuations (next logical request sequence advances4). The original list is
+restored; this controlled oversized parent receipt proves transport, not natural
+assignment eligibility for those items or long-list picker navigation. Both owned
+sessions close unsaved with source saves unchanged and empty client stderr.
+Graphics run serially at30FPS with sampled GPU57–62C. The assigned-panel image
+was inspected. An earlier090248 large test omitted required empty request fields;
+it failed before dispatch and is not paging acceptance.
+
+Root19 and Display state checks pass. Model tests cover oversized read, commit
+and removal receipts, duplicate/wrong-family pages, expired captures and world
+replacement without replay. Live oversized post-edit receipts and natural large
+picker lists remain unqualified; the same bounded transfer handles their replies.
 
 Management protocol254 adds DisplayRead, DisplayCommit and DisplayRemove with
 typed requests and replies. The display request owns building identity, category,
@@ -3497,9 +3515,9 @@ Both peers must be rebuilt together. Protocol253 management messages are rejecte
 there is no conversion inventing display membership, revisions or item facts in
 old recordings. The bridge, model, extension and generated action/domain contracts
 share the new vocabulary. Malformed post-effect receipts retain uncertainty rather
-than becoming definite rejection. Oversized display replies reject explicitly;
-retained display reply paging is not implemented and public presentation remains
-unfinished.
+than becoming definite rejection. Protocol255 adds bounded retained reply paging
+as described above. Replies beyond the retained budget still fail without replay;
+post-effect failure preserves uncertainty.
 
 Protected071630 on2026-11-22 (DF59168) verifies the complete protocol254 path
 through the Godot extension: parent/initial/category/detail reads, native group
@@ -3572,7 +3590,7 @@ available and are retired when an explicit edit supersedes them. Deferred visibl
 detail work is coalesced behind the current ticket, and unavailable icon textures
 are retried after asset preparation. Regression checks cover those read/edit races.
 This acceptance covers the ordinary public single-item workflow. Multiselect,
-reassignment, On display, long lists/resize and oversized-reply paging remain
+reassignment, On display and long-list/resize variants remain
 unqualified or unfinished; public exposure does not establish those claims.
 
 ### Trap and hive control providers

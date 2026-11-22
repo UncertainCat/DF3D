@@ -56,6 +56,17 @@ func run() -> void:
 	var catalog:=await request("construction",{"action":C.ManagementAction.Catalog})
 	if not check(catalog.get("status")==C.ManagementStatus.Ok,"Display catalog failed"):quit(1);return
 	var id:=int(expected.id);var item:=int(expected.item_id)
+	if expected.has("large_ids"):
+		var response:=await request("display",{"action":C.ManagementAction.DisplayRead,"building_id":id,"category":-1,"query":"","item_ids":[]})
+		var body: Array=response.get("display",{}).get("body",[])
+		check(response.get("status")==C.ManagementStatus.Ok and body.size()==expected.large_ids.size(),"Large Display body incomplete")
+		for index in mini(body.size(),expected.large_ids.size()):check(body[index].id==int(expected.large_ids[index]) and body[index].resolved,"Large Display identity/order differs")
+		var after:=await request("construction",{"action":C.ManagementAction.Catalog})
+		var sequences: int=int(after.get("request_seq",0))-int(response.get("request_seq",0))
+		check(sequences>1,"Large Display did not use reply continuations")
+		var result_file:=FileAccess.open(directory+"/display-wire-result.json",FileAccess.WRITE)
+		result_file.store_string(JSON.stringify({"success":not failed,"large_rows":body.size(),"sequence_delta":sequences}));result_file.close()
+		world.queue_free();await process_frame;quit(1 if failed else 0);return
 	var parent_capture: Dictionary={}
 	var parent:=await read_display(id,-1)
 	var initial:=await read_display(id,-2)

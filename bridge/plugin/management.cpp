@@ -1064,13 +1064,16 @@ bool publishReplyPage(df3d::stocks_pages::Identity identity,uint32_t offset,
   flatbuffers::FlatBufferBuilder b;
   flatbuffers::Offset<m::StocksReplyPage> stocksPart;
   flatbuffers::Offset<m::ProductionReplyPage> productionPart;
+  flatbuffers::Offset<m::DisplayReplyPage> displayPart;
   const auto bytes=b.CreateVector(page->bytes);
   if(family==df3d::stocks_pages::Family::Production)
     productionPart=m::CreateProductionReplyPage(b,identity.request,page->total,page->offset,bytes);
+  else if(family==df3d::stocks_pages::Family::Display)
+    displayPart=m::CreateDisplayReplyPage(b,identity.request,page->total,page->offset,bytes);
   else stocksPart=m::CreateStocksReplyPage(b,identity.request,page->total,page->offset,bytes);
   m::ManagementStateBuilder state(b);state.add_revision(++revision);state.add_world_epoch(epoch);
   state.add_client_id(client);state.add_request_seq(seq);state.add_action(action);state.add_status(m::ManagementStatus::Pending);
-  state.add_stocks_page(stocksPart);state.add_production_page(productionPart);
+  state.add_stocks_page(stocksPart);state.add_production_page(productionPart);state.add_display_page(displayPart);
   b.Finish(state.Finish());
   sh::publishSnapshot(region,b.GetBufferPointer(),b.GetSize(),revision);
   if(reply)sh::publishSnapshot(reply->region(),b.GetBufferPointer(),b.GetSize(),revision);
@@ -1941,15 +1944,14 @@ void publish() {
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
   // Retained depot reply paging is not wired yet. Reject an oversized read
   // explicitly instead of letting a failed mailbox write look like a timeout.
-  if(displayReply && !validationError && b.GetSize()>m::kManagementCapacity)validationError="display response exceeds mailbox capacity";
   if(depotGoodsReply && !validationError && b.GetSize()>m::kManagementCapacity)
     validationError="depot goods response exceeds mailbox capacity";
   if(tradeCatalogReply && !validationError && b.GetSize()>m::kManagementCapacity)
     validationError="trade catalog response exceeds mailbox capacity";
   const bool productionReply=action==m::ManagementAction::ProductionInspect ||
       action==m::ManagementAction::ProductionQueue || action==m::ManagementAction::ProductionJobEdit;
-  if((stocks || productionReply) && !validationError && b.GetSize()>m::kManagementCapacity) {
-    const auto family=productionReply?df3d::stocks_pages::Family::Production:df3d::stocks_pages::Family::Stocks;
+  if((stocks || productionReply || displayReply) && !validationError && b.GetSize()>m::kManagementCapacity) {
+    const auto family=displayReply?df3d::stocks_pages::Family::Display:productionReply?df3d::stocks_pages::Family::Production:df3d::stocks_pages::Family::Stocks;
     if(b.GetSize()<=df3d::stocks_pages::retainedBytes &&
        pagedReplies.capture({epoch,client,seq},{b.GetBufferPointer(),b.GetBufferPointer()+b.GetSize()},family) && publishReplyPage({epoch,client,seq},0,family))return;
     validationError="response exceeds retained reply budget";
@@ -7983,6 +7985,12 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
     }
     if(!m::runtimeManagementAction(action)){status=m::ManagementStatus::Rejected;message="Native screen adapters are retired; semantic replacement unfinished";publish();return;}
     // Continuations never enter semantic dispatch, including failed/expired reads.
+    if(const auto* page=r->display_reply()) {
+      if(!publishReplyPage({epoch,client,page->request_seq()},page->offset(),df3d::stocks_pages::Family::Display)) {
+        status=m::ManagementStatus::Rejected;message="Display reply expired";publish();
+      }
+      return;
+    }
     if(const auto* page=r->production_reply()) {
       if(!publishReplyPage({epoch,client,page->request_seq()},page->offset(),df3d::stocks_pages::Family::Production)) {
         status=m::ManagementStatus::Rejected;message="Production reply expired";publish();

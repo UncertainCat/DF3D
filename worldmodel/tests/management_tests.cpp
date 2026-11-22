@@ -1994,4 +1994,66 @@ TEST_CASE("Stocks page envelopes and continuation requests reject mixed or malfo
   }
 }
 
+
+TEST_CASE("Display large receipts assemble once and interrupted edits remain unknown") {
+  for(int mode=0;mode<7;++mode) {
+    CAPTURE(mode);
+    ManagementPublisher p;p.publish(1);auto c=openClient(p);const auto owner=claim(p,*c);
+    wm::ManagementRequest request;request.action=mode==0?wm::ManagementAction::DisplayRead:mode==2?wm::ManagementAction::DisplayRemove:wm::ManagementAction::DisplayCommit;
+    request.display.buildingId=72;
+    if(mode){request.display.expectedRevision=13;request.display.selectedIds={1};}
+    const auto logical=c->send(request);REQUIRE(logical);REQUIRE(p.pop()->display());
+    flatbuffers::FlatBufferBuilder full;
+    std::vector<flatbuffers::Offset<mm::DisplayBodyRow>> rows;
+    for(int id=0;id<600;++id)rows.push_back(mm::CreateDisplayBodyRow(full,id,true,false,full.CreateString(std::string(1024,'x')),full.CreateString("Assigned"),15));
+    const auto data=mm::CreateDisplayState(full,72,mode?mm::DisplayOutcome::Applied:mm::DisplayOutcome::Available,17,0,false,-1,
+        full.CreateVector(rows),full.CreateVector(std::vector<flatbuffers::Offset<mm::StocksCategoryRow>>{}),
+        full.CreateVector(std::vector<flatbuffers::Offset<mm::StocksGroupRow>>{}),full.CreateVector(std::vector<flatbuffers::Offset<mm::StocksItemRow>>{}));
+    mm::ManagementStateBuilder state(full);state.add_revision(3);state.add_client_id(owner.id);state.add_request_seq(logical);
+    state.add_world_epoch(7);state.add_action(mm::ManagementAction(request.action));state.add_status(mm::ManagementStatus::Ok);state.add_display(data);full.Finish(state.Finish());
+    REQUIRE(full.GetSize()>mm::kManagementCapacity);
+    REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(full.GetBufferPointer())));
+    uint64_t transport=logical,revision=4;uint32_t offset=0;
+    while(offset<full.GetSize()) {
+      if(offset && mode==5) {
+        p.publish(revision++,0,0,8);REQUIRE(c->poll());CHECK(c->state().worldEpoch==8);CHECK_FALSE(c->state().display);
+        CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);break;
+      }
+      if(offset && mode==3) {
+        p.publish(revision++,owner.id,transport,7,mm::ManagementAction::DisplayRead,mm::ManagementStatus::Rejected);
+      } else {
+        flatbuffers::FlatBufferBuilder page;const auto sentOffset=offset && mode==4?0:offset;
+        const auto count=std::min(df3d::stocks_pages::pageBytes,uint32_t(full.GetSize()-sentOffset));
+        const auto bytes=page.CreateVector(full.GetBufferPointer()+sentOffset,count);
+        const auto part=mode==6?flatbuffers::Offset<mm::DisplayReplyPage>{}:mm::CreateDisplayReplyPage(page,logical,uint32_t(full.GetSize()),sentOffset,bytes);
+        const auto wrong=mode==6?mm::CreateStocksReplyPage(page,logical,uint32_t(full.GetSize()),sentOffset,bytes):flatbuffers::Offset<mm::StocksReplyPage>{};
+        mm::ManagementStateBuilder envelope(page);envelope.add_revision(revision++);envelope.add_client_id(owner.id);envelope.add_request_seq(transport);envelope.add_world_epoch(7);
+        envelope.add_action(mode==6?mm::ManagementAction::StocksMenuRead:offset?mm::ManagementAction::DisplayRead:mm::ManagementAction(request.action));
+        envelope.add_status(mm::ManagementStatus::Pending);envelope.add_display_page(part);envelope.add_stocks_page(wrong);page.Finish(envelope.Finish());
+        REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(page.GetBufferPointer())));
+        REQUIRE(p.write(page.GetBufferPointer(),page.GetSize()));
+      }
+      if(mode==6 || (offset && (mode==3 || mode==4))) {
+        REQUIRE(c->poll());CHECK(c->state().requestSeq==logical);CHECK(c->state().action==request.action);
+        CHECK(c->state().status==wm::ManagementStatus::Rejected);REQUIRE(c->state().display);
+        CHECK(c->state().display->outcome==wm::DisplayOutcome::Unknown);CHECK(c->state().display->body.empty());
+        CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);break;
+      }
+      offset+=std::min(df3d::stocks_pages::pageBytes,uint32_t(full.GetSize()-offset));
+      if(offset<full.GetSize()) {
+        CHECK_FALSE(c->poll());CHECK_FALSE(c->state().display);
+        const auto* next=p.pop();REQUIRE(next->display_reply());CHECK_FALSE(next->display());
+        CHECK(next->action()==mm::ManagementAction::DisplayRead);CHECK(next->display_reply()->request_seq()==logical);
+        CHECK(next->display_reply()->offset()==offset);transport=next->seq();
+        CHECK_FALSE(c->poll());CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);
+      } else {
+        REQUIRE(c->poll());CHECK(c->state().requestSeq==logical);CHECK(c->state().action==request.action);
+        CHECK(c->state().status==wm::ManagementStatus::Ok);REQUIRE(c->state().display);CHECK(c->state().display->body.size()==600);
+        CHECK(c->state().display->outcome==(mode?wm::DisplayOutcome::Applied:wm::DisplayOutcome::Available));
+        CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);
+      }
+    }
+  }
+}
+
 #endif

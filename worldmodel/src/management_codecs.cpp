@@ -589,8 +589,9 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       r.action==ManagementAction::TradeCatalogRead?m::CreateTradeCatalogRequest(b,r.tradeCatalog.depotId):flatbuffers::Offset<m::TradeCatalogRequest>{},
       ((r.action>=ManagementAction::TradeSessionOpen && r.action<=ManagementAction::TradeSessionClose) || ((r.action==ManagementAction::TradeSessionExchange || r.action==ManagementAction::TradeSessionGift || r.action==ManagementAction::TradeSessionSeize) || r.action==ManagementAction::TradeSessionDismiss))?m::CreateTradeSessionRequest(b,r.tradeSession.depotId,r.tradeSession.choiceToken,r.tradeSession.session,r.tradeSession.expectedRevision,r.tradeSession.columns):flatbuffers::Offset<m::TradeSessionRequest>{},
       r.action==ManagementAction::TradeDraftRead || r.action==ManagementAction::TradeDraftApply?m::CreateTradeDraftRequest(b,r.tradeDraft.session,r.tradeDraft.expectedRevision,r.tradeDraft.side,r.tradeDraft.offset,r.tradeDraft.limit,m::TradeDraftOperation(r.tradeDraft.operation),r.tradeDraft.item,r.tradeDraft.type,r.tradeDraft.subtype,b.CreateString(r.tradeDraft.query)):flatbuffers::Offset<m::TradeDraftRequest>{},
-      r.action>=ManagementAction::DisplayRead && r.action<=ManagementAction::DisplayRemove?
-        m::CreateDisplayRequest(b,r.display.buildingId,r.display.category,b.CreateString(r.display.query),b.CreateVector(r.display.itemIds),r.display.expectedRevision,b.CreateVector(r.display.selectedIds)):flatbuffers::Offset<m::DisplayRequest>{});
+      !r.displayReplyRequest && r.action>=ManagementAction::DisplayRead && r.action<=ManagementAction::DisplayRemove?
+        m::CreateDisplayRequest(b,r.display.buildingId,r.display.category,b.CreateString(r.display.query),b.CreateVector(r.display.itemIds),r.display.expectedRevision,b.CreateVector(r.display.selectedIds)):flatbuffers::Offset<m::DisplayRequest>{},
+      r.displayReplyRequest?m::CreateDisplayReplyRequest(b,r.displayReplyRequest,r.displayReplyOffset):flatbuffers::Offset<m::DisplayReplyRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

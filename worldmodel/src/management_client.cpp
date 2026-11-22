@@ -111,30 +111,36 @@ bool ManagementClient::poll() {
     if(i.logicalAction==ManagementAction::StocksGroupApply || i.logicalAction==ManagementAction::StocksItemApply) {
       state_.stocksMenu.emplace();state_.stocksMenu->outcome=StocksMenuOutcome::Unknown;
     }
+    if(i.logicalAction==ManagementAction::DisplayCommit || i.logicalAction==ManagementAction::DisplayRemove) {
+      state_.display.emplace();state_.display->outcome=DisplayOutcome::Unknown;
+    }
     error_=why;pending_=0;i.assembly.reset();i.assembled.clear();i.paging=false;return true;
   };
-  if(s->stocks_page() || s->production_page()) {
+  if(s->stocks_page() || s->production_page() || s->display_page()) {
     if(!pending_ || s->request_seq()!=i.transportSeq)return false;
     const bool production=i.logicalAction==ManagementAction::ProductionInspect ||
         i.logicalAction==ManagementAction::ProductionQueue || i.logicalAction==ManagementAction::ProductionJobEdit;
+    const bool display=i.logicalAction>=ManagementAction::DisplayRead && i.logicalAction<=ManagementAction::DisplayRemove;
     const bool stocks=i.logicalAction==ManagementAction::StocksMenuRead ||
         i.logicalAction==ManagementAction::StocksGroupApply || i.logicalAction==ManagementAction::StocksItemApply;
-    if((production && !s->production_page()) || (stocks && !s->stocks_page()) || (!production && !stocks))
+    if((production && !s->production_page()) || (stocks && !s->stocks_page()) || (display && !s->display_page()) || (!production && !stocks && !display))
       return failTransfer("Mismatched reply family");
-    const auto continuationAction=production?ManagementAction::ProductionInspect:ManagementAction::StocksMenuRead;
+    const auto continuationAction=display?ManagementAction::DisplayRead:production?ManagementAction::ProductionInspect:ManagementAction::StocksMenuRead;
     df3d::stocks_pages::Page part;
     const auto copyPage=[&](const auto* page) {
       part={{s->world_epoch(),s->client_id(),page->request_seq()},page->total(),page->offset(),
         {page->bytes()->begin(),page->bytes()->end()}};
     };
-    if(production)copyPage(s->production_page());else copyPage(s->stocks_page());
+    if(display)copyPage(s->display_page());else if(production)copyPage(s->production_page());else copyPage(s->stocks_page());
     if(part.identity.request!=pending_ || s->world_epoch()!=state_.worldEpoch ||
        s->action()!=m::ManagementAction(i.paging?continuationAction:i.logicalAction))return failTransfer("Mismatched reply page");
     if(!i.assembly.append(part))return failTransfer("Invalid reply sequence");
     i.paging=true;
     if(!i.assembly.complete()) {
       ManagementRequest continuation;continuation.action=continuationAction;
-      if(production) {
+      if(display) {
+        continuation.displayReplyRequest=pending_;continuation.displayReplyOffset=i.assembly.nextOffset();
+      } else if(production) {
         continuation.productionReplyRequest=pending_;continuation.productionReplyOffset=i.assembly.nextOffset();
       } else {
         continuation.stocksMenu.pageRequest=pending_;continuation.stocksMenu.pageOffset=i.assembly.nextOffset();
@@ -149,9 +155,9 @@ bool ManagementClient::poll() {
     flatbuffers::Verifier complete(i.assembled.data(),i.assembled.size());
     if(!complete.VerifyBuffer<m::ManagementState>(nullptr))return failTransfer("Malformed complete reply");
     s=flatbuffers::GetRoot<m::ManagementState>(i.assembled.data());
-    if(s->stocks_page() || s->production_page() || m::validateManagementState(*s) || s->client_id()!=clientId_ || s->world_epoch()!=state_.worldEpoch ||
+    if(s->stocks_page() || s->production_page() || s->display_page() || m::validateManagementState(*s) || s->client_id()!=clientId_ || s->world_epoch()!=state_.worldEpoch ||
        s->request_seq()!=pending_ || s->action()!=m::ManagementAction(i.logicalAction) ||
-       (production?!s->production():!s->stocks_menu()))return failTransfer("Mismatched complete reply");
+       (display?!s->display():production?!s->production():!s->stocks_menu()))return failTransfer("Mismatched complete reply");
     i.paging=false;
   }else if(i.paging) {
     if(s->request_seq()!=i.transportSeq)return false;

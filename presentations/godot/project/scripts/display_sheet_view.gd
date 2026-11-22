@@ -24,11 +24,11 @@ func _display_changed() -> void:
 	display_scroll.position=Vector2(size.x-32,96);display_scroll.size=Vector2(16,228)
 	display_scroll.set_rows(display.body.size(),display_scroll.first)
 	display_scroll.visible=state.snapshot.get("type",-1)==53 and not removing and display.category==-1 and display.body.size()>7
-	if display_allowed() and not _details_pending:_details_pending=true;_fetch_display.call_deferred()
+	if display_allowed() and display.ticket==0 and not _details_pending:_details_pending=true;_fetch_display.call_deferred()
 	queue_redraw()
 func _fetch_display() -> void:
 	_details_pending=false
-	if not display_allowed():return
+	if not display_allowed() or display.ticket!=0:return
 	var ids: Array=[]
 	for i in range(display_scroll.first,mini(display.body.size(),display_scroll.first+7)):
 		var row: Dictionary=display.body[i]
@@ -44,7 +44,7 @@ func _process(delta: float) -> void:
 	super._process(delta)
 	if not is_visible_in_tree() or display==null or state.snapshot.get("type",-1)!=53:return
 	for row in display.items.values():
-		if row.has("appearance") and display_icons.get(row.id,{}).get("appearance")!=row.appearance:
+		if row.has("appearance") and (display_icons.get(row.id,{}).get("appearance")!=row.appearance or display_icons.get(row.id,{}).get("texture")==null):
 			display_icons[row.id]={"appearance":row.appearance.duplicate(true),"texture":native_header_source.item_sheet_icon(row.type,row.appearance,row.id)};queue_redraw()
 func _gui_input(event: InputEvent) -> void:
 	if display_allowed() and event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:

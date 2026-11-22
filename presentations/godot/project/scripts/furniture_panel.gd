@@ -102,7 +102,7 @@ func _open_display() -> void:
 	selection_retired.emit();display_view.show();display.open_picker()
 func _finish_display() -> void:
 	if not display_mode:return
-	if display.phase==display.Phase.Ready:display.finish_picker()
+	if display.phase in [display.Phase.Ready,display.Phase.Reading]:display.finish_picker()
 	elif display.phase in [display.Phase.Rejected,display.Phase.Stale,display.Phase.Unknown,display.Phase.Unavailable]:close_panel()
 func _retire_display() -> void:
 	display_mode=false;modal_input=false

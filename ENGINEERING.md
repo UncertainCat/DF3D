@@ -3536,8 +3536,29 @@ Both full944x708 picker comparisons remain exact, including caption no-op input.
 Root19 checks and Display state checks pass. Graphics run serially at30FPS with
 sampled GPU59–63C; rendering has only the documented Godot shutdown diagnostics.
 Evidence: display_parent_view_reference. Public main-scene/tab composition, header
-edits, multiselect/reassignment, On display and long-list/resize qualification remain
-unfinished; completed Display furniture is still gated from public selection.
+edits and broader assignment variants are qualified separately below.
+
+### Public Display furniture workflow
+
+Completed DisplayFurniture53 is admitted through ordinary map selection, semantic
+tile navigation and item-holder routes. Protected074809 on2026-11-22 (DF53548)
+exercises the actual main scene with development routing disabled: map open/close,
+rename/restoration, building removal/cancellation, picker category/checkbox input,
+Escape commit and modal-input retirement, reopen, assigned-item removal and holder
+return. Seven full488x708 panels match native, including the shared tile-selection
+frame overlay. The client reports success with empty stderr; the owned session
+closes unsaved and source saves are preserved. Graphics run serially at30FPS with
+sampled GPU59–63C. Root19, Display state and holder-routing checks pass. Evidence:
+display_public_scene_reference.
+
+Explicit picker closure retires pending detail reads before committing its existing
+draft; it does not wait for artwork. Parent refresh/detail reads keep controls
+available and are retired when an explicit edit supersedes them. Deferred visible
+detail work is coalesced behind the current ticket, and unavailable icon textures
+are retried after asset preparation. Regression checks cover those read/edit races.
+This acceptance covers the ordinary public single-item workflow. Multiselect,
+reassignment, On display, long lists/resize and oversized-reply paging remain
+unqualified or unfinished; public exposure does not establish those claims.
 
 ### Trap and hive control providers
 

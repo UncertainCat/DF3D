@@ -128313,6 +128313,130 @@
           "build/stockpile-storage-native-farm-discovery-20261122-073619/display-selected-parent.png": "e06a6546183c83ae8bd0540705750b2b9953a115f3fac0148e17852a5477ae7e",
           "build/stockpile-storage-native-farm-discovery-20261122-073619/display-wire.png": "fd5b0b404d136ec19f54dbec0124d464669e6fba97860641e93724928cda1935"
         }
+      },
+      "display_public_scene_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261122-074809",
+        "owned_df_pid": 53548,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Public actual main scene passes map and holder routes53, rename/restoration, building remove/cancel, category/checkbox input, Escape assignment and modal retirement, reopen and parent item removal. Seven full488x708 panels match native including shared tile-selection frame overlay. Deferred detail reads and background refresh no longer block closure/edits or enqueue repeated read work. Multiselect/reassignment/On display and long-list/resize remain unqualified. Composed furniture owner opens Display picker, owns modal input, commits on Escape and retires parent, reopens assigned body and removes item through real action service. Parent480x708 content matches native (final8px frame owned by tile-selection tabs excluded from isolated view); picker944x708 unselected/selected remains exact. Native group/name clicks leave draft and expansion unchanged. Public scene/tab/header-edit/long-list qualification remains unfinished. Rendering has only known Godot shutdown diagnostics. Viewer-owned Display state through the real semantic action service preserves draft selection across category navigation, commits on explicit closure, receives the assigned parent and removes the item. Public UI/rendering remain unfinished. Protocol254 live transport validates parent/initial/category/detail reads, native group membership/captions and item appearance, search, assignment, stale removal rejection and successful removal. Source save is preserved; viewer draft/render/public route and oversized-reply paging remain unfinished. Prior composed display read chooses native initial category39, serves visible-page item38540 caption/appearance, and preserves inventory revision through repeated detail reads. Forbidding the candidate changes eligibility and stale-rejects commit without effects; restoring permits native-equivalent assignment/removal. Duplicate/stale edit and existing picker/inventory checks pass. Viewer draft lifecycle, transport/rendering/public exposure remain unfinished.",
+        "wire": {
+          "roundtrip": true,
+          "success": true,
+          "surface": "actual main scene"
+        },
+        "item_count": 6411,
+        "read": {
+          "changed": {
+            "effects_started": false,
+            "items": [],
+            "outcome": 2,
+            "removing": false,
+            "revision": "8150647884290783749"
+          },
+          "initial": {
+            "category": 39,
+            "inventory_revision": "5505426441492985229",
+            "items": [],
+            "revision": "8150647884290783749"
+          },
+          "page": {
+            "category": 37,
+            "inventory_revision": "5505426441492985229",
+            "items": [
+              {
+                "appearance": true,
+                "caption": "â˜¼steel amuletâ˜¼",
+                "id": 38540
+              }
+            ],
+            "revision": "8150647884290783749"
+          },
+          "repeated": {
+            "category": 37,
+            "inventory_revision": "5505426441492985229",
+            "items": [
+              {
+                "appearance": true,
+                "caption": "â˜¼steel amuletâ˜¼",
+                "id": 38540
+              }
+            ],
+            "revision": "8150647884290783749"
+          }
+        },
+        "provider": {
+          "assigned": {
+            "effects_started": true,
+            "items": [
+              38540
+            ],
+            "outcome": 1,
+            "removing": false,
+            "revision": "8575683379901701473"
+          },
+          "duplicate": {
+            "effects_started": false,
+            "items": [],
+            "outcome": 0,
+            "removing": false,
+            "revision": "8150647884290783749"
+          },
+          "removed": {
+            "effects_started": true,
+            "items": [],
+            "outcome": 1,
+            "removing": false,
+            "revision": "8150647884290783749"
+          },
+          "stale": {
+            "effects_started": false,
+            "items": [
+              38540
+            ],
+            "outcome": 2,
+            "removing": false,
+            "revision": "8575683379901701473"
+          }
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-building-native.json": "fe3a24215dd39bcb55d916c42ac64ef94f51c23dc7a6aa189c2cbe391f6e64d5",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/display_read_native.h": "449f4c91f9388b8d72045ebeb661d6fc66fda7f776e883a4417022ef52878e31",
+          "bridge/plugin/display_assignment_native.h": "bc98d0ea83c9c0a1841925077e094552e48689e3392658939c37952869a6a24f",
+          "tools/smoke/display-building-native.lua": "ec87a603d1675f0e0f98ca3fb926944fc56434a6fc096610f9b01e9d44f45f54",
+          "presentations/godot/project/scripts/display_sheet_view.gd": "2347760f29f3058a11e88ee38563e4dc7084932914769dbba36b8bbfe2dbd41a",
+          "presentations/godot/project/scripts/furniture_panel.gd": "677f9da18ff3fb509c5b5289b9977468b5045506f45b18017bae6a8f97f37506",
+          "presentations/godot/project/tests/display_parent_capture.gd": "e0c7846da59cf0913a14a1c809612300ebc8c37b713dc449038f052d56a5daee",
+          "presentations/godot/project/scripts/display_state.gd": "61e6fed1c396ffff6f8a7f576cfc6af318ddfb8891a37ce02f36ea2c6c4eb858",
+          "presentations/godot/project/tests/display_state_test.gd": "91177bc8dfafc13cd0be54912affa6c41ab79c31bae852514f07e4db6d5c2249",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "presentations/godot/project/tests/display_wire_live.gd": "88f5399910f596643b2debef340fe81c8f4bb71538fc7872c06e190d64d1ddbc",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-amulets.png": "6066973976f5b8744751547cbdb0b0880344589c3951ade15e9c78e207c39b48",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-assignment-closed.png": "3b6ac84e60b1b9253badd18b034912cc0bdad9c8f928cdbcbed53eec8a380221",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-assignment-open.png": "4363fd9cf3513b4fb65f5161f67e7509743c56673c77bf72502a9e26654d5106",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-assignment-settled.png": "4ff6a0e70092a46fc706f58ba121e40fffcf1b663c6b574297796cfe5f8716f0",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-removed-parent.png": "38f8235ea8d52e299329055cef584435811d0cd7abb641fc0a292162e81a3c19",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-scene-cancelled.png": "6f9d6cf22180d09bc75ec134f391c5cb3673bb32d052b3aceb2a89a07157d509",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-scene-initial.png": "6f9d6cf22180d09bc75ec134f391c5cb3673bb32d052b3aceb2a89a07157d509",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-scene-removing.png": "2aea85b97b7a59765d05db06c19e279ccba219c6fbd535f9b072560b6533786e",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-scene-renamed.png": "dec1aa857c51662a476367058e610013f7ab8a2472b0b66b1dc8829b30823de3",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-scene-restored.png": "6f9d6cf22180d09bc75ec134f391c5cb3673bb32d052b3aceb2a89a07157d509",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-search-steel.png": "63acdfa086ffb0dc46d32235e0724c3f0714704b50c4a2d297bcd0c02b8598d9",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-selected-draft.png": "ede5c037ab53d919ea981d9eeba95b595ddd75a5d534be22dfc99a3cd82c76f8",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-selected-parent.png": "cdaa4645fdfcbc52f7fcd44811ff9d1dcc7c7854e02b4bc4d2e30fabe576a68e",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/display-wire.png": "6f9d6cf22180d09bc75ec134f391c5cb3673bb32d052b3aceb2a89a07157d509",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/chest-scene-display-assigned.png": "eb5c07b6a737f54bbd20f1382589a46fd45db12a3c7ddc70e7b1b4492d31ac05",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/chest-scene-display-cancelled.png": "5a6b616f92c34ed3c79aab3eaf299147f7ff49b940fea46196c5f245fab29f64",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/chest-scene-display-initial.png": "5a6b616f92c34ed3c79aab3eaf299147f7ff49b940fea46196c5f245fab29f64",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/chest-scene-display-removed.png": "5a6b616f92c34ed3c79aab3eaf299147f7ff49b940fea46196c5f245fab29f64",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/chest-scene-display-removing.png": "a9402443d61c15634da06292e7843a71fdea7024bf665b4f87e453ad66b5462e",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/chest-scene-display-renamed.png": "79d10a428d3701a38b698820c4a8c91f61dd0bc570a8f77cec09a669d5733170",
+          "build/stockpile-storage-native-farm-discovery-20261122-074809/chest-scene-display-restored.png": "5a6b616f92c34ed3c79aab3eaf299147f7ff49b940fea46196c5f245fab29f64",
+          "presentations/godot/project/tests/display_scene_live.gd": "a3ee5ae4ce5273fedcf0655183a1b98fef1ad5d5128951e6d567e40e11aabcd9",
+          "presentations/godot/project/scripts/fortress_ui.gd": "9b187e0858d19d877696cbca8f541a92f842d9634d12feb27489f0fb003b957b"
+        }
       }
     },
     "pending_construction_reference": {

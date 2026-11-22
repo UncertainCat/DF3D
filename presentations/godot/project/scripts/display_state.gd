@@ -46,9 +46,14 @@ func open(id: int) -> void:
 func poll_refresh(delta: float) -> void:
 	if phase!=Phase.Ready or category!=-1 or ticket!=0:return
 	refresh_age+=maxf(0.0,delta)
-	if refresh_age>=0.5:refresh_age=0.0;_read()
+	if refresh_age>=0.5:refresh_age=0.0;_read([],true)
+func _retire_read() -> void:
+	generation+=1
+	if service!=null and ticket!=0:service.detach(ticket)
+	ticket=0
 func open_picker() -> void:
 	if phase!=Phase.Ready or category!=-1:return
+	_retire_read()
 	category=-2;selected={};inventory_revision=0;_read()
 func key(row: Dictionary) -> String:return "%d:%d:%d:%d"%[row.type,row.subtype,row.subcat1,row.subcat2]
 func visible_categories() -> Array:return categories.filter(func(row):return row.matches)
@@ -67,7 +72,7 @@ func toggle_item(id: int) -> void:
 	else:selected[id]=true
 	changed.emit()
 func request_items(ids: Array) -> void:
-	if phase!=Phase.Ready or ids.size()>64:return
+	if phase!=Phase.Ready or ticket!=0 or ids.size()>64:return
 	var members: Dictionary={}
 	if category<0:
 		for row in body:members[row.id]=true
@@ -79,9 +84,12 @@ func request_items(ids: Array) -> void:
 		if typeof(id)!=TYPE_INT or not members.has(id) or seen.has(id):return
 		seen[id]=true
 	if ids.all(func(id):return items.has(id)):return
-	_read(ids)
+	_read(ids,category==-1)
 func finish_picker() -> void:
-	if phase!=Phase.Ready or category<0:return
+	if phase not in [Phase.Ready,Phase.Reading] or category==-1:return
+	# Detail reads carry no edits. Explicit closure retires them and commits
+	# the existing draft against its original authority, even while art loads.
+	_retire_read();phase=Phase.Ready;_queries=[]
 	if selected.is_empty():
 		category=-1;query="";_active_query="";_queries=[];inventory_revision=0;_read();picker_closed.emit();return
 	var ids: Array=selected.keys();ids.sort()
@@ -89,10 +97,11 @@ func finish_picker() -> void:
 	_submit({"action":C.ManagementAction.DisplayCommit,"building_id":building_id,"expected_revision":inventory_revision,"selected_ids":ids})
 func remove_item(id: int) -> void:
 	if phase!=Phase.Ready or category!=-1 or not body.any(func(row):return row.id==id):return
+	_retire_read()
 	phase=Phase.Applying
 	_submit({"action":C.ManagementAction.DisplayRemove,"building_id":building_id,"expected_revision":revision,"selected_ids":[id]})
-func _read(ids: Array=[]) -> void:
-	phase=Phase.Reading
+func _read(ids: Array=[],background: bool=false) -> void:
+	if not background:phase=Phase.Reading
 	_submit({"action":C.ManagementAction.DisplayRead,"building_id":building_id,"category":category,"query":_active_query,"item_ids":ids.duplicate()})
 func _reject(result: Dictionary,uncertain: bool=false) -> void:
 	last_result=result.duplicate(true);items={}

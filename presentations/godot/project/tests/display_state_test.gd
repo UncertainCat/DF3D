@@ -38,6 +38,17 @@ func run() -> void:
 	check(state.selected.is_empty() and state.phase==State.Phase.Unavailable,"Session replacement retained draft")
 	ready(state,service);state.toggle_item(7);state.finish_picker();service.reply(state.ticket,receipt(-1,0,C.DisplayOutcome.Applied))
 	check(state.phase==State.Phase.Ready and state.category==-1 and state.selected.is_empty(),"Commit receipt failed to return to parent")
+	ready(state,service);state.toggle_item(7);state.request_items([7]);pending=state.ticket
+	state.finish_picker()
+	check(service.detached.has(pending) and service.calls[state.ticket].intent.action==C.ManagementAction.DisplayCommit,"Escape during detail read did not retire read and commit")
+	var commit_ticket: int=state.ticket;service.reply(pending,receipt(39))
+	check(state.ticket==commit_ticket and state.phase==State.Phase.Applying,"Retired detail read replaced commit")
+	service.reply(commit_ticket,receipt(-1,0,C.DisplayOutcome.Applied))
+	state.body=[{"id":7}];state.poll_refresh(1.0);pending=state.ticket
+	check(state.phase==State.Phase.Ready and pending!=0,"Background parent refresh blocked controls")
+	before=service.next;state.request_items([7]);check(service.next==before,"Pending background read queued duplicate detail work")
+	state.remove_item(7)
+	check(service.detached.has(pending) and service.calls[state.ticket].intent.action==C.ManagementAction.DisplayRemove,"Parent action did not supersede background read")
 	state.dispose();service.queue_free();await process_frame
 	print("DISPLAY_STATE_PASS" if failures==0 else "DISPLAY_STATE_FAIL")
 	quit(0 if failures==0 else 1)

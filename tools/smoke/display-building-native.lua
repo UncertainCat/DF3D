@@ -163,8 +163,16 @@ gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
 assert(not picker.open,'Display assignment did not close');capture('display-assignment-closed')
 result.after={displayed=values(building.displayed_items),jobs=#building.jobs}
 assert(json.encode(before)==json.encode(result.after),'Display open/close changed assignment')
+if os.getenv('DF3D_DISPLAY_SCENE')=='1' then
+ select_map(building);view:render(dfhack.getTickCount());capture('display-scene-initial')
+ local original=building.name;assert(#building.jobs==0)
+ click(800,82);gui.simulateInput(view,'STRING_A120');gui.simulateInput(view,'SELECT');assert(building.name==original..'x');capture('display-scene-renamed')
+ click(800,82);gui.simulateInput(view,'STRING_A000');gui.simulateInput(view,'SELECT');assert(building.name==original);capture('display-scene-restored')
+ click(832,82);assert(#building.jobs==1 and building.jobs[0].job_type==df.job_type.DestroyBuilding);capture('display-scene-removing')
+ click(520,202);assert(#building.jobs==0);capture('display-scene-cancelled')
+end
 if os.getenv('DF3D_DISPLAY_WIRE')=='1' then
- local expected={id=building.id,item_id=result.selection.id,picker=result.picker_comparisons[2].owned}
+ local expected={tile={building.centerx,building.centery,building.z},custom_name=dfhack.df2utf(building.name),id=building.id,item_id=result.selection.id,picker=result.picker_comparisons[2].owned}
  local f=assert(io.open(out..'/display-wire-expected.json','w'));f:write(json.encode(expected));f:close()
  capture('display-wire')
  f=assert(io.open(out..'/display-wire-result.json'));result.wire=json.decode(f:read('*a'));f:close()

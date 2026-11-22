@@ -458,6 +458,7 @@ try {
      if($name -like 'well-wire-*'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/well_scene_live.gd')}
      if($name -eq 'special-building-wire'){$clientArgs=@('--headless','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/special_building_wire_live.gd')}
      if($name -eq 'display-wire'){$clientArgs=@('--headless','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/display_wire_live.gd')}
+     if($name -eq 'display-wire' -and $env:DF3D_DISPLAY_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/display_scene_live.gd')}
      if($name -eq 'siege-building-wire'){$clientArgs=@('--headless','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/siege_building_wire_live.gd')}
      if($name -eq 'siege-building-wire' -and $env:DF3D_SIEGE_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/siege_scene_live.gd')}
      if($name -eq 'special-building-wire' -and $env:DF3D_SPECIAL_BUILDINGS_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/special_building_scene_live.gd')}

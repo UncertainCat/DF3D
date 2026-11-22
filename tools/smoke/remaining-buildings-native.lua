@@ -11,6 +11,7 @@ if specialized_families then kinds={22,24,26,27,48,49,53}end
 if os.getenv("DF3D_DEPOT_NATIVE")=="1" then kinds={6}end
 if os.getenv("DF3D_CAGE_NATIVE")=="1" then kinds={28}end
 if os.getenv('DF3D_CHAIN_NATIVE')=='1' then kinds={27}end
+if os.getenv('DF3D_SIEGE_NATIVE')=='1' then kinds={22}end
 local wanted={};for _,kind in ipairs(kinds)do wanted[kind]=true end
 local result={frame=df.global.world.frame_counter,inventory={},buildings={},missing={}}
 local selected={}
@@ -85,6 +86,11 @@ for _,kind in ipairs(kinds)do
   if specialized_families then
    row.items={}
    for _,held in ipairs(b.contained_items)do row.items[#row.items+1]={id=held.item.id,type=held.item:getType(),use_mode=held.use_mode}end
+  end
+  if kind==22 and os.getenv('DF3D_SIEGE_NATIVE')=='1' then
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','siege-building-native.lua')
+   result.siege=assert(loadfile(source))(out,view,b,select_map,capture)
+   select_map(b);view:render(dfhack.getTickCount())
   end
   if kind==27 and os.getenv('DF3D_CHAIN_NATIVE')=='1' then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','chain-native.lua')

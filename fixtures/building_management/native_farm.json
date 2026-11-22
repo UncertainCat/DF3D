@@ -115187,6 +115187,371 @@
           "presentations/godot/project/tests/chain_capture.gd": "0e2f79f1266e4a1b0858eaec12008d6cabb40b100ecf18c9b168e7b61cc6d6d5",
           "tools/smoke/chain-native.lua": "2220a4694e439ab387c8a56d822d07d782e46b37ae442ba53398c4b0319b77de"
         }
+      },
+      "siege_sheet_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261122-055157",
+        "owned_df_pid": 49460,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "engines": [
+          {
+            "actions": [
+              {
+                "action": 3,
+                "lines": [
+                  {
+                    "text": "Fire at enemies",
+                    "y": 11
+                  }
+                ]
+              },
+              {
+                "action": 4,
+                "lines": [
+                  {
+                    "text": "Practice fire",
+                    "y": 11
+                  },
+                  {
+                    "text": "* Will also target enemies",
+                    "y": 13
+                  },
+                  {
+                    "text": "* Place archery targets for better training",
+                    "y": 14
+                  }
+                ]
+              },
+              {
+                "action": 2,
+                "lines": [
+                  {
+                    "text": "Stand ready but do not fire",
+                    "y": 11
+                  }
+                ]
+              },
+              {
+                "action": 1,
+                "lines": [
+                  {
+                    "text": "Keep loaded but do not stand ready",
+                    "y": 11
+                  }
+                ]
+              },
+              {
+                "action": 0,
+                "lines": [
+                  {
+                    "text": "Not in use",
+                    "y": 11
+                  }
+                ]
+              }
+            ],
+            "before": {
+              "action": 0,
+              "facing": 0,
+              "jobs": 0,
+              "resting": 0
+            },
+            "id": 1490,
+            "lines": [
+              {
+                "text": "Not in use",
+                "y": 11
+              }
+            ],
+            "tile": [
+              113,
+              101,
+              165
+            ],
+            "type": 0
+          },
+          {
+            "actions": [
+              {
+                "action": 3,
+                "lines": [
+                  {
+                    "text": "Fire at enemies",
+                    "y": 11
+                  }
+                ]
+              },
+              {
+                "action": 4,
+                "lines": [
+                  {
+                    "text": "Practice fire",
+                    "y": 11
+                  },
+                  {
+                    "text": "* Will also target enemies",
+                    "y": 13
+                  },
+                  {
+                    "text": "* Place archery targets for better training",
+                    "y": 14
+                  }
+                ]
+              },
+              {
+                "action": 2,
+                "lines": [
+                  {
+                    "text": "Stand ready but do not fire",
+                    "y": 11
+                  }
+                ]
+              },
+              {
+                "action": 1,
+                "lines": [
+                  {
+                    "text": "Keep loaded but do not stand ready",
+                    "y": 11
+                  }
+                ]
+              },
+              {
+                "action": 0,
+                "lines": [
+                  {
+                    "text": "Not in use",
+                    "y": 11
+                  }
+                ]
+              }
+            ],
+            "before": {
+              "action": 0,
+              "facing": 0,
+              "jobs": 0,
+              "resting": 0
+            },
+            "id": 1491,
+            "lines": [
+              {
+                "text": "Not in use",
+                "y": 11
+              }
+            ],
+            "tile": [
+              101,
+              105,
+              165
+            ],
+            "type": 1
+          },
+          {
+            "actions": [
+              {
+                "action": 3,
+                "lines": [
+                  {
+                    "text": "Fire at enemies",
+                    "y": 11
+                  },
+                  {
+                    "text": "Resting orientation",
+                    "y": 16
+                  },
+                  {
+                    "text": "Bolts loaded: 0",
+                    "y": 21
+                  },
+                  {
+                    "text": "Bolts nearby and available: 0",
+                    "y": 22
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to squads: 25",
+                    "y": 23
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to hunters: 89",
+                    "y": 24
+                  }
+                ]
+              },
+              {
+                "action": 4,
+                "lines": [
+                  {
+                    "text": "Practice fire (uses many bolts!)",
+                    "y": 11
+                  },
+                  {
+                    "text": "* Will also target enemies",
+                    "y": 13
+                  },
+                  {
+                    "text": "* Place archery targets for better training",
+                    "y": 14
+                  },
+                  {
+                    "text": "Resting orientation",
+                    "y": 16
+                  },
+                  {
+                    "text": "Bolts loaded: 0",
+                    "y": 21
+                  },
+                  {
+                    "text": "Bolts nearby and available: 0",
+                    "y": 22
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to squads: 25",
+                    "y": 23
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to hunters: 89",
+                    "y": 24
+                  }
+                ]
+              },
+              {
+                "action": 2,
+                "lines": [
+                  {
+                    "text": "Stand ready but do not fire",
+                    "y": 11
+                  },
+                  {
+                    "text": "Resting orientation",
+                    "y": 16
+                  },
+                  {
+                    "text": "Bolts loaded: 0",
+                    "y": 21
+                  },
+                  {
+                    "text": "Bolts nearby and available: 0",
+                    "y": 22
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to squads: 25",
+                    "y": 23
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to hunters: 89",
+                    "y": 24
+                  }
+                ]
+              },
+              {
+                "action": 1,
+                "lines": [
+                  {
+                    "text": "Keep loaded but do not stand ready",
+                    "y": 11
+                  },
+                  {
+                    "text": "Resting orientation",
+                    "y": 16
+                  },
+                  {
+                    "text": "Bolts loaded: 0",
+                    "y": 21
+                  },
+                  {
+                    "text": "Bolts nearby and available: 0",
+                    "y": 22
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to squads: 25",
+                    "y": 23
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to hunters: 89",
+                    "y": 24
+                  }
+                ]
+              },
+              {
+                "action": 0,
+                "lines": [
+                  {
+                    "text": "Not in use",
+                    "y": 11
+                  },
+                  {
+                    "text": "Resting orientation",
+                    "y": 16
+                  },
+                  {
+                    "text": "Bolts loaded: 0",
+                    "y": 21
+                  },
+                  {
+                    "text": "Bolts nearby and available: 0",
+                    "y": 22
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to squads: 25",
+                    "y": 23
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to hunters: 89",
+                    "y": 24
+                  }
+                ]
+              }
+            ],
+            "before": {
+              "action": 0,
+              "facing": 0,
+              "jobs": 0,
+              "resting": 0
+            },
+            "id": 1492,
+            "lines": [
+              {
+                "text": "Not in use",
+                "y": 11
+              },
+              {
+                "text": "Resting orientation",
+                "y": 16
+              },
+              {
+                "text": "Bolts loaded: 0",
+                "y": 21
+              },
+              {
+                "text": "Bolts nearby and available: 0",
+                "y": 22
+              },
+              {
+                "text": "Bolts nearby but assigned to squads: 25",
+                "y": 23
+              },
+              {
+                "text": "Bolts nearby but assigned to hunters: 89",
+                "y": 24
+              }
+            ],
+            "tile": [
+              136,
+              84,
+              165
+            ],
+            "type": 2
+          }
+        ],
+        "scope": "Protected completed Catapult/Ballista/BoltThrower fixtures with matching installed parts. Native building sheet controls map to actions3,4,2,1,0 for every variant and restore action/facing/resting/jobs. Captures full native panels and text. BoltThrower natural nearby counts0available25squads89hunters; loaded0. Runtime provider, orientation input and public workflow not yet qualified.30FPS GPU48C sampled.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261122-055157/siege-building-native.json": "50a713a5b489e7f7384d320af6999262a600740cc58a01693b187c11b79c9d1e",
+          "build/stockpile-storage-native-farm-discovery-20261122-055157/remaining-buildings-native.json": "d55a1d8485228764478215598e88b91c606b60367385a0270eb03889fb69cf1c",
+          "build/stockpile-storage-native-farm-discovery-20261122-055157/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261122-055157/result.json": "ed9d83446fb29d13d5b54aea0ebbe200b5076bbf9531cb4aca91d0abcfd1daf7",
+          "tools/smoke/siege-building-native.lua": "3b77b4dce0167493a439ca480d440a4b8f0d4f55ecddfa369ea99792c5daadce",
+          "tools/smoke/remaining-buildings-native.lua": "30980447bcabace4a458a321621723a03102a63718bc3df2db0911471c037912"
+        }
       }
     },
     "pending_construction_reference": {

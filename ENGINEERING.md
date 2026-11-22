@@ -3095,6 +3095,26 @@ render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
 
 ## Remaining completed-building native providers
 
+### Siege building sheet reference
+
+Protected055157 on2026-11-22 (DF49460) creates completed Catapult, Ballista and
+Bolt Thrower fixtures with matching installed parts. All five native sheet buttons
+map to actions3/4/2/1/0, matching the already inspected Places mode semantics.
+The run restores action, facing, resting orientation and job count. Bolt Thrower
+adds eight resting-direction buttons and four ammunition counts; its reference
+has0 loaded,0 available,25 squad-assigned and89 hunter-assigned bolts. These are
+native observations, not acceptance of a new runtime count provider. Full panel
+captures and native text are retained in
+completed_sheet_discovery_reference.siege_sheet_reference.
+The source save is unchanged; owned DF closes unsaved at30FPS, sampled48C.
+
+Native sheet input1af364..1af6cf writes action and cancels the same firing-job
+types as Places. For Bolt Thrower,1af4d4..1af4db writes resting_orientation only;
+facing is a separate simulation field. Renderer19205a..193ced supplies the body.
+The building provider, resting-direction effects and public workflow remain open.
+Reuse the Places mode behavior and independently owned semantic helpers; do not
+call native sheet input/render functions or borrow their globals.
+
 ### Chain candidates and native actions
 
 Chain27 is admitted through public map selection and holder navigation. It reuses

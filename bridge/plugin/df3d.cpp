@@ -92,6 +92,7 @@
 #include "machinery_native.h"
 #include "well_native.h"
 #include "cage_native.h"
+#include "chain_native.h"
 #include "cage_occupants_native.h"
 #include "special_building_native.h"
 #include "depot_native.h"
@@ -5730,6 +5731,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["jobs"]=Json::Value(Json::arrayValue);
           for(const auto& job:body->jobs){Json::Value row;row["id"]=job.id;row["type"]=job.type;row["item_type"]=job.itemType;row["flags"]=job.flags;result["jobs"].append(row);}
         } else if(!edit)return CR_FAILURE;
+        out.print("{}",Json::FastWriter().write(result));return CR_OK;
+      }
+      if(parameters[0]=="chain-candidates-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& value=parameters[1];
+        const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        auto* chain=virtual_cast<df::building_chainst>(df::building::find(id));
+        if(!chain)return CR_FAILURE;
+        const auto candidates=df3d_production::chainCandidates(*chain);if(!candidates)return CR_FAILURE;
+        Json::Value result(Json::arrayValue);
+        for(const auto& row:*candidates){Json::Value item;item["id"]=row.id;result.append(item);}
         out.print("{}",Json::FastWriter().write(result));return CR_OK;
       }
       if(parameters[0]=="special-building-read") {

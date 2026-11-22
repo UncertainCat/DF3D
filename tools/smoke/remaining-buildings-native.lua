@@ -10,6 +10,7 @@ local specialized_families=os.getenv('DF3D_SPECIAL_BUILDINGS_NATIVE')=='1'
 if specialized_families then kinds={22,24,26,27,48,49,53}end
 if os.getenv("DF3D_DEPOT_NATIVE")=="1" then kinds={6}end
 if os.getenv("DF3D_CAGE_NATIVE")=="1" then kinds={28}end
+if os.getenv('DF3D_CHAIN_NATIVE')=='1' then kinds={27}end
 local wanted={};for _,kind in ipairs(kinds)do wanted[kind]=true end
 local result={frame=df.global.world.frame_counter,inventory={},buildings={},missing={}}
 local selected={}
@@ -84,6 +85,10 @@ for _,kind in ipairs(kinds)do
   if specialized_families then
    row.items={}
    for _,held in ipairs(b.contained_items)do row.items[#row.items+1]={id=held.item.id,type=held.item:getType(),use_mode=held.use_mode}end
+  end
+  if kind==27 and os.getenv('DF3D_CHAIN_NATIVE')=='1' then
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','chain-native.lua')
+   result.chain=assert(loadfile(source))(out,view,b,capture)
   end
   if kind==28 and os.getenv('DF3D_CAGE_NATIVE')=='1' then
    local function ids(v)local t={};for _,id in ipairs(v)do t[#t+1]=id end;return t end

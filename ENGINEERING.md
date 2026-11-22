@@ -3095,6 +3095,36 @@ render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
 
 ## Remaining completed-building native providers
 
+### Chain candidates and native actions
+
+`chain_native.h` invokes native exclusion predicate3d5550 with an independently
+owned capture containing the semantic chain pointer and a16-byte unit entry.
+The predicate rejects nonunits, missing/inactive units, the current assignee and
+trade-locked units, then delegates eligibility to13673b0. Both functions are
+fingerprinted; the shared owner baseline pins the nested creature predicate.
+The reader iterates active units and returns bounded pointer-free candidate IDs.
+It does not read native filter, widget, selector or drawing state.
+
+Protected051441 on2026-11-22 (DF50088) matches all six displayed native candidates
+and preserves GPS/main_interface bytes. A native pointer selects unit6960, then
+its row toggle removes assignment; chain assigned/chained/flags/jobs and the
+unit's original flags and lack of assigned cage/zone/chain membership are restored.
+The newly assigned unit disappears from the owned candidate result. Native raw
+list storage contains340 entries (339units, one item), so raw entries must not be
+mistaken for the filtered visible choices. This comparison qualifies membership;
+owned sorting, search, editing, body transport and public admission remain open.
+The temporary fixture and source save are preserved/removed as appropriate; owned
+DF closes unsaved at30FPS, sampled58-59C. Bridge build and all19 root checks pass.
+Evidence: completed_sheet_discovery_reference.chain_candidates_reference.
+
+Native plus input1af139..1af1ac opens picker context6 and binds the chain through
+3a3830. The selection action3a7cb0 resolves its target through active-sheet globals
+and changes UI state, so it must not be called by the runtime. Its semantic effects
+need an owned path using the existing restraint/job helpers. The body lists the
+assigned unit followed by a distinct chained unit, formats names through1330c30
+with false (cages pass true), and uses native Assigned, Assigned and chained, or
+Chained status. Room membership shares the native relevant-room predicate.
+
 ### Archery target shared workflow
 
 Completed ArcheryTarget26 uses the shared header/contents controller and public

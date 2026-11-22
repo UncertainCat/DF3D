@@ -115010,6 +115010,39 @@
           "presentations/godot/project/scripts/fortress_ui.gd": "2a2568f6fe9de0a3d0e4b228d23b44ec893fbc5b569bbe0272670bb17638ea11",
           "presentations/godot/project/tests/simple_building_scene_live.gd": "e9afa32b2e6ef1dd9600160142a30e0097b27189830a4c1ddcfb3522f84faa8b"
         }
+      },
+      "chain_candidates_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261122-051441",
+        "owned_df_pid": 50088,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "eligible_unit_ids": [
+          6960,
+          6961,
+          7122,
+          7264,
+          7277,
+          7346
+        ],
+        "native_display_order": [
+          6960,
+          6961,
+          7122,
+          7277,
+          7264,
+          7346
+        ],
+        "scope": "Owned chain predicate with independently allocated capture/entry matches six native visible candidates. GPS/main_interface bytes unchanged. Native pointer selects unassigned unit6960 then row removal restores original assigned/chained/flags/jobs and unit flags/membership; assigned unit absent from fresh owned candidates. Controlled completed iron chain fixture; room sculpturegarden.30FPS GPU58-59C. Bridge build installed, root19pass. Candidate membership only, not owned display ordering/search, assignments, body transport or public workflow. Native raw list340 entries includes339units/oneitem; eligible display is filtered. Native action3a7cb0 uses active-sheet globals and is not a runtime API.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261122-051441/chain-native.json": "b0ae9698b163ed089f2f708f73cfb0c9912586884746f215c1e6debb83b6a559",
+          "build/stockpile-storage-native-farm-discovery-20261122-051441/remaining-buildings-native.json": "15e82b899279808bc0a9a3afc340b76203891151ba4ab74abe41e2a97bf44ab8",
+          "build/stockpile-storage-native-farm-discovery-20261122-051441/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261122-051441/result.json": "67a36c9008f30cbeaa8eb773c559b66861f190cffd87f8ab5fd64791fc13af7a",
+          "bridge/plugin/chain_native.h": "d2af9fc6feec6cd9a74edbf08d2c9a0f76d39391e10692755b9d3e1031195a8d",
+          "bridge/plugin/df3d.cpp": "5a3f0a5303ef78868d7ab6606c78cab15a08a34107ca7d3ded97a48ce521f8f4",
+          "tools/smoke/chain-native.lua": "7a807a233c42eca9c2e92efabcb702ab63dd2d863d0e2b3cd68e7205143ca80c",
+          "tools/smoke/remaining-buildings-native.lua": "153c892060cec9910c67508ebf00ae27f9d161a8d0433aa1b8e427fc11d4147b"
+        }
       }
     },
     "pending_construction_reference": {

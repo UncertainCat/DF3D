@@ -12844,8 +12844,9 @@ the frame; actual viewport input on that child scrollbar passes headlessly.
 Sibling rows use BUTTON_RECTANGLE, default down-arrow artwork, selected-tab
 RGB70,44,0 and inactive sort-label RGB160,160,160. Residents keeps its existing
 row-background and sort-direction mapping. The three recorded sibling headers
-match exactly. Other/Dead still lack the native cursor-row highlight, and Other
-activity-detail buttons are not yet represented by the sibling-row contract.
+match exactly. Sibling cursor rows use BUTTON_RECTANGLE_SELECTED and the selected
+picture frame. Other activity-detail buttons are not yet represented by the
+sibling-row contract.
 Their full rendered workflows remain unqualified; all sibling tabs remain gated.
 
 Protected133629 also records all six pet hover messages and Ctrl+t/w/h/e/b/g
@@ -12864,7 +12865,20 @@ Unobserved help stays absent. Native133629 copy/wrapping and shortcut colors pas
 an offline installed-font comparison of12,831 opaque glyph pixels across all six
 messages. Headless input checks cover all six actions, item/unit identities,
 wrong keys, pending exclusion and trainer navigation. This is not main-scene
-public keyboard acceptance. Activity details and cursor interaction remain open.
+public keyboard acceptance. Activity details remain open.
+
+Protected135032 on2026-11-22 records standard cursor navigation for all three
+sibling tabs. Page-down on a55-row,13-visible list moves cursor0 to13 and scroll0
+to1; twenty down presses reach cursor20/scroll8, and twenty up presses restore0/0.
+The short Other list clamps at its last row without scrolling. Presentation-owned
+cursor navigation follows these observations, using installed default standard
+scroll keys, and excludes pending edits and focused search. No native widget
+state enters the runtime. Owned DF41272 closes unsaved with source unchanged.
+Headless Residents input and all19 core checks pass. Recorded133629 rendering now
+has zero Pets panel differences,2165 Other differences confined to five missing
+activity buttons, and26 Dead scrollbar pixels still unresolved. This qualifies
+initial selection and standard keyboard navigation, not mouse selection,
+sort/filter retention, tab-return behavior or full public-route acceptance.
 
 Management protocol258 adds optional native name warnings to creature and trainer
 rows, and a required full trainer heading. Warning captions carry native palette
@@ -12908,8 +12922,9 @@ buttons open the picker, and other buttons submit typed revision-checked edits.
 Native pet buttons extending past the frame receive explicit outside-frame input
 only in their visible hitboxes. Headless input checks cover that item Adoption
 path, Overall Training, each tab's sort header and pending-edit tab exclusion;
-Residents, Work Details and UI composition pass. Ownership/trainer-status grouping,
-pet help, species artwork and rendered/full-route acceptance remain unfinished.
+Residents, Work Details and UI composition pass. Species artwork, activity details
+and full rendered/public-route acceptance remain unfinished; grouping and pet help
+have the scoped qualification above.
 
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching

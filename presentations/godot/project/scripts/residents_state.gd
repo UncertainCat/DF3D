@@ -16,6 +16,7 @@ var query:=PackedByteArray()
 var ids:=PackedInt32Array()
 var rows: Dictionary={}
 var first:=0
+var cursor:=0
 var capacity:=13
 var columns:=30
 var show_gender:=false
@@ -39,7 +40,7 @@ func retire() -> void:
 	if service!=null and previous!=0:service.detach(previous)
 func close() -> void:
 	activity_selection={};activity_page={};activity_columns=0;activity_first=0
-	retire();ids=PackedInt32Array();rows={};first=0;roster_ready=false;phase=Phase.Closed;changed.emit()
+	retire();ids=PackedInt32Array();rows={};first=0;cursor=0;roster_ready=false;phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open() -> void:
@@ -48,7 +49,7 @@ func select_tab(value: int) -> void:
 	if value<0 or value>3 or value==tab or phase in [Phase.Closed,Phase.Applying,Phase.Navigating]:return
 	retire();activity_selection={};activity_page={};activity_first=0
 	tab=value;sort=C.ResidentsSort.Category;directions=[false,false,false,false,false,false]
-	query=PackedByteArray();first=0;phase=Phase.Reading;refresh()
+	query=PackedByteArray();first=0;cursor=0;phase=Phase.Reading;refresh()
 # Native IDs are nonnegative int32. Negative local keys encode item identities
 # without collisions, including unit/item rows with the same native ID.
 static func row_key(row: Dictionary) -> int:
@@ -87,6 +88,7 @@ func refresh() -> void:
 		else:
 			if result.creature_list.get("tab",-1)!=tab:_reject();return
 			for entry: Dictionary in result.creature_list.entries:ids.append(row_key(entry))
+		cursor=clampi(cursor,0,maxi(0,ids.size()-1))
 		roster_ready=true
 		first=clampi(first,0,maxi(0,ids.size()-capacity));_fill();changed.emit())
 	if ticket==0:phase=Phase.Unavailable
@@ -168,6 +170,13 @@ func pet_action(key: int,action: int) -> void:
 		phase=Phase.Ready;refresh())
 	if ticket==0:_reject()
 	else:changed.emit()
+func move_cursor(step: int) -> void:
+	if tab==0 or phase!=Phase.Ready or ids.is_empty() or capacity<=0:return
+	cursor=clampi(cursor+step,0,ids.size()-1)
+	var offset:=first
+	if cursor<first:offset=cursor
+	elif cursor>=first+capacity:offset=cursor-capacity+1
+	seek(offset,capacity)
 func seek(offset: int,count: int) -> void:
 	capacity=clampi(count,0,64);first=clampi(offset,0,maxi(0,ids.size()-capacity))
 	_fill();changed.emit()

@@ -148,6 +148,13 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode==KEY_ESCAPE:cancelled.emit();get_viewport().set_input_as_handled()
 		elif search.has_focus():search.feed_key(event);get_viewport().set_input_as_handled()
+		elif state.tab>0 and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed and not event.shift_pressed and event.keycode in [KEY_UP,KEY_8,KEY_KP_8,KEY_DOWN,KEY_2,KEY_KP_2,KEY_PAGEUP,KEY_9,KEY_KP_9,KEY_PAGEDOWN,KEY_3,KEY_KP_3]:
+			# Native135032 standard scrolling moves the cursor and only scrolls
+			# enough to expose it. Ordinary map CURSOR keys are separate in DF.
+			var step: int=-1 if event.keycode in [KEY_UP,KEY_8,KEY_KP_8] else 1
+			if event.keycode in [KEY_PAGEUP,KEY_9,KEY_KP_9]:step=-state.capacity
+			elif event.keycode in [KEY_PAGEDOWN,KEY_3,KEY_KP_3]:step=state.capacity
+			state.move_cursor(step);get_viewport().set_input_as_handled()
 		elif event.ctrl_pressed and not event.echo and pointer_known and state.phase==state.Phase.Ready:
 			var target:=hover_target(pointer_position)
 			if target.has("pet"):
@@ -309,8 +316,9 @@ func _draw() -> void:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty():continue
 		var y:=list_top()+index*36
-		patch("BUTTON_RECTANGLE_DARK" if state.tab==0 else "BUTTON_RECTANGLE",Vector2i(2,int(y/12)),row_background_columns(),3)
-		patch("",Vector2i(2,int(y/12)),5,3,picture.texture(false))
+		var row_token: String="BUTTON_RECTANGLE_DARK" if state.tab==0 else "BUTTON_RECTANGLE_SELECTED" if state.first+index==state.cursor else "BUTTON_RECTANGLE"
+		patch(row_token,Vector2i(2,int(y/12)),row_background_columns(),3)
+		patch("",Vector2i(2,int(y/12)),5,3,picture.texture(state.tab>0 and state.first+index==state.cursor))
 		var portrait: Texture2D=portraits.get(RosterState.row_key(row),{}).get("texture")
 		if portrait!=null:draw_texture_rect(portrait,Rect2(18,y+2,32,32),false)
 		if state.tab==1:

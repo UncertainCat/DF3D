@@ -183,7 +183,25 @@ func pet_scrollbar_input() -> void:
 	click.pressed=false;root.push_input(click,true)
 	check(bar.first==1,"Pets scrollbar outside the frame receives actual viewport input")
 	view.free()
+func cursor_navigation() -> void:
+	var state:=State.new();state.tab=3;state.phase=State.Phase.Ready;state.capacity=13
+	for id in 55:state.ids.append(id)
+	var view:=View.new();view.state=state;view.search=Control.new();view.add_child(view.search);root.add_child(view);view.set_process(false)
+	var key:=InputEventKey.new();key.pressed=true;key.keycode=KEY_PAGEDOWN;view._input(key)
+	check(state.cursor==13 and state.first==1,"Native page-down moves13 rows and scrolls just one row")
+	state.cursor=0;state.first=0;key.keycode=KEY_DOWN
+	for repeat in 20:view._input(key)
+	check(state.cursor==20 and state.first==8,"Native repeated down keeps cursor visible")
+	key.keycode=KEY_UP
+	for repeat in 20:view._input(key)
+	check(state.cursor==0 and state.first==0,"Native repeated up returns to first row")
+	state.ids=PackedInt32Array([1,2,3,4,5,6,7,8]);key.keycode=KEY_PAGEDOWN;view._input(key)
+	check(state.cursor==7 and state.first==0,"Short roster cursor clamps without scrolling")
+	state.phase=State.Phase.Applying;key.keycode=KEY_UP;view._input(key)
+	check(state.cursor==7,"Pending mutation excludes cursor changes")
+	view.free();state.dispose()
 func run() -> void:
+	cursor_navigation()
 	pet_help_input()
 	await pet_scrollbar_input()
 	roster_tab_input()

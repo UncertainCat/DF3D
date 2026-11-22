@@ -1,7 +1,7 @@
 extends Node
 # Referenced views consume resident semantic publications; no transport ownership.
 const Frame = preload("res://scripts/native_info_frame.gd")
-const PAGES = ["Residents", "Work Details", "Work orders"]
+const PAGES = ["Residents", "Work Details"]
 signal focus_requested(tile: Vector3i)
 signal inspect_requested(unit_id: int)
 var world
@@ -19,7 +19,6 @@ var page := "Residents"
 var people: Array = []
 var details: Array = []
 var detail_list_revision: int = 0
-var orders: Array = []
 var selected_detail := -1
 var rows: VBoxContainer
 var detail_list: VBoxContainer
@@ -147,7 +146,6 @@ func read_resident_state():
 			preload("res://scripts/native_creature_text.gd").load_text(world); palette_loaded = true
 		details = records.get("details",[])
 		detail_list_revision = int(state.get("detail_list_revision",0)) if complete else 0
-		orders = records.get("orders",[])
 		# Keep local selection only when the native definition revision still matches.
 		var selection_valid := false
 		for detail in details:
@@ -215,18 +213,6 @@ func render_rows():
 			mode_label.text = str(detail.name)+"    "+["Default","Everybody does this","Nobody does this","Only selected do this"][clampi(mode,0,3)]
 			mode_label.tooltip_text = ", ".join(detail.get("labor_names",[]))
 			for citizen in people: citizen_row(citizen,int(citizen.id) in detail.get("assigned_units",[]))
-	elif page == "Work orders":
-		for order in orders:
-			if not matches(str(order.get("name",""))): continue
-			var row := row_box()
-			label(row,"Approved" if order.get("validated",false) else "Pending").custom_minimum_size.x = 100
-			var name_label := label(row,"%s\n%d/%d" % [order.get("name",""),order.get("remaining",0),order.get("total",0)],true)
-			name_label.add_theme_color_override("font_color",Color.CYAN)
-			label(row,"Can use any shop" if int(order.get("workshop_id",-1)) < 0 else "Workshop #%d" % int(order.workshop_id),true)
-			var conditions: Array = order.get("conditions",[])
-			var descriptions: PackedStringArray = []
-			for condition in conditions: descriptions.append(str(condition.get("description","")))
-			name_label.tooltip_text = "\n".join(descriptions) if not descriptions.is_empty() else str(order.get("name",""))
 	if rows.get_child_count() == 0 and page != "Residents": label(rows,"No matching entries" if complete else "Not loaded")
 
 func _process(delta: float):

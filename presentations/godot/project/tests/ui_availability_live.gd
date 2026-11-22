@@ -22,7 +22,7 @@ func run():
 		assert(not hud.navigation.has(title) or not hud.navigation[title].visible, "Unpromoted controller remains hidden from HUD")
 	assert(hud.navigation.Reports.visible and hud.navigation["Build / construction"].visible )
 	assert(hud.navigation.Stockpiles.visible and not hud.navigation.Stockpiles.disabled,"Stockpiles public entry")
-	assert(hud.navigation.Zones.disabled,"Zones remains staged")
+	assert(not hud.navigation.Zones.disabled,"Zones public entry")
 	# A session refresh must not allow a retired placeholder to steal ownership.
 	scene._ui.controller("construction").open_panel()
 	await process_frame

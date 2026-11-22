@@ -312,6 +312,7 @@ func open_destination(destination: String) -> void:
 	destination = Registry.READ_LAUNCHERS.get(destination,destination)
 	if not Registry.PANEL_ROUTES.has(destination) or not host.play_enabled: return
 	var panel = controller(Registry.PANEL_ROUTES[destination])
+	if destination=="Work orders":panel.open_global_orders();return
 	if destination in ["Stockpiles", "Zones"]: panel.set_area_kind(0 if destination == "Stockpiles" else 1)
 	if panel.has_method("set_info_page"): panel.set_info_page(destination)
 	panel.open_panel()

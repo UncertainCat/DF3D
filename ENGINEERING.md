@@ -23109,7 +23109,8 @@ The workshop panel controller also owns a standalone global Work orders mode.
 without requiring a selected building. Deferred release checks retain that claim
 through list/Conditions/Details/picker transitions; closing the standalone list
 releases it. Workshop-origin navigation keeps its existing refresh behavior.
-This entry point remains staged and does not replace the public read-only route.
+The public HUD Work orders launcher opens this owned editable mode; the old
+read-only Work orders presentation has been removed.
 Protected001512 on2026-11-06 exercises the actual controller, host, service and
 views: standalone open, Conditions and Back, Details and Back, resizing1200x800
 to1600x900 to912x552, Escape close, reopen and host-level close. Native readback
@@ -23119,6 +23120,19 @@ paired logs contain only documented diagnostics. The earlier001349 workflow
 passed but leaked the harness's unattached Interaction panel; cleanup was fixed
 before the accepted run. The wide Conditions capture was visually inspected.
 Root19/19 and headless composition pass in `build/qa/work-orders-navigation`.
+Protected075512 on2026-11-22 additionally exercises this workflow through the
+actual main scene and public HUD launch/reopen. With PUBLIC_SCENE, RESIZED_EDIT,
+RESIZED_FILTER and RESIZED_TEXT_EDIT enabled, Conditions threshold, native IRON
+material selection, dependency selection, quantity entry12 and workshop limit
+are confirmed independently in DF. Conditions/Details/Back, three viewport sizes,
+Escape and host close preserve ownership. Owned DF55264 closes unsaved with
+source preserved at30FPS; sampled GPU60C, viewer stderr empty. Evidence is in
+`build/stockpile-storage-native-farm-discovery-20261122-075512`.
+This qualifies the public entry and those composed edits, not every list boundary
+or quantity increment: the9999 text-entry cap versus native plus-button behavior
+above9999 remains unresolved, including native signed overflow.
+Use `DF3D_WORK_ORDER_PUBLIC_SCENE=1` to select the main-scene variant.
+
 Use `DF3D_WORK_ORDER_NAVIGATION=1` with the focused artwork-reference lane.
 This establishes navigation/input ownership, not resized writes or epoch-change
 acceptance for every child panel.
@@ -34518,8 +34532,10 @@ game state), the **core** (`schema/` and `worldmodel/`, engine-independent C++),
 **Status.** Product launches own a native DF child session and render its terrain,
 creatures, items and animations; pause, unpause and save remain available. The
 toolbar exposes designation and inspection tools, Reports/alerts, construction
-and Stockpiles, plus read-only Residents, Work Details and Work orders panels.
-Zones remains staged, and other management screens are not implemented. Windows x64 packages bundle the viewer and a bridge setup launcher;
+Stockpiles, Zones/Locations and editable Work orders, plus read-only Residents
+and Work Details panels. Other management screens have staged implementations
+whose public integration remains unfinished. Specialized building controls are
+qualified individually in their owning sections. Windows x64 packages bundle the viewer and a bridge setup launcher;
 source builds are also supported. Both require the pinned Steam release of Dwarf Fortress.
 
 ## Viewer preferences

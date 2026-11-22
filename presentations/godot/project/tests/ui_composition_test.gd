@@ -130,7 +130,9 @@ func run():
 	check(workshop==ui.controller("workshop") and not workshop.play_enabled,"staged workshop shares factory and disabled-play lifecycle")
 	check(workshop.unit_requested.get_connections().size()==1,"assigned portrait connects to creature navigation")
 	check(workshop.item_owner.carrier_requested.is_connected(ui.open_item_carrier),"workshop items share carrier navigation")
-	check(not ui.Registry.PANEL_ROUTES.values().has("workshop"),"unfinished workshop has no public launcher")
+	check(ui.Registry.PANEL_ROUTES.get("Work orders")=="workshop","Work orders uses editable owner")
+	ui.open_destination("Work orders")
+	check(ui.host.active==null,"disabled play refuses Work orders")
 	ui.host.set_play_enabled(true)
 	workshop.open_workshop(37,"BUILDING_ICON_WORKSHOP_STILL")
 	check(ui.host.active==workshop and workshop.state.building_id==37,"composed workshop owns its target")
@@ -149,7 +151,7 @@ func run():
 	# A standalone list has no selected building to drive its retirement. Cover
 	# each child while its first read is still queued in the real shared service.
 	for child in ["list","conditions","details","picker"]:
-		workshop.open_global_orders()
+		ui.open_destination("Work orders")
 		check(ui.host.active==workshop and workshop.global_orders_mode,"standalone orders claim input")
 		match child:
 			"conditions":

@@ -38,7 +38,7 @@ local function shot(name)
  observations[#observations+1]={name=name,dimensions={g.dimx,g.dimy},lines=lines(),page=m.image_creator.current_option,open=m.image_creator.open,hovered=m.image_creator.last_selected_index,columns=m.image_creator.last_selected_box_width,preview=preview}
  local f=assert(io.open(out..'/work-order-artwork-reference.json','w'));f:write(json.encode(observations));f:close()
  f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+(name:find('%-wire$') and 65000 or 30000)
+ local deadline=dfhack.getTickCount()+(name:find('%-wire$') and 95000 or 30000)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'artwork capture timeout');script.sleep(1,'frames')end
 end
 key('D_ORDERS');assert(m.info.open)

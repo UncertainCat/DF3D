@@ -2587,6 +2587,8 @@ table StocksReplyPage { request_seq:uint64; total:uint32; offset:uint32; bytes:[
 // Continuations read an already serialized Production reply; never rerun its action.
 table ProductionReplyRequest { request_seq:uint64; offset:uint32; }
 table ProductionReplyPage { request_seq:uint64; total:uint32; offset:uint32; bytes:[uint8] (required); }
+table DisplayReplyRequest { request_seq:uint64; offset:uint32; }
+table DisplayReplyPage { request_seq:uint64; total:uint32; offset:uint32; bytes:[uint8] (required); }
 table StocksMenuState { outcome:StocksMenuOutcome; category:int16 = -1; categories:[StocksCategoryRow] (required); groups:[StocksGroupRow] (required); items:[StocksItemRow] (required); }
 
 // Display checkbox drafts remain viewer-owned; commit binds the eligible inventory.
@@ -2695,7 +2697,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 254;
+  schema_version:uint32 = 255;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2768,13 +2770,14 @@ table ConstructionRequest {
   trade_session:TradeSessionRequest;
   trade_draft:TradeDraftRequest;
   display:DisplayRequest;
+  display_reply:DisplayReplyRequest;
 }
 // Native ordered world-hover descriptions. Missing means unavailable, never guessed.
 table WorldHoverEntry { text:string (required); foreground:uint8; background:uint8; bright:bool; kind:uint8; object_id:int32 = -1; }
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 254;
+  schema_version:uint32 = 255;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;
@@ -2842,6 +2845,7 @@ table ManagementState {
   trade_session:TradeSessionState;
   trade_draft:TradeDraftState;
   display:DisplayState;
+  display_page:DisplayReplyPage;
 }
 
 table WorkOrderInput { index:uint16; description:string; mat_type:int16 = -1; mat_index:int32 = -1; editable:bool; }

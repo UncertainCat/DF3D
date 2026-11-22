@@ -192,8 +192,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 254;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v253";
+inline constexpr uint32_t kManagementVersion = 255;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v255";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -835,7 +835,12 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       if(q->depot_id()<0 || !q->choice_token() || q->choice_token()>INT64_MAX || q->session() || q->expected_revision())return "invalid trade open request";
     }else if(q->depot_id()!=-1 || q->choice_token() || !q->session() || q->session()>INT64_MAX || q->expected_revision()>INT64_MAX || (r.action()!=ManagementAction::TradeSessionClose?!q->expected_revision():q->expected_revision()!=0))return "invalid trade session request";
   }else if(r.trade_session())return "unexpected trade session request";
-  if(r.action()>=ManagementAction::DisplayRead && r.action()<=ManagementAction::DisplayRemove) {
+  if(const auto* page=r.display_reply()) {
+    if(r.action()!=ManagementAction::DisplayRead || r.display() || r.production_reply() ||
+       !page->request_seq() || page->request_seq()>=r.seq() || !page->offset() ||
+       page->offset()>=df3d::stocks_pages::retainedBytes || page->offset()%df3d::stocks_pages::pageBytes)
+      return "invalid display reply continuation";
+  } else if(r.action()>=ManagementAction::DisplayRead && r.action()<=ManagementAction::DisplayRemove) {
     const auto* q=r.display();if(!q || q->building_id()<0 || !q->query() || q->query()->size()>1024 || q->query()->str().find('\0')!=std::string::npos || !q->item_ids() || !q->selected_ids())return "invalid display request";
     if(r.action()==ManagementAction::DisplayRead) {
       if(q->category()<-2 || q->category()>=93 || (q->category()<0 && q->query()->size()) || q->expected_revision() || q->selected_ids()->size() || q->item_ids()->size()>64)return "invalid display read";
@@ -1613,6 +1618,14 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
+  if(const auto* page=s.display_page()) {
+    if((s.action()!=ManagementAction::DisplayRead && s.action()!=ManagementAction::DisplayCommit && s.action()!=ManagementAction::DisplayRemove) ||
+       s.status()!=ManagementStatus::Pending || !s.world_epoch() || !s.client_id() || !page->request_seq() || page->request_seq()>s.request_seq() ||
+       !page->total() || page->total()>df3d::stocks_pages::retainedBytes || page->offset()>=page->total() || page->offset()%df3d::stocks_pages::pageBytes ||
+       !page->bytes() || page->bytes()->size()!=std::min(df3d::stocks_pages::pageBytes,page->total()-page->offset()) ||
+       s.display() || s.production() || s.production_page() || s.stocks_page() || s.stocks_menu())return "invalid display reply page";
+    return std::nullopt;
+  }
   if(const auto* page=s.production_page()) {
     if((s.action()!=ManagementAction::ProductionInspect && s.action()!=ManagementAction::ProductionQueue && s.action()!=ManagementAction::ProductionJobEdit) ||
        s.status()!=ManagementStatus::Pending || !s.world_epoch() || !s.client_id() || !page->request_seq() || page->request_seq()>s.request_seq() ||

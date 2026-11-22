@@ -23,7 +23,7 @@ struct Page {
     uint32_t total=0, offset=0;
     std::vector<uint8_t> bytes;
 };
-enum class Family { Stocks, Production };
+enum class Family { Stocks, Production, Display };
 inline bool valid(const Page& page) {
     return page.identity.valid() && page.total && page.total<=retainedBytes &&
         page.offset<page.total && page.offset%pageBytes==0 &&

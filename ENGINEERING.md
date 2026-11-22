@@ -3468,6 +3468,21 @@ unfinished, along with public workflow acceptance.
 
 ### Display management protocol
 
+Management protocol255 adds DisplayReplyRequest and DisplayReplyPage envelopes.
+Continuations use DisplayRead with the original request identity and an aligned
+nonzero offset; they carry no Display assignment intent. Initial pages may retain
+DisplayRead, DisplayCommit or DisplayRemove as their logical action. Page receipts
+require Pending status, exact chunk size, bounded total bytes and matching identity;
+they cannot mix Stocks or production page payloads. The retained store distinguishes
+Display as its own family under the shared64MiB budget and256KiB page size.
+
+Both schema defaults and the mailbox move to255 (`Local\\df3d_management_v255`).
+Version254 messages are rejected; older captures imply no Display page transfer.
+Rebuild bridge and clients together. This is the contract migration; bridge capture
+and client reassembly must be wired and live-verified before oversized Display
+replies can be claimed supported. The ordinary Display fields introduced by254
+below retain their semantics.
+
 Management protocol254 adds DisplayRead, DisplayCommit and DisplayRemove with
 typed requests and replies. The display request owns building identity, category,
 query, bounded visible-page IDs, expected revision and a sorted explicit draft.

@@ -43,7 +43,7 @@ if not button then
     if rc==0 then
      local observed=json.decode(text)
      candidates[#candidates+1]={id=candidate.id,caption=observed.caption,options=observed.options,requirements=#candidate.job_items.elements}
-     if not production_source and #observed.options>1 and #candidate.job_items.elements>0 then production_source=candidate end
+     if not production_source and #observed.options>1 and #candidate.job_items.elements>0 and (os.getenv('DF3D_RESIDENTS_JOB_MULTIPLE')~='1' or (candidate.job_type==df.job_type.EncrustWithStones and #candidate.job_items.elements>=2)) then production_source=candidate end
     end
    end
   end

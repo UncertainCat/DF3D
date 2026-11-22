@@ -20,11 +20,14 @@ local function label(text)
  local f=assert(io.open(out..'/residents-production-missing-label.txt','w'));f:write(text..'\n'..table.concat(rows,'\n'));f:close()
  return false
 end
+local multiple=os.getenv('DF3D_RESIDENTS_JOB_MULTIPLE')=='1'
+local workshop_type=multiple and 'Jewelers' or 'Masons'
+local job_type=multiple and df.job_type.EncrustWithStones or df.job_type.ConstructStatue
 local building
 for _,b in ipairs(df.global.world.buildings.other.WORKSHOP_ANY)do
- if df.building_workshopst:is_instance(b) and df.workshop_type[b.type]=='Masons' and b:getBuildStage()==b:getMaxBuildStage()then building=b;break end
+ if df.building_workshopst:is_instance(b) and df.workshop_type[b.type]==workshop_type and b:getBuildStage()==b:getMaxBuildStage()then building=b;break end
 end
-assert(building,'No completed native stoneworker workshop')
+assert(building,'No completed native workshop: '..workshop_type)
 gui.simulateInput(view,'LEAVESCREEN');settle()
 dfhack.gui.revealInDwarfmodeMap({x=building.centerx,y=building.centery,z=building.z},true)
 df.global.window_x=math.max(0,building.centerx-8);df.global.window_y=math.max(0,building.centery-10);settle()
@@ -39,11 +42,23 @@ end
 assert(found,'Workshop map selection failed')
 assert(label('Add new task'),'Workshop Add new task missing')
 click(58,12)
-for character in ('statue'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(character:byte()))end
+for character in (multiple and 'stone' or 'statue'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(character:byte()))end
 settle()
-assert(label('Make rock statue'),'Workshop statue choice missing')
+local caption='Make rock statue'
+if multiple then
+ local choices={};caption=nil
+ for _,button in ipairs(df.global.game.main_interface.building.filtered_button)do
+  if df.interface_button_building_new_jobst:is_instance(button)then
+   local text=dfhack.df2utf(require('utils').call_with_string(button,'text'))
+   choices[#choices+1]={caption=text,type=button.jobtype,unavailable=button.show_help_instead}
+   if not caption and button.jobtype==job_type and not button.show_help_instead then caption=text end
+  end
+ end
+ local f=assert(io.open(out..'/residents-production-create-choices.json','w'));f:write(require('json').encode(choices));f:close()
+end
+assert(caption and label(caption),'Native production choice missing')
 local job=building.jobs[#building.jobs-1]
-assert(job and job.job_type==df.job_type.ConstructStatue and #job.job_items.elements>0,'Native statue did not create real material requirements')
+assert(job and job.job_type==job_type and #job.job_items.elements>=(multiple and 2 or 1),'Native production task did not create required inputs')
 local f=assert(io.open(out..'/residents-production-created.json','w'));f:write(require('json').encode({job_id=job.id,building_id=building.id,requirements=#job.job_items.elements}));f:close()
 gui.simulateInput(view,'LEAVESCREEN');gui.simulateInput(view,'D_UNITLIST');settle()
 return job

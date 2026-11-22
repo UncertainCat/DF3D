@@ -14331,6 +14331,25 @@ by the short-lived process. This verifies the material and figure edits for a
 native-created single-input job; multiple-input jobs, production new-image drafts
 and simulation execution remain pending.
 
+`DF3D_RESIDENTS_JOB_MULTIPLE=1` selects a native-created Jeweler encrusting job
+in the production oracle. Native155819 on2026-11-22 creates job382794 through
+ordinary workshop controls (Encrust ammo with polished stones), deep-clones its
+two requirements and verifies the Details root and all89 ordered stone choices.
+The original job has a polished-stone requirement and an independent target-item
+requirement. The native root exposes Specify stone and Specify type, rather than
+the statue job's image option; its captured layout was inspected.
+Protected155942 adds the existing production edit/wire flags. Native clicks and
+the headless Residents owner both select material0/241. Job and first requirement
+materials, saved restrictions, details flags and the other recorded requirement
+fields match exactly; the second requirement's recorded fields and art specifier
+remain unchanged. Confirmed edit returns to Residents, and the original queued
+job's recorded fields are unchanged. Owned DF62740 closes unsaved with source
+preserved, native30FPS and GPU56–57C; the client reports only the documented
+separate-render-thread notice (passed_with_known_issues). This qualifies editing
+one material requirement without disturbing the other input on this two-input
+production family. It does not establish simulation execution, editing several
+independently selectable inputs or full rendered parity of the viewer pane.
+
 Artwork draft resize reads retain the last completed formatting width separately
 from the desired panel width. The shared view asks the job/order state to refresh
 only a ready draft whose width differs, preserving query, page, first row and

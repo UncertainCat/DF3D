@@ -65,13 +65,16 @@ if os.getenv('DF3D_RESIDENTS_JOB_PRODUCTION_EDIT')=='1' then
  click(10,8);assert(details.current_option==0,'Production native material entry failed')
  click(10,17);assert(not details.open and info.open,'Production native material edit did not close Details')
  evidence.native_material_effect=snapshot(job)
+ if os.getenv('DF3D_RESIDENTS_JOB_MULTIPLE')~='1' then
  click(button.rect.x1+1,button.rect.y1+1);click(10,11)
  local art=df.global.game.main_interface.image_creator
  assert(art.open,'Production native image entry failed');click(10,12)
  assert(art.current_option==1 and #art.hf>0,'Production native figure list failed')
  evidence.native_figure=art.hf[0].id;click(10,15)
  assert(not art.open and info.open,'Production native artwork edit did not close')
+ end
  evidence.native_combined_effect=snapshot(job)
+ if os.getenv('DF3D_RESIDENTS_JOB_MULTIPLE')=='1' then assert(json.encode(evidence.before.requirements[2])==json.encode(evidence.native_combined_effect.requirements[2]),'Native material edit changed unrelated input')end
  job.mat_type=backup.mat_type;job.mat_index=backup.mat_index
  job.art_spec:assign(backup.art_spec)
  for i,item in ipairs(job.job_items.elements)do item:assign(backup.job_items.elements[i])end

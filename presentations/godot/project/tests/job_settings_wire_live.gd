@@ -330,6 +330,9 @@ func production_read() -> void:
 	var state=owner.job_state;var view=owner.job_panel
 	check(await ready(state) and state.selected==-1 and state.snapshot.get("options",[]).size()==2,"Production Details root failed")
 	await capture_draft("production-root")
+	if OS.get_environment("DF3D_RESIDENTS_JOB_MULTIPLE")=="1":
+		await production_multiple(owner,reference)
+		owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0);return
 	await pointer(view,Vector2(120,66));check(await ready(state) and state.selected==0 and state.rows.size()==83,"Production material option failed")
 	var expected: Array=reference.pages[0].provider.materials
 	for i in mini(expected.size(),state.rows.size()):check(state.rows[i].caption==expected[i].caption and state.rows[i].get("count_caption")==expected[i].get("count_caption"),"Production material choices differ")
@@ -350,6 +353,17 @@ func production_read() -> void:
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"production":{"source_job":reference.source_job_id,"options":2,"materials":expected.size(),"image":true,"back":true}}));file.close()
 	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func production_multiple(owner,reference: Dictionary) -> void:
+	var state=owner.job_state;var view=owner.job_panel
+	await pointer(view,Vector2(120,66))
+	var expected: Array=reference.pages[0].provider.materials
+	check(await ready(state) and state.selected==0 and state.rows.size()==expected.size(),"Multiple-input material option failed")
+	for i in mini(expected.size(),state.rows.size()):check(state.rows[i].caption==expected[i].caption and state.rows[i].get("count_caption")==expected[i].get("count_caption"),"Multiple-input choices differ")
+	await capture_draft("production-materials")
+	await pointer(view,Vector2(120,view.list_top()+54));await production_applied(owner)
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"production":{"source_job":reference.source_job_id,"requirements":reference.before.requirements.size(),"materials":expected.size(),"material_edit":true,"owner_return":owner.panel.visible}}));file.close()
 
 func production_applied(owner) -> void:
 	var deadline:=Time.get_ticks_msec()+5000

@@ -4,6 +4,8 @@ const View=preload("res://scripts/residents_view.gd")
 const C=preload("res://scripts/management_contract.gd")
 const Owner=preload("res://scripts/residents_panel.gd")
 const Shell=preload("res://scripts/fortress_ui.gd")
+const PetState=preload("res://scripts/pet_management_state.gd")
+const PetView=preload("res://scripts/pet_management_view.gd")
 class MissingCreatureWorld extends RefCounted:
 	func inspect_tile(_tile):return [{"kind":1,"id":7}]
 	func inspect_entity(_kind,_id):return {}
@@ -66,8 +68,54 @@ func siblings() -> void:
 	service.reply(pending,{"creature_list":{"tab":3,"entries":[{"kind":0,"id":7}]}})
 	check(state.phase==State.Phase.Closed and state.ids.is_empty(),"Closing retires sibling reads")
 	state.dispose()
+func pet_panes() -> void:
+	var service:=Service.new();var state:=PetState.new();state.configure(service);state.capacity=2
+	var animal: Dictionary={"kind":0,"id":7,"pet":{"revision":9,"controls":[{"action":C.PetAction.Trainer}]}}
+	state.open_trainers(animal)
+	check(service.calls[state.ticket].request.unit_ids.is_empty(),"Trainer root reads complete native order before row content")
+	var trainer_root: Dictionary={"animal_id":7,"revision":9,"assigned":false,"trainer_id":-1,"any_trainer":false,"unassigned_only":false,"unit_ids":PackedInt32Array([11,12]),"rows":[]}
+	service.reply(state.ticket,{"pet_trainers":trainer_root})
+	check(state.total==5 and state.row_at(0).mode==C.PetTrainerMode.Any and state.row_at(2).mode==C.PetTrainerMode.None,"Native generic trainer choices precede candidates")
+	state.seek(3,2);var page_ticket:=state.ticket
+	check(service.calls[page_ticket].request.unit_ids==PackedInt32Array([11,12]),"Trainer viewport requests native candidate IDs")
+	trainer_root.unit_ids=PackedInt32Array([12,11]);trainer_root.rows=[{"id":11,"skills":[]},{"id":12,"skills":[]}]
+	service.reply(page_ticket,{"pet_trainers":trainer_root})
+	check(state.phase==PetState.Phase.Ready and state.row_at(3).id==12,"Fresh native candidate order replaces the displayed order")
+	state.select_trainer(C.PetTrainerMode.Individual,11)
+	var edit:=state.ticket
+	check(service.calls[edit].request.expected_revision==9 and service.calls[edit].request.trainer_id==11,"Trainer selection uses the observed revision")
+	state.open_knowledge();check(state.ticket==edit and state.pane==PetState.Pane.Trainers,"Pending trainer edit blocks pane replacement")
+	service.reply(edit,{"pet_edit":{"target":{"kind":0,"id":7},"outcome":C.PetOutcome.Unknown}})
+	check(state.phase==PetState.Phase.Unknown and service.next==edit,"Unknown trainer result neither refreshes nor retries")
+	state.close();state.open_knowledge()
+	service.reply(state.ticket,{"pet_knowledge":{"revision":91,"total":5,"offset":0,"rows":[{"race":1},{"race":2}]}})
+	state.seek(3,2);page_ticket=state.ticket
+	check(service.calls[page_ticket].request.offset==3 and service.calls[page_ticket].request.expected_revision==91,"Knowledge continuation binds the complete list receipt")
+	state.seek(1,2)
+	service.reply(page_ticket,{"pet_knowledge":{"revision":91,"total":5,"offset":3,"rows":[{"race":4},{"race":5}]}})
+	check(service.calls[state.ticket].request.offset==2,"Scrolling during a knowledge read fills the current viewport")
+	service.reply(state.ticket,{"pet_knowledge":{"revision":92,"total":5,"offset":2,"rows":[{"race":3}]}})
+	check(state.phase==PetState.Phase.Rejected,"Changed knowledge receipt cannot combine pages")
+	state.open_trainers(animal);page_ticket=state.ticket;state.close()
+	service.reply(page_ticket,{"pet_trainers":trainer_root})
+	check(state.phase==PetState.Phase.Closed and state.rows.is_empty(),"Closing the picker retires late candidate reads")
+	state.open_trainers(animal);trainer_root.unit_ids=PackedInt32Array();trainer_root.rows=[]
+	service.reply(state.ticket,{"pet_trainers":trainer_root})
+	state.select_trainer(C.PetTrainerMode.None);edit=state.ticket
+	var call: Dictionary=service.calls[edit]
+	call.observer.call(edit,{"status":C.ManagementStatus.Rejected,"action":C.ManagementAction.PetTrainerApply,"pet_edit":{"target":{"kind":0,"id":7},"outcome":C.PetOutcome.Rejected}},call.request)
+	check(state.phase==PetState.Phase.Closed and service.next==edit,"Authoritative no-op permits local dismissal without replay")
+	state.open_trainers(animal);service.reply(state.ticket,{"pet_trainers":trainer_root})
+	var view:=PetView.new();view.state=state;root.add_child(view);view.size=Vector2(944,708);view.refresh()
+	var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true;click.position=Vector2(80,view.content_top()+18)
+	view._gui_input(click)
+	check(service.calls[state.ticket].request.mode==C.PetTrainerMode.Any,"Actual generic trainer row click dispatches its native mode")
+	service.reply(state.ticket,{"pet_edit":{"target":{"kind":0,"id":7},"outcome":C.PetOutcome.Applied}})
+	check(state.phase==PetState.Phase.Closed,"Applied trainer choice closes the pane")
+	view.free();state.dispose()
 func run() -> void:
 	siblings()
+	pet_panes()
 	var service:=Service.new();var state:=State.new();state.configure(service);state.capacity=2;state.open()
 	var stale:=state.ticket
 	state.set_query(PackedByteArray([84,195]))

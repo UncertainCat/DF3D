@@ -12798,6 +12798,19 @@ Headless Residents, Work Details and UI composition checks pass, as do all19 cor
 checks. Public sibling tab input remains unwired until the pet panes and layouts
 are complete; this state integration alone does not expose those workflows.
 
+The staged trainer and animal-knowledge panes share the Residents frame and panel
+owner. Trainer candidates retain native order after the three generic choices;
+bounded reads fill the visible range and bind to the animal revision. Knowledge
+pages bind to their list revision. Closing, replacing or resizing a pane retires
+obsolete reads, and late replies cannot reclaim it. Unknown edits are never
+replayed. A revision-checked rejection of an already selected trainer choice may
+dismiss the local picker without reporting an applied edit; returning rereads the
+roster. Headless checks cover paging, changed order, stale replies, close, generic
+row dispatch and unknown outcomes; Residents, Work Details, UI composition and
+all19 core checks pass. Pane geometry is based on native094804/093702, but rendered
+parity remains unverified. The trainer heading, grazer warning and species artwork
+still require producer/contract integration; public sibling tabs remain unwired.
+
 Remaining name-display integration: native widget_unit_name renders the grazer
 warning as a third line and shifts two-line names upward. The shared owned
 nativeZoneAnimalUnitDisplay already supplies the pinned caste-flag observation and

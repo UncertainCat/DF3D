@@ -2,6 +2,8 @@ extends "res://scripts/location_staff_candidates_frame.gd"
 # Native Residents list, activity descriptions and semantic row actions.
 signal information_requested(caption: String)
 signal job_requested(unit_id: int)
+signal trainer_requested(row_key: int)
+signal knowledge_requested
 signal cancelled
 signal inspect_requested(unit_id: int)
 signal focus_requested(tile: Vector3i)
@@ -206,8 +208,7 @@ func tab(value: String,point: Vector2,selected:=false,secondary:=false) -> float
 				var sx:=x if x<2 else x-width+5 if x>=width-2 else 2
 				draw_texture_rect_region(texture,Rect2(point+Vector2(x*8,y*12),Vector2(8,12)),Rect2(sx*8,y*12,8,12))
 	text(value,point+Vector2(16,18),0 if selected else 15);return width*8
-func _draw() -> void:
-	if world==null:return
+func draw_chrome(selected_tab: int) -> void:
 	draw_rect(Rect2(Vector2(4,4),size-Vector2(8,8)),Color8(28,28,28))
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
 	var groups:=InfoTabs.rows(wide_tabs)
@@ -215,7 +216,11 @@ func _draw() -> void:
 		var x:=8.0
 		for caption in groups[index]:x+=tab(caption,Vector2(x,12+index*24),caption=="Creatures")
 	var x:=8.0
-	for caption in ["Residents","Pets/Livestock","Other","Dead/Missing"]:x+=tab(caption,Vector2(x,list_top()-60),caption=="Residents",true)
+	var captions: Array[String]=["Residents","Pets/Livestock","Other","Dead/Missing"]
+	for index in captions.size():x+=tab(captions[index],Vector2(x,list_top()-60),index==selected_tab,true)
+func _draw() -> void:
+	if world==null:return
+	draw_chrome(state.tab if state!=null else 0)
 	if state==null:return
 	if state.activity_open():
 		draw_activity();return

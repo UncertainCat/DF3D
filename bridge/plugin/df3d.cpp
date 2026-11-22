@@ -3528,6 +3528,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(const auto& caption:controls->captions)result["captions"].append(DF2UTF(caption));
           result["caption_colors"]=Json::Value(Json::arrayValue);
           for(const auto& color:controls->captionColors){Json::Value value(Json::arrayValue);for(auto component:color)value.append(component);result["caption_colors"].append(value);}
+          result["training"]=Json::Value(Json::arrayValue);result["training_colors"]=Json::Value(Json::arrayValue);
+          for(const auto& caption:controls->training)result["training"].append(DF2UTF(caption));
+          for(const auto& color:controls->trainingColors){Json::Value value(Json::arrayValue);for(auto component:color)value.append(component);result["training_colors"].append(value);}
           for(auto id:controls->owners)result["owners"].append(id);
           for(auto action:controls->actions)result["actions"].append(action);
           result["action_help"]=Json::Value(Json::arrayValue);

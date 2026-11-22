@@ -58,6 +58,11 @@ func list_top() -> int:return 96 if wide_tabs else 120
 func activity_rows() -> int:return maxi(0,int((size.y-list_top()-60)/12))
 func activity_width() -> int:return clampi(int(size.x/8)-8,1,1024)
 func activity_close_rect() -> Rect2:return Rect2(size.x-208,size.y-72,160,36)
+func roster_scrollbar_x() -> int:
+	# Native125038 Pets scroll-row minimum129 cells, starting at local16.
+	# Its scrollbar starts immediately after that native row extent.
+	return maxi(int(size.x)-32,1048) if state!=null and state.tab==1 else int(size.x)-32
+func row_background_columns() -> int:return int((roster_scrollbar_x()-24)/8)
 func sort_specs() -> Array:
 	var result: Array=[]
 	for index in SORTS.size():
@@ -90,7 +95,7 @@ func layout(view: Vector2) -> void:
 	if search!=null:search.position=Vector2(32,size.y-60);search.size=Vector2(312,36)
 	if scrollbar!=null:
 		scrollbar.dragging=false
-		scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,maxi(36,size.y-list_top()-84));scrollbar.page=page_rows
+		scrollbar.position=Vector2(roster_scrollbar_x(),list_top());scrollbar.size=Vector2(16,maxi(36,size.y-list_top()-84));scrollbar.page=page_rows
 	if state!=null and (state.capacity!=page_rows):state.seek(state.first,page_rows)
 	if state!=null:
 		state.activity_capacity=activity_rows();state.resize_activity(activity_width())
@@ -111,7 +116,7 @@ func refresh() -> void:
 			scrollbar.position=Vector2(size.x-32,list_top()-24);scrollbar.size=Vector2(16,maxi(36,activity_rows()*12));scrollbar.page=activity_rows()
 			scrollbar.set_rows(int(state.activity_page.get("max_y",-1))+1,state.activity_first)
 		else:
-			scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,maxi(36,size.y-list_top()-84));scrollbar.page=page_rows
+			scrollbar.position=Vector2(roster_scrollbar_x(),list_top());scrollbar.size=Vector2(16,maxi(36,size.y-list_top()-84));scrollbar.page=page_rows
 			scrollbar.set_rows(state.ids.size(),state.first)
 	if search!=null:
 		if state.activity_open():search.release_focus()
@@ -126,6 +131,8 @@ func _process(_delta: float) -> void:
 	if ticks_override<0 and is_visible_in_tree() and state!=null and state.phase==state.Phase.Ready:
 		for row: Dictionary in state.rows.values():
 			if int(row.name_color.effect)!=0:queue_redraw();break
+			for owner: Dictionary in row.get("pet",{}).get("owners",[]):
+				if int(owner.name_color.effect)!=0:queue_redraw();return
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		pointer_known=true;pointer_position=get_global_transform_with_canvas().affine_inverse()*event.position
@@ -223,8 +230,10 @@ func _gui_input(event: InputEvent) -> void:
 		for spec: Dictionary in sort_specs():
 			if Rect2(spec.x*8,list_top()-24,spec.width*8,12).has_point(event.position):state.select_sort(spec.sort);break
 		accept_event()
+func text_rgb(value: String,point: Vector2,color: Color,width: float=-1) -> void:
+	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,width,12,color)
 func text(value: String,point: Vector2,color: int=15,width: float=-1) -> void:
-	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,width,12,colors[color] if colors.size()>color else Color.WHITE)
+	text_rgb(value,point,colors[color] if colors.size()>color else Color.WHITE,width)
 func draw_activity() -> void:
 	# DF supplies wrapping and blank lines. Only viewport scrolling is local.
 	var links: Array=state.activity_page.get("links",[])
@@ -249,7 +258,10 @@ func tab(value: String,point: Vector2,selected:=false,secondary:=false) -> float
 			for x in width:
 				var sx:=x if x<2 else x-width+5 if x>=width-2 else 2
 				draw_texture_rect_region(texture,Rect2(point+Vector2(x*8,y*12),Vector2(8,12)),Rect2(sx*8,y*12,8,12))
-	text(value,point+Vector2(16,18),0 if selected else 15);return width*8
+	# Native133629 selected tab ink is RGB70,44,0, not palette black.
+	if selected:text_rgb(value,point+Vector2(16,18),Color8(70,44,0))
+	else:text(value,point+Vector2(16,18))
+	return width*8
 func draw_chrome(selected_tab: int) -> void:
 	draw_rect(Rect2(Vector2(4,4),size-Vector2(8,8)),Color8(28,28,28))
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
@@ -272,7 +284,8 @@ func _draw() -> void:
 		text("Overall Training",training.position+Vector2(16,24))
 	for spec: Dictionary in sort_specs():
 		var suffix: String="ACTIVE" if state.sort==spec.sort else "INACTIVE"
-		var direction: String="DESCENDING" if state.directions[spec.sort] else "ASCENDING"
+		var arrow_down: bool=state.directions[spec.sort] if state.tab==0 else not state.directions[spec.sort]
+		var direction: String="DESCENDING" if arrow_down else "ASCENDING"
 		for cell in 4:
 			var arrow:=strip("SORT_"+direction+"_"+suffix,cell)
 			if arrow!=null:draw_texture_rect(arrow,Rect2((spec.x+cell)*8,list_top()-24,8,12),false)
@@ -281,16 +294,26 @@ func _draw() -> void:
 			for cell in width:
 				var background:=strip("SORT_TEXT_"+suffix,0 if cell==0 else 2 if cell==width-1 else 1)
 				if background!=null:draw_texture_rect(background,Rect2((spec.x+4+cell)*8,list_top()-24,8,12),false)
-			text(spec.label,Vector2((spec.x+5)*8,list_top()-12),0 if suffix=="ACTIVE" else 7)
+			text_rgb(spec.label,Vector2((spec.x+5)*8,list_top()-12),Color.BLACK if suffix=="ACTIVE" else Color8(160,160,160))
 	for index in page_rows:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty():continue
 		var y:=list_top()+index*36
-		patch("BUTTON_RECTANGLE_DARK",Vector2i(2,int(y/12)),int(size.x/8)-7,3)
+		patch("BUTTON_RECTANGLE_DARK" if state.tab==0 else "BUTTON_RECTANGLE",Vector2i(2,int(y/12)),row_background_columns(),3)
 		patch("",Vector2i(2,int(y/12)),5,3,picture.texture(false))
 		var portrait: Texture2D=portraits.get(RosterState.row_key(row),{}).get("texture")
 		if portrait!=null:draw_texture_rect(portrait,Rect2(18,y+2,32,32),false)
 		if state.tab==1:
+			for caption: Dictionary in PetRow.training_captions(row,y):text(caption.text,caption.point,caption.color)
+			# Native125038: ownership text at row+24, owner first line at+12.
+			# Keep native caption-before-name paint order for the shared column.
+			for caption: Dictionary in row.get("pet",{}).get("captions",[]):
+				text(caption.text,Vector2(736,y+24),int(caption.foreground)+8*int(caption.bright))
+			for owner: Dictionary in row.get("pet",{}).get("owners",[]):
+				var owner_ink:=NameColor.choose(owner.name_color,ticks_override if ticks_override>=0 else Time.get_ticks_msec(),0 if ticks_override>=0 else randi_range(0,1))
+				if not owner_ink.is_empty():
+					text(owner.first_line,Vector2(736,y+12),int(owner_ink[0])+8*int(owner_ink[2]),192)
+					text(owner.second_line,Vector2(736,y+24),int(owner_ink[0])+8*int(owner_ink[2]),192)
 			for control: Dictionary in PetRow.controls(row,y):
 				var texture: Texture2D=art.texture(control.token)
 				if texture!=null:draw_texture_rect(texture,control.rect,false)

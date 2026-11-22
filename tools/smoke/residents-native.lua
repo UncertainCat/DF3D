@@ -118,7 +118,7 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
    if active and df.widget_item_portrait:is_instance(widget) and widget.i then observed.rows[#observed.rows+1]={kind=1,id=widget.i.id}end
    if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child,active)end end
   end
-  assert(active_list);collect(active_list,true)
+  assert(active_list);observed.cursor_idx=active_list.cursor_idx;collect(active_list,true)
   if os.getenv('DF3D_CREATURE_LIST_PROVIDER')=='1' then
    local text,rc=dfhack.run_command_silent('df3d','creature-list-probe',tostring(index),'0','0',query or '');assert(rc==0,text)
    observed.provider=json.decode(text).rows
@@ -136,6 +136,10 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
   if index==1 and not suffix and os.getenv('DF3D_PET_OWNER_ROWS')=='1' then
    local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','pet-owner-rows-native.lua')
    assert(loadfile(path))(out,active_list)
+  end
+  if index==1 and not suffix and os.getenv('DF3D_PET_HOVER')=='1' then
+   local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','pet-hover-native.lua')
+   assert(loadfile(path))(out,view,active_list)
   end
   if os.getenv('DF3D_CREATURE_CONTROL_REFERENCE')=='1' and index==1 then
    local controls={}
@@ -165,8 +169,13 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
    local f=assert(io.open(out..'/creature-controls-reference.json','w'));f:write(json.encode(controls));f:close()
    if os.getenv('DF3D_PET_CONTROLS_PROVIDER')=='1' then
     local samples={}
-    local function semantic(widget,result)
-     if df.widget_text:is_instance(widget)then result.captions[#result.captions+1]=dfhack.df2utf(widget.str);result.caption_colors[#result.caption_colors+1]={widget.fg,widget.bg,widget.bright and 1 or 0}end
+    local function semantic(widget,result,training)
+     if df.widget_text:is_instance(widget)then
+      local captions=training and result.training or result.captions
+      local colors=training and result.training_colors or result.caption_colors
+      local value=df.widget_text_truncated:is_instance(widget) and widget.original_str or widget.str
+      captions[#captions+1]=dfhack.df2utf(value);colors[#colors+1]={widget.fg,widget.bg,widget.bright and 1 or 0}
+     end
      if df.widget_unit_name:is_instance(widget) and widget.u then result.owners[#result.owners+1]=widget.u.id end
      for _,target in ipairs(callbacks(widget.custom_activated,64))do
       local action=({[0x3d0ca0]=0,[0x3d0e50]=1,[0x3d0a90]=1,[0x3d0c40]=2,[0x3d1700]=3,[0x3d1460]=4,[0x3d1280]=5})[target]
@@ -192,15 +201,21 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
        end
       end
      end
-     if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do semantic(child,result)end end
+     if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do semantic(child,result,training)end end
     end
     local function compare(widget)
      local kind,id,target
      if df.widget_unit_portrait:is_instance(widget) and widget.u then kind=0;target=widget.u;id=target.id end
      if df.widget_item_portrait:is_instance(widget) and widget.i then kind=1;target=widget.i;id=target.id end
      if id then
-      local expected={captions={},caption_colors={},owners={},actions={},action_help={}}
+      local expected={captions={},caption_colors={},training={},training_colors={},owners={},actions={},action_help={}}
       for ordinal,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do if ordinal>=6 then semantic(child,expected)end end
+      -- Native row child5 is Job: its first two children are activity and
+      -- details. The pet postprocessor appends trainer status after those.
+      if kind==0 then
+       local children=dfhack.gui.getWidgetChildren(widget.parent)
+       for ordinal,child in ipairs(dfhack.gui.getWidgetChildren(children[5]))do if ordinal>=3 then semantic(child,expected,true)end end
+      end
       local before=kind==0 and {target.flags1.whole,target.flags2.whole,target.flags3.whole} or {target.flags.whole}
       local text,rc=dfhack.run_command_silent('df3d','pet-controls-probe',tostring(kind),tostring(id));assert(rc==0,text)
       local provider=json.decode(text)

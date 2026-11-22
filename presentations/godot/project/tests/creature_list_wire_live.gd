@@ -54,14 +54,17 @@ func workflows() -> void:
 	var editable: Array=[]
 	var trainer_cases: Array=[]
 	var counts: Dictionary={}
+	var render_rows: Dictionary={}
 	for tab in [1,2,3]:
 		var expected: Array=reference.tabs[str(tab)]
 		counts[str(tab)]=0
+		render_rows[tab]=[]
 		for offset in range(0,expected.size(),64):
 			var targets: Array=[]
 			for v: Dictionary in expected.slice(offset,offset+64):targets.append({"kind":int(v.kind),"id":int(v.id)})
 			var rows:=await read_rows(tab,targets)
 			if not check(rows.size()==targets.size(),"Creature row batch incomplete"):return
+			render_rows[tab].append_array(rows)
 			for i in rows.size():
 				var row: Dictionary=rows[i];var native: Dictionary=expected[offset+i];var value: Dictionary=native.text
 				check(row.kind==int(native.kind) and row.id==int(native.id),"Creature row identity differs")
@@ -87,6 +90,9 @@ func workflows() -> void:
 					check(pet.captions.size()==native.controls.captions.size() and pet.owners.size()==native.owners.size() and pet.controls.size()==native.controls.actions.size(),"Pet control counts differ")
 					for j in mini(pet.captions.size(),native.controls.captions.size()):
 						check(pet.captions[j].text==native.controls.captions[j] and pet.captions[j].foreground==int(native.controls.caption_colors[j][0]),"Pet caption differs")
+					check(pet.training.size()==native.controls.training.size(),"Pet training caption count differs")
+					for j in mini(pet.training.size(),native.controls.training.size()):
+						check(pet.training[j].text==native.controls.training[j] and pet.training[j].foreground==int(native.controls.training_colors[j][0]) and pet.training[j].background==int(native.controls.training_colors[j][1]) and pet.training[j].bright==bool(native.controls.training_colors[j][2]),"Pet training caption differs")
 					for j in mini(pet.owners.size(),native.owners.size()):
 						check(pet.owners[j].id==int(native.owners[j].id) and pet.owners[j].first_line==native.owners[j].first_line and pet.owners[j].second_line==native.owners[j].second_line,"Pet owner differs")
 					for control: Dictionary in pet.controls:
@@ -94,6 +100,8 @@ func workflows() -> void:
 						if control.action<=2:editable.append({"target":targets[i],"control":control,"revision":pet.revision})
 					if native.has("trainers"):trainer_cases.append({"id":row.id,"revision":pet.revision,"native":native.trainers,"header":native.get("trainer_header","")})
 				counts[str(tab)]+=1
+	var render_file:=FileAccess.open(directory+"/creature-render-rows.bin",FileAccess.WRITE)
+	render_file.store_var(render_rows);render_file.close()
 	for sample: Dictionary in trainer_cases:
 		var ids:=PackedInt32Array()
 		for row: Dictionary in sample.native:ids.append(int(row.id))

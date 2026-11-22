@@ -58,6 +58,8 @@ inline std::optional<PetEditState> petEditState(int kind,int32_t id) {
         add(pet->flags.whole);add(pet->pet_flags.whole);
     }
     for(const auto& caption:controls->captions){add(caption.size());for(unsigned char ch:caption)add(ch);}
+    add(controls->training.size());
+    for(const auto& caption:controls->training){add(caption.size());for(unsigned char ch:caption)add(ch);}
     for(auto owner:controls->owners)add(owner);
     for(auto action:controls->actions)add(action);
     result.revision=hash&uint64_t(INT64_MAX);if(!result.revision)result.revision=1;

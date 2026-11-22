@@ -1656,14 +1656,15 @@ void publish() {
       flatbuffers::Offset<m::PetRowControls> controls;
       if(v.pet) {
         const auto& p=*v.pet;const auto& c=p.controls;
-        std::vector<flatbuffers::Offset<m::PetCaption>> captions;
+        std::vector<flatbuffers::Offset<m::PetCaption>> captions,training;
         std::vector<flatbuffers::Offset<m::PetOwner>> owners;
         std::vector<flatbuffers::Offset<m::PetControl>> actions;
         for(size_t i=0;i<c.captions.size();++i)captions.push_back(m::CreatePetCaption(b,b.CreateString(c.captions[i]),uint8_t(c.captionColors[i][0]),uint8_t(c.captionColors[i][1]),c.captionColors[i][2]!=0));
+        for(size_t i=0;i<c.training.size();++i)training.push_back(m::CreatePetCaption(b,b.CreateString(c.training[i]),uint8_t(c.trainingColors[i][0]),uint8_t(c.trainingColors[i][1]),c.trainingColors[i][2]!=0));
         for(const auto& o:c.ownerDisplay)owners.push_back(m::CreatePetOwner(b,o.id,b.CreateString(o.text.firstLine),b.CreateString(o.text.secondLine),creatureColor(o.color)));
         for(size_t i=0;i<c.actions.size();++i) {const auto& h=c.actionHelp[i];const auto a=c.actions[i];
           actions.push_back(m::CreatePetControl(b,m::PetAction(a),p.values[a],h.observed,b.CreateString(h.text),h.hover,h.instruction));}
-        controls=m::CreatePetRowControls(b,p.revision,b.CreateVector(captions),b.CreateVector(owners),b.CreateVector(actions));
+        controls=m::CreatePetRowControls(b,p.revision,b.CreateVector(captions),b.CreateVector(owners),b.CreateVector(actions),b.CreateVector(training));
       }
       const auto& a=v.text.activity;std::optional<m::TilePos> pos;
       if(v.position)pos.emplace(v.position->x,v.position->y,v.position->z);
@@ -6158,10 +6159,11 @@ void run(color_ostream& out) {
             if(q.tab()==m::CreatureListTab::Pets) {
               row.pet=df3d_residents::petEditState(kind,id);if(!row.pet)break;
               auto& controls=row.pet->controls;
-              if(controls.captions.size()>32 || controls.owners.size()>32 || controls.actions.size()>6 ||
+              if(controls.captions.size()>32 || controls.training.size()>32 || (kind==1 && !controls.training.empty()) || controls.trainingColors.size()!=controls.training.size() || controls.owners.size()>32 || controls.actions.size()>6 ||
                  controls.captionColors.size()!=controls.captions.size() || controls.ownerDisplay.size()!=controls.owners.size() || controls.actionHelp.size()!=controls.actions.size())break;
               bool valid=true;
               for(auto& c:controls.captions)if(!text(c))valid=false;
+              for(auto& c:controls.training)if(!text(c))valid=false;
               for(auto& owner:controls.ownerDisplay)if(!text(owner.text.firstLine) || !text(owner.text.secondLine))valid=false;
               for(size_t i=0;i<controls.actions.size();++i)if(controls.actions[i]<0 || controls.actions[i]>5 || !text(controls.actionHelp[i].text))valid=false;
               if(!valid)break;

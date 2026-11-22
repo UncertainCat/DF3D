@@ -143,9 +143,36 @@ func roster_tab_input() -> void:
 	click.position=Vector2(308,view.list_top()-18);view._gui_input(click)
 	check(service.calls[state.ticket].request.sort==C.CreatureListSort.Activity,"Dead activity arrow dispatches the native activity sort")
 	view.free();state.dispose()
+func pet_scrollbar_input() -> void:
+	root.size=Vector2i(1200,800)
+	var view:=View.new();root.add_child(view);view.set_process(false)
+	view.state=State.new();view.state.tab=1;view.state.phase=State.Phase.Ready
+	view.position=Vector2(32,52);view.size=Vector2(944,708);view.page_rows=13
+	var bar=preload("res://scripts/area_location_scrollbar.gd").new();view.add_child(bar)
+	bar.configure(null);bar.position=Vector2(view.roster_scrollbar_x(),view.list_top());bar.size=Vector2(16,504);bar.page=13;bar.set_rows(17)
+	bar.input_allowed=view.allowed
+	await process_frame
+	var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
+	click.position=view.position+bar.position+Vector2(8,498);root.push_input(click,true)
+	click.pressed=false;root.push_input(click,true)
+	check(bar.first==1,"Pets scrollbar outside the frame receives actual viewport input")
+	view.free()
 func run() -> void:
+	await pet_scrollbar_input()
 	roster_tab_input()
 	siblings()
+	var trainer_display:=preload("res://scripts/pet_row_view.gd").training_captions({"pet":{"training":[
+		{"text":"","foreground":7,"bright":true},
+		{"text":"Trainer: Kumil Dorenothlest, Animal Trainer, ♂","foreground":7,"bright":true}]}},120)
+	check(trainer_display.size()==1 and trainer_display[0].text=="Trainer: Kumil Doreno..." and trainer_display[0].point==Vector2(368,156),"Native125944 trainer caption keeps its activity column and24 glyph ellipsis; blank placeholder occupies no line")
+	var pet_layout:=View.new();pet_layout.state=State.new();pet_layout.size=Vector2(944,708)
+	pet_layout.state.tab=1
+	check(pet_layout.roster_scrollbar_x()==1048 and pet_layout.row_background_columns()==128,"Native Pets minimum width keeps scrollbar beyond action columns")
+	pet_layout.size.x=1344
+	check(pet_layout.roster_scrollbar_x()==1312,"Pets scrollbar follows a wider viewport")
+	pet_layout.state.tab=0;pet_layout.size.x=944
+	check(pet_layout.roster_scrollbar_x()==912 and pet_layout.row_background_columns()==111,"Residents retains its accepted row layout")
+	pet_layout.free()
 	pet_panes()
 	var service:=Service.new();var state:=State.new();state.configure(service);state.capacity=2;state.open()
 	var stale:=state.ticket

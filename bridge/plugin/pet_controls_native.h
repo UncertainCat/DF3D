@@ -6,7 +6,8 @@ namespace df3d_residents {
 struct PetActionHelp {std::string text;int32_t hover=-1,instruction=-1;bool observed=false;};
 struct PetOwnerDisplay {int32_t id,columns;bool showGender,showProfession,oneLineOnly;df3d_area::ZoneOwnerDisplayText text;df3d_area::ZoneOwnerNameColor color;};
 struct PetControls {
-    std::vector<std::string> captions;
+    std::vector<std::string> captions,training;
+    std::vector<std::array<int16_t,3>> trainingColors;
     std::vector<std::array<int16_t,3>> captionColors; // foreground, background, bright
     std::vector<int32_t> owners;
     std::vector<PetOwnerDisplay> ownerDisplay;
@@ -48,12 +49,17 @@ inline std::optional<PetControls> petControls(const CreatureReference& entry) {
         reinterpret_cast<Build>(const_cast<uint8_t*>(base+0x3731a0))(captures.data(),row,entry.item);
     }
     PetControls result;size_t count=0;bool valid=true;
-    const auto visit=[&](auto&& self,df::widget* widget)->void {
+    const auto job=row->children_by_name.find("Job");
+    const auto* trainingRoot=job==row->children_by_name.end()?nullptr:job->second.get();
+    const auto visit=[&](auto&& self,df::widget* widget,bool training)->void {
         if(!widget || !valid)return;
         if(++count>512){valid=false;return;}
+        training=training || widget==trainingRoot;
         if(auto* text=virtual_cast<df::widget_text>(widget)) {
-            result.captions.push_back(text->str);
-            result.captionColors.push_back({text->fg,text->bg,int16_t(text->bright)});
+            // Native370bf0 places trainer status in the named Job group.
+            // Ownership prose is outside it; never classify by visible wording.
+            (training?result.training:result.captions).push_back(text->str);
+            (training?result.trainingColors:result.captionColors).push_back({text->fg,text->bg,int16_t(text->bright)});
         }
         if(auto* name=virtual_cast<df::widget_unit_name>(widget);name && name->u) {
             // The owned postprocessor creates fixed-width owner widgets. Read
@@ -109,9 +115,9 @@ inline std::optional<PetControls> petControls(const CreatureReference& entry) {
                 result.actionHelp.push_back(std::move(help));
             }
         }
-        if(auto* container=virtual_cast<df::widget_container>(widget))for(const auto& child:container->children)self(self,child.get());
+        if(auto* container=virtual_cast<df::widget_container>(widget))for(const auto& child:container->children)self(self,child.get(),training);
     };
-    visit(visit,row.get());
+    visit(visit,row.get(),false);
     return valid?std::optional<PetControls>(std::move(result)):std::nullopt;
 }
 }

@@ -17,3 +17,14 @@ static func controls(row: Dictionary,y: int) -> Array:
 				token=prefix+("_ACTIVE" if control.value else "_INACTIVE")
 		result.append({"action":action,"rect":Rect2(COLUMNS[action],y,24,36),"token":"PETS_LIVESTOCK_"+token,"control":control})
 	return result
+
+static func training_captions(row: Dictionary,y: int) -> Array:
+	var result: Array=[]
+	for caption: Dictionary in row.get("pet",{}).get("training",[]):
+		var value:=str(caption.text)
+		# Native372433/37244e selects ellipses and24 columns. Widget14196e0
+		# keeps21 single-byte glyphs and appends dots; UTF8 is decoded here.
+		if value.is_empty():continue
+		if value.length()>24:value=value.left(21)+"..."
+		result.append({"text":value,"point":Vector2(368,y+36),"color":int(caption.foreground)+8*int(caption.bright)})
+	return result

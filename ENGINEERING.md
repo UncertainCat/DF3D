@@ -12836,7 +12836,26 @@ source saves unchanged, at30FPS with GPU samples46C. Client stderr is empty.
 These runs qualify semantic grouping and transport, not rendered pane parity.
 The ownership baseline comes from native125038's captured ownership container:
 status at row+24, owner name first line at row+12, native caption-before-name
-paint order. Full rendered acceptance and remaining sibling workflow work remain.
+paint order. The1200x800 Pets viewport at scroll4 is rendered against protected133629 with
+zero differing RGB pixels over the full944x708 panel. This covers13 visible rows,
+ownership names/status, grazer warnings, navigation, filter and Overall Training.
+The native minimum129-cell pet table puts the scrollbar at localx1048 beyond
+the frame; actual viewport input on that child scrollbar passes headlessly.
+Sibling rows use BUTTON_RECTANGLE, default down-arrow artwork, selected-tab
+RGB70,44,0 and inactive sort-label RGB160,160,160. Residents keeps its existing
+row-background and sort-direction mapping. The three recorded sibling headers
+match exactly. Other/Dead still lack the native cursor-row highlight, and Other
+activity-detail buttons are not yet represented by the sibling-row contract.
+Their full rendered workflows remain unqualified; all sibling tabs remain gated.
+
+Protected133629 also records all six pet hover messages and Ctrl+t/w/h/e/b/g
+shortcuts. main.current_hover and last_displayed_hover_inst are247/249/250/251/
+270/271; the callback's other immediate IDs590..595 are not those displayed IDs.
+Owned DF63256 closes unsaved/source unchanged; wire checks pass and stderr is
+empty. Offline rendering uses recorded pointer-free rows and installed assets,
+serially at30FPS; GPU samples48–49C. This viewport omits the assigned-trainer row,
+and does not qualify trainer/knowledge panes, narrow sizes or public entry.
+Remaining help/keyboard, activity details and cursor interaction are unfinished.
 
 Management protocol258 adds optional native name warnings to creature and trainer
 rows, and a required full trainer heading. Warning captions carry native palette

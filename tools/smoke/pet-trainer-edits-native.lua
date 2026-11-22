@@ -53,6 +53,47 @@ local function click(widget)
  for _=1,15 do script.sleep(1,'frames')end
  view:render(dfhack.getTickCount())
 end
+local function row_display()
+ local target
+ local function find_row(widget)
+  if df.widget_unit_portrait:is_instance(widget) and widget.u and widget.u.id==id then target=widget.parent end
+  if df.widget_container:is_instance(widget)then
+   for ordinal,child in ipairs(dfhack.gui.getWidgetChildren(widget))do
+    if not df.widget_tabs:is_instance(widget) or ordinal-1==widget.cur_idx then find_row(child)end
+   end
+  end
+ end
+ find_row(info.creatures);assert(target,'Animal row missing after trainer selection')
+ local widgets={}
+ local function collect(widget,path)
+  assert(#widgets<512,'Animal row reference exceeded bound')
+  local value={path=path,name=widget.name,rect={widget.rect.x1,widget.rect.y1,widget.rect.x2,widget.rect.y2},flags=widget.flag.whole}
+  if df.widget_text:is_instance(widget)then value.text=dfhack.df2utf(widget.str);value.color={widget.fg,widget.bg,widget.bright}end
+  if df.widget_text_truncated:is_instance(widget)then
+   value.original_text=dfhack.df2utf(widget.original_str);value.truncate_mode=widget.truncate_mode_flags.whole;value.min_columns=widget.min_w
+  end
+  if df.widget_unit_name:is_instance(widget) and widget.u then
+   value.unit=widget.u.id;value.columns=widget.min_w;value.profession=widget.show_profession;value.gender=widget.show_gender;value.one_line=widget.one_line_only
+  end
+  if df.widget_interface_pets_livestock_button:is_instance(widget)then value.button=widget.which_button end
+  widgets[#widgets+1]=value
+  if df.widget_container:is_instance(widget)then for ordinal,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child,path..'/'..ordinal)end end
+ end
+ collect(target,'row')
+ local text,rc=dfhack.run_command_silent('df3d','pet-controls-probe','0',tostring(id));assert(rc==0,text)
+ local provider=json.decode(text)
+ local training,ownership={},{}
+ for _,widget in ipairs(widgets)do
+  if widget.text then
+   local index=tonumber(widget.path:match('^row/5/(%d+)$'))
+   if index and index>=3 then training[#training+1]=widget.original_text or widget.text end
+   if widget.path:match('^row/7/')then ownership[#ownership+1]=widget.text end
+  end
+ end
+ assert(json.encode(provider.training)==json.encode(training),'Trainer status group differs from native row')
+ assert(json.encode(provider.captions)==json.encode(ownership),'Ownership status group differs from native row')
+ return {widgets=widgets,provider=provider}
+end
 local text,rc=dfhack.run_command_silent('df3d','pet-trainers-probe',tostring(id));assert(rc==0,text)
 local trainer=assert(json.decode(text).rows[1]).id
 local cases={{mode=1,trainer=-1,callback=0x3d1a90},{mode=2,trainer=-1,callback=0x3d19d0},
@@ -69,13 +110,14 @@ local ok,err=pcall(function()
   local invalid=read(receipt.revision,3,2147483647);assert(invalid.outcome==1 and json.encode(snapshot())==json.encode(before),'Unavailable trainer changed state')
   click(find(case.callback,case.mode==3 and trainer or nil))
   local native=snapshot();assert(json.encode(native)~=json.encode(before),'Trainer native click had no effect')
+  local display=os.getenv('DF3D_PET_TRAINER_ROW_REFERENCE')=='1' and row_display() or nil
   restore(before)
   local applied=read(receipt.revision,case.mode,case.trainer)
   assert(applied.outcome==0 and json.encode(snapshot())==json.encode(native),'Trainer provider differs from native')
   local stale=read(receipt.revision,case.mode,case.trainer);assert(stale.outcome==2,'Stale trainer selection accepted')
   local duplicate=read(applied.revision,case.mode,case.trainer);assert(duplicate.outcome==1,'Duplicate trainer selection accepted')
   assert(json.encode(snapshot())==json.encode(native),'Rejected trainer selection changed state')
-  evidence[#evidence+1]={mode=case.mode,trainer=case.trainer,before=before,native=native,provider=applied,stale=stale.outcome,duplicate=duplicate.outcome}
+  evidence[#evidence+1]={mode=case.mode,trainer=case.trainer,before=before,native=native,provider=applied,stale=stale.outcome,duplicate=duplicate.outcome,display=display}
  end
 end)
 restore(original)

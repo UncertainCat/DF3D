@@ -66,6 +66,10 @@ local ok,err=xpcall(function()
   local before={action=engine.action,facing=engine.facing,resting=engine.resting_orientation,jobs=#engine.jobs}
   local row={id=engine.id,type=engine.type,tile={engine.centerx,engine.centery,engine.z},before=before,actions={}}
   capture('siege-'..engine.type..'-initial');row.lines=lines()
+  if engine.type==2 then
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('siege%-building%-native.lua$','siege-ammunition-native.lua')
+   row.ammunition=assert(loadfile(source))(engine,probe,view,lines,capture,worker,material)
+  end
   for slot,action in ipairs{3,4,2,1,0}do
    local owned_before=probe(engine)
    click(780+(slot-1)*24,154)

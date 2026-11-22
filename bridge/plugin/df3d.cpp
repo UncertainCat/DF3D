@@ -88,6 +88,7 @@
 #include "pending_building_native.h"
 #include "pending_building_duration_native.h"
 #include "building_item_native.h"
+#include "siege_body_native.h"
 #include "funerary_native.h"
 #include "machinery_native.h"
 #include "well_native.h"
@@ -5751,6 +5752,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         const auto snapshot=df3d_production::siegeControls(building);if(!snapshot)return CR_FAILURE;
         result["revision"]=std::to_string(snapshot->revision);result["type"]=snapshot->type;
         result["action"]=snapshot->action;result["resting"]=snapshot->resting;result["facing"]=snapshot->facing;result["removing"]=snapshot->removing;
+        if(snapshot->type==2) {
+          const auto counts=df3d_production::siegeAmmunition(building);if(!counts)return CR_FAILURE;
+          auto& values=result["ammunition"];values=Json::Value(Json::arrayValue);
+          for(auto count:*counts)values.append(count);
+        }
         out.print("{}",Json::FastWriter().write(result));return CR_OK;
       }
       if(parameters[0]=="chain-state-probe") {

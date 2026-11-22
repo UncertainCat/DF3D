@@ -1,4 +1,5 @@
 #pragma once
+#include "ammunition_assignment_native.h"
 #include "farm_native.h"
 #include "appearance.h"
 #include "zone_native.h"
@@ -246,20 +247,16 @@ inline std::optional<ItemAmmunitionAssignment> itemAmmunitionAssignment(df::item
             std::string(reinterpret_cast<char*>(base+0x15fe210))=="Assigned to ";
     }();
     if(!supported)return std::nullopt;
-    const auto contains=[base](int32_t id,const std::vector<int32_t>& ids){
-        return reinterpret_cast<int32_t(*)(int32_t,const std::vector<int32_t>*)>(base+0xb9f70)(id,&ids)!=-1;};
-    const auto& equipment=df::global::plotinfo->equipment;
-    if(!contains(item->id,equipment.items_assigned[int(df::item_type::AMMO)]))return result;
-    for(const auto* spec:equipment.hunter_ammunition){if(!spec)return std::nullopt;
-        if(contains(item->id,spec->assigned)){result.kind=1;result.caption=reinterpret_cast<char*>(base+0x15fe220);return result;}}
-    const auto* entity=df::global::plotinfo->main.fortress_entity;if(!entity)return std::nullopt;
-    for(auto id:entity->squads){auto* squad=df::squad::find(id);if(!squad)continue;
-        for(const auto* spec:squad->ammo.ammunition){if(!spec)return std::nullopt;
-            if(!contains(item->id,spec->assigned))continue;
-            result.kind=2;result.squadId=id;result.caption=reinterpret_cast<char*>(base+0x15fe210);
-            std::string name=squad->alias;
-            if(name.empty()){auto owned=squad->name;reinterpret_cast<void(*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&owned,&name,true,false);}
-            result.caption+=name;return result;}}
+    const auto allocation=ammunitionAllocation(item->id);if(!allocation)return std::nullopt;
+    result.kind=allocation->kind;result.squadId=allocation->squadId;
+    if(result.kind==1)result.caption=reinterpret_cast<char*>(base+0x15fe220);
+    else if(result.kind==2) {
+        auto* squad=df::squad::find(result.squadId);if(!squad)return std::nullopt;
+        result.caption=reinterpret_cast<char*>(base+0x15fe210);
+        std::string name=squad->alias;
+        if(name.empty()){auto owned=squad->name;reinterpret_cast<void(*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&owned,&name,true,false);}
+        result.caption+=name;
+    }
     return result;
 }
 // Native follow loops35e7b6/8b6b76 use these independently owned outputs.

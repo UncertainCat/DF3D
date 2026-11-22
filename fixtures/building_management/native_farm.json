@@ -116304,6 +116304,84 @@
           "tools/smoke/siege-building-native.lua": "67dfca995981c54aea1b12b280b3f458e6b7450658911b332023fba77e711ed7",
           "tools/smoke/siege-jobs-native.lua": "ceb0eb3ee95c2a5899db1f80a80d71cd7b09327b842c1538b1f76a296598d542"
         }
+      },
+      "siege_ammunition_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261122-060813",
+        "owned_df_pid": 50268,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Bolt Thrower natural loaded/available/squad/hunter counts match native. Temporary stacks verify 11 loaded, 7 available, 13 forbidden then available, and restoration. Assignment reader shared with item details. All mode/resting/job cleanup comparisons repeated; owned reads/edits preserve GPS/main_interface. Transport and public panel remain unqualified.",
+        "ammunition": [
+          {
+            "label": "natural",
+            "native": [
+              0,
+              0,
+              25,
+              89
+            ],
+            "owned": [
+              0,
+              0,
+              25,
+              89
+            ]
+          },
+          {
+            "label": "loaded-available-forbidden",
+            "native": [
+              11,
+              7,
+              25,
+              89
+            ],
+            "owned": [
+              11,
+              7,
+              25,
+              89
+            ]
+          },
+          {
+            "label": "unforbidden",
+            "native": [
+              11,
+              20,
+              25,
+              89
+            ],
+            "owned": [
+              11,
+              20,
+              25,
+              89
+            ]
+          },
+          {
+            "label": "restored",
+            "native": [
+              0,
+              0,
+              25,
+              89
+            ],
+            "owned": [
+              0,
+              0,
+              25,
+              89
+            ]
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261122-060813/siege-building-native.json": "28dffd655ea9ef2b03ce67a45ff05879197d6047a2d5f3a6522bf7c63ac196c4",
+          "build/stockpile-storage-native-farm-discovery-20261122-060813/result.json": "842633742974d2b52de6418c767f9e7d5ea2f56ab45a49127655cefc2dbaf42a",
+          "build/stockpile-storage-native-farm-discovery-20261122-060813/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/siege_body_native.h": "4c842fc83f015fbd4a37536f23f97ba6e8a3216341fb078887cd653667e397af",
+          "bridge/plugin/ammunition_assignment_native.h": "00e65a5f1ff9011cdd2393eb4b4dc3ff23dde9f6cc3287e03161dd0a6b9ad937",
+          "bridge/plugin/building_item_native.h": "62121c1210b29e81db4b80baa5933268911415de05134f22835287aa223c0a09",
+          "tools/smoke/siege-ammunition-native.lua": "990026a2eff3285e4d8be3cebc6eaf00362a42e1761b142920b98400b8cd6e40"
+        }
       }
     },
     "pending_construction_reference": {

@@ -3134,6 +3134,28 @@ unchanged and owned DF closes unsaved at30FPS, sampled47C. Evidence:
 completed_sheet_discovery_reference.siege_controls_reference. Bridge build and
 all19 root CTest checks pass. This does not qualify ammunition or public UI.
 
+The Siege count provider uses native item availability, effective positions and
+walkability components. Nearby means sharing a positive component with one of
+the eight tiles around the engine center; it is not a distance cutoff. Loaded
+ammunition sums contained AMMO stacks independently. Nearby candidates retain
+the native item-flag exclusions and BOLT class predicate. Shared
+ammunition_assignment_native.h supplies the assignment gate and hunter-before-
+squad precedence for both item details and Siege, using simulation equipment
+lists and the fortress entity's squads. Count outputs are independently owned;
+native sheet rendering is never executed by the runtime provider.
+
+Protected060813 on2026-11-22 (DF50268) matches all four native counts: natural
+0 loaded/0 available/25 squad/89 hunter, then temporary stacks with11 loaded,
+7 available and13 forbidden. Unforbidding raises available to20; cleanup restores
+the natural counts. The run also repeats all mode, direction and job-cleanup
+comparisons, with owned reads/edits preserving GPS/main_interface bytes. Bridge
+build and all19 root checks pass. Owned DF closes unsaved, source unchanged,
+at30FPS, sampled46C. Evidence:
+completed_sheet_discovery_reference.siege_ammunition_reference. Initial060611
+rejected because the AMMO address guard was mistyped; the corrected guard is
+23e55e8, matching native192dba+225282e. Transport and public panel integration
+remain pending; the count oracle does not qualify their behavior or appearance.
+
 ### Chain candidates and native actions
 
 Chain27 is admitted through public map selection and holder navigation. It reuses

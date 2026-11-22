@@ -70,6 +70,14 @@ func _gui_input(event: InputEvent) -> void:
 			elif row.has("id"):state.select_trainer(C.PetTrainerMode.Individual,int(row.id))
 			break
 	accept_event()
+func row_background(origin: Vector2i,columns: int) -> void:
+	# Native094804/093702 use texture columns0/2/1 for left/fill/right,
+	# unlike the generic frame helper's0/1/2 ordering.
+	var texture: Texture2D=art.texture("BUTTON_RECTANGLE")
+	if texture==null:return
+	for y in 3:
+		for x in columns:
+			draw_texture_rect_region(texture,Rect2((origin.x+x)*8,(origin.y+y)*12,8,12),Rect2((0 if x==0 else 8 if x==columns-1 else 16),y*12,8,12))
 func _draw() -> void:
 	if world==null or state==null:return
 	draw_chrome(1)
@@ -80,7 +88,7 @@ func _draw() -> void:
 		if row.has("mode"):
 			text(GENERIC_LABELS[row.mode],Vector2(48,y+24));continue
 		var x:=16 if is_trainers() else 32
-		patch("BUTTON_RECTANGLE_DARK",Vector2i(x/8,y/12),int(size.x/8)-7 if is_trainers() else 50,3)
+		row_background(Vector2i(x/8,y/12),int(size.x/8)-7 if is_trainers() else 50)
 		patch("",Vector2i(x/8,y/12),5,3,picture.texture(false))
 		var key: String=("unit:"+str(row.id)) if is_trainers() else ("race:"+str(row.race))
 		var portrait: Texture2D=portraits.get(key,{}).get("texture")

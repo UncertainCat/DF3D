@@ -12905,6 +12905,22 @@ all19 core checks pass, and Residents headless input passes. Graphics are serial
 at30FPS, GPU samples45–46C. This qualifies staged Other description data, rendering
 and selection behavior; full public sibling-tab navigation remains gated.
 
+The trainer and training-knowledge panes use installed BUTTON_RECTANGLE columns
+0/2/1 for left/fill/right, as observed in native094804/093702. These rows repeat
+the final source column through their interior; the generic frame's0/1/2 mapping
+is not equivalent. The correction is local to these panes. Recorded wire data
+from141441 renders the trainer pane with26 differing scrollbar pixels over the
+full944x708 panel, using the native capture's alternate name-color phase. The
+knowledge pane has2774 differing pixels:2748 missing species-art pixels and the
+same26 scrollbar pixels. Text, backgrounds, portrait frames, trainer artwork,
+headings and geometry otherwise match. These counts exclude neither the body
+nor the chrome; the artwork-only residual is separately isolated for diagnosis.
+Capture tool: pet_panes_capture.gd, using pet-trainer-6548-0/64.bin and
+pet-knowledge-rows.bin produced by the protected wire lane. No DF session is
+attached during this render. Serial30FPS rendering exits cleanly; GPU samples
+46–50C, Residents headless checks and all19 core tests pass. This establishes
+the recorded first viewport, not scrolling, resize or public trainer integration.
+
 Management protocol258 adds optional native name warnings to creature and trainer
 rows, and a required full trainer heading. Warning captions carry native palette
 values; item rows cannot carry a unit-name warning. The heading is bounded by the

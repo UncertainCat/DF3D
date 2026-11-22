@@ -12513,7 +12513,7 @@ checks pass. Run with `DF3D_PET_TRAINING_REFERENCE=1` and
 `DF3D_PET_TRAINING_PROVIDER=1` through the existing creature-tab oracle. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-093702`.
 
-Per-animal trainer assignment, tooltip and row-color
+Tooltip and row-color
 extraction, typed transport and public sibling views remain unqualified or
 unimplemented. Paused toggle parity does not qualify subsequent simulation job
 execution or broader animal lifecycle behavior.
@@ -12525,8 +12525,8 @@ and Domesticated level are restored. This is a controlled visibility fixture,
 not evidence of a naturally unowned animal or a completed training job.
 The owned control provider matches all six native actions in order: trainer
 selection, war, hunting, adoption, slaughter and gelding. New semantic action
-IDs3/4/5 identify those controls; trainer selection remains read-only,
-while war/hunting edits have the separate acceptance below.
+IDs3/4/5 identify those controls; trainer selection and war/hunting edits have
+the separate acceptance below.
 All17 pet control rows match and compared flags remain unchanged. Native
 trainer-picker capture adds `DF3D_PET_TRAINER_REFERENCE=1`; it offers Any trainer,
 Any unassigned trainer, None and individual trainers with native skill text.
@@ -12547,8 +12547,8 @@ The native picker has inline inactive/labor gates around membership predicate
 Native skill producer1429ef0 receives an owned row and Animal Training weight;
 only its resulting text is extracted. No native menu or staged selection is used.
 `pet-trainers-probe` exposes this read-only provider; it requires current trainer
-control availability. Generic selection actions and assignment effects remain
-separate unfinished work.
+control availability. Generic selection actions and assignment effects use the
+separate owned API below.
 
 Protected094804 on2026-11-22 compares a cold provider read against the native
 picker in the controlled dog fixture: all122 trainer IDs, ordering and skill
@@ -12562,7 +12562,8 @@ owned callback input and glyph scratch. The native routines own assignment
 allocation and global AnimalTrainCheck invalidation. Revisions include assignment
 presence, trainer ID and flags; membership, control availability, stale revisions
 and duplicate desired values are checked before mutation. Post-call failure stays
-Unknown and must not be replayed. Trainer selection3 is still rejected.
+Unknown and must not be replayed. Trainer selection3 is rejected by this toggle
+API; `setPetTrainer` handles it separately.
 
 Protected095231 on2026-11-22 matches six native clicks on controlled dog6548:
 each training mode creates an absent assignment, toggles off, and replaces the
@@ -12575,6 +12576,31 @@ training jobs. Owned DF50856 closes unsaved/source-preserved at30FPS, sampled60C
 bridge build and19 core checks pass. Set `DF3D_PET_TRAINING_EDITS=1` with
 `DF3D_PET_EDITS_PROVIDER=1` and the controlled trainer/control-provider flags.
 Evidence: `build/stockpile-storage-native-farm-discovery-20261122-095231`.
+
+`pet_trainer_edits_native.h` invokes native36eda0/36ef50/36f100/36f2b0 for
+Any trainer, Any unassigned trainer, None and an individual trainer. Inputs own
+the close marker and deferred row-refresh context. The native routines never
+receive or open a native menu; the differently ordered weak references for each
+callback are explicit in the adapter. Individual selection revalidates the native
+candidate list. Membership, current control availability, revision and duplicate
+selection are checked before mutation. Any/Unassigned/Individual preserve the
+other training flags; None deletes the entire assignment, including those flags,
+as native does. Native post-effect failures remain Unknown without replay.
+
+Protected095736 on2026-11-22 compares five native selections (Any, Unassigned,
+individual7204, Any, None) against the owned API on controlled dog6548. The full
+assignment vector matches after each; war-training flags survive trainer changes
+and are removed by None. Stale, duplicate and unavailable-trainer requests reject
+without changes. The oracle restores original assignment absence, and the parent
+restores the dog's owner/level. Earlier095554/095644 stopped after successful
+partial comparisons because the native reopen click did not open the picker;
+the oracle now waits15frames after clicks before the next transition. Those
+failed runs restored state and preserved saves; they are not full acceptance.
+Owned DF63220 closes unsaved/source-preserved at30FPS, sampled59C. Bridge build
+and19 core checks pass. `DF3D_PET_TRAINER_EDITS=1` extends the trainer-reference
+lane. Public UI, transport, later training jobs and other trainer lifecycle
+variants remain unqualified. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-095736`.
 
 
 Residents Activity has distinct job-settings and event-description routes.

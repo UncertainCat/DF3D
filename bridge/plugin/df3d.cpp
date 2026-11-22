@@ -151,6 +151,7 @@
 #include "pet_edits_native.h"
 #include "pet_training_native.h"
 #include "pet_trainers_native.h"
+#include "pet_trainer_edits_native.h"
 #include "residents_activity_native.h"
 #include "tasks_native.h"
 #include "places_native.h"
@@ -3430,6 +3431,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!ids)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["ids"]=Json::Value(Json::arrayValue);
           for(auto id:*ids)result["ids"].append(id);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="pet-trainer-edit-probe") {
+          if(parameters.size()!=2 && parameters.size()!=5)return CR_WRONG_USAGE;
+          int64_t values[4]{};
+          for(size_t i=1;i<parameters.size();++i){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;}
+          if(values[0]<0 || values[0]>INT32_MAX)return CR_WRONG_USAGE;
+          Json::Value result(Json::objectValue);
+          if(parameters.size()==5){if(values[1]<1 || values[2]<0 || values[2]>3 || values[3]<-1 || values[3]>INT32_MAX)return CR_WRONG_USAGE;result["outcome"]=int(df3d_residents::setPetTrainer(int32_t(values[0]),uint64_t(values[1]),df3d_residents::TrainerMode(values[2]),int32_t(values[3])));}
+          const auto state=df3d_residents::petEditState(0,int32_t(values[0]));if(!state)return CR_FAILURE;
+          result["revision"]=std::to_string(state->revision);
+          const auto* assignment=df::training_assignment::find(int32_t(values[0]));result["assigned"]=assignment!=nullptr;
+          result["trainer"]=assignment?assignment->trainer_id:-1;result["flags"]=assignment?assignment->flags.whole:0;
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="pet-trainers-probe") {

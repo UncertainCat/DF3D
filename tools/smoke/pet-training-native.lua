@@ -90,3 +90,7 @@ while true do
  local ack=io.open(out..'/ack-'..prefix..'-root');if ack then ack:close();break end
  assert(dfhack.getTickCount()<deadline,'Training capture timeout');script.sleep(1,'frames')
 end
+if trainer and os.getenv('DF3D_PET_TRAINER_EDITS')=='1' then
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('pet%-training%-native.lua$','pet-trainer-edits-native.lua')
+ assert(loadfile(path))(out,view,info,callbacks)
+end

@@ -3507,6 +3507,18 @@ client passes with empty stderr; source saves are preserved and DF closes unsave
 at30FPS (GPU samples58–60C). Evidence: display_state_reference. The parent/picker
 views and public entry remain unfinished.
 
+The Display picker reuses Stocks category layout, item artwork and visible-detail
+requests, with local assignment checkboxes in place of stock flags. Its graphical
+scrollbars and gray empty-filter hint follow the native Display surface. Item
+selection preserves filter focus. Protected072403 on2026-11-22 supplies all18
+amulet details; both unselected and selected full944x708 panels at1200x800 match
+the native captures exactly. Checkbox toggle/clear passes; cursor blink phase is
+fixed only in the capture check. Rendering reports the known Godot render-thread
+shutdown diagnostics, not a clean diagnostic run. Graphics run serially at30FPS,
+with sampled GPU60–61C. Native source saves are preserved and DF57076 closes
+unsaved. Evidence: display_picker_view_reference. Group/scroll/resize input and
+the composed public parent/picker workflow remain unqualified.
+
 ### Trap and hive control providers
 
 The trap/hive control provider now owns revisions over target stage/flags,

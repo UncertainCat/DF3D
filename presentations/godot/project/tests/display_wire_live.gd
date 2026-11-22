@@ -66,6 +66,9 @@ func run() -> void:
 							model.remove_item(item)
 							if await settle(model,actions):check(model.body.is_empty(),"Live controller removal missing")
 		model.dispose();actions.queue_free();await process_frame
+	var all_ids: Array=[]
+	for group in page.get("groups",[]):all_ids.append_array(group.item_ids)
+	var full_page:=await read_display(id,37,"",all_ids)
 	var file:=FileAccess.open(directory+"/display-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"initial":initial,"page":page}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"initial":initial,"page":page,"full_page":full_page}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)

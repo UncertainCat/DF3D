@@ -143,6 +143,32 @@ func roster_tab_input() -> void:
 	click.position=Vector2(308,view.list_top()-18);view._gui_input(click)
 	check(service.calls[state.ticket].request.sort==C.CreatureListSort.Activity,"Dead activity arrow dispatches the native activity sort")
 	view.free();state.dispose()
+func pet_help_input() -> void:
+	var service:=Service.new();var state:=State.new();state.configure(service)
+	var view:=View.new();view.state=state;view.search=Control.new();view.add_child(view.search);root.add_child(view);view.set_process(false)
+	view.size=Vector2(944,708);view.page_rows=1;state.tab=1
+	var help=preload("res://scripts/native_hover_view.gd").new();root.add_child(help);help.set_process(false);view.hover_help=help
+	var trainers: Array=[];view.trainer_requested.connect(func(key):trainers.append(key))
+	var cases=[[C.PetAction.Trainer,247,KEY_T,656],[C.PetAction.War,249,KEY_W,680],[C.PetAction.Hunting,250,KEY_H,704],[C.PetAction.Adoption,251,KEY_E,960],[C.PetAction.Slaughter,270,KEY_B,936],[C.PetAction.Gelding,271,KEY_G,984]]
+	for sample in cases:
+		state.retire()
+		var key: int=-8 if sample[0]==C.PetAction.Adoption else 7
+		var control: Dictionary={"action":sample[0],"value":false,"help_observed":true,"hover_help":sample[1]}
+		state.ids=PackedInt32Array([key]);state.rows={key:{"kind":1 if key<0 else 0,"id":7,"pet":{"revision":9,"controls":[control]}}};state.phase=State.Phase.Ready
+		view.pointer_known=true;view.pointer_position=Vector2(sample[3]+8,view.list_top()+18);view.update_hover()
+		check(help.state.key=="pet_"+str(sample[1]),"Pet control owns its native help even in overlapping Residents columns")
+		var event:=InputEventKey.new();event.pressed=true;event.ctrl_pressed=true;event.keycode=KEY_Q
+		var before:=service.next;view._input(event);check(service.next==before,"Unrelated shortcut cannot activate pet control")
+		event.keycode=sample[2];view._input(event)
+		if sample[0]==C.PetAction.Trainer:check(trainers==[7] and service.next==before,"Ctrl+t opens trainer picker without submitting a mutation")
+		else:
+			check(service.next==before+1 and service.calls[state.ticket].request.target==state.identity(key) and service.calls[state.ticket].request.pet_action==sample[0] and service.calls[state.ticket].request.expected_revision==9,"Pet shortcut submits current typed target and observed receipt")
+		state.phase=State.Phase.Applying;before=service.next;view._input(event);view.update_hover()
+		check(service.next==before and help.state.key.is_empty(),"Pending pet edit excludes shortcuts and releases hover help")
+	state.phase=State.Phase.Ready;state.rows[state.ids[0]].pet.controls[0].help_observed=false
+	view.update_hover();check(help.state.key.is_empty(),"Unobserved help does not invent a tooltip")
+	view.hide();view.update_hover();help.free();view.hover_help=null;view.free();state.dispose()
+
 func pet_scrollbar_input() -> void:
 	root.size=Vector2i(1200,800)
 	var view:=View.new();root.add_child(view);view.set_process(false)
@@ -158,6 +184,7 @@ func pet_scrollbar_input() -> void:
 	check(bar.first==1,"Pets scrollbar outside the frame receives actual viewport input")
 	view.free()
 func run() -> void:
+	pet_help_input()
 	await pet_scrollbar_input()
 	roster_tab_input()
 	siblings()

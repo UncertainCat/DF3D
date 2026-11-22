@@ -13,6 +13,7 @@ const Indicators=preload("res://scripts/location_staff_indicators.gd")
 const InfoTabs=preload("res://scripts/work_order_info_tabs.gd")
 const RosterState=preload("res://scripts/residents_state.gd")
 const PetRow=preload("res://scripts/pet_row_view.gd")
+const PetHelp=preload("res://scripts/native_pet_help.gd")
 const SORTS=[C.ResidentsSort.Name,C.ResidentsSort.Category,C.ResidentsSort.Profession,C.ResidentsSort.Activity,C.ResidentsSort.Stress]
 const SORT_X=[7,17,26,46,82]
 const SORT_WIDTH=[10,9,10,35,4]
@@ -149,6 +150,11 @@ func _input(event: InputEvent) -> void:
 		elif search.has_focus():search.feed_key(event);get_viewport().set_input_as_handled()
 		elif event.ctrl_pressed and not event.echo and pointer_known and state.phase==state.Phase.Ready:
 			var target:=hover_target(pointer_position)
+			if target.has("pet"):
+				var help_id:=PetHelp.observed(target.pet)
+				if help_id>=0 and event.keycode==PetHelp.ENTRIES[help_id].key:
+					activate_pet_control(pointer_position);get_viewport().set_input_as_handled()
+				return
 			if target.get("kind")=="recenter" and event.keycode==KEY_C:focus_requested.emit(target.row.position);get_viewport().set_input_as_handled()
 			elif target.get("kind")=="details" and event.keycode==KEY_V:inspect_requested.emit(RosterState.row_key(target.row));get_viewport().set_input_as_handled()
 			elif str(target.get("kind","")).begins_with("specialization_") and event.keycode==KEY_Z:state.specialize(RosterState.row_key(target.row));get_viewport().set_input_as_handled()
@@ -160,6 +166,9 @@ func hover_target(point: Vector2) -> Dictionary:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty():continue
 		var y:=list_top()+index*36
+		if state.tab==1:
+			for control: Dictionary in PetRow.controls(row,y):
+				if control.rect.has_point(point):return {"pet":control.control,"row":row}
 		for entry in [["recenter",304,24],["details",336,24],["happiness",656,16],["specialization",696,32]]:
 			if not Rect2(entry[1],y,entry[2],24 if entry[0]=="happiness" else 36).has_point(point):continue
 			var kind: String=entry[0]
@@ -185,7 +194,8 @@ func hover_target(point: Vector2) -> Dictionary:
 func update_hover() -> void:
 	if not is_instance_valid(hover_help):return
 	var target: Dictionary=hover_target(pointer_position) if pointer_known and allowed() else {}
-	if target.has("kind"):hover_help.enter_residents(get_instance_id(),target.kind)
+	if target.has("pet"):hover_help.enter_pet(get_instance_id(),target.pet)
+	elif target.has("kind"):hover_help.enter_residents(get_instance_id(),target.kind)
 	elif target.has("staff"):hover_help.enter_staff_indicator(get_instance_id(),target.staff)
 	else:hover_help.leave(get_instance_id())
 func _leave_hover() -> void:

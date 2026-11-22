@@ -12855,7 +12855,16 @@ Owned DF63256 closes unsaved/source unchanged; wire checks pass and stderr is
 empty. Offline rendering uses recorded pointer-free rows and installed assets,
 serially at30FPS; GPU samples48–49C. This viewport omits the assigned-trainer row,
 and does not qualify trainer/knowledge panes, narrow sizes or public entry.
-Remaining help/keyboard, activity details and cursor interaction are unfinished.
+The staged roster now uses these observed hover IDs for the shared main-help
+owner and matching Ctrl shortcuts. Pet hit-testing precedes overlapping Residents
+happiness/specialization columns. Only present DF controls in a Ready roster can
+activate; shortcuts reuse current typed targets and receipts, and the trainer key
+opens the existing picker. Pending edits release help and exclude repeat actions.
+Unobserved help stays absent. Native133629 copy/wrapping and shortcut colors pass
+an offline installed-font comparison of12,831 opaque glyph pixels across all six
+messages. Headless input checks cover all six actions, item/unit identities,
+wrong keys, pending exclusion and trainer navigation. This is not main-scene
+public keyboard acceptance. Activity details and cursor interaction remain open.
 
 Management protocol258 adds optional native name warnings to creature and trainer
 rows, and a required full trainer heading. Warning captions carry native palette

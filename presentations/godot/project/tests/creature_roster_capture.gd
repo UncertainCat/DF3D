@@ -25,5 +25,25 @@ func run() -> void:
 		view.refresh()
 		for frame in 3:await process_frame;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/creature-roster-"+str(tab)+".png")
+	var hover_reference:=directory+"/pet-hover-reference.json"
+	if FileAccess.file_exists(hover_reference):
+		var observed: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(hover_reference))
+		var help=preload("res://scripts/native_hover_view.gd").new();root.add_child(help);help.configure(world);help.layout(Vector2(1200,800));help.set_process(false)
+		var font:=Image.load_from_file(world.ui_font_path());var checked:=0
+		for probe: Dictionary in observed.probes:
+			help.displayed="pet_"+str(int(probe.displayed));help.visible=true;help.queue_redraw()
+			for frame in 3:await process_frame;await RenderingServer.frame_post_draw
+			var image:=root.get_texture().get_image();image.save_png(directory+"/pet-help-"+str(int(probe.displayed))+".png")
+			for cell: Dictionary in probe.text_cells:
+				var ch:=int(cell.ch);var ink: Color=help.palette[int(cell.fg)+(8 if cell.bold else 0)]
+				for y in 12:
+					for x in 8:
+						var glyph:=font.get_pixel((ch%16)*8+x,(ch/16)*12+y)
+						if glyph.a<0.99 or minf(glyph.r,minf(glyph.g,glyph.b))<0.99:continue
+						var actual:=image.get_pixel(int(cell.x)*8+x,int(cell.y)*12+4+y)
+						if absf(actual.r-ink.r)+absf(actual.g-ink.g)+absf(actual.b-ink.b)>0.035:
+							push_error("Native pet help glyph mismatch: "+str(probe.displayed)+" cell="+str(cell));quit(1);return
+						checked+=1
+		help.free();print("PET_HELP_CAPTURE_PASS glyph_pixels=",checked)
 	view.free();world.queue_free();state.dispose();await process_frame
 	print("CREATURE_ROSTER_CAPTURE_PASS");quit()

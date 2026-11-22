@@ -1,6 +1,7 @@
 extends Control
 signal showing_changed(showing: bool)
 const State=preload("res://scripts/native_hover_state.gd")
+const PetHelp=preload("res://scripts/native_pet_help.gd")
 # Verbatim native204218 wrapping at the supported 24-cell minimap width.
 const ACCESS_HELP = [
 	["This option allows","visitors from outside","the fortress to enter","this location."],
@@ -276,6 +277,11 @@ func enter_residents(owner: int, kind: String) -> void:
 		state.enter(owner,"residents_"+kind,Time.get_ticks_msec());_process(0)
 	else:leave(owner)
 
+func enter_pet(owner: int, control: Dictionary) -> void:
+	var id:=PetHelp.observed(control)
+	if id<0:leave(owner);return
+	state.enter(owner,"pet_"+str(id),Time.get_ticks_msec());_process(0)
+
 func enter_staff_indicator(owner: int, kind: String) -> void:
 	if STAFF_HELP.has(kind):state.enter(owner,"staff_"+kind,Time.get_ticks_msec());_process(0)
 
@@ -333,6 +339,7 @@ func _draw() -> void:
 	elif displayed.begins_with("workshop_task_"):lines=WORKSHOP_TASK_HELP[displayed.trim_prefix("workshop_task_")]
 	elif displayed.begins_with("tasks_"):lines=TASKS_HELP[displayed.trim_prefix("tasks_")]
 	elif displayed.begins_with("depot_goods_"):lines=DEPOT_GOODS_HELP[displayed.trim_prefix("depot_goods_")]
+	elif displayed.begins_with("pet_"):lines=PetHelp.ENTRIES[int(displayed.trim_prefix("pet_"))].lines
 	elif displayed.begins_with("residents_specialization_"):lines=SPECIALIZATION_HELP[int(displayed.trim_prefix("residents_specialization_"))]
 	elif displayed.begins_with("residents_"):lines=RESIDENTS_HELP[displayed.trim_prefix("residents_")]
 	elif displayed.begins_with("item_"): lines=ITEM_HELP[displayed.trim_prefix("item_")]
@@ -349,8 +356,9 @@ func _draw() -> void:
 	var offset := 1 if is_widget else 0
 	for row in lines.size():
 		theme.default_font.draw_string(get_canvas_item(),Vector2(8,(row+1+offset)*12),lines[row],HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
-	if displayed in ["residents_recenter","residents_details","residents_specialization_0","residents_specialization_1"] and palette.size()==16:
+	if (displayed.begins_with("pet_") or displayed in ["residents_recenter","residents_details","residents_specialization_0","residents_specialization_1"]) and palette.size()==16:
 		var shortcut: String="Ctrl+c" if displayed=="residents_recenter" else "Ctrl+v" if displayed=="residents_details" else "Ctrl+z"
+		if displayed.begins_with("pet_"):shortcut=PetHelp.ENTRIES[int(displayed.trim_prefix("pet_"))].shortcut
 		var baseline: int=(lines.size()+2)*12
 		theme.default_font.draw_string(get_canvas_item(),Vector2(8,baseline),"Hotkey: ",HORIZONTAL_ALIGNMENT_LEFT,-1,12,palette[7])
 		theme.default_font.draw_string(get_canvas_item(),Vector2(72,baseline),shortcut,HORIZONTAL_ALIGNMENT_LEFT,-1,12,palette[10])

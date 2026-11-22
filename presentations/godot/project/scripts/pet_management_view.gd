@@ -1,6 +1,6 @@
 extends "res://scripts/residents_view.gd"
 # Native trainer/knowledge pane geometry: protected094804 and093702.
-# These components remain staged until their complete roster route is qualified.
+# Shared by the public Pets/Livestock trainer and knowledge routes.
 signal tab_requested(index: int)
 const GENERIC_LABELS={C.PetTrainerMode.Any:"Any trainer",C.PetTrainerMode.Unassigned:"Any unassigned trainer",C.PetTrainerMode.None:"None"}
 var displayed: Array=[]

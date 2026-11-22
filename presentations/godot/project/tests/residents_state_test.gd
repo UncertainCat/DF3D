@@ -118,8 +118,6 @@ func roster_tab_input() -> void:
 	var view:=View.new();view.state=state;view.search=Control.new();view.add_child(view.search);root.add_child(view)
 	var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
 	click.position=Vector2(140,view.list_top()-48);view._gui_input(click)
-	check(state.tab==0,"Unqualified sibling tabs retain their public gate")
-	view.creature_tabs_enabled=true;view._gui_input(click)
 	check(state.tab==1 and service.calls[state.ticket].request.tab==1,"Pets tab dispatches its native roster query")
 	var specs:=view.sort_specs()
 	check(specs.size()==5 and specs[4].sort==C.CreatureListSort.Slaughterability and specs[4].x==92,"Pets header targets native Slaughterability rather than Residents stress")

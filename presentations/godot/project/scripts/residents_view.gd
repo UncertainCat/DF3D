@@ -19,7 +19,6 @@ const SORT_X=[7,17,26,46,82]
 const SORT_WIDTH=[10,9,10,35,4]
 const SORT_LABELS=["Name","Cat","Prof","",""]
 var state
-var creature_tabs_enabled:=false # Enable after complete sibling workflow acceptance.
 var search
 var colors: Array[Color]=[]
 var wide_tabs:=false
@@ -223,7 +222,7 @@ func _gui_input(event: InputEvent) -> void:
 			accept_event();return
 		var creature_tab:=creature_tab_at(event.position)
 		if creature_tab>=0:
-			if creature_tabs_enabled:state.select_tab(creature_tab)
+			state.select_tab(creature_tab)
 			accept_event();return
 		if state.activity_open():
 			if activity_close_rect().has_point(event.position):state.close_activity()

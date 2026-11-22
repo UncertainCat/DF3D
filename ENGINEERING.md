@@ -12823,7 +12823,8 @@ used. Both caption groups contribute to the observed revision and shared text bu
 The model and Godot dictionaries preserve the groups. The staged view draws trainer
 status below activity and ownership text/names in their separate native column.
 Trainer text uses native14196e0's24-column ellipsis rule, selected by372433/37244e;
-empty placeholders do not move the visible caption. Public sibling tabs remain gated.
+empty placeholders do not move the visible caption. Public workflow acceptance
+is recorded below.
 
 Protected131547 on2026-11-22 compares both groups with native widgets after
 Any, Unassigned, Individual, Any and None trainer selections. The individual
@@ -12847,7 +12848,7 @@ row-background and sort-direction mapping. The three recorded sibling headers
 match exactly. Sibling cursor rows use BUTTON_RECTANGLE_SELECTED and the selected
 picture frame. Other activity-detail buttons use the additive target described
 below.
-Their full rendered workflows remain unqualified; all sibling tabs remain gated.
+These captures establish roster fidelity; the public workflow qualification is below.
 
 Protected133629 also records all six pet hover messages and Ctrl+t/w/h/e/b/g
 shortcuts. main.current_hover and last_displayed_hover_inst are247/249/250/251/
@@ -12903,7 +12904,7 @@ source unchanged; wire results cover17 Pets,9 Other,55 Dead, four pet edit
 families, one trainer case and45 knowledge rows. Wire and render stderr are clean,
 all19 core checks pass, and Residents headless input passes. Graphics are serial
 at30FPS, GPU samples45–46C. This qualifies staged Other description data, rendering
-and selection behavior; full public sibling-tab navigation remains gated.
+and selection behavior; public sibling-tab navigation is qualified below.
 
 The trainer and training-knowledge panes use installed BUTTON_RECTANGLE columns
 0/2/1 for left/fill/right, as observed in native094804/093702. These rows repeat
@@ -12989,17 +12990,17 @@ truncated row text.
 The staged roster view maps Pets to the native Slaughterability header and omits
 stress from Other/Dead; Dead's activity header and text use the column freed by
 absent navigation controls. Shared tab hit-testing retires reads through the
-roster owner and is reused by the trainer/knowledge panes. Public sibling input
-remains gated by creature_tabs_enabled until complete workflow acceptance.
+roster owner and is reused by the trainer/knowledge panes. All four creature tabs
+are public through the Citizens HUD route; there is no sibling-tab override.
 Pet row buttons map only DF-supplied controls/values to installed artwork and
 native column positions. Overall Training opens the knowledge pane; trainer
 buttons open the picker, and other buttons submit typed revision-checked edits.
 Native pet buttons extending past the frame receive explicit outside-frame input
 only in their visible hitboxes. Headless input checks cover that item Adoption
 path, Overall Training, each tab's sort header and pending-edit tab exclusion;
-Residents, Work Details and UI composition pass. Complex species artwork and
-full public-route acceptance remain unfinished; grouping, activity details and pet help
-have the scoped qualification above.
+Residents, Work Details and UI composition pass. Complex species artwork remains
+unsupported as described above; grouping, activity details and pet help have
+the scoped qualification above. Public route acceptance follows.
 
 The protected main-scene creature acceptance uses `DF3D_CREATURE_SCENE=1`
 with the existing creature workflow fixture. It opens Citizens through the HUD
@@ -13022,6 +13023,22 @@ Owned DF45512 closes unsaved with source unchanged; graphical work is capped at
 30FPS, sampled50–51C, client stderr empty. All19 core checks pass.
 This qualifies the assembled route with a test-only gate override, not public
 exposure or all sibling actions. Native pane fidelity retains its separate evidence.
+
+Protected145151 on2026-11-22 repeats the complete workflow after removing the
+product gate and test override. Public Citizens -> Pets/Other/Dead navigation,
+trainer selection/readback/restoration, knowledge paging/resize and final owner
+release pass. Other activity opens, resizes at912x552/1600x900/1200x800 and closes;
+its creature-sheet button opens the exact selected unit, and Citizens reopens.
+Dead/Missing pages and resizes with stable membership; absent inspection controls
+remain inert. Five unit pet action families and item Adoption toggle by mouse
+and restore through pointer-context Ctrl shortcuts. Native final flags, trainer
+absence and species cache/template preservation pass independently. Owned
+DF52532 closes unsaved/source unchanged, client stderr is empty, and graphical
+work is serial30FPS (GPU samples51–52C). Protected145032 established the same
+extended workflow before promotion; its composed Dead screenshot was inspected.
+Residents headless input passes with public sibling dispatch. These ordinary
+public workflows do not resolve complex species artwork, the recorded26-pixel
+scrollbar residual, all sort/filter cursor variants or the broader release gate.
 
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching

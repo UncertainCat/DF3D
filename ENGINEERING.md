@@ -12389,8 +12389,8 @@ the full screen stays hidden. These roster checks do not establish full Work Det
 ## Residents native list discovery
 
 The Citizens HUD launcher now opens the owned Residents controller. The old
-read-only resident renderer and its local sorting are removed; Labor retains its
-separate readout until public qualification. Protected080118 on2026-11-22 uses
+read-only resident renderer and its local sorting are removed; Labor uses its
+separately qualified Work Details controller. Protected080118 on2026-11-22 uses
 the actual main scene: initial and Name-sorted IDs match the native list capture,
 ABAN search/clear restores the complete roster, wheel scrolling returns to row0,
 activity descriptions open and close, and1200x800/1600x900/912x552 layouts retain
@@ -12399,9 +12399,25 @@ reopen and Escape release input. The earlier075950 also passes navigation and
 resize. Evidence: `build/stockpile-storage-native-farm-discovery-20261122-080118`.
 Owned DF59284 closes unsaved/source-preserved at30FPS, sampled GPU60–62C;
 viewer stderr is empty. The public roster screenshot was inspected in075950.
-This does not qualify Pets/Livestock, Other or Dead/Missing tabs, all portrait
-variants, or simulation execution of edited production jobs. Those are separate
-coverage limits; the accepted Residents job/artwork effects are recorded below.
+Pets/Livestock, Other and Dead/Missing are currently drawn without input routes
+or providers: these are missing workflows, not merely acceptance gaps. Portrait
+variants and simulation execution of edited production jobs remain coverage
+limits; the accepted Residents job/artwork effects are recorded below.
+
+Protected091034 on2026-11-22 captures all four native creature tabs through
+`DF3D_RESIDENTS_REFERENCE=1 DF3D_CREATURE_TABS_REFERENCE=1` in the protected
+`stockpile_storage_native.ps1 -FarmDiscovery` lane. Native tab selection changes
+while `creatures.current_mode` remains0; that field is not authoritative tab
+state. Capture records per-tab widget trees, screenshots, options and filter
+callbacks. Native exclusion callbacks are Residents3d5df0, Pets3d5cc0,
+Other3d5860 and Dead/Missing3d55e0; the last forwards to3ccc30. All share the
+text-filter wrapper1435b40. The captured340-entry vectors are unfiltered input,
+not visible membership evidence. Pets includes ownership and animal actions;
+Dead/Missing omits recenter/sheet controls. These differences require semantic
+providers and matching presentation, not a renamed Residents list. No sibling
+provider or action is qualified by this diagnostic. Owned DF36636 closes unsaved
+with source unchanged, at30FPS, sampled GPU59–60C. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-091034`.
 
 
 Residents Activity has distinct job-settings and event-description routes.

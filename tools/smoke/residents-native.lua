@@ -62,6 +62,47 @@ local function walk(widget)
 end
 walk(info.creatures)
 assert(#lists>0,'Native Residents unit list missing')
+if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
+ local tabs
+ for _,child in ipairs(dfhack.gui.getWidgetChildren(info.creatures))do
+  if df.widget_tabs:is_instance(child) and child.name=='Tabs' then tabs=child;break end
+ end
+ assert(tabs and #tabs.tab_labels==4,'Native creature tabs missing')
+ local observations={}
+ local function capture(index)
+  lists={};active_list=nil;headers={};filter_box=nil
+  walk(info.creatures)
+  for _,child in ipairs(dfhack.gui.getWidgetChildren(info.creatures))do
+   if df.widget_tabs:is_instance(child) and child.name=='Tabs' then tabs=child;break end
+  end
+  assert(tabs.cur_idx==index,'Creature tab click failed: expected '..index..' tab '..tabs.cur_idx)
+  local name='creature-tab-'..index
+  observations[#observations+1]={tab=index,interface_mode=info.creatures.current_mode,label=dfhack.df2utf(tabs.tab_labels[index]),lists=lists}
+  assert(loadfile(source))(out..'/'..name..'-widgets.json','templates')
+  local f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close()
+  assert(os.rename(out..'/shot.tmp',out..'/shot'))
+  local deadline=dfhack.getTickCount()+30000
+  while true do
+   local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
+   assert(dfhack.getTickCount()<deadline,'Creature tab capture timeout');script.sleep(1,'frames')
+  end
+ end
+ capture(0)
+ for index=1,3 do
+  local x=tabs.rect.x1+2
+  for previous=0,index-1 do x=x+#tabs.tab_labels[previous]+4 end
+  local y=tabs.rect.y1+1;local g=df.global.gps
+  g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  for _=1,3 do script.sleep(1,'frames')end
+  view:render(dfhack.getTickCount());capture(index)
+ end
+ local f=assert(io.open(out..'/creature-tabs-reference.json','w'));f:write(json.encode(observations));f:close()
+ records[#records+1]={name='creature-tabs-native-discovery',modes=#observations}
+ return
+end
 if os.getenv('DF3D_RESIDENTS_ASSIGNMENTS')=='1' then
  local samples={}
  local occupation_codes={[0]=387,[1]=388,[2]=391,[3]=389,[4]=390,[5]=392,[7]=393,[8]=393,[9]=393,[10]=393}

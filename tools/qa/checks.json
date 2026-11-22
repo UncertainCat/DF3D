@@ -4160,6 +4160,411 @@
   ],
   "exclusions": [
     {
+      "path": "presentations/godot/project/tests/barrier_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/barrier_variants_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/barrier_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/building_links_art_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_BUILDING_LINKS_ART. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/building_links_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_BUILDING_LINKS_WIRE. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/cage_glass_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_CAGE_CAPTURE, DF3D_DF_PATH. Reads or writes cage-glass-wire-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/cage_occupants_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_CAGE_CAPTURE, DF3D_DF_PATH. Reads or writes cage-wire-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/cage_picker_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_CAGE_CAPTURE, DF3D_DF_PATH. Reads or writes cage-wire-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/cage_room_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_CAGE_CAPTURE, DF3D_DF_PATH. Reads or writes cage-wire-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/cage_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/cage_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/chain_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_CAGE_CAPTURE, DF3D_CHAIN_CAPTURE, DF3D_DF_PATH. Reads or writes chain-wire-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/chain_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/chain_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/depot_goods_container_view.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_DEPOT_CAPTURE_DIRECTORY, DF3D_DEPOT_EXPANSION_DIRECTORY, DF3D_DF_PATH. Reads or writes depot-goods-wire-container-page-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/depot_goods_hover_view.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_DEPOT_CAPTURE_CASE, DF3D_DEPOT_CAPTURE_DIRECTORY, DF3D_DEPOT_DATA_DIRECTORY, DF3D_DF_PATH. Reads or writes depot-goods-native.json, result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/depot_goods_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/depot_goods_value_view.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_DEPOT_CAPTURE_DIRECTORY, DF3D_DEPOT_EXPANSION_DIRECTORY, DF3D_DF_PATH. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/depot_goods_view_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_DEPOT_CAPTURE_CASE, DF3D_DEPOT_CAPTURE_DIRECTORY, DF3D_DF_PATH. Reads or writes result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/depot_goods_view_interaction.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_DEPOT_CAPTURE_CASE, DF3D_DEPOT_CAPTURE_DIRECTORY, DF3D_DEPOT_EXPANSION_DIRECTORY, DF3D_DF_PATH. Reads or writes result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/depot_goods_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/depot_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/depot_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/display_parent_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_CARRIER_DIRECTORY, DF3D_DF_PATH, DF3D_DISPLAY_CAPTURE_DIRECTORY. Reads or writes display-wire-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/display_picker_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_CARRIER_DIRECTORY, DF3D_DF_PATH, DF3D_DISPLAY_CAPTURE_DIRECTORY. Reads or writes display-wire-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/display_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_DISPLAY_SCENE. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/display_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/door_controls_render_test.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_DF_PATH, DF3D_DOOR_OUTPUT, DF3D_DOOR_REFERENCE. Reads or writes result.json, workshop-native.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/door_controls_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_DOOR_CONTROL_RUNTIME. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/door_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_DOOR_HEADER_RUNTIME. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/floodgate_map_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_FLOODGATE_MAP. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/floodgate_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_FLOODGATE_RUNTIME. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/floodgate_scroll_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_FLOODGATE_SCROLL_VIEWER. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/furniture_map_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_FURNITURE_MAP. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/furniture_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_FURNITURE_RUNTIME. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/lever_map_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_LEVER_MAP. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/lever_panel_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_LEVER_PANEL. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/lever_prompt_art_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_LEVER_PROMPT_ART. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/lever_tasks_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_DF_PATH, DF3D_LEVER_REFERENCE. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/lever_warning_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/lever_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_LEVER_WIRE. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/machinery_contract_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/machinery_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/machinery_variants_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/machinery_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/pending_building_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_PENDING_SCENE. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/pending_building_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_PENDING_RUNTIME. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/pending_component_selection_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_PENDING_COMPONENT_SELECTION. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/pending_contents_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_PENDING_CONTENTS_RUNTIME. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/pending_header_art_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_PENDING_HEADER_ART. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/pending_layout_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_PENDING_LAYOUT. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/pending_map_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_PENDING_MAP. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/pending_progress_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_PENDING_PROGRESS_RUNTIME. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/pending_selection_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_PENDING_SELECTION. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/pressure_plate_map_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_PRESSURE_PLATE_MAP. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/pressure_plate_panel_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_PRESSURE_PLATE_PANEL. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/pressure_plate_tasks_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_DF_PATH, DF3D_PLATE_REFERENCE. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/pressure_plate_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_PRESSURE_PLATE_WIRE. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/siege_building_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/siege_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_CAGE_CAPTURE, DF3D_DF_PATH, DF3D_SIEGE_CAPTURE. Reads or writes siege-building-wire-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/siege_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_SIEGE_SCENE. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/simple_building_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/special_building_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_SPECIAL_BUILDINGS_SCENE. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/special_building_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/tile_selection_vermin_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_TILE_SELECTION_VERMIN. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_action_view_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_DEPOT_CAPTURE_DIRECTORY, DF3D_DF_PATH. Reads or writes trade-buttons-extra-cases.json, trade-buttons-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_catalog_view_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_DEPOT_CAPTURE_DIRECTORY, DF3D_DF_PATH. Reads or writes trade-catalog-wire-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_catalog_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_counter_composite_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_COUNTER_ACCEPTED_NATIVE, DF3D_DEPOT_CAPTURE_DIRECTORY, DF3D_DF_PATH. Reads or writes trade-exchange-wire-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_counter_view_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_COUNTER_ART, DF3D_COUNTER_GOODS_ROWS, DF3D_COUNTER_LONG, DF3D_COUNTER_NATIVE, DF3D_DEPOT_CAPTURE_DIRECTORY, DF3D_DF_PATH. Reads or writes depot-trade-native.json, trade-counter-page.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_exchange_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_DF_PATH. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_footer_view_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_DEPOT_CAPTURE_DIRECTORY, DF3D_DF_PATH. Reads or writes depot-trade-native.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_goods_art_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_goods_view_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_CARRIER_DIRECTORY, DF3D_DEPOT_CAPTURE_DIRECTORY, DF3D_DF_PATH. Reads or writes trade-goods-art-wire-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_header_view_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_DEPOT_CAPTURE_DIRECTORY, DF3D_DF_PATH. Reads or writes depot-trade-native.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_main_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_TRADE_MAIN_SCENE. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_session_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_transfer_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1 through DF3D_DF_PATH. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/trade_view_capture.gd",
+      "status": "manual",
+      "reason": "Manual rendered reference/interaction harness. Requires DF3D_DEPOT_CAPTURE_DIRECTORY, DF3D_DF_PATH, DF3D_TRADE_AFTER_REFERENCE. Reads or writes trade-transfer-wire-result.json. Supply the matching protected native capture and installed assets; run serially at30FPS with GPU monitoring. Scratch evidence is not a portable offline fixture."
+    },
+    {
+      "path": "presentations/godot/project/tests/trap_sheet_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
+      "path": "presentations/godot/project/tests/well_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."
+    },
+    {
       "path": "presentations/godot/project/tests/residents_scene_live.gd",
       "status": "manual",
       "reason": "Protected main-scene acceptance through stockpile_storage_native.ps1 with DF3D_RESIDENTS_PUBLIC_SCENE=1; owns a disposable native session and validates native observations."

@@ -12842,6 +12842,20 @@ The optional DF3D_PET_TRAINER_HEADING_REFERENCE fixture contains id/header and m
 be derived from native capture with explicit encoding, never reconstructed from
 truncated row text.
 
+The staged roster view maps Pets to the native Slaughterability header and omits
+stress from Other/Dead; Dead's activity header and text use the column freed by
+absent navigation controls. Shared tab hit-testing retires reads through the
+roster owner and is reused by the trainer/knowledge panes. Public sibling input
+remains gated by creature_tabs_enabled until complete workflow acceptance.
+Pet row buttons map only DF-supplied controls/values to installed artwork and
+native column positions. Overall Training opens the knowledge pane; trainer
+buttons open the picker, and other buttons submit typed revision-checked edits.
+Native pet buttons extending past the frame receive explicit outside-frame input
+only in their visible hitboxes. Headless input checks cover that item Adoption
+path, Overall Training, each tab's sort header and pending-edit tab exclusion;
+Residents, Work Details and UI composition pass. Ownership/trainer-status grouping,
+pet help, species artwork and rendered/full-route acceptance remain unfinished.
+
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching
 item-name renderer1423fe0. Native142b45a..142b4c5 captures raw item.pos for Recenter;

@@ -60,11 +60,8 @@ func _gui_input(event: InputEvent) -> void:
 	if not caption.is_empty():
 		if caption!="Creatures":information_requested.emit(caption)
 		accept_event();return
-	var x:=8
-	for index in ["Residents","Pets/Livestock","Other","Dead/Missing"].size():
-		var width: int=(["Residents","Pets/Livestock","Other","Dead/Missing"][index].length()+4)*8
-		if Rect2(x,list_top()-60,width,24).has_point(event.position):tab_requested.emit(index);accept_event();return
-		x+=width
+	var creature_tab:=creature_tab_at(event.position)
+	if creature_tab>=0:tab_requested.emit(creature_tab);accept_event();return
 	if is_trainers() and state.phase==state.Phase.Ready:
 		for entry: Dictionary in displayed:
 			if not Rect2(16,entry.y,size.x-56,step_at(entry.index)).has_point(event.position):continue

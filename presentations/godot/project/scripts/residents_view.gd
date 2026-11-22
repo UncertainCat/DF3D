@@ -12,11 +12,13 @@ const NameColor=preload("res://scripts/native_name_color.gd")
 const Indicators=preload("res://scripts/location_staff_indicators.gd")
 const InfoTabs=preload("res://scripts/work_order_info_tabs.gd")
 const RosterState=preload("res://scripts/residents_state.gd")
+const PetRow=preload("res://scripts/pet_row_view.gd")
 const SORTS=[C.ResidentsSort.Name,C.ResidentsSort.Category,C.ResidentsSort.Profession,C.ResidentsSort.Activity,C.ResidentsSort.Stress]
 const SORT_X=[7,17,26,46,82]
 const SORT_WIDTH=[10,9,10,35,4]
 const SORT_LABELS=["Name","Cat","Prof","",""]
 var state
+var creature_tabs_enabled:=false # Enable after complete sibling workflow acceptance.
 var search
 var colors: Array[Color]=[]
 var wide_tabs:=false
@@ -56,6 +58,31 @@ func list_top() -> int:return 96 if wide_tabs else 120
 func activity_rows() -> int:return maxi(0,int((size.y-list_top()-60)/12))
 func activity_width() -> int:return clampi(int(size.x/8)-8,1,1024)
 func activity_close_rect() -> Rect2:return Rect2(size.x-208,size.y-72,160,36)
+func sort_specs() -> Array:
+	var result: Array=[]
+	for index in SORTS.size():
+		if index==4 and state.tab in [2,3]:continue
+		var sort_id: int=C.CreatureListSort.Slaughterability if index==4 and state.tab==1 else SORTS[index]
+		var column: int=92 if index==4 and state.tab==1 else 38 if index==3 and state.tab==3 else SORT_X[index]
+		result.append({"sort":sort_id,"x":column,"width":SORT_WIDTH[index],"label":SORT_LABELS[index]})
+	return result
+func creature_tab_at(point: Vector2) -> int:
+	var x:=8
+	for index in ["Residents","Pets/Livestock","Other","Dead/Missing"].size():
+		var width: int=(["Residents","Pets/Livestock","Other","Dead/Missing"][index].length()+4)*8
+		if Rect2(x,list_top()-60,width,24).has_point(point):return index
+		x+=width
+	return -1
+func activate_pet_control(point: Vector2) -> bool:
+	if state.tab!=1 or state.phase!=state.Phase.Ready:return false
+	for index in page_rows:
+		var row: Dictionary=state.row_at(state.first+index)
+		for control: Dictionary in PetRow.controls(row,list_top()+index*36):
+			if not control.rect.has_point(point):continue
+			if control.action==C.PetAction.Trainer:trainer_requested.emit(RosterState.row_key(row))
+			else:state.pet_action(RosterState.row_key(row),control.action)
+			return true
+	return false
 func layout(view: Vector2) -> void:
 	wide_tabs=floori(view.x/8)>=155;frame_rows=maxi(13,floori(view.y/12)-7)
 	position=Vector2(32,48+fposmod(view.y,12)*0.5);size=Vector2((floori(view.x/8)-32)*8,frame_rows*12)
@@ -103,6 +130,13 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		pointer_known=true;pointer_position=get_global_transform_with_canvas().affine_inverse()*event.position
 	if not allowed() or state==null:return
+	# Native Pets table can extend beyond the frame at narrow widths. Godot's
+	# Control bounds do not deliver GUI events there, so claim only those visible
+	# action hitboxes explicitly; ordinary inside-frame clicks use _gui_input.
+	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
+		var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position
+		if not Rect2(Vector2.ZERO,size).has_point(point) and activate_pet_control(point):
+			get_viewport().set_input_as_handled();return
 	if event is InputEventKey and event.pressed:
 		if event.keycode==KEY_ESCAPE:cancelled.emit();get_viewport().set_input_as_handled()
 		elif search.has_focus():search.feed_key(event);get_viewport().set_input_as_handled()
@@ -163,9 +197,17 @@ func _gui_input(event: InputEvent) -> void:
 		if not caption.is_empty():
 			if caption!="Creatures":information_requested.emit(caption)
 			accept_event();return
+		var creature_tab:=creature_tab_at(event.position)
+		if creature_tab>=0:
+			if creature_tabs_enabled:state.select_tab(creature_tab)
+			accept_event();return
 		if state.activity_open():
 			if activity_close_rect().has_point(event.position):state.close_activity()
 			accept_event();return
+		if state.tab==1 and activity_close_rect().has_point(event.position):
+			if state.phase==state.Phase.Ready:knowledge_requested.emit()
+			accept_event();return
+		if activate_pet_control(event.position):accept_event();return
 		for index in page_rows:
 			var row: Dictionary=state.row_at(state.first+index)
 			if not row.is_empty() and state.phase==state.Phase.Ready and row.has("position") and Rect2(304,list_top()+index*36,24,36).has_point(event.position):
@@ -178,8 +220,8 @@ func _gui_input(event: InputEvent) -> void:
 				state.activity_capacity=activity_rows();state.show_activity(RosterState.row_key(row),activity_width());accept_event();return
 			if not row.is_empty() and row.has("specialization") and Rect2(696,list_top()+index*36,32,36).has_point(event.position):
 				state.specialize(RosterState.row_key(row));accept_event();return
-		for index in SORTS.size():
-			if Rect2(SORT_X[index]*8,list_top()-24,SORT_WIDTH[index]*8,12).has_point(event.position):state.select_sort(SORTS[index]);break
+		for spec: Dictionary in sort_specs():
+			if Rect2(spec.x*8,list_top()-24,spec.width*8,12).has_point(event.position):state.select_sort(spec.sort);break
 		accept_event()
 func text(value: String,point: Vector2,color: int=15,width: float=-1) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,width,12,colors[color] if colors.size()>color else Color.WHITE)
@@ -224,18 +266,22 @@ func _draw() -> void:
 	if state==null:return
 	if state.activity_open():
 		draw_activity();return
-	for index in SORTS.size():
-		var suffix: String="ACTIVE" if state.sort==SORTS[index] else "INACTIVE"
-		var direction: String="DESCENDING" if state.directions[SORTS[index]] else "ASCENDING"
+	if state.tab==1:
+		var training:=activity_close_rect()
+		patch("HORIZONTAL_OPTION_CONFIRM",Vector2i(int(training.position.x/8),int(training.position.y/12)),20,3)
+		text("Overall Training",training.position+Vector2(16,24))
+	for spec: Dictionary in sort_specs():
+		var suffix: String="ACTIVE" if state.sort==spec.sort else "INACTIVE"
+		var direction: String="DESCENDING" if state.directions[spec.sort] else "ASCENDING"
 		for cell in 4:
 			var arrow:=strip("SORT_"+direction+"_"+suffix,cell)
-			if arrow!=null:draw_texture_rect(arrow,Rect2((SORT_X[index]+cell)*8,list_top()-24,8,12),false)
-		if not SORT_LABELS[index].is_empty():
-			var width: int=SORT_WIDTH[index]-4
+			if arrow!=null:draw_texture_rect(arrow,Rect2((spec.x+cell)*8,list_top()-24,8,12),false)
+		if not spec.label.is_empty():
+			var width: int=spec.width-4
 			for cell in width:
 				var background:=strip("SORT_TEXT_"+suffix,0 if cell==0 else 2 if cell==width-1 else 1)
-				if background!=null:draw_texture_rect(background,Rect2((SORT_X[index]+4+cell)*8,list_top()-24,8,12),false)
-			text(SORT_LABELS[index],Vector2((SORT_X[index]+5)*8,list_top()-12),0 if suffix=="ACTIVE" else 7)
+				if background!=null:draw_texture_rect(background,Rect2((spec.x+4+cell)*8,list_top()-24,8,12),false)
+			text(spec.label,Vector2((spec.x+5)*8,list_top()-12),0 if suffix=="ACTIVE" else 7)
 	for index in page_rows:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty():continue
@@ -244,6 +290,10 @@ func _draw() -> void:
 		patch("",Vector2i(2,int(y/12)),5,3,picture.texture(false))
 		var portrait: Texture2D=portraits.get(RosterState.row_key(row),{}).get("texture")
 		if portrait!=null:draw_texture_rect(portrait,Rect2(18,y+2,32,32),false)
+		if state.tab==1:
+			for control: Dictionary in PetRow.controls(row,y):
+				var texture: Texture2D=art.texture(control.token)
+				if texture!=null:draw_texture_rect(texture,control.rect,false)
 		# Native142ed10 constructs the 3x3 unit-sheet button with this row's ID.
 		var details: Texture2D=art.texture("STOCKS_VIEW_ITEM")
 		if details!=null and row.get("can_inspect",true):draw_texture_rect(details,Rect2(336,y,24,36),false)
@@ -259,7 +309,7 @@ func _draw() -> void:
 			text(row.first_line,Vector2(56,y+24-name_shift),int(ink[0])+8*int(ink[2]),240)
 			text(row.second_line,Vector2(56,y+36-name_shift),int(ink[0])+8*int(ink[2]),240)
 		if not warning.is_empty():text(warning.text,Vector2(64,y+36),int(warning.foreground)+8*int(warning.bright))
-		text(row.activity.caption,Vector2(368,y+24),int(row.activity.fg)+8*int(row.activity.bright),280)
+		text(row.activity.caption,Vector2(304 if state.tab==3 else 368,y+24),int(row.activity.fg)+8*int(row.activity.bright),280)
 		var indicator_x:=736
 		for entry: Dictionary in row.get("assignments",[]):
 			var slot:=Indicators.art_for(entry)

@@ -12666,14 +12666,15 @@ closes unsaved/source-preserved at30FPS, sampled60C; bridge build and19 core
 checks pass. Enable `DF3D_CREATURE_UNIT_ROWS=1` in the creature-tab lane.
 Evidence: `build/stockpile-storage-native-farm-discovery-20261122-101755`.
 
-`creature_item_row_native.h` supplies PET item rows separately from unit rows.
+`creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching
 item-name renderer1423fe0. Native142b45a..142b4c5 captures raw item.pos for Recenter;
 the provider preserves it, including invalid coordinates for contained items.
 The holder-resolving position used by item Follow is not this row's behavior.
 The PET activity branch supplies native literal `Tame (Small)` and palette2/0/1.
+VERMIN uses native `Wild Animal (Small)` and palette2/0/0.
 
-PET display color c7b200 delegates to7022c0, which only exposes a drawing-global
+PET and VERMIN display color c7b200 delegates to7022c0, which only exposes a drawing-global
 writer. The provider does not call it: pinned raw selection is projected into an
 owned palette value, including caste HAS_COLOR override, equal foreground/
 background brightening and invalid-race fallback. This is a bounded projection
@@ -12691,6 +12692,16 @@ checks pass. Enable `DF3D_CREATURE_ITEM_ROWS=1`. Viewport positioning is control
 oracle setup; scrolling, portraits, caste-color variants and the public view
 are not qualified by this run. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-102528`.
+
+Protected102844 on2026-11-22 additionally verifies a controlled live damselfly
+VERMIN admitted by the native Other predicate: caption cells/palette, activity,
+raw Recenter coordinates and item-sheet control match. The ordinary PET row
+also passes. Enable `DF3D_CREATURE_VERMIN_FIXTURE=1` for this disposable fixture;
+the item remains allocated until owned unsaved exit because native widgets
+retain pointers. This is controlled coverage, not a naturally occurring Other
+item. DF58900 exits unsaved and the source save is unchanged. Bridge build and
+all19 core checks pass. Public tabs and item portraits remain unqualified.
+Evidence: `build/stockpile-storage-native-farm-discovery-20261122-102844`.
 
 
 Residents Activity has distinct job-settings and event-description routes.

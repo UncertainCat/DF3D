@@ -2317,7 +2317,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
           int32_t id=-1;const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
           if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
-          const auto row=df3d_residents::itemPetRow(df::item::find(id));if(!row)return CR_FAILURE;
+          const auto row=df3d_residents::creatureItemRow(df::item::find(id));if(!row)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["id"]=id;result["caption"]=DF2UTF(row->caption);
           result["activity"]=DF2UTF(row->activity);for(auto value:row->activityColor)result["activity_color"].append(value);
           for(auto value:row->color)result["color"].append(value);

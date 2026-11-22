@@ -1,5 +1,5 @@
 -- Controlled viewport positioning; native rendering remains the row oracle.
-local out,view,list=...
+local out,view,list,tab=...
 local script=require('gui.script');local json=require('json');local found=false
 local function contains_item(widget)
  if df.widget_item_name:is_instance(widget) and widget.it then return true end
@@ -46,4 +46,4 @@ local function collect(widget)
  if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
 end
 collect(list);assert(#samples>0,'Item pet not visible')
-local f=assert(io.open(out..'/creature-item-rows.json','w'));f:write(json.encode(samples));f:close()
+local f=assert(io.open(out..(tab==2 and '/creature-other-item-rows.json' or '/creature-item-rows.json'),'w'));f:write(json.encode(samples));f:close()

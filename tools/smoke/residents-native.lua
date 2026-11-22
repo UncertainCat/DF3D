@@ -11,6 +11,25 @@ end
 local activity_provider
 local residents_hover_finish
 local training_fixture_finish
+if os.getenv('DF3D_CREATURE_VERMIN_FIXTURE')=='1' then
+ local race,caste
+ for race_id,raw in ipairs(df.global.world.raws.creatures.all)do
+  if raw.flags.VERMIN_GROUNDER then
+   for caste_id,value in ipairs(raw.caste)do if not value.flags.PET and not value.flags.PET_EXOTIC then race=race_id;caste=caste_id;break end end
+  end
+  if race then break end
+ end
+ assert(race,'Controlled Other fixture requires a non-pet vermin raw')
+ local extra=df.item_verminst:new();extra.id=df.global.item_next_id;df.global.item_next_id=extra.id+1
+ extra.race=race;extra.caste=caste;extra.pos:assign(df.global.world.units.active[0].pos)
+ df.global.world.items.all:insert('#',extra);df.global.world.items.other.ANY_CRITTER:insert('#',extra);df.global.world.items.other.VERMIN:insert('#',extra)
+ assert(extra:isLiveAnimal(),'Controlled vermin is not a live animal')
+ local text,rc=dfhack.run_command_silent('df3d','creature-list-probe','2','0','0','');assert(rc==0,text)
+ local admitted=false;for _,row in ipairs(json.decode(text).rows)do if row.kind==1 and row.id==extra.id then admitted=true end end
+ assert(admitted,'Native Other predicate rejected controlled vermin')
+ local file=assert(io.open(out..'/creature-vermin-fixture.json','w'));file:write(json.encode({id=extra.id,race=race,caste=caste,raw=df.global.world.raws.creatures.all[race].creature_id,retained_until_unsaved_exit=true}));file:close()
+ -- Native widgets keep pointers: retain this disposable item until owned exit.
+end
 if os.getenv('DF3D_PET_TRAINER_FIXTURE')=='1' then
  local target
  for _,unit in ipairs(df.global.world.units.active)do
@@ -110,9 +129,9 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
    local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','creature-unit-rows-native.lua')
    assert(loadfile(path))(out,active_list,index)
   end
-  if index==1 and os.getenv('DF3D_CREATURE_ITEM_ROWS')=='1' then
+  if (index==1 and os.getenv('DF3D_CREATURE_ITEM_ROWS')=='1') or (index==2 and os.getenv('DF3D_CREATURE_VERMIN_FIXTURE')=='1') then
    local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','creature-item-rows-native.lua')
-   assert(loadfile(path))(out,view,active_list)
+   assert(loadfile(path))(out,view,active_list,index)
   end
   if os.getenv('DF3D_CREATURE_CONTROL_REFERENCE')=='1' and index==1 then
    local controls={}

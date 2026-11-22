@@ -1,15 +1,17 @@
 #pragma once
 #include "building_item_native.h"
 #include "df/item_petst.h"
+#include "df/item_verminst.h"
 #include "df/creature_raw.h"
 #include "df/caste_raw.h"
 #include "df/caste_raw_flags.h"
 
 namespace df3d_residents {
-struct ItemPetRow {std::string caption;std::array<int16_t,3> color;df::coord position;std::string activity;std::array<int16_t,3> activityColor{2,0,1};};
-inline std::optional<ItemPetRow> itemPetRow(df::item* item) {
-    auto* pet=virtual_cast<df::item_petst>(item);
-    if(!pet || !df::global::world)return std::nullopt;
+struct CreatureItemRow {std::string caption;std::array<int16_t,3> color;df::coord position;std::string activity;std::array<int16_t,3> activityColor{2,0,1};};
+inline std::optional<CreatureItemRow> creatureItemRow(df::item* item) {
+    const bool tame=virtual_cast<df::item_petst>(item)!=nullptr;
+    if(!item || (!tame && !virtual_cast<df::item_verminst>(item)) || !df::global::world)return std::nullopt;
+    auto* pet=static_cast<df::item_critter*>(item);
     static const bool supported=[] {
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
         struct Pin {size_t rva,size;uint64_t hash;};
@@ -17,6 +19,7 @@ inline std::optional<ItemPetRow> itemPetRow(df::item* item) {
             {0xc7b200,0x1f,UINT64_C(0x5c74bfc3e8d4ddf4)},
             {0x7022c0,0xe5,UINT64_C(0xb01a72d65e66e9a3)},
             {0x142b746,0x73,UINT64_C(0x66d559baafa821e)},
+            {0x142b7b9,0xa8,UINT64_C(0xd27f833ca79273bb)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -31,11 +34,12 @@ inline std::optional<ItemPetRow> itemPetRow(df::item* item) {
     // Native142b45a..142b4c5 captures raw item.pos, including contained pets.
     // Do not substitute the holder-resolving position used by item-sheet Follow.
     static_assert(offsetof(df::item,pos)==8);
-    ItemPetRow result{*caption,{4,4,1},item->pos};
+    CreatureItemRow result{*caption,{4,4,1},item->pos};
     // PET branch142b751..142b7af supplies this exact native activity caption.
     const auto* base=reinterpret_cast<const char*>(GetModuleHandleW(nullptr));
-    result.activity.assign(base+0x1787218,12);
-    // Native item-name renderer1423fe0 requests setDisplayColor(0). The PET
+    result.activity.assign(base+(tame?0x1787218:0x1787228),tame?12:19);
+    result.activityColor[2]=tame?1:0;
+    // Native item-name renderer1423fe0 requests setDisplayColor(0). PET/VERMIN
     // implementation only exposes a drawing-global writer (c7b200/7022c0),
     // so project its pinned raw-color branches without invoking that writer.
     static_assert(offsetof(df::item_critter,race)==0xb8 && offsetof(df::item_critter,caste)==0xba);

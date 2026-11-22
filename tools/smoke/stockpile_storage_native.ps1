@@ -278,7 +278,7 @@ try {
      if($name -eq 'tasks-wire' -and $env:DF3D_TASKS_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/tasks_scene_live.gd')}
      if($name -eq 'stocks-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/stocks_wire_live.gd')}
      if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/stocks_wire_live.gd')}
-     if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/stocks_scene_live.gd')}
+     if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/stocks_scene_live.gd')}
      if($name -eq 'stone-use-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/stone_use_wire_live.gd')}
      if($name -eq 'stone-use-wire' -and $env:DF3D_STONE_USE_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/stone_use_wire_live.gd')}
      if($name -eq 'kitchen-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/kitchen_wire_live.gd')}

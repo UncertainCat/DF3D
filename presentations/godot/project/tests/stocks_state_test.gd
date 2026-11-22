@@ -67,7 +67,7 @@ func run() -> void:
 	var enter:=InputEventKey.new();enter.pressed=true;enter.keycode=KEY_ENTER;filter.feed_key(enter)
 	check(not filter.has_focus() and filter.value.get_string_from_utf8()=="A","Enter ends typing without clearing query")
 	filter.free()
-	check(Registry.PANEL_SCRIPTS.has("stocks") and not Registry.allows_launcher("Stocks"),"Incomplete Stocks launcher exposed")
+	check(Registry.PANEL_SCRIPTS.has("stocks") and Registry.allows_launcher("Stocks"),"Accepted Stocks launcher unavailable")
 	var service:=Service.new();root.add_child(service)
 	var state:=State.new();state.configure(service);ready(state,service)
 	check(state.phase==State.Phase.Ready and state.category==39,"Initial native category not selected")

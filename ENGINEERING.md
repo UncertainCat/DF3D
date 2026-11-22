@@ -9762,7 +9762,17 @@ unsaved; 30FPS GPU47-48C sampled. Only documented thread/finalize/shutdown-objec
 diagnostics remain. This rendered evidence covers visibility; the other three
 native effects are covered by the separate provider comparison above. The public Stocks route remains hidden.
 
-Stocks has a staged panel owner registered by ID only, without a public launcher.
+Stocks is exposed through its public HUD launcher and owned panel controller.
+Protected080911 on2026-11-22 runs actual HUD launch/reopen, Recenter and View,
+exact item/camera destination, follow on/off, item Back, resize1600x900/912x552/
+1200x800 and Escape. The final Stocks screenshot was inspected. Native checks
+retain the in-play flag baseline; owned DF41676 closes unsaved/source-preserved,
+30FPS, GPU60–62C sampled, viewer stderr empty. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-080911`.
+This qualifies public entry and navigation. Item-family artwork residuals,
+unqualified variants and remaining inspection limitations in their owning
+sections still require integration review; public exposure does not erase them.
+
 Native000234 on2026-11-09 verifies that both Recenter and View close Stocks and
 move the camera without starting follow. View opens the item sheet, and Back
 does not return to Stocks. Both buttons obtain a fresh semantic item position;
@@ -34568,7 +34578,7 @@ game state), the **core** (`schema/` and `worldmodel/`, engine-independent C++),
 creatures, items and animations; pause, unpause and save remain available. The
 toolbar exposes designation and inspection tools, Reports/alerts, construction
 Stockpiles, Zones/Locations, editable Work orders, native Residents and the
-Labor workflow (Work Details, Standing orders, Kitchen and Stone use). Other management screens have staged implementations
+Labor workflow (Work Details, Standing orders, Kitchen and Stone use), plus Stocks. Other management screens have staged implementations
 whose public integration remains unfinished. Specialized building controls are
 qualified individually in their owning sections. Windows x64 packages bundle the viewer and a bridge setup launcher;
 source builds are also supported. Both require the pinned Steam release of Dwarf Fortress.

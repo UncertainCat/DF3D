@@ -1,5 +1,5 @@
 extends Node
-# Staged Stocks owner. Native View/Recenter leave Stocks without a return route.
+# Public Stocks owner. Native View/Recenter leave Stocks without a return route.
 signal focus_requested(tile: Vector3i)
 var ui_host
 var modal_input:=true

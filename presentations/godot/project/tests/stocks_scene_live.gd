@@ -15,7 +15,7 @@ func exercise(expected: Dictionary) -> void:
 	var tile:=Vector3i(int(expected.position[0]),int(expected.position[1]),int(expected.position[2]))
 	var rig=scene.camera_rig
 	for inspect in [false,true]:
-		owner.open_panel()
+		await pointer(scene._fortress_hud.launcher_rect("Stocks").get_center())
 		if not await stocks_ready():return
 		var group: Dictionary=owner.state.groups[0]
 		if not owner.state.expanded(group):
@@ -38,6 +38,15 @@ func exercise(expected: Dictionary) -> void:
 			await pointer(panel.get_global_transform_with_canvas()*Vector2(100,200),MOUSE_BUTTON_RIGHT)
 			check(not panel.visible and scene._ui.host.active==null and not owner.panel.visible,"Back did not close item sheet without returning to Stocks")
 		else:check(scene._ui.host.active==null and not owner.item_owner.panel.visible,"Recenter retained a panel")
+	await pointer(scene._fortress_hud.launcher_rect("Stocks").get_center())
+	if not await stocks_ready():return
+	for dimensions in [Vector2i(1600,900),Vector2i(912,552),Vector2i(1200,800)]:
+		root.size=dimensions
+		for frame in 3:await process_frame
+		if not await stocks_ready():return
+		check(scene._ui.host.active==owner,"Stocks resize lost owner")
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/stocks-main-scene.png")
+	key(KEY_ESCAPE);await process_frame
+	check(scene._ui.host.active==null and not owner.panel.visible,"Stocks Escape retained owner")
 	exercised=true

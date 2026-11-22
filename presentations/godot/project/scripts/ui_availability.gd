@@ -8,7 +8,7 @@ const AVAILABLE = [
 
 # The same registry gates routes and constructs known implementations. Staged
 # routes below remain testable without promoting their unfinished launchers.
-const PANEL_ROUTES = {"Build / construction":"construction", "Stockpiles / zones":"areas", "Stockpiles":"areas", "Zones":"areas", "Residents":"residents", "Work Details":"work_details", "Work orders":"workshop", "Reports":"reports"}
+const PANEL_ROUTES = {"Stocks":"stocks", "Build / construction":"construction", "Stockpiles / zones":"areas", "Stockpiles":"areas", "Zones":"areas", "Residents":"residents", "Work Details":"work_details", "Work orders":"workshop", "Reports":"reports"}
 const PANEL_SCRIPTS = {"pressure_plate":"res://scripts/pressure_plate_panel.gd", "justice":"res://scripts/justice_panel.gd", "objects":"res://scripts/objects_panel.gd", "nobles":"res://scripts/nobles_panel.gd", "places":"res://scripts/places_panel.gd", "tasks":"res://scripts/tasks_panel.gd", "stocks":"res://scripts/stocks_panel.gd", "standing_orders":"res://scripts/standing_orders_panel.gd", "work_details":"res://scripts/work_details_panel.gd", "residents":"res://scripts/residents_panel.gd", "construction":"res://scripts/construction.gd", "areas":"res://scripts/areas.gd", "inspector":"res://scripts/context_inspector.gd", "reports":"res://scripts/reports_panel.gd", "alerts":"res://scripts/alert_popup_panel.gd", "farm":"res://scripts/farm_panel.gd", "chest":"res://scripts/chest_panel.gd", "furniture":"res://scripts/furniture_panel.gd", "door":"res://scripts/door_panel.gd", "pending_building":"res://scripts/pending_building_panel.gd", "workshop":"res://scripts/workshop_panel.gd", "lever":"res://scripts/lever_panel.gd"}
 
 # Native ordered world-hover entries from independently owned bridge inputs.

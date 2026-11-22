@@ -14,9 +14,9 @@ func run():
 	for id in ["citizens","work_orders","trade","agreements","notifications","stocks","appointments","kitchen","rough_panels"]:
 		assert(scene._ui.controller(id)==null, "Retired controller has no product factory")
 	assert(not scene._interaction.construction_active, "Rejected routes leave input free")
-	for title in ["Stocks","Petitions","Trade","Tasks","Places","Objects","Justice"]:
+	for title in ["Petitions","Trade","Tasks","Places","Objects","Justice"]:
 		assert(not hud.navigation[title].visible, "Hidden entry: "+title)
-	for title in ["Citizens","Labor","Work orders"]:
+	for title in ["Stocks","Citizens","Labor","Work orders"]:
 		assert(hud.navigation[title].visible, "Accepted entry: "+title)
 	for title in ["Stockpiles / zones"]:
 		assert(not hud.navigation.has(title) or not hud.navigation[title].visible, "Unpromoted controller remains hidden from HUD")

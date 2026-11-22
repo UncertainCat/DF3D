@@ -5,6 +5,7 @@
 namespace df3d_residents {
 struct PetControls {
     std::vector<std::string> captions;
+    std::vector<std::array<int16_t,3>> captionColors; // foreground, background, bright
     std::vector<int32_t> owners;
     std::vector<int32_t> actions; // 0 slaughter, 1 adoption, 2 gelding, 3 trainer, 4 war, 5 hunting
 };
@@ -46,7 +47,10 @@ inline std::optional<PetControls> petControls(const CreatureReference& entry) {
     const auto visit=[&](auto&& self,df::widget* widget)->void {
         if(!widget || !valid)return;
         if(++count>512){valid=false;return;}
-        if(auto* text=virtual_cast<df::widget_text>(widget))result.captions.push_back(text->str);
+        if(auto* text=virtual_cast<df::widget_text>(widget)) {
+            result.captions.push_back(text->str);
+            result.captionColors.push_back({text->fg,text->bg,int16_t(text->bright)});
+        }
         if(auto* name=virtual_cast<df::widget_unit_name>(widget);name && name->u)result.owners.push_back(name->u->id);
         for(const auto& callback:widget->custom_activated) {
             static_assert(sizeof(callback)==64);

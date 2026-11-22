@@ -12513,8 +12513,7 @@ checks pass. Run with `DF3D_PET_TRAINING_REFERENCE=1` and
 `DF3D_PET_TRAINING_PROVIDER=1` through the existing creature-tab oracle. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-093702`.
 
-Tooltip and row-color
-extraction, typed transport and public sibling views remain unqualified or
+Tooltip extraction, typed transport and public sibling views remain unqualified or
 unimplemented. Paused toggle parity does not qualify subsequent simulation job
 execution or broader animal lifecycle behavior.
 
@@ -12601,6 +12600,19 @@ and19 core checks pass. `DF3D_PET_TRAINER_EDITS=1` extends the trainer-reference
 lane. Public UI, transport, later training jobs and other trainer lifecycle
 variants remain unqualified. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-095736`.
+
+Pet control captions retain native foreground/background/bright values alongside
+their text. `pet-controls-probe` exposes aligned `caption_colors`; the runtime
+reads them from the independently owned native postprocessor output without
+rendering it. Protected100048 on2026-11-22 matches captions/colors, owners and
+action order for all17 pet rows, including the controlled trainable dog and the
+item pet. Compared unit/item flags remain unchanged. This is data parity, not
+acceptance of the future public rendering or every status variant. Native button
+captures additionally retain `which_button` and `tooltip_type`; observed pet
+buttons have tooltip_type=-1, so that field does not supply their hover text.
+Owned DF48132 closes unsaved/source-preserved at30FPS, sampled60C; bridge build
+and19 core checks pass. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-100048`.
 
 
 Residents Activity has distinct job-settings and event-description routes.

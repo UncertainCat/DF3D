@@ -253,9 +253,21 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
      if df.widget_item_portrait:is_instance(widget) and widget.i then sample.rows[#sample.rows+1]={kind=1,id=widget.i.id}end
      if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
     end
-    collect(active_list);sorted[#sorted+1]=sample
+    collect(active_list)
+    if os.getenv('DF3D_PET_SORT_PROVIDER')=='1' then
+     sample.providers={};sample.matching={}
+     for descending=0,1 do
+      local text,rc=dfhack.run_command_silent('df3d','creature-list-probe','1','5',tostring(descending),'');assert(rc==0,text)
+      local rows=json.decode(text).rows;sample.providers[#sample.providers+1]=rows
+      if json.encode(rows)==json.encode(sample.rows)then sample.matching[#sample.matching+1]=descending end
+     end
+    end
+    sorted[#sorted+1]=sample
    end
    local file=assert(io.open(out..'/pet-sort-reference.json','w'));file:write(json.encode(sorted));file:close()
+   if os.getenv('DF3D_PET_SORT_PROVIDER')=='1' then
+    assert(#sorted[1].matching==1 and #sorted[2].matching==1 and sorted[1].matching[1]~=sorted[2].matching[1],'Native pet sort differs')
+   end
   end
   if index==1 and training_fixture_finish then
    local ok,err=pcall(function()

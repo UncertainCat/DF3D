@@ -12630,13 +12630,24 @@ callback targets. Owned DF60784 closes unsaved/source-preserved at30FPS,
 sampled60C; bridge build and19 core checks pass. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-100848`.
 
-The same oracle's optional `DF3D_PET_SORT_REFERENCE=1` clicks Slaughterability
-both ways and records row order plus comparator identity. Callback3d61b0 jumps
-to3d61d0. Its behavior is not a conventional strict comparator (some left-side
-states return true without considering the right-side state), so exposing it
-through an arbitrary standard sorting algorithm is not yet qualified. Native
-sorting execution/order needs investigation before implementing this sort;
-the owned creature-list provider still rejects it.
+The oracle's optional `DF3D_PET_SORT_REFERENCE=1` clicks Slaughterability both
+ways and records row order plus comparator identity. Callback3d61b0 jumps to
+3d61d0. It is not a conventional strict comparator: some left-side states return
+true without considering the right side. Sort5 in `orderedCreatures` therefore
+uses the actual native sorting routines instead of a standard C++ algorithm.
+Native142c4b0 dispatches forward insertion1430780 up to32 entries, then buffered
+merge1430890; reverse iteration uses wrapper142fba0. The adapter supplies an
+owned vector, callback and merge scratch. The reverse wrapper consumes its
+by-value callback copy. No native list, render state or staged sort is borrowed.
+Sort5 is admitted only for Pets/Livestock.
+
+Protected101348 on2026-11-22 matches all17 native rows in both directions; the
+first header click matches forward/descending=false and the second reverse/true.
+Add `DF3D_PET_SORT_PROVIDER=1` to repeat the comparison. This fixture does not
+exercise the above32-entry merge path or sorting after an edit. Owned DF58404
+closes unsaved/source-preserved at30FPS, sampled60C. Bridge build and19 core
+checks pass. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-101348`.
 
 
 Residents Activity has distinct job-settings and event-description routes.

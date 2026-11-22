@@ -20,7 +20,8 @@ class World extends RefCounted:
  func inspect_entity(kind,id):return {"tile":Vector3i(132,70,165)} if kind==1 and id==2905 else {}
 class Inspector extends RefCounted:
  var received:Array=[]
- func open_target(tile,kind,id):received.append([tile,kind,id])
+ var creature_sheet={"tab":"Inventory"}
+ func open_target(tile,kind,id,exact=false):received.append([tile,kind,id,exact])
 class View extends RefCounted:
  var camera_rig
 class Service extends RefCounted:
@@ -82,11 +83,14 @@ func run():
  owner.open_panel();owner.controller.state.unit_id=71;owner.controller.state.rows=[{"id":10,"speaker_id":2905,"position":Vector3i(125,50,165)}]
  assert(not owner.controller.state.inspect_speaker(11))
  assert(owner.controller.state.inspect_speaker(10))
- assert(inspector.received==[[Vector3i(132,70,165),1,2905]] and not owner.controller.state.opened)
+ assert(inspector.received==[[Vector3i(132,70,165),1,2905,true]] and not owner.controller.state.opened)
  assert(rig.position==Vector3(132.5,166.0,70.5))
  owner.open_panel();owner.controller.state.unit_id=71;owner.controller.state.rows=[{"id":11,"speaker_id":2000000000}]
  assert(owner.controller.state.inspect_speaker(11))
  assert(owner.controller.state.opened and host.active==owner and inspector.received.size()==1)
+ composition.open_item_carrier(2,2905)
+ assert(inspector.received.back()==[Vector3i(132,70,165),1,2905,true] and inspector.received.size()==2)
+ assert(inspector.creature_sheet.tab=="Overview")
  owner.close_panel()
  composition.free();rig.free()
  owner.free();assert(host.active==null and not interaction.construction_active)

@@ -162,7 +162,7 @@ func open_item_carrier(kind: int,id: int) -> void:
 	var target: Dictionary=world.inspect_entity(1,id)
 	if not target.is_empty():
 		controller("inspector").creature_sheet.tab="Overview"
-		open_target(target.tile,1,id)
+		controller("inspector").open_target(target.tile,1,id,true)
 
 func controller(id: String):
 	if not Registry.PANEL_SCRIPTS.has(id): return null
@@ -386,7 +386,7 @@ func inspect_report_speaker(unit_id:int) -> void:
 	if controllers.has("reports"): controllers.reports.close_panel()
 	# Native speaker navigation targets the current creature, not report.pos.
 	focus_tile(target.tile)
-	open_target(target.tile,1,unit_id)
+	controller("inspector").open_target(target.tile,1,unit_id,true)
 
 func close_panel() -> void:
 	if tile_selection!=null:

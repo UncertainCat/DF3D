@@ -41435,7 +41435,12 @@ recenters on current creature132,70,165 (different from report125,50,165), and o
 ViewSheets/UNIT/Overview. Back returns to Default, not Reports.
 
 ReportsView now renders these controls from native art. State validates the row's speaker ID; the factory resolves the current entity before
-closing Reports, then focuses it and opens the existing inspector. build/qa/reports-speaker-route passes
+closing Reports, then focuses it and opens the existing inspector with exact-unit
+selection. Item carrier links also use exact-unit selection. Neither route passes
+through map-click tile selection when the creature covers a building; map clicks
+retain native building alternatives. The Reports routing check covers both exact
+handoffs, and the holder routing check covers the overlapping map click.
+build/qa/reports-speaker-route passes
 panel/camera routing with an injected inspector destination. GPU
 build/reports-speaker-gpu verifies secondary/speaker viewport clicks and all six
 control layouts with zero differing pixels over864,112..936,328. Diagnostics

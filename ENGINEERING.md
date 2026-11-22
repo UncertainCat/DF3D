@@ -3589,9 +3589,16 @@ draft; it does not wait for artwork. Parent refresh/detail reads keep controls
 available and are retired when an explicit edit supersedes them. Deferred visible
 detail work is coalesced behind the current ticket, and unavailable icon textures
 are retried after asset preparation. Regression checks cover those read/edit races.
-This acceptance covers the ordinary public single-item workflow. Multiselect,
-reassignment, On display and long-list/resize variants remain
-unqualified or unfinished; public exposure does not establish those claims.
+Protected165913 on2026-11-22 extends the actual main-scene workflow to two
+checkbox selections, amulets38540/39109. Native and public UI both commit the same
+ordered membership on Escape, reopen with both Assigned rows, and remove each item
+independently. The original empty membership/jobs are restored. Seven full488x708
+panels match native exactly, including the two-item parent; that image was inspected.
+Client stderr is empty; owned DF47160 closes unsaved with the source save unchanged,
+serial30FPS and GPU samples52–53C. The fixture retains the ordinary single-item mode.
+All19 root checks pass on the current runtime. This qualifies public multi-item
+assignment/removal, not reassignment between buildings, later hauling/On display,
+or long-list/resize behavior; those remain unqualified.
 
 ### Trap and hive control providers
 

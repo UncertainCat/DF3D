@@ -37,16 +37,21 @@ func exercise(expected: Dictionary) -> void:
 	await pointer(owner.display_view.get_global_transform_with_canvas()*Vector2(128,78))
 	if not await display_ready():return
 	check(owner.display.category==37,"Display category click failed")
-	await pointer(owner.display_view.get_global_transform_with_canvas()*(owner.display_view.item_canvas.position+owner.display_view.checkbox_rect(1).get_center()))
-	check(owner.display.selected.has(int(expected.item_id)),"Display checkbox click failed")
+	var selected_ids: Array=expected.get("item_ids",[expected.item_id]).map(func(value):return int(value))
+	for id in selected_ids:
+		var index: int=owner.display_view.page.find_custom(func(row):return row.get("id",-1)==id)
+		if not check(index>=0,"Display selected item is not visible"):return
+		await pointer(owner.display_view.get_global_transform_with_canvas()*(owner.display_view.item_canvas.position+owner.display_view.checkbox_rect(index).get_center()))
+		check(owner.display.selected.has(id),"Display checkbox click failed")
 	key(KEY_ESCAPE);await drain();await process_frame
 	check(scene._ui.host.active==null and not owner.display_view.visible and not scene._interaction.construction_active,"Display close retained modal selection")
 	if not await open_furniture(expected) or not await display_ready():return
-	check(owner.display.body.size()==1 and owner.display.body[0].id==int(expected.item_id),"Display assignment was not committed")
+	check(owner.display.body.map(func(row):return row.id)==expected.get("assigned_ids",[expected.item_id]).map(func(value):return int(value)),"Display assignment membership/order differs from native")
 	await panel_capture("display-assigned","display-selected-parent")
-	await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.display_check(0).get_center())
-	if not await display_ready():return
-	check(owner.display.body.is_empty(),"Display parent removal failed")
+	for remaining in range(selected_ids.size()-1,-1,-1):
+		await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.display_check(0).get_center())
+		if not await display_ready():return
+		check(owner.display.body.size()==remaining,"Display parent removal affected the wrong number of items")
 	await panel_capture("display-removed","display-removed-parent")
 	key(KEY_ESCAPE);await drain()
 	scene._ui.open_building_holder(53,int(expected.id))

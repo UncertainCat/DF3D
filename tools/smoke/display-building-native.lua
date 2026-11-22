@@ -2,6 +2,8 @@
 local out,view,building,capture,select_map=...
 local gui=require('gui');local json=require('json');local g=df.global.gps
 local main=df.global.game.main_interface;local picker=main.assign_display_item
+local multi=os.getenv('DF3D_DISPLAY_MULTI')=='1'
+assert(not multi or os.getenv('DF3D_DISPLAY_ASSIGNMENT')~='1','Multi public fixture does not use the single-item provider comparison')
 local function values(v)local result={};for _,value in ipairs(v)do result[#result+1]=value end;return result end
 local function click(x,y)
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
@@ -108,8 +110,13 @@ if os.getenv('DF3D_DISPLAY_SELECT')=='1' then
   local refs={};for _,ref in ipairs(candidate.general_refs)do refs[#refs+1]={type=df.general_ref_type[ref:getType()],building=ref:getBuilding() and ref:getBuilding().id or -1}end
   return {displayed=values(building.displayed_items),draft=values(picker.new_display_itid),jobs=jobs,item_flags=tostring(candidate.flags.whole),item_flags2=tostring(candidate.flags2.whole),item_refs=refs}
  end
- result.selection={id=candidate_id,before=snapshot()}
- click(916,166);result.selection.selected=snapshot();capture('display-selected-draft')
+ result.selection={id=candidate_id,ids={candidate_id},before=snapshot()}
+ click(916,166)
+ if multi then
+  local second=assert(picker.current_type_i_list[1]);result.selection.ids[#result.selection.ids+1]=second.id
+  click(916,202);assert(#picker.new_display_itid==2,'Native multi-checkbox draft differs')
+ end
+ result.selection.selected=snapshot();capture('display-selected-draft')
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  assert(not picker.open);result.selection.closed=snapshot();checkpoint()
  -- Escape closes the assignment screen and its parent sheet. Re-select the
@@ -117,12 +124,17 @@ if os.getenv('DF3D_DISPLAY_SELECT')=='1' then
  select_map(building);view:render(dfhack.getTickCount());capture('display-selected-parent')
  if os.getenv('DF3D_DISPLAY_PICKER')=='1' then
   local owned=probe('display-picker-probe',df.item_type.AMULET,'')
-  assert(#owned.body==1 and owned.body[1].id==candidate_id and owned.body[1].resolved and not owned.body[1].on_display and owned.body[1].status=='Assigned' and owned.body[1].color==15,'Display assigned body differs')
+  assert(#owned.body==#result.selection.ids,'Display assigned body count differs')
+  for i,row in ipairs(owned.body)do
+   assert(row.id==building.displayed_items[i-1] and row.resolved and not row.on_display and row.status=='Assigned' and row.color==15,'Display assigned body differs')
+  end
   result.assigned_body=owned.body;checkpoint()
  end
- if #building.displayed_items>#before.displayed then
-  click(880,142);result.selection.removed=snapshot();checkpoint();capture('display-removed-parent')
+ for _=1,#result.selection.ids do
+  assert(#building.displayed_items>#before.displayed,'Display removal lost additional selection')
+  click(880,142)
  end
+ result.selection.removed=snapshot();checkpoint();capture('display-removed-parent')
  assert(#building.displayed_items==#before.displayed,'Display parent removal missed')
  if os.getenv('DF3D_DISPLAY_ASSIGNMENT')=='1' then
   local authority=probe('display-assignment-probe')
@@ -172,7 +184,7 @@ if os.getenv('DF3D_DISPLAY_SCENE')=='1' then
  click(520,202);assert(#building.jobs==0);capture('display-scene-cancelled')
 end
 if os.getenv('DF3D_DISPLAY_WIRE')=='1' then
- local expected={tile={building.centerx,building.centery,building.z},custom_name=dfhack.df2utf(building.name),id=building.id,item_id=result.selection.id,picker=result.picker_comparisons[2].owned}
+ local expected={tile={building.centerx,building.centery,building.z},custom_name=dfhack.df2utf(building.name),id=building.id,item_id=result.selection.id,item_ids=result.selection.ids,assigned_ids=result.selection.closed.displayed,picker=result.picker_comparisons[2].owned}
  local large=os.getenv('DF3D_DISPLAY_LARGE_REPLY')=='1'
  local saved=values(building.displayed_items)
  if large then

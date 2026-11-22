@@ -12493,10 +12493,30 @@ not qualified by this run. Owned DF32712 closes unsaved/source-preserved at30FPS
 sampled60C. Bridge build and19 core checks pass. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-093033`.
 
-Overall Training routes through3d15c0 to36cf90; training choices/actions,
-tooltip and color extraction, typed transport and public sibling views remain
-unqualified or unimplemented. Paused toggle parity does not qualify subsequent
-simulation job execution or broader animal lifecycle behavior.
+Overall Training is a read-only species familiarity view, separate from
+per-animal training choices/actions. `pet_training_native.h` projects the
+fortress entity's already-calculated knowledge levels into an owned race-ID
+vector, excluding zero entries as native36d060 does. It uses native comparator
+a9c7d0 and the same imported qsort as36d0e0: ordering uses singular names,
+while displayed names are plural. Captions/colors come from the pinned native
+presentation branches. Runtime never calls menu-opening36cf90 or borrows its
+static scratch vector. `pet-training-probe` exposes the diagnostic.
+
+Protected093231 captures the native Overall Training view. Protected093702
+compares a provider read taken before opening that native view: all45 race IDs,
+levels, ordered names, captions and colors match. Earlier093545 matches with
+the same comparator but predates switching to native qsort. The fixture has
+General familiarity and Domesticated entries; the three intermediate captions
+are statically sourced but not independently live-qualified. Owned DF50524
+closes unsaved/source-preserved at30FPS, sampled59–60C; bridge build and19 core
+checks pass. Run with `DF3D_PET_TRAINING_REFERENCE=1` and
+`DF3D_PET_TRAINING_PROVIDER=1` through the existing creature-tab oracle. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-093702`.
+
+Per-animal trainer assignment, war/hunting controls, tooltip and row-color
+extraction, typed transport and public sibling views remain unqualified or
+unimplemented. Paused toggle parity does not qualify subsequent simulation job
+execution or broader animal lifecycle behavior.
 
 
 Residents Activity has distinct job-settings and event-description routes.

@@ -193,6 +193,11 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
   for _=1,3 do script.sleep(1,'frames')end
   view:render(dfhack.getTickCount());capture(index);queries(index)
+  if index==1 and os.getenv('DF3D_PET_TRAINING_REFERENCE')=='1' then
+   local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','pet-training-native.lua')
+   assert(loadfile(path))(out,view,info,callbacks)
+   records[#records+1]={name='pet-training-native-discovery'};return
+  end
  end
  local f=assert(io.open(out..'/creature-tabs-reference.json','w'));f:write(json.encode(observations));f:close()
  for _,observed in ipairs(observations)do assert(observed.matches~=false,'Creature list differs on tab '..observed.tab)end

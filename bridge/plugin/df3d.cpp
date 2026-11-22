@@ -149,6 +149,7 @@
 #include "creature_lists_native.h"
 #include "pet_controls_native.h"
 #include "pet_edits_native.h"
+#include "pet_training_native.h"
 #include "residents_activity_native.h"
 #include "tasks_native.h"
 #include "places_native.h"
@@ -3428,6 +3429,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!ids)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["ids"]=Json::Value(Json::arrayValue);
           for(auto id:*ids)result["ids"].append(id);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="pet-training-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          const auto rows=df3d_residents::trainingKnowledge();if(!rows)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["rows"]=Json::Value(Json::arrayValue);
+          for(const auto& row:*rows) {
+            Json::Value value(Json::objectValue);value["race"]=row.race;value["level"]=row.level;
+            value["name"]=DF2UTF(row.name);value["caption"]=DF2UTF(row.caption);
+            value["foreground"]=row.foreground;value["bright"]=row.bright;result["rows"].append(value);
+          }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="pet-edit-probe") {

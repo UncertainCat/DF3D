@@ -12666,6 +12666,32 @@ closes unsaved/source-preserved at30FPS, sampled60C; bridge build and19 core
 checks pass. Enable `DF3D_CREATURE_UNIT_ROWS=1` in the creature-tab lane.
 Evidence: `build/stockpile-storage-native-farm-discovery-20261122-101755`.
 
+`creature_item_row_native.h` supplies PET item rows separately from unit rows.
+Names reuse the native c65450 formatter through `buildingItemCaption`, matching
+item-name renderer1423fe0. Native142b45a..142b4c5 captures raw item.pos for Recenter;
+the provider preserves it, including invalid coordinates for contained items.
+The holder-resolving position used by item Follow is not this row's behavior.
+The PET activity branch supplies native literal `Tame (Small)` and palette2/0/1.
+
+PET display color c7b200 delegates to7022c0, which only exposes a drawing-global
+writer. The provider does not call it: pinned raw selection is projected into an
+owned palette value, including caste HAS_COLOR override, equal foreground/
+background brightening and invalid-race fallback. This is a bounded projection
+of native display rules, not a call to a pure native color API. Other item types
+remain outside this provider's admitted scope.
+
+Protected102528 on2026-11-22 matches item5969's displayed name/palette, activity
+caption/palette, raw Recenter target and item-sheet control. Item flags are
+unchanged. Native names that control `Unit sheet button` despite its actual
+widget_item_sheet_button type. Earlier102137 caught the incorrect effective-
+position helper;102330 caught the oracle's incorrect button-name assumption.
+Both failures closed without saving and preserved the source. Final DF41492
+closes unsaved/source-preserved at30FPS, sampled60C; bridge build and19 core
+checks pass. Enable `DF3D_CREATURE_ITEM_ROWS=1`. Viewport positioning is controlled
+oracle setup; scrolling, portraits, caste-color variants and the public view
+are not qualified by this run. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-102528`.
+
 
 Residents Activity has distinct job-settings and event-description routes.
 The job-details widget1423130 uses native eligibility d15ef0 and opens213420

@@ -152,6 +152,7 @@
 #include "pet_training_native.h"
 #include "pet_trainers_native.h"
 #include "pet_trainer_edits_native.h"
+#include "creature_item_row_native.h"
 #include "residents_activity_native.h"
 #include "tasks_native.h"
 #include "places_native.h"
@@ -2310,6 +2311,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!state)return CR_FAILURE;
           result["only_assigned"]=state->onlyAssigned;result["revision"]=std::to_string(state->revision);
           result["labors"]=Json::Value(Json::arrayValue);for(bool labor:unit->status.labors)result["labors"].append(labor);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="creature-item-row-read") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          const auto row=df3d_residents::itemPetRow(df::item::find(id));if(!row)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["id"]=id;result["caption"]=DF2UTF(row->caption);
+          result["activity"]=DF2UTF(row->activity);for(auto value:row->activityColor)result["activity_color"].append(value);
+          for(auto value:row->color)result["color"].append(value);
+          result["position"].append(row->position.x);result["position"].append(row->position.y);result["position"].append(row->position.z);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="residents-row-read" || parameters[0]=="creature-unit-row-read") {

@@ -110,6 +110,10 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
    local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','creature-unit-rows-native.lua')
    assert(loadfile(path))(out,active_list,index)
   end
+  if index==1 and os.getenv('DF3D_CREATURE_ITEM_ROWS')=='1' then
+   local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','creature-item-rows-native.lua')
+   assert(loadfile(path))(out,view,active_list)
+  end
   if os.getenv('DF3D_CREATURE_CONTROL_REFERENCE')=='1' and index==1 then
    local controls={}
    local function inspect(widget,path,active)

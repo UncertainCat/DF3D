@@ -80,7 +80,7 @@ inline std::shared_ptr<df::widget_container> ownedRow() {
         [destroy](df::widget_container* value){destroy(value,1);});
     return row;
 }
-inline std::optional<ActivityText> activityText(df::unit* unit) {
+inline std::optional<ActivityText> activityText(df::unit* unit,bool includeDetails=true) {
     if(!unit)return std::nullopt;
     auto row=ownedRow();if(!row)return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -89,7 +89,7 @@ inline std::optional<ActivityText> activityText(df::unit* unit) {
     // The list pointer is only captured by deferred button callbacks. Passing
     // null prevents accidental borrowing of a native menu. The actual by-value
     // shared_ptr ABI gives the callee its own reference to consume.
-    ActivityText result;result.key=produce(nullptr,row,unit,true);
+    ActivityText result;result.key=produce(nullptr,row,unit,includeDetails);
     const auto found=row->children_by_name.find("Job");
     if(found==row->children_by_name.end())return std::nullopt;
     const auto* job=static_cast<const df::widget_container*>(found->second.get());

@@ -12649,6 +12649,23 @@ closes unsaved/source-preserved at30FPS, sampled60C. Bridge build and19 core
 checks pass. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-101348`.
 
+`creatureUnitRowText` reuses the owned native identity/color and activity
+providers for Pets/Livestock, Other and Dead/Missing. It omits happiness and
+requests activity text without Details controls. Native tab options establish
+SHOW_GENDER only for Pets; Dead/Missing omits Recenter and Sheet, while Pets and
+Other include both. These distinctions must survive the pending transport/view
+integration. The existing Residents and Work Details provider behavior remains
+unchanged. `creature-unit-row-read` exposes this sibling-row diagnostic.
+
+Protected101755 on2026-11-22 compares13 visible pet unit rows,8 Other rows and13
+Dead/Missing rows. Both name lines match native screen cells, and activity
+caption/palette match the native Job child. Native navigation presence agrees
+with the tab options; happiness remains unobserved. This covers visible unit
+rows, not item pets, all portraits, scrolling or the public view. Owned DF40016
+closes unsaved/source-preserved at30FPS, sampled60C; bridge build and19 core
+checks pass. Enable `DF3D_CREATURE_UNIT_ROWS=1` in the creature-tab lane.
+Evidence: `build/stockpile-storage-native-farm-discovery-20261122-101755`.
+
 
 Residents Activity has distinct job-settings and event-description routes.
 The job-details widget1423130 uses native eligibility d15ef0 and opens213420

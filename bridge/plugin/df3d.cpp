@@ -2312,7 +2312,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["labors"]=Json::Value(Json::arrayValue);for(bool labor:unit->status.labors)result["labors"].append(labor);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
-        if(parameters[0]=="residents-row-read") {
+        if(parameters[0]=="residents-row-read" || parameters[0]=="creature-unit-row-read") {
           if(parameters.size()!=4)return CR_WRONG_USAGE;
           int32_t values[3];
           for(size_t i=0;i<3;++i) {
@@ -2321,7 +2321,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
           }
           if(values[2]<0 || values[2]>1)return CR_WRONG_USAGE;
-          const auto row=df3d_residents::rowText(df::unit::find(values[0]),values[1],values[2]!=0);
+          const auto row=parameters[0]=="residents-row-read"?
+            df3d_residents::rowText(df::unit::find(values[0]),values[1],values[2]!=0):
+            df3d_residents::creatureUnitRowText(df::unit::find(values[0]),values[1],values[2]!=0);
           if(!row)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["id"]=values[0];
           result["combined"]=DF2UTF(row->name.combined);result["name"]=DF2UTF(row->name.name);

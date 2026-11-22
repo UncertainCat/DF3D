@@ -29,4 +29,11 @@ inline std::optional<RowText> rowText(df::unit* unit,int32_t columns,bool showGe
     if(!name || !color || !activity || !happiness)return std::nullopt;
     return RowText{*name,*color,*activity,int8_t(*happiness)};
 }
+// Pets, Other and Dead/Missing use NAME_PROF/CUR_JOB without the Residents
+// happiness indicator or activity-details actions. Gender is a Pets option.
+inline std::optional<RowText> creatureUnitRowText(df::unit* unit,int32_t columns,bool showGender) {
+    auto result=rowText(unit,columns,showGender,false);if(!result)return std::nullopt;
+    const auto activity=activityText(unit,false);if(!activity)return std::nullopt;
+    result->activity=*activity;return result;
+}
 }

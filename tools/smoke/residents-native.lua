@@ -106,6 +106,10 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
    observed.matches=json.encode(observed.provider)==json.encode(observed.rows)
   end
   observations[#observations+1]=observed
+  if index>0 and os.getenv('DF3D_CREATURE_UNIT_ROWS')=='1' then
+   local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','creature-unit-rows-native.lua')
+   assert(loadfile(path))(out,active_list,index)
+  end
   if os.getenv('DF3D_CREATURE_CONTROL_REFERENCE')=='1' and index==1 then
    local controls={}
    local function inspect(widget,path,active)

@@ -8298,6 +8298,23 @@ still separate acceptance gaps, as are typed siege mutations.
 
 ## Management 174 Tasks contract
 
+The Tasks HUD launcher now opens the owned controller. Protected081302 on
+2026-11-22 exercises public launch/reopen, four viewport sizes, scrolling/hover,
+overlay blocking, native-confirmed Suspend/Repeat and restoration, task Details,
+Dolomite material and historical-figure9876 artwork edits, exact worker View,
+building Recenter, Remove worker, unstarted Well Cancel and workshop-job Cancel.
+Native readback confirms the effects and preserves unrelated jobs and workshop.
+The combined oracle accounts explicitly for the earlier confirmed Well removal;
+081129 failed because the workshop-cancel baseline still expected that removed
+job. This correction does not permit unrelated job changes. Final evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-081302`.
+Owned DF52852 closes unsaved/source-preserved at30FPS, GPU58–59C sampled, empty
+viewer stderr. The main Tasks screenshot was inspected. Core19 and Tasks state,
+UI composition and adapter-retirement checks pass. Remaining action branches,
+Details subpage/overflow rendering and producer/epoch coverage below remain
+integration work; this public-route acceptance does not establish those cases.
+
+
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is
 no recording migration that invents Tasks rows from older captures. Rebuild bridge,
 model and viewer together. TasksRead/TasksApply add a separate Tasks domain.
@@ -8452,7 +8469,7 @@ DF38916 closed unsaved, both processes capped30FPS, GPU43C/0% sampled; only
 documented engine diagnostics (passed_with_known_issues). Assigned jobs,
 demolition and started-construction cancellation are not covered by this run.
 Remaining action branches, Details subpage/overflow backgrounds and producer/epoch
-live acceptance are unfinished; public exposure stays gated.
+live acceptance remain unfinished; public-route acceptance is recorded above.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can
@@ -34578,7 +34595,7 @@ game state), the **core** (`schema/` and `worldmodel/`, engine-independent C++),
 creatures, items and animations; pause, unpause and save remain available. The
 toolbar exposes designation and inspection tools, Reports/alerts, construction
 Stockpiles, Zones/Locations, editable Work orders, native Residents and the
-Labor workflow (Work Details, Standing orders, Kitchen and Stone use), plus Stocks. Other management screens have staged implementations
+Labor workflow (Work Details, Standing orders, Kitchen and Stone use), plus Stocks and Tasks. Other management screens have staged implementations
 whose public integration remains unfinished. Specialized building controls are
 qualified individually in their owning sections. Windows x64 packages bundle the viewer and a bridge setup launcher;
 source builds are also supported. Both require the pinned Steam release of Dwarf Fortress.

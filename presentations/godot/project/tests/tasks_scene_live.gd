@@ -8,7 +8,7 @@ func ready_tasks() -> bool:
 	await process_frame
 	return check(scene._ui.host.active==owner and owner.panel.visible,"Tasks lost modal ownership")
 func exercise(expected: Dictionary) -> void:
-	owner=scene._ui.controller("tasks");owner.open_panel()
+	owner=scene._ui.controller("tasks");await pointer(scene._fortress_hud.launcher_rect("Tasks").get_center())
 	if not await ready_tasks():return
 	check(owner.state.rows.size()==expected.rows.size(),"Main Tasks list differs")
 	if OS.get_environment("DF3D_TASKS_LAYOUT")=="1":
@@ -136,7 +136,7 @@ func exercise(expected: Dictionary) -> void:
 	await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(220,owner.panel.list_top()+index*36+18));await drain();await process_frame
 	check(owner.state.phase==owner.state.Phase.Closed and not owner.panel.visible and scene._ui.host.active==null,"Tasks Recenter retained panel ownership")
 	check(world.get_top_z()==tile.z and is_equal_approx(scene.camera_rig.position.x,tile.x+0.5) and is_equal_approx(scene.camera_rig.position.z,tile.y+0.5),"Tasks Recenter focused wrong destination")
-	owner.open_panel();if not await ready_tasks():return
+	await pointer(scene._fortress_hud.launcher_rect("Tasks").get_center());if not await ready_tasks():return
 	var worker: int=owner.state.rows[0].worker_id
 	await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(700,owner.panel.list_top()+18));await drain();await process_frame
 	check(owner.state.phase==owner.state.Phase.Closed and not owner.panel.visible,"Worker View did not close Tasks")
@@ -144,7 +144,7 @@ func exercise(expected: Dictionary) -> void:
 	check(scene._ui.host.active==inspector and inspector.selected.get("kind")==1 and inspector.selected.get("id")==worker,"Worker View failed to activate exact creature")
 	check(worker>=0,"Worker View fixture missing")
 	scene._ui.host.close_active();await process_frame
-	owner.open_panel();if not await ready_tasks():return
+	await pointer(scene._fortress_hud.launcher_rect("Tasks").get_center());if not await ready_tasks():return
 	if OS.get_environment("DF3D_TASKS_DESTRUCTIVE")=="1":
 		for step in [1,2]:
 			var target_id: int=382763 if step==1 else 372039

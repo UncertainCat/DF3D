@@ -128,7 +128,11 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
     local world_jobs={};local holder_jobs={}
     for _,job in require('utils').listpairs(df.global.world.jobs.list)do assert(workshop_cancel.world_jobs[job.id],'Cancel added world job');world_jobs[job.id]=true end
     for _,job in ipairs(holder.jobs)do assert(workshop_cancel.holder_jobs[job.id],'Cancel added workshop job');holder_jobs[job.id]=true end
-    for id in pairs(workshop_cancel.world_jobs)do assert((world_jobs[id]==true)==(id~=workshop_cancel.job_id),'Cancel changed unrelated world job')end
+    -- A combined run may already have confirmed the explicit Well cancellation.
+    for id in pairs(workshop_cancel.world_jobs)do
+     local previously_cancelled=destructive and destructive.step==2 and id==372039
+     assert((world_jobs[id]==true)==(id~=workshop_cancel.job_id and not previously_cancelled),'Cancel changed unrelated world job')
+    end
     for id in pairs(workshop_cancel.holder_jobs)do assert((holder_jobs[id]==true)==(id~=workshop_cancel.job_id),'Cancel changed unrelated workshop job')end
     workshop_cancel.checked=true;write('tasks-workshop-cancel-ack','1')
    end
@@ -141,7 +145,7 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
  assert(not df.global.game.main_interface.info.open,'Tasks transport opened native menu')
  if workshop_cancel then
   assert(workshop_cancel.checked,'Workshop cancellation incomplete')
-  local after=probe();write('tasks-workshop-cancel-native-result.json',json.encode{job_id=workshop_cancel.job_id,building_id=workshop_cancel.building_id,workshop_preserved=true,other_jobs_preserved=true,before=cold,after=after});cold=after
+  local after=probe();write('tasks-workshop-cancel-native-result.json',json.encode{job_id=workshop_cancel.job_id,building_id=workshop_cancel.building_id,workshop_preserved=true,other_jobs_preserved=true,previous_well_cancelled=destructive and destructive.step==2 or false,before=cold,after=after});cold=after
  end
  if os.getenv('DF3D_TASKS_MATERIAL')=='1' then
   assert(material_checked and art_checked,'Tasks Details workflow incomplete')

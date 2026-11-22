@@ -1,5 +1,5 @@
 extends Node
-# Staged Tasks owner. Public launchers remain gated until input/navigation parity.
+# Public Tasks owner; native actions and Details retain independent authority.
 signal information_requested(caption: String)
 signal focus_requested(tile: Vector3i)
 signal inspect_requested(tile: Vector3i,unit_id: int)

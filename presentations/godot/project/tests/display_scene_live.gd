@@ -19,6 +19,7 @@ func display_ready() -> bool:
 	return check(false,"Display visible facts/art did not settle")
 func exercise(expected: Dictionary) -> void:
 	Engine.max_fps=30;owner=scene._ui.controller("furniture")
+	if expected.get("reassignment",false):await reassign(expected);return
 	if not await open_furniture(expected) or not await display_ready():return
 	await panel_capture("display-initial","display-scene-initial")
 	if not await rename_to(expected.custom_name+"x"):return
@@ -57,4 +58,37 @@ func exercise(expected: Dictionary) -> void:
 	scene._ui.open_building_holder(53,int(expected.id))
 	if not await chest_ready() or not await display_ready():return
 	check(owner.state.building_id==int(expected.id),"Display holder route failed")
+	key(KEY_ESCAPE);await drain();exercised=true
+
+func assign_one(entry: Dictionary,id: int) -> bool:
+	if not await open_furniture(entry) or not await display_ready():return false
+	await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.assign_rect().get_center())
+	if not await display_ready():return false
+	await pointer(owner.display_view.get_global_transform_with_canvas()*Vector2(128,78))
+	if not await display_ready():return false
+	var index: int=owner.display_view.page.find_custom(func(row):return row.get("id",-1)==id)
+	if not check(index>=0,"Reassignment item is unavailable in the public picker"):return false
+	await pointer(owner.display_view.get_global_transform_with_canvas()*(owner.display_view.item_canvas.position+owner.display_view.checkbox_rect(index).get_center()))
+	if not check(owner.display.selected.has(id),"Reassignment checkbox failed"):return false
+	key(KEY_ESCAPE);await drain();await process_frame
+	return check(scene._ui.host.active==null,"Reassignment retained picker input")
+func reassign(expected: Dictionary) -> void:
+	var id:=int(expected.item_id)
+	if not await assign_one(expected.from,id):return
+	if not await open_furniture(expected.from) or not await display_ready():return
+	check(owner.display.body.size()==1 and owner.display.body[0].id==id,"First display assignment missing")
+	await panel_capture("reassign-first-assigned","display-reassign-first-assigned")
+	key(KEY_ESCAPE);await drain()
+	if not await assign_one(expected.to,id):return
+	if not await open_furniture(expected.from) or not await display_ready():return
+	check(owner.display.body.is_empty(),"Reassignment retained old display membership")
+	await panel_capture("reassign-first-empty","display-reassign-first-empty")
+	key(KEY_ESCAPE);await drain()
+	if not await open_furniture(expected.to) or not await display_ready():return
+	check(owner.display.body.size()==1 and owner.display.body[0].id==id,"Reassignment missed target display")
+	await panel_capture("reassign-second-assigned","display-reassign-second-assigned")
+	await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.display_check(0).get_center())
+	if not await display_ready():return
+	check(owner.display.body.is_empty(),"Reassigned item removal failed")
+	await panel_capture("reassign-second-removed","display-reassign-second-removed")
 	key(KEY_ESCAPE);await drain();exercised=true

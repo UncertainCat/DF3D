@@ -1,5 +1,9 @@
 -- Protected native UI observation only. Runtime must use owned semantic inputs.
 local out,view,building,capture,select_map=...
+if os.getenv('DF3D_DISPLAY_REASSIGN')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('display%-building%-native.lua$','display-reassignment-native.lua')
+ return assert(loadfile(source))(out,view,building,capture,select_map)
+end
 local gui=require('gui');local json=require('json');local g=df.global.gps
 local main=df.global.game.main_interface;local picker=main.assign_display_item
 local multi=os.getenv('DF3D_DISPLAY_MULTI')=='1'

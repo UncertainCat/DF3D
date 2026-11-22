@@ -3597,8 +3597,16 @@ panels match native exactly, including the two-item parent; that image was inspe
 Client stderr is empty; owned DF47160 closes unsaved with the source save unchanged,
 serial30FPS and GPU samples52–53C. The fixture retains the ordinary single-item mode.
 All19 root checks pass on the current runtime. This qualifies public multi-item
-assignment/removal, not reassignment between buildings, later hauling/On display,
-or long-list/resize behavior; those remain unqualified.
+assignment/removal. Protected170400 on2026-11-22 qualifies reassignment between
+two disposable completed pedestals. Native assignment moves amulet38540 from1490
+to1491 and replaces its BUILDING_DISPLAY_FURNITURE reference; the actual public
+map/picker workflow reproduces the old empty membership and new assigned row,
+then removes it. Four full488x708 panels match native exactly; the target panel
+was inspected. Final native checks confirm both memberships empty, no display
+reference/reservation and no building jobs. The second fixture is cleaned up,
+client stderr is empty, source saves are unchanged and owned DF52184 closes unsaved
+at30FPS (GPU samples49–52C). All19 core checks pass. Later hauling/On display and
+long-list/resize behavior remain unqualified.
 
 ### Trap and hive control providers
 

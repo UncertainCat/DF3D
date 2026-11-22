@@ -370,4 +370,7 @@ func _draw_settings() -> void:
 				var icon: Texture2D=art.texture("WORK_DETAIL_"+Indicators.WORK_DETAILS[badge.icon])
 				if icon!=null:draw_texture_rect(icon,badge.rect,false)
 		var checkbox: Texture2D=art.texture("LABOR_WORKER_ASSIGNED" if checked else "LABOR_WORKER_UNASSIGNED")
+		# Native replaces this checkbox cell's backing, including its transparent
+		# bottom edge; the other cells retain the surrounding row border.
+		draw_rect(Rect2(size.x-56,rect.position.y+24,8,12),Color8(28,28,28))
 		if checkbox!=null:draw_texture_rect(checkbox,Rect2(size.x-72,rect.position.y,32,36),false)

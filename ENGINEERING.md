@@ -10927,11 +10927,22 @@ a later200ms capture without forced redraw. All five panels are identical and
 contain the captions; text/icons in304,184..920,724 match native210353 exactly.
 The complete fifteen-row area differs by120 background pixels: eight pixels at
 the bottom of each checkbox are28,28,28 in native and41,36,43 in DF3D. That small
-drawing discrepancy remains open; full-panel identity is not claimed. The earlier
+drawing discrepancy is corrected below; full-panel identity is not claimed. The earlier
 caption omission's cause is unestablished, with no runtime correction asserted.
 211004 preserves the source and closes owned DF44684, with known thread/finalize/
 shutdown diagnostics only and60–61C GPU sampling. `labor_page_retention_reference`
 retains both observations. All sort-direction combinations remain unverified.
+
+The checkbox background correction on2026-11-22 restores only the third bottom
+8x12 cell to the panel background before drawing the installed checkbox artwork.
+Native210353 retains the row border under the other checkbox cells; clearing the
+whole checkbox would change correct pixels. Replaying the recorded settings,
+offset15 and work-detail definitions from210353/211004 now yields zero differing
+pixels across304,184..944,724 (fifteen complete rows). The former120 differences
+were exactly the transparent bottom8px of that cell in each row. The isolated
+render runs at30FPS with empty stderr and sampled GPU60–64C. Evidence is the
+recorded inputs above and build/notes/pm/work-details-checkbox-render.png; this
+qualifies the recorded row region, not fresh live navigation or full-panel parity.
 The earlier205635 screenshot omitted skill captions, but this does not establish
 an ongoing runtime defect. Protected210203 compares ten existing Miners rows
 without the controlled all-labor override: native widgets, provider and typed
@@ -11596,7 +11607,7 @@ viewer stderr. The settings screenshot was inspected. Attempt080509 incorrectly
 asked Miners to use the prohibited Everybody mode; native rejection was correct,
 and the final test uses an allowed mode. This is public-route/composed navigation
 acceptance, not a replacement for the detailed edit/native-effect evidence below.
-The previously recorded120 checkbox-background pixels and unqualified sort/portrait
+The recorded120 checkbox-background pixels are corrected by the row comparison above; unqualified sort/portrait
 variants remain open; whole-panel pixel identity is not claimed.
 
 

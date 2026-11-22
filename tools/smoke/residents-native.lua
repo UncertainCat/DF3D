@@ -556,7 +556,7 @@ if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS')=='1' then
 end
 file=assert(io.open(out..'/shot.tmp','w'));file:write('residents-root');file:close()
 assert(os.rename(out..'/shot.tmp',out..'/shot'))
-local deadline=dfhack.getTickCount()+30000
+local deadline=dfhack.getTickCount()+(os.getenv('DF3D_RESIDENTS_PUBLIC_SCENE')=='1' and 95000 or 30000)
 while true do
  local ack=io.open(out..'/ack-residents-root');if ack then ack:close();break end
  assert(dfhack.getTickCount()<deadline,'Residents capture timeout');script.sleep(1,'frames')

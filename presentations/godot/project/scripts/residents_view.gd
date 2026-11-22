@@ -1,6 +1,5 @@
 extends "res://scripts/location_staff_candidates_frame.gd"
-# Staged Residents surface. Indicators, actions, hover and remaining portrait
-# states need acceptance before this may replace the public readout.
+# Native Residents list, activity descriptions and semantic row actions.
 signal information_requested(caption: String)
 signal job_requested(unit_id: int)
 signal cancelled

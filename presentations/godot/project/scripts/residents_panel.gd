@@ -1,5 +1,5 @@
 extends Node
-# Staged composition: public Residents remains on its existing route until complete.
+# Public Residents owner; job Details shares the native-backed editor.
 signal information_requested(caption: String)
 signal focus_requested(tile: Vector3i)
 signal inspect_requested(tile: Vector3i,unit_id: int)

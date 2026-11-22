@@ -12246,6 +12246,22 @@ the full screen stays hidden. These roster checks do not establish full Work Det
 
 ## Residents native list discovery
 
+The Citizens HUD launcher now opens the owned Residents controller. The old
+read-only resident renderer and its local sorting are removed; Labor retains its
+separate readout until public qualification. Protected080118 on2026-11-22 uses
+the actual main scene: initial and Name-sorted IDs match the native list capture,
+ABAN search/clear restores the complete roster, wheel scrolling returns to row0,
+activity descriptions open and close, and1200x800/1600x900/912x552 layouts retain
+ownership. A row's creature-sheet button opens that exact resident, then HUD
+reopen and Escape release input. The earlier075950 also passes navigation and
+resize. Evidence: `build/stockpile-storage-native-farm-discovery-20261122-080118`.
+Owned DF59284 closes unsaved/source-preserved at30FPS, sampled GPU60–62C;
+viewer stderr is empty. The public roster screenshot was inspected in075950.
+This does not qualify Pets/Livestock, Other or Dead/Missing tabs, all portrait
+variants, or simulation execution of edited production jobs. Those are separate
+coverage limits; the accepted Residents job/artwork effects are recorded below.
+
+
 Residents Activity has distinct job-settings and event-description routes.
 The job-details widget1423130 uses native eligibility d15ef0 and opens213420
 with context1 (`CREATURES_LIST_TASK`). The existing Work order details provider
@@ -34532,8 +34548,8 @@ game state), the **core** (`schema/` and `worldmodel/`, engine-independent C++),
 **Status.** Product launches own a native DF child session and render its terrain,
 creatures, items and animations; pause, unpause and save remain available. The
 toolbar exposes designation and inspection tools, Reports/alerts, construction
-Stockpiles, Zones/Locations and editable Work orders, plus read-only Residents
-and Work Details panels. Other management screens have staged implementations
+Stockpiles, Zones/Locations, editable Work orders and native Residents, plus the
+read-only Work Details panel. Other management screens have staged implementations
 whose public integration remains unfinished. Specialized building controls are
 qualified individually in their owning sections. Windows x64 packages bundle the viewer and a bridge setup launcher;
 source builds are also supported. Both require the pinned Steam release of Dwarf Fortress.

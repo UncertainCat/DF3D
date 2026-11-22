@@ -945,18 +945,6 @@
       ]
     },
     {
-      "id": "read_only_info_test",
-      "lane": "assets",
-      "kind": "godot",
-      "script": "res://tests/read_only_info_test.gd",
-      "completion": "READ_ONLY_INFO_PASS",
-      "timeout": 50,
-      "prerequisites": [
-        "extension_build",
-        "df_assets"
-      ]
-    },
-    {
       "id": "build_menu_test",
       "lane": "assets",
       "kind": "godot",
@@ -1250,18 +1238,6 @@
       "kind": "godot",
       "script": "res://tests/adapter_retirement_test.gd",
       "completion": "ADAPTER_RETIREMENT_PASS",
-      "timeout": 50,
-      "prerequisites": [
-        "extension_build",
-        "df_assets"
-      ]
-    },
-    {
-      "id": "native_info_test",
-      "lane": "assets",
-      "kind": "godot",
-      "script": "res://tests/native_info_test.gd",
-      "completion": "NATIVE_INFO_PASS",
       "timeout": 50,
       "prerequisites": [
         "extension_build",
@@ -4085,6 +4061,16 @@
   ],
   "exclusions": [
     {
+      "path": "presentations/godot/project/tests/residents_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected main-scene acceptance through stockpile_storage_native.ps1 with DF3D_RESIDENTS_PUBLIC_SCENE=1; owns a disposable native session and validates native observations."
+    },
+    {
+      "path": "presentations/godot/project/tests/labor_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected main-scene acceptance through stockpile_storage_native.ps1 with DF3D_LABOR_PUBLIC_SCENE=1; owns a disposable native session and validates native observations."
+    },
+    {
       "path": "presentations/godot/project/tests/workshop_dyer_live.gd",
       "status": "manual",
       "reason": "Protected Dyer menu navigation and native text/color comparison. Never standalone."
@@ -4695,11 +4681,6 @@
       "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test mesh_batch_profile_live. Same save/frame/camera, old submission vs spatial batches; no fidelity toggles."
     },
     {
-      "path": "presentations/godot/project/tests/read_only_info_live.gd",
-      "status": "manual",
-      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test read_only_info_live."
-    },
-    {
       "path": "presentations/godot/project/tests/render_attribution_live.gd",
       "status": "manual",
       "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test render_attribution_live. Owned diagnostic lane only. Census/readbacks happen outside timing windows."
@@ -4713,11 +4694,6 @@
       "path": "presentations/godot/project/tests/render_thread_fixture_test.gd",
       "status": "manual",
       "reason": "Protected live workflow; launched by tools/smoke/render_thread_fixture.ps1. Real renderer threading/resize/readback diagnostic; known engine diagnostic, see tools/qa/diagnostics.py. Requires a fixed mature recording, licensed assets, output directory and dedicated renderer-thread lane; revisit during planned engine work."
-    },
-    {
-      "path": "presentations/godot/project/tests/resident_roster_live.gd",
-      "status": "manual",
-      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test resident_roster_live."
     },
     {
       "path": "presentations/godot/project/tests/stream_benchmark_live.gd",

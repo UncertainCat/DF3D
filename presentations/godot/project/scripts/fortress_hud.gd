@@ -579,8 +579,8 @@ func toggle_labor():
 
 func launch(title: String):
 	if not Availability.allows(title): return
-	if Availability.READ_LAUNCHERS.has(title):
-		if enabled and not interaction.construction_active and not menu_open(): info_requested.emit(Availability.READ_LAUNCHERS[title])
+	if Availability.LAUNCHER_DESTINATIONS.has(title):
+		if enabled and not interaction.construction_active and not menu_open(): info_requested.emit(Availability.LAUNCHER_DESTINATIONS[title])
 		return
 	if not enabled or (interaction.construction_active and title != owned_launcher()) or menu_open(): return
 	labor_menu.hide()

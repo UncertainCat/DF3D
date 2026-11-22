@@ -2,7 +2,7 @@ extends "res://scripts/residents_view.gd"
 signal standing_orders_requested
 signal stone_use_requested
 signal kitchen_requested
-# Staged native Work Details surface. Shared roster art/name/hover helpers come
+# Native Work Details surface. Shared roster art/name/hover helpers come
 # from Residents; this screen has its own layout, columns and input targets.
 signal settings_requested
 signal rename_requested

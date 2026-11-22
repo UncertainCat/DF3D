@@ -112,10 +112,19 @@ end
 local function shot(name)
  local file=assert(io.open(out..'/work-details-native.json','w'));file:write(json.encode(result));file:close()
  file=assert(io.open(out..'/shot.tmp','w'));file:write(name);file:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+(name=='work-details-rename-wire' and os.getenv('DF3D_WORK_DETAILS_RENAME_RENDER')=='1' and 30000 or 10000)
+ local deadline=dfhack.getTickCount()+(os.getenv('DF3D_LABOR_PUBLIC_SCENE')=='1' and 120000 or name=='work-details-rename-wire' and os.getenv('DF3D_WORK_DETAILS_RENAME_RENDER')=='1' and 30000 or 10000)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Work Details capture timeout');script.sleep(1,'frames')end
 end
 shot('work-details-root')
+if os.getenv('DF3D_LABOR_PUBLIC_SCENE')=='1' then
+ local file=assert(io.open(out..'/job-settings-wire-result.json'));local accepted=json.decode(file:read('*a'));file:close()
+ assert(accepted.success,'Public Labor workflow failed')
+ for _,before in ipairs(result.details)do
+  local detail=df.global.plotinfo.labor_info.work_details[before.index]
+  assert(detail and detail.flags.whole==before.flags and #detail.assigned_units==before.assigned_count,'Public Labor did not restore definition')
+ end
+ records[#records+1]={name='labor-public-scene',restored=true};return
+end
 if os.getenv('DF3D_WORK_DETAILS_MODSORT')=='1' then
  local helper=debug.getinfo(1,'S').source:sub(2):gsub('work%-details%-native.lua$','work-details-sort-native.lua')
  result.modified_sort=assert(loadfile(helper))(out,view,active_list,headers,shot)

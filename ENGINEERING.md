@@ -11502,6 +11502,25 @@ orders panel or public exposure is implemented yet.
 
 ## Work Details native discovery
 
+The Labor HUD now opens the owned Work Details controller. The superseded
+read-only management controller, local renderer and dedicated tests are removed;
+launcher aliases resolve to the native-backed owners. Protected080615 on2026-11-22
+runs the actual main scene from the Labor HUD, checks native definition count,
+changes/restores the Miners assignment mode, and visits Standing orders, Kitchen
+and Stone use from both roster and settings. All six returns retain settings and
+input ownership. Resize1200x800/1600x900/912x552, Escape and HUD reopen pass;
+ordinary reopen starts outside settings. Native readback confirms every original
+definition's flags and assigned count are restored. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-080615`.
+Owned DF51168 closes unsaved/source-preserved at30FPS, sampled GPU60C, empty
+viewer stderr. The settings screenshot was inspected. Attempt080509 incorrectly
+asked Miners to use the prohibited Everybody mode; native rejection was correct,
+and the final test uses an allowed mode. This is public-route/composed navigation
+acceptance, not a replacement for the detailed edit/native-effect evidence below.
+The previously recorded120 checkbox-background pixels and unqualified sort/portrait
+variants remain open; whole-panel pixel identity is not claimed.
+
+
 The main `fortress_ui` composition now owns a lazy, reusable `work_details`
 controller, configured with the shared action service, input host and native
 hover help. It remains staged: public Work Details/Labor destinations still use
@@ -34548,8 +34567,8 @@ game state), the **core** (`schema/` and `worldmodel/`, engine-independent C++),
 **Status.** Product launches own a native DF child session and render its terrain,
 creatures, items and animations; pause, unpause and save remain available. The
 toolbar exposes designation and inspection tools, Reports/alerts, construction
-Stockpiles, Zones/Locations, editable Work orders and native Residents, plus the
-read-only Work Details panel. Other management screens have staged implementations
+Stockpiles, Zones/Locations, editable Work orders, native Residents and the
+Labor workflow (Work Details, Standing orders, Kitchen and Stone use). Other management screens have staged implementations
 whose public integration remains unfinished. Specialized building controls are
 qualified individually in their owning sections. Windows x64 packages bundle the viewer and a bridge setup launcher;
 source builds are also supported. Both require the pinned Steam release of Dwarf Fortress.

@@ -1,5 +1,5 @@
 extends Node
-# Staged owner; settings/name editing and full native acceptance precede exposure.
+# Public Labor owner; settings and naming use revision-bound native actions.
 signal information_requested(caption: String)
 signal settings_requested
 signal rename_requested

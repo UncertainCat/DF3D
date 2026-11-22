@@ -4,7 +4,7 @@
 param(
  [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,
  [string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}),
- [ValidateSet('floor_profile_live','mesh_batch_profile_live','mesh_batch_motion_live','visibility_profile_live','frame_breakdown_live','profiling_scene_test','render_quality_live','ui_availability_live','read_only_info_live','resident_roster_live','world_markers_live','context_inspect_live','creature_sheet_live','item_culling_profile_live','render_attribution_live','deep_profile_live','building_residency_live','gameplay_demo_live','targeted_attack_live')][string]$Test='floor_profile_live',
+ [ValidateSet('floor_profile_live','mesh_batch_profile_live','mesh_batch_motion_live','visibility_profile_live','frame_breakdown_live','profiling_scene_test','render_quality_live','ui_availability_live','world_markers_live','context_inspect_live','creature_sheet_live','item_culling_profile_live','render_attribution_live','deep_profile_live','building_residency_live','gameplay_demo_live','targeted_attack_live')][string]$Test='floor_profile_live',
  [ValidatePattern('^[A-Za-z0-9_-]+$')][string]$OutputName='testfort-floor-perf',
  [ValidateSet('project','safe','separate')][string]$RenderThread='project',
  [Alias('Profile')][ValidateSet('off','basic','deep')][string]$Profiling='basic',

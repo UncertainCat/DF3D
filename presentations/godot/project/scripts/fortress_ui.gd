@@ -281,20 +281,11 @@ func controller(id: String):
 		panel.focus_requested.connect(focus_tile)
 		panel.options_requested.connect(func():
 			if native_options != null: native_options.open())
-	if id == "readouts":
-		panel.info_frame.destination_requested.connect(open_destination)
-		panel.focus_requested.connect(focus_tile)
-		panel.inspect_requested.connect(func(unit_id):
-			var target: Dictionary = world.inspect_entity(1,unit_id)
-			if target.is_empty():
-				panel.message.text = "This resident is no longer available."
-				return
-			open_target(target.tile,1,unit_id))
 	return panel
 
 # Internal transitions between staged native information screens. Public routes
 # retain their separate acceptance gate; unknown tabs never fall back to Zones
-# or the older readouts. The host closes the source only after accepting a target.
+# or retired views. The host closes the source only after accepting a target.
 func _open_staged_information(source,caption: String) -> void:
 	var completed_nobles: bool=controllers.get("nobles")==source and source.completing_information_handoff and host.active==null
 	if not host.play_enabled or host.overlay_blocked or (not host.allows_panel_input(source) and not completed_nobles):return
@@ -309,7 +300,7 @@ func _open_staged_information(source,caption: String) -> void:
 		"Nobles and administrators":controller("nobles").open_panel()
 
 func open_destination(destination: String) -> void:
-	destination = Registry.READ_LAUNCHERS.get(destination,destination)
+	destination = Registry.LAUNCHER_DESTINATIONS.get(destination,destination)
 	if not Registry.PANEL_ROUTES.has(destination) or not host.play_enabled: return
 	var panel = controller(Registry.PANEL_ROUTES[destination])
 	if destination=="Work orders":panel.open_global_orders();return

@@ -8,13 +8,13 @@ func run():
 	for title in ["Stocks","Kitchen","Nobles and administrators","Tile details","Trade","Petitions","Production / farms","Tasks","Places","Objects","Justice"]:
 		assert(not Registry.allows(title), "Retired route fails closed: "+title)
 		assert(not Registry.PANEL_ROUTES.has(title), "Retired route has no factory")
-	for id in ["stocks","kitchen","appointments","native_selection","trade","agreements","notifications","production","rough_panels","citizens","work_orders"]:
+	for id in ["readouts","kitchen","appointments","native_selection","trade","agreements","notifications","production","rough_panels","citizens","work_orders"]:
 		assert(composition.controller(id)==null, "Retired controller cannot be instantiated: "+id)
 	assert(composition.controllers.is_empty() and composition.get_child_count()==0, "Rejected destinations do not construct any runtime nodes")
 	for title in ["Build / construction","Stockpiles / zones","Residents","Work Details","Work orders","Reports"]:
 		assert(Registry.allows(title) and Registry.PANEL_SCRIPTS.has(Registry.PANEL_ROUTES[title]), "Accepted route has exactly one registered factory")
 	assert(Registry.PANEL_SCRIPTS.has("work_details"),"Staged Work Details has a composition factory")
-	assert(Registry.PANEL_ROUTES["Work Details"]=="readouts","Unfinished Work Details must not replace the public route")
+	assert(Registry.PANEL_ROUTES["Work Details"]=="work_details","Work Details uses its editable owner")
 	composition.free()
 	print("ADAPTER_RETIREMENT_PASS")
 	quit()

@@ -286,6 +286,7 @@ try {
      if($name -eq 'labor-lifecycle-wire'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/labor_lifecycle_wire_live.gd')}
      if($name -eq 'labor-lifecycle-wire' -and $env:DF3D_LABOR_LIFECYCLE_HEADLESS -eq '1'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/labor_lifecycle_wire_live.gd')}
      if($name -eq 'standing-automation-wire'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/standing_automation_wire_live.gd')}
+     if($name -eq 'work-details-root' -and $env:DF3D_LABOR_PUBLIC_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/labor_scene_live.gd')}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"
      $null=$client.Handle
      $wireTimeout=if($name -eq 'objects-wire' -and $env:DF3D_OBJECTS_LAYOUT -eq '1'){55000}elseif($name -eq 'kitchen-wire' -and $env:DF3D_KITCHEN_MAIN -eq '1'){115000}else{25000}
@@ -305,6 +306,7 @@ try {
      if($name -eq 'hunter-ammunition-wire' -and $env:DF3D_HUNTER_AMMUNITION_MAIN -eq '1'){$wireTimeout=115000}
      if($name -eq 'nobles-wire' -and $env:DF3D_NOBLES_SYMBOL_NAME_RESIZE -eq '1'){$wireTimeout=115000}
      if($name -eq 'nobles-wire' -and $env:DF3D_NOBLES_SCENE -eq '1'){$wireTimeout=115000}
+     if($name -eq 'work-details-root' -and $env:DF3D_LABOR_PUBLIC_SCENE -eq '1'){$wireTimeout=115000}
      if(-not $client.WaitForExit($wireTimeout)){$client.Kill();$client.WaitForExit();throw 'Job settings wire client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/job-settings-wire-result.json")){throw 'Job settings wire client failed'}
     }

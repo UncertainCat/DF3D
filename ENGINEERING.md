@@ -3929,8 +3929,25 @@ paths for trade depots, wells, siege engines, animal traps, archery targets,
 restraints, cages, nest boxes, hives and display furniture. Windows, bridges,
 roads, supports, upright weapons, wagons and traction benches reach the default
 body/input branches; this static result alone does not qualify their panels.
-Shop7 and natural Nest47 also reach those defaults, without establishing a
-fortress-mode product route. Missing examples are retained in the fixture.
+Shop7 and natural Nest47 also reach those defaults. Their native management
+selection and controls are qualified below; public viewer admission remains open.
+Missing natural examples are retained in the fixture.
+
+`DF3D_LEGACY_BUILDINGS_NATIVE=1` selects disposable Shop7 and natural Nest47
+fixtures in the remaining-building oracle. DFHack has no default construction
+recipe for these types, so fixture creation supplies one block filter and then
+removes the construction job before marking them complete. This is diagnostic
+setup, not a product construction recipe or evidence of natural fortress creation.
+Protected151309 on2026-11-22 selects both through native map input, observes the
+ordinary header/contents pane, renames/restores, schedules removal and cancels it.
+Shop subtype0 is titled Vacant Shop; natural Nest is titled Nest. All ten native
+panel states are captured. Temporary buildings are removed, frame0 is unchanged,
+and owned DF53496 closes unsaved with source preservation at30FPS.
+Evidence: `build/stockpile-storage-native-farm-discovery-20261122-151309/remaining-buildings-native.json`.
+The earlier151101 native sub-oracle also passed, but its enclosing lane failed
+after continuing into an unrelated chest test; it is not a complete lane pass.
+The isolated run uses the existing workshop-scope early return. Neither run
+establishes natural occurrence, shopkeeper variants or public DF3D parity.
 
 Protected131925 on2026-11-16 creates temporary completed examples for native
 WindowGlass16, WindowGem17, RoadDirt20, RoadPaved21, Support25 and Weapon31.

@@ -6,6 +6,8 @@ local kinds={6,7,16,17,18,19,20,21,22,24,25,26,27,28,31,32,45,47,48,49,53}
 if os.getenv("DF3D_SIMPLE_BUILDING_SCENE")=="1" then kinds={19,32,45}end
 local default_families=os.getenv('DF3D_DEFAULT_BUILDINGS_NATIVE')=='1'
 if default_families then kinds={16,17,20,21,25,31};if os.getenv('DF3D_ARCHERY_TARGET_SCENE')=='1' then kinds={26}end end
+local legacy_families=os.getenv('DF3D_LEGACY_BUILDINGS_NATIVE')=='1'
+if legacy_families then default_families=true;kinds={7,47}end
 local specialized_families=os.getenv('DF3D_SPECIAL_BUILDINGS_NATIVE')=='1'
 if specialized_families then kinds={22,24,26,27,48,49,53}end
 if os.getenv("DF3D_DEPOT_NATIVE")=="1" then kinds={6}end
@@ -31,26 +33,29 @@ local ok,err=xpcall(function()
 if default_families or specialized_families then
  for _,kind in ipairs(kinds)do
   if not selected[kind]then
-   local b
+   local b,last_error
    for y=80,140,4 do for x=80,160,4 do
-    local pos={x=x,y=y,z=165};local clear=true;local extent=kind==22 and 2 or 0
+    local pos={x=x,y=y,z=165};local clear=true;local extent=kind==7 and 4 or kind==22 and 2 or 0
     for dy=0,extent do for dx=0,extent do
      local tile={x=x+dx,y=y+dy,z=165};local d,o=dfhack.maps.getTileFlags(tile)
      if not d or d.hidden or not o or o.item or o.unit or o.unit_grounded or dfhack.buildings.findAtTile(tile)then clear=false end
     end end
     if clear then
-     local success,placed=pcall(dfhack.buildings.constructBuilding,{type=kind,subtype=kind==22 and 0 or -1,pos=pos,full_rectangle=true})
+     -- DFHack has no default Shop/Nest recipe. Explicit block filters
+     -- create only a disposable selection oracle, not a product build route.
+     local success,placed,reason=pcall(dfhack.buildings.constructBuilding,{type=kind,subtype=(kind==7 or kind==22) and 0 or -1,pos=pos,full_rectangle=true,filters=legacy_families and {{item_type=df.item_type.BLOCKS,quantity=1}} or nil})
      if success and placed then b=placed;break end
+     last_error=success and reason or placed
     end
    end;if b then break end end
-   assert(b,'No fixture site for '..df.building_type[kind])
+   assert(b,'No fixture site for '..df.building_type[kind]..': '..tostring(last_error))
    fixtures[#fixtures+1]=b
    fixture_ids[b.id]=true
    while #b.jobs>0 do assert(dfhack.job.removeJob(b.jobs[0]))end
    b:setBuildStage(b:getMaxBuildStage());b.flags.exists=true;b:updateOccupancy(b.centerx,b.centery)
    local token=kind==16 and 'GLASS_GREEN' or kind==17 and 'INORGANIC:RUBY' or kind==22 and 'PLANT:OAK:WOOD' or (kind==24 or kind==27 or kind==31) and 'INORGANIC:IRON' or 'INORGANIC:GRANITE'
    local material=assert(dfhack.matinfo.find(token));b.mat_type=material.type;b.mat_index=material.index
-   if kind~=20 then
+   if kind~=20 and kind~=7 and kind~=47 then
     local worker
     for _,u in ipairs(df.global.world.units.active)do if dfhack.units.isCitizen(u)then worker=u;break end end
     local item_type=kind==16 and df.item_type.WINDOW or kind==17 and df.item_type.SMALLGEM or kind==22 and df.item_type.CATAPULTPARTS or kind==24 and df.item_type.ANIMALTRAP or kind==27 and df.item_type.CHAIN or kind==31 and df.item_type.TRAPCOMP or (kind==48 or kind==49 or kind==53) and df.item_type.TOOL or df.item_type.BLOCKS

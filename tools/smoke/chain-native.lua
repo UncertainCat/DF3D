@@ -98,6 +98,30 @@ if os.getenv('DF3D_CHAIN_EFFECTS')=='1' then
  capture('chain-assignment-removed')
  assert(unit.flags1.whole==flags1 and unit.flags2.whole==flags2 and unassigned(unit),'Chain roundtrip changed original unit facts')
  result.selection.restored=true
+ if os.getenv('DF3D_CHAIN_OWNED_EFFECTS')=='1' then
+  local function probe(revision,id,toggle)
+   return dfhack.with_suspend(function()
+    local guards={}
+    for _,value in ipairs{g,main}do local size,address=df.sizeof(value);local copy=df.new('uint8_t',size);dfhack.internal.memmove(copy,address,size);guards[#guards+1]={size=size,address=address,copy=copy}end
+    local args={'df3d','chain-state-probe',tostring(chain.id)}
+    if revision then args[#args+1]=revision;args[#args+1]=tostring(id);args[#args+1]=tostring(toggle)end
+    local text,code=dfhack.run_command_silent(table.unpack(args));assert(code==0,text)
+    for _,guard in ipairs(guards)do assert(dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0,'Chain edit changed native UI storage');df.delete(guard.copy)end
+    return json.decode(text)
+   end)
+  end
+  local initial=probe()
+  local invalid=probe(initial.revision,-1,0);assert(invalid.outcome==0 and not invalid.effects_started)
+  local selected=probe(initial.revision,unit.id,0)
+  assert(selected.outcome==1 and selected.effects_started and selected.assigned_id==unit.id)
+  assert(json.encode(snapshot())==json.encode(result.selection.after),'Owned chain selection differs from native')
+  local stale=probe(initial.revision,unit.id,1);assert(stale.outcome==2 and not stale.effects_started and chain.assigned==unit)
+  local removed=probe(selected.revision,unit.id,1)
+  assert(removed.outcome==1 and removed.effects_started and removed.assigned_id==-1)
+  assert(json.encode(snapshot())==json.encode(before),'Owned chain removal differs from native')
+  assert(unit.flags1.whole==flags1 and unit.flags2.whole==flags2 and unassigned(unit),'Owned chain roundtrip changed original unit facts')
+  result.owned_effects={initial=initial,invalid=invalid,selected=selected,stale=stale,removed=removed,ui_unchanged=true}
+ end
 else
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());capture('chain-assignment-closed')
 end

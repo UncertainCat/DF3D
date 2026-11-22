@@ -3097,6 +3097,27 @@ render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
 
 ### Chain candidates and native actions
 
+The revisioned chain edit owner rejects invalid candidates, stale revisions,
+justice restraints and pending demolition. Its revision includes destination
+occupants/jobs and prior cage, zone and chain memberships that a transfer retires.
+It marks the outcome unknown before native effects and never replays an uncertain
+edit. Native8bfcf0 detaches cage membership; fingerprinted13adf80 removes zone
+memberships/references. Shared chain cleanup excludes the destination and removes
+job holder references before native deletion, avoiding native selection/cursor
+bookkeeping. Picker selection assigns the candidate; a body-row click toggles it,
+including selecting a chained-only occupant. No native picker callback is invoked.
+
+Protected052710 on2026-11-22 (DF29900) compares owned select/remove against native
+pointer effects for an initially empty ordinary chain and unassigned unit6960.
+Assigned/chained pointers, flags and jobs match; the round trip restores unit
+flags and original memberships. Invalid IDs and stale revisions reject without
+effects; GPS/main_interface bytes remain unchanged across owned reads/edits.
+Source saves are preserved, owned DF closes unsaved at30FPS, sampled59-60C.
+Bridge build and19 core checks pass. Evidence:
+completed_sheet_discovery_reference.chain_assignment_reference.
+This qualifies ordinary assignment/removal only. Transfers, queued-job cleanup,
+chained-only toggle, ordering/search, transport and public workflow remain open.
+
 `chain_native.h` invokes native exclusion predicate3d5550 with an independently
 owned capture containing the semantic chain pointer and a16-byte unit entry.
 The predicate rejects nonunits, missing/inactive units, the current assignee and
@@ -3112,7 +3133,8 @@ unit's original flags and lack of assigned cage/zone/chain membership are restor
 The newly assigned unit disappears from the owned candidate result. Native raw
 list storage contains340 entries (339units, one item), so raw entries must not be
 mistaken for the filtered visible choices. This comparison qualifies membership;
-owned sorting, search, editing, body transport and public admission remain open.
+owned sorting, search, body transport and public admission remain open.
+Ordinary editing is qualified by052710 above.
 The temporary fixture and source save are preserved/removed as appropriate; owned
 DF closes unsaved at30FPS, sampled58-59C. Bridge build and all19 root checks pass.
 Evidence: completed_sheet_discovery_reference.chain_candidates_reference.
@@ -3120,7 +3142,7 @@ Evidence: completed_sheet_discovery_reference.chain_candidates_reference.
 Native plus input1af139..1af1ac opens picker context6 and binds the chain through
 3a3830. The selection action3a7cb0 resolves its target through active-sheet globals
 and changes UI state, so it must not be called by the runtime. Its semantic effects
-need an owned path using the existing restraint/job helpers. The body lists the
+use the owned path and shared restraint/job helpers described above. The body lists the
 assigned unit followed by a distinct chained unit, formats names through1330c30
 with false (cages pass true), and uses native Assigned, Assigned and chained, or
 Chained status. Room membership shares the native relevant-room predicate.

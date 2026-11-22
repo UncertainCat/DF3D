@@ -5733,6 +5733,29 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         } else if(!edit)return CR_FAILURE;
         out.print("{}",Json::FastWriter().write(result));return CR_OK;
       }
+      if(parameters[0]=="chain-state-probe") {
+        if(parameters.size()!=2 && parameters.size()!=5)return CR_WRONG_USAGE;
+        int32_t id=-1,unitId=-1,toggle=0;uint64_t revision=0;
+        const auto parse=[](const std::string& value,auto& target) {
+          const auto parsed=std::from_chars(value.data(),value.data()+value.size(),target);
+          return parsed.ec==std::errc{} && parsed.ptr==value.data()+value.size();
+        };
+        if(!parse(parameters[1],id))return CR_WRONG_USAGE;
+        if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+        auto* building=df::building::find(id);
+        Json::Value result;
+        if(parameters.size()==5) {
+          if(!parse(parameters[2],revision) || !parse(parameters[3],unitId) ||
+              !parse(parameters[4],toggle) || (toggle!=0 && toggle!=1))return CR_WRONG_USAGE;
+          const auto edit=df3d_production::setChainAssignment(building,revision,unitId,toggle!=0);
+          result["outcome"]=int(edit.outcome);result["effects_started"]=edit.effectsStarted;
+        }
+        const auto snapshot=df3d_production::observeChain(building);if(!snapshot)return CR_FAILURE;
+        result["revision"]=std::to_string(snapshot->revision);
+        result["assigned_id"]=snapshot->assignedId;result["chained_id"]=snapshot->chainedId;
+        result["removing"]=snapshot->removing;
+        out.print("{}",Json::FastWriter().write(result));return CR_OK;
+      }
       if(parameters[0]=="chain-candidates-read") {
         if(parameters.size()!=2)return CR_WRONG_USAGE;
         int32_t id=-1;const auto& value=parameters[1];

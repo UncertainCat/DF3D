@@ -115043,6 +115043,64 @@
           "tools/smoke/chain-native.lua": "7a807a233c42eca9c2e92efabcb702ab63dd2d863d0e2b3cd68e7205143ca80c",
           "tools/smoke/remaining-buildings-native.lua": "153c892060cec9910c67508ebf00ae27f9d161a8d0433aa1b8e427fc11d4147b"
         }
+      },
+      "chain_assignment_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261122-052710",
+        "owned_df_pid": 29900,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Owned revisioned chain select/remove matches native snapshots for initially empty ordinary chain and unassigned unit6960. Invalid ID and stale revision reject without effects. Exact original chain and unit flags/memberships restored. GPS/main_interface byte unchanged across owned reads/edits.30FPS GPU59-60C sampled; bridge build and root19 pass. Membership transfers, queued job cleanup, chained-only toggle, ordering/search, body transport and public workflow not qualified.",
+        "receipts": {
+          "initial": {
+            "assigned_id": -1,
+            "chained_id": -1,
+            "removing": false,
+            "revision": "3786439580162829815"
+          },
+          "invalid": {
+            "assigned_id": -1,
+            "chained_id": -1,
+            "effects_started": false,
+            "outcome": 0,
+            "removing": false,
+            "revision": "3786439580162829815"
+          },
+          "removed": {
+            "assigned_id": -1,
+            "chained_id": -1,
+            "effects_started": true,
+            "outcome": 1,
+            "removing": false,
+            "revision": "3786439580162829815"
+          },
+          "selected": {
+            "assigned_id": 6960,
+            "chained_id": -1,
+            "effects_started": true,
+            "outcome": 1,
+            "removing": false,
+            "revision": "2315626302047394143"
+          },
+          "stale": {
+            "assigned_id": 6960,
+            "chained_id": -1,
+            "effects_started": false,
+            "outcome": 2,
+            "removing": false,
+            "revision": "2315626302047394143"
+          },
+          "ui_unchanged": true
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261122-052710/chain-native.json": "b891921556dae98dd612c999d91ec045d306670e078c5c761ef3af5e7d315591",
+          "build/stockpile-storage-native-farm-discovery-20261122-052710/result.json": "34171c7182adfeeaf5fbf25dfdd6cbae925d735a5a439d43aca2c8e3840bebe9",
+          "build/stockpile-storage-native-farm-discovery-20261122-052710/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/chain_native.h": "e6cde8b32360e6ee6810c92b11dd7dc6902f1738976ca811bdfae9692fabe3c0",
+          "bridge/plugin/zone_native.h": "5c64a6716a0b612663981d5b864efa5ed0afa0b1b91a9431355e61205a1c89c4",
+          "bridge/plugin/zone_native.cpp": "e88d033f8e4ea076a291251d9412c728559676d5b4b4abf226282682287d1931",
+          "bridge/plugin/df3d.cpp": "d9c841fa9ff5de2dccf385e8d60f4ace9acc9fae9173f60fa3d9e150746cfca0",
+          "tools/smoke/chain-native.lua": "d7e38572c7fcebcb137e18fb748e004a7f72b60c619ad58ce718f7ff719c961c"
+        }
       }
     },
     "pending_construction_reference": {

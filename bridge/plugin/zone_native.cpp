@@ -443,40 +443,49 @@ bool nativeZoneAssignItem(df::building_civzonest& zone,df::item& item,bool assig
     reinterpret_cast<void (*)(df::building_civzonest**,Entry*,bool)>(base+0x3ce1b0)(&context,&entry,assign);
     return true;
 }
+bool nativeRemoveAnimalChainJobs(df::building_chainst& target,bool unchain) {
+    if(!nativeZoneAnimalAssignmentReady())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    auto* chain=&target;
+    for(size_t i=chain->jobs.size();i-->0;) {
+        auto* job=chain->jobs[i];
+        if(!job || job->job_type!=(unchain?df::job_type::UnchainAnimal:df::job_type::ChainAnimal))continue;
+        for(size_t r=job->general_refs.size();r-->0;) {
+            auto* ref=job->general_refs[r];
+            if(!ref || ref->getType()!=df::general_ref_type::BUILDING_HOLDER)continue;
+            if(auto* holder=ref->getBuilding()) {
+                auto& jobs=holder->jobs;
+                jobs.erase(std::remove(jobs.begin(),jobs.end(),job),jobs.end());
+            }
+            // Native reference destruction/erase; no UI bookkeeping.
+            reinterpret_cast<bool (*)(df::job*,int32_t,int32_t)>(base+0xd09860)(job,36,-1);
+        }
+        reinterpret_cast<void (*)(df::job*)>(base+0xa67820)(job);
+        // Valid native holder relationships removed this entry. Avoid
+        // retaining a dangling job in malformed semantic input too.
+        auto& jobs=chain->jobs;
+        jobs.erase(std::remove(jobs.begin(),jobs.end(),job),jobs.end());
+        i=std::min(i,jobs.size());
+    }
+    return true;
+}
+bool nativeDetachAnimalChains(df::unit& unit,df::building_chainst* except) {
+    if(!df::global::world || !nativeZoneAnimalAssignmentReady())return false;
+    for(auto* chain:df::global::world->buildings.other.CHAIN) {
+        if(!chain || chain==except || chain->assigned!=&unit)continue;
+        chain->assigned=nullptr;
+        if(!nativeRemoveAnimalChainJobs(*chain,false))return false;
+    }
+    return true;
+}
 bool nativeDetachAnimalRestraints(df::unit& unit) {
     if(!df::global::world || !nativeZoneAnimalAssignmentReady())return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     // Native order: cage membership, chain assignment/jobs, zone transfer.
-    // The ordinary chain helper calls job deletion with BUILDING_HOLDER
-    // references intact. Job detach then reads native selection/cursor.
-    // Perform only that reciprocal semantic detach here. Native deletion
-    // owns all remaining job effects and destruction with no holder branch.
+    // Job deletion receives no BUILDING_HOLDER references, avoiding native
+    // selection/cursor bookkeeping while retaining all semantic job effects.
     reinterpret_cast<void (*)(df::unit*)>(base+0x8bfcf0)(&unit);
-    for(auto* chain:df::global::world->buildings.other.CHAIN) {
-        if(!chain || chain->assigned!=&unit)continue;
-        chain->assigned=nullptr;
-        for(size_t i=chain->jobs.size();i-->0;) {
-            auto* job=chain->jobs[i];
-            if(!job || job->job_type!=df::job_type::ChainAnimal)continue;
-            for(size_t r=job->general_refs.size();r-->0;) {
-                auto* ref=job->general_refs[r];
-                if(!ref || ref->getType()!=df::general_ref_type::BUILDING_HOLDER)continue;
-                if(auto* holder=ref->getBuilding()) {
-                    auto& jobs=holder->jobs;
-                    jobs.erase(std::remove(jobs.begin(),jobs.end(),job),jobs.end());
-                }
-                // Native reference destruction/erase; no UI bookkeeping.
-                reinterpret_cast<bool (*)(df::job*,int32_t,int32_t)>(base+0xd09860)(job,36,-1);
-            }
-            reinterpret_cast<void (*)(df::job*)>(base+0xa67820)(job);
-            // Valid native holder relationships removed this entry. Avoid
-            // retaining a dangling job in malformed semantic input too.
-            auto& jobs=chain->jobs;
-            jobs.erase(std::remove(jobs.begin(),jobs.end(),job),jobs.end());
-            i=std::min(i,jobs.size());
-        }
-    }
-    return true;
+    return nativeDetachAnimalChains(unit);
 }
 bool nativeZoneAssignUnit(df::building_civzonest& zone,df::unit& unit,bool assign) {
     if(!df::global::world || !nativeZoneAnimalAssignmentReady())return false;

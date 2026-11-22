@@ -284,6 +284,7 @@ try {
      if($name -eq 'kitchen-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/kitchen_wire_live.gd')}
      if($name -eq 'kitchen-wire' -and $env:DF3D_KITCHEN_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/kitchen_wire_live.gd')}
      if($name -eq 'labor-lifecycle-wire'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/labor_lifecycle_wire_live.gd')}
+     if($name -eq 'labor-lifecycle-wire' -and $env:DF3D_MANAGEMENT_LIFECYCLE -eq '1'){$clientArgs=@('--max-fps','30','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/labor_lifecycle_wire_live.gd')}
      if($name -eq 'labor-lifecycle-wire' -and $env:DF3D_LABOR_LIFECYCLE_HEADLESS -eq '1'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/labor_lifecycle_wire_live.gd')}
      if($name -eq 'standing-automation-wire'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/standing_automation_wire_live.gd')}
      if($name -eq 'work-details-root' -and $env:DF3D_LABOR_PUBLIC_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/labor_scene_live.gd')}

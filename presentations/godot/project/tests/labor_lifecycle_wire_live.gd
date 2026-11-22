@@ -1,7 +1,7 @@
 extends "res://tests/standing_automation_wire_live.gd"
 func ready_state(state) -> bool:
 	var deadline:=Time.get_ticks_msec()+5000
-	while state.phase in [state.Phase.Reading,state.Phase.Applying] and Time.get_ticks_msec()<deadline:await create_timer(0.01).timeout
+	while state.phase!=state.Phase.Ready and Time.get_ticks_msec()<deadline:await create_timer(0.01).timeout
 	return check(state.phase==state.Phase.Ready,"Labor authority failed: %s phase=%s result=%s"%[state.get_script().resource_path,state.phase,state.last_result])
 func handshake(step: int) -> bool:
 	var file:=FileAccess.open(directory+"/labor-lifecycle-request",FileAccess.WRITE)
@@ -35,6 +35,8 @@ func settled(main) -> bool:
 	output.store_string(JSON.stringify(snapshot));output.close()
 	return check(false,"Labor replacement connection did not settle: "+JSON.stringify(snapshot))
 func run() -> void:
+	if OS.get_environment("DF3D_MANAGEMENT_LIFECYCLE")=="1":
+		await management_run();return
 	Engine.max_fps=30;root.size=Vector2i(1200,800)
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	var preferences=preload("res://scripts/presentation_settings.gd")
@@ -93,3 +95,56 @@ func run() -> void:
 	output.store_string(JSON.stringify({"success":not failed,"main":true,"transport_cycles":records}));output.close()
 	main.queue_free();await process_frame;await process_frame
 	quit(1 if failed else 0)
+
+func management_run() -> void:
+	Engine.max_fps=30;root.size=Vector2i(1200,800)
+	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	var preferences=preload("res://scripts/presentation_settings.gd")
+	preferences.loaded=true;preferences.ui_scale=1.0;preferences.camera_mode="df"
+	OS.set_environment("DF3D_FIXTURE","")
+	var main=load("res://scenes/main.tscn").instantiate();root.add_child(main);world=main.world
+	if not await settled(main):quit(1);return
+	var actions=main._ui.actions
+	var records: Array=[]
+	var screens: Array=[{"name":"Tasks","owner":"tasks","key":"job_id"},{"name":"Objects","owner":"objects","key":"artifact_id"},{"name":"Justice","owner":"justice","key":"crime_id"}]
+	for index in screens.size():
+		var spec: Dictionary=screens[index]
+		var owner=main._ui.controller(spec.owner);var state=owner.state
+		await hud_click(main._fortress_hud.launcher_rect(spec.name).get_center())
+		if not await ready_state(state):quit(1);return
+		check(owner.panel.visible and main._ui.host.active==owner,"Public management entry lost owner: "+spec.name)
+		var ids: Array=state.rows.map(func(row):return row.get(spec.key,-1))
+		# Hold delivery after dispatch so a pre-loss read cannot grant authority
+		# to the replacement producer, even if DF completed it before disabling.
+		actions.set_process(false);state.refresh()
+		var old_ticket: int=state.ticket
+		var deadline:=Time.get_ticks_msec()+5000
+		while actions._requests.has(old_ticket) and int(actions._requests[old_ticket].sequence)==0 and Time.get_ticks_msec()<deadline:
+			actions.poll(0.01);await process_frame
+		if not check(old_ticket>0 and actions._requests.has(old_ticket) and int(actions._requests[old_ticket].sequence)>0,"Management read was not dispatched: "+spec.name):quit(1);return
+		var generation: int=state.generation
+		if not await handshake(index*2+1):quit(1);return
+		actions.set_process(true)
+		deadline=Time.get_ticks_msec()+10000
+		while owner.panel.visible and Time.get_ticks_msec()<deadline:await create_timer(0.01).timeout
+		check(not owner.panel.visible and main._ui.host.active==null,"Producer loss retained management owner: "+spec.name)
+		check(state.generation>generation and state.ticket==0 and state.rows.is_empty(),"Producer loss retained management facts: "+spec.name)
+		if spec.owner=="justice":check(state.detail.is_empty(),"Justice retained case detail after loss")
+		if not await handshake(index*2+2):quit(1);return
+		if not await settled(main):quit(1);return
+		check(not owner.panel.visible and state.rows.is_empty(),"Reconnect reused retired management facts: "+spec.name)
+		await hud_click(main._fortress_hud.launcher_rect(spec.name).get_center())
+		if not await ready_state(state):quit(1);return
+		check(owner.panel.visible and state.rows.map(func(row):return row.get(spec.key,-1))==ids,"Fresh management membership changed: "+spec.name)
+		main._ui.host.close_active()
+		records.append({"screen":spec.name,"rows":ids.size(),"retired":true,"fresh_read":true})
+		if failed:quit(1);return
+	var output:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	output.store_string(JSON.stringify({"success":not failed,"main":true,"transport_cycles":records}));output.close()
+	main.queue_free();await process_frame;await process_frame
+	quit(1 if failed else 0)
+
+func hud_click(point: Vector2) -> void:
+	for pressed in [true,false]:
+		var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed
+		event.position=point;event.global_position=point;root.push_input(event,true);await process_frame

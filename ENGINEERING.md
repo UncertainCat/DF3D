@@ -8592,6 +8592,26 @@ demolition and started-construction cancellation are not covered by this run.
 Remaining action branches, Details subpage/overflow backgrounds and producer/epoch
 live acceptance remain unfinished; public-route acceptance is recorded above.
 
+### Management producer recovery
+
+Protected153800 on2026-11-22 runs the public Tasks, Objects and Justice HUD routes
+through three real bridge disable/enable cycles using the existing Labor lifecycle
+handshake. `DF3D_MANAGEMENT_LIFECYCLE=1` selects this mode in
+`labor_lifecycle_wire_live.gd`. Each screen loads, dispatches a refresh and holds
+receipt delivery before the producer is disabled. Transport loss retires the
+panel, modal owner, ticket, generation and rows; Justice also clears case detail.
+Reconnection does not reopen stale UI. Explicit HUD reopening obtains fresh,
+identical ordered membership:41 Tasks rows,10 Objects and7 Justice cases.
+
+The native handshake verifies all six disable/enable stages. Client stderr is
+empty, the source save is unchanged, and owned DF60012 closes unsaved. Graphics
+are serial30FPS, with GPU samples50C. Earlier153633 failed a harness call that
+treated the HUD CanvasLayer as a Control; viewport-coordinate clicks fixed it.
+No runtime change was needed. This qualifies producer restart and retirement of
+outstanding read authority in these three main-scene workflows. It does not
+establish a changed native world epoch or unknown sent-mutation handling; those
+remain separate from producer recovery and from the prior close/reopen tests.
+
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can
 return fewer rows to keep the text/recipe payload below384KiB within the512KiB

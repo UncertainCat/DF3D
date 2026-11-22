@@ -271,6 +271,8 @@ enum FarmOperation {
 	TrapBait = 16,
 	HiveInstall = 17,
 	HiveGather = 18,
+	SiegeMode = 19,
+	SiegeResting = 20,
 }
 enum ManagementAction {
 	Catalog = 0,

@@ -125,6 +125,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
         if(const auto* c=v->name_color())d.nameColor=AreaNameColor{{c->foreground(),c->background(),c->bright()},{c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};}
       if(const auto* v=f->trap())state.snapshot->trap=AnimalTrapBodySnapshot{v->state(),v->bait_type(),v->item_id(),str(v->status()),str(v->name())};
       if(const auto* v=f->hive())state.snapshot->hive=HiveBodySnapshot{v->flags(),v->outdoor_access(),v->crowding(),v->colony_race(),v->matching_colonies()};
+      if(const auto* v=f->siege())state.snapshot->siege=SiegeBodySnapshot{v->type(),v->action(),v->resting(),v->facing(),v->loaded(),v->available(),v->squads(),v->hunters()};
     }
     if(source->snapshot() && source->snapshot()->cage()) {
       const auto* f=source->snapshot()->cage();auto& v=state.snapshot->cage.emplace();

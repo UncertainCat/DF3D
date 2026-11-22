@@ -327,6 +327,8 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
         value["nest"]=body;}
       if(f.trap){const auto& v=*f.trap;Dictionary body;body["state"]=v.state;body["bait_type"]=v.baitType;body["item_id"]=v.itemId;
         body["status"]=String::utf8(v.status.c_str());body["name"]=String::utf8(v.name.c_str());value["trap"]=body;}
+      if(f.siege){const auto& v=*f.siege;Dictionary body;body["type"]=v.type;body["action"]=v.action;body["resting"]=v.resting;body["facing"]=v.facing;
+        body["loaded"]=v.loaded;body["available"]=v.available;body["squads"]=v.squads;body["hunters"]=v.hunters;value["siege"]=body;}
       if(f.hive){const auto& v=*f.hive;Dictionary body;body["flags"]=int64_t(v.flags);body["outdoor_access"]=v.outdoorAccess;body["crowding"]=v.crowding;
         body["colony_race"]=v.colonyRace;body["matching_colonies"]=v.matchingColonies;value["hive"]=body;}
       headerState["snapshot"]=value;
@@ -805,9 +807,9 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.generalOrderValue=int16_t(n("general_order_value",-1,-1,99));
   value.workshopWorkers=data.get("workshop_workers",false);
   value.workerId=int32_t(n("worker_id",-1,-1,INT32_MAX));value.workerListRevision=uint64_t(n("worker_list_revision",0,0,INT64_MAX));value.workerValue=int8_t(n("worker_value",-1,-1,1));
-  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,int(wm::FarmOperation::HiveGather)));
+  value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,int(wm::FarmOperation::SiegeResting)));
   value.itemId=int32_t(n("item_id",-1,-1,INT32_MAX));
-  value.itemValue=int8_t(n("item_value",-1,-1,value.farmOperation==wm::FarmOperation::TrapBait?49:value.farmOperation==wm::FarmOperation::DepotMode?2:1));
+  value.itemValue=int8_t(n("item_value",-1,-1,value.farmOperation==wm::FarmOperation::TrapBait?49:value.farmOperation==wm::FarmOperation::SiegeResting?7:value.farmOperation==wm::FarmOperation::SiegeMode?4:value.farmOperation==wm::FarmOperation::DepotMode?2:1));
   String farmName=data.get("farm_name",String());
   const auto nameBytes=farmName.utf8();value.farmName.assign(nameBytes.get_data(),nameBytes.length());
   if(value.farmName.size()>90)valid=false;

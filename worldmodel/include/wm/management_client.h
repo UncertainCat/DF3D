@@ -469,6 +469,10 @@ struct AnimalTrapBodySnapshot {
 struct HiveBodySnapshot {
   uint32_t flags=0;bool outdoorAccess=false;uint8_t crowding=0;int32_t colonyRace=-1,matchingColonies=0;
 };
+struct SiegeBodySnapshot {
+  int8_t type=-1,action=-1,resting=-1,facing=-1;
+  int32_t loaded=-1,available=-1,squads=-1,hunters=-1;
+};
 struct BuildingHeaderSnapshot {
   int32_t id=-1,type=-1,stage=-1,maxStage=-1;uint64_t revision=0;
   std::string customName,nativeName,headerName;
@@ -483,6 +487,7 @@ struct BuildingHeaderSnapshot {
   std::optional<NestBoxBodySnapshot> nest;
   std::optional<AnimalTrapBodySnapshot> trap;
   std::optional<HiveBodySnapshot> hive;
+  std::optional<SiegeBodySnapshot> siege;
 };
 struct BuildingHeaderState {
   std::optional<BuildingHeaderSnapshot> snapshot;

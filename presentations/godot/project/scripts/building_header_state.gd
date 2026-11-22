@@ -3,7 +3,7 @@ extends RefCounted
 signal changed
 signal applied
 const C=preload("res://scripts/management_contract.gd")
-const SUPPORTED_TYPES=[0,1,2,3,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,24,25,26,27,28,31,32,33,35,36,37,38,39,40,41,42,43,44,45,46,48,49,50,51,52,54]
+const SUPPORTED_TYPES=[0,1,2,3,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,31,32,33,35,36,37,38,39,40,41,42,43,44,45,46,48,49,50,51,52,54]
 enum Phase { Closed, Reading, Ready, Applying, Rejected, Stale, Unknown, Unavailable }
 var service
 var phase:=Phase.Closed
@@ -119,6 +119,14 @@ func set_hive_setting(install: bool,enabled: bool) -> void:
 	if snapshot.get("type",-1)!=49:return
 	_edit(C.FarmOperation.HiveInstall if install else C.FarmOperation.HiveGather,{"item_value":int(enabled)})
 
+func set_siege_mode(mode: int) -> void:
+	if snapshot.get("type",-1)!=22 or mode<0 or mode>4:return
+	_edit(C.FarmOperation.SiegeMode,{"item_value":mode})
+
+func set_siege_resting(direction: int) -> void:
+	if snapshot.get("type",-1)!=22 or snapshot.get("siege",{}).get("type",-1)!=2 or direction<0 or direction>7:return
+	_edit(C.FarmOperation.SiegeResting,{"item_value":direction})
+
 func _edit(operation: int,fields: Dictionary) -> void:
 	if phase!=Phase.Ready or ticket!=0 or snapshot.is_empty() or snapshot.get("type",-1) not in SUPPORTED_TYPES or snapshot.stage!=snapshot.max_stage:return
 	if snapshot.removing!=(operation==C.FarmOperation.CancelRemoval):return
@@ -148,8 +156,21 @@ static func valid_snapshot(value: Dictionary,id: int) -> bool:
 	for field in ["removing","suspended","has_worker","forbidden"]:
 		if typeof(value.get(field))!=TYPE_BOOL:return false
 	if value.has("appearance") and not preload("res://scripts/item_sheet_state.gd")._valid_recipe(value.appearance):return false
-	if not valid_special(value) or not valid_cage(value) or not valid_funerary(value) or not valid_machinery(value) or not valid_well(value) or not valid_depot(value):return false
+	if not valid_siege(value) or not valid_special(value) or not valid_cage(value) or not valid_funerary(value) or not valid_machinery(value) or not valid_well(value) or not valid_depot(value):return false
 	return value.removing or (not value.suspended and not value.has_worker)
+
+static func valid_siege(value: Dictionary) -> bool:
+	if value.type!=22:return not value.has("siege")
+	if typeof(value.get("siege"))!=TYPE_DICTIONARY or value.siege.size()!=8:return false
+	var body: Dictionary=value.siege
+	for field in ["type","action","resting","facing","loaded","available","squads","hunters"]:
+		if typeof(body.get(field))!=TYPE_INT:return false
+	if body.type<0 or body.type>2 or body.action<0 or body.action>4 or body.resting<0 or body.resting>7 or body.facing<0 or body.facing>7:return false
+	for field in ["loaded","available","squads","hunters"]:
+		if body.type==2:
+			if body[field]<0 or body[field]>2147483647:return false
+		elif body[field]!=-1:return false
+	return true
 
 static func valid_special(value: Dictionary) -> bool:
 	for pair in [[24,"trap"],[48,"nest"],[49,"hive"]]:
@@ -302,6 +323,8 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 			(operation==C.FarmOperation.PumpManual and (observed.type!=33 or observed.machinery.pump_manual!=sent.item_value)) or \
 			(operation==C.FarmOperation.CageAquarium and (observed.type!=28 or observed.cage.justice_restraint or not observed.cage.glass or observed.cage.aquarium!=(sent.item_value==1))) or \
 			(operation==C.FarmOperation.TrapBait and (observed.type!=24 or observed.trap.state!=1 or observed.trap.bait_type!=sent.item_value)) or \
+			(operation==C.FarmOperation.SiegeMode and (observed.type!=22 or observed.siege.action!=sent.item_value)) or \
+			(operation==C.FarmOperation.SiegeResting and (observed.type!=22 or observed.siege.type!=2 or observed.siege.resting!=sent.item_value)) or \
 			(operation in [C.FarmOperation.HiveInstall,C.FarmOperation.HiveGather] and (observed.type!=49 or bool(observed.hive.flags & (1 if operation==C.FarmOperation.HiveInstall else 2))!=(sent.item_value==1))) or \
 			(operation==C.FarmOperation.DepotMode and (observed.type!=6 or observed.depot.requested!=(sent.item_value!=2) or (sent.item_value!=2 and observed.depot.anyone!=(sent.item_value==1)))):
 			_fail(Phase.Unknown);return

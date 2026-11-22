@@ -273,6 +273,8 @@ enum class FarmOperation : uint8_t {
   TrapBait = 16,
   HiveInstall = 17,
   HiveGather = 18,
+  SiegeMode = 19,
+  SiegeResting = 20,
 };
 enum class ManagementAction : uint8_t {
   Catalog = 0,

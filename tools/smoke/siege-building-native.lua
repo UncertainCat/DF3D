@@ -101,6 +101,15 @@ local ok,err=xpcall(function()
   assert(engine.facing==before.facing and engine.resting_orientation==before.resting and #engine.jobs==before.jobs)
   result.engines[#result.engines+1]=row
  end
+ if os.getenv('DF3D_SIEGE_WIRE')=='1' then
+  local expected={buildings={}}
+  for _,engine in ipairs(engines)do expected.buildings[#expected.buildings+1]={id=engine.id,body=probe(engine)}end
+  local file=assert(io.open(out..'/siege-building-expected.json','w'));file:write(json.encode(expected));file:close()
+  local active=sheet.active_id;capture('siege-building-wire')
+  file=assert(io.open(out..'/siege-building-wire-result.json'));result.viewer=json.decode(file:read('*a'));file:close()
+  assert(result.viewer.success and sheet.active_id==active)
+  for _,row in ipairs(expected.buildings)do assert(json.encode(probe(assert(df.building.find(row.id))))==json.encode(row.body),'Siege wire did not restore state')end
+ end
 end,debug.traceback)
 if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
 for _,item in ipairs(items)do item.flags.in_building=false;assert(dfhack.items.remove(item))end

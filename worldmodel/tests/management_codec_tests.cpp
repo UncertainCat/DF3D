@@ -6267,3 +6267,29 @@ TEST_CASE("special building edits require header revisions and native value doma
     CHECK(bool(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
   }
 }
+TEST_CASE("siege transport requires typed bodies and preserves owned ammunition") {
+  for(int type=0;type<3;++type)for(int fault=0;fault<6;++fault) {
+    flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");const auto label=b.CreateString("Synthetic siege");
+    const auto body=wire::CreateSiegeBodySnapshot(b,type,fault==3?5:3,7,2,type==2?11:-1,type==2?7:-1,type==2?25:-1,fault==4?-2:type==2?89:-1);
+    wire::BuildingHeaderSnapshotBuilder h(b);h.add_id(1491);h.add_type(fault==1?15:22);h.add_revision(9007199254740993ULL);
+    h.add_stage(1);h.add_max_stage(1);h.add_custom_name(empty);h.add_native_name(label);h.add_header_name(label);h.add_forbidden(0);
+    if(fault!=2)h.add_siege(body);
+    const auto header=wire::CreateBuildingHeaderState(b,h.Finish());
+    wire::ProductionStateBuilder prod(b);prod.add_building_header(header);const auto payload=prod.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_schema_version(fault==5?252:wire::kManagementVersion);
+    root.add_action(wire::ManagementAction::ProductionInspect);root.add_status(wire::ManagementStatus::Ok);root.add_production(payload);b.Finish(root.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CAPTURE(type);CAPTURE(fault);
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeProduction(value->production());b.Clear();REQUIRE(decoded.buildingHeader->snapshot->siege);
+      const auto& v=*decoded.buildingHeader->snapshot->siege;CHECK(v.type==type);CHECK(v.action==3);CHECK(v.resting==7);CHECK(v.facing==2);CHECK(v.hunters==(type==2?89:-1));}
+  }
+}
+TEST_CASE("siege edit intents reject foreign fields and out of range values") {
+  for(auto op:{wm::FarmOperation::SiegeMode,wm::FarmOperation::SiegeResting})for(int fault=0;fault<5;++fault) {
+    wm::ManagementRequest r;r.action=fault==4?wm::ManagementAction::ProductionInspect:wm::ManagementAction::FarmEdit;
+    auto& p=r.production;p.buildingId=1491;p.buildingHeader=fault!=1;p.expectedRevision=fault==2?0:9007199254740993ULL;
+    p.farmOperation=op;p.itemValue=fault==3?8:op==wm::FarmOperation::SiegeMode?4:7;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);CAPTURE(int(op));CAPTURE(fault);
+    CHECK(bool(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+  }
+}

@@ -413,7 +413,7 @@ try {
      if(-not $client.WaitForExit(60000)){$client.Kill();$client.WaitForExit();throw 'Work order client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/$name-result.json")){throw 'Work order client failed'}
     }
-    if($FarmItemCarriers -and ($name -in @('chain-scene','chain-wire','cage-wire','cage-glass-wire','cage-scene','workshop-wire','workshop-order-wire','lever-warning-wire','machinery-wire','machinery-scene','barrier-wire','barrier-scene','simple-building-wire','special-building-wire','depot-wire','depot-scene','depot-goods-scene','trade-catalog-wire','trade-session-wire','trade-goods-art-wire','trade-exchange-wire','trade-transfer-wire') -or $name -like 'depot-scene-gate-*' -or $name -like 'depot-goods-wire-*' -or $name -like 'door-mode-wire-*' -or $name -like 'well-wire-*' -or $name -like 'barrier-variant-wire-*' -or $name -like 'machinery-variant-wire-*' -or $name -like 'trap-sheet-wire-*' -or $name -eq 'machinery-contract-wire')) {
+    if($FarmItemCarriers -and ($name -in @('siege-building-wire','chain-scene','chain-wire','cage-wire','cage-glass-wire','cage-scene','workshop-wire','workshop-order-wire','lever-warning-wire','machinery-wire','machinery-scene','barrier-wire','barrier-scene','simple-building-wire','special-building-wire','depot-wire','depot-scene','depot-goods-scene','trade-catalog-wire','trade-session-wire','trade-goods-art-wire','trade-exchange-wire','trade-transfer-wire') -or $name -like 'depot-scene-gate-*' -or $name -like 'depot-goods-wire-*' -or $name -like 'door-mode-wire-*' -or $name -like 'well-wire-*' -or $name -like 'barrier-variant-wire-*' -or $name -like 'machinery-variant-wire-*' -or $name -like 'trap-sheet-wire-*' -or $name -eq 'machinery-contract-wire')) {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $env:DF3D_DOOR_CAPTURE=$name
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
@@ -457,6 +457,7 @@ try {
      if($name -like 'barrier-variant-wire-*'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/barrier_variants_scene_live.gd')}
      if($name -like 'well-wire-*'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/well_scene_live.gd')}
      if($name -eq 'special-building-wire'){$clientArgs=@('--headless','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/special_building_wire_live.gd')}
+     if($name -eq 'siege-building-wire'){$clientArgs=@('--headless','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/siege_building_wire_live.gd')}
      if($name -eq 'special-building-wire' -and $env:DF3D_SPECIAL_BUILDINGS_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/special_building_scene_live.gd')}
      if($name -eq 'simple-building-wire'){$clientArgs=@('--max-fps','30','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/simple_building_scene_live.gd')}
      if($name -eq 'barrier-scene'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/barrier_scene_live.gd')}

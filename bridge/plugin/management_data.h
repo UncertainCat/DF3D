@@ -1,5 +1,6 @@
 #pragma once
 #include "cage_body.h"
+#include "siege_body.h"
 #include "special_building_native.h"
 #include "bed_appearance_native.h"
 #include "item_appearance_recipe.h"
@@ -213,6 +214,7 @@ struct BuildingHeaderSnapshot {
   std::optional<df3d_production::NestBoxBody> nest;
   std::optional<df3d_production::AnimalTrapBody> trap;
   std::optional<df3d_production::HiveBody> hive;
+  std::optional<df3d_production::SiegeBody> siege;
 };
 struct BuildingHeaderState {
   std::optional<BuildingHeaderSnapshot> snapshot;

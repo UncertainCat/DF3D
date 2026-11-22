@@ -1,8 +1,10 @@
 #pragma once
 #include "siege_controls_native.h"
+#include "siege_body.h"
 #include "ammunition_assignment_native.h"
 #include "df/buildingitemst.h"
 #include "df/item.h"
+#include "df/item_ammost.h"
 #include <array>
 
 namespace df3d_production {
@@ -68,5 +70,12 @@ inline std::optional<std::array<int32_t,4>> siegeAmmunition(df::building* buildi
         if(!add(index,item))return {};
     }
     return result;
+}
+inline std::optional<SiegeBody> siegeBody(df::building* building) {
+    const auto controls=siegeControls(building);if(!controls)return {};
+    SiegeBody result;result.type=int8_t(controls->type);result.action=int8_t(controls->action);
+    result.resting=int8_t(controls->resting);result.facing=int8_t(controls->facing);
+    if(result.type==2){const auto counts=siegeAmmunition(building);if(!counts)return {};result.ammunition=*counts;}
+    return validSiegeBody(result)?std::optional<SiegeBody>(result):std::nullopt;
 }
 }

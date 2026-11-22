@@ -3097,6 +3097,25 @@ render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
 
 ### Siege building sheet reference
 
+Management protocol253 adds SiegeBodySnapshot to building headers and distinct
+SiegeMode/SiegeResting edits. Rebuild bridge, model consumers and Godot extension
+together;252 management peers are rejected. Earlier recordings have no siege
+body facts and must not be promoted by inventing counts or orientations. Other
+snapshot payloads are unchanged. Native type22 requires a validated siege body;
+only Bolt Thrower carries nonnegative ammunition counts or accepts resting edits.
+Header revisions include control identity and ammunition observations; edits use
+fresh control revisions at the safe point. Unknown effects are never replayed.
+The owned controller validates typed receipts and retires late replies on close.
+Protected061852 on2026-11-22 (DF44292) qualifies all three typed header bodies,
+mode edits, Bolt resting-direction edits, stale rejection, rename/restore and
+remove/cancel through both253 peers. Receipts restore original snapshots exactly;
+owned DF closes unsaved with source unchanged at30FPS, sampled46C. The headless
+client stderr is empty. Building-header owner tests pass, including late-reply
+retirement. Bridge, extension and core builds and all19 root checks pass.
+Public rendering and map/holder admission remain gated. Initial061711
+caught the Godot decoder's old0–1 setting bound;253 now accepts mode0–4 and
+resting0–7 while the wire validator enforces each operation's domain.
+
 Protected055157 on2026-11-22 (DF49460) creates completed Catapult, Ballista and
 Bolt Thrower fixtures with matching installed parts. All five native sheet buttons
 map to actions3/4/2/1/0, matching the already inspected Places mode semantics.

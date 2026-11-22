@@ -231,7 +231,9 @@ static_assert(static_cast<int>(wm::FarmOperation::CageAquarium) == static_cast<i
 static_assert(static_cast<int>(wm::FarmOperation::TrapBait) == static_cast<int>(df3d::mirror::FarmOperation::TrapBait));
 static_assert(static_cast<int>(wm::FarmOperation::HiveInstall) == static_cast<int>(df3d::mirror::FarmOperation::HiveInstall));
 static_assert(static_cast<int>(wm::FarmOperation::HiveGather) == static_cast<int>(df3d::mirror::FarmOperation::HiveGather));
-static_assert(sizeof(df3d::mirror::EnumValuesFarmOperation()) / sizeof(df3d::mirror::FarmOperation) == 19);
+static_assert(static_cast<int>(wm::FarmOperation::SiegeMode) == static_cast<int>(df3d::mirror::FarmOperation::SiegeMode));
+static_assert(static_cast<int>(wm::FarmOperation::SiegeResting) == static_cast<int>(df3d::mirror::FarmOperation::SiegeResting));
+static_assert(sizeof(df3d::mirror::EnumValuesFarmOperation()) / sizeof(df3d::mirror::FarmOperation) == 21);
 static_assert(static_cast<int>(wm::ManagementAction::Catalog) == static_cast<int>(df3d::mirror::ManagementAction::Catalog));
 static_assert(static_cast<int>(wm::ManagementAction::Preview) == static_cast<int>(df3d::mirror::ManagementAction::Preview));
 static_assert(static_cast<int>(wm::ManagementAction::Place) == static_cast<int>(df3d::mirror::ManagementAction::Place));

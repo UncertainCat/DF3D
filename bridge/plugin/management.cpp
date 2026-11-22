@@ -1418,6 +1418,8 @@ void publish() {
       flatbuffers::Offset<m::NestBoxBodySnapshot> nest;
       flatbuffers::Offset<m::AnimalTrapBodySnapshot> trap;
       flatbuffers::Offset<m::HiveBodySnapshot> hive;
+      flatbuffers::Offset<m::SiegeBodySnapshot> siege;
+      if(f.siege){const auto& v=*f.siege;siege=m::CreateSiegeBodySnapshot(b,v.type,v.action,v.resting,v.facing,v.ammunition[0],v.ammunition[1],v.ammunition[2],v.ammunition[3]);}
       if(f.nest){const auto& v=*f.nest;flatbuffers::Offset<m::AreaNameColor> color;
         if(v.nameColor){const auto& c=*v.nameColor;color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);}
         nest=m::CreateNestBoxBodySnapshot(b,v.claimantId,b.CreateString(v.status),b.CreateString(v.name),color);}
@@ -1425,7 +1427,7 @@ void publish() {
       if(f.hive){const auto& v=*f.hive;hive=m::CreateHiveBodySnapshot(b,v.flags,v.outdoorAccess,v.crowding,v.colonyRace,v.matchingColonies);}
 
       snapshot=m::CreateBuildingHeaderSnapshot(b,f.id,f.type,f.revision,f.stage,f.maxStage,
-        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance),funerary,machinery,well,depot,cage,nest,trap,hive);
+        b.CreateString(f.customName),b.CreateString(f.nativeName),b.CreateString(f.headerName),f.removing,f.suspended,f.hasWorker,f.forbidden,encodeItemRecipe(f.appearance),funerary,machinery,well,depot,cage,nest,trap,hive,siege);
     }
     buildingHeader=m::CreateBuildingHeaderState(b,snapshot,state.outcome,state.operation,state.missingBuildingId);
   }
@@ -3679,7 +3681,7 @@ df::building_actual* contentsBuilding(int32_t id,bool editing=false) {
   if(!building)return nullptr;
   const auto type=building->getType();
   const bool lever=type==df::building_type::Trap && (building->getSubtype()==0 || building->getSubtype()==1);
-  if(!df3d_production::specialFurnitureType(type) && type!=df::building_type::Cage && type!=df::building_type::Chain && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
+  if(!df3d_production::specialFurnitureType(type) && type!=df::building_type::Cage && type!=df::building_type::Chain && type!=df::building_type::SiegeEngine && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
      !lever && (editing || !df3d_production::productionProfileBuilding(building)) &&
      !df3d_production::observePendingBuilding(building))return nullptr;
   auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
@@ -4593,13 +4595,13 @@ void run(color_ostream& out) {
     // Newly admitted wire operations must not fall through to CancelRemoval.
     if(editing && q->farm_operation()!=m::FarmOperation::Rename &&
        q->farm_operation()!=m::FarmOperation::Remove && q->farm_operation()!=m::FarmOperation::CancelRemoval &&
-       q->farm_operation()!=m::FarmOperation::PumpManual && q->farm_operation()!=m::FarmOperation::DepotMode && q->farm_operation()!=m::FarmOperation::CageAquarium && q->farm_operation()!=m::FarmOperation::TrapBait && q->farm_operation()!=m::FarmOperation::HiveInstall && q->farm_operation()!=m::FarmOperation::HiveGather){publish();return;}
+       q->farm_operation()!=m::FarmOperation::PumpManual && q->farm_operation()!=m::FarmOperation::DepotMode && q->farm_operation()!=m::FarmOperation::CageAquarium && q->farm_operation()!=m::FarmOperation::TrapBait && q->farm_operation()!=m::FarmOperation::HiveInstall && q->farm_operation()!=m::FarmOperation::HiveGather && q->farm_operation()!=m::FarmOperation::SiegeMode && q->farm_operation()!=m::FarmOperation::SiegeResting){publish();return;}
     try {
       const auto target=[&]()->df::building* {
         auto* building=df::building::find(q->building_id());
         if(!building)return nullptr;
         const auto type=building->getType();
-        if(!df3d_production::specialFurnitureType(type) && type!=df::building_type::Cage && type!=df::building_type::Chain && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && !df3d_production::productionProfileBuilding(building))return nullptr;
+        if(!df3d_production::specialFurnitureType(type) && type!=df::building_type::Cage && type!=df::building_type::Chain && type!=df::building_type::SiegeEngine && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && !df3d_production::productionProfileBuilding(building))return nullptr;
         auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
         return tile && !tile->bits.hidden?building:nullptr;
       };
@@ -4609,6 +4611,7 @@ void run(color_ostream& out) {
         if(f.nest){result.nest=*f.nest;result.nest->status=DF2UTF(f.nest->status);result.nest->name=DF2UTF(f.nest->name);}
         if(f.trap){result.trap=*f.trap;result.trap->status=DF2UTF(f.trap->status);result.trap->name=DF2UTF(f.trap->name);}
         if(f.hive)result.hive=*f.hive;
+        if(f.siege)result.siege=*f.siege;
         if(f.cage){result.cage=*f.cage;auto& room=result.cage->room;
           room.introduction=DF2UTF(room.introduction);room.name=DF2UTF(room.name);
           for(auto& notice:room.notices)notice=DF2UTF(notice);}
@@ -4637,6 +4640,20 @@ void run(color_ostream& out) {
         response.missingBuildingId=q->building_id();status=m::ManagementStatus::Ok;
       }
       else if(before && !editing){response.snapshot=convert(*before);if(response.snapshot)status=m::ManagementStatus::Ok;}
+      else if(before && (q->farm_operation()==m::FarmOperation::SiegeMode || q->farm_operation()==m::FarmOperation::SiegeResting)) {
+        using O=df3d_production::SiegeOutcome;
+        if(before->revision!=q->expected_revision())response.outcome=m::FarmEditOutcome::Stale;
+        else {
+          const auto result=df3d_production::setSiegeControl(target(),before->siegeRevision,q->item_value(),q->farm_operation()==m::FarmOperation::SiegeResting);
+          entered=result.effectsStarted;mutated=entered;
+          if(result.outcome==O::Completed) {
+            response.outcome=m::FarmEditOutcome::Unknown;
+            if(const auto after=observe())response.snapshot=convert(*after);
+            if(response.snapshot){response.operation=q->farm_operation();response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;}
+          } else if(result.outcome==O::Stale)response.outcome=m::FarmEditOutcome::Stale;
+          else if(result.outcome==O::Unknown)response.outcome=m::FarmEditOutcome::Unknown;
+        }
+      }
       else if(before && (q->farm_operation()==m::FarmOperation::TrapBait || q->farm_operation()==m::FarmOperation::HiveInstall || q->farm_operation()==m::FarmOperation::HiveGather)) {
         using O=df3d_production::SpecialBuildingOutcome;
         if(before->revision!=q->expected_revision())response.outcome=m::FarmEditOutcome::Stale;

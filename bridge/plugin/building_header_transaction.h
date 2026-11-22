@@ -2,6 +2,7 @@
 #include "machinery_body.h"
 #include "depot_body.h"
 #include "cage_body.h"
+#include "siege_body.h"
 #include "special_building_native.h"
 #include <cstdint>
 #include <optional>
@@ -25,6 +26,8 @@ struct BuildingHeaderObservation {
     std::optional<NestBoxBody> nest;
     std::optional<AnimalTrapBody> trap;
     std::optional<HiveBody> hive;
+    std::optional<SiegeBody> siege;
+    uint64_t siegeRevision=0;
     uint64_t specialRevision=0;
 };
 inline uint64_t buildingHeaderRevision(const BuildingHeaderObservation& value) {
@@ -53,6 +56,7 @@ inline uint64_t buildingHeaderRevision(const BuildingHeaderObservation& value) {
         for(const auto* text:{&v.room.introduction,&v.room.name}){number(text->size());for(unsigned char c:*text)byte(c);}
         number(v.room.notices.size());for(const auto& text:v.room.notices){number(text.size());for(unsigned char c:text)byte(c);}}
     if(value.specialRevision)number(value.specialRevision);
+    if(value.siege){const auto& v=*value.siege;number(value.siegeRevision);byte(v.type);byte(v.action);byte(v.resting);byte(v.facing);for(auto count:v.ammunition)number(count);}
     if(value.nest){const auto& v=*value.nest;number(v.claimantId);
         for(const auto* text:{&v.status,&v.name}){number(text->size());for(unsigned char c:*text)byte(c);}
         if(v.nameColor){for(auto c:v.nameColor->color)byte(c);for(auto c:v.nameColor->alternate)byte(c);byte(v.nameColor->effect);}}
@@ -68,6 +72,7 @@ inline bool validBuildingHeader(const BuildingHeaderObservation& value) {
         (value.type==27 || value.type==28)==bool(value.cage) && (!value.cage || value.cage->room.buildingId==value.id) &&
         (value.type==48)==bool(value.nest) && (value.type==24)==bool(value.trap) && (value.type==49)==bool(value.hive) &&
         ((value.type==24 || value.type==49)==(value.specialRevision>0)) &&
+        (value.type==22)==bool(value.siege) && (value.type==22)==(value.siegeRevision>0) && (!value.siege || validSiegeBody(*value.siege)) &&
         machineryType(value.type)==bool(value.machinery) &&
         (!value.machinery || validMachineryBody(*value.machinery,value.type)) && value.revision==buildingHeaderRevision(value);
 }
@@ -162,6 +167,7 @@ BuildingHeaderEdit finishBuildingHeaderEdit(const BuildingHeaderObservation& bef
             if(after->removing!=(operation==BuildingHeaderOperation::Remove))return result;
             if(operation==BuildingHeaderOperation::CancelRemoval && !after->jobs.empty())return result;
             unchanged.specialRevision=before.specialRevision;
+            unchanged.siegeRevision=before.siegeRevision;
             unchanged.removing=before.removing;unchanged.suspended=before.suspended;unchanged.hasWorker=before.hasWorker;unchanged.jobs=before.jobs;
         }
         if(buildingHeaderRevision(unchanged)!=before.revision)return result;

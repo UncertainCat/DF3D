@@ -245,6 +245,20 @@ func run() -> void:
 		service.poll();model.close();reply(special,1,operation)
 		check(model.phase==Model.Phase.Closed and model.snapshot.is_empty(),"late special receipt cannot reopen owner")
 		await process_frame
+	for operation in [C.FarmOperation.SiegeMode,C.FarmOperation.SiegeResting]:
+		setup();model.open(278);service.poll();var siege:=snapshot();siege.type=22
+		siege.siege={"type":2,"action":0,"resting":0,"facing":3,"loaded":11,"available":7,"squads":25,"hunters":89}
+		reply(siege);check(model.phase==Model.Phase.Ready,"siege body accepted")
+		if operation==C.FarmOperation.SiegeMode:model.set_siege_mode(3)
+		else:model.set_siege_resting(7)
+		service.poll();check(world.calls[-1].request.farm_operation==operation,"siege typed intent")
+		var changed:=siege.duplicate(true);changed.revision+=1
+		if operation==C.FarmOperation.SiegeMode:changed.siege.action=3
+		else:changed.siege.resting=7
+		reply(changed,1,operation);check(model.phase==Model.Phase.Ready,"siege receipt accepted")
+		model.set_siege_mode(1);service.poll();model.close();reply(siege,1,C.FarmOperation.SiegeMode)
+		check(model.phase==Model.Phase.Closed and model.snapshot.is_empty(),"late siege receipt cannot reopen")
+		await process_frame
 	model.dispose();service.free()
 	if failures==0:print("BUILDING_HEADER_STATE_PASS")
 	quit(0 if failures==0 else 1)

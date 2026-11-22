@@ -314,6 +314,7 @@ try {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
      $clientArgs=@('--headless','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/creature_list_wire_live.gd')
+     if($env:DF3D_CREATURE_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/creature_scene_live.gd');$env:DF3D_DF_PATH=$dfPath}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/creature-list-wire.stdout.log" -RedirectStandardError "$out/creature-list-wire.stderr.log"
      $null=$client.Handle
      if(-not $client.WaitForExit(90000)){$client.Kill();$client.WaitForExit();throw 'Creature list wire timed out; no replay'}

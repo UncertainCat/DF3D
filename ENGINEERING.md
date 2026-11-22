@@ -13001,6 +13001,28 @@ Residents, Work Details and UI composition pass. Complex species artwork and
 full public-route acceptance remain unfinished; grouping, activity details and pet help
 have the scoped qualification above.
 
+The protected main-scene creature acceptance uses `DF3D_CREATURE_SCENE=1`
+with the existing creature workflow fixture. It opens Citizens through the HUD
+and enables sibling input only on that test instance; this does not change the
+product gate. Protected144804 on2026-11-22 opens the trainer picker for animal6548,
+scrolls beyond64 candidates, resizes through912x552/1600x900/1200x800, selects
+trainer6822 and verifies the assignment by reopening the picker. Escape returns
+to the roster. Overall Training opens knowledge, scrolls to35, resizes without
+missing visible rows and switches directly to Other; Dead/Residents/Pets returns
+and final input-owner release pass. All five unit pet action families (war, hunting,
+adoption, slaughter and gelding) toggle through mouse input and restore through
+their native pointer-context Ctrl shortcuts, with fresh row readback. The native
+oracle independently verifies final pet flags, trainer absence and unchanged
+species graphics caches/templates. War/hunting toggles can retain a training
+assignment after being toggled off; the test removes it through the picker's None
+choice. Earlier144322/144500/144614 passed UI assertions but failed this enclosing
+restoration check and are not complete acceptance runs. No product change was
+needed. The composed knowledge screenshot was inspected in144322.
+Owned DF45512 closes unsaved with source unchanged; graphical work is capped at
+30FPS, sampled50–51C, client stderr empty. All19 core checks pass.
+This qualifies the assembled route with a test-only gate override, not public
+exposure or all sibling actions. Native pane fidelity retains its separate evidence.
+
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching
 item-name renderer1423fe0. Native142b45a..142b4c5 captures raw item.pos for Recenter;

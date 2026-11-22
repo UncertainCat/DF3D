@@ -192,7 +192,7 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 253;
+inline constexpr uint32_t kManagementVersion = 254;
 inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v253";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
@@ -492,7 +492,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::TradeSessionSeize &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::DisplayRemove &&
       action != ManagementAction::Alert &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -581,7 +581,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::TradeSessionSeize)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::DisplayRemove)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -835,6 +835,16 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       if(q->depot_id()<0 || !q->choice_token() || q->choice_token()>INT64_MAX || q->session() || q->expected_revision())return "invalid trade open request";
     }else if(q->depot_id()!=-1 || q->choice_token() || !q->session() || q->session()>INT64_MAX || q->expected_revision()>INT64_MAX || (r.action()!=ManagementAction::TradeSessionClose?!q->expected_revision():q->expected_revision()!=0))return "invalid trade session request";
   }else if(r.trade_session())return "unexpected trade session request";
+  if(r.action()>=ManagementAction::DisplayRead && r.action()<=ManagementAction::DisplayRemove) {
+    const auto* q=r.display();if(!q || q->building_id()<0 || !q->query() || q->query()->size()>1024 || q->query()->str().find('\0')!=std::string::npos || !q->item_ids() || !q->selected_ids())return "invalid display request";
+    if(r.action()==ManagementAction::DisplayRead) {
+      if(q->category()<-2 || q->category()>=93 || (q->category()<0 && q->query()->size()) || q->expected_revision() || q->selected_ids()->size() || q->item_ids()->size()>64)return "invalid display read";
+      std::unordered_set<int32_t> ids;for(auto id:*q->item_ids())if(id<0 || !ids.insert(id).second)return "invalid display detail identity";
+    } else {
+      if(q->category()!=-1 || q->query()->size() || q->item_ids()->size() || !q->expected_revision() || q->expected_revision()>INT64_MAX || !q->selected_ids()->size() || q->selected_ids()->size()>65536 || (r.action()==ManagementAction::DisplayRemove && q->selected_ids()->size()!=1))return "invalid display edit";
+      int32_t last=-1;for(auto id:*q->selected_ids()){if(id<=last)return "invalid display draft identity";last=id;}
+    }
+  }else if(r.display())return "unexpected display request";
   if(r.action()==ManagementAction::DepotGoodsCommit){
     const auto* q=r.depot_commit();if(!q || q->depot_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX || !q->changes() || !q->changes()->size() || q->changes()->size()>65536)return "invalid depot commit request";
     std::unordered_set<int32_t> ids;for(const auto* row:*q->changes())if(!row || row->id()<0 || row->desired()>1 || !ids.insert(row->id()).second)return "invalid depot commit target";
@@ -1599,7 +1609,7 @@ inline const char* validateAreaCandidate(const AreaCandidateRow* row,uint8_t kin
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::TradeSessionSeize ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::DisplayRemove ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -2112,6 +2122,29 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     }
     if(r->category()==-1 && (r->groups()->size() || r->items()->size() || r->container()))return "unexpected unselected depot rows";
   }else if(s.status()==ManagementStatus::Ok && s.action()==ManagementAction::DepotGoodsRead)return "missing depot goods result";
+  if(const auto* r=s.display()) {
+    const bool read=s.action()==ManagementAction::DisplayRead;
+    if((!read && s.action()!=ManagementAction::DisplayCommit && s.action()!=ManagementAction::DisplayRemove) || r->building_id()<0 || !r->body() || !r->categories() || !r->groups() || !r->items() || r->outcome()>DisplayOutcome::Unknown)return "invalid display result";
+    if(s.status()==ManagementStatus::Ok) {
+      if(r->outcome()!=(read?DisplayOutcome::Available:DisplayOutcome::Applied) || !r->revision() || r->revision()>INT64_MAX || r->category()<-1 || r->category()>=93 || (!read && r->category()!=-1) || r->body()->size()>1048576 || r->groups()->size()>65536 || r->items()->size()>64)return "invalid display success";
+      if(r->category()<0 ? (r->inventory_revision()!=0 || r->categories()->size() || r->groups()->size()) : (!r->inventory_revision() || r->inventory_revision()>INT64_MAX || r->categories()->size()!=93 || r->removing()))return "invalid display picker authority";
+      std::unordered_set<int32_t> parents,members,details;std::unordered_set<int16_t> types;
+      for(const auto* row:*r->body()) {
+        if(!row || row->id()<0 || !parents.insert(row->id()).second || !row->name() || row->name()->size()>16384 || !row->status() || row->status()->size()>64 || (row->status_color()!=10 && row->status_color()!=15))return "invalid display body row";
+        if(!row->resolved() && (row->on_display() || row->name()->size() || row->status()->size() || row->status_color()!=15))return "invalid unresolved display row";
+      }
+      for(const auto* row:*r->categories())if(!row || row->type()<0 || row->type()>=93 || !types.insert(row->type()).second || !row->caption() || !row->caption()->size() || row->caption()->size()>16384 || !row->stored() || !row->stored()->size() || row->stored()->size()>64 || !row->unavailable() || row->unavailable()->size()>64)return "invalid display category";
+      std::set<std::tuple<int16_t,int16_t,int16_t>> keys;
+      for(const auto* row:*r->groups()) {
+        if(!row || !validStocksKey(row->key()) || row->key()->type()!=r->category() || row->revision() || row->flags() || !row->caption() || !row->caption()->size() || row->caption()->size()>16384 || !row->item_ids() || !row->item_ids()->size() || row->item_ids()->size()>1048576 || !keys.emplace(row->key()->subtype(),row->key()->subcat1(),row->key()->subcat2()).second)return "invalid display group";
+        for(auto id:*row->item_ids())if(id<0 || !members.insert(id).second || members.size()>1048576)return "invalid display membership";
+      }
+      for(const auto* row:*r->items()) {
+        if(!row || row->type()<0 || row->type()>112 || !details.insert(row->id()).second || (r->category()<0?!parents.count(row->id()):(!members.count(row->id()) || row->type()!=r->category())) || !row->caption() || !row->caption()->size() || row->caption()->size()>16384 || !row->material_token() || row->material_token()->size()>256 || !row->subtype_raw() || row->subtype_raw()->size()>256)return "invalid display detail";
+        if(const auto* a=row->appearance())if(!validInspectionInstrument(*a,row->type()) || !a->material_token() || !a->material_token()->size() || a->material_token()->size()>256 || !a->subtype_raw() || a->subtype_raw()->size()>128 || !a->color_token() || a->color_token()->size()>128 || a->stack()<1 || (a->flags()&~96) || a->material_token()->str()!=row->material_token()->str() || a->subtype_raw()->str()!=row->subtype_raw()->str())return "invalid display appearance";
+      }
+    } else if(s.status()!=ManagementStatus::Rejected || r->revision() || r->inventory_revision() || r->removing() || r->category()!=-1 || r->body()->size() || r->categories()->size() || r->groups()->size() || r->items()->size() || (r->outcome()!=DisplayOutcome::Rejected && (read || (r->outcome()!=DisplayOutcome::Stale && r->outcome()!=DisplayOutcome::Unknown))))return "invalid display refusal";
+  } else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::DisplayRead && s.action()<=ManagementAction::DisplayRemove)return "missing display result";
   if(const auto* r=s.stocks_menu()) {
     const bool read=s.action()==ManagementAction::StocksMenuRead,apply=s.action()==ManagementAction::StocksGroupApply || s.action()==ManagementAction::StocksItemApply;
     if((!read && !apply) || !r->categories() || !r->groups() || !r->items() || r->category()<-1 || r->category()>=93)return "invalid stocks result";

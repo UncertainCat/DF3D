@@ -128,6 +128,7 @@
 #include "kitchen_native.h"
 #include "stone_use_native.h"
 #include "stocks_native.h"
+#include "display_read_native.h"
 #include "depot_goods_read.h"
 #include "trade_owner_native.h"
 #include "tasks_action_native.h"
@@ -723,6 +724,8 @@ struct StocksResult {
   std::vector<StocksItemResult> items;
 };
 std::optional<StocksResult> stocks;
+struct DisplayReply {int32_t id=-1;m::DisplayOutcome outcome=m::DisplayOutcome::Rejected;std::optional<df3d_production::DisplayRead> read;};
+std::optional<DisplayReply> displayReply;
 std::optional<df3d_production::DepotGoodsRead> depotGoodsReply;
 std::optional<df3d_production::TradeCaravanCatalog> tradeCatalogReply;
 int32_t tradeCatalogDepot=-1;
@@ -907,7 +910,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();depotGoodsReply.reset();depotCommitReply.reset();tradeCatalogReply.reset();tradeCatalogDepot=-1;tradeSessionReply.reset();tradeDraftReply.reset();tasks.reset();objects.reset();justice.reset();places.reset();nobles.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();displayReply.reset();depotGoodsReply.reset();depotCommitReply.reset();tradeCatalogReply.reset();tradeCatalogDepot=-1;tradeSessionReply.reset();tradeDraftReply.reset();tasks.reset();objects.reset();justice.reset();places.reset();nobles.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1841,26 +1844,44 @@ void publish() {
     if(v.container){std::vector<flatbuffers::Offset<m::DepotContainedItem>> rows;for(const auto& row:v.container->items)rows.push_back(m::CreateDepotContainedItem(b,row.id,int16_t(row.type),row.containedCount,row.value,row.prohibited,b.CreateString(DF2UTF(row.caption)),b.CreateString(DF2UTF(row.valueCaption))));container=m::CreateDepotContainerPage(b,v.containerId,v.containerOffset,v.container->total,b.CreateVector(rows));}
     depotGoodsResult=m::CreateDepotGoodsState(b,v.depotId,v.revision,v.category,b.CreateVector(categories),b.CreateVector(groups),b.CreateVector(items),v.appraisal,container);
   }
-  flatbuffers::Offset<m::StocksMenuState> stocksResult;
-  if(stocks){
+  const auto encodeStocksFields=[&](const StocksResult& source) {
     std::vector<flatbuffers::Offset<m::StocksCategoryRow>> categories;
     std::vector<flatbuffers::Offset<m::StocksGroupRow>> groups;
     std::vector<flatbuffers::Offset<m::StocksItemRow>> items;
-    for(const auto& row:stocks->categories)categories.push_back(m::CreateStocksCategoryRow(b,row.type,
+    for(const auto& row:source.categories)categories.push_back(m::CreateStocksCategoryRow(b,row.type,
       b.CreateString(row.caption),b.CreateString(row.stored),b.CreateString(row.unavailable),
-      std::find(stocks->matches.begin(),stocks->matches.end(),row.type)!=stocks->matches.end()));
-    for(const auto& row:stocks->selection.groups){const auto& g=row.group;
+      std::find(source.matches.begin(),source.matches.end(),row.type)!=source.matches.end()));
+    for(const auto& row:source.selection.groups){const auto& g=row.group;
       auto key=m::CreateStocksGroupKey(b,g.type,g.subtype,g.subcat1,g.subcat2);
       groups.push_back(m::CreateStocksGroupRow(b,key,g.amount,b.CreateString(row.caption),row.matches,g.expanded,
         uint8_t(row.flags),row.revision,b.CreateVector(row.ids)));}
-    for(const auto& row:stocks->items){
+    for(const auto& row:source.items){
       flatbuffers::Offset<m::ItemInspectionAppearance> appearance;
       if(row.appearance){const auto& a=*row.appearance;
         appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector),a.craftGemColor?b.CreateString(*a.craftGemColor):0,a.craftSoftMaterial,a.artifactMood,a.coffinUnused,a.bedding?m::CreateBeddingFactsDirect(b,a.bedding->sheet,a.bedding->pillow,a.bedding->baseColor.c_str(),a.bedding->sheetColor.c_str()):0,a.grateWall,a.grateOpen,a.webPattern,a.webThick);}
       items.push_back(m::CreateStocksItemRow(b,row.id,int16_t(row.itemType),b.CreateString(row.caption),row.flags,row.canDump,row.canMelt,
         b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw),appearance));
     }
-    stocksResult=m::CreateStocksMenuState(b,stocks->outcome,stocks->category,b.CreateVector(categories),b.CreateVector(groups),b.CreateVector(items));
+    return std::make_tuple(b.CreateVector(categories),b.CreateVector(groups),b.CreateVector(items));
+  };
+  flatbuffers::Offset<m::StocksMenuState> stocksResult;
+  if(stocks){const auto [categories,groups,items]=encodeStocksFields(*stocks);stocksResult=m::CreateStocksMenuState(b,stocks->outcome,stocks->category,categories,groups,items);}
+  flatbuffers::Offset<m::DisplayState> displayResult;
+  if(displayReply) {
+    StocksResult fields;std::vector<flatbuffers::Offset<m::DisplayBodyRow>> body;
+    uint64_t sourceRevision=0,inventoryRevision=0;bool demolition=false;
+    if(const auto& read=displayReply->read) {
+      sourceRevision=read->assignments.revision;inventoryRevision=read->inventoryRevision;demolition=read->assignments.removing;
+      for(const auto& row:read->body)body.push_back(m::CreateDisplayBodyRow(b,row.id,row.resolved,row.onDisplay,b.CreateString(DF2UTF(row.name)),b.CreateString(DF2UTF(row.status)),row.statusColor));
+      if(const auto& picker=read->picker) {
+        fields.category=picker->type;fields.matches=picker->categories;fields.selection.groups=picker->groups;
+        for(auto type:picker->order){auto row=picker->captions.at(type);row.caption=DF2UTF(row.caption);row.stored=DF2UTF(row.stored);row.unavailable=DF2UTF(row.unavailable);fields.categories.push_back(std::move(row));}
+        for(auto& row:fields.selection.groups)row.caption=DF2UTF(row.caption);
+      }
+      for(const auto& row:read->items){StocksItemResult item;static_cast<df3d_production::ItemFacts&>(item)=row;item.caption=DF2UTF(item.caption);item.appearance=row.appearance;fields.items.push_back(std::move(item));}
+    }
+    const auto [categories,groups,items]=encodeStocksFields(fields);
+    displayResult=m::CreateDisplayState(b,displayReply->id,displayReply->outcome,sourceRevision,inventoryRevision,demolition,fields.category,b.CreateVector(body),categories,groups,items);
   }
   flatbuffers::Offset<m::StoneUseState> stoneUseResult;
   if(stoneUse){
@@ -1914,12 +1935,13 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult,depotGoodsResult,depotCommitResult,tradeCatalogResult,tradeSessionResult,tradeDraftResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult,depotGoodsResult,depotCommitResult,tradeCatalogResult,tradeSessionResult,tradeDraftResult,displayResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
   // Retained depot reply paging is not wired yet. Reject an oversized read
   // explicitly instead of letting a failed mailbox write look like a timeout.
+  if(displayReply && !validationError && b.GetSize()>m::kManagementCapacity)validationError="display response exceeds mailbox capacity";
   if(depotGoodsReply && !validationError && b.GetSize()>m::kManagementCapacity)
     validationError="depot goods response exceeds mailbox capacity";
   if(tradeCatalogReply && !validationError && b.GetSize()>m::kManagementCapacity)
@@ -1944,6 +1966,7 @@ void publish() {
     // A batch may already have changed jobs. Never turn a malformed receipt
     // into a definite rejection; retain Pending for unknown-outcome retirement.
     if(action==m::ManagementAction::DepotGoodsCommit && mutated)return;
+    if((action==m::ManagementAction::DisplayCommit || action==m::ManagementAction::DisplayRemove) && mutated)return;
     if((action==m::ManagementAction::TradeSessionOpen || (action==m::ManagementAction::TradeSessionExchange || action==m::ManagementAction::TradeSessionGift || action==m::ManagementAction::TradeSessionSeize) || action==m::ManagementAction::TradeSessionDismiss || action==m::ManagementAction::TradeDraftApply) && mutated)return;
     // A malformed lever receipt after native job creation is uncertain, never
     // a rejection that could encourage retrying the mutation.
@@ -5690,6 +5713,31 @@ void run(color_ostream& out) {
       depotGoodsReply=df3d_production::readDepotGoods(df::building::find(q.depot_id()),q.category(),UTF2DF(q.query()->str()),q.sort_by_distance(),q.pending_on_top(),q.exclude_prohibited(),ids,q.expected_revision(),draft,sortDraft,q.container_id(),q.container_offset(),q.container_limit());
       if(depotGoodsReply)status=m::ManagementStatus::Ok;
     }catch(...){depotGoodsReply.reset();}
+    publish();return;
+  }
+  if(r->action()>=m::ManagementAction::DisplayRead && r->action()<=m::ManagementAction::DisplayRemove) {
+    const auto& q=*r->display();displayReply.emplace();displayReply->id=q.building_id();status=m::ManagementStatus::Rejected;message.clear();bool entered=false;
+    try {
+      auto* target=df::building::find(q.building_id());
+      if(r->action()==m::ManagementAction::DisplayRead) {
+        std::vector<int32_t> ids(q.item_ids()->begin(),q.item_ids()->end());
+        displayReply->read=df3d_production::readDisplay(target,q.category(),UTF2DF(q.query()->str()),ids);
+        if(displayReply->read){displayReply->outcome=m::DisplayOutcome::Available;status=m::ManagementStatus::Ok;}
+      }else {
+        std::vector<int32_t> ids(q.selected_ids()->begin(),q.selected_ids()->end());
+        const auto edit=r->action()==m::ManagementAction::DisplayCommit?df3d_production::commitDisplayDraft(target,q.expected_revision(),ids):df3d_production::removeDisplayItem(target,q.expected_revision(),ids.front());
+        entered=edit.effectsStarted;if(entered)mutated=true;
+        switch(edit.outcome) {
+          case df3d_production::DisplayOutcome::Completed:
+            displayReply->read=df3d_production::readDisplay(target,-1,"",{});
+            if(!displayReply->read)throw std::runtime_error("display receipt unavailable");
+            displayReply->outcome=m::DisplayOutcome::Applied;status=m::ManagementStatus::Ok;break;
+          case df3d_production::DisplayOutcome::Stale:displayReply->outcome=m::DisplayOutcome::Stale;break;
+          case df3d_production::DisplayOutcome::Unknown:displayReply->outcome=m::DisplayOutcome::Unknown;break;
+          default:break;
+        }
+      }
+    }catch(...){displayReply->read.reset();displayReply->outcome=entered?m::DisplayOutcome::Unknown:m::DisplayOutcome::Rejected;status=m::ManagementStatus::Rejected;}
     publish();return;
   }
   if(r->action()==m::ManagementAction::StocksMenuRead || r->action()==m::ManagementAction::StocksGroupApply || r->action()==m::ManagementAction::StocksItemApply) {

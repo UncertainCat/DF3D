@@ -30,7 +30,7 @@ struct DisplayPicker {
     int32_t height=0;
     df3d_stocks::Totals counts;
     std::vector<df3d_stocks::CategoryDisplay> captions;
-    std::vector<int16_t> categories;
+    std::vector<int16_t> categories,order;
     std::vector<df3d_stocks::SelectedGroup> groups;
     std::vector<int32_t> items;
 };
@@ -50,6 +50,7 @@ inline std::optional<DisplayPicker> displayPicker(df::building* building,int16_t
     static_assert(offsetof(df::assign_display_item_interfacest,current_type_a_on)==0x210);
     owned.current_type=df::item_type(type);owned.item_filter=std::move(query);
     DisplayPicker result;result.type=type;result.categories=*categories;
+    const auto order=owned.item_filter.empty()?categories:df3d_stocks::categories("");if(!order)return {};result.order=*order;
     for(auto id:*ids) {
         auto* item=df::item::find(id);if(!item)return {};
         owned.master_i_list.l_item.push_back(item);

@@ -732,6 +732,9 @@ struct StocksCategoryRow {int16_t type=-1;std::string caption,stored,unavailable
 struct StocksGroupRow {StocksGroupKey key;int32_t amount=0;std::string caption;bool matches=false,expanded=false;uint8_t flags=0;uint64_t revision=0;std::vector<int32_t> itemIds;};
 struct StocksItemRow {int32_t id=-1;int16_t type=-1;std::string caption;uint32_t flags=0;bool canDump=false,canMelt=false;std::string materialToken,subtypeRaw;std::optional<ItemInspectionAppearance> appearance;};
 struct StocksMenuState {StocksMenuOutcome outcome=StocksMenuOutcome::None;int16_t category=-1;std::vector<StocksCategoryRow> categories;std::vector<StocksGroupRow> groups;std::vector<StocksItemRow> items;};
+struct DisplayRequest {int32_t buildingId=-1;int16_t category=-1;std::string query;std::vector<int32_t> itemIds,selectedIds;uint64_t expectedRevision=0;};
+struct DisplayBodyRow {int32_t id=-1;bool resolved=false,onDisplay=false;std::string name,status;uint8_t statusColor=15;};
+struct DisplayState {int32_t buildingId=-1;DisplayOutcome outcome=DisplayOutcome::Rejected;uint64_t revision=0,inventoryRevision=0;bool removing=false;int16_t category=-1;std::vector<DisplayBodyRow> body;std::vector<StocksCategoryRow> categories;std::vector<StocksGroupRow> groups;std::vector<StocksItemRow> items;};
 struct StoneUseRequest {int32_t category=-1,index=-1;std::optional<std::vector<uint8_t>> expected;};
 struct StoneUseRow {int32_t category=-1,index=-1;bool restricted=false;std::string name,uses;bool magmaSafe=false;std::string materialToken;};
 struct StoneUseState {StoneUseOutcome outcome=StoneUseOutcome::None;std::vector<StoneUseRow> rows;std::vector<uint8_t> restrictions;};
@@ -1173,6 +1176,7 @@ struct ManagementRequest {
   KitchenMenuRequest kitchenMenu;
   StoneUseRequest stoneUse;
   StocksMenuRequest stocksMenu;
+  DisplayRequest display;
   DepotGoodsRequest depotGoods;
   TradeCatalogRequest tradeCatalog;
   TradeSessionRequest tradeSession;
@@ -1251,6 +1255,7 @@ struct ManagementState {
   std::optional<KitchenMenuState> kitchenMenu;
   std::optional<StoneUseState> stoneUse;
   std::optional<StocksMenuState> stocksMenu;
+  std::optional<DisplayState> display;
   std::optional<DepotGoodsState> depotGoods;
   std::optional<TradeCatalogState> tradeCatalog;
   std::optional<TradeSessionState> tradeSession;

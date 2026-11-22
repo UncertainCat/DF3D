@@ -387,6 +387,17 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         value["outcome"]=int(v.outcome);value["category"]=v.category;value["categories"]=categories;value["groups"]=groups;value["items"]=items;result["stocks_menu"]=value;
         if(v.outcome==wm::StocksMenuOutcome::Unknown)result["outcome"]="unknown";
     }
+    if(s.display) {
+        const auto& v=*s.display;Dictionary value;Array categories,groups,items;
+        for(const auto& row:v.categories){Dictionary d;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());d["stored"]=String::utf8(row.stored.c_str());d["unavailable"]=String::utf8(row.unavailable.c_str());d["matches"]=row.matches;categories.push_back(d);}
+        for(const auto& row:v.groups){Dictionary d;d["type"]=row.key.type;d["subtype"]=row.key.subtype;d["subcat1"]=row.key.subcat1;d["subcat2"]=row.key.subcat2;d["amount"]=row.amount;d["caption"]=String::utf8(row.caption.c_str());d["matches"]=row.matches;d["expanded"]=row.expanded;d["flags"]=int(row.flags);d["revision"]=int64_t(row.revision);Array ids;for(auto id:row.itemIds)ids.push_back(id);d["item_ids"]=ids;groups.push_back(d);}
+        for(const auto& row:v.items){Dictionary d;d["id"]=row.id;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());d["flags"]=int64_t(row.flags);d["can_dump"]=row.canDump;d["can_melt"]=row.canMelt;d["material_token"]=String::utf8(row.materialToken.c_str());d["subtype_raw"]=String::utf8(row.subtypeRaw.c_str());if(row.appearance)d["appearance"]=management::itemAppearanceDictionary(*row.appearance);
+        items.push_back(d);}
+        value["building_id"]=v.buildingId;value["revision"]=int64_t(v.revision);value["inventory_revision"]=int64_t(v.inventoryRevision);value["removing"]=v.removing;
+        Array body;for(const auto& row:v.body){Dictionary d;d["id"]=row.id;d["resolved"]=row.resolved;d["on_display"]=row.onDisplay;d["name"]=String::utf8(row.name.c_str());d["status"]=String::utf8(row.status.c_str());d["status_color"]=row.statusColor;body.append(d);}value["body"]=body;
+        value["outcome"]=int(v.outcome);value["category"]=v.category;value["categories"]=categories;value["groups"]=groups;value["items"]=items;result["display"]=value;
+        if(v.outcome==wm::DisplayOutcome::Unknown)result["outcome"]="unknown";
+    }
     if(s.stoneUse) {
         const auto& v=*s.stoneUse;Dictionary value;Array rows,flags;
         for(const auto& row:v.rows){Dictionary d;d["category"]=row.category;d["index"]=row.index;d["restricted"]=row.restricted;
@@ -989,6 +1000,28 @@ bool readDepotGoods(const Dictionary& data,wm::ManagementRequest& request,String
     if(data.has("container_id")){q.containerId=int32_t(int64_t(data["container_id"]));q.containerOffset=int32_t(int64_t(data["container_offset"]));q.containerLimit=int32_t(int64_t(data["container_limit"]));}
     const Array ids=data["item_ids"];for(int64_t i=0;i<ids.size();++i)q.itemIds.push_back(int32_t(int64_t(ids[i])));return true;
 }
+bool validateDisplay(const Dictionary& data,String& error) {
+    error="Invalid display request";
+    const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
+    if(!integer(data,"building_id",0,INT32_MAX))return false;
+    const auto action=wm::ManagementAction(int64_t(data["action"]));
+    const bool read=action==wm::ManagementAction::DisplayRead;
+    const char* key=read?"item_ids":"selected_ids";
+    if(!data.has(key) || data[key].get_type()!=Variant::ARRAY)return false;
+    const Array ids=data[key];if(ids.size()>(read?64:65536) || (!read && ids.is_empty()) || (action==wm::ManagementAction::DisplayRemove && ids.size()!=1))return false;
+    std::unordered_set<int64_t> seen;int64_t last=-1;
+    for(int64_t i=0;i<ids.size();++i){if(ids[i].get_type()!=Variant::INT || int64_t(ids[i])<0 || int64_t(ids[i])>INT32_MAX || !seen.insert(int64_t(ids[i])).second || (!read && int64_t(ids[i])<=last))return false;last=int64_t(ids[i]);}
+    if(read) {
+      if(data.size()!=5 || !integer(data,"category",-2,92) || !data.has("query") || data["query"].get_type()!=Variant::STRING || String(data["query"]).utf8().length()>1024 || (int64_t(data["category"])<0 && !String(data["query"]).is_empty()))return false;
+    }else if(data.size()!=4 || !integer(data,"expected_revision",1,INT64_MAX))return false;
+    error=String();return true;
+}
+bool readDisplay(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.display;q.buildingId=int32_t(int64_t(data["building_id"]));
+    if(request.action==wm::ManagementAction::DisplayRead){q.category=int16_t(int64_t(data["category"]));q.query=String(data["query"]).utf8().get_data();const Array ids=data["item_ids"];for(int64_t i=0;i<ids.size();++i)q.itemIds.push_back(int32_t(int64_t(ids[i])));}
+    else {q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));const Array ids=data["selected_ids"];for(int64_t i=0;i<ids.size();++i)q.selectedIds.push_back(int32_t(int64_t(ids[i])));}
+    return true;
+}
 bool validateStocksMenu(const Dictionary& data,String& error) {
     error="Invalid stocks request";
     const bool individual=int64_t(data["action"])==int64_t(wm::ManagementAction::StocksItemApply);
@@ -1353,6 +1386,7 @@ const ManagementCodec managementCodecs[] = {
     {"trade_draft",validateTradeDraft,readTradeDraft},
     {"trade_session",validateTradeSession,readTradeSession},
     {"stocks_menu",validateStocksMenu,readStocksMenu},
+    {"display",validateDisplay,readDisplay},
     {"nobles",validateNobles,readNobles},
     {"places",validatePlaces,readPlaces},
     {"objects",validateObjects,readObjects},
@@ -1377,7 +1411,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::TradeSessionSeize)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::DisplayRemove)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

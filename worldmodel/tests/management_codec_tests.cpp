@@ -6293,3 +6293,25 @@ TEST_CASE("siege edit intents reject foreign fields and out of range values") {
     CHECK(bool(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
   }
 }
+
+TEST_CASE("display transport separates page reads from sorted revision-bound drafts") {
+  for(auto action:{wm::ManagementAction::DisplayRead,wm::ManagementAction::DisplayCommit,wm::ManagementAction::DisplayRemove})for(int fault=0;fault<4;++fault) {
+    wm::ManagementRequest r;r.action=action;auto& q=r.display;q.buildingId=1490;
+    if(action==wm::ManagementAction::DisplayRead){q.category=-2;if(fault==1)q.category=-3;if(fault==2)q.expectedRevision=7;if(fault==3)q.selectedIds={7};}
+    else {q.expectedRevision=fault==1?0:9007199254740993ULL;q.selectedIds=fault==2?std::vector<int32_t>{7,7}:std::vector<int32_t>{7};if(fault==3)q.query="foreign";}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(int(action));CAPTURE(fault);CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){REQUIRE(value->display());CHECK(value->display()->building_id()==1490);CHECK(value->display()->expected_revision()==q.expectedRevision);}
+  }
+}
+TEST_CASE("display parent replies retain exact revisions and reject foreign picker state") {
+  for(int fault=0;fault<4;++fault) {
+    flatbuffers::FlatBufferBuilder b;auto name=b.CreateString("Synthetic item");auto status=b.CreateString("Assigned");
+    auto row=wire::CreateDisplayBodyRow(b,7,true,false,name,status,15);
+    std::vector<flatbuffers::Offset<wire::DisplayBodyRow>> rows{row};if(fault==1)rows.push_back(row);
+    const auto state=wire::CreateDisplayState(b,1490,wire::DisplayOutcome::Available,9007199254740993ULL,fault==2?9:0,false,-1,b.CreateVector(rows),b.CreateVector(std::vector<flatbuffers::Offset<wire::StocksCategoryRow>>{}),b.CreateVector(std::vector<flatbuffers::Offset<wire::StocksGroupRow>>{}),b.CreateVector(std::vector<flatbuffers::Offset<wire::StocksItemRow>>{}));
+    wire::ManagementStateBuilder root(b);root.add_schema_version(fault==3?253:wire::kManagementVersion);root.add_revision(1);root.add_action(wire::ManagementAction::DisplayRead);root.add_status(wire::ManagementStatus::Ok);root.add_display(state);b.Finish(root.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CAPTURE(fault);CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){auto decoded=codec::decodeState(value);b.Clear();REQUIRE(decoded.display);CHECK(decoded.display->revision==9007199254740993ULL);REQUIRE(decoded.display->body.size()==1);CHECK(decoded.display->body[0].name=="Synthetic item");}
+  }
+}

@@ -147,6 +147,13 @@ gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
 assert(not picker.open,'Display assignment did not close');capture('display-assignment-closed')
 result.after={displayed=values(building.displayed_items),jobs=#building.jobs}
 assert(json.encode(before)==json.encode(result.after),'Display open/close changed assignment')
+if os.getenv('DF3D_DISPLAY_WIRE')=='1' then
+ local expected={id=building.id,item_id=result.selection.id,picker=result.picker_comparisons[2].owned}
+ local f=assert(io.open(out..'/display-wire-expected.json','w'));f:write(json.encode(expected));f:close()
+ capture('display-wire')
+ f=assert(io.open(out..'/display-wire-result.json'));result.wire=json.decode(f:read('*a'));f:close()
+ assert(result.wire.success and #building.displayed_items==#before.displayed and #building.jobs==before.jobs,'Display wire failed to restore')
+end
 result.success=true
 local file=assert(io.open(out..'/display-building-native.json','w'));file:write(json.encode(result));file:close()
 return result

@@ -242,6 +242,17 @@ ManagementState decodeState(const m::ManagementState* s) {
       out.items.push_back(std::move(item));
     }
   }
+  if(const auto* r=s->display()) {
+    next.display.emplace();auto& out=*next.display;out.outcome=DisplayOutcome(r->outcome());out.category=r->category();out.buildingId=r->building_id();out.revision=r->revision();out.inventoryRevision=r->inventory_revision();out.removing=r->removing();
+    for(const auto* row:*r->body())out.body.push_back({row->id(),row->resolved(),row->on_display(),row->name()->str(),row->status()->str(),row->status_color()});
+    for(const auto* row:*r->categories())out.categories.push_back({row->type(),row->caption()->str(),row->stored()->str(),row->unavailable()->str(),row->matches()});
+    for(const auto* row:*r->groups()){const auto* k=row->key();StocksGroupRow group;group.key={k->type(),k->subtype(),k->subcat1(),k->subcat2()};group.amount=row->amount();group.caption=row->caption()->str();group.matches=row->matches();group.expanded=row->expanded();group.flags=row->flags();group.revision=row->revision();group.itemIds.assign(row->item_ids()->begin(),row->item_ids()->end());out.groups.push_back(std::move(group));}
+    for(const auto* row:*r->items()){
+      StocksItemRow item{row->id(),row->type(),row->caption()->str(),row->flags(),row->can_dump(),row->can_melt(),row->material_token()->str(),row->subtype_raw()->str()};
+      if(const auto* a=row->appearance())item.appearance=decodeInspectionAppearance(a);
+      out.items.push_back(std::move(item));
+    }
+  }
   if(const auto* r=s->stone_use()) {
     next.stoneUse.emplace();auto& out=*next.stoneUse;out.outcome=StoneUseOutcome(r->outcome());
     for(const auto* row:*r->rows())out.rows.push_back({row->category(),row->index(),row->restricted(),row->name()->str(),row->uses()->str(),row->magma_safe(),row->material_token()->str()});
@@ -577,7 +588,9 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       r.action==ManagementAction::DepotGoodsCommit?[&](){std::vector<m::DepotGoodsChange> changes;for(const auto& row:r.depotCommit.changes)changes.emplace_back(row.id,uint8_t(row.desired));return m::CreateDepotGoodsCommitRequest(b,r.depotCommit.depotId,r.depotCommit.expectedRevision,b.CreateVectorOfStructs(changes));}():flatbuffers::Offset<m::DepotGoodsCommitRequest>{},
       r.action==ManagementAction::TradeCatalogRead?m::CreateTradeCatalogRequest(b,r.tradeCatalog.depotId):flatbuffers::Offset<m::TradeCatalogRequest>{},
       ((r.action>=ManagementAction::TradeSessionOpen && r.action<=ManagementAction::TradeSessionClose) || ((r.action==ManagementAction::TradeSessionExchange || r.action==ManagementAction::TradeSessionGift || r.action==ManagementAction::TradeSessionSeize) || r.action==ManagementAction::TradeSessionDismiss))?m::CreateTradeSessionRequest(b,r.tradeSession.depotId,r.tradeSession.choiceToken,r.tradeSession.session,r.tradeSession.expectedRevision,r.tradeSession.columns):flatbuffers::Offset<m::TradeSessionRequest>{},
-      r.action==ManagementAction::TradeDraftRead || r.action==ManagementAction::TradeDraftApply?m::CreateTradeDraftRequest(b,r.tradeDraft.session,r.tradeDraft.expectedRevision,r.tradeDraft.side,r.tradeDraft.offset,r.tradeDraft.limit,m::TradeDraftOperation(r.tradeDraft.operation),r.tradeDraft.item,r.tradeDraft.type,r.tradeDraft.subtype,b.CreateString(r.tradeDraft.query)):flatbuffers::Offset<m::TradeDraftRequest>{});
+      r.action==ManagementAction::TradeDraftRead || r.action==ManagementAction::TradeDraftApply?m::CreateTradeDraftRequest(b,r.tradeDraft.session,r.tradeDraft.expectedRevision,r.tradeDraft.side,r.tradeDraft.offset,r.tradeDraft.limit,m::TradeDraftOperation(r.tradeDraft.operation),r.tradeDraft.item,r.tradeDraft.type,r.tradeDraft.subtype,b.CreateString(r.tradeDraft.query)):flatbuffers::Offset<m::TradeDraftRequest>{},
+      r.action>=ManagementAction::DisplayRead && r.action<=ManagementAction::DisplayRemove?
+        m::CreateDisplayRequest(b,r.display.buildingId,r.display.category,b.CreateString(r.display.query),b.CreateVector(r.display.itemIds),r.display.expectedRevision,b.CreateVector(r.display.selectedIds)):flatbuffers::Offset<m::DisplayRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

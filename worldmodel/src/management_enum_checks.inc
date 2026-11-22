@@ -1,4 +1,10 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::DisplayOutcome::Available) == static_cast<int>(df3d::mirror::DisplayOutcome::Available));
+static_assert(static_cast<int>(wm::DisplayOutcome::Applied) == static_cast<int>(df3d::mirror::DisplayOutcome::Applied));
+static_assert(static_cast<int>(wm::DisplayOutcome::Rejected) == static_cast<int>(df3d::mirror::DisplayOutcome::Rejected));
+static_assert(static_cast<int>(wm::DisplayOutcome::Stale) == static_cast<int>(df3d::mirror::DisplayOutcome::Stale));
+static_assert(static_cast<int>(wm::DisplayOutcome::Unknown) == static_cast<int>(df3d::mirror::DisplayOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesDisplayOutcome()) / sizeof(df3d::mirror::DisplayOutcome) == 5);
 static_assert(static_cast<int>(wm::TradeItemDisposition::Local) == static_cast<int>(df3d::mirror::TradeItemDisposition::Local));
 static_assert(static_cast<int>(wm::TradeItemDisposition::Imported) == static_cast<int>(df3d::mirror::TradeItemDisposition::Imported));
 static_assert(static_cast<int>(wm::TradeItemDisposition::ExportRestricted) == static_cast<int>(df3d::mirror::TradeItemDisposition::ExportRestricted));
@@ -379,7 +385,10 @@ static_assert(static_cast<int>(wm::ManagementAction::TradeSessionExchange) == st
 static_assert(static_cast<int>(wm::ManagementAction::TradeSessionDismiss) == static_cast<int>(df3d::mirror::ManagementAction::TradeSessionDismiss));
 static_assert(static_cast<int>(wm::ManagementAction::TradeSessionGift) == static_cast<int>(df3d::mirror::ManagementAction::TradeSessionGift));
 static_assert(static_cast<int>(wm::ManagementAction::TradeSessionSeize) == static_cast<int>(df3d::mirror::ManagementAction::TradeSessionSeize));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 145);
+static_assert(static_cast<int>(wm::ManagementAction::DisplayRead) == static_cast<int>(df3d::mirror::ManagementAction::DisplayRead));
+static_assert(static_cast<int>(wm::ManagementAction::DisplayCommit) == static_cast<int>(df3d::mirror::ManagementAction::DisplayCommit));
+static_assert(static_cast<int>(wm::ManagementAction::DisplayRemove) == static_cast<int>(df3d::mirror::ManagementAction::DisplayRemove));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 148);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -732,3 +741,6 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionExchange) ==
 static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionDismiss) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeSessionDismiss));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionGift) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeSessionGift));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::TradeSessionSeize) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::TradeSessionSeize));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::DisplayRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DisplayRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::DisplayCommit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DisplayCommit));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::DisplayRemove) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DisplayRemove));

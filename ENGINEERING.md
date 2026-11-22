@@ -3466,6 +3466,35 @@ unsaved at30FPS, sampled GPU60C. Bridge build and19 core checks pass. Evidence:
 This qualifies the provider boundary; transport and actual viewer ownership remain
 unfinished, along with public workflow acceptance.
 
+### Display management protocol
+
+Management protocol254 adds DisplayRead, DisplayCommit and DisplayRemove with
+typed requests and replies. The display request owns building identity, category,
+query, bounded visible-page IDs, expected revision and a sorted explicit draft.
+The reply carries parent rows, separate assignment/inventory revisions, and shared
+Stocks category/group/item records. Parent reads use category-1; category-2 opens
+the first native picker category. Commit binds the inventory revision, removal
+binds the assignment revision, and native edit outcomes preserve Stale/Unknown.
+The viewer remains responsible for draft selection and closure; no bridge menu
+or persistent native picker is borrowed.
+
+Both peers must be rebuilt together. Protocol253 management messages are rejected;
+there is no conversion inventing display membership, revisions or item facts in
+old recordings. The bridge, model, extension and generated action/domain contracts
+share the new vocabulary. Malformed post-effect receipts retain uncertainty rather
+than becoming definite rejection. Oversized display replies reject explicitly;
+retained display reply paging is not implemented and public presentation remains
+unfinished.
+
+Protected071630 on2026-11-22 (DF59168) verifies the complete protocol254 path
+through the Godot extension: parent/initial/category/detail reads, native group
+membership and captions, item appearance, search, assignment, stale removal
+rejection and successful removal. Native assignments and jobs are restored after
+the sequence. The client reports success with empty stderr; all19 root checks
+pass. Owned DF closes unsaved with source preservation, graphics capped at30FPS
+and sampled GPU59–60C. Evidence: display_wire_reference in the completed-sheet
+fixture. This is transport acceptance, not public UI or rendering acceptance.
+
 ### Trap and hive control providers
 
 The trap/hive control provider now owns revisions over target stage/flags,

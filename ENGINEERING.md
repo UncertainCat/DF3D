@@ -12461,6 +12461,27 @@ is never arranged, rendered, fed or activated. `pet-controls-probe kind id`
 exposes this read-only diagnostic. The edit provider below remains diagnostic;
 no public pet edit is exposed yet.
 
+Owner names retain the owned native widget's width, gender, profession and
+one-line options. Shared `nativeUnitNameDisplayText` uses caller-owned strings
+and the corresponding native semantic text readers: name-only1330260 receives
+false as its third argument; profession-bearing names retain the existing
+combined/split readers. Native shortening is shared. The renderer14237a0 is
+pinned for branch provenance but never called. Existing Residents/Zone display
+uses the same profession-enabled, two-line behavior as before this extension.
+`pet-controls-probe kind id owners` exposes owner display observations.
+
+Protected112747 on2026-11-22 matches all17 pet control rows and10 owner widget
+options, including eight visible owner names/colors cell-for-cell. These owner
+widgets use24 columns with gender/profession/one-line flags all false. Existing
+13 Pets, eight Other and13 Dead/Missing visible unit-row comparisons also pass.
+The profession-enabled one-line truncation branch has static provenance only.
+Enable `DF3D_PET_OWNER_ROWS=1`; the oracle uses the native scroll container's
+visible-row range because offscreen widgets can retain active flags. Earlier
+112441/112555/112655 sampled a clipped row; each closed with the source unchanged.
+DF4300 closes unsaved/source-preserved at30FPS, sampled59C; bridge build and all19
+root checks pass. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-112747`.
+
 Protected092054 captures the complete native Pets/Livestock control tree with
 `DF3D_CREATURE_CONTROL_REFERENCE=1`;092607 adds `DF3D_PET_CONTROLS_PROVIDER=1`
 and matches all17 rows' captions, owner IDs and action order. The fixture covers

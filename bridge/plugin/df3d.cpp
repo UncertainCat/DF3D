@@ -3500,7 +3500,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="pet-controls-probe") {
-          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          if(parameters.size()!=3 && (parameters.size()!=4 || parameters[3]!="owners"))return CR_WRONG_USAGE;
           int32_t values[2];
           for(size_t i=1;i<3;++i) {
             const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);
@@ -3511,6 +3511,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           else if(values[0]==1){entry.item=df::item::find(values[1]);entry.kind=1;}
           else return CR_WRONG_USAGE;
           const auto controls=df3d_residents::petControls(entry);if(!controls)return CR_FAILURE;
+          if(parameters.size()==4) {
+            Json::Value rows(Json::arrayValue);
+            for(const auto& owner:controls->ownerDisplay) {
+              Json::Value row(Json::objectValue);row["id"]=owner.id;row["columns"]=owner.columns;
+              row["show_gender"]=owner.showGender;row["show_profession"]=owner.showProfession;row["one_line_only"]=owner.oneLineOnly;
+              row["first_line"]=DF2UTF(owner.text.firstLine);row["second_line"]=DF2UTF(owner.text.secondLine);
+              for(auto c:owner.color.color)row["color"].append(int(c));
+              for(auto c:owner.color.alternate)row["alternate"].append(int(c));
+              row["effect"]=int(owner.color.effect);rows.append(row);
+            }
+            out.print("{}",Json::FastWriter().write(rows));return CR_OK;
+          }
           Json::Value result(Json::objectValue);
           result["captions"]=Json::Value(Json::arrayValue);result["owners"]=Json::Value(Json::arrayValue);result["actions"]=Json::Value(Json::arrayValue);
           for(const auto& caption:controls->captions)result["captions"].append(DF2UTF(caption));

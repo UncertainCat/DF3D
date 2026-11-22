@@ -887,20 +887,28 @@ std::optional<std::vector<ZoneSelectedOwner>> nativeZoneSelectedOwners(df::build
     }
     return result;
 }
-std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candidate,int32_t columns,bool showGender) {
+std::optional<ZoneOwnerDisplayText> nativeUnitNameDisplayText(df::unit& candidate,int32_t columns,bool showGender,bool showProfession,bool oneLineOnly) {
     const auto& order=staffOrderingFunctions();
     if(!order || !df::global::world || columns<3 || columns>2048)return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     // Widget14237a0 uses combined text when it fits, otherwise these two
     // semantic readers. Global widget output strings are never borrowed.
-    if(hash(base+0x1330500,0x37d)!=UINT64_C(0x963e5805735092ee) ||
+    if(hash(base+0x14237a0,0x83f)!=UINT64_C(0xbc38168cc5c544cd) ||
+       hash(base+0x1330260,0x2a0)!=UINT64_C(0xa928fdf4d1ddc573) ||
+       hash(base+0x1330500,0x37d)!=UINT64_C(0x963e5805735092ee) ||
        hash(base+0x1330880,0x3ac)!=UINT64_C(0xbef834f2b924d785) ||
        hash(base+0x52d910,0x5c4)!=UINT64_C(0x3cc66a9b45f7baa9))return std::nullopt;
     ZoneOwnerDisplayText result;
-    order.name(&candidate,&result.combined,showGender);
-    using Name=void (*)(df::unit*,std::string*);
-    reinterpret_cast<Name>(const_cast<uint8_t*>(base+0x1330500))(&candidate,&result.name);
-    reinterpret_cast<StaffOrderingFunctions::Text>(const_cast<uint8_t*>(base+0x1330880))(&candidate,&result.profession,showGender);
+    if(showProfession) {
+        order.name(&candidate,&result.combined,showGender);
+        using Name=void (*)(df::unit*,std::string*);
+        reinterpret_cast<Name>(const_cast<uint8_t*>(base+0x1330500))(&candidate,&result.name);
+        reinterpret_cast<StaffOrderingFunctions::Text>(const_cast<uint8_t*>(base+0x1330880))(&candidate,&result.profession,showGender);
+    } else {
+        // Native1423e51..1423e71 uses name-only1330260 with its third argument false.
+        reinterpret_cast<StaffOrderingFunctions::Text>(const_cast<uint8_t*>(base+0x1330260))(&candidate,&result.combined,false);
+        result.name=result.combined;
+    }
     const auto fit=[&](std::string text) {
         if(text.size()>size_t(columns)) {
             using Shorten=void (*)(std::string*,int32_t);
@@ -909,9 +917,13 @@ std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candida
         }
         return text;
     };
-    if(result.combined.size()<=size_t(columns))result.firstLine=result.combined;
+    if(!showProfession || oneLineOnly)result.firstLine=fit(result.combined);
+    else if(result.combined.size()<=size_t(columns))result.firstLine=result.combined;
     else {result.firstLine=fit(result.name);result.secondLine=fit(result.profession);}
     return result;
+}
+std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candidate,int32_t columns,bool showGender) {
+    return nativeUnitNameDisplayText(candidate,columns,showGender,true,false);
 }
 std::optional<ZoneAnimalUnitDisplay> nativeZoneAnimalUnitDisplay(df::unit& candidate,int32_t columns) {
     const auto text=nativeZoneOwnerDisplayText(candidate,columns);

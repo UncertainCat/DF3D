@@ -4,10 +4,12 @@
 
 namespace df3d_residents {
 struct PetActionHelp {std::string text;int32_t hover=-1,instruction=-1;bool observed=false;};
+struct PetOwnerDisplay {int32_t id,columns;bool showGender,showProfession,oneLineOnly;df3d_area::ZoneOwnerDisplayText text;df3d_area::ZoneOwnerNameColor color;};
 struct PetControls {
     std::vector<std::string> captions;
     std::vector<std::array<int16_t,3>> captionColors; // foreground, background, bright
     std::vector<int32_t> owners;
+    std::vector<PetOwnerDisplay> ownerDisplay;
     std::vector<int32_t> actions; // 0 slaughter, 1 adoption, 2 gelding, 3 trainer, 4 war, 5 hunting
     std::vector<PetActionHelp> actionHelp;
 };
@@ -53,7 +55,15 @@ inline std::optional<PetControls> petControls(const CreatureReference& entry) {
             result.captions.push_back(text->str);
             result.captionColors.push_back({text->fg,text->bg,int16_t(text->bright)});
         }
-        if(auto* name=virtual_cast<df::widget_unit_name>(widget);name && name->u)result.owners.push_back(name->u->id);
+        if(auto* name=virtual_cast<df::widget_unit_name>(widget);name && name->u) {
+            // The owned postprocessor creates fixed-width owner widgets. Read
+            // their flags/minimum, without arranging or rendering native widgets.
+            const auto text=df3d_area::nativeUnitNameDisplayText(*name->u,name->min_w,name->show_gender,name->show_profession,name->one_line_only);
+            const auto color=df3d_area::nativeZoneOwnerNameColor(*name->u);
+            if(!text || !color){valid=false;return;}
+            result.owners.push_back(name->u->id);
+            result.ownerDisplay.push_back({name->u->id,name->min_w,name->show_gender,name->show_profession,name->one_line_only,*text,*color});
+        }
         for(const auto& callback:widget->custom_activated) {
             const auto oldCount=result.actions.size();
             static_assert(sizeof(callback)==64);

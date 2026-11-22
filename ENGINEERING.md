@@ -12424,9 +12424,13 @@ owned tagged references to active units and `ANY_CRITTER` items. It calls the
 four pinned native exclusion predicates and existing native comparators; it
 does not borrow native widget storage. Identity retains kind and ID, since
 Pets/Livestock includes item-backed creatures. `creature-list-probe tab sort
-descending` exposes this diagnostic; public transport and sibling controllers
-remain missing. Search, Activity sorting, ownership/animal actions and row
-composition still require implementation and verification.
+descending [query]` exposes this diagnostic; public transport and sibling
+controllers remain missing. Search uses the owned Residents query context and
+native1424c30. Unit activity keys come from1425c40; native item builder142b280
+does not populate the activity map, so item keys remain absent. Activity sorting
+is implemented through1434030 but remains unqualified for sibling tabs.
+Ownership/animal actions and row composition still require implementation and
+verification.
 
 Protected091510 on2026-11-22 compares complete native portrait-row membership
 and initial ordering against this provider: Residents141, Pets/Livestock17
@@ -12436,6 +12440,16 @@ fortress, not every possible creature lifecycle or user-selected sort. Owned
 DF896 closes unsaved/source-preserved at30FPS, sampled GPU60–61C. Bridge build
 and all19 core checks pass. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-091510`.
+
+Protected091829 adds `DF3D_CREATURE_QUERY_REFERENCE=1` and the host's existing
+`DF3D_RESIDENTS_QUERY=1` input flag. Twenty native/provider comparisons pass:
+initial rows, DOMESTICATED, DECEASED, no match and clear on all four tabs.
+DOMESTICATED returns16 Pets; DECEASED returns53 Dead/Missing; clear restores
+141/17/8/55 rows respectively. This covers activity filtering and retirement
+of the query, not arbitrary item-name text or user-selected sorting. Owned
+DF46324 closes unsaved/source-preserved at30FPS, sampled GPU60–61C. Bridge build
+and19 core checks pass. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-091829`.
 
 
 Residents Activity has distinct job-settings and event-description routes.

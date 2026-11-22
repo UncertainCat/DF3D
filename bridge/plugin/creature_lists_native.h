@@ -1,5 +1,5 @@
 #pragma once
-#include "residents_order_native.h"
+#include "residents_query_native.h"
 #include "df/item.h"
 #include "df/items_other_id.h"
 
@@ -32,30 +32,40 @@ inline bool creatureListsSupported() {
         return true;
     }();return ready;
 }
-// Initial-list diagnostic: search, activity sorting and animal actions have
-// separate ownership requirements and are not supplied by this entry point.
-inline std::optional<std::vector<CreatureIdentity>> orderedCreatures(int tab,int sort,bool descending) {
-    if(tab<0 || tab>3 || sort<0 || sort>2 || !df::global::world || !creatureListsSupported())return std::nullopt;
+// The native item-row builder does not populate the activity map. Keep item
+// keys absent, rather than inventing an activity string for search or sorting.
+inline std::optional<std::vector<CreatureIdentity>> orderedCreatures(int tab,int sort,bool descending,std::string query={}) {
+    if(tab<0 || tab>3 || sort<0 || sort>4 || sort==3 || !df::global::world || !creatureListsSupported() || !querySupported())return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     using Predicate=bool (*)(void*,const CreatureReference*);
     using Compare=bool (*)(void*,const CreatureReference*,const CreatureReference*);
     constexpr size_t filters[]={0x3d5df0,0x3d5cc0,0x3d5860,0x3d55e0};
-    constexpr size_t comparators[]={0x1431370,0x1435a10,0x14358c0};
+    constexpr size_t comparators[]={0x1431370,0x1435a10,0x14358c0,0,0x1434030};
     const auto excluded=reinterpret_cast<Predicate>(const_cast<uint8_t*>(base+filters[tab]));
     const auto compare=reinterpret_cast<Compare>(const_cast<uint8_t*>(base+comparators[sort]));
+    const auto filtered=reinterpret_cast<Predicate>(const_cast<uint8_t*>(base+0x1424c30));
+    detail::QueryContext context;
+    context.query=std::move(query);df3d_area::staffOrderingFunctions().normalize(&context.query);
+    auto* contextPointer=&context;
+    const bool needsActivity=sort==4 || !context.query.empty();
     std::vector<CreatureReference> entries;
     for(auto* unit:df::global::world->units.active) {
         if(!unit)continue;
         CreatureReference entry{};entry.unit=unit;
-        if(!excluded(nullptr,&entry))entries.push_back(entry);
+        if(excluded(nullptr,&entry))continue;
+        if(needsActivity) {
+            const auto activity=activityText(unit);if(!activity)return std::nullopt;
+            context.activities.emplace(detail::Entry{unit},activity->key);
+        }
+        if(!filtered(&contextPointer,&entry))entries.push_back(entry);
     }
     for(auto* item:df::global::world->items.other[df::items_other_id::ANY_CRITTER]) {
         if(!item)continue;
         CreatureReference entry{};entry.item=item;entry.kind=1;
-        if(!excluded(nullptr,&entry))entries.push_back(entry);
+        if(!excluded(nullptr,&entry) && !filtered(&contextPointer,&entry))entries.push_back(entry);
     }
     std::stable_sort(entries.begin(),entries.end(),[&](const auto& a,const auto& b) {
-        return descending?compare(nullptr,&b,&a):compare(nullptr,&a,&b);
+        return descending?compare(&contextPointer,&b,&a):compare(&contextPointer,&a,&b);
     });
     std::vector<CreatureIdentity> result;result.reserve(entries.size());
     for(const auto& entry:entries)result.push_back({entry.kind,entry.kind==0?entry.unit->id:entry.item->id});

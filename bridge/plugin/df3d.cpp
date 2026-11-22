@@ -3429,14 +3429,14 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="creature-list-probe") {
-          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          if(parameters.size()!=4 && parameters.size()!=5)return CR_WRONG_USAGE;
           int32_t values[3];
           for(size_t i=1;i<4;++i) {
             const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);
             if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
           }
           if(values[2]<0 || values[2]>1)return CR_WRONG_USAGE;
-          const auto rows=df3d_residents::orderedCreatures(values[0],values[1],values[2]!=0);if(!rows)return CR_FAILURE;
+          const auto rows=df3d_residents::orderedCreatures(values[0],values[1],values[2]!=0,parameters.size()==5?parameters[4]:std::string{});if(!rows)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["rows"]=Json::Value(Json::arrayValue);
           for(const auto& row:*rows){Json::Value value(Json::objectValue);value["kind"]=row.kind;value["id"]=row.id;result["rows"].append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;

@@ -69,15 +69,15 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
  end
  assert(tabs and #tabs.tab_labels==4,'Native creature tabs missing')
  local observations={}
- local function capture(index)
+ local function capture(index,suffix,query)
   lists={};active_list=nil;headers={};filter_box=nil
   walk(info.creatures)
   for _,child in ipairs(dfhack.gui.getWidgetChildren(info.creatures))do
    if df.widget_tabs:is_instance(child) and child.name=='Tabs' then tabs=child;break end
   end
   assert(tabs.cur_idx==index,'Creature tab click failed: expected '..index..' tab '..tabs.cur_idx)
-  local name='creature-tab-'..index
-  local observed={tab=index,interface_mode=info.creatures.current_mode,label=dfhack.df2utf(tabs.tab_labels[index]),lists=lists,rows={}}
+  local name='creature-tab-'..index..(suffix or '')
+  local observed={tab=index,query=query or '',interface_mode=info.creatures.current_mode,label=dfhack.df2utf(tabs.tab_labels[index]),lists=lists,rows={}}
   local function collect(widget,active)
    active=active and (widget.flag.whole&1)==1
    if active and df.widget_unit_portrait:is_instance(widget) and widget.u then observed.rows[#observed.rows+1]={kind=0,id=widget.u.id}end
@@ -86,7 +86,7 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
   end
   assert(active_list);collect(active_list,true)
   if os.getenv('DF3D_CREATURE_LIST_PROVIDER')=='1' then
-   local text,rc=dfhack.run_command_silent('df3d','creature-list-probe',tostring(index),'0','0');assert(rc==0,text)
+   local text,rc=dfhack.run_command_silent('df3d','creature-list-probe',tostring(index),'0','0',query or '');assert(rc==0,text)
    observed.provider=json.decode(text).rows
    observed.matches=json.encode(observed.provider)==json.encode(observed.rows)
   end
@@ -100,7 +100,29 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
    assert(dfhack.getTickCount()<deadline,'Creature tab capture timeout');script.sleep(1,'frames')
   end
  end
+ local function queries(index)
+  if os.getenv('DF3D_CREATURE_QUERY_REFERENCE')~='1' then return end
+  for ordinal,query in ipairs{'DOMESTICATED','DECEASED','zzq-no-creature',''}do
+   assert(filter_box,'Creature search box missing')
+   local x=filter_box.rect.x1+1;local y=filter_box.rect.y1+1;local g=df.global.gps
+   g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+   local f=assert(io.open(out..'/residents-search-input.json','w'));f:write(json.encode({clear_count=#filter_box.str,text=query}));f:close()
+   f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('residents-search');f:close()
+   assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+   local deadline=dfhack.getTickCount()+30000
+   while true do
+    local ack=io.open(out..'/owner-input-ack');if ack then ack:close();os.remove(out..'/owner-input-ack');break end
+    assert(dfhack.getTickCount()<deadline,'Creature query input timeout');script.sleep(1,'frames')
+   end
+   for _=1,3 do script.sleep(1,'frames')end
+   view:render(dfhack.getTickCount());capture(index,'-query-'..ordinal,query)
+  end
+ end
  capture(0)
+ queries(0)
  for index=1,3 do
   local x=tabs.rect.x1+2
   for previous=0,index-1 do x=x+#tabs.tab_labels[previous]+4 end
@@ -110,7 +132,7 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
   df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
   for _=1,3 do script.sleep(1,'frames')end
-  view:render(dfhack.getTickCount());capture(index)
+  view:render(dfhack.getTickCount());capture(index);queries(index)
  end
  local f=assert(io.open(out..'/creature-tabs-reference.json','w'));f:write(json.encode(observations));f:close()
  for _,observed in ipairs(observations)do assert(observed.matches~=false,'Creature list differs on tab '..observed.tab)end

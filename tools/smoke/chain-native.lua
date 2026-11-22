@@ -121,6 +121,17 @@ if os.getenv('DF3D_CHAIN_EFFECTS')=='1' then
   assert(json.encode(snapshot())==json.encode(before),'Owned chain removal differs from native')
   assert(unit.flags1.whole==flags1 and unit.flags2.whole==flags2 and unassigned(unit),'Owned chain roundtrip changed original unit facts')
   result.owned_effects={initial=initial,invalid=invalid,selected=selected,stale=stale,removed=removed,ui_unchanged=true}
+  if os.getenv('DF3D_CHAIN_TRANSFER')=='1' then
+   local function native_select()
+    view:render(dfhack.getTickCount());click(448,190);view:render(dfhack.getTickCount())
+    visible={};walk(main.unit_selector,0,true)
+    local selected_row;for _,row in ipairs(visible)do if row.id==unit.id then selected_row=row;break end end
+    assert(selected_row,'Transfer fixture unit absent from native picker')
+    click(200,(selected_row.y-1)*12+6)
+   end
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('chain%-native.lua$','chain-transfer-native.lua')
+   result.transfer=assert(loadfile(source))(chain,unit,probe,native_select)
+  end
  end
 else
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());capture('chain-assignment-closed')

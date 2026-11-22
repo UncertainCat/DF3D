@@ -115101,6 +115101,59 @@
           "bridge/plugin/df3d.cpp": "d9c841fa9ff5de2dccf385e8d60f4ace9acc9fae9173f60fa3d9e150746cfca0",
           "tools/smoke/chain-native.lua": "d7e38572c7fcebcb137e18fb748e004a7f72b60c619ad58ce718f7ff719c961c"
         }
+      },
+      "chain_transfer_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261122-053045",
+        "owned_df_pid": 44808,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "effects": {
+          "native": {
+            "assigned": 6960,
+            "cage_member": false,
+            "cancelled_exists": false,
+            "chained": 6960,
+            "item_in_job": false,
+            "item_refs": 0,
+            "retained_exists": true,
+            "source_assigned": -1,
+            "source_chained": 6960,
+            "source_jobs": 1,
+            "target_jobs": 0,
+            "unchain_exists": false,
+            "worker_job": -1,
+            "zone_member": false,
+            "zone_refs": 0
+          },
+          "owned": {
+            "assigned": 6960,
+            "cage_member": false,
+            "cancelled_exists": false,
+            "chained": 6960,
+            "item_in_job": false,
+            "item_refs": 0,
+            "retained_exists": true,
+            "source_assigned": -1,
+            "source_chained": 6960,
+            "source_jobs": 1,
+            "target_jobs": 0,
+            "unchain_exists": false,
+            "worker_job": -1,
+            "zone_member": false,
+            "zone_refs": 0
+          },
+          "success": true
+        },
+        "scope": "Controlled paused fixture compares native picker transfer to owned guarded edit. Removes prior cage and zone assignment including zone ref, clears other chain assignment and ChainAnimal job, releases worker/item reservation, deletes destination UnchainAnimal job, preserves other chain UnchainAnimal and both actual chained pointers. GPS/main_interface unchanged during owned edit. Fixture restored;30FPS GPU55-56C sampled. Chained-only body toggle and full public workflow remain unqualified.",
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261122-053045/chain-native.json": "f0dc9b4c563c17f94c018a5ce5255b6b13a9ac3d7619425283d8a58c8f384082",
+          "build/stockpile-storage-native-farm-discovery-20261122-053045/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "build/stockpile-storage-native-farm-discovery-20261122-053045/result.json": "f12c26fddf428b327b3104a286f9c57ce753fcd1b7710c0c1752febd75503bc2",
+          "bridge/plugin/chain_native.h": "e6cde8b32360e6ee6810c92b11dd7dc6902f1738976ca811bdfae9692fabe3c0",
+          "bridge/plugin/zone_native.cpp": "e88d033f8e4ea076a291251d9412c728559676d5b4b4abf226282682287d1931",
+          "tools/smoke/chain-native.lua": "eef818c5d731de3fd0198dd446356d044ab5a1a56969d4832bc9d63fed72f83f",
+          "tools/smoke/chain-transfer-native.lua": "1c79c3f80d800666d5e8e3e68c1ffdf10b2bcaa7c8d5923b01b4fd472aa8c676"
+        }
       }
     },
     "pending_construction_reference": {

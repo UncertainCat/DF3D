@@ -3115,8 +3115,16 @@ effects; GPS/main_interface bytes remain unchanged across owned reads/edits.
 Source saves are preserved, owned DF closes unsaved at30FPS, sampled59-60C.
 Bridge build and19 core checks pass. Evidence:
 completed_sheet_discovery_reference.chain_assignment_reference.
-This qualifies ordinary assignment/removal only. Transfers, queued-job cleanup,
-chained-only toggle, ordering/search, transport and public workflow remain open.
+The ordinary fixture qualifies assignment/removal. Protected053045 on2026-11-22
+(DF44808) additionally compares native picker transfer against the guarded edit
+using controlled cage/zone memberships, a zone reference, another assigned chain,
+a ChainAnimal job with a worker/reserved item, and a destination UnchainAnimal job.
+Both paths remove those assignments/references, cancel the selected jobs and
+release worker/item reservations while retaining unrelated UnchainAnimal work and
+both chained pointers. Owned edits preserve GPS/main_interface bytes. The fixture
+is restored; owned DF closes unsaved/source-preserved at30FPS, sampled55-56C.
+Evidence: completed_sheet_discovery_reference.chain_transfer_reference.
+Chained-only body toggle, ordering/search, transport and public workflow remain open.
 
 `chain_native.h` invokes native exclusion predicate3d5550 with an independently
 owned capture containing the semantic chain pointer and a16-byte unit entry.

@@ -12451,6 +12451,33 @@ DF46324 closes unsaved/source-preserved at30FPS, sampled GPU60–61C. Bridge bui
 and19 core checks pass. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-091829`.
 
+### Pet ownership and control availability
+
+`pet_controls_native.h` calls native postprocessors370bf0 (units) and3731a0
+(items) with independently allocated rows and two empty parent weak references.
+It copies ownership captions/owner IDs and maps the generated callbacks to
+semantic slaughter/adoption-availability/gelding operations. The temporary row
+is never arranged, rendered, fed or activated. `pet-controls-probe kind id`
+exposes this read-only diagnostic; no public pet edit is implemented yet.
+
+Protected092054 captures the complete native Pets/Livestock control tree with
+`DF3D_CREATURE_CONTROL_REFERENCE=1`;092607 adds `DF3D_PET_CONTROLS_PROVIDER=1`
+and matches all17 rows' captions, owner IDs and action order. The fixture covers
+Owned, Adopted somebody, Unavailable as pet and Uninterested in an owner, plus
+item5969's availability control. Compared unit flags1/2/3 and item general flags
+remain unchanged. DF35804 closes unsaved/source-preserved at30FPS, sampled59C;
+bridge build and19 core checks pass. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-092607`.
+
+Native actions are unit slaughter3d0ca0, adoption availability3d0e50,
+gelding3d0c40 and item availability3d0a90. Slaughter/availability callbacks
+also enqueue a row refresh through142c110/142c200, which dereferences list
+storage even when the captured row is absent. They must not be called with a
+null list or a borrowed native list. An owned refresh context and live effect
+comparison remain necessary. Overall Training routes through3d15c0 to36cf90;
+training choices/actions, tooltip and color extraction, animal edit effects,
+typed transport and public sibling views remain unqualified or unimplemented.
+
 
 Residents Activity has distinct job-settings and event-description routes.
 The job-details widget1423130 uses native eligibility d15ef0 and opens213420

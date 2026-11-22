@@ -91,6 +91,62 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
    observed.matches=json.encode(observed.provider)==json.encode(observed.rows)
   end
   observations[#observations+1]=observed
+  if os.getenv('DF3D_CREATURE_CONTROL_REFERENCE')=='1' and index==1 then
+   local controls={}
+   local function inspect(widget,path,active)
+    active=active and (widget.flag.whole&1)==1
+    if not active then return end
+    assert(#controls<10000,'Creature control tree exceeded bound')
+    local _,address=df.sizeof(widget)
+    local value={path=path,name=widget.name,vtable=df.reinterpret_cast('uint64_t',address).value-base,
+     rect={widget.rect.x1,widget.rect.y1,widget.rect.x2,widget.rect.y2},
+     feed=callbacks(widget.custom_feed,64),logic=callbacks(widget.custom_logic,64),
+     render=callbacks(widget.custom_render,64),activated=callbacks(widget.custom_activated,64)}
+    if df.widget_text:is_instance(widget) then value.text=dfhack.df2utf(widget.str);value.color={widget.fg,widget.bg,widget.bright}end
+    if df.widget_unit_name:is_instance(widget) and widget.u then value.unit=widget.u.id end
+    if df.widget_unit_portrait:is_instance(widget) and widget.u then value.unit=widget.u.id end
+    if df.widget_item_portrait:is_instance(widget) and widget.i then value.item=widget.i.id end
+    controls[#controls+1]=value
+    if df.widget_container:is_instance(widget)then
+     for ordinal,child in ipairs(dfhack.gui.getWidgetChildren(widget))do
+      if not df.widget_tabs:is_instance(widget) or ordinal-1==widget.cur_idx then inspect(child,path..'/'..(ordinal-1),active)end
+     end
+    end
+   end
+   inspect(info.creatures,'creatures',true)
+   local f=assert(io.open(out..'/creature-controls-reference.json','w'));f:write(json.encode(controls));f:close()
+   if os.getenv('DF3D_PET_CONTROLS_PROVIDER')=='1' then
+    local samples={}
+    local function semantic(widget,result)
+     if df.widget_text:is_instance(widget)then result.captions[#result.captions+1]=dfhack.df2utf(widget.str)end
+     if df.widget_unit_name:is_instance(widget) and widget.u then result.owners[#result.owners+1]=widget.u.id end
+     for _,target in ipairs(callbacks(widget.custom_activated,64))do
+      local action=({[0x3d0ca0]=0,[0x3d0e50]=1,[0x3d0a90]=1,[0x3d0c40]=2})[target]
+      if action then result.actions[#result.actions+1]=action end
+     end
+     if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do semantic(child,result)end end
+    end
+    local function compare(widget)
+     local kind,id,target
+     if df.widget_unit_portrait:is_instance(widget) and widget.u then kind=0;target=widget.u;id=target.id end
+     if df.widget_item_portrait:is_instance(widget) and widget.i then kind=1;target=widget.i;id=target.id end
+     if id then
+      local expected={captions={},owners={},actions={}}
+      for ordinal,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do if ordinal>=6 then semantic(child,expected)end end
+      local before=kind==0 and {target.flags1.whole,target.flags2.whole,target.flags3.whole} or {target.flags.whole}
+      local text,rc=dfhack.run_command_silent('df3d','pet-controls-probe',tostring(kind),tostring(id));assert(rc==0,text)
+      local provider=json.decode(text)
+      local after=kind==0 and {target.flags1.whole,target.flags2.whole,target.flags3.whole} or {target.flags.whole}
+      samples[#samples+1]={kind=kind,id=id,expected=expected,provider=provider,matches=json.encode(expected)==json.encode(provider),unchanged=json.encode(before)==json.encode(after)}
+     end
+     if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do compare(child)end end
+    end
+    compare(active_list)
+    f=assert(io.open(out..'/pet-controls-provider.json','w'));f:write(json.encode(samples));f:close()
+    assert(#samples==#observed.rows,'Pet control row count differs')
+    for _,sample in ipairs(samples)do assert(sample.matches and sample.unchanged,'Pet controls differ '..sample.kind..':'..sample.id)end
+   end
+  end
   assert(loadfile(source))(out..'/'..name..'-widgets.json','templates')
   local f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close()
   assert(os.rename(out..'/shot.tmp',out..'/shot'))

@@ -147,6 +147,7 @@
 #include "item_owner_native.h"
 #include "residents_order_native.h"
 #include "creature_lists_native.h"
+#include "pet_controls_native.h"
 #include "residents_activity_native.h"
 #include "tasks_native.h"
 #include "places_native.h"
@@ -3426,6 +3427,25 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!ids)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["ids"]=Json::Value(Json::arrayValue);
           for(auto id:*ids)result["ids"].append(id);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="pet-controls-probe") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          int32_t values[2];
+          for(size_t i=1;i<3;++i) {
+            const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          }
+          df3d_residents::CreatureReference entry{};
+          if(values[0]==0)entry.unit=df::unit::find(values[1]);
+          else if(values[0]==1){entry.item=df::item::find(values[1]);entry.kind=1;}
+          else return CR_WRONG_USAGE;
+          const auto controls=df3d_residents::petControls(entry);if(!controls)return CR_FAILURE;
+          Json::Value result(Json::objectValue);
+          result["captions"]=Json::Value(Json::arrayValue);result["owners"]=Json::Value(Json::arrayValue);result["actions"]=Json::Value(Json::arrayValue);
+          for(const auto& caption:controls->captions)result["captions"].append(DF2UTF(caption));
+          for(auto id:controls->owners)result["owners"].append(id);
+          for(auto action:controls->actions)result["actions"].append(action);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="creature-list-probe") {

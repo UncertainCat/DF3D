@@ -116528,6 +116528,165 @@
           "build/stockpile-storage-native-farm-discovery-20261122-064139/display-selected-draft.png": "5e30150768ae5d571b26e44783356bbfd590ff5dda4c00d3a8953aab4f565326",
           "build/stockpile-storage-native-farm-discovery-20261122-064139/display-selected-parent.png": "a450abb1d6b4587833296ecf97b5e4661e52c4016d6c5c0e3127b1006b8778c2"
         }
+      },
+      "display_assignment_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261122-064601",
+        "owned_df_pid": 53336,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Owned assignment and removal match native item38540 flags, reservation bit, general references, target membership and paused building jobs. Duplicate drafts and stale removal reject without effects. Native UI bytes unchanged; all6411 inventory IDs/order still match. Multi-item commit, reassignment, hauling, picker/body transport and public exposure remain unqualified.",
+        "item_count": 6411,
+        "selection": {
+          "before": {
+            "displayed": [],
+            "draft": [],
+            "item_flags": "8",
+            "item_flags2": "0",
+            "item_refs": [
+              {
+                "building": -1,
+                "type": "CONTAINED_IN_ITEM"
+              }
+            ],
+            "jobs": []
+          },
+          "closed": {
+            "displayed": [
+              38540
+            ],
+            "draft": [
+              38540
+            ],
+            "item_flags": "8",
+            "item_flags2": "8",
+            "item_refs": [
+              {
+                "building": -1,
+                "type": "CONTAINED_IN_ITEM"
+              },
+              {
+                "building": 1490,
+                "type": "BUILDING_DISPLAY_FURNITURE"
+              }
+            ],
+            "jobs": []
+          },
+          "id": 38540,
+          "owned_assigned": {
+            "displayed": [
+              38540
+            ],
+            "draft": [
+              38540
+            ],
+            "item_flags": "8",
+            "item_flags2": "8",
+            "item_refs": [
+              {
+                "building": -1,
+                "type": "CONTAINED_IN_ITEM"
+              },
+              {
+                "building": 1490,
+                "type": "BUILDING_DISPLAY_FURNITURE"
+              }
+            ],
+            "jobs": []
+          },
+          "owned_removed": {
+            "displayed": [],
+            "draft": [
+              38540
+            ],
+            "item_flags": "8",
+            "item_flags2": "0",
+            "item_refs": [
+              {
+                "building": -1,
+                "type": "CONTAINED_IN_ITEM"
+              }
+            ],
+            "jobs": []
+          },
+          "removed": {
+            "displayed": [],
+            "draft": [
+              38540
+            ],
+            "item_flags": "8",
+            "item_flags2": "0",
+            "item_refs": [
+              {
+                "building": -1,
+                "type": "CONTAINED_IN_ITEM"
+              }
+            ],
+            "jobs": []
+          },
+          "selected": {
+            "displayed": [],
+            "draft": [
+              38540
+            ],
+            "item_flags": "8",
+            "item_flags2": "0",
+            "item_refs": [
+              {
+                "building": -1,
+                "type": "CONTAINED_IN_ITEM"
+              }
+            ],
+            "jobs": []
+          }
+        },
+        "provider": {
+          "assigned": {
+            "effects_started": true,
+            "items": [
+              38540
+            ],
+            "outcome": 1,
+            "removing": false,
+            "revision": "8575683379901701473"
+          },
+          "duplicate": {
+            "effects_started": false,
+            "items": [],
+            "outcome": 0,
+            "removing": false,
+            "revision": "8150647884290783749"
+          },
+          "removed": {
+            "effects_started": true,
+            "items": [],
+            "outcome": 1,
+            "removing": false,
+            "revision": "8150647884290783749"
+          },
+          "stale": {
+            "effects_started": false,
+            "items": [
+              38540
+            ],
+            "outcome": 2,
+            "removing": false,
+            "revision": "8575683379901701473"
+          }
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261122-064601/display-building-native.json": "ae3faeb71d51821ec3f62958d81359f6bc8da7b51a4889119d593e28ad6b84de",
+          "build/stockpile-storage-native-farm-discovery-20261122-064601/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/display_assignment_native.h": "8ed62daef08546ce6dc55a645e3e5f2787357eed12c7f2291f47aea794b5c0d2",
+          "bridge/plugin/display_inventory_native.h": "06a17080b08e2c3ee2b35f21619791df142852b2bd370f61032398e1be0fff52",
+          "tools/smoke/display-building-native.lua": "73e926c98e42a1f614ba4da6da0686d80e5c71a9271341acd6b8a376f9a1bbf0",
+          "build/stockpile-storage-native-farm-discovery-20261122-064601/display-amulets.png": "6066973976f5b8744751547cbdb0b0880344589c3951ade15e9c78e207c39b48",
+          "build/stockpile-storage-native-farm-discovery-20261122-064601/display-assignment-closed.png": "bf077e844bddd93ae0b1297c81014e74885d0c89cf2007ea64a683a4fd802338",
+          "build/stockpile-storage-native-farm-discovery-20261122-064601/display-assignment-open.png": "4ff6a0e70092a46fc706f58ba121e40fffcf1b663c6b574297796cfe5f8716f0",
+          "build/stockpile-storage-native-farm-discovery-20261122-064601/display-assignment-settled.png": "4ff6a0e70092a46fc706f58ba121e40fffcf1b663c6b574297796cfe5f8716f0",
+          "build/stockpile-storage-native-farm-discovery-20261122-064601/display-removed-parent.png": "38f8235ea8d52e299329055cef584435811d0cd7abb641fc0a292162e81a3c19",
+          "build/stockpile-storage-native-farm-discovery-20261122-064601/display-selected-draft.png": "a40fc489ac62af0224d1e6d2c5ea32affd1d10827f3914253e2fb5cf9f1d6877",
+          "build/stockpile-storage-native-farm-discovery-20261122-064601/display-selected-parent.png": "cdaa4645fdfcbc52f7fcd44811ff9d1dcc7c7854e02b4bc4d2e30fabe576a68e"
+        }
       }
     },
     "pending_construction_reference": {

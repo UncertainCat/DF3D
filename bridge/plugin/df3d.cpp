@@ -179,6 +179,7 @@
 #include "item_uses_native.h"
 #include "stocks_native.h"
 #include "display_inventory_native.h"
+#include "display_assignment_native.h"
 #include "kitchen_native.h"
 #include "hunter_ammunition_native.h"
 #include "hunter_ammunition_captions_native.h"
@@ -5733,6 +5734,28 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["jobs"]=Json::Value(Json::arrayValue);
           for(const auto& job:body->jobs){Json::Value row;row["id"]=job.id;row["type"]=job.type;row["item_type"]=job.itemType;row["flags"]=job.flags;result["jobs"].append(row);}
         } else if(!edit)return CR_FAILURE;
+        out.print("{}",Json::FastWriter().write(result));return CR_OK;
+      }
+      if(parameters[0]=="display-assignment-probe") {
+        if(parameters.size()!=2 && parameters.size()<5)return CR_WRONG_USAGE;
+        const auto parse=[](const std::string& value,auto& target) {
+          const auto parsed=std::from_chars(value.data(),value.data()+value.size(),target);
+          return parsed.ec==std::errc{} && parsed.ptr==value.data()+value.size();
+        };
+        int32_t id=-1,assign=0;uint64_t revision=0;
+        if(!parse(parameters[1],id))return CR_WRONG_USAGE;
+        if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+        auto* building=df::building::find(id);Json::Value result;
+        if(parameters.size()>2) {
+          if(!parse(parameters[2],revision) || !parse(parameters[3],assign) || (assign!=0 && assign!=1))return CR_WRONG_USAGE;
+          std::vector<int32_t> items;
+          for(size_t i=4;i<parameters.size();++i){int32_t item=-1;if(!parse(parameters[i],item))return CR_WRONG_USAGE;items.push_back(item);}
+          const auto edit=df3d_production::editDisplayAssignments(building,revision,items,assign!=0);
+          result["outcome"]=int(edit.outcome);result["effects_started"]=edit.effectsStarted;
+        }
+        const auto snapshot=df3d_production::displayAssignments(building);if(!snapshot)return CR_FAILURE;
+        result["revision"]=std::to_string(snapshot->revision);result["removing"]=snapshot->removing;
+        result["items"]=Json::Value(Json::arrayValue);for(auto item:snapshot->items)result["items"].append(item);
         out.print("{}",Json::FastWriter().write(result));return CR_OK;
       }
       if(parameters[0]=="display-inventory-probe") {

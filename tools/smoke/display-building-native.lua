@@ -9,14 +9,16 @@ local function click(x,y)
  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
 end
-local function probe()
+local function probe(command,...)
+ local args={'df3d',command or 'display-inventory-probe',tostring(building.id)}
+ for _,value in ipairs{...}do args[#args+1]=tostring(value)end
  return dfhack.with_suspend(function()
   local guards={}
   for _,storage in ipairs{g,main}do
    local size,address=df.sizeof(storage);local copy=df.new('uint8_t',size)
    dfhack.internal.memmove(copy,address,size);guards[#guards+1]={size=size,address=address,copy=copy}
   end
-  local text,code=dfhack.run_command_silent('df3d','display-inventory-probe',tostring(building.id))
+  local text,code=dfhack.run_command_silent(table.unpack(args))
   local unchanged=true
   for _,guard in ipairs(guards)do
    unchanged=unchanged and dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0;df.delete(guard.copy)
@@ -77,6 +79,23 @@ if os.getenv('DF3D_DISPLAY_SELECT')=='1' then
   click(880,142);result.selection.removed=snapshot();checkpoint();capture('display-removed-parent')
  end
  assert(#building.displayed_items==#before.displayed,'Display parent removal missed')
+ if os.getenv('DF3D_DISPLAY_ASSIGNMENT')=='1' then
+  local authority=probe('display-assignment-probe')
+  local invalid=probe('display-assignment-probe',authority.revision,1,candidate_id,candidate_id)
+  assert(invalid.outcome==0 and not invalid.effects_started,'Duplicate display draft accepted')
+  local assigned=probe('display-assignment-probe',authority.revision,1,candidate_id)
+  assert(assigned.outcome==1 and assigned.effects_started,'Owned display assignment failed')
+  result.selection.owned_assigned=snapshot()
+  assert(json.encode(result.selection.owned_assigned)==json.encode(result.selection.closed),'Owned display assignment effects differ')
+  local stale=probe('display-assignment-probe',authority.revision,0,candidate_id)
+  assert(stale.outcome==2 and not stale.effects_started,'Stale display removal accepted')
+  local removed=probe('display-assignment-probe',assigned.revision,0,candidate_id)
+  assert(removed.outcome==1 and removed.effects_started,'Owned display removal failed')
+  result.selection.owned_removed=snapshot()
+  assert(json.encode(result.selection.owned_removed)==json.encode(result.selection.removed),'Owned display removal effects differ')
+  result.assignment_provider={assigned=assigned,removed=removed,stale=stale,duplicate=invalid}
+  checkpoint()
+ end
  click(520,406);assert(picker.open)
 end
 gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())

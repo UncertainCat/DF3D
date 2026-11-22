@@ -3408,6 +3408,26 @@ sampled GPU60C. Bridge build and19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.display_inventory_reference`.
 This qualifies inventory enumeration/order, not product editing or public exposure.
 
+The assignment provider accepts a sorted owned draft and revalidates every item
+against current display eligibility before applying it. Target revisions cover
+membership, item flags/references/positions and building jobs; epoch/session/draft
+authority remains with the caller. Native367618..3676c0 clears building/reservation
+flags, invokes the shared item cleanup, detaches an earlier display assignment,
+adds the target membership/reference and sets the reservation bit. Parent removal
+preserves the distinct native1adf0a ordering of reference removal and item cleanup.
+No native picker context or global redraw flag is used. Once effects begin,
+unverified outcomes are Unknown and must not be replayed.
+
+Protected064601 (DF53336) compares owned assignment/removal with native item38540
+effects: flags, reservation bit, general references, target membership and paused
+building jobs match. Duplicate drafts and stale removal reject before effects;
+all calls leave GPS/main_interface bytes unchanged. Inventory still matches all6411
+native IDs/order. Source preserved, owned session closes unsaved at30FPS, sampled
+GPU59–60C. Bridge build and19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.display_assignment_reference`.
+Multi-item commit, reassignment and later hauling remain unqualified. The owned
+picker/body transport and public display-furniture route are still unfinished.
+
 The trap/hive control provider now owns revisions over target stage/flags,
 contents, body facts and jobs. Bait selection preserves native1afad4..1afbc9:
 set the requested bait and cancel mismatched BaitTrap107 jobs backwards using

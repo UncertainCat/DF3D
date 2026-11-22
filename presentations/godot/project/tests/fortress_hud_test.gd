@@ -161,10 +161,10 @@ func run():
 	assert(hud.navigation["Build / construction"].get_parent().get_parent().get_parent() == hud.actions,"Construction group belongs to bottom actions")
 	assert(hud.navigation.Stockpiles.get_index() == hud.navigation["Build / construction"].get_index()+1 and hud.navigation.Zones.get_index() == hud.navigation.Stockpiles.get_index()+1,"Stockpile and Zone follow Build in native order")
 	assert(hud.navigation.Stockpiles.visible and not hud.navigation.Stockpiles.disabled,"Completed stockpile workflow has an enabled public launcher")
-	for title in hud.DISPLAY_ONLY_SLOTS:
-		assert(hud.navigation[title].visible and hud.navigation[title].disabled,"Native slot remains visible without exposing unfinished route: " + title)
+	for title in ["Stocks", "Citizens", "Tasks", "Places", "Labor", "Work orders", "Nobles and administrators", "Objects", "Justice"]:
+		assert(hud.navigation[title].visible and not hud.navigation[title].disabled,"Accepted management workflow has an enabled public launcher: " + title)
 	hud.navigation["Labor"].pressed.emit()
-	assert(not hud.labor_menu.visible, "Read-only Labor does not reopen the legacy editor")
+	assert(not hud.labor_menu.visible, "Public Work Details does not reopen the legacy Labor menu")
 	var reachable: Array = [0, 14]
 	for group in ["Dig", "Smooth", "Chop trees", "Gather plants", "Remove"]:
 		hud.navigation[group].pressed.emit()
@@ -271,7 +271,7 @@ func run():
 		if hud.moods.visible: assert(hud.moods.position.x - hud.population.get_rect().end.x <= 12, "Mood counts stay next to population")
 		assert(hud.summary_spacer.get_index() > hud.moods.get_index() and hud.summary_spacer.get_index() < hud.date.get_index())
 		assert(hud.status_panel.get_rect().end.x <= hud.playback.position.x, "Header stays clear of playback controls at %s: %s vs %s" % [view, hud.status_panel.get_rect(), hud.playback.position])
-		assert(hud.navigation["Stocks"].visible and hud.navigation["Stocks"].disabled, "Stocks retains native header footprint without dispatch")
+		assert(hud.navigation["Stocks"].visible and not hud.navigation["Stocks"].disabled, "Public Stocks retains its native header footprint")
 		assert(hud.navigation["Stocks"].get_index() > hud.moods.get_index() and hud.navigation["Stocks"].get_index() < hud.resources.get_index(), "Stocks follows native header grouping")
 		if hud.moods.visible: assert(hud.status_panel.get_global_rect().encloses(hud.moods.get_global_rect()), "All mood counts fit in the header at %s: %s / %s" % [view, hud.status_panel.get_global_rect(), hud.moods.get_global_rect()])
 		assert(not hud.level_steps.visible,"Unsourced stepper is not part of native minimap frame")

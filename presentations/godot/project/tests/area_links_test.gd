@@ -174,6 +174,8 @@ func run() -> void:
 		var item: Array = settings_cases[index]
 		var typed: Dictionary = zone.duplicate(true)
 		typed.zone_type = 100+index; typed.zone_settings = {item[1]:item[2]}
+		# Native burial permissions are editable only for an unassigned tomb.
+		if item[0] == "Tomb":typed.owner_id=-1
 		for definition in controller.menu_data.zones:
 			if definition.name == item[0]:
 				var observed: Dictionary = definition.duplicate(true); observed.id = typed.zone_type
@@ -303,13 +305,14 @@ func run() -> void:
 		typed.owner_allowed = type_name == "Office"; typed.location_id = 0
 		typed.location_name = "The Golden Shrine"; typed.religion = "The Bejeweled Creed"
 		typed.location_kind = 2; typed.owner_name = "Observed owner"; typed.owner_profession = "Miner"; typed.owner_sex = 0
+		typed.owner_rows=[{"id":typed.owner_id,"caption":"Observed owner, Miner, ♀","status":""}]
 		for definition in controller.menu_data.zones:
 			if definition.name == type_name:
 				var observed: Dictionary = definition.duplicate(true); observed.id = typed.zone_type; controller.zone_types.append(observed)
 		controller.use_area(typed)
 		check(controller.zone_menu.visible and not controller.kind_picker.visible,"native panel replaces generic controls for " + type_name)
 		check(controller.zone_menu.type_label.text == typed.location_name and controller.zone_menu.religion_label.text == typed.religion,"location summary uses observed name and religion")
-		check(controller.zone_menu.owner_label.text == "Observed owner, Miner, ♀","zone owner summary uses observed profession and sex")
+		check(controller.zone_menu.owner_label.text == typed.owner_rows[0].caption,"zone owner summary uses the native caption")
 		check(controller.zone_menu.controls.location_details.visible and controller.zone_menu.controls.location.position.x == 254,"assigned location has native details and shifted assignment slots")
 		if type_name == "Office":
 			controller.zone_menu.controls.owner.pressed.emit(); service.poll()

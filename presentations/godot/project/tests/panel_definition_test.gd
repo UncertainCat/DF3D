@@ -1,7 +1,7 @@
 extends "res://tests/ui_test_support.gd"
 const Definition = preload("res://scripts/panel_definition.gd")
 const DEFINITION_PATH = "res://panels/native_selection.json"
-const BINDINGS = ["row.icon","row.name","selection.container_name","selection.description","selection.door_status","selection.icon","selection.job","selection.overview.age_sex","selection.overview.citizenship","selection.overview.current_thought","selection.overview.hauling","selection.overview.health","selection.overview.labor_skills","selection.overview.military","selection.overview.recent_thoughts","selection.overview.traits","selection.overview.unmet_needs","selection.portrait","selection.subtitle","selection.title","selection.weight_value"]
+const BINDINGS = ["row.icon","row.name","selection.container_name","selection.description","selection.door_status","selection.header_status","selection.icon","selection.job","selection.overview.age_sex","selection.overview.citizenship","selection.overview.current_thought","selection.overview.hauling","selection.overview.health","selection.overview.labor_skills","selection.overview.military","selection.overview.recent_thoughts","selection.overview.traits","selection.overview.unmet_needs","selection.portrait","selection.subtitle","selection.title","selection.weight_value"]
 const ACTIONS = ["selection.inspect_item","selection.view_container"]
 const DEFINITION_CONTRACT = {"layout_positive":["panel_width"],"layout_arrays":{"frame_margins":2,"body_insets":4,"feedback_rect":4,"tabs_origin":2},"required_nodes":["common.fallback_title"],"require_tabs":true}
 func run():

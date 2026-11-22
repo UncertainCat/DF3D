@@ -538,8 +538,8 @@ func assert_citizen_person(u: Dictionary, inspected: bool, member: int = 1, sent
 		"roles":[{"name":"Manager","required_office":250}] if inspected else [],"offices":[]})
 
 func reject_production(request: Dictionary, error: String) -> void:
-	assert(world.management_request("production", request) == 0)
-	assert(world.last_error() == error)
+	assert(world.management_request("production", request) == 0, "Invalid production request was accepted: " + str(request))
+	assert(world.last_error() == error, "Production rejection differs for " + str(request) + ": " + world.last_error())
 
 func test_production() -> void:
 	var cage := {"action":A.ProductionQueue,"building_id":261,"expected_revision":9007199254740993,"cage_operation":1,"cage_candidate_id":5969,"cage_entity":2,"cage_assigned":true}
@@ -576,8 +576,8 @@ func test_production() -> void:
 		request[key] = 1
 		reject_production(request, "Wrong management field type: " + key)
 	var bounds := {"building_id":[-2,2147483648],"job_id":[-2,2147483648],"cursor":[-1,4294967296],
-		"repeat":[2],"suspend":[-2],"season":[4],"crop_id":[32768],"expected_revision":[-1],"farm_operation":[Contract.FarmOperation.CageAquarium+1],"seasonal_fertilization":[2],
-		"recipe":["x".repeat(129),String.chr(233).repeat(65)],"query":["x".repeat(129),String.chr(233).repeat(65)]}
+		"repeat":[2],"suspend":[-2],"season":[4],"crop_id":[32768],"expected_revision":[-1],"farm_operation":[Contract.FarmOperation.values().max()+1],"seasonal_fertilization":[2],
+		"recipe":["x".repeat(129),String.chr(233).repeat(65)],"query":["x".repeat(139),String.chr(233).repeat(70)]}
 	for key in bounds:
 		for bad in bounds[key]:
 			var request := {"action":15}

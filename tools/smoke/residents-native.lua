@@ -139,7 +139,27 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
      if df.widget_unit_name:is_instance(widget) and widget.u then result.owners[#result.owners+1]=widget.u.id end
      for _,target in ipairs(callbacks(widget.custom_activated,64))do
       local action=({[0x3d0ca0]=0,[0x3d0e50]=1,[0x3d0a90]=1,[0x3d0c40]=2,[0x3d1700]=3,[0x3d1460]=4,[0x3d1280]=5})[target]
-      if action then result.actions[#result.actions+1]=action end
+      if action then
+       result.actions[#result.actions+1]=action
+       local _,address=df.sizeof(widget);local at=address+0xd0
+       local tag=df.reinterpret_cast('uint8_t',at+0x40).value
+       assert(tag==0 or tag==1,'Pet tooltip variant invalid '..tag)
+       if tag==1 then
+        local context=df.reinterpret_cast('uint64_t',at+56).value
+        local callback=0
+        if context~=0 then local vt=df.reinterpret_cast('uint64_t',context).value;callback=df.reinterpret_cast('uint64_t',vt+16).value-base end
+        assert(callback~=0,'Empty pet tooltip callback')
+        result.action_help[#result.action_help+1]={observed=true,text='',hover=df.reinterpret_cast('int32_t',base+callback+8).value,instruction=df.reinterpret_cast('int32_t',base+callback+0x19).value}
+        local file=assert(io.open(out..'/pet-tooltip-callbacks.txt','a'));file:write(action..' '..string.format('%x',callback)..'\n');file:close()
+       else
+       local length=df.reinterpret_cast('uint64_t',at+16).value
+       local capacity=df.reinterpret_cast('uint64_t',at+24).value
+       assert(length<=1024 and capacity>=length,'Pet tooltip string invalid')
+       local data=capacity>15 and df.reinterpret_cast('uint64_t',at).value or at
+       local chars={};for offset=0,length-1 do chars[#chars+1]=string.char(df.reinterpret_cast('uint8_t',data+offset).value)end
+       result.action_help[#result.action_help+1]={observed=true,text=dfhack.df2utf(table.concat(chars)),hover=-1,instruction=-1}
+       end
+      end
      end
      if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do semantic(child,result)end end
     end
@@ -148,7 +168,7 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
      if df.widget_unit_portrait:is_instance(widget) and widget.u then kind=0;target=widget.u;id=target.id end
      if df.widget_item_portrait:is_instance(widget) and widget.i then kind=1;target=widget.i;id=target.id end
      if id then
-      local expected={captions={},caption_colors={},owners={},actions={}}
+      local expected={captions={},caption_colors={},owners={},actions={},action_help={}}
       for ordinal,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do if ordinal>=6 then semantic(child,expected)end end
       local before=kind==0 and {target.flags1.whole,target.flags2.whole,target.flags3.whole} or {target.flags.whole}
       local text,rc=dfhack.run_command_silent('df3d','pet-controls-probe',tostring(kind),tostring(id));assert(rc==0,text)
@@ -210,6 +230,33 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
   for _=1,3 do script.sleep(1,'frames')end
   view:render(dfhack.getTickCount());capture(index);queries(index)
+  if index==1 and os.getenv('DF3D_PET_SORT_REFERENCE')=='1' then
+   local sorted={}
+   for direction=1,2 do
+    local button=assert(headers.Slaughterability,'Missing native Slaughterability sort')
+    local x=button.rect.x1+1;local y=button.rect.y1;local g=df.global.gps
+    g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+    gui.simulateInput(view,'_MOUSE_L')
+    df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+    for _=1,15 do script.sleep(1,'frames')end
+    view:render(dfhack.getTickCount())
+    lists={};headers={};walk(info.creatures)
+    local sample={direction=direction,rows={},sorting={},flags=active_list.sort_flags.whole}
+    for _,entry in ipairs(active_list.sorting_by)do
+     local _,address=df.sizeof(entry.fn);local context=df.reinterpret_cast('uint64_t',address+56).value
+     local vt=df.reinterpret_cast('uint64_t',context).value
+     sample.sorting[#sample.sorting+1]={name=entry.ident,callback=df.reinterpret_cast('uint64_t',vt+16).value-base}
+    end
+    local function collect(widget)
+     if df.widget_unit_portrait:is_instance(widget) and widget.u then sample.rows[#sample.rows+1]={kind=0,id=widget.u.id}end
+     if df.widget_item_portrait:is_instance(widget) and widget.i then sample.rows[#sample.rows+1]={kind=1,id=widget.i.id}end
+     if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
+    end
+    collect(active_list);sorted[#sorted+1]=sample
+   end
+   local file=assert(io.open(out..'/pet-sort-reference.json','w'));file:write(json.encode(sorted));file:close()
+  end
   if index==1 and training_fixture_finish then
    local ok,err=pcall(function()
     if os.getenv('DF3D_PET_TRAINER_REFERENCE')=='1' then

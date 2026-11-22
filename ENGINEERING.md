@@ -12614,6 +12614,30 @@ Owned DF48132 closes unsaved/source-preserved at30FPS, sampled60C; bridge build
 and19 core checks pass. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-100048`.
 
+Pet control data also retains native help references. All six observed action
+tooltips use callbacks, not literal strings: adoption3d39d0, gelding3d3a20,
+slaughter3d3a70, hunting3d3b30, war3d3b80 and trainer3d3c10. These callbacks
+select two global native help IDs. The provider verifies each complete37-byte
+body and reads its immediate IDs without executing the callback or changing
+hover globals. Literal text is retained if present; an unrecognized callback
+remains explicitly unobserved. `action_help` aligns with the semantic action list.
+
+Protected100848 on2026-11-22 matches all17 rows' help references against their
+native widget callbacks, alongside captions/colors/owners/actions and unchanged
+flags. This proves reference extraction, not rendered hover text/timing. Initial
+100349 rejected the incorrect literal-only assumption;100525 established the
+callback targets. Owned DF60784 closes unsaved/source-preserved at30FPS,
+sampled60C; bridge build and19 core checks pass. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-100848`.
+
+The same oracle's optional `DF3D_PET_SORT_REFERENCE=1` clicks Slaughterability
+both ways and records row order plus comparator identity. Callback3d61b0 jumps
+to3d61d0. Its behavior is not a conventional strict comparator (some left-side
+states return true without considering the right-side state), so exposing it
+through an arbitrary standard sorting algorithm is not yet qualified. Native
+sorting execution/order needs investigation before implementing this sort;
+the owned creature-list provider still rejects it.
+
 
 Residents Activity has distinct job-settings and event-description routes.
 The job-details widget1423130 uses native eligibility d15ef0 and opens213420

@@ -3504,6 +3504,8 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(const auto& color:controls->captionColors){Json::Value value(Json::arrayValue);for(auto component:color)value.append(component);result["caption_colors"].append(value);}
           for(auto id:controls->owners)result["owners"].append(id);
           for(auto action:controls->actions)result["actions"].append(action);
+          result["action_help"]=Json::Value(Json::arrayValue);
+          for(const auto& help:controls->actionHelp){Json::Value value(Json::objectValue);value["observed"]=help.observed;value["text"]=DF2UTF(help.text);value["hover"]=help.hover;value["instruction"]=help.instruction;result["action_help"].append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="creature-list-probe") {

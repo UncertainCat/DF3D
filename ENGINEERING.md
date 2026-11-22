@@ -8627,6 +8627,21 @@ across actual world replacement, not main-scene graphical reload acceptance or
 proof of unknown sent-mutation handling. The main-scene producer-recovery evidence
 above remains separate.
 
+`DF3D_MANAGEMENT_MUTATION=1` additionally qualifies an interrupted Tasks suspension
+edit in the main-scene producer-recovery lane. Protected155327 on2026-11-22 clicks
+task68196's Suspend control, dispatches the request and holds receipt delivery.
+Native readback confirms the full flags changed by exactly the suspension bit
+before disabling the bridge. The service retires the sent edit as unknown; the
+panel loses its old authority. After recovery, an explicit public HUD reopen
+reads the changed suspension value, and the retained mutation/request records
+contain exactly the original edit ticket, with no replay. A fresh pointer edit
+restores suspension; native checks confirm the complete original flags through
+all remaining handshake stages. Objects and Justice read recovery also passes.
+The owned DF62124 closes unsaved, source hashes are unchanged, client stderr is
+empty, and serial30FPS graphics sample59–60C. This establishes a mutation applied
+before receipt loss; loss before application, cancellation and other mutation
+families are not implied. No runtime change was necessary.
+
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can
 return fewer rows to keep the text/recipe payload below384KiB within the512KiB

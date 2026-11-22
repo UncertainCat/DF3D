@@ -873,16 +873,30 @@ if os.getenv('DF3D_STANDING_AUTOMATION')=='1' then
 end
 if os.getenv('DF3D_LABOR_LIFECYCLE')=='1' then
  local stage=0;local disabled=false
+ local mutation_job,mutation_flags
+ if os.getenv('DF3D_MANAGEMENT_MUTATION')=='1' then
+  for _,job in require('utils').listpairs(df.global.world.jobs.list)do if job.id==68196 then mutation_job=job;break end end
+  assert(mutation_job and mutation_job.flags.suspend,'Interrupted Tasks fixture unavailable')
+  mutation_flags=mutation_job.flags.whole
+ end
  local ok,err=xpcall(function()
   shot('labor-lifecycle-wire',function()
    local file=io.open(out..'/labor-lifecycle-request');if not file then return end
    local wanted=tonumber(file:read('*a'));file:close();if wanted==stage then return end
    assert(wanted==stage+1 and wanted<=6,'Unexpected lifecycle handshake')
+   if mutation_job then
+    if wanted==1 and mutation_job.flags.whole==mutation_flags then return end
+    assert(mutation_job.flags.whole==(wanted<=2 and (mutation_flags ~ 2) or mutation_flags),'Interrupted Tasks native effect/restoration differs')
+   end
    disabled=wanted%2==1
    assert(dfhack.run_command(disabled and 'disable' or 'enable','df3d')==0,'Lifecycle transport toggle failed')
    stage=wanted;file=assert(io.open(out..'/labor-lifecycle-ack','w'));file:write(tostring(stage));file:close()
   end)
   assert(stage==6,'Incomplete Labor lifecycle check')
+  if mutation_job then
+   assert(mutation_job.flags.whole==mutation_flags,'Interrupted Tasks final restore failed')
+   local f=assert(io.open(out..'/management-mutation-native.json','w'));f:write(json.encode{job_id=mutation_job.id,applied_before_disconnect=true,restored=true,stages=stage});f:close()
+  end
  end,debug.traceback)
  if disabled then dfhack.run_command('enable','df3d')end
  assert(ok,err)

@@ -4917,7 +4917,7 @@
     {
       "path": "presentations/godot/project/tests/labor_lifecycle_wire_live.gd",
       "status": "manual",
-      "reason": "Protected stockpile_storage_native.ps1 with DF3D_STANDING_ORDERS_NATIVE and DF3D_LABOR_LIFECYCLE; main-scene Kitchen, Stone use and Hunter retirement and fresh reads across real plugin transport disable/enable cycles; DF3D_MANAGEMENT_LIFECYCLE selects Tasks, Objects and Justice."
+      "reason": "Protected stockpile_storage_native.ps1 with DF3D_STANDING_ORDERS_NATIVE and DF3D_LABOR_LIFECYCLE; main-scene Kitchen, Stone use and Hunter retirement and fresh reads across real plugin transport disable/enable cycles; DF3D_MANAGEMENT_LIFECYCLE selects Tasks, Objects and Justice; DF3D_MANAGEMENT_MUTATION adds a native-confirmed Tasks edit with receipt loss, no replay and explicit restoration."
     },
     {
       "path": "presentations/godot/project/tests/standing_automation_wire_live.gd",

@@ -116,7 +116,14 @@ func management_run() -> void:
 		var ids: Array=state.rows.map(func(row):return row.get(spec.key,-1))
 		# Hold delivery after dispatch so a pre-loss read cannot grant authority
 		# to the replacement producer, even if DF completed it before disabling.
-		actions.set_process(false);state.refresh()
+		actions.set_process(false)
+		var interrupted_edit: bool=index==0 and OS.get_environment("DF3D_MANAGEMENT_MUTATION")=="1"
+		if interrupted_edit:
+			var row_index: int=ids.find(68196)
+			if not check(row_index>=0 and state.rows[row_index].suspended and state.rows[row_index].can_suspend,"Interrupted Tasks fixture unavailable"):quit(1);return
+			state.seek(row_index,owner.panel.capacity())
+			await pointer(owner.panel,owner.panel.button_rect(row_index-state.first,3).get_center())
+		else:state.refresh()
 		var old_ticket: int=state.ticket
 		var deadline:=Time.get_ticks_msec()+5000
 		while actions._requests.has(old_ticket) and int(actions._requests[old_ticket].sequence)==0 and Time.get_ticks_msec()<deadline:
@@ -136,6 +143,21 @@ func management_run() -> void:
 		await hud_click(main._fortress_hud.launcher_rect(spec.name).get_center())
 		if not await ready_state(state):quit(1);return
 		check(owner.panel.visible and state.rows.map(func(row):return row.get(spec.key,-1))==ids,"Fresh management membership changed: "+spec.name)
+		if interrupted_edit:
+			check(actions.result(old_ticket).get("outcome")=="unknown","Interrupted Tasks edit did not retire as unknown")
+			var submitted: Array=[]
+			for collection in [actions._outcomes,actions._requests]:
+				for request_ticket in collection:
+					var request: Dictionary=collection[request_ticket].get("request",{})
+					if request.get("action")==C.ManagementAction.TasksApply and request.get("job_id")==68196:submitted.append(request_ticket)
+			check(submitted==[old_ticket],"Interrupted Tasks edit was replayed")
+			var row_index: int=ids.find(68196)
+			check(not state.rows[row_index].suspended,"Fresh Tasks read lost completed native edit")
+			state.seek(row_index,owner.panel.capacity())
+			await pointer(owner.panel,owner.panel.button_rect(row_index-state.first,3).get_center())
+			if not await ready_state(state):quit(1);return
+			check(state.rows[row_index].suspended,"Explicit Tasks restore failed")
+			records.append({"screen":"Tasks","unknown_edit":true,"no_replay":submitted==[old_ticket],"fresh_effect":true,"restored":true})
 		main._ui.host.close_active()
 		records.append({"screen":spec.name,"rows":ids.size(),"retired":true,"fresh_read":true})
 		if failed:quit(1);return

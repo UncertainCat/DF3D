@@ -115552,6 +115552,758 @@
           "tools/smoke/siege-building-native.lua": "3b77b4dce0167493a439ca480d440a4b8f0d4f55ecddfa369ea99792c5daadce",
           "tools/smoke/remaining-buildings-native.lua": "30980447bcabace4a458a321621723a03102a63718bc3df2db0911471c037912"
         }
+      },
+      "siege_controls_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261122-060027",
+        "owned_df_pid": 61252,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "All three completed siege types: five native/owned mode edits and stale revision rejection; eight Bolt Thrower resting directions preserve facing/action. Both stop modes cancel two firing jobs, release worker/item reservations and retain loading job, matching native. Owned reads/edits leave GPS/main_interface bytes unchanged. No ammunition provider, transport or public panel acceptance.",
+        "engines": [
+          {
+            "actions": [
+              {
+                "action": 3,
+                "lines": [
+                  {
+                    "text": "Fire at enemies",
+                    "y": 11
+                  }
+                ],
+                "owned": {
+                  "action": 3,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "938336509448465283",
+                  "type": 0
+                },
+                "stale": 2
+              },
+              {
+                "action": 4,
+                "lines": [
+                  {
+                    "text": "Practice fire",
+                    "y": 11
+                  },
+                  {
+                    "text": "* Will also target enemies",
+                    "y": 13
+                  },
+                  {
+                    "text": "* Place archery targets for better training",
+                    "y": 14
+                  }
+                ],
+                "owned": {
+                  "action": 4,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "5287750321737696933",
+                  "type": 0
+                },
+                "stale": 2
+              },
+              {
+                "action": 2,
+                "lines": [
+                  {
+                    "text": "Stand ready but do not fire",
+                    "y": 11
+                  }
+                ],
+                "owned": {
+                  "action": 2,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "4716431488821840483",
+                  "type": 0
+                },
+                "stale": 2
+              },
+              {
+                "action": 1,
+                "lines": [
+                  {
+                    "text": "Keep loaded but do not stand ready",
+                    "y": 11
+                  }
+                ],
+                "owned": {
+                  "action": 1,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "4895321353095974209",
+                  "type": 0
+                },
+                "stale": 2
+              },
+              {
+                "action": 0,
+                "lines": [
+                  {
+                    "text": "Not in use",
+                    "y": 11
+                  }
+                ],
+                "owned": {
+                  "action": 0,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "8673416332469349409",
+                  "type": 0
+                },
+                "stale": 2
+              }
+            ],
+            "before": {
+              "action": 0,
+              "facing": 0,
+              "jobs": 0,
+              "resting": 0
+            },
+            "id": 1490,
+            "job_effects": [
+              {
+                "native": {
+                  "action": 1,
+                  "firing": false,
+                  "item_refs": 0,
+                  "item_reserved": false,
+                  "jobs": 1,
+                  "loading": true,
+                  "second": false,
+                  "worker_free": true
+                },
+                "owned": {
+                  "action": 1,
+                  "firing": false,
+                  "item_refs": 0,
+                  "item_reserved": false,
+                  "jobs": 1,
+                  "loading": true,
+                  "second": false,
+                  "worker_free": true
+                }
+              },
+              {
+                "native": {
+                  "action": 0,
+                  "firing": false,
+                  "item_refs": 0,
+                  "item_reserved": false,
+                  "jobs": 1,
+                  "loading": true,
+                  "second": false,
+                  "worker_free": true
+                },
+                "owned": {
+                  "action": 0,
+                  "firing": false,
+                  "item_refs": 0,
+                  "item_reserved": false,
+                  "jobs": 1,
+                  "loading": true,
+                  "second": false,
+                  "worker_free": true
+                }
+              }
+            ],
+            "lines": [
+              {
+                "text": "Not in use",
+                "y": 11
+              }
+            ],
+            "tile": [
+              113,
+              101,
+              165
+            ],
+            "type": 0
+          },
+          {
+            "actions": [
+              {
+                "action": 3,
+                "lines": [
+                  {
+                    "text": "Fire at enemies",
+                    "y": 11
+                  }
+                ],
+                "owned": {
+                  "action": 3,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "3277727243572651959",
+                  "type": 1
+                },
+                "stale": 2
+              },
+              {
+                "action": 4,
+                "lines": [
+                  {
+                    "text": "Practice fire",
+                    "y": 11
+                  },
+                  {
+                    "text": "* Will also target enemies",
+                    "y": 13
+                  },
+                  {
+                    "text": "* Place archery targets for better training",
+                    "y": 14
+                  }
+                ],
+                "owned": {
+                  "action": 4,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "1933846084818623825",
+                  "type": 1
+                },
+                "stale": 2
+              },
+              {
+                "action": 2,
+                "lines": [
+                  {
+                    "text": "Stand ready but do not fire",
+                    "y": 11
+                  }
+                ],
+                "owned": {
+                  "action": 2,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "4430850938795550231",
+                  "type": 1
+                },
+                "stale": 2
+              },
+              {
+                "action": 1,
+                "lines": [
+                  {
+                    "text": "Keep loaded but do not stand ready",
+                    "y": 11
+                  }
+                ],
+                "owned": {
+                  "action": 1,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "4402764459148053109",
+                  "type": 1
+                },
+                "stale": 2
+              },
+              {
+                "action": 0,
+                "lines": [
+                  {
+                    "text": "Not in use",
+                    "y": 11
+                  }
+                ],
+                "owned": {
+                  "action": 0,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "8249851553161971925",
+                  "type": 1
+                },
+                "stale": 2
+              }
+            ],
+            "before": {
+              "action": 0,
+              "facing": 0,
+              "jobs": 0,
+              "resting": 0
+            },
+            "id": 1491,
+            "job_effects": [
+              {
+                "native": {
+                  "action": 1,
+                  "firing": false,
+                  "item_refs": 0,
+                  "item_reserved": false,
+                  "jobs": 1,
+                  "loading": true,
+                  "second": false,
+                  "worker_free": true
+                },
+                "owned": {
+                  "action": 1,
+                  "firing": false,
+                  "item_refs": 0,
+                  "item_reserved": false,
+                  "jobs": 1,
+                  "loading": true,
+                  "second": false,
+                  "worker_free": true
+                }
+              },
+              {
+                "native": {
+                  "action": 0,
+                  "firing": false,
+                  "item_refs": 0,
+                  "item_reserved": false,
+                  "jobs": 1,
+                  "loading": true,
+                  "second": false,
+                  "worker_free": true
+                },
+                "owned": {
+                  "action": 0,
+                  "firing": false,
+                  "item_refs": 0,
+                  "item_reserved": false,
+                  "jobs": 1,
+                  "loading": true,
+                  "second": false,
+                  "worker_free": true
+                }
+              }
+            ],
+            "lines": [
+              {
+                "text": "Not in use",
+                "y": 11
+              }
+            ],
+            "tile": [
+              101,
+              105,
+              165
+            ],
+            "type": 1
+          },
+          {
+            "actions": [
+              {
+                "action": 3,
+                "lines": [
+                  {
+                    "text": "Fire at enemies",
+                    "y": 11
+                  },
+                  {
+                    "text": "Resting orientation",
+                    "y": 16
+                  },
+                  {
+                    "text": "Bolts loaded: 0",
+                    "y": 21
+                  },
+                  {
+                    "text": "Bolts nearby and available: 0",
+                    "y": 22
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to squads: 25",
+                    "y": 23
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to hunters: 89",
+                    "y": 24
+                  }
+                ],
+                "owned": {
+                  "action": 3,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "3941767645538828059",
+                  "type": 2
+                },
+                "stale": 2
+              },
+              {
+                "action": 4,
+                "lines": [
+                  {
+                    "text": "Practice fire (uses many bolts!)",
+                    "y": 11
+                  },
+                  {
+                    "text": "* Will also target enemies",
+                    "y": 13
+                  },
+                  {
+                    "text": "* Place archery targets for better training",
+                    "y": 14
+                  },
+                  {
+                    "text": "Resting orientation",
+                    "y": 16
+                  },
+                  {
+                    "text": "Bolts loaded: 0",
+                    "y": 21
+                  },
+                  {
+                    "text": "Bolts nearby and available: 0",
+                    "y": 22
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to squads: 25",
+                    "y": 23
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to hunters: 89",
+                    "y": 24
+                  }
+                ],
+                "owned": {
+                  "action": 4,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "7019876560109079741",
+                  "type": 2
+                },
+                "stale": 2
+              },
+              {
+                "action": 2,
+                "lines": [
+                  {
+                    "text": "Stand ready but do not fire",
+                    "y": 11
+                  },
+                  {
+                    "text": "Resting orientation",
+                    "y": 16
+                  },
+                  {
+                    "text": "Bolts loaded: 0",
+                    "y": 21
+                  },
+                  {
+                    "text": "Bolts nearby and available: 0",
+                    "y": 22
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to squads: 25",
+                    "y": 23
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to hunters: 89",
+                    "y": 24
+                  }
+                ],
+                "owned": {
+                  "action": 2,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "3390829752082976507",
+                  "type": 2
+                },
+                "stale": 2
+              },
+              {
+                "action": 1,
+                "lines": [
+                  {
+                    "text": "Keep loaded but do not stand ready",
+                    "y": 11
+                  },
+                  {
+                    "text": "Resting orientation",
+                    "y": 16
+                  },
+                  {
+                    "text": "Bolts loaded: 0",
+                    "y": 21
+                  },
+                  {
+                    "text": "Bolts nearby and available: 0",
+                    "y": 22
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to squads: 25",
+                    "y": 23
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to hunters: 89",
+                    "y": 24
+                  }
+                ],
+                "owned": {
+                  "action": 1,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "2009076886003982425",
+                  "type": 2
+                },
+                "stale": 2
+              },
+              {
+                "action": 0,
+                "lines": [
+                  {
+                    "text": "Not in use",
+                    "y": 11
+                  },
+                  {
+                    "text": "Resting orientation",
+                    "y": 16
+                  },
+                  {
+                    "text": "Bolts loaded: 0",
+                    "y": 21
+                  },
+                  {
+                    "text": "Bolts nearby and available: 0",
+                    "y": 22
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to squads: 25",
+                    "y": 23
+                  },
+                  {
+                    "text": "Bolts nearby but assigned to hunters: 89",
+                    "y": 24
+                  }
+                ],
+                "owned": {
+                  "action": 0,
+                  "effects_started": true,
+                  "facing": 0,
+                  "outcome": 1,
+                  "removing": false,
+                  "resting": 0,
+                  "revision": "7573594942768624441",
+                  "type": 2
+                },
+                "stale": 2
+              }
+            ],
+            "before": {
+              "action": 0,
+              "facing": 0,
+              "jobs": 0,
+              "resting": 0
+            },
+            "id": 1492,
+            "job_effects": [
+              {
+                "native": {
+                  "action": 1,
+                  "firing": false,
+                  "item_refs": 0,
+                  "item_reserved": false,
+                  "jobs": 1,
+                  "loading": true,
+                  "second": false,
+                  "worker_free": true
+                },
+                "owned": {
+                  "action": 1,
+                  "firing": false,
+                  "item_refs": 0,
+                  "item_reserved": false,
+                  "jobs": 1,
+                  "loading": true,
+                  "second": false,
+                  "worker_free": true
+                }
+              },
+              {
+                "native": {
+                  "action": 0,
+                  "firing": false,
+                  "item_refs": 0,
+                  "item_reserved": false,
+                  "jobs": 1,
+                  "loading": true,
+                  "second": false,
+                  "worker_free": true
+                },
+                "owned": {
+                  "action": 0,
+                  "firing": false,
+                  "item_refs": 0,
+                  "item_reserved": false,
+                  "jobs": 1,
+                  "loading": true,
+                  "second": false,
+                  "worker_free": true
+                }
+              }
+            ],
+            "lines": [
+              {
+                "text": "Not in use",
+                "y": 11
+              },
+              {
+                "text": "Resting orientation",
+                "y": 16
+              },
+              {
+                "text": "Bolts loaded: 0",
+                "y": 21
+              },
+              {
+                "text": "Bolts nearby and available: 0",
+                "y": 22
+              },
+              {
+                "text": "Bolts nearby but assigned to squads: 25",
+                "y": 23
+              },
+              {
+                "text": "Bolts nearby but assigned to hunters: 89",
+                "y": 24
+              }
+            ],
+            "orientations": [
+              {
+                "action": 0,
+                "effects_started": true,
+                "facing": 0,
+                "outcome": 1,
+                "removing": false,
+                "resting": 1,
+                "revision": "3542826266485774073",
+                "type": 2
+              },
+              {
+                "action": 0,
+                "effects_started": true,
+                "facing": 0,
+                "outcome": 1,
+                "removing": false,
+                "resting": 2,
+                "revision": "3620543629449447995",
+                "type": 2
+              },
+              {
+                "action": 0,
+                "effects_started": true,
+                "facing": 0,
+                "outcome": 1,
+                "removing": false,
+                "resting": 3,
+                "revision": "2447656076421713659",
+                "type": 2
+              },
+              {
+                "action": 0,
+                "effects_started": true,
+                "facing": 0,
+                "outcome": 1,
+                "removing": false,
+                "resting": 4,
+                "revision": "7367253580743943741",
+                "type": 2
+              },
+              {
+                "action": 0,
+                "effects_started": true,
+                "facing": 0,
+                "outcome": 1,
+                "removing": false,
+                "resting": 5,
+                "revision": "3336484904461093373",
+                "type": 2
+              },
+              {
+                "action": 0,
+                "effects_started": true,
+                "facing": 0,
+                "outcome": 1,
+                "removing": false,
+                "resting": 6,
+                "revision": "3414202267424767295",
+                "type": 2
+              },
+              {
+                "action": 0,
+                "effects_started": true,
+                "facing": 0,
+                "outcome": 1,
+                "removing": false,
+                "resting": 7,
+                "revision": "2241314714397032959",
+                "type": 2
+              },
+              {
+                "action": 0,
+                "effects_started": true,
+                "facing": 0,
+                "outcome": 1,
+                "removing": false,
+                "resting": 0,
+                "revision": "7573594942768624441",
+                "type": 2
+              }
+            ],
+            "tile": [
+              136,
+              84,
+              165
+            ],
+            "type": 2
+          }
+        ],
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261122-060027/siege-building-native.json": "46b99920bd59bb1c21da844f84ee9b81366628608647fce576401c62d4d78bc5",
+          "build/stockpile-storage-native-farm-discovery-20261122-060027/result.json": "edefd7a1bb00d09a7e9c1ee00a811c1a5f2a6fffd10b956d0f97bdaa48dea58c",
+          "build/stockpile-storage-native-farm-discovery-20261122-060027/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/siege_controls_native.h": "1fed9a2ddc94fd6bc63c499064187d58844be2ed01e72ab32a07cbda3dc7a379",
+          "bridge/plugin/zone_native.cpp": "da2522495cfcd1a3899f140fc704ec166fe1f2f233e53f699de44430025629ff",
+          "bridge/plugin/places_action_native.h": "a427e9839af716b855822c6d7ed9f0ad8d44c3e2856965982ecacc6045a19c97",
+          "tools/smoke/siege-building-native.lua": "67dfca995981c54aea1b12b280b3f458e6b7450658911b332023fba77e711ed7",
+          "tools/smoke/siege-jobs-native.lua": "ceb0eb3ee95c2a5899db1f80a80d71cd7b09327b842c1538b1f76a296598d542"
+        }
       }
     },
     "pending_construction_reference": {

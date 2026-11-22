@@ -443,29 +443,33 @@ bool nativeZoneAssignItem(df::building_civzonest& zone,df::item& item,bool assig
     reinterpret_cast<void (*)(df::building_civzonest**,Entry*,bool)>(base+0x3ce1b0)(&context,&entry,assign);
     return true;
 }
-bool nativeRemoveAnimalChainJobs(df::building_chainst& target,bool unchain) {
-    if(!nativeZoneAnimalAssignmentReady())return false;
+bool nativeRemoveBuildingJob(df::building& owner,df::job& value) {
+    if(!nativeZoneAnimalAssignmentReady() || value.general_refs.size()>4096 || owner.jobs.size()>4096)return false;
+    auto* job=&value;
+    if(std::find(owner.jobs.begin(),owner.jobs.end(),job)==owner.jobs.end())return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
-    auto* chain=&target;
-    for(size_t i=chain->jobs.size();i-->0;) {
-        auto* job=chain->jobs[i];
-        if(!job || job->job_type!=(unchain?df::job_type::UnchainAnimal:df::job_type::ChainAnimal))continue;
-        for(size_t r=job->general_refs.size();r-->0;) {
-            auto* ref=job->general_refs[r];
-            if(!ref || ref->getType()!=df::general_ref_type::BUILDING_HOLDER)continue;
-            if(auto* holder=ref->getBuilding()) {
-                auto& jobs=holder->jobs;
-                jobs.erase(std::remove(jobs.begin(),jobs.end(),job),jobs.end());
-            }
-            // Native reference destruction/erase; no UI bookkeeping.
-            reinterpret_cast<bool (*)(df::job*,int32_t,int32_t)>(base+0xd09860)(job,36,-1);
+    for(size_t r=job->general_refs.size();r-->0;) {
+        auto* ref=job->general_refs[r];
+        if(!ref || ref->getType()!=df::general_ref_type::BUILDING_HOLDER)continue;
+        if(auto* holder=ref->getBuilding()) {
+            auto& jobs=holder->jobs;
+            jobs.erase(std::remove(jobs.begin(),jobs.end(),job),jobs.end());
         }
-        reinterpret_cast<void (*)(df::job*)>(base+0xa67820)(job);
-        // Valid native holder relationships removed this entry. Avoid
-        // retaining a dangling job in malformed semantic input too.
-        auto& jobs=chain->jobs;
-        jobs.erase(std::remove(jobs.begin(),jobs.end(),job),jobs.end());
-        i=std::min(i,jobs.size());
+        reinterpret_cast<bool (*)(df::job*,int32_t,int32_t)>(base+0xd09860)(job,36,-1);
+        r=std::min(r,job->general_refs.size());
+    }
+    reinterpret_cast<void (*)(df::job*)>(base+0xa67820)(job);
+    auto& jobs=owner.jobs;
+    jobs.erase(std::remove(jobs.begin(),jobs.end(),job),jobs.end());
+    return true;
+}
+bool nativeRemoveAnimalChainJobs(df::building_chainst& chain,bool unchain) {
+    if(!nativeZoneAnimalAssignmentReady())return false;
+    for(size_t i=chain.jobs.size();i-->0;) {
+        auto* job=chain.jobs[i];
+        if(!job || job->job_type!=(unchain?df::job_type::UnchainAnimal:df::job_type::ChainAnimal))continue;
+        if(!nativeRemoveBuildingJob(chain,*job))return false;
+        i=std::min(i,chain.jobs.size());
     }
     return true;
 }

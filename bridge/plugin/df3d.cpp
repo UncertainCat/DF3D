@@ -5733,6 +5733,26 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         } else if(!edit)return CR_FAILURE;
         out.print("{}",Json::FastWriter().write(result));return CR_OK;
       }
+      if(parameters[0]=="siege-state-probe") {
+        if(parameters.size()!=2 && parameters.size()!=5)return CR_WRONG_USAGE;
+        int32_t id=-1,value=-1,resting=0;uint64_t revision=0;
+        const auto parse=[](const std::string& value,auto& target) {
+          const auto parsed=std::from_chars(value.data(),value.data()+value.size(),target);
+          return parsed.ec==std::errc{} && parsed.ptr==value.data()+value.size();
+        };
+        if(!parse(parameters[1],id))return CR_WRONG_USAGE;
+        if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+        auto* building=df::building::find(id);Json::Value result;
+        if(parameters.size()==5) {
+          if(!parse(parameters[2],revision) || !parse(parameters[3],value) || !parse(parameters[4],resting) || (resting!=0 && resting!=1))return CR_WRONG_USAGE;
+          const auto edit=df3d_production::setSiegeControl(building,revision,value,resting!=0);
+          result["outcome"]=int(edit.outcome);result["effects_started"]=edit.effectsStarted;
+        }
+        const auto snapshot=df3d_production::siegeControls(building);if(!snapshot)return CR_FAILURE;
+        result["revision"]=std::to_string(snapshot->revision);result["type"]=snapshot->type;
+        result["action"]=snapshot->action;result["resting"]=snapshot->resting;result["facing"]=snapshot->facing;result["removing"]=snapshot->removing;
+        out.print("{}",Json::FastWriter().write(result));return CR_OK;
+      }
       if(parameters[0]=="chain-state-probe") {
         if(parameters.size()!=2 && parameters.size()!=5)return CR_WRONG_USAGE;
         int32_t id=-1,unitId=-1,toggle=0;uint64_t revision=0;

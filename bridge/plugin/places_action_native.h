@@ -1,5 +1,6 @@
 #pragma once
 #include "places_native.h"
+#include "siege_controls_native.h"
 
 namespace df3d_places {
 enum class ActionOutcome { Unsupported, Rejected, Applied, Unknown };
@@ -22,7 +23,7 @@ inline ActionOutcome siegeAction(int32_t buildingId,int32_t action) {
             for(size_t i=0;i<p.length;++i){h^=base[p.rva+i];h*=UINT64_C(1099511628211);}if(h!=p.hash)return false;}
         return true;
     }();
-    if(!pinned)return ActionOutcome::Unsupported;
+    if(!pinned || !df3d_production::siegeControlsReady())return ActionOutcome::Unsupported;
     const auto current=lists();if(!current)return ActionOutcome::Unsupported;
     std::vector<df::building_siegeenginest*> targets;
     for(auto id:(*current)[5])if(buildingId==-1 || id==buildingId){
@@ -35,15 +36,7 @@ inline ActionOutcome siegeAction(int32_t buildingId,int32_t action) {
     static_assert(offsetof(df::building_siegeenginest,action)==0x14c);
     try {
         for(auto* engine:targets){
-            engine->action=static_cast<df::siegeengine_action>(action);
-            if(action>1)continue;
-            // Reload the vector after cancellation; the native destructor erases
-            // the job. Reverse traversal preserves the remaining indices.
-            for(size_t i=engine->jobs.size();i>0;--i){
-                auto* job=engine->jobs[i-1];const int type=int(job->job_type);
-                if(int(engine->type)==2 ? type==247 : type==137 || type==138)
-                    reinterpret_cast<void(*)(df::job*)>(base+0xa67820)(job);
-            }
+            if(!df3d_production::applySiegeMode(*engine,action))return ActionOutcome::Unknown;
         }
         return ActionOutcome::Applied;
     }catch(...){return ActionOutcome::Unknown;}

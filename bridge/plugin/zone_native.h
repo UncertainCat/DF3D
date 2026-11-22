@@ -4,7 +4,7 @@
 #include <string>
 #include <array>
 #include <vector>
-namespace df { struct building_chainst; struct building_civzonest; struct unit; struct item; struct squad; }
+namespace df { struct building; struct job; struct building_chainst; struct building_civzonest; struct unit; struct item; struct squad; }
 namespace df3d_area {
 // Caller supplies a newly allocated zone and its selected type, at one safe point.
 // Includes native initial range direction from supplied extents and target
@@ -152,6 +152,9 @@ bool nativeDetachAnimalRestraints(df::unit& unit);
 // Same semantic detach with an explicit destination exclusion for chain edits.
 bool nativeDetachAnimalChains(df::unit& unit,df::building_chainst* except=nullptr);
 bool nativeRemoveAnimalChainJobs(df::building_chainst& chain,bool unchain);
+// Shared semantic holder detach + native job destruction; no selection bookkeeping.
+// Uses nativeZoneAnimalAssignmentReady's verified job-destruction baseline.
+bool nativeRemoveBuildingJob(df::building& holder,df::job& job);
 bool nativeZoneAssignUnit(df::building_civzonest& zone,df::unit& unit,bool assign);
 bool nativeZoneCreateReady();
 bool nativeZoneMultiReady();

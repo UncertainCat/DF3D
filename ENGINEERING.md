@@ -3111,9 +3111,28 @@ The source save is unchanged; owned DF closes unsaved at30FPS, sampled48C.
 Native sheet input1af364..1af6cf writes action and cancels the same firing-job
 types as Places. For Bolt Thrower,1af4d4..1af4db writes resting_orientation only;
 facing is a separate simulation field. Renderer19205a..193ced supplies the body.
-The building provider, resting-direction effects and public workflow remain open.
-Reuse the Places mode behavior and independently owned semantic helpers; do not
-call native sheet input/render functions or borrow their globals.
+The building and Places mode setters share siege_controls_native.h. Firing-job
+cleanup detaches holder references before invoking the native job destructor,
+avoiding its selection/cursor branch while retaining semantic cleanup. Building
+edits validate a fresh revision and reject demolition; effects that cannot be
+confirmed return Unknown and must not be replayed. Resting-direction edits change
+only resting_orientation, preserving facing and action.
+
+Protected055922 on2026-11-22 (DF59764) compares all15 native mode clicks with
+owned edits, rejects their stale revisions, and compares all eight Bolt Thrower
+resting directions. GPS and main_interface bytes remain unchanged by owned reads
+and edits. The bridge build passes; source saves are preserved and owned DF closes
+unsaved at30FPS, sampled46C. This run has no firing jobs. Ammunition counts,
+transport, body rendering and the public building workflow remain unfinished.
+Do not call native sheet input/render functions or borrow their globals.
+
+Protected060027 (DF61252) repeats the control comparisons and adds native/owned
+job cleanup for both stop modes on all three engine types. Each case removes two
+firing jobs, releases a worker and an item reservation, and retains the loading
+job. Owned operations preserve GPS/main_interface bytes. Source saves remain
+unchanged and owned DF closes unsaved at30FPS, sampled47C. Evidence:
+completed_sheet_discovery_reference.siege_controls_reference. Bridge build and
+all19 root CTest checks pass. This does not qualify ammunition or public UI.
 
 ### Chain candidates and native actions
 

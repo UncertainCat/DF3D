@@ -4,6 +4,24 @@ local gui=require('gui');local json=require('json');local g=df.global.gps
 local sheet=df.global.game.main_interface.view_sheets
 local created,items={},{}
 local engines={first};local result={engines={}}
+local function probe(engine,revision,value,resting)
+ return dfhack.with_suspend(function()
+  local guards={}
+  for _,storage in ipairs{g,df.global.game.main_interface}do
+   local size,address=df.sizeof(storage);local copy=df.new('uint8_t',size)
+   dfhack.internal.memmove(copy,address,size);guards[#guards+1]={size=size,address=address,copy=copy}
+  end
+  local args={'df3d','siege-state-probe',tostring(engine.id)}
+  if revision then args[#args+1]=revision;args[#args+1]=tostring(value);args[#args+1]=resting and '1' or '0'end
+  local text,code=dfhack.run_command_silent(table.unpack(args))
+  local unchanged=true
+  for _,guard in ipairs(guards)do
+   unchanged=unchanged and dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0;df.delete(guard.copy)
+  end
+  assert(code==0,text);assert(unchanged,'Siege provider changed native UI storage')
+  return json.decode(text)
+ end)
+end
 local function click(x,y)
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
@@ -49,11 +67,32 @@ local ok,err=xpcall(function()
   local row={id=engine.id,type=engine.type,tile={engine.centerx,engine.centery,engine.z},before=before,actions={}}
   capture('siege-'..engine.type..'-initial');row.lines=lines()
   for slot,action in ipairs{3,4,2,1,0}do
+   local owned_before=probe(engine)
    click(780+(slot-1)*24,154)
    assert(engine.action==action and #engine.jobs==before.jobs,'Siege sheet action mapping differs')
    capture('siege-'..engine.type..'-action-'..action)
-   row.actions[#row.actions+1]={action=action,lines=lines()}
+   local native_lines=lines()
+   engine.action=owned_before.action
+   local owned=probe(engine,owned_before.revision,action,false)
+   assert(owned.outcome==1 and owned.effects_started and owned.action==action and owned.facing==before.facing and owned.resting==before.resting,'Owned siege mode differs')
+   local stale=probe(engine,owned_before.revision,action,false)
+   assert(stale.outcome==2 and not stale.effects_started,'Old siege revision accepted')
+   row.actions[#row.actions+1]={action=action,lines=native_lines,owned=owned,stale=stale.outcome}
   end
+  if engine.type==2 then
+   row.orientations={}
+   for _,direction in ipairs{1,2,3,4,5,6,7,0}do
+    local owned_before=probe(engine)
+    click(448+32*direction,226)
+    assert(engine.resting_orientation==direction and engine.facing==before.facing and engine.action==0,'Native resting orientation differs')
+    engine.resting_orientation=owned_before.resting
+    local owned=probe(engine,owned_before.revision,direction,true)
+    assert(owned.outcome==1 and owned.resting==direction and owned.facing==before.facing and owned.action==0,'Owned resting orientation differs')
+    row.orientations[#row.orientations+1]=owned
+   end
+  end
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('siege%-building%-native.lua$','siege-jobs-native.lua')
+  row.job_effects=assert(loadfile(source))(engine,probe,click)
   engine.action=before.action
   assert(engine.facing==before.facing and engine.resting_orientation==before.resting and #engine.jobs==before.jobs)
   result.engines[#result.engines+1]=row

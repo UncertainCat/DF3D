@@ -327,8 +327,8 @@ func open_target(tile: Vector3i, kind: int, id: int) -> void:
 		var target: Dictionary=world.inspect_entity(kind,id)
 		if uses_building_selection(target):
 			open_tile_selection(tile);return
-	if kind in [0,2,3]:
-		# Loose items and room/zone meshes can cover a supported building.
+	if kind in [0,1,2,3]:
+		# Creatures, loose items and room/zone meshes can cover a supported building.
 		# Let DF's tile selection choose the sheet and alternatives there too.
 		for building in world.buildings_at_tile(tile):
 			var target: Dictionary=world.inspect_entity(3,int(building.id))

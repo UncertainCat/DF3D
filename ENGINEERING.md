@@ -3605,8 +3605,31 @@ then removes it. Four full488x708 panels match native exactly; the target panel
 was inspected. Final native checks confirm both memberships empty, no display
 reference/reservation and no building jobs. The second fixture is cleaned up,
 client stderr is empty, source saves are unchanged and owned DF52184 closes unsaved
-at30FPS (GPU samples49–52C). All19 core checks pass. Later hauling/On display and
-long-list/resize behavior remain unqualified.
+at30FPS (GPU samples49–52C). All19 core checks pass.
+
+Protected172036 on2026-11-22 qualifies delivery after actual public assignment.
+Native worker1017 performs PutItemOnDisplay382797 and delivers existing amulet38540
+to the disposable pedestal1490 at tick1241. No hauling worker, cargo or job is
+manufactured. The native BUILDING_HOLDER reference establishes delivery; the owned
+body reports On display/color10. Reopening through the public map route shows the
+same state and removes the item. The full488x708 panel, including its contained
+amulet icon, matches native exactly and was inspected. Both client stderr files
+are empty; the original save is unchanged and owned DF31140 closes unsaved. Graphics
+run serially at30FPS, GPU samples47–49C. Bridge build, all19 core checks and focused
+holder-routing, UI composition and Display state checks pass. The progression
+fixture is bounded by12000 ticks/180seconds and restores pause; post-delivery
+captures require matching recorded start/end ticks, preserving ordinary paused guards.
+
+This workflow exposed two corrected omissions. Creature meshes covering supported
+buildings now enter the existing native tile-selection path, retaining native
+ordering and side tabs instead of bypassing the building alternatives. Native171253
+opens worker1017 first with the pedestal alternative; public171538 reaches that
+alternative after the routing correction. Display contents now request the existing
+owned itemAppearance provider for every contained item, as other furniture already
+does. That omitted type caused171538's160-pixel missing amulet icon;172036 verifies
+the correction. Earlier170843 stopped at the old paused capture guard, and171028/
+171253 stopped at the missing tile-selection route; none is a whole-lane pass.
+Long-list/resize behavior remains unqualified.
 
 ### Trap and hive control providers
 

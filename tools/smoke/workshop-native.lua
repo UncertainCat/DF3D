@@ -137,7 +137,11 @@ local ok,err=xpcall(function()
  if os.getenv('DF3D_REMAINING_BUILDINGS_NATIVE')=='1'then
   resize_worker('default')
   local source=debug.getinfo(1,'S').source:sub(2):gsub('workshop%-native.lua$','remaining-buildings-native.lua')
-  assert(loadfile(source))(out,view,select_map,capture)
+  local remaining=assert(loadfile(source))(out,view,select_map,capture)
+  if os.getenv('DF3D_DISPLAY_HAUL')=='1' then
+   assert(remaining.display.success and remaining.display.start_tick==frame and remaining.display.end_tick==df.global.world.frame_counter)
+   records[#records+1]={name='display-hauling',result=remaining.display}
+  end
   return
  end
  if os.getenv('DF3D_BARRIER_SHEETS_NATIVE')=='1'then
@@ -3723,7 +3727,7 @@ for _,prior in ipairs(dye_names)do prior.color.name=prior.name;assert(prior.colo
 for _,entry in ipairs(furnace_fixtures)do entry.building.type=entry.prior_type end
 for _,entry in ipairs(workshop_fixtures)do entry.building.type=entry.prior_type;entry.building.custom_type=entry.prior_custom;entry.building.construction_stage=entry.prior_stage end
 if craft_tool_fixture then craft_tool_fixture.raw.flags.BONE_MAT=craft_tool_fixture.bone end
-local advanced=os.getenv('DF3D_FURNITURE_DEMOLITION')=='1'
+local advanced=os.getenv('DF3D_FURNITURE_DEMOLITION')=='1' or os.getenv('DF3D_DISPLAY_HAUL')=='1'
 if not advanced then
  assert(#building.jobs==#jobs,'Workshop capture changed job count'..(ok and '' or '\n'..tostring(err)))
  for i,id in ipairs(jobs)do assert(building.jobs[i-1].id==id,'Workshop capture changed job order')end

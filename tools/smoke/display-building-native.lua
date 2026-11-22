@@ -1,5 +1,9 @@
 -- Protected native UI observation only. Runtime must use owned semantic inputs.
 local out,view,building,capture,select_map=...
+if os.getenv('DF3D_DISPLAY_HAUL')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('display%-building%-native.lua$','display-hauling-native.lua')
+ return assert(loadfile(source))(out,view,building,capture,select_map)
+end
 if os.getenv('DF3D_DISPLAY_REASSIGN')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('display%-building%-native.lua$','display-reassignment-native.lua')
  return assert(loadfile(source))(out,view,building,capture,select_map)

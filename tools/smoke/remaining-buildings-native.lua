@@ -248,7 +248,9 @@ if sheet.open then gui.simulateInput(view,'LEAVESCREEN')end
 for _,item in ipairs(fixture_items)do item.flags.in_building=false;assert(dfhack.items.remove(item))end
 for _,b in ipairs(fixtures)do b:setBuildStage(0);b.flags.exists=false;assert(dfhack.buildings.deconstruct(b))end
 assert(ok,err)
-assert(df.global.world.frame_counter==result.frame)
+if os.getenv('DF3D_DISPLAY_HAUL')=='1' then
+ assert(result.display.success and result.display.delivered and result.display.start_tick==result.frame and result.display.end_tick==df.global.world.frame_counter and df.global.pause_state,'Missing bounded display hauling evidence')
+else assert(df.global.world.frame_counter==result.frame)end
 result.success=true
 local f=assert(io.open(out..'/remaining-buildings-native.json','w'));f:write(json.encode(result));f:close()
 return result

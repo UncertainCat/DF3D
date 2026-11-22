@@ -1,6 +1,6 @@
 extends "res://tests/furniture_map_scene_live.gd"
 func expected_filename() -> String:return "display-wire-expected.json"
-func result_filename() -> String:return "display-wire-result.json"
+func result_filename() -> String:return "display-haul-wire-result.json" if OS.get_environment("DF3D_DISPLAY_HAUL_STAGE")=="delivered" else "display-wire-result.json"
 func display_ready() -> bool:
 	var deadline:=Time.get_ticks_msec()+10000
 	while Time.get_ticks_msec()<deadline:
@@ -19,6 +19,7 @@ func display_ready() -> bool:
 	return check(false,"Display visible facts/art did not settle")
 func exercise(expected: Dictionary) -> void:
 	Engine.max_fps=30;owner=scene._ui.controller("furniture")
+	if expected.has("haul_stage"):await hauling(expected);return
 	if expected.get("reassignment",false):await reassign(expected);return
 	if not await open_furniture(expected) or not await display_ready():return
 	await panel_capture("display-initial","display-scene-initial")
@@ -91,4 +92,19 @@ func reassign(expected: Dictionary) -> void:
 	if not await display_ready():return
 	check(owner.display.body.is_empty(),"Reassigned item removal failed")
 	await panel_capture("reassign-second-removed","display-reassign-second-removed")
+	key(KEY_ESCAPE);await drain();exercised=true
+
+func hauling(expected: Dictionary) -> void:
+	var id:=int(expected.item_id)
+	if expected.haul_stage=="assign":
+		if not await assign_one(expected.target,id):return
+		if not await open_furniture(expected.target) or not await display_ready():return
+		check(owner.display.body.size()==1 and owner.display.body[0].id==id and not owner.display.body[0].on_display,"Public assignment missed Assigned state")
+	else:
+		if not await open_furniture(expected.target) or not await display_ready():return
+		check(owner.display.body.size()==1 and owner.display.body[0].id==id and owner.display.body[0].on_display and owner.display.body[0].status=="On display" and owner.display.body[0].status_color==10,"Public panel missed native delivered state")
+		await panel_capture("haul-on-display","display-haul-on-display")
+		await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.display_check(0).get_center())
+		if not await display_ready():return
+		check(owner.display.body.is_empty(),"Delivered item removal failed")
 	key(KEY_ESCAPE);await drain();exercised=true

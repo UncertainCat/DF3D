@@ -20,8 +20,17 @@ func open_furniture(entry: Dictionary) -> bool:
 	# verify its exact identity after the real pointer event below.
 	if not check(hit.get("tile",Vector3i(-1,-1,-1))==tile,"Furniture map ray missed tile for "+str(entry.id)):return false
 	await pointer(point);key(KEY_ESCAPE);await drain()
+	if scene._ui.host.active!=null or scene._ui.tile_selection==null or scene._ui.tile_selection.navigation.state.ticket!=0:
+		print("FURNITURE_ESCAPE_STATE ",JSON.stringify({"active":str(scene._ui.host.active),"tile_selection":str(scene._ui.tile_selection),"ticket":scene._ui.tile_selection.navigation.state.ticket if scene._ui.tile_selection!=null else -1,"piece":scene._interaction._pick_piece(point),"actions_active":actions._active,"queued":actions._queue.size()}))
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/furniture-escape-state.png")
 	if not check(scene._ui.host.active==null and scene._ui.tile_selection!=null and scene._ui.tile_selection.navigation.state.ticket==0,"Escape retained furniture selection request"):return false
 	print("FURNITURE_MAP_PICK ",entry.id," ",scene._interaction._pick_piece(point))
 	await pointer(point);await drain()
+	if scene._ui.host.active!=owner and scene._ui.tile_selection!=null:
+		var tabs=scene._ui.tile_selection.tabs
+		var index: int=tabs.alternatives.find_custom(func(row):return row.kind==C.SelectionKind.Building and row.id==int(entry.id))
+		if not check(index>=0,"Native selection omitted the covered building alternative"):return false
+		await pointer(tabs.get_global_transform_with_canvas()*Vector2(24,index*36+18));await drain()
 	if not await chest_ready():return false
 	return check(owner.state.building_id==int(entry.id),"Map click selected the wrong furniture")

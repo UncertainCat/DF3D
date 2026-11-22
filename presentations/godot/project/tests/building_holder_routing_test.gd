@@ -3,6 +3,10 @@ class World:
 	extends RefCounted
 	var facts: Dictionary={}
 	func inspect_entity(_kind,_id):return facts
+	func buildings_at_tile(_tile):return [{"id":278}]
+class SelectionCapture extends RefCounted:
+	var tiles: Array=[]
+	func open_tile(tile):tiles.append(tile)
 class HolderPanel:
 	extends RefCounted
 	var opened: Array=[]
@@ -26,6 +30,9 @@ func _initialize() -> void:
 		ui.open_building_holder(pair[0],278)
 		if furniture.opened.size()!=1 or not pending.opened.is_empty():failures+=1;push_error("Completed holder remains gated: "+str(pair))
 		furniture.opened.clear()
+	ui.tile_selection=SelectionCapture.new()
+	ui.open_target(Vector3i(128,80,165),1,1017)
+	if ui.tile_selection.tiles!=[Vector3i(128,80,165)]:failures+=1;push_error("Creature covering furniture bypassed native alternatives")
 	ui.free()
 	if failures==0:print("BUILDING_HOLDER_ROUTING_PASS")
 	quit(0 if failures==0 else 1)

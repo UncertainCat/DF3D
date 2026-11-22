@@ -195,7 +195,7 @@ local function selection_shot(name,while_waiting)
  -- Combined Labor visits multiple creature/zone sheets and waits for fresh receipts.
  local labor_navigation=name=='farm-item-carrier-unit-scene' and os.getenv('DF3D_UNIT_LABOR_ANIMALS')=='1'
  -- Match the launcher's90-second rendered-client budget at the30 FPS cap.
- local rendered_carrier=name=='display-wire' or (name=='siege-building-wire' and os.getenv('DF3D_SIEGE_SCENE')=='1') or name=='farm-item-carrier-scene' or name=='farm-item-carrier-unit-scene' or name=='chain-scene' or name=='cage-scene' or name=='simple-building-wire' or (name=='special-building-wire' and os.getenv('DF3D_SPECIAL_BUILDINGS_SCENE')=='1')
+ local rendered_carrier=name=='display-wire' or name=='display-haul-wire' or (name=='siege-building-wire' and os.getenv('DF3D_SIEGE_SCENE')=='1') or name=='farm-item-carrier-scene' or name=='farm-item-carrier-unit-scene' or name=='chain-scene' or name=='cage-scene' or name=='simple-building-wire' or (name=='special-building-wire' and os.getenv('DF3D_SPECIAL_BUILDINGS_SCENE')=='1')
  local furniture=name=='workshop-wire' and os.getenv('DF3D_FURNITURE_RUNTIME')=='1'
  -- The four furniture workflows may use the launcher's full45-second budget.
  local limit=dfhack.getTickCount()+(furniture and os.getenv('DF3D_FURNITURE_GENERIC_DISCOVERY')=='1' and 95000 or furniture and 60000 or rendered_carrier and 95000 or lifecycle and 85000 or (blink or contents_refresh or labor_navigation) and 60000 or 30000)
@@ -203,7 +203,13 @@ local function selection_shot(name,while_waiting)
   assert(dfhack.getTickCount()<limit,'selection capture timeout')
   if while_waiting then while_waiting()end
   script.sleep(1,'frames')end
- assert(df.global.pause_state and df.global.world.frame_counter==frame,'selection advanced simulation')
+ local expected_frame=frame
+ if os.getenv('DF3D_DISPLAY_HAUL')=='1' and (name=='display-haul-on-display' or name=='display-haul-wire')then
+  local f=assert(io.open(out..'/display-hauling-native.json'));local evidence=require('json').decode(f:read('*a'));f:close()
+  assert(evidence.delivered and evidence.start_tick==frame and evidence.end_tick>frame and evidence.end_tick-frame<=12000,'Missing bounded delivery capture evidence')
+  expected_frame=evidence.end_tick
+ end
+ assert(df.global.pause_state and df.global.world.frame_counter==expected_frame,'selection advanced simulation')
  for i=0,3 do assert(b.plant_id[i]==seasons[i+1],'selection changed crops')end
  return row
 end

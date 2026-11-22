@@ -96,6 +96,9 @@ require('gui.script').start(function()
     local completed=false
     for _,record in ipairs(records)do if record.name=='furniture-demolition' then completed=record.result.success end end
     assert(completed and df.global.pause_state,'demolition scope did not finish paused')
+   elseif os.getenv('DF3D_DISPLAY_HAUL')=='1' then
+    local evidence;for _,record in ipairs(records)do if record.name=='display-hauling' then evidence=record.result end end
+    assert(evidence and evidence.success and evidence.delivered and evidence.start_tick==frame and evidence.end_tick==df.global.world.frame_counter and df.global.pause_state,'Missing display hauling evidence')
    elseif progress then progress:close();assert(df.global.pause_state,'progress scope did not pause')
    else assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')end
    return

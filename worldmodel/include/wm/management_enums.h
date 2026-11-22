@@ -2,6 +2,27 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class PetAction : uint8_t {
+  Slaughter = 0,
+  Adoption = 1,
+  Gelding = 2,
+  Trainer = 3,
+  War = 4,
+  Hunting = 5,
+};
+enum class PetOutcome : uint8_t {
+  Applied = 0,
+  Rejected = 1,
+  Stale = 2,
+  Unavailable = 3,
+  Unknown = 4,
+};
+enum class PetTrainerMode : uint8_t {
+  None = 0,
+  Any = 1,
+  Unassigned = 2,
+  Individual = 3,
+};
 enum class CreatureListTab : uint8_t {
   Pets = 1,
   Other = 2,
@@ -449,6 +470,11 @@ enum class ManagementAction : uint8_t {
   DisplayCommit = 146,
   DisplayRemove = 147,
   CreatureListQuery = 148,
+  CreatureListRowsRead = 149,
+  PetActionApply = 150,
+  PetTrainersRead = 151,
+  PetTrainerApply = 152,
+  PetKnowledgeRead = 153,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -810,11 +836,21 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::DisplayCommit: return true;
   case ManagementAction::DisplayRemove: return true;
   case ManagementAction::CreatureListQuery: return true;
+  case ManagementAction::CreatureListRowsRead: return true;
+  case ManagementAction::PetActionApply: return true;
+  case ManagementAction::PetTrainersRead: return true;
+  case ManagementAction::PetTrainerApply: return true;
+  case ManagementAction::PetKnowledgeRead: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::CreatureListRowsRead: return "creature_list_rows";
+  case ManagementAction::PetActionApply: return "pet_action";
+  case ManagementAction::PetTrainersRead: return "pet_trainers";
+  case ManagementAction::PetTrainerApply: return "pet_trainer";
+  case ManagementAction::PetKnowledgeRead: return "pet_knowledge";
   case ManagementAction::CreatureListQuery: return "creature_list";
   case ManagementAction::DisplayRead: return "display";
   case ManagementAction::DisplayCommit: return "display";

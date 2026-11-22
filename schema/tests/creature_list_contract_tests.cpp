@@ -31,7 +31,7 @@ TEST_CASE("Creature list query requires matching envelope and current management
   flatbuffers::FlatBufferBuilder b;
   auto list=m::CreateCreatureListRequest(b,m::CreatureListTab::Other,m::CreatureListSort::Name,false,b.CreateVector(std::vector<uint8_t>{}));
   m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);
-  r.add_schema_version(fault==1?255:m::kManagementVersion);
+  r.add_schema_version(fault==1?m::kManagementVersion-1:m::kManagementVersion);
   r.add_action(fault==2?m::ManagementAction::Catalog:m::ManagementAction::CreatureListQuery);
   if(fault!=3)r.add_creature_list(list);b.Finish(r.Finish());
   CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
@@ -48,5 +48,62 @@ TEST_CASE("Maximum creature roster fits a management reply and requires aligned 
   s.add_status(m::ManagementStatus::Ok);s.add_creature_list(list);b.Finish(s.Finish());
   CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
   if(fault==0)CHECK(b.GetSize()<m::kManagementCapacity);
+ }
+}
+
+TEST_CASE("Pet mutations require exact observed target and revision") {
+ for(int kind=0;kind<3;++kind)for(int action=0;action<7;++action)for(uint64_t revision:{uint64_t(0),uint64_t(7),UINT64_MAX}) {
+  flatbuffers::FlatBufferBuilder b;
+  auto target=m::CreateCreatureListIdentity(b,m::CreatureListKind(kind),42);
+  auto edit=m::CreatePetActionRequest(b,target,revision,m::PetAction(action),true);
+  m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);
+  r.add_action(m::ManagementAction::PetActionApply);r.add_pet_action(edit);b.Finish(r.Finish());
+  const bool valid=kind<2 && action<6 && action!=3 && (kind==0 || action==1) && revision==7;
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==!valid);
+ }
+}
+TEST_CASE("Trainer selection separates generic modes from individual identity") {
+ for(int mode=0;mode<5;++mode)for(int trainer:{-2,-1,42}) {
+  flatbuffers::FlatBufferBuilder b;
+  auto edit=m::CreatePetTrainerRequest(b,7,1,m::PetTrainerMode(mode),trainer);
+  m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);
+  r.add_action(m::ManagementAction::PetTrainerApply);r.add_pet_trainer(edit);b.Finish(r.Finish());
+  const bool valid=mode<4 && (mode==3?trainer>=0:trainer==-1);
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==!valid);
+ }
+}
+TEST_CASE("Dead rows do not gain live navigation and item identity remains separate") {
+ for(int fault=0;fault<7;++fault) {
+  flatbuffers::FlatBufferBuilder b;const auto text=b.CreateString("name"),empty=b.CreateString("");
+  const auto color=m::CreateAreaNameColor(b);
+  const auto activity=m::CreatePetCaption(b,empty,7);
+  const m::TilePos position(1,2,3);
+  m::CreatureListRowBuilder row(b);row.add_id(42);row.add_kind(fault==1?m::CreatureListKind::Item:m::CreatureListKind::Unit);
+  row.add_first_line(text);row.add_second_line(empty);row.add_name_color(color);row.add_activity(activity);
+  if(fault==2)row.add_position(&position);if(fault==3)row.add_can_inspect(true);
+  auto value=row.Finish();std::vector<flatbuffers::Offset<m::CreatureListRow>> rows{value};
+  if(fault==4)rows.push_back(value);
+  const auto payload=m::CreateCreatureListRowsState(b,fault==5?m::CreatureListTab::Other:m::CreatureListTab::Dead,b.CreateVector(rows));
+  m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(fault==6?m::ManagementAction::CreatureListQuery:m::ManagementAction::CreatureListRowsRead);
+  s.add_status(m::ManagementStatus::Ok);s.add_creature_list_rows(payload);b.Finish(s.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
+TEST_CASE("Pet outcomes never report unknown application as success") {
+ for(int outcome=0;outcome<6;++outcome)for(bool success:{false,true}) {
+  flatbuffers::FlatBufferBuilder b;auto target=m::CreateCreatureListIdentity(b,m::CreatureListKind::Unit,7);
+  auto edit=m::CreatePetEditState(b,target,m::PetOutcome(outcome));
+  m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(m::ManagementAction::PetActionApply);
+  s.add_status(success?m::ManagementStatus::Ok:m::ManagementStatus::Rejected);s.add_pet_edit(edit);b.Finish(s.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==!(outcome<5 && success==(outcome==0)));
+ }
+}
+TEST_CASE("Knowledge continuation requires a receipt") {
+ for(int fault=0;fault<4;++fault) {
+  flatbuffers::FlatBufferBuilder b;
+  auto read=m::CreatePetKnowledgeRequest(b,fault==1?0:7,64,fault==2?0:fault==3?65:64);
+  m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);
+  r.add_action(m::ManagementAction::PetKnowledgeRead);r.add_pet_knowledge(read);b.Finish(r.Finish());
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
  }
 }

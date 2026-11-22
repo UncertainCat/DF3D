@@ -192,8 +192,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 256;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v256";
+inline constexpr uint32_t kManagementVersion = 257;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v257";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kCreatureListEntries = 65536;
@@ -493,7 +493,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::CreatureListQuery &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::PetKnowledgeRead &&
       action != ManagementAction::Alert &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -533,6 +533,41 @@ inline bool validHunterSpec(const HunterAmmunitionSpec* v) {
   int32_t prior=-1;for(auto id:*v->assigned()){if(id<=prior)return false;prior=id;}
   return true;
 }
+inline bool validCreatureIdentity(const CreatureListIdentity* value) {
+  return value && value->kind()<=CreatureListKind::Item && value->id()>=0;
+}
+inline bool validCreatureTab(CreatureListTab tab) {
+  return tab>=CreatureListTab::Pets && tab<=CreatureListTab::Dead;
+}
+inline bool validPetReceipt(uint64_t revision) { return revision && revision<=INT64_MAX; }
+inline bool validCreatureText(const flatbuffers::String* text,size_t& bytes) {
+  if(!text || text->size()>4096 || text->str().find('\0')!=std::string::npos)return false;
+  bytes+=4+text->size();return bytes<=131072;
+}
+inline bool validCreatureColor(const AreaNameColor* c) {
+  return c && c->foreground()<=7 && c->background()<=7 && c->bright()<=1 &&
+    c->alternate_foreground()<=7 && c->alternate_background()<=7 && c->alternate_bright()<=1 && c->effect()<=3;
+}
+inline bool validPetCaption(const PetCaption* c,size_t& bytes) {
+  return c && c->foreground()<=7 && c->background()<=7 && validCreatureText(c->text(),bytes);
+}
+inline bool validPetControls(const PetRowControls* p,CreatureListKind kind,size_t& bytes) {
+  if(!p || !validPetReceipt(p->revision()) || !p->captions() || p->captions()->size()>32 ||
+     !p->owners() || p->owners()->size()>32 || !p->controls() || p->controls()->size()>6)return false;
+  for(const auto* c:*p->captions())if(!validPetCaption(c,bytes))return false;
+  for(const auto* owner:*p->owners())if(!owner || owner->id()<0 || !validCreatureText(owner->first_line(),bytes) ||
+      !validCreatureText(owner->second_line(),bytes) || !validCreatureColor(owner->name_color()))return false;
+  std::set<PetAction> actions;
+  for(const auto* c:*p->controls()) {
+    if(!c || c->action()>PetAction::Hunting || !actions.insert(c->action()).second ||
+       (kind==CreatureListKind::Item && c->action()!=PetAction::Adoption) ||
+       (c->action()==PetAction::Trainer && c->value()) || !validCreatureText(c->help_text(),bytes) ||
+       c->hover_help() < -1 || c->instruction_help() < -1 ||
+       (!c->help_observed() && (c->help_text()->size() || c->hover_help()!=-1 || c->instruction_help()!=-1)))return false;
+  }
+  return true;
+}
+
 inline std::optional<std::string> validateConstructionRequest(const ConstructionRequest& r) {
   if (r.schema_version() != kManagementVersion) return "management version mismatch";
   if (r.cancel_removal() && r.action()!=ManagementAction::Remove) return "cancellation requires building removal intent";
@@ -582,7 +617,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::CreatureListQuery)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::PetKnowledgeRead)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -965,6 +1000,38 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       direction=int8_t(sort->descending());
     }
   } else if(r.work_detail_workers())return "unexpected work-detail worker query";
+  if(r.action()==ManagementAction::CreatureListRowsRead) {
+    const auto* q=r.creature_list_rows();
+    if(!q || !validCreatureTab(q->tab()) || !q->targets() || !q->targets()->size() ||
+       q->targets()->size()>64 || q->columns()<3 || q->columns()>30)return "invalid creature row request";
+    std::set<std::pair<int,int32_t>> ids;
+    for(const auto* v:*q->targets())if(!validCreatureIdentity(v) ||
+       (q->tab()==CreatureListTab::Dead && v->kind()!=CreatureListKind::Unit) ||
+       !ids.emplace(int(v->kind()),v->id()).second)return "invalid creature row identity";
+  } else if(r.creature_list_rows())return "unexpected creature rows request";
+  if(r.action()==ManagementAction::PetActionApply) {
+    const auto* q=r.pet_action();
+    if(!q || !validCreatureIdentity(q->target()) || !validPetReceipt(q->expected_revision()) ||
+       q->action()>PetAction::Hunting || q->action()==PetAction::Trainer ||
+       (q->target()->kind()==CreatureListKind::Item && q->action()!=PetAction::Adoption))return "invalid pet action request";
+  } else if(r.pet_action())return "unexpected pet action request";
+  if(r.action()==ManagementAction::PetTrainersRead) {
+    const auto* q=r.pet_trainers();
+    if(!q || q->animal_id()<0 || !validPetReceipt(q->expected_revision()) || !q->unit_ids() ||
+       q->unit_ids()->size()>64 || q->columns()<3 || q->columns()>30)return "invalid pet trainers request";
+    std::unordered_set<int32_t> ids;
+    for(auto id:*q->unit_ids())if(id<0 || !ids.insert(id).second)return "invalid trainer row identity";
+  } else if(r.pet_trainers())return "unexpected pet trainers request";
+  if(r.action()==ManagementAction::PetTrainerApply) {
+    const auto* q=r.pet_trainer();
+    if(!q || q->animal_id()<0 || !validPetReceipt(q->expected_revision()) || q->mode()>PetTrainerMode::Individual ||
+       (q->mode()==PetTrainerMode::Individual?q->trainer_id()<0:q->trainer_id()!=-1))return "invalid pet trainer request";
+  } else if(r.pet_trainer())return "unexpected pet trainer request";
+  if(r.action()==ManagementAction::PetKnowledgeRead) {
+    const auto* q=r.pet_knowledge();
+    if(!q || !q->limit() || q->limit()>64 || q->offset()>32767 || q->expected_revision()>INT64_MAX ||
+       (q->offset() && !q->expected_revision()))return "invalid pet knowledge request";
+  } else if(r.pet_knowledge())return "unexpected pet knowledge request";
   if(r.action()==ManagementAction::CreatureListQuery) {
     const auto* q=r.creature_list();
     if(!q || q->tab()<CreatureListTab::Pets || q->tab()>CreatureListTab::Dead ||
@@ -1627,7 +1694,7 @@ inline const char* validateAreaCandidate(const AreaCandidateRow* row,uint8_t kin
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::CreatureListQuery ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::PetKnowledgeRead ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -2148,6 +2215,61 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     }
     if(r->category()==-1 && (r->groups()->size() || r->items()->size() || r->container()))return "unexpected unselected depot rows";
   }else if(s.status()==ManagementStatus::Ok && s.action()==ManagementAction::DepotGoodsRead)return "missing depot goods result";
+  if(const auto* q=s.creature_list_rows()) {
+    if(s.action()!=ManagementAction::CreatureListRowsRead || s.status()!=ManagementStatus::Ok || !validCreatureTab(q->tab()) ||
+       !q->rows() || !q->rows()->size() || q->rows()->size()>64)return "invalid creature rows result";
+    std::set<std::pair<int,int32_t>> ids;size_t bytes=0,art=0;
+    for(const auto* v:*q->rows()) {
+      if(!v || v->kind()>CreatureListKind::Item || v->id()<0 || !ids.emplace(int(v->kind()),v->id()).second ||
+         !validCreatureText(v->first_line(),bytes) || !validCreatureText(v->second_line(),bytes) ||
+         !validCreatureColor(v->name_color()) || !validPetCaption(v->activity(),bytes))return "invalid creature row";
+      if(q->tab()==CreatureListTab::Dead) {
+        if(v->kind()!=CreatureListKind::Unit || v->position() || v->can_inspect())return "invalid dead creature navigation";
+      } else if(!v->position() || !v->can_inspect())return "missing creature navigation";
+      if(const auto* pos=v->position())if(pos->x()<INT16_MIN || pos->x()>INT16_MAX || pos->y()<INT16_MIN || pos->y()>INT16_MAX || pos->z()<INT16_MIN || pos->z()>INT16_MAX)return "invalid creature position";
+      if(v->kind()==CreatureListKind::Item && (v->second_line()->size() || v->job_target()))return "unexpected item creature fields";
+      if(const auto* job=v->job_target())if(job->job_id()<0 || job->building_id()<0)return "invalid creature job target";
+      if(q->tab()==CreatureListTab::Pets) {
+        if(!validPetControls(v->pet(),v->kind(),bytes))return "invalid pet row controls";
+      } else if(v->pet())return "unexpected pet row controls";
+      if(v->portrait())if(auto error=validateOwnerAppearance(*v->portrait(),art))return error;
+    }
+    if(art>131072 || bytes+art>262144)return "creature rows payload exceeded";
+  } else if(s.action()==ManagementAction::CreatureListRowsRead && s.status()==ManagementStatus::Ok)return "missing creature rows result";
+  const bool petEdit=s.action()==ManagementAction::PetActionApply || s.action()==ManagementAction::PetTrainerApply;
+  if(const auto* q=s.pet_edit()) {
+    if(!petEdit || !validCreatureIdentity(q->target()) || q->outcome()>PetOutcome::Unknown ||
+       (s.action()==ManagementAction::PetTrainerApply && q->target()->kind()!=CreatureListKind::Unit) ||
+       s.status()!=(q->outcome()==PetOutcome::Applied?ManagementStatus::Ok:ManagementStatus::Rejected))return "invalid pet edit result";
+  } else if(petEdit && s.status()==ManagementStatus::Ok)return "missing pet edit result";
+  if(const auto* q=s.pet_trainers()) {
+    if(s.action()!=ManagementAction::PetTrainersRead || s.status()!=ManagementStatus::Ok || q->animal_id()<0 ||
+       !validPetReceipt(q->revision()) || q->trainer_id() < -1 ||
+       (!q->assigned() && (q->trainer_id()!=-1 || q->any_trainer() || q->unassigned_only())) ||
+       !q->unit_ids() || q->unit_ids()->size()>kResidentsQueryUnits || !q->rows() || q->rows()->size()>64)return "invalid pet trainers result";
+    std::unordered_set<int32_t> candidates,seen;size_t bytes=0,art=0;
+    for(auto id:*q->unit_ids())if(id<0 || !candidates.insert(id).second)return "invalid trainer candidate identity";
+    for(const auto* v:*q->rows()) {
+      if(!v || !candidates.count(v->id()) || !seen.insert(v->id()).second ||
+         !validCreatureText(v->first_line(),bytes) || !validCreatureText(v->second_line(),bytes) ||
+         !validCreatureColor(v->name_color()) || !v->skills() || v->skills()->size()>149)return "invalid trainer row";
+      for(const auto* text:*v->skills())if(!validCreatureText(text,bytes))return "invalid trainer skill";
+      if(v->portrait())if(auto error=validateOwnerAppearance(*v->portrait(),art))return error;
+    }
+    if(bytes+art>196608)return "trainer rows payload exceeded";
+  } else if(s.action()==ManagementAction::PetTrainersRead && s.status()==ManagementStatus::Ok)return "missing pet trainers result";
+  if(const auto* q=s.pet_knowledge()) {
+    if(s.action()!=ManagementAction::PetKnowledgeRead || s.status()!=ManagementStatus::Ok || !validPetReceipt(q->revision()) ||
+       q->total()>32767 || q->offset()>q->total() || !q->rows() || q->rows()->size()>64 ||
+       q->rows()->size()>q->total()-q->offset() || (q->offset()<q->total() && !q->rows()->size()))return "invalid pet knowledge result";
+    std::unordered_set<int32_t> races;size_t bytes=0,art=0;
+    for(const auto* v:*q->rows()) {
+      if(!v || v->race()<0 || v->race()>=32767 || !v->level() || !races.insert(v->race()).second ||
+         !validCreatureText(v->name(),bytes) || !validPetCaption(v->knowledge(),bytes))return "invalid pet knowledge row";
+      if(v->portrait())if(auto error=validateOwnerAppearance(*v->portrait(),art))return error;
+    }
+    if(art>131072 || bytes+art>262144)return "pet knowledge payload exceeded";
+  } else if(s.action()==ManagementAction::PetKnowledgeRead && s.status()==ManagementStatus::Ok)return "missing pet knowledge result";
   if(const auto* list=s.creature_list()) {
     if(s.action()!=ManagementAction::CreatureListQuery || s.status()!=ManagementStatus::Ok ||
        list->tab()<CreatureListTab::Pets || list->tab()>CreatureListTab::Dead ||

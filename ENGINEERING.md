@@ -12695,6 +12695,23 @@ before wire acceptance; the owned process exited and source hashes were unchange
 The corrected query transport does not complete row/action transport or public
 Pets/Livestock, Other and Dead/Missing workflows.
 
+Management protocol257 adds sibling row batches, pet desired-state edits,
+trainer candidate reads/selection and paged Overall Training knowledge. Typed
+row reads carry at most64 targets; runtime producers must revalidate membership
+in the requested tab. Unit and item portraits share the existing owned appearance
+recipe contract. Rows explicitly carry native navigation availability; Dead
+rows cannot carry Recenter coordinates or a sheet action. Pet controls include
+colored captions, formatted owner names, action values/help observations and
+an observed revision. Item pets admit adoption only; trainer selection is a
+separate revision-checked request. Unknown mutation outcomes cannot report Ok.
+
+Trainer reads carry the complete candidate order with a bounded content batch;
+species knowledge pages require the same observed list revision after page0.
+Text and appearance budgets reserve room inside the management reply capacity.
+Both bridge and consumer must rebuild for region v257; v256 management records
+are incompatible and must not acquire inferred row/control facts. The schema
+does not establish implementation or public acceptance of these new actions.
+
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching
 item-name renderer1423fe0. Native142b45a..142b4c5 captures raw item.pos for Recenter;

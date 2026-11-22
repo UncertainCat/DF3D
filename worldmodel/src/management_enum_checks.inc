@@ -1,4 +1,22 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::PetAction::Slaughter) == static_cast<int>(df3d::mirror::PetAction::Slaughter));
+static_assert(static_cast<int>(wm::PetAction::Adoption) == static_cast<int>(df3d::mirror::PetAction::Adoption));
+static_assert(static_cast<int>(wm::PetAction::Gelding) == static_cast<int>(df3d::mirror::PetAction::Gelding));
+static_assert(static_cast<int>(wm::PetAction::Trainer) == static_cast<int>(df3d::mirror::PetAction::Trainer));
+static_assert(static_cast<int>(wm::PetAction::War) == static_cast<int>(df3d::mirror::PetAction::War));
+static_assert(static_cast<int>(wm::PetAction::Hunting) == static_cast<int>(df3d::mirror::PetAction::Hunting));
+static_assert(sizeof(df3d::mirror::EnumValuesPetAction()) / sizeof(df3d::mirror::PetAction) == 6);
+static_assert(static_cast<int>(wm::PetOutcome::Applied) == static_cast<int>(df3d::mirror::PetOutcome::Applied));
+static_assert(static_cast<int>(wm::PetOutcome::Rejected) == static_cast<int>(df3d::mirror::PetOutcome::Rejected));
+static_assert(static_cast<int>(wm::PetOutcome::Stale) == static_cast<int>(df3d::mirror::PetOutcome::Stale));
+static_assert(static_cast<int>(wm::PetOutcome::Unavailable) == static_cast<int>(df3d::mirror::PetOutcome::Unavailable));
+static_assert(static_cast<int>(wm::PetOutcome::Unknown) == static_cast<int>(df3d::mirror::PetOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesPetOutcome()) / sizeof(df3d::mirror::PetOutcome) == 5);
+static_assert(static_cast<int>(wm::PetTrainerMode::None) == static_cast<int>(df3d::mirror::PetTrainerMode::None));
+static_assert(static_cast<int>(wm::PetTrainerMode::Any) == static_cast<int>(df3d::mirror::PetTrainerMode::Any));
+static_assert(static_cast<int>(wm::PetTrainerMode::Unassigned) == static_cast<int>(df3d::mirror::PetTrainerMode::Unassigned));
+static_assert(static_cast<int>(wm::PetTrainerMode::Individual) == static_cast<int>(df3d::mirror::PetTrainerMode::Individual));
+static_assert(sizeof(df3d::mirror::EnumValuesPetTrainerMode()) / sizeof(df3d::mirror::PetTrainerMode) == 4);
 static_assert(static_cast<int>(wm::CreatureListTab::Pets) == static_cast<int>(df3d::mirror::CreatureListTab::Pets));
 static_assert(static_cast<int>(wm::CreatureListTab::Other) == static_cast<int>(df3d::mirror::CreatureListTab::Other));
 static_assert(static_cast<int>(wm::CreatureListTab::Dead) == static_cast<int>(df3d::mirror::CreatureListTab::Dead));
@@ -402,7 +420,12 @@ static_assert(static_cast<int>(wm::ManagementAction::DisplayRead) == static_cast
 static_assert(static_cast<int>(wm::ManagementAction::DisplayCommit) == static_cast<int>(df3d::mirror::ManagementAction::DisplayCommit));
 static_assert(static_cast<int>(wm::ManagementAction::DisplayRemove) == static_cast<int>(df3d::mirror::ManagementAction::DisplayRemove));
 static_assert(static_cast<int>(wm::ManagementAction::CreatureListQuery) == static_cast<int>(df3d::mirror::ManagementAction::CreatureListQuery));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 149);
+static_assert(static_cast<int>(wm::ManagementAction::CreatureListRowsRead) == static_cast<int>(df3d::mirror::ManagementAction::CreatureListRowsRead));
+static_assert(static_cast<int>(wm::ManagementAction::PetActionApply) == static_cast<int>(df3d::mirror::ManagementAction::PetActionApply));
+static_assert(static_cast<int>(wm::ManagementAction::PetTrainersRead) == static_cast<int>(df3d::mirror::ManagementAction::PetTrainersRead));
+static_assert(static_cast<int>(wm::ManagementAction::PetTrainerApply) == static_cast<int>(df3d::mirror::ManagementAction::PetTrainerApply));
+static_assert(static_cast<int>(wm::ManagementAction::PetKnowledgeRead) == static_cast<int>(df3d::mirror::ManagementAction::PetKnowledgeRead));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 154);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -759,3 +782,8 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::DisplayRead) == df3d::mi
 static_assert(wm::isRuntimeAction(wm::ManagementAction::DisplayCommit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DisplayCommit));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::DisplayRemove) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DisplayRemove));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureListQuery) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureListQuery));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureListRowsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureListRowsRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::PetActionApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::PetActionApply));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::PetTrainersRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::PetTrainersRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::PetTrainerApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::PetTrainerApply));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::PetKnowledgeRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::PetKnowledgeRead));

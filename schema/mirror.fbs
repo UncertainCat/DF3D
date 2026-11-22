@@ -1177,7 +1177,7 @@ table SessionCommand {
 }
 
 // Bounded fortress management channel; independently versioned from map snapshots.
-enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmEdit, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover, CreatureHeaderRead, CreatureHeaderEdit, CreatureLocate, CreatureExpelRead, CreatureExpelApply, CreatureKnowledgeRead, CreatureWorkshopRemove, CreatureLocationRemove, CreatureAnimalEdit, ResidentsQuery, ResidentsRowsRead, ResidentsSpecialize, CreatureSheetLocate, ResidentsActivityRead, JobSettingsRead, JobSettingsApply, WorkDetailWorkersQuery, WorkDetailRowsRead, WorkDetailSettingsRead, WorkDetailSettingsToggle, StandingOrdersRead, StandingOrdersSet, HunterAmmunitionRead, HunterAmmunitionCandidates, HunterAmmunitionApply, ChoresRead, ChoresApply, KitchenRead, KitchenApply, StoneUseRead, StoneUseApply, StocksMenuRead, StocksGroupApply, StocksItemApply, TasksRead, TasksApply, PlacesRead, PlacesApply, NoblesRead, NoblesCandidates, NoblesCommit, NoblesAccounting, NoblesSymbolsRead, NoblesSymbolsApply, NoblesSymbolNameRead, NoblesSymbolNameEdit, NoblesSymbolsContinue, NoblesSymbolsRetire, ObjectsRead, ObjectsLocate, JusticeRead, JusticeCaseRead, JusticeCandidatesRead, JusticeConvict, JusticeInterrogate, JusticeGuardRead, JusticeConvictsRead, JusticeConvictDetailRead, JusticeIntelligenceRead, JusticeIntelligenceGraphRead, SelectionArtRead, SelectionArtApply, DepotGoodsRead, DepotGoodsCommit, TradeCatalogRead, TradeSessionOpen, TradeSessionRead, TradeSessionClose, TradeDraftRead, TradeDraftApply, TradeSessionExchange, TradeSessionDismiss, TradeSessionGift, TradeSessionSeize, DisplayRead, DisplayCommit, DisplayRemove, CreatureListQuery }
+enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmEdit, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover, CreatureHeaderRead, CreatureHeaderEdit, CreatureLocate, CreatureExpelRead, CreatureExpelApply, CreatureKnowledgeRead, CreatureWorkshopRemove, CreatureLocationRemove, CreatureAnimalEdit, ResidentsQuery, ResidentsRowsRead, ResidentsSpecialize, CreatureSheetLocate, ResidentsActivityRead, JobSettingsRead, JobSettingsApply, WorkDetailWorkersQuery, WorkDetailRowsRead, WorkDetailSettingsRead, WorkDetailSettingsToggle, StandingOrdersRead, StandingOrdersSet, HunterAmmunitionRead, HunterAmmunitionCandidates, HunterAmmunitionApply, ChoresRead, ChoresApply, KitchenRead, KitchenApply, StoneUseRead, StoneUseApply, StocksMenuRead, StocksGroupApply, StocksItemApply, TasksRead, TasksApply, PlacesRead, PlacesApply, NoblesRead, NoblesCandidates, NoblesCommit, NoblesAccounting, NoblesSymbolsRead, NoblesSymbolsApply, NoblesSymbolNameRead, NoblesSymbolNameEdit, NoblesSymbolsContinue, NoblesSymbolsRetire, ObjectsRead, ObjectsLocate, JusticeRead, JusticeCaseRead, JusticeCandidatesRead, JusticeConvict, JusticeInterrogate, JusticeGuardRead, JusticeConvictsRead, JusticeConvictDetailRead, JusticeIntelligenceRead, JusticeIntelligenceGraphRead, SelectionArtRead, SelectionArtApply, DepotGoodsRead, DepotGoodsCommit, TradeCatalogRead, TradeSessionOpen, TradeSessionRead, TradeSessionClose, TradeDraftRead, TradeDraftApply, TradeSessionExchange, TradeSessionDismiss, TradeSessionGift, TradeSessionSeize, DisplayRead, DisplayCommit, DisplayRemove, CreatureListQuery, CreatureListRowsRead, PetActionApply, PetTrainersRead, PetTrainerApply, PetKnowledgeRead }
 enum AreaKind : uint8 { Stockpile, Zone, Workshop }
 enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink, MultiCreate, MultiUndo, MultiFinish, PaintCounts, LocationChoices, LocationDetails, LocationOpen, LocationAccess, LocationStaffCandidates, LocationStaffEdit, LinkTarget, LocationQuantity, LocationNameRead, LocationNameChoices, LocationNameEdit, LocationRecognitionRead, LocationRecognize, LocationReligiousStaffRead, LocationReligiousStaffRemove, LocationReligiousCandidates, LocationReligiousAssignmentRead, LocationReligiousAssign, LocationSpecializationRead, LocationSpecializationSet, LocationStaffAssignmentsRead }
 enum LocationNameMode : uint8 { Clear, SelectWord, RandomComponent, RandomWhole }
@@ -2151,6 +2151,72 @@ table ResidentRow {
 }
 table ResidentsRowsState { rows:[ResidentRow] (required); }
 
+// Sibling rows never imply Residents happiness, specialization or staff controls.
+enum PetAction : uint8 { Slaughter, Adoption, Gelding, Trainer, War, Hunting }
+enum PetOutcome : uint8 { Applied, Rejected, Stale, Unavailable, Unknown }
+enum PetTrainerMode : uint8 { None, Any, Unassigned, Individual }
+table CreatureListIdentity { kind:CreatureListKind; id:int32 = -1; }
+table CreatureListRowsRequest {
+  tab:CreatureListTab = Pets; targets:[CreatureListIdentity] (required); columns:uint16 = 30;
+}
+table PetCaption { text:string (required); foreground:uint8; background:uint8; bright:bool; }
+table PetControl {
+  action:PetAction; value:bool; help_observed:bool;
+  help_text:string (required); hover_help:int32 = -1; instruction_help:int32 = -1;
+}
+table PetOwner {
+  id:int32 = -1; first_line:string (required); second_line:string (required);
+  name_color:AreaNameColor (required);
+}
+table PetRowControls {
+  revision:uint64; captions:[PetCaption] (required); owners:[PetOwner] (required);
+  controls:[PetControl] (required);
+}
+table CreatureListRow {
+  kind:CreatureListKind; id:int32 = -1;
+  first_line:string (required); second_line:string (required);
+  name_color:AreaNameColor (required);
+  activity:PetCaption (required); portrait:SelectionAppearance;
+  // Raw native recenter target, possibly invalid; absent when there is no button.
+  position:TilePos; can_inspect:bool; job_target:ResidentJobTarget;
+  pet:PetRowControls;
+}
+table CreatureListRowsState {
+  tab:CreatureListTab = Pets; rows:[CreatureListRow] (required);
+}
+table PetActionRequest {
+  target:CreatureListIdentity (required); expected_revision:uint64; action:PetAction; desired:bool;
+}
+table PetEditState { target:CreatureListIdentity (required); outcome:PetOutcome; }
+// Every read returns the complete current candidate order; row content is bounded.
+table PetTrainersRequest {
+  animal_id:int32 = -1; expected_revision:uint64;
+  unit_ids:[int32] (required); columns:uint16 = 30;
+}
+table PetTrainerRow {
+  id:int32 = -1; first_line:string (required); second_line:string (required);
+  name_color:AreaNameColor (required); portrait:SelectionAppearance;
+  skills:[string] (required);
+}
+table PetTrainersState {
+  animal_id:int32 = -1; revision:uint64; assigned:bool;
+  trainer_id:int32 = -1; any_trainer:bool; unassigned_only:bool;
+  unit_ids:[int32] (required); rows:[PetTrainerRow] (required);
+}
+table PetTrainerRequest {
+  animal_id:int32 = -1; expected_revision:uint64; mode:PetTrainerMode; trainer_id:int32 = -1;
+}
+// Page receipts bind every species page to the complete observed knowledge list.
+table PetKnowledgeRequest { expected_revision:uint64; offset:uint32; limit:uint16 = 64; }
+table PetKnowledgeRow {
+  race:int32 = -1; level:int32; name:string (required);
+  knowledge:PetCaption (required); portrait:SelectionAppearance;
+}
+table PetKnowledgeState {
+  revision:uint64; total:uint32; offset:uint32; rows:[PetKnowledgeRow] (required);
+}
+
+
 table CitizenRequest {
   unit_id:int32 = -1;
   detail_index:int32 = -1;
@@ -2712,7 +2778,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 256;
+  schema_version:uint32 = 257;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2787,13 +2853,18 @@ table ConstructionRequest {
   display:DisplayRequest;
   display_reply:DisplayReplyRequest;
   creature_list:CreatureListRequest;
+  creature_list_rows:CreatureListRowsRequest;
+  pet_action:PetActionRequest;
+  pet_trainers:PetTrainersRequest;
+  pet_trainer:PetTrainerRequest;
+  pet_knowledge:PetKnowledgeRequest;
 }
 // Native ordered world-hover descriptions. Missing means unavailable, never guessed.
 table WorldHoverEntry { text:string (required); foreground:uint8; background:uint8; bright:bool; kind:uint8; object_id:int32 = -1; }
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 256;
+  schema_version:uint32 = 257;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;
@@ -2863,6 +2934,10 @@ table ManagementState {
   display:DisplayState;
   display_page:DisplayReplyPage;
   creature_list:CreatureListState;
+  creature_list_rows:CreatureListRowsState;
+  pet_edit:PetEditState;
+  pet_trainers:PetTrainersState;
+  pet_knowledge:PetKnowledgeState;
 }
 
 table WorkOrderInput { index:uint16; description:string; mat_type:int16 = -1; mat_index:int32 = -1; editable:bool; }

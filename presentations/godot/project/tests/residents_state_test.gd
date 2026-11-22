@@ -183,6 +183,16 @@ func pet_scrollbar_input() -> void:
 	click.pressed=false;root.push_input(click,true)
 	check(bar.first==1,"Pets scrollbar outside the frame receives actual viewport input")
 	view.free()
+func other_activity_selection() -> void:
+	var service:=Service.new();var state:=State.new();state.configure(service)
+	state.tab=2;state.phase=State.Phase.Ready;state.roster_ready=true
+	state.ids=PackedInt32Array([7,42]);state.rows={7:{"id":7},42:{"id":42,"activity_target":{"activity_id":50,"event_id":8}}}
+	state.show_activity(42,110)
+	check(state.cursor==1 and state.phase==State.Phase.ActivityReading,"Native Other Details selects its row")
+	service.reply(state.ticket,{"residents_activity":{"unit_id":42,"activity_id":50,"event_id":8,"columns":110,"max_y":1,"words":[],"links":[]}})
+	state.close_activity()
+	check(state.cursor==1 and state.phase==State.Phase.Ready,"Other Close retains selected row")
+	state.dispose()
 func cursor_navigation() -> void:
 	var state:=State.new();state.tab=3;state.phase=State.Phase.Ready;state.capacity=13
 	for id in 55:state.ids.append(id)
@@ -201,6 +211,7 @@ func cursor_navigation() -> void:
 	check(state.cursor==7,"Pending mutation excludes cursor changes")
 	view.free();state.dispose()
 func run() -> void:
+	other_activity_selection()
 	cursor_navigation()
 	pet_help_input()
 	await pet_scrollbar_input()

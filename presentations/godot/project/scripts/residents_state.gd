@@ -98,6 +98,8 @@ func show_activity(id: int,width: int) -> void:
 	if phase!=Phase.Ready or ticket!=0 or service==null or width<1 or width>1024:return
 	var target: Dictionary=rows.get(id,{}).get("activity_target",{})
 	if target.is_empty():return
+	# Native Other Details selects its row and retains it after Close.
+	if tab==2 and ids.has(id):cursor=ids.find(id)
 	activity_selection={"unit_id":id,"activity_id":int(target.activity_id),"event_id":int(target.event_id)}
 	activity_first=0;_read_activity(width)
 func resize_activity(width: int) -> void:

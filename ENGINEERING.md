@@ -12845,8 +12845,8 @@ Sibling rows use BUTTON_RECTANGLE, default down-arrow artwork, selected-tab
 RGB70,44,0 and inactive sort-label RGB160,160,160. Residents keeps its existing
 row-background and sort-direction mapping. The three recorded sibling headers
 match exactly. Sibling cursor rows use BUTTON_RECTANGLE_SELECTED and the selected
-picture frame. Other activity-detail buttons are not yet represented by the
-sibling-row contract.
+picture frame. Other activity-detail buttons use the additive target described
+below.
 Their full rendered workflows remain unqualified; all sibling tabs remain gated.
 
 Protected133629 also records all six pet hover messages and Ctrl+t/w/h/e/b/g
@@ -12865,7 +12865,7 @@ Unobserved help stays absent. Native133629 copy/wrapping and shortcut colors pas
 an offline installed-font comparison of12,831 opaque glyph pixels across all six
 messages. Headless input checks cover all six actions, item/unit identities,
 wrong keys, pending exclusion and trainer navigation. This is not main-scene
-public keyboard acceptance. Activity details remain open.
+public keyboard acceptance. Other activity details have the qualification below.
 
 Protected135032 on2026-11-22 records standard cursor navigation for all three
 sibling tabs. Page-down on a55-row,13-visible list moves cursor0 to13 and scroll0
@@ -12879,6 +12879,31 @@ has zero Pets panel differences,2165 Other differences confined to five missing
 activity buttons, and26 Dead scrollbar pixels still unresolved. This qualifies
 initial selection and standard keyboard navigation, not mouse selection,
 sort/filter retention, tab-return behavior or full public-route acceptance.
+
+CreatureListRow has an additive optional activity_target observation for Other
+units. Older protocol259 recordings omit it; consumers do not synthesize buttons.
+The target carries nonnegative activity/event identities, excludes item rows and
+simultaneous job targets, and reuses ResidentActivityTarget. Other row reads use
+the existing pinned activityDescriptionTarget provider. Activity reads authorize
+fresh Residents or Other membership and re-resolve the expected event before
+formatting into owned markup storage. No menu callback is invoked at runtime.
+The presentation reuses the existing activity pane, read owner and Close path.
+Protected141314 and141441 on2026-11-22 match all five Other activity-button
+identities against native widgets, read all five descriptions through the wire,
+and reject stale event IDs. Clicking native unit2609's button produces the same
+markup/layout as the owned formatter; Close retains the Other list. Native cursor
+moves0 to1 on opening and remains1 after Close. The local state preserves that
+selection, with a headless regression. The oracle restores its original cursor
+before the baseline roster screenshot; this restoration is test-only.
+
+Recorded-wire rendering against141441 matches the entire944x708 Other roster
+and activity pane with zero RGB differences. Pets remains exact; Dead retains
+26 unresolved scrollbar pixels. Native141441 closes owned DF58676 unsaved with
+source unchanged; wire results cover17 Pets,9 Other,55 Dead, four pet edit
+families, one trainer case and45 knowledge rows. Wire and render stderr are clean,
+all19 core checks pass, and Residents headless input passes. Graphics are serial
+at30FPS, GPU samples45–46C. This qualifies staged Other description data, rendering
+and selection behavior; full public sibling-tab navigation remains gated.
 
 Management protocol258 adds optional native name warnings to creature and trainer
 rows, and a required full trainer heading. Warning captions carry native palette

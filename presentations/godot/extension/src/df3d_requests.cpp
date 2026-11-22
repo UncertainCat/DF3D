@@ -187,6 +187,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& v:s.creatureListRows->rows) {
             Dictionary row;row["kind"]=int(v.kind);row["id"]=v.id;
             if(v.nameWarning)row["name_warning"]=petCaption(*v.nameWarning);
+            if(v.activityTarget){Dictionary a;a["activity_id"]=v.activityTarget->activityId;a["event_id"]=v.activityTarget->eventId;row["activity_target"]=a;}
             row["first_line"]=String::utf8(v.firstLine.c_str());row["second_line"]=String::utf8(v.secondLine.c_str());
             row["name_color"]=creatureColor(v.nameColor);row["activity"]=petCaption(v.activity);row["can_inspect"]=v.canInspect;
             if(v.portrait)row["portrait"]=management::itemRecipeDictionary(*v.portrait);

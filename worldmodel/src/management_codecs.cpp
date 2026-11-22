@@ -62,6 +62,7 @@ ManagementState decodeState(const m::ManagementState* s) {
       row.firstLine=v->first_line()->str();row.secondLine=v->second_line()->str();row.nameColor=creatureColor(v->name_color());
       row.activity=petCaption(v->activity());row.canInspect=v->can_inspect();
       if(v->name_warning())row.nameWarning=petCaption(v->name_warning());
+      if(const auto* a=v->activity_target())row.activityTarget=ResidentActivityTarget{a->activity_id(),a->event_id()};
       if(v->portrait())row.portrait=decodeItemRecipe(v->portrait());
       if(const auto* p=v->position())row.position=TilePos{p->x(),p->y(),p->z()};
       if(const auto* j=v->job_target())row.jobTarget=ResidentJobTarget{j->job_id(),j->building_id()};

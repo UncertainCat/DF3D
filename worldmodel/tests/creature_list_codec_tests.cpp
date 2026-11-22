@@ -77,3 +77,25 @@ TEST_CASE("Creature workflows preserve typed identities, receipts and unknown ou
   REQUIRE(decoded.petKnowledge);REQUIRE(decoded.petKnowledge->offset==64);REQUIRE(decoded.petKnowledge->revision==revision);
   REQUIRE(decoded.petKnowledge->rows.at(0).knowledge.bright);REQUIRE_FALSE(decoded.petTrainers);
 }
+
+TEST_CASE("Other activity targets remain optional and reject invalid identities") {
+  for(int variant=0;variant<5;++variant) {
+    flatbuffers::FlatBufferBuilder b;
+    auto color=m::CreateAreaNameColor(b,1,0,0,1,0,0,0);
+    auto caption=m::CreatePetCaption(b,b.CreateString("activity fixture"),7,0,false);
+    m::TilePos position(1,2,3);
+    auto target=variant==0?flatbuffers::Offset<m::ResidentActivityTarget>{}:m::CreateResidentActivityTarget(b,variant==3?-1:12,34);
+    auto job=variant==4?m::CreateResidentJobTarget(b,8,9):flatbuffers::Offset<m::ResidentJobTarget>{};
+    auto row=m::CreateCreatureListRow(b,variant==2?m::CreatureListKind::Item:m::CreatureListKind::Unit,7,
+      b.CreateString("unit fixture"),b.CreateString(""),color,caption,0,&position,true,job,0,0,target);
+    auto rows=m::CreateCreatureListRowsState(b,m::CreatureListTab::Other,b.CreateVector(std::vector{row}));
+    m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::CreatureListRowsRead);
+    state.add_status(m::ManagementStatus::Ok);state.add_creature_list_rows(rows);b.Finish(state.Finish());
+    auto* wire=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());
+    if(variant>=2){REQUIRE(m::validateManagementState(*wire));continue;}
+    REQUIRE(!m::validateManagementState(*wire));
+    auto decoded=c::decodeState(wire);const auto& activity=decoded.creatureListRows->rows.at(0).activityTarget;
+    REQUIRE(bool(activity)==(variant==1));
+    if(activity)REQUIRE((activity->activityId==12 && activity->eventId==34));
+  }
+}

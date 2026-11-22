@@ -2232,6 +2232,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(v->name_warning() && !validPetCaption(v->name_warning(),bytes))return "invalid creature name warning";
       if(v->kind()==CreatureListKind::Item && (v->second_line()->size() || v->job_target() || v->name_warning()))return "unexpected item creature fields";
       if(const auto* job=v->job_target())if(job->job_id()<0 || job->building_id()<0)return "invalid creature job target";
+      if(const auto* activity=v->activity_target())if(q->tab()!=CreatureListTab::Other || v->kind()!=CreatureListKind::Unit || v->job_target() || activity->activity_id()<0 || activity->event_id()<0)return "invalid creature activity target";
       if(q->tab()==CreatureListTab::Pets) {
         if(!validPetControls(v->pet(),v->kind(),bytes))return "invalid pet row controls";
       } else if(v->pet())return "unexpected pet row controls";

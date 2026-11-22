@@ -619,6 +619,7 @@ struct CreatureRowResult {
   std::optional<df3d_residents::PetEditState> pet;
   std::vector<std::string> skills;
   std::string nameWarning;
+  std::optional<df3d_residents::ActivityTarget> activityTarget;
 };
 struct CreatureRowsResult {m::CreatureListTab tab;std::vector<CreatureRowResult> rows;};
 std::optional<CreatureRowsResult> creatureRows;
@@ -1670,7 +1671,8 @@ void publish() {
       if(v.position)pos.emplace(v.position->x,v.position->y,v.position->z);
       rows.push_back(m::CreateCreatureListRow(b,m::CreatureListKind(v.kind),v.id,b.CreateString(v.text.name.firstLine),b.CreateString(v.text.name.secondLine),
         creatureColor(v.text.nameColor),m::CreatePetCaption(b,b.CreateString(a.caption),uint8_t(a.foreground),uint8_t(a.background),a.bright),encodeItemRecipe(v.portrait),
-        pos?&*pos:nullptr,v.canInspect,v.jobTarget?m::CreateResidentJobTarget(b,v.jobTarget->jobId,v.jobTarget->buildingId):flatbuffers::Offset<m::ResidentJobTarget>{},controls,nameWarning(v.nameWarning)));
+        pos?&*pos:nullptr,v.canInspect,v.jobTarget?m::CreateResidentJobTarget(b,v.jobTarget->jobId,v.jobTarget->buildingId):flatbuffers::Offset<m::ResidentJobTarget>{},controls,nameWarning(v.nameWarning),
+        v.activityTarget?m::CreateResidentActivityTarget(b,v.activityTarget->activityId,v.activityTarget->eventId):flatbuffers::Offset<m::ResidentActivityTarget>{}));
     }
     creatureRowsResult=m::CreateCreatureListRowsState(b,creatureRows->tab,b.CreateVector(rows));
   }
@@ -5305,7 +5307,12 @@ void run(color_ostream& out) {
     const auto& query=*r->residents_activity();
     try {
       const auto eligible=df3d_residents::orderedResidents(0,false);
-      if(eligible && std::find(eligible->begin(),eligible->end(),query.unit_id())!=eligible->end()) {
+      bool member=eligible && std::find(eligible->begin(),eligible->end(),query.unit_id())!=eligible->end();
+      if(!member) {
+        const auto others=df3d_residents::orderedCreatures(int(m::CreatureListTab::Other),0,false);
+        member=others && std::any_of(others->begin(),others->end(),[&](const auto& unit){return unit.kind==0 && unit.id==query.unit_id();});
+      }
+      if(member) {
         auto value=df3d_residents::activityDescription(df::unit::find(query.unit_id()),query.columns(),query.activity_id(),query.event_id());
         if(value) {
           bool bounded=value->maxY>=0 && value->maxY<=32768;size_t bytes=0;
@@ -6145,6 +6152,7 @@ void run(color_ostream& out) {
               row.text=*value;row.nameWarning=*warning;row.portrait=unitPortrait(unit);
               if(row.canInspect)row.position=unit->pos;
               row.jobTarget=df3d_production::jobSettingsTarget(unit->job.current_job);
+              if(q.tab()==m::CreatureListTab::Other)row.activityTarget=df3d_residents::activityDescriptionTarget(unit);
             } else {
               auto* item=df::item::find(id);const auto value=df3d_residents::creatureItemRow(item);if(!value)break;
               row.text.name.firstLine=value->caption;

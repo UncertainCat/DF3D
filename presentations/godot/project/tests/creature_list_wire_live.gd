@@ -55,6 +55,9 @@ func workflows() -> void:
 	var trainer_cases: Array=[]
 	var counts: Dictionary={}
 	var render_rows: Dictionary={}
+	var activity_reference: Dictionary={}
+	if FileAccess.file_exists(directory+"/other-activity-reference.json"):
+		activity_reference=JSON.parse_string(FileAccess.get_file_as_string(directory+"/other-activity-reference.json")).rows
 	for tab in [1,2,3]:
 		var expected: Array=reference.tabs[str(tab)]
 		counts[str(tab)]=0
@@ -68,6 +71,22 @@ func workflows() -> void:
 			for i in rows.size():
 				var row: Dictionary=rows[i];var native: Dictionary=expected[offset+i];var value: Dictionary=native.text
 				check(row.kind==int(native.kind) and row.id==int(native.id),"Creature row identity differs")
+				if tab==2 and not activity_reference.is_empty():
+					check(row.has("activity_target")==activity_reference.has(str(row.id)),"Other activity button eligibility differs")
+					if row.has("activity_target"):
+						var observed: Dictionary=activity_reference[str(row.id)]
+						var target: Dictionary=row.activity_target
+						check(target.activity_id==int(observed.activity_id) and target.event_id==int(observed.event_id),"Other activity identity differs")
+						var activity:=await request("residents_activity",{"action":C.ManagementAction.ResidentsActivityRead,"unit_id":row.id,"activity_id":target.activity_id,"event_id":target.event_id,"columns":80})
+						var page: Dictionary=activity.get("residents_activity",{})
+						check(activity.get("status")==C.ManagementStatus.Ok and page.get("max_y")==int(observed.max_y),"Other activity read rejected or layout differs")
+						var words: Array=page.get("words",[])
+						check(words.size()==observed.words.size(),"Other activity word count differs")
+						for wi in mini(words.size(),observed.words.size()):
+							var word: Dictionary=words[wi];var expected_word: Dictionary=observed.words[wi]
+							check(word.text==expected_word.text and word.x==int(expected_word.x) and word.y==int(expected_word.y) and word.link==int(expected_word.link) and word.flags==int(expected_word.flags) and PackedInt32Array(word.rgb)==PackedInt32Array(expected_word.rgb),"Other activity native markup differs")
+						var stale:=await request("residents_activity",{"action":C.ManagementAction.ResidentsActivityRead,"unit_id":row.id,"activity_id":target.activity_id,"event_id":2147483647,"columns":80})
+						check(stale.get("status")==C.ManagementStatus.Rejected and not stale.has("residents_activity"),"Stale Other activity accepted")
 				check(row.can_inspect==(tab!=3) and row.has("position")== (tab!=3),"Creature row navigation differs")
 				if tab!=3:check(row.position==Vector3i(int(native.position[0]),int(native.position[1]),int(native.position[2])),"Creature raw position differs")
 				if row.kind==0:
@@ -100,6 +119,13 @@ func workflows() -> void:
 						if control.action<=2:editable.append({"target":targets[i],"control":control,"revision":pet.revision})
 					if native.has("trainers"):trainer_cases.append({"id":row.id,"revision":pet.revision,"native":native.trainers,"header":native.get("trainer_header","")})
 				counts[str(tab)]+=1
+	if not activity_reference.is_empty():
+		var native: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/other-activity-reference.json"))
+		var sample: Dictionary=native.clicked_provider
+		var response:=await request("residents_activity",{"action":C.ManagementAction.ResidentsActivityRead,"unit_id":int(native.clicked),"activity_id":int(sample.activity_id),"event_id":int(sample.event_id),"columns":int(sample.width)})
+		check(response.get("status")==C.ManagementStatus.Ok,"Native-width Other activity failed")
+		var page_file:=FileAccess.open(directory+"/other-activity-page.bin",FileAccess.WRITE)
+		page_file.store_var(response.get("residents_activity",{}));page_file.close()
 	var render_file:=FileAccess.open(directory+"/creature-render-rows.bin",FileAccess.WRITE)
 	render_file.store_var(render_rows);render_file.close()
 	for sample: Dictionary in trainer_cases:
@@ -109,6 +135,8 @@ func workflows() -> void:
 			var response:=await request("pet_trainers",{"action":C.ManagementAction.PetTrainersRead,"animal_id":sample.id,"expected_revision":sample.revision,"columns":30,"unit_ids":ids.slice(offset,offset+64)})
 			var state: Dictionary=response.get("pet_trainers",{})
 			if not check(response.get("status")==C.ManagementStatus.Ok and state.get("unit_ids")==ids,"Trainer order differs"):return
+			var recording:=FileAccess.open(directory+"/pet-trainer-"+str(sample.id)+"-"+str(offset)+".bin",FileAccess.WRITE)
+			recording.store_var(state);recording.close()
 			if not sample.header.is_empty():check(state.header==sample.header,"Trainer heading differs from captured native widget: expected="+sample.header+" observed="+state.header)
 			for i in state.rows.size():
 				check(state.rows[i].id==ids[offset+i] and state.rows[i].skills==sample.native[offset+i].skills,"Trainer skills differ")
@@ -132,6 +160,8 @@ func workflows() -> void:
 		var state: Dictionary=response.get("pet_knowledge",{})
 		if not check(response.get("status")==C.ManagementStatus.Ok and not state.get("rows",[]).is_empty(),"Knowledge page rejected"):return
 		check(revision==0 or revision==state.revision,"Knowledge receipt changed across pages");revision=state.revision;knowledge.append_array(state.rows)
+	var knowledge_recording:=FileAccess.open(directory+"/pet-knowledge-rows.bin",FileAccess.WRITE)
+	knowledge_recording.store_var(knowledge);knowledge_recording.close()
 	check(knowledge.size()==reference.knowledge.size(),"Knowledge count differs")
 	for i in mini(knowledge.size(),reference.knowledge.size()):
 		var row: Dictionary=knowledge[i];var native: Dictionary=reference.knowledge[i]

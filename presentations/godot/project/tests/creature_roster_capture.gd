@@ -25,6 +25,14 @@ func run() -> void:
 		view.refresh()
 		for frame in 3:await process_frame;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/creature-roster-"+str(tab)+".png")
+	if FileAccess.file_exists(directory+"/other-activity-page.bin"):
+		var page_file:=FileAccess.open(directory+"/other-activity-page.bin",FileAccess.READ)
+		var page: Dictionary=page_file.get_var();page_file.close()
+		state.tab=2;state.activity_selection={"unit_id":page.unit_id};state.activity_page=page;state.phase=State.Phase.ActivityReady
+		view.refresh()
+		for frame in 3:await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/other-activity-render.png")
+		state.activity_selection={};state.activity_page={};state.phase=State.Phase.Ready;state.tab=3;view.refresh()
 	var hover_reference:=directory+"/pet-hover-reference.json"
 	if FileAccess.file_exists(hover_reference):
 		var observed: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(hover_reference))

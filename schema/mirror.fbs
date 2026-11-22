@@ -2184,6 +2184,8 @@ table CreatureListRow {
   pet:PetRowControls;
   // Absent for non-grazers and item rows; native name-widget warning.
   name_warning:PetCaption;
+  // Optional observation for Other-unit activity Details; older producers omit it.
+  activity_target:ResidentActivityTarget;
 }
 table CreatureListRowsState {
   tab:CreatureListTab = Pets; rows:[CreatureListRow] (required);

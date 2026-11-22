@@ -125,6 +125,10 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
    observed.matches=json.encode(observed.provider)==json.encode(observed.rows)
   end
   observations[#observations+1]=observed
+  if index==2 and not suffix and os.getenv('DF3D_OTHER_ACTIVITY_REFERENCE')=='1' then
+   local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','other-activity-native.lua')
+   assert(loadfile(path))(out,view,info,active_list,callbacks)
+  end
   if index>0 and not suffix and os.getenv('DF3D_CREATURE_CURSOR_REFERENCE')=='1' then
    local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','creature-cursor-native.lua')
    assert(loadfile(path))(out,view,active_list,index)

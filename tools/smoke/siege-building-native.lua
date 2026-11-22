@@ -75,6 +75,11 @@ local ok,err=xpcall(function()
    click(780+(slot-1)*24,154)
    assert(engine.action==action and #engine.jobs==before.jobs,'Siege sheet action mapping differs')
    capture('siege-'..engine.type..'-action-'..action)
+   if action==4 and engine.type~=2 then
+    gui.simulateInput(view,'LEAVESCREEN');select_map(engine);view:render(dfhack.getTickCount())
+    assert(sheet.open and sheet.active_id==engine.id and engine.action==action)
+    capture('siege-'..engine.type..'-practice-reopened')
+   end
    local native_lines=lines()
    engine.action=owned_before.action
    local owned=probe(engine,owned_before.revision,action,false)
@@ -89,6 +94,7 @@ local ok,err=xpcall(function()
     local owned_before=probe(engine)
     click(448+32*direction,226)
     assert(engine.resting_orientation==direction and engine.facing==before.facing and engine.action==0,'Native resting orientation differs')
+    if direction==7 or direction==0 then capture('siege-resting-'..direction)end
     engine.resting_orientation=owned_before.resting
     local owned=probe(engine,owned_before.revision,direction,true)
     assert(owned.outcome==1 and owned.resting==direction and owned.facing==before.facing and owned.action==0,'Owned resting orientation differs')
@@ -99,11 +105,19 @@ local ok,err=xpcall(function()
   row.job_effects=assert(loadfile(source))(engine,probe,click)
   engine.action=before.action
   assert(engine.facing==before.facing and engine.resting_orientation==before.resting and #engine.jobs==before.jobs)
+  if os.getenv('DF3D_SIEGE_SCENE')=='1' then
+   local original=engine.name;assert(#engine.jobs==0)
+   local function shot(label)capture('siege-'..engine.type..'-'..label)end
+   click(800,82);gui.simulateInput(view,'STRING_A120');gui.simulateInput(view,'SELECT');assert(engine.name==original..'x');shot('renamed')
+   click(800,82);gui.simulateInput(view,'STRING_A000');gui.simulateInput(view,'SELECT');assert(engine.name==original);shot('restored')
+   click(832,82);assert(#engine.jobs==1 and engine.jobs[0].job_type==df.job_type.DestroyBuilding);shot('removing')
+   click(520,202);assert(#engine.jobs==0);shot('cancelled')
+  end
   result.engines[#result.engines+1]=row
  end
- if os.getenv('DF3D_SIEGE_WIRE')=='1' then
+ if os.getenv('DF3D_SIEGE_WIRE')=='1' or os.getenv('DF3D_SIEGE_SCENE')=='1' then
   local expected={buildings={}}
-  for _,engine in ipairs(engines)do expected.buildings[#expected.buildings+1]={id=engine.id,body=probe(engine)}end
+  for _,engine in ipairs(engines)do expected.buildings[#expected.buildings+1]={id=engine.id,type=22,custom_name=dfhack.df2utf(engine.name),tile={engine.centerx,engine.centery,engine.z},body=probe(engine)}end
   local file=assert(io.open(out..'/siege-building-expected.json','w'));file:write(json.encode(expected));file:close()
   local active=sheet.active_id;capture('siege-building-wire')
   file=assert(io.open(out..'/siege-building-wire-result.json'));result.viewer=json.decode(file:read('*a'));file:close()

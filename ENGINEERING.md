@@ -3097,6 +3097,25 @@ render-thread finalize and two ObjectDB shutdown diagnostics. Evidence:
 
 ### Siege building sheet reference
 
+Catapult, Ballista and Bolt Thrower are public through actual map selection and
+building-holder navigation. The shared furniture owner uses siege_sheet_view,
+native header and contents artwork, five mode buttons, and Bolt Thrower's eight
+resting directions and four ammunition counts. Commands remain owned semantic
+intents; the presentation only selects modes and renders observations.
+
+Protected062635 on2026-11-22 (DF51576) accepts all three main-scene workflows:
+five pointer modes each, Bolt resting7/0 while preserving facing, rename/restore,
+remove/cancel, close and holder reopen. All32 full488x708 panel crops match native,
+including contents. The independent15-body comparison also passes against062257.
+Native practice captures initially showed a transient blank body for Catapult
+and Ballista; reopening restores the caption, buttons and two notes recorded by
+native text observations. Comparisons use those settled references, not the blank
+capture. Bridge build, holder-routing check and all19 root checks pass. Client
+stderr is empty. Source saves remain unchanged; owned DF closes unsaved at30FPS,
+sampled52–57C. Evidence:
+completed_sheet_discovery_reference.siege_public_workflow_reference. Minimum
+dimensions, active firing animation and advancing simulation remain unqualified.
+
 Management protocol253 adds SiegeBodySnapshot to building headers and distinct
 SiegeMode/SiegeResting edits. Rebuild bridge, model consumers and Godot extension
 together;252 management peers are rejected. Earlier recordings have no siege
@@ -3112,7 +3131,7 @@ remove/cancel through both253 peers. Receipts restore original snapshots exactly
 owned DF closes unsaved with source unchanged at30FPS, sampled46C. The headless
 client stderr is empty. Building-header owner tests pass, including late-reply
 retirement. Bridge, extension and core builds and all19 root checks pass.
-Public rendering and map/holder admission remain gated. Initial061711
+Initial061711
 caught the Godot decoder's old0–1 setting bound;253 now accepts mode0–4 and
 resting0–7 while the wire validator enforces each operation's domain.
 
@@ -3141,8 +3160,8 @@ Protected055922 on2026-11-22 (DF59764) compares all15 native mode clicks with
 owned edits, rejects their stale revisions, and compares all eight Bolt Thrower
 resting directions. GPS and main_interface bytes remain unchanged by owned reads
 and edits. The bridge build passes; source saves are preserved and owned DF closes
-unsaved at30FPS, sampled46C. This run has no firing jobs. Ammunition counts,
-transport, body rendering and the public building workflow remain unfinished.
+unsaved at30FPS, sampled46C. This run has no firing jobs and establishes control
+semantics only; later evidence above qualifies transport and the public workflow.
 Do not call native sheet input/render functions or borrow their globals.
 
 Protected060027 (DF61252) repeats the control comparisons and adds native/owned
@@ -3172,8 +3191,8 @@ build and all19 root checks pass. Owned DF closes unsaved, source unchanged,
 at30FPS, sampled46C. Evidence:
 completed_sheet_discovery_reference.siege_ammunition_reference. Initial060611
 rejected because the AMMO address guard was mistyped; the corrected guard is
-23e55e8, matching native192dba+225282e. Transport and public panel integration
-remain pending; the count oracle does not qualify their behavior or appearance.
+23e55e8, matching native192dba+225282e. This count oracle is separate from the
+transport and main-scene evidence above.
 
 ### Chain candidates and native actions
 

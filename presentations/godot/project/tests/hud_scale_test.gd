@@ -84,16 +84,12 @@ func run():
 	check(Preferences.visual_style == "billboard" and style_events == ["billboard"], "settings toggle updates graphics preference and emits once")
 	var state := {"fortress_valid": true, "fort_name": "Chantmansion", "year":104, "year_tick":225600, "paused":true,
 		"fortress_summary":{"available":true,"population":177,"stress_available":true,"stress_counts":[8,8,21,38,27,18,57],"elevation_offset":-129,"level_count":256,"resources_available":true,"bookkeeper_precision":0,"resource_counts":[852,135,310,206,14,453,247]}}
-	var canvas := CanvasLayer.new()
-	canvas.layer = 2
-	root.add_child(canvas)
-	var panel := PanelContainer.new()
-	canvas.add_child(panel)
-	panel.add_child(VBoxContainer.new())
-	var frame := InfoFrame.new()
-	frame.install(panel, world, "Residents")
+	var owner=preload("res://scripts/residents_panel.gd").new()
+	root.add_child(owner);owner.configure(assets,null,host)
+	owner.state.phase=owner.state.Phase.Ready;owner._sync()
+	var panel=owner.panel
 	var destinations: Array = []
-	frame.destination_requested.connect(func(destination): destinations.append(destination))
+	owner.information_requested.connect(func(caption): destinations.append(InfoFrame.destination(caption)))
 	panel.hide()
 	check(hud.information.get_child_count() == 8, "eight native Info slots without DFHack adornments")
 	for index in HUD.INFO_SLOTS.size():
@@ -113,7 +109,7 @@ func run():
 		check(hud.scale_picker.value == value, "scale control reflects the saved requested value")
 		check(root.size == Vector2i(1920,1080), "UI scale never resizes 3D viewport")
 		check(hud.scale == Vector2.ONE * float(value) / 100.0, "HUD canvas transform scales geometry")
-		check(hud.navigation["Tasks"].disabled and hud.navigation["Objects"].disabled, "unfinished destinations remain inert after state refresh")
+		check(not hud.navigation["Tasks"].disabled and not hud.navigation["Objects"].disabled, "public destinations remain enabled after state refresh")
 		var button: Button = hud.navigation["Citizens"]
 		var physical_width: float = button.size.x * button.get_global_transform_with_canvas().get_scale().x
 		check(physical_width >= 32.0 * value / 100.0, "native icon hit target scales with art")
@@ -129,25 +125,33 @@ func run():
 			root.get_texture().get_image().save_png(capture + "-menu.png")
 			hud.toggle_settings()
 		panel.show()
-		frame.layout(Vector2(root.size))
+		owner._layout()
 		await process_frame
 		await process_frame
-		frame.layout(Vector2(root.size))
+		owner._layout()
 		await process_frame
-		check(canvas.scale == hud.scale, "Info frame shares HUD scale")
-		var visible_rect: Rect2 = Rect2(panel.position * canvas.scale, panel.size * canvas.scale)
+		check(panel.scale == hud.scale, "Info frame shares HUD scale")
+		var visible_rect: Rect2 = Rect2(panel.position * panel.scale, panel.size * panel.scale)
 		check(Rect2(Vector2.ZERO, Vector2(root.size)).encloses(visible_rect), "scaled Info frame stays inside viewport")
-		var tab: Button = frame.buttons["Labor"]
+		host.activate(owner)
+		var tab_center:=Vector2.ZERO
+		var groups=panel.InfoTabs.rows(panel.wide_tabs)
+		for row in groups.size():
+			var x:=8
+			for caption in groups[row]:
+				var width: int=(caption.length()+4)*8
+				if caption=="Labor":tab_center=Vector2(x+width/2,24+row*24)
+				x+=width
 		var click := InputEventMouseButton.new()
 		click.button_index = MOUSE_BUTTON_LEFT
-		click.position = tab.get_global_transform_with_canvas() * (tab.size * 0.5)
+		click.position = panel.get_global_transform_with_canvas() * tab_center
 		click.pressed = true
 		root.push_input(click)
 		click = click.duplicate()
 		click.pressed = false
 		root.push_input(click)
 		check(destinations.size() == (value - 100) / 25 + 1 and destinations.back() == "Work Details", "physical mouse hit reaches scaled native tab")
-		panel.hide()
+		panel.hide();host.release(owner)
 	Preferences.ui_scale = 2.0
 	check(is_equal_approx(Preferences.effective_scale(Vector2(960,640)), 4.0/3.0), "small windows fit controls without losing requested scale")
 	Preferences.targeting_grid = false
@@ -185,8 +189,8 @@ func run():
 			check(hud.information.position * hud.scale == Vector2(0,1035), "native information rail anchor")
 			check(hud.map_tools.position * hud.scale == Vector2(1630,30), "native map control anchor")
 		check(hud.minimap_layer.scale==hud.scale, "automatic minimap and HUD share scale")
-		frame.layout(Vector2(root.size))
-		check(canvas.scale==hud.scale, "automatic Info panel uses both native cell axes")
+		owner._layout()
+		check(panel.scale==hud.scale, "automatic Info panel uses both native cell axes")
 		check(not hud.scale_picker.editable, "automatic scale makes manual percentage inactive")
 		var capture := OS.get_environment("DF3D_HUD_CAPTURE")
 		if not capture.is_empty():
@@ -218,7 +222,7 @@ func run():
 	check(not display.pending and Preferences.window_mode=="windowed", "Keep changes persists display selection")
 	display.free()
 	DirAccess.remove_absolute(path)
-	canvas.free()
+	owner.free()
 	hud.free()
 	interaction.free()
 	rig.free()

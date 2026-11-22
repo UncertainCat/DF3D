@@ -150,6 +150,7 @@
 #include "pet_controls_native.h"
 #include "pet_edits_native.h"
 #include "pet_training_native.h"
+#include "species_art_native.h"
 #include "pet_trainers_native.h"
 #include "pet_trainer_edits_native.h"
 #include "creature_item_row_native.h"
@@ -3470,13 +3471,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="pet-training-probe") {
-          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(parameters.size()>2 || (parameters.size()==2 && parameters[1]!="art"))return CR_WRONG_USAGE;
           const auto rows=df3d_residents::trainingKnowledge();if(!rows)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["rows"]=Json::Value(Json::arrayValue);
           for(const auto& row:*rows) {
             Json::Value value(Json::objectValue);value["race"]=row.race;value["level"]=row.level;
             value["name"]=DF2UTF(row.name);value["caption"]=DF2UTF(row.caption);
-            value["foreground"]=row.foreground;value["bright"]=row.bright;result["rows"].append(value);
+            value["foreground"]=row.foreground;value["bright"]=row.bright;
+            if(parameters.size()==2) {
+              const auto tile=df3d_residents::speciesSelectorOriginalTile(row.race);
+              if(tile)value["art_tile"]=*tile;
+              value["layered_fallback"]=tile && *tile==df3d_residents::speciesLayeredFallback;
+              if(value["layered_fallback"].asBool()) {
+                df3d_appearance::Result look;value["layered_resolved"]=df3d_appearance::resolveSpeciesLayeredSelector(row.race,look);
+              }
+            }
+            result["rows"].append(value);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }

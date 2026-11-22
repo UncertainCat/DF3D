@@ -5,7 +5,39 @@ local json=require('json')
 local function probe(...)
  local text,rc=dfhack.run_command_silent('df3d',...);assert(rc==0,text);return json.decode(text)
 end
-local expected={tabs={},knowledge=probe('pet-training-probe').rows}
+local function species_cache()
+ local result={}
+ for race,level in ipairs(df.global.plotinfo.main.fortress_entity.training_knowledge.level)do
+  if level~=0 then
+   local raw=assert(df.global.world.raws.creatures.all[race]);local values={}
+   local function capture(graphics)
+    if not graphics then return end
+    local entry={cells={},icons={},templates={}}
+    for _,column in ipairs(graphics.layer_unitless_texpos[102])do
+     for _,cell in ipairs(column)do local list={};for _,tile in ipairs(cell)do list[#list+1]=tile end;entry.cells[#entry.cells+1]=list end
+    end
+    for _,tile in ipairs(graphics.layer_unitless_sheet_icon_texpos[102])do entry.icons[#entry.icons+1]=tile end
+    for _,set in ipairs(graphics.graphics_layer_set)do entry.templates[#entry.templates+1]=set.layer_set_template_token end
+    values[#values+1]=entry
+   end
+   capture(raw.graphics);for _,caste in ipairs(raw.caste)do capture(caste.caste_graphics)end
+   result[tostring(race)]=values
+  end
+ end
+ return json.encode(result)
+end
+local before_species=species_cache()
+local expected={tabs={},knowledge=probe('pet-training-probe','art').rows}
+assert(before_species==species_cache(),'Species selector changed shared graphics caches/templates')
+local pages={}
+for _,page in ipairs(df.global.texture.page)do
+ for index,tile in ipairs(page.texpos)do if tile>0 then pages[tile]={page=page.token,x=index%page.page_dim_x,y=index//page.page_dim_x}end end
+end
+for _,row in ipairs(expected.knowledge)do
+ if row.art_tile and row.art_tile>0 and not row.layered_fallback then
+  row.art=assert(pages[row.art_tile],'Species selector returned non-original tile')
+ end
+end
 local flags={}
 local heading_reference
 local heading_path=os.getenv('DF3D_PET_TRAINER_HEADING_REFERENCE')
@@ -56,6 +88,7 @@ end
 assert(not heading_reference or heading_observed,'Recorded trainer heading target missing')
 local f=assert(io.open(out..'/creature-workflows-wire-reference.json','w'));f:write(json.encode(expected));f:close()
 return function()
+ assert(before_species==species_cache(),'Species wire reads changed shared graphics caches/templates')
  for _,before in ipairs(flags)do
   local target=before.kind==0 and df.unit.find(before.id) or df.item.find(before.id)
   local after=before.kind==0 and {target.flags1.whole,target.flags2.whole,target.flags3.whole} or {target.flags.whole,target.pet_flags.whole}

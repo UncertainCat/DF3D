@@ -165,6 +165,13 @@ func workflows() -> void:
 	check(knowledge.size()==reference.knowledge.size(),"Knowledge count differs")
 	for i in mini(knowledge.size(),reference.knowledge.size()):
 		var row: Dictionary=knowledge[i];var native: Dictionary=reference.knowledge[i]
+		if native.get("layered_resolved",false):check(row.get("portrait",{}).get("layers",[]).size()>0,"Species layered artwork missing")
+		if native.has("art"):
+			var portrait: Dictionary=row.get("portrait",{})
+			check(portrait.get("layers",[]).size()==1,"Species original artwork missing")
+			if portrait.get("layers",[]).size()==1:
+				var layer: Array=portrait.layers[0]
+				check(portrait.tile_pages[layer[0]]==native.art.page and layer[1]==int(native.art.x) and layer[2]==int(native.art.y),"Species original page differs")
 		check(row.race==int(native.race) and row.level==int(native.level) and row.name==native.name and row.knowledge.text==native.caption and row.knowledge.foreground==int(native.foreground) and row.knowledge.bright==native.bright,"Knowledge row differs")
 	var stale:=await request("pet_knowledge",{"action":C.ManagementAction.PetKnowledgeRead,"expected_revision":1 if revision!=1 else 2,"offset":16,"limit":16})
 	check(stale.get("status")==C.ManagementStatus.Rejected and not stale.has("pet_knowledge"),"Stale knowledge page admitted")

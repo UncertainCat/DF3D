@@ -26,4 +26,8 @@ func run() -> void:
 	view.layout(Vector2(1200,800))
 	for frame in 3:await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/pet-knowledge-render.png")
+	for offset in [10,20,30,35]:
+		state.seek(offset,10);view.refresh()
+		for frame in 3:await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/pet-knowledge-render-"+str(offset)+".png")
 	view.queue_free();world.queue_free();await process_frame;quit(0)

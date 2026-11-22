@@ -94,6 +94,7 @@
 #include "creature_item_row_native.h"
 #include "pet_trainer_edits_native.h"
 #include "pet_training_native.h"
+#include "species_art_native.h"
 #include "residents_row_native.h"
 #include "residents_specialization_native.h"
 #include "residents_activity_description_native.h"
@@ -631,7 +632,8 @@ struct PetTrainersResult {
   std::string header;
 };
 std::optional<PetTrainersResult> petTrainers;
-struct PetKnowledgeResult {uint64_t revision;uint32_t total,offset;std::vector<df3d_residents::TrainingKnowledgeRow> rows;};
+struct PetKnowledgeRowResult {df3d_residents::TrainingKnowledgeRow text;std::optional<df3d_production::ItemAppearanceRecipe> portrait;};
+struct PetKnowledgeResult {uint64_t revision;uint32_t total,offset;std::vector<PetKnowledgeRowResult> rows;};
 std::optional<PetKnowledgeResult> petKnowledge;
 std::optional<std::vector<int32_t>> residents;
 // Strings are converted to UTF-8 and bounded before publishing this batch.
@@ -1687,8 +1689,8 @@ void publish() {
   flatbuffers::Offset<m::PetKnowledgeState> petKnowledgeResult;
   if(petKnowledge) {
     const auto& v=*petKnowledge;std::vector<flatbuffers::Offset<m::PetKnowledgeRow>> rows;
-    for(const auto& row:v.rows)rows.push_back(m::CreatePetKnowledgeRow(b,row.race,row.level,b.CreateString(row.name),
-      m::CreatePetCaption(b,b.CreateString(row.caption),uint8_t(row.foreground),0,row.bright)));
+    for(const auto& entry:v.rows){const auto& row=entry.text;rows.push_back(m::CreatePetKnowledgeRow(b,row.race,row.level,b.CreateString(row.name),
+      m::CreatePetCaption(b,b.CreateString(row.caption),uint8_t(row.foreground),0,row.bright),encodeItemRecipe(entry.portrait)));}
     petKnowledgeResult=m::CreatePetKnowledgeState(b,v.revision,v.total,v.offset,b.CreateVector(rows));
   }
   const auto residentsSpecializationResult=residentsSpecialization?
@@ -6234,7 +6236,11 @@ void run(color_ostream& out) {
           if(!q.expected_revision() || q.expected_revision()==hash) {
             PetKnowledgeResult result{hash,uint32_t(knowledge->size()),q.offset(),{}};
             const size_t end=std::min(knowledge->size(),size_t(q.offset())+q.limit());
-            for(size_t i=q.offset();i<end;++i){auto row=std::move((*knowledge)[i]);if(!text(row.name) || !text(row.caption))break;result.rows.push_back(std::move(row));}
+            for(size_t i=q.offset();i<end;++i){auto row=std::move((*knowledge)[i]);if(!text(row.name) || !text(row.caption))break;
+              std::optional<df3d_production::ItemAppearanceRecipe> portrait;
+              const auto tile=df3d_residents::speciesSelectorOriginalTile(row.race);df3d_appearance::Result look;
+              if(tile && (*tile==df3d_residents::speciesLayeredFallback?df3d_appearance::resolveSpeciesLayeredSelector(row.race,look):df3d_appearance::resolveOriginalItemTile(*tile,look)))portrait=df3d_production::ownedItemRecipe(look);
+              result.rows.push_back({std::move(row),std::move(portrait)});}
             if(result.rows.size()==end-q.offset()){petKnowledge=std::move(result);status=m::ManagementStatus::Ok;}
           }
         }

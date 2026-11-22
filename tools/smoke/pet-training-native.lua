@@ -94,3 +94,31 @@ if trainer and os.getenv('DF3D_PET_TRAINER_EDITS')=='1' then
  local path=debug.getinfo(1,'S').source:sub(2):gsub('pet%-training%-native.lua$','pet-trainer-edits-native.lua')
  assert(loadfile(path))(out,view,info,callbacks)
 end
+
+if not trainer and os.getenv('DF3D_SPECIES_ART_REFERENCE')=='1' then
+ local scroll
+ local function find_scroll(widget)
+  if (widget.flag.whole&1)==0 then return end
+  if df.widget_scroll_rows:is_instance(widget)then scroll=widget end
+  if df.widget_container:is_instance(widget)then
+   for ordinal,child in ipairs(dfhack.gui.getWidgetChildren(widget))do
+    if not df.widget_tabs:is_instance(widget) or ordinal-1==widget.cur_idx then find_scroll(child)end
+   end
+  end
+ end
+ find_scroll(info.creatures);assert(scroll,'Knowledge scroll rows absent')
+ local original=scroll.scroll;local captured={}
+ for _,offset in ipairs{10,20,30,35}do
+  scroll.scroll=offset;script.sleep(3,'frames');view:render(dfhack.getTickCount())
+  local name='pet-training-scroll-'..offset
+  local file=assert(io.open(out..'/shot.tmp','w'));file:write(name);file:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
+  local deadline=dfhack.getTickCount()+30000
+  while true do
+   local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
+   assert(dfhack.getTickCount()<deadline,'Knowledge scroll capture timeout');script.sleep(1,'frames')
+  end
+  captured[#captured+1]={requested=offset,actual=scroll.scroll,visible=scroll.num_visible}
+ end
+ scroll.scroll=original
+ local file=assert(io.open(out..'/pet-knowledge-scroll.json','w'));file:write(json.encode(captured));file:close()
+end

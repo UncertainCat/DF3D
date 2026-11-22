@@ -62,6 +62,8 @@ bool resolve(df::unit* u, Result& out);
 bool resolvePortrait(df::unit* u, Result& out);
 // Full-body selector image: native raw conditions, without map-only anatomy masks.
 bool resolveUnitSelector(df::unit* u, Result& out);
+// Unitless original-layer recipes; rejects unqualified templates/conditions.
+bool resolveSpeciesLayeredSelector(int32_t race, Result& out);
 // PET/VERMIN selector artwork from original small-creature tile pages.
 bool resolveCritterItemSelector(df::item* item, Result& out);
 // Detail portrait recipe; separate from the small selector tile.

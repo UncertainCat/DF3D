@@ -12911,15 +12911,49 @@ the final source column through their interior; the generic frame's0/1/2 mapping
 is not equivalent. The correction is local to these panes. Recorded wire data
 from141441 renders the trainer pane with26 differing scrollbar pixels over the
 full944x708 panel, using the native capture's alternate name-color phase. The
-knowledge pane has2774 differing pixels:2748 missing species-art pixels and the
-same26 scrollbar pixels. Text, backgrounds, portrait frames, trainer artwork,
-headings and geometry otherwise match. These counts exclude neither the body
-nor the chrome; the artwork-only residual is separately isolated for diagnosis.
+knowledge pane now has the artwork qualification below. Text, backgrounds,
+portrait frames, trainer artwork,
+headings and geometry otherwise match. The counts cover both body and chrome.
 Capture tool: pet_panes_capture.gd, using pet-trainer-6548-0/64.bin and
 pet-knowledge-rows.bin produced by the protected wire lane. No DF session is
 attached during this render. Serial30FPS rendering exits cleanly; GPU samples
 46–50C, Residents headless checks and all19 core tests pass. This establishes
 the recorded first viewport, not scrolling, resize or public trainer integration.
+
+### Species knowledge artwork
+
+species_art_native.h calls pinned6d6560 with independently owned raw flags,
+castes and graphics, using the knowledge widget's caste=-1/profession102/flags400.
+DF retains its generated-creature, LIST_ICON, SMALL_RACE, raw-before-first-caste
+and ordinary flat-tile selection. Flags400 do not request the800 sheet-icon
+compositor; flat multi-cell branches return the native original cell. Original
+page lookup rejects generated cache textures. Owned profession102 unitless
+vectors contain a sentinel, so a selected layered branch returns an explicit
+fallback without entering71a410, expanding a borrowed template or composing a
+shared texture. Borrowed layer-set metadata is inspected only for selection.
+
+The layered resolver supplies caste0 and raw-first graphics to the existing
+appearance predicates. Pinned71a410 confirms zero haul count, DEFAULT rather
+than CHILD, and the body-size exclusion. Only template-free, original single-cell
+layers with the qualified child/not-child/haul conditions are admitted; complex
+conditions, palette/material processing, offsets and templates remain unsupported
+and produce no substitute artwork. This guard is based on layer structure, not
+species names. Original recipes continue through the existing optional portrait
+contract without a schema change. pet-training-probe preserves its old output;
+its explicit art option adds selection/coverage diagnostics for protected tests.
+
+Protected143703 on2026-11-22 verifies40 original tiles and five layered recipes
+(donkeys, horses, mules, water buffalos and yaks), completing artwork for all45
+knowledge entries in this fortress. Shared profession102 unitless vectors,
+sheet-icon vectors and layer-set template tokens remain unchanged before/after
+both the probe and wire workflow. Protected143755 captures native offsets0,10,20,
+30,35. Recorded-wire rendering has zero content differences across all five
+viewports; each full944x708 panel retains26 scrollbar pixels. This includes every
+knowledge entry and all five layered species. Native sessions52536/37196 close
+unsaved with source saves unchanged. Wire/render stderr is clean, graphics run
+serially at30FPS, GPU samples47–48C and all19 core checks pass. Generated-creature
+variants and complex layered artwork are not qualified by this fixture. Public
+pane lifecycle, resizing and sibling-tab integration still require acceptance.
 
 Management protocol258 adds optional native name warnings to creature and trainer
 rows, and a required full trainer heading. Warning captions carry native palette
@@ -12963,8 +12997,8 @@ buttons open the picker, and other buttons submit typed revision-checked edits.
 Native pet buttons extending past the frame receive explicit outside-frame input
 only in their visible hitboxes. Headless input checks cover that item Adoption
 path, Overall Training, each tab's sort header and pending-edit tab exclusion;
-Residents, Work Details and UI composition pass. Species artwork, activity details
-and full rendered/public-route acceptance remain unfinished; grouping and pet help
+Residents, Work Details and UI composition pass. Complex species artwork and
+full public-route acceptance remain unfinished; grouping, activity details and pet help
 have the scoped qualification above.
 
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.

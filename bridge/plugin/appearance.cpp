@@ -790,6 +790,39 @@ bool resolveUnitSelector(df::unit* u, Result& out) {
     return buildCtx(u,c) && resolveCtx(c,out,false,false);
 }
 
+bool resolveSpeciesLayeredSelector(int32_t race,Result& out) {
+    out=Result{};Ctx c;c.raw=df::creature_raw::find(race);
+    if(!c.raw || c.raw->caste.empty() || !c.raw->caste[0])return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base] {
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x3c25;++i){hash^=base[0x71a410+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x046ecd4b168fb74a);
+    }();
+    if(!pinned)return false;
+    c.caste=c.raw->caste[0];c.casteIdx=0;c.profession=102;c.g=c.raw->graphics;
+    if(!c.g)for(const auto* caste:c.raw->caste)if(caste && caste->caste_graphics){c.g=caste->caste_graphics;break;}
+    if(!c.g)return false;
+    int32_t role=-1,prof=-1;const auto* set=chooseSet(c,role,prof);
+    if(!set || !set->layer_set_template_token.empty() || !set->lg_bp_condition.empty())return false;
+    // Native71ad95..71ae8b: no body-size constraint; zero haul count; DEFAULT
+    // profession is not CHILD. Reuse the existing predicates only for this
+    // verified subset. No template expansion or palette cache is reachable.
+    for(const auto* layer:set->graphics_layer) {
+        if(!layer || (layer->flags.whole&~uint32_t(0x13)) || layer->pcg_layering!=-1 ||
+           !layer->tl_condition.empty() || !layer->bp_condition.empty() ||
+           !layer->required_syn_class.empty() || !layer->random_part_condition_string.empty() ||
+           !layer->required_caste.empty() || !layer->required_profession.empty() ||
+           layer->body_size_min!=-1 || !layer->required_item.empty() || !layer->forbidden_item.empty() ||
+           !layer->dye_color_index.empty() || layer->mat || !layer->use_palette_index.empty() ||
+           !layer->use_palette_row.empty() || layer->use_standard_nex_body_palette_row!=-1 ||
+           layer->use_standard_beast_palette_row!=-1 || !layer->use_color_palette_token.empty() ||
+           layer->offset_x || layer->offset_y)return false;
+        for(size_t x=0;x<3;++x)for(size_t y=0;y<2;++y)if((x || y) && layer->texpos[x][y])return false;
+    }
+    return resolveCtx(c,out,false,false,set) && !out.layers.empty();
+}
+
 bool resolveOriginalItemTile(int32_t tile, Result& out, int32_t color) {
     out=Result{};
     const df::tile_pagest* page=nullptr;

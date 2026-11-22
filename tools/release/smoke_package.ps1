@@ -27,9 +27,18 @@ foreach ($file in Get-ChildItem -LiteralPath $DfPath -File) {
         Copy-Item -LiteralPath $file.FullName -Destination (Join-Path $game $file.Name)
     }
 }
+function Get-SaveHashes([string]$Root) {
+    $rootPath=[IO.Path]::GetFullPath($Root).TrimEnd('\','/')
+    return (@(Get-ChildItem -LiteralPath $rootPath -File -Recurse | ForEach-Object {
+        $_.FullName.Substring($rootPath.Length).TrimStart('\','/')+' '+(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash
+    } | Sort-Object) -join "`n")
+}
 $save = $null
+$sourceHashes = $null
 if ($SourceSave) {
     $source = (Resolve-Path -LiteralPath $SourceSave).Path
+    $sourceHashes=Get-SaveHashes $source
+    $sourceHashes | Set-Content -LiteralPath (Join-Path $out 'source-save-sha256.txt')
     $save = Join-Path $game 'save\df3d-package-test'
     New-Item -ItemType Directory -Path (Split-Path $save) -Force | Out-Null
     Copy-Item -LiteralPath $source -Destination $save -Recurse
@@ -53,7 +62,10 @@ try {
     [Reflection.Assembly]::LoadFrom($moved) | Out-Null
     $manifest = [DF3D.Release.Package]::ReadManifest($extracted)
     $journal = [DF3D.Release.Package]::Install($extracted, $manifest, $game)
-    $prefsHash = (Get-FileHash -LiteralPath (Join-Path $game 'prefs\init.txt')).Hash
+    # Limit only this disposable game's graphics; the user's preferences are untouched.
+    $isolatedPrefs=Join-Path $game 'prefs\init.txt'
+    [IO.File]::WriteAllText($isolatedPrefs,([IO.File]::ReadAllText($isolatedPrefs) -replace '\[G_FPS_CAP:\d+\]','[G_FPS_CAP:30]'))
+    $prefsHash = (Get-FileHash -LiteralPath $isolatedPrefs).Hash
     Enter-Df3dLane -DfPath $game -Port 5010
     $entered = $true
     $env:DF3D_DF_PATH = $game
@@ -93,7 +105,7 @@ try {
         $null = $client.Handle
         if (-not $client.WaitForExit(330000) -or $client.ExitCode -ne 0) { throw 'Disposable fortress load failed' }
         $env:DF3D_SCREENSHOT = Join-Path $out 'fortress.png'
-        $viewer = Start-ContainedProcess -Exe $viewerExe -WorkingDir (Split-Path $viewerExe) -Arguments "--log-file `"$out\gpu.log`""
+        $viewer = Start-ContainedProcess -Exe $viewerExe -WorkingDir (Split-Path $viewerExe) -Arguments "--max-fps 30 --render-thread safe --log-file `"$out\gpu.log`""
         $null = $viewer.Handle
         if (-not $viewer.WaitForExit(180000) -or $viewer.ExitCode -ne 0) { throw 'Exported GPU viewer failed' }
         $frame = Get-Content -LiteralPath "$out\fortress.png.txt" -Raw
@@ -109,7 +121,12 @@ try {
     [DF3D.Release.Package]::Restore($journal)
     $journal = $null
     if (Test-Path -LiteralPath (Join-Path $game 'hack\plugins\df3d.plug.dll')) { throw 'Bridge uninstall left plugin behind' }
-    @{artifact=$Artifact;sha256=(Get-FileHash -LiteralPath $Artifact).Hash;version=$manifest.version;extraction='pass';install_restore='pass';headless='pass';gpu_capture=[bool]$save;system_only_path=$true;separate_machine=$false} | ConvertTo-Json | Set-Content -LiteralPath "$out\result.json"
+    if ($save) {
+        if ((Get-SaveHashes $source) -cne $sourceHashes) { throw 'Source save changed during package smoke' }
+        if ((Get-SaveHashes $save) -cne $sourceHashes) { throw 'Disposable save changed during save-free package smoke' }
+        'Source and disposable save hashes unchanged' | Set-Content -LiteralPath "$out\save-preservation.txt"
+    }
+    @{source_save_preserved=[bool]$save;artifact=$Artifact;sha256=(Get-FileHash -LiteralPath $Artifact).Hash;version=$manifest.version;extraction='pass';install_restore='pass';headless='pass';gpu_capture=[bool]$save;system_only_path=$true;separate_machine=$false} | ConvertTo-Json | Set-Content -LiteralPath "$out\result.json"
     Write-Host "PACKAGE_SMOKE_PASS: $out"
 } finally {
     try { if ($entered) { Exit-Df3dLane } }

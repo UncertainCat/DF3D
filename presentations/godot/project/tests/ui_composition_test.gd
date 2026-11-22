@@ -252,7 +252,7 @@ func run():
 		check(ui.host.active==places and not objects.panel.visible and objects.state.phase==objects.state.Phase.Closed,"Objects header returns to Places")
 		check(not ui.actions._requests.has(pending) and not ui.actions._queue.has(pending),"Objects handoff retires pending read")
 	var nobles=ui.controller("nobles")
-	check(nobles==ui.controller("nobles") and not ui.Registry.allows_launcher("Nobles and administrators"),"Nobles factory is reused without public exposure")
+	check(nobles==ui.controller("nobles") and ui.Registry.allows_launcher("Nobles and administrators"),"Public Nobles reuses its composed owner")
 	for dimensions in [Vector2(912,552),Vector2(1600,900)]:
 		places.open_panel();places.panel.layout(dimensions)
 		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true

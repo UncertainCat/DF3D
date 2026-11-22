@@ -6516,6 +6516,20 @@ do not infer replacement artwork from the fixture alone.
 
 ## Nobles and administrators native discovery
 
+Nobles and administrators is publicly available through the HUD. Protected082058
+on2026-11-22 verifies HUD launch/reopen,14 overview rows, Tasks header round trips
+at912x552/1600x900, overlay blocking, appointment selection and delayed Work orders
+handoff, and F10/host-close cleanup. Two navigation clicks retain one commit;
+native readback confirms unit6598 on assignment6/entity865, position/history
+effects and unchanged bookkeeping settings/precision. The wide overview screenshot
+was inspected. Owned DF61088 closes unsaved/source-preserved at30FPS, sampled
+GPU59–61C, viewer stderr empty. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-082058`.
+Nobles state, composition and adapter-retirement checks pass. This public-route
+acceptance retains the separately recorded symbol, accounting and recovery evidence;
+it does not newly qualify every office/symbol variant or world-epoch replacement.
+
+
 Maintainer-approved uncertainty close (2026-11-11): Escape can dismiss Nobles
 when an appointment/accounting or symbol/name edit has an unknown outcome.
 The normal play/overlay/active-owner gates still apply. Closing clears local
@@ -34614,7 +34628,7 @@ game state), the **core** (`schema/` and `worldmodel/`, engine-independent C++),
 creatures, items and animations; pause, unpause and save remain available. The
 toolbar exposes designation and inspection tools, Reports/alerts, construction
 Stockpiles, Zones/Locations, editable Work orders, native Residents and the
-Labor workflow (Work Details, Standing orders, Kitchen and Stone use), plus Stocks, Tasks and Places. Other management screens have staged implementations
+Labor workflow (Work Details, Standing orders, Kitchen and Stone use), plus Stocks, Tasks, Places and Nobles/administrators. Other management screens have staged implementations
 whose public integration remains unfinished. Specialized building controls are
 qualified individually in their owning sections. Windows x64 packages bundle the viewer and a bridge setup launcher;
 source builds are also supported. Both require the pinned Steam release of Dwarf Fortress.

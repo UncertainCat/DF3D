@@ -1,5 +1,5 @@
 extends Node
-# Staged owner. Public entry remains gated until the full native workflow passes.
+# Public Nobles owner; pending edits retain ownership until confirmed.
 signal information_requested(caption: String)
 var ui_host
 var modal_input:=true

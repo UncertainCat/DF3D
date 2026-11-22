@@ -102,7 +102,7 @@ func lifecycle_recovery(expected: Dictionary) -> bool:
 	file.store_string(JSON.stringify({"sent_case":sent_case,"sent_outcome":actions.result(sent_ticket).get("outcome","") if sent_case else "not_sent","draft_retired":true,"fresh_read":true,"chosen":chosen,"holder":refreshed.get("unit_id"),"success":not failed}));file.close()
 	return not failed
 func exercise(expected: Dictionary) -> void:
-	owner=scene._ui.controller("nobles");owner.open_panel()
+	owner=scene._ui.controller("nobles");await pointer(scene._fortress_hud.launcher_rect("Nobles and administrators").get_center())
 	if not await settle(owner.state):return
 	check(owner.state.rows.size()==expected.rows.size(),"Composed Nobles rows differ")
 	check(scene._interaction.construction_active,"Nobles does not own world input")
@@ -125,4 +125,9 @@ func exercise(expected: Dictionary) -> void:
 	if OS.get_environment("DF3D_NOBLES_SCENE_COMMIT")=="1" and not await commit_handoff(expected):return
 	key(KEY_F10);await process_frame
 	check(scene._ui.host.active==null and not owner.panel.visible and not scene._interaction.construction_active,"Nobles reset did not release map input")
-	await drain();exercised=true
+	await drain()
+	await pointer(scene._fortress_hud.launcher_rect("Nobles and administrators").get_center())
+	if not await settle(owner.state):return
+	scene._ui.host.close_active();await process_frame
+	check(scene._ui.host.active==null and not owner.panel.visible,"Nobles HUD reopen/close retained ownership")
+	exercised=true

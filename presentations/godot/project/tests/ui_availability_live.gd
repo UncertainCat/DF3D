@@ -16,7 +16,7 @@ func run():
 	assert(not scene._interaction.construction_active, "Rejected routes leave input free")
 	for title in ["Petitions","Trade","Objects","Justice"]:
 		assert(not hud.navigation[title].visible, "Hidden entry: "+title)
-	for title in ["Places","Tasks","Stocks","Citizens","Labor","Work orders"]:
+	for title in ["Nobles and administrators","Places","Tasks","Stocks","Citizens","Labor","Work orders"]:
 		assert(hud.navigation[title].visible, "Accepted entry: "+title)
 	for title in ["Stockpiles / zones"]:
 		assert(not hud.navigation.has(title) or not hud.navigation[title].visible, "Unpromoted controller remains hidden from HUD")

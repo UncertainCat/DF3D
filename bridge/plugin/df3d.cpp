@@ -178,6 +178,7 @@
 #include "stone_use_native.h"
 #include "item_uses_native.h"
 #include "stocks_native.h"
+#include "display_inventory_native.h"
 #include "kitchen_native.h"
 #include "hunter_ammunition_native.h"
 #include "hunter_ammunition_captions_native.h"
@@ -5732,6 +5733,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["jobs"]=Json::Value(Json::arrayValue);
           for(const auto& job:body->jobs){Json::Value row;row["id"]=job.id;row["type"]=job.type;row["item_type"]=job.itemType;row["flags"]=job.flags;result["jobs"].append(row);}
         } else if(!edit)return CR_FAILURE;
+        out.print("{}",Json::FastWriter().write(result));return CR_OK;
+      }
+      if(parameters[0]=="display-inventory-probe") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;
+        const auto parsed=std::from_chars(parameters[1].data(),parameters[1].data()+parameters[1].size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=parameters[1].data()+parameters[1].size())return CR_WRONG_USAGE;
+        if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+        const auto ids=df3d_production::displayInventory(df::building::find(id));if(!ids)return CR_FAILURE;
+        Json::Value result(Json::arrayValue);for(auto item:*ids)result.append(item);
         out.print("{}",Json::FastWriter().write(result));return CR_OK;
       }
       if(parameters[0]=="siege-state-probe") {

@@ -12,6 +12,7 @@ if os.getenv("DF3D_DEPOT_NATIVE")=="1" then kinds={6}end
 if os.getenv("DF3D_CAGE_NATIVE")=="1" then kinds={28}end
 if os.getenv('DF3D_CHAIN_NATIVE')=='1' then kinds={27}end
 if os.getenv('DF3D_SIEGE_NATIVE')=='1' then kinds={22}end
+if os.getenv('DF3D_DISPLAY_NATIVE')=='1' then kinds={53}end
 local wanted={};for _,kind in ipairs(kinds)do wanted[kind]=true end
 local result={frame=df.global.world.frame_counter,inventory={},buildings={},missing={}}
 local selected={}
@@ -83,6 +84,10 @@ for _,kind in ipairs(kinds)do
   local row={id=b.id,type=kind,subtype=b:getSubtype(),tile={b.centerx,b.centery,b.z},native_type=df.building_type[kind],custom_name=dfhack.df2utf(b.name),selected_sheet=sheet.active_sheet,selected_id=sheet.active_id,lines={}}
   row.temporary_fixture=fixture_ids[b.id] or false
   capture('remaining-building-'..kind)
+  if kind==53 and os.getenv('DF3D_DISPLAY_NATIVE')=='1' then
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('remaining%-buildings%-native.lua$','display-building-native.lua')
+   result.display=assert(loadfile(source))(out,view,b,capture,select_map)
+  end
   if specialized_families then
    row.items={}
    for _,held in ipairs(b.contained_items)do row.items[#row.items+1]={id=held.item.id,type=held.item:getType(),use_mode=held.use_mode}end

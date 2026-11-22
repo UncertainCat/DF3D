@@ -3367,11 +3367,46 @@ Evidence: `completed_sheet_discovery_reference.special_building_readers_referenc
 
 The controlled claim establishes display behavior, not natural nesting eligibility.
 Occupied/baited trap bodies and hive crowding branches have static native evidence
-but no live acceptance yet. Siege22,
-Chain27 and DisplayFurniture53 still need their workflows; Archery26 shared
-controls are qualified above. Shop7 and natural Nest47 require fortress-route assessment.
+but no live acceptance yet. DisplayFurniture53 still needs its product workflow;
+Siege22, Chain27 and Archery26 public controls are qualified in their owning sections.
+Shop7 and natural Nest47 require fortress-route assessment.
 Earlier135024's siege capture selected a dwarf inside the footprint and is invalid;
 135309 and140937 use full-footprint clearance and explicit selected-building checks.
+
+### Display furniture assignment reference
+
+Protected063508 on2026-11-22 (DF54284) records a completed pedestal's native
+assignment picker and parent removal. Selecting amulet38540 changes only
+new_display_itid; Escape commits the assignment, adds a BUILDING_DISPLAY_FURNITURE
+reference to building1490, and closes both picker and building sheet. Reopening
+through map selection shows the item with native status "Assigned". The parent
+checkbox removes the assignment and reference, restoring the observed item flags
+and references. No building job appears during this paused interaction; this
+does not establish later hauling behavior. Empty open/close leaves assignments
+and jobs unchanged. Evidence and captures are in
+build/stockpile-storage-native-farm-discovery-20261122-063508/display-building-native.json.
+The source save remains unchanged and the owned session closes unsaved at30FPS;
+sampled GPU temperature61C. This is native discovery, not product acceptance.
+
+The native opener367710 also changes unrelated global menus and must not be
+called by runtime code. Its semantic inventory block uses the same c93160
+exclusion and c8be10/138ed20 holder checks already pinned by Stocks, with additional
+display eligibility and existing-assignment exclusions. Grouping uses ac9c30,
+already exposed with owned storage. Category filtering37b6e0 reads screen geometry;
+it is not a standalone semantic provider. Display-specific selection, commit,
+removal and owned transport remain to be implemented and verified.
+
+The owned display inventory now shares Stocks' availability/holder predicate,
+applies the pinned display-specific exclusions, and invokes native ac9b20/ac94a0
+ordering on independently owned storage. It never writes item.base_uniform_score.
+Protected064139 (DF50820) matches all6411 native IDs in exact order, both before
+and after opening the native picker. Reads leave GPS/main_interface bytes and
+observed item scratch unchanged. The repeated native selection confirms that
+commit sets flags2.location_reserved and parent removal clears it, alongside
+the display reference. Source preserved, owned session closed unsaved at30FPS,
+sampled GPU60C. Bridge build and19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.display_inventory_reference`.
+This qualifies inventory enumeration/order, not product editing or public exposure.
 
 The trap/hive control provider now owns revisions over target stage/flags,
 contents, body facts and jobs. Bait selection preserves native1afad4..1afbc9:

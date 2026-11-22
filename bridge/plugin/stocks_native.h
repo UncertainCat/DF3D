@@ -46,6 +46,22 @@ inline std::optional<std::vector<int32_t>> inventory() {
     return ids;
 }
 struct Totals {std::array<int32_t,113> stored{},unavailable{};};
+// Shared native inventory availability, after inventory() has validated the
+// semantic call graph. Display assignment uses this same holder/flag test.
+inline std::optional<bool> inventoryAvailable(df::item* item) {
+    if(!item)return std::nullopt;
+    if(item->flags.whole&0xe88f10)return false;
+    if(item->flags.whole&8) {
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        df::specific_ref holder;holder.type=df::specific_ref_type(-1);
+        reinterpret_cast<void (*)(df::item*,df::specific_ref*,bool)>(base+0xc8be10)(item,&holder,true);
+        if(int32_t(holder.type)==1) {
+            if(!holder.data.unit)return std::nullopt;
+            return reinterpret_cast<bool (*)(df::unit*)>(base+0x138ed20)(holder.data.unit);
+        }
+    }
+    return true;
+}
 inline std::optional<Totals> totals() {
     const auto ids=inventory();if(!ids)return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
@@ -61,18 +77,10 @@ inline std::optional<Totals> totals() {
     Totals result;
     for(auto id:*ids) {
         auto* item=df::item::find(id);if(!item)return std::nullopt;
-        bool available=(item->flags.whole&0xe88f10)==0;
-        if(available && (item->flags.whole&8)) {
-            df::specific_ref holder;holder.type=df::specific_ref_type(-1);
-            reinterpret_cast<void (*)(df::item*,df::specific_ref*,bool)>(base+0xc8be10)(item,&holder,true);
-            if(int32_t(holder.type)==1) {
-                if(!holder.data.unit)return std::nullopt;
-                available=reinterpret_cast<bool (*)(df::unit*)>(base+0x138ed20)(holder.data.unit);
-            }
-        }
+        const auto available=inventoryAvailable(item);if(!available)return std::nullopt;
         const auto type=int32_t(item->getType());
         if(type<0 || type>=int32_t(result.stored.size()))return std::nullopt;
-        auto& value=(available && !(item->flags.whole&0x20)?result.stored:result.unavailable)[type];
+        auto& value=(*available && !(item->flags.whole&0x20)?result.stored:result.unavailable)[type];
         // DF's native ADD is a 32-bit operation.
         value=int32_t(uint32_t(value)+uint32_t(item->getStackSize()));
     }

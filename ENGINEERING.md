@@ -8992,6 +8992,22 @@ it does not enable worn inventory or borrow cached native textures. Unitless
 generic71a410 selection remains unadmitted rather than using the map provider's
 historical-figure profession fallback or guessed random hash.
 
+Protected unitless-corpse-selector174138 on2026-11-22 confirms the visible
+consequence: temporarily replacing corpse47852's unit7295 with an unresolved ID
+leaves its native icon present but DF3D's icon empty. The488x708 item panel differs
+in350 RGB pixels, all within the icon bounds426,74..458,89; description, controls
+and the remaining panel match. The original unit ID is restored before owned
+DF52812 closes unsaved; source-save hashes are unchanged. This is a controlled
+missing-record fixture, not a naturally occurring unresolved corpse. The preceding
+174017 inventory found103 corpses and one unresolved unit, skeleton7820, whose
+separate native skeleton path already has acceptance. The diagnostic item-inspect
+JSON omits selector recipes and cannot itself establish their absence. Use the
+typed item snapshot and rendered comparison for that claim. Runtime support for
+the non-skeleton unitless path remains unfinished. Graphics were capped30FPS;
+sampled GPU temperature42C is not a peak. The viewer emitted the documented
+separate-thread, render-device finalize and ObjectDB shutdown diagnostics, so
+this evidence is passed_with_known_issues rather than a clean client run.
+
 Core19, extension/item-state and MSVC pass (`corpse-selector-wired`). Protected
 101742 on2026-11-10 verifies actual View/close, exact description/Uses and full
 488x708 pixel-identical panels for human corpse47852 and tooth21176; all four

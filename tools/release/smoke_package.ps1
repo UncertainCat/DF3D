@@ -123,8 +123,21 @@ try {
     if (Test-Path -LiteralPath (Join-Path $game 'hack\plugins\df3d.plug.dll')) { throw 'Bridge uninstall left plugin behind' }
     if ($save) {
         if ((Get-SaveHashes $source) -cne $sourceHashes) { throw 'Source save changed during package smoke' }
-        if ((Get-SaveHashes $save) -cne $sourceHashes) { throw 'Disposable save changed during save-free package smoke' }
-        'Source and disposable save hashes unchanged' | Set-Content -LiteralPath "$out\save-preservation.txt"
+        $copyHashes=Get-SaveHashes $save
+        $withoutEventLog={param($value) (($value -split "`n" | Where-Object {$_ -notmatch '^events-dfhack\.log '}) -join "`n")}
+        if ((& $withoutEventLog $copyHashes) -cne (& $withoutEventLog $sourceHashes)) { throw 'Disposable game data changed during save-free package smoke' }
+        # Upstream DFHack appends this diagnostic on SC_WORLD_LOADED when a
+        # save lives under the game's save/ root. Permit only that exact append.
+        $originalEventLog=Join-Path $source 'events-dfhack.log'
+        $copiedEventLog=Join-Path $save 'events-dfhack.log'
+        $originalBytes=[byte[]]@()
+        if(Test-Path -LiteralPath $originalEventLog){$originalBytes=[IO.File]::ReadAllBytes($originalEventLog)}
+        $copiedBytes=[IO.File]::ReadAllBytes($copiedEventLog)
+        if ($copiedBytes.Length -lt $originalBytes.Length -or [Convert]::ToBase64String($copiedBytes,0,$originalBytes.Length) -cne [Convert]::ToBase64String($originalBytes)) { throw 'DFHack event log was rewritten' }
+        $append=[Text.Encoding]::UTF8.GetString($copiedBytes,$originalBytes.Length,$copiedBytes.Length-$originalBytes.Length)
+        if ($append -notmatch '^\[[^\r\n]+\] DFHack [^\r\n]+; save: df3d-package-test; SC_WORLD_LOADED; game type DWARF_MAIN \(0\)\r?\n$') { throw 'Unexpected disposable DFHack event log append' }
+        $copyHashes | Set-Content -LiteralPath "$out\disposable-save-sha256.txt"
+        'Source hashes unchanged; disposable game-data hashes unchanged; one verified DFHack world-load log append' | Set-Content -LiteralPath "$out\save-preservation.txt"
     }
     @{source_save_preserved=[bool]$save;artifact=$Artifact;sha256=(Get-FileHash -LiteralPath $Artifact).Hash;version=$manifest.version;extraction='pass';install_restore='pass';headless='pass';gpu_capture=[bool]$save;system_only_path=$true;separate_machine=$false} | ConvertTo-Json | Set-Content -LiteralPath "$out\result.json"
     Write-Host "PACKAGE_SMOKE_PASS: $out"

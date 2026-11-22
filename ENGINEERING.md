@@ -35567,6 +35567,30 @@ only in its ignored harness; product labels remain driven by session data.
 
 ## Windows package
 
+The unpublished management candidate0.3.0-rc.1 was exported from clean source
+be52d9560184d6178cf1448520e67444f7e978f0 with clean pinned dependencies. Its
+Windows executable SHA256 is
+d58ee7c10a169b9638db72315966829e8bc9fd8c73b93cf4a90e85d2db300c28.
+The payload audit verifies866 files,104 binaries,708 packed resources, imports,
+checksums and the asset policy. Export-generated script resource identifiers
+are committed; all818 script IDs are unique. Earlier dirty candidate exports
+are not the verified artifact.
+
+Exact-package smoke `build/package smoke b0f817aa8d7849ce8eca68346d0bd96d`
+passes relocated extraction, launcher self-test, bridge installation/restoration,
+system-only PATH, isolated profile/cache, fresh asset loading and an actual
+fortress GPU frame. The screenshot was inspected; terrain and native HUD are
+visible with play entered. Headless/GPU logs contain no engine errors, and the
+owned DF42304 closes unsaved. Native and viewer graphics are capped30FPS;
+GPU samples57–60C. All source-save hashes and disposable game-data hashes match.
+Upstream DFHack Core.cpp appends one SC_WORLD_LOADED line to events-dfhack.log
+when the copy lives under the game's save root. The smoke check verifies that
+exact append and preserves the original log prefix; it permits no other change.
+The earlier33a7aa49 smoke failed the overly broad log hash assertion and is not
+the accepted run. This is local Windows10/RTX3080Ti evidence, not separate-machine
+certification, a full management acceptance audit, publication or backlog closure.
+
+
 Run the versioned `DF3D-<version>-windows-x64.exe`, select your installed Dwarf Fortress, and use **Set up bridge**
 with the game closed. The launcher discovers Steam libraries and also accepts `DF3D_DF_PATH`
 or a folder selected with Browse. Godot and the required runtimes are included.

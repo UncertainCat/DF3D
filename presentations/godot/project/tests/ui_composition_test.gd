@@ -241,7 +241,7 @@ func run():
 		check(ui.host.active==justice,"Overlay blocks information handoff")
 		ui.host.set_overlay_blocked(false)
 	var objects=ui.controller("objects")
-	check(objects==ui.controller("objects") and not ui.Registry.allows_launcher("Objects"),"Objects factory is reused without public exposure")
+	check(objects==ui.controller("objects") and ui.Registry.allows_launcher("Objects"),"Public Objects reuses its composed owner")
 	for dimensions in [Vector2(912,552),Vector2(1600,900)]:
 		places.open_panel();places.panel.layout(dimensions)
 		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true

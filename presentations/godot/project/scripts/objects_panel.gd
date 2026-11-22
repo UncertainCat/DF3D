@@ -1,5 +1,5 @@
 extends Node
-# Staged owner; public Objects entry stays gated while controls are incomplete.
+# Public Objects owner; item navigation uses fresh semantic location receipts.
 signal information_requested(caption: String)
 signal focus_requested(tile: Vector3i)
 signal inspect_requested(item_id: int,tile: Vector3i)

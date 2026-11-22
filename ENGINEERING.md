@@ -6232,10 +6232,18 @@ remains. Earlier172100 had an escaped-path error in the test helper;172155 used
 an off-map artifact removed from membership when its claims were cleared.
 Neither is accepted as ownership evidence. No runtime change was required.
 
-Objects has a staged main-scene factory and information-header route. It reuses
+Objects has a public HUD launcher, main-scene factory and information-header route. It reuses
 the shared UI host, hover owner, camera focus and existing item-sheet owner.
 Nobles can hand off to Objects through its existing commit-before-navigation
-flow. No public launcher is promoted. Offline `build/qa/objects-composition-final`
+flow. Protected082302 on2026-11-22 adds actual public HUD launch/reopen to
+the main-scene navigation workflow: all four category memberships, Places header
+round trips at912x552/1600x900, exact-item View/Recenter, correct camera without
+follow, overlay blocking, Escape and play-disable/late-read cleanup pass. Native
+menu bytes and RNG remain unchanged; owned DF32732 closes unsaved/source-preserved
+at30FPS, sampled GPU60–62C, viewer stderr empty. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-082302`. This does not
+newly establish world/save replacement or the ownership/appearance variants noted
+below. Offline `build/qa/objects-composition-final`
 verifies Places→Objects→Places at narrow/wide widths, factory reuse and pending
 read retirement. Protected171633 on2026-11-11 verifies actual main-scene
 Places→Objects→Places header clicks at912x552 and1600x900, all four category
@@ -34628,7 +34636,7 @@ game state), the **core** (`schema/` and `worldmodel/`, engine-independent C++),
 creatures, items and animations; pause, unpause and save remain available. The
 toolbar exposes designation and inspection tools, Reports/alerts, construction
 Stockpiles, Zones/Locations, editable Work orders, native Residents and the
-Labor workflow (Work Details, Standing orders, Kitchen and Stone use), plus Stocks, Tasks, Places and Nobles/administrators. Other management screens have staged implementations
+Labor workflow (Work Details, Standing orders, Kitchen and Stone use), plus Stocks, Tasks, Places, Nobles/administrators and Objects. Other management screens have staged implementations
 whose public integration remains unfinished. Specialized building controls are
 qualified individually in their owning sections. Windows x64 packages bundle the viewer and a bridge setup launcher;
 source builds are also supported. Both require the pinned Steam release of Dwarf Fortress.

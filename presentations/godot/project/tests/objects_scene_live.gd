@@ -85,7 +85,7 @@ func exercise(expected: Dictionary) -> void:
 		places.close_panel()
 	root.size=Vector2i(1200,800);await process_frame;await process_frame
 	for inspect in [false,true]:
-		owner.open_panel();if not await settle(owner.state):return
+		await pointer(scene._fortress_hud.launcher_rect("Objects").get_center());if not await settle(owner.state):return
 		var index: int=owner.state.rows.find_custom(func(row):return row.has("position"))
 		if not check(index>=0 and index<owner.panel.capacity(),"No visible local artifact for scene handoff"):return
 		var row: Dictionary=owner.state.rows[index].duplicate(true)
@@ -105,7 +105,7 @@ func exercise(expected: Dictionary) -> void:
 			key(KEY_ESCAPE);await process_frame
 			check(not item.panel.visible and scene._ui.host.active==null,"Escape retained item sheet")
 		else:check(scene._ui.host.active==null,"Recenter retained modal input")
-	owner.open_panel();if not await settle(owner.state):return
+	await pointer(scene._fortress_hud.launcher_rect("Objects").get_center());if not await settle(owner.state):return
 	key(KEY_ESCAPE);await process_frame
 	check(owner.state.phase==owner.state.Phase.Closed and scene._ui.host.active==null,"Escape retained Objects")
 	owner.open_panel();scene._ui.host.set_play_enabled(false);await drain()

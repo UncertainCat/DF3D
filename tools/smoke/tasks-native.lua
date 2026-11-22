@@ -56,6 +56,12 @@ if os.getenv('DF3D_TASKS_EXECUTION')=='1' then
  assert(execution_material,'No free local boulder with a native material choice')
  write('tasks-execution-material.json',json.encode(execution_material))
 end
+local demolition
+if os.getenv('DF3D_TASKS_CANCEL_DEMOLITION')=='1' then
+ assert(not created_job and not workshop_cancel,'Demolition uses the idle workshop fixture')
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('tasks%-native.lua$','tasks-demolition-native.lua')
+ demolition=assert(loadfile(path))(out,view)
+end
 local cold=probe()
 local destructive
 local function find_job(id)
@@ -72,7 +78,7 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
  assert(job and job.flags.suspend,'Expected suspended construction fixture')
  local original=job.flags.whole
  write('tasks-wire-reference.json',json.encode(cold))
- write('tasks-scene-reference.json',json.encode{rows=cold,details_job=created_job and created_job.id or -1,cancel_job=workshop_cancel and workshop_cancel.job_id or -1,execution_material=execution_material})
+ write('tasks-scene-reference.json',json.encode{rows=cold,details_job=created_job and created_job.id or -1,cancel_job=workshop_cancel and workshop_cancel.job_id or demolition and demolition.job_id or -1,execution_material=execution_material})
  write('shot.tmp','tasks-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+(os.getenv('DF3D_TASKS_SCENE')=='1' and 120000 or 30000);local checked=0;local repeats=0;local lifecycle_steps=0;local material_checked=false;local art_checked=false;local original_repeat=created_job and created_job.flags.whole
  while true do
@@ -157,12 +163,17 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
     workshop_cancel.checked=true;write('tasks-workshop-cancel-ack','1')
    end
   end
+  if demolition and not demolition.checked then
+   local step=io.open(out..'/tasks-workshop-cancel-step')
+   if step then step:close();demolition.verify();demolition.checked=true;write('tasks-workshop-cancel-ack','1')end
+  end
   local ack=io.open(out..'/ack-tasks-wire');if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Tasks wire timed out');script.sleep(1,'frames')
  end
  assert(checked==2 and job.flags.whole==original,'Tasks wire did not restore suspension')
  if created_job then assert(repeats==2 and created_job.flags.whole==original_repeat,'Tasks Repeat did not restore');write('tasks-repeat-native-result.json',json.encode{job_id=created_job.id,steps=repeats,restored=true})end
  assert(not df.global.game.main_interface.info.open,'Tasks transport opened native menu')
+ if demolition then assert(demolition.checked,'Demolition cancellation incomplete');cold=probe()end
  if workshop_cancel then
   assert(workshop_cancel.checked,'Workshop cancellation incomplete')
   local after=probe();write('tasks-workshop-cancel-native-result.json',json.encode{job_id=workshop_cancel.job_id,building_id=workshop_cancel.building_id,workshop_preserved=true,other_jobs_preserved=true,previous_well_cancelled=destructive and destructive.step==2 or false,before=cold,after=after});cold=after

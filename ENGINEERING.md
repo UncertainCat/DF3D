@@ -8475,7 +8475,7 @@ recovery153800, actual world replacement154406 and interrupted applied mutation
 below. Production160820 also verifies that native DF completes a statue with
 the material and artwork selected through Tasks. These are separate evidence
 scopes: world replacement uses controllers, not a graphical main-scene reload.
-Assigned-job, demolition and started-construction cancellation, full Details
+Assigned-job and started-construction cancellation, full Details
 subpage/overflow rendering, and graphical reload remain unqualified. They are
 acceptance gaps, not established implementation defects.
 
@@ -8634,10 +8634,26 @@ DF38916 closed unsaved, both processes capped30FPS, GPU43C/0% sampled; only
 documented engine diagnostics (passed_with_known_issues). Assigned jobs,
 demolition and started-construction cancellation are not covered by this run.
 This cancellation run does not qualify assigned-job, demolition or
-started-construction cancellation. Full Details subpage/overflow pixel evidence
+started-construction cancellation; demolition has separate acceptance below.
+Full Details subpage/overflow pixel evidence
 also remains incomplete. Producer recovery, world replacement and interrupted
 applied edits have later acceptance below; do not treat their earlier absence
 as a current missing implementation.
+
+Protected173439 on2026-11-22 qualifies demolition cancellation. In the paused
+disposable clone, the native building method queues removal of idle completed
+workshop3. Native Tasks cancels job382794 and preserves the workshop and every
+unrelated job. A second removal, job382795, is cancelled through the public Tasks
+HUD in the actual DF3D main scene. Independent native readback confirms the same
+effect, an empty workshop job list and unchanged completed construction stage.
+`tasks-demolition-native.lua` supplies the native oracle; the existing public
+Tasks driver clicks Cancel and verifies refreshed membership. No runtime change
+was required. Client stderr is empty, the source save is unchanged, and owned
+DF14492 closes unsaved. Graphics are capped30FPS with GPU samples44–46C.
+This qualifies cancellation of a queued demolition, not an assigned job or a
+partially constructed building. Earlier173116/173219/173309/173356 attempts failed
+the diagnostic native click before public acceptance; the final driver clamps
+its native scroll and restores pointer coordinates after capture.
 
 ### Production execution after Tasks edits
 

@@ -163,7 +163,7 @@ func exercise(expected: Dictionary) -> void:
 			var deadline:=Time.get_ticks_msec()+5000
 			while Time.get_ticks_msec()<deadline and FileAccess.get_file_as_string(directory+"/tasks-destructive-ack")!=str(step):await create_timer(0.01).timeout
 			if not check(FileAccess.get_file_as_string(directory+"/tasks-destructive-ack")==str(step),"Native Tasks action effect unconfirmed"):return
-	if OS.get_environment("DF3D_TASKS_CANCEL_WORKSHOP")=="1":
+	if OS.get_environment("DF3D_TASKS_CANCEL_WORKSHOP")=="1" or OS.get_environment("DF3D_TASKS_CANCEL_DEMOLITION")=="1":
 		var target: int=-1
 		for i in owner.state.rows.size():
 			if owner.state.rows[i].job_id==int(expected.cancel_job):target=i;break

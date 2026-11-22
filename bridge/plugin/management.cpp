@@ -3704,7 +3704,7 @@ df::building_actual* contentsBuilding(int32_t id,bool editing=false) {
   if(!building)return nullptr;
   const auto type=building->getType();
   const bool lever=type==df::building_type::Trap && (building->getSubtype()==0 || building->getSubtype()==1);
-  if(!df3d_production::specialFurnitureType(type) && type!=df::building_type::Cage && type!=df::building_type::Chain && type!=df::building_type::SiegeEngine && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
+  if(!df3d_production::specialFurnitureType(type) && type!=df::building_type::Cage && type!=df::building_type::Chain && type!=df::building_type::DisplayFurniture && type!=df::building_type::SiegeEngine && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::FarmPlot && type!=df::building_type::Box &&
      !lever && (editing || !df3d_production::productionProfileBuilding(building)) &&
      !df3d_production::observePendingBuilding(building))return nullptr;
   auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
@@ -4624,7 +4624,7 @@ void run(color_ostream& out) {
         auto* building=df::building::find(q->building_id());
         if(!building)return nullptr;
         const auto type=building->getType();
-        if(!df3d_production::specialFurnitureType(type) && type!=df::building_type::Cage && type!=df::building_type::Chain && type!=df::building_type::SiegeEngine && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && !df3d_production::productionProfileBuilding(building))return nullptr;
+        if(!df3d_production::specialFurnitureType(type) && type!=df::building_type::Cage && type!=df::building_type::Chain && type!=df::building_type::DisplayFurniture && type!=df::building_type::SiegeEngine && type!=df::building_type::TradeDepot && type!=df::building_type::Well && !df3d_production::machineryBuildingType(type) && !df3d_production::ordinaryTrapBuilding(building) && !df3d_production::plainFurnitureType(type) && !df3d_production::funeraryFurnitureType(type) && !df3d_production::linkedFurnitureType(type) && type!=df::building_type::Door && type!=df::building_type::Box && !df3d_production::productionProfileBuilding(building))return nullptr;
         auto* tile=Maps::getTileDesignation(building->centerx,building->centery,building->z);
         return tile && !tile->bits.hidden?building:nullptr;
       };
@@ -4785,7 +4785,7 @@ void run(color_ostream& out) {
         const auto contentsType=contentsBuilding(q->building_id())->getType();
         const bool editRemoving=df3d_production::ordinaryTrapBuilding(contentsBuilding(q->building_id())) || unfinished || contentsType==df::building_type::Box ||
           (contentsType==df::building_type::Trap && (contentsBuilding(q->building_id())->getSubtype()==0 || contentsBuilding(q->building_id())->getSubtype()==1)) ||
-          df3d_production::specialFurnitureType(contentsType) || contentsType==df::building_type::Cage || contentsType==df::building_type::Chain || contentsType==df::building_type::TradeDepot || contentsType==df::building_type::Well || df3d_production::machineryBuildingType(contentsType) || df3d_production::plainFurnitureType(contentsType) || df3d_production::funeraryFurnitureType(contentsType) || df3d_production::linkedFurnitureType(contentsType);
+          df3d_production::specialFurnitureType(contentsType) || contentsType==df::building_type::DisplayFurniture || contentsType==df::building_type::Cage || contentsType==df::building_type::Chain || contentsType==df::building_type::TradeDepot || contentsType==df::building_type::Well || df3d_production::machineryBuildingType(contentsType) || df3d_production::plainFurnitureType(contentsType) || df3d_production::funeraryFurnitureType(contentsType) || df3d_production::linkedFurnitureType(contentsType);
         auto edit=df3d_production::finishBuildingItemEdit(*before,q->expected_revision(),q->item_id(),action,q->item_value()!=0,[&] {
           auto* building=contentsBuilding(q->building_id(),true);
           if(!building)return false;

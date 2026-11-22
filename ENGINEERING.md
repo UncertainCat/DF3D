@@ -3495,7 +3495,7 @@ pass. Owned DF closes unsaved with source preservation, graphics capped at30FPS
 and sampled GPU59–60C. Evidence: display_wire_reference in the completed-sheet
 fixture. This is transport acceptance, not public UI or rendering acceptance.
 
-The viewer's display_state owns selection, category, search, expansion and scroll.
+The viewer's display_state owns selection, category, search and scroll.
 Checkbox edits stay local across category navigation; explicit picker closure
 submits one sorted draft against its original inventory revision. Changed inventory
 retires that authority instead of silently rebinding selected IDs. Pending, stale
@@ -3518,6 +3518,26 @@ shutdown diagnostics, not a clean diagnostic run. Graphics run serially at30FPS,
 with sampled GPU60–61C. Native source saves are preserved and DF57076 closes
 unsaved. Evidence: display_picker_view_reference. Group/scroll/resize input and
 the composed public parent/picker workflow remain unqualified.
+
+Display furniture uses the shared header/contents APIs and furniture owner. The
+parent supplies item artwork, assignment status, removal and the native assignment
+button. The picker takes modal input; explicit closure commits its local draft and
+clears parent selection, while target/session replacement retires it. Parent reads
+refresh assignment status independently of header facts. Native073105/073619
+confirms group and item-caption clicks do nothing; Display does not inherit Stocks
+group expansion. Only the checkbox toggles selection.
+
+Protected073619 on2026-11-22 (DF2936) passes the composed owner through the real
+action service: open, category selection, Escape commit, input release, reopen and
+parent removal. Source saves are preserved and DF closes unsaved. The parent
+480x708 content matches native at1200x800; its last8px frame is overlaid by the
+separate tile-selection tabs and is excluded from this isolated view comparison.
+Both full944x708 picker comparisons remain exact, including caption no-op input.
+Root19 checks and Display state checks pass. Graphics run serially at30FPS with
+sampled GPU59–63C; rendering has only the documented Godot shutdown diagnostics.
+Evidence: display_parent_view_reference. Public main-scene/tab composition, header
+edits, multiselect/reassignment, On display and long-list/resize qualification remain
+unfinished; completed Display furniture is still gated from public selection.
 
 ### Trap and hive control providers
 

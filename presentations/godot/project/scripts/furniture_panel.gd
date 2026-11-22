@@ -13,18 +13,22 @@ var cage=preload("res://scripts/cage_picker_state.gd").new()
 var cage_occupants=preload("res://scripts/cage_picker_state.gd").new()
 var cage_view
 var cage_mode:=false
+var display=preload("res://scripts/display_state.gd").new()
+var display_view
+var display_mode:=false
 # Ordinary furniture uses native header and contained-item authority.
 func _init() -> void:
 	state=preload("res://scripts/building_header_state.gd").new()
 	contents.edit_removing=true
 func _create_view():
-	var view=preload("res://scripts/siege_sheet_view.gd").new()
+	var view=preload("res://scripts/display_sheet_view.gd").new()
 	view.building_icon="" # Native artwork is authoritative; no Box fallback for other furniture.
 	return view
 func _open_state(id: int,_season: int) -> void:
-	_retire_cage();cage_occupants.close();_retire_goods();_retire_trade();state.open(id)
+	_retire_display();_retire_cage();cage_occupants.close();_retire_goods();_retire_trade();state.open(id)
 func _contents_supported() -> bool:return true
 func configure(world,service,host,help=null) -> void:
+	display.configure(service)
 	goods.configure(service)
 	trade.configure(service)
 	links.configure(service)
@@ -32,6 +36,13 @@ func configure(world,service,host,help=null) -> void:
 	cage.configure(service)
 	cage_occupants.configure(service,true)
 	super.configure(world,service,host,help)
+	panel.configure_display(display)
+	display_view=preload("res://scripts/display_picker_view.gd").new();canvas.add_child(display_view)
+	display_view.configure_display(world,display);display_view.hide()
+	display_view.input_allowed=func():return display_mode and play_enabled and ui_host.allows_panel_input(self)
+	display_view.cancelled.connect(_finish_display)
+	display.picker_closed.connect(close_panel)
+	panel.display_requested.connect(_open_display)
 	panel.configure_occupants(cage_occupants)
 	cage_view=preload("res://scripts/area_candidates_view.gd").new();cage_view.cage_layout=true
 	canvas.add_child(cage_view);cage_view.native_help=help;cage_view.configure(world,cage)
@@ -62,6 +73,10 @@ func configure(world,service,host,help=null) -> void:
 			close_panel();focus_requested.emit(tile))
 func _state_changed() -> void:
 	super._state_changed()
+	if state.snapshot.get("type",-1)==53 and not state.snapshot.get("removing",true):
+		if display.building_id!=state.building_id:display.open(state.building_id)
+	elif display.building_id>=0:_retire_display()
+	if display_mode:panel.hide()
 	if state.snapshot.get("type",-1) in [27,28] and not state.snapshot.get("removing",true):
 		if cage_occupants.building_id!=state.building_id or (cage_occupants.phase==cage_occupants.Phase.Ready and cage_occupants.snapshot.get("justice_restraint")!=state.snapshot.cage.justice_restraint):cage_occupants.open(state.building_id)
 	elif cage_occupants.building_id>=0:cage_occupants.close()
@@ -80,6 +95,20 @@ func _state_changed() -> void:
 	if state.snapshot.get("type",-1)==35 and not state.snapshot.get("removing",true):
 		if access.building_id!=state.building_id:access.open(state.building_id)
 	elif access.building_id>=0:access.close()
+func _open_display() -> void:
+	if display_mode or not play_enabled or not ui_host.allows_panel_input(self) or not panel.display_allowed():return
+	display_mode=true;modal_input=true;panel.finish_rename();panel.hide();cancel_gesture()
+	ui_host._sync_input()
+	selection_retired.emit();display_view.show();display.open_picker()
+func _finish_display() -> void:
+	if not display_mode:return
+	if display.phase==display.Phase.Ready:display.finish_picker()
+	elif display.phase in [display.Phase.Rejected,display.Phase.Stale,display.Phase.Unknown,display.Phase.Unavailable]:close_panel()
+func _retire_display() -> void:
+	display_mode=false;modal_input=false
+	if ui_host!=null:ui_host._sync_input()
+	if display_view!=null:display_view.hide()
+	display.close()
 func _open_goods() -> void:
 	if goods_mode or trade_mode or not play_enabled or not ui_host.allows_panel_input(self) or not panel.contents_allowed():return
 	if state.snapshot.get("type",-1)!=6 or not state.snapshot.get("depot",{}).get("goods_available",false):return
@@ -115,7 +144,8 @@ func _retire_cage() -> void:
 	if cage_view!=null:cage_view.hide()
 	cage.close()
 func handle_escape() -> void:
-	if cage_mode:_retire_cage()
+	if display_mode:_finish_display()
+	elif cage_mode:_retire_cage()
 	elif goods_mode:goods_view._finish()
 	else:super.handle_escape()
 func _input(event: InputEvent) -> void:
@@ -127,13 +157,17 @@ func _input(event: InputEvent) -> void:
 	super._input(event)
 func close_panel() -> void:
 	# Native Trade and chooser cancellation also clear the depot selection.
-	_retire_cage();_retire_goods();_retire_trade()
+	_retire_display();_retire_cage();_retire_goods();_retire_trade()
 	cage_occupants.close();access.close();links.close();super.close_panel()
 func _exit_tree() -> void:
+	_retire_display();display.dispose()
 	_retire_cage();cage.dispose();cage_occupants.dispose();_retire_goods();_retire_trade();trade.dispose();goods.dispose();access.dispose();links.dispose();super._exit_tree()
 
 func _process(delta: float) -> void:
 	super._process(delta)
+	if display_view!=null:
+		display_view.layout(get_viewport().get_visible_rect().size/canvas.scale)
+		if display_mode:panel.hide()
 	if cage_mode:
 		cage_view.visible=play_enabled and ui_host.allows_panel_input(self)
 		cage.tick(delta);cage_view.layout(get_viewport().get_visible_rect().size/canvas.scale)
@@ -152,5 +186,6 @@ func _process(delta: float) -> void:
 		state.poll_refresh(delta)
 		if state.phase==state.Phase.Ready and state.ticket==0 and state.name_session==null:
 			contents.poll_refresh(delta)
+			if state.snapshot.get("type",-1)==53 and not display_mode:display.poll_refresh(delta)
 			links.poll_refresh(delta)
 			if not cage_mode:cage_occupants.poll_refresh(delta)

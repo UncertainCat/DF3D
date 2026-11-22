@@ -29,6 +29,10 @@ func run() -> void:
 		var rect:=Rect2i(32,52,944,708)
 		check(rendered.get_region(rect).get_data()==native.get_region(rect).get_data(),"Native selected Display picker pixels differ")
 	view._gui_input(event);check(model.selected.is_empty(),"Display checkbox failed to clear draft")
+	var before_height: int=view.total_rows
+	for point in [Vector2(140,18),Vector2(140,54)]:
+		event.position=view.item_canvas.position+point;view._gui_input(event)
+	check(model.selected.is_empty() and view.total_rows==before_height,"Display captions changed selection or expansion")
 	view.queue_free();await process_frame;model.dispose();world.queue_free();await process_frame
 	if not failed:print("DISPLAY_PICKER_VIEW_PASS")
 	quit(1 if failed else 0)

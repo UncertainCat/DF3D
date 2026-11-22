@@ -14,7 +14,6 @@ var groups: Array=[]
 var body: Array=[]
 var items: Dictionary={}
 var selected: Dictionary={}
-var expansion: Dictionary={}
 var first_category:=0
 var first_item:=0
 var revision: int=0
@@ -22,6 +21,7 @@ var inventory_revision: int=0
 var ticket:=0
 var generation:=0
 var last_result: Dictionary={}
+var refresh_age:=0.0
 var _queries: Array[String]=[]
 var _active_query: String=""
 func configure(source) -> void:
@@ -35,27 +35,27 @@ func close() -> void:
 	generation+=1
 	if service!=null and ticket!=0:service.detach(ticket)
 	ticket=0;building_id=-1;category=-1;query="";_active_query="";_queries=[]
-	categories=[];groups=[];body=[];items={};selected={};expansion={}
-	first_category=0;first_item=0;revision=0;inventory_revision=0;last_result={}
+	categories=[];groups=[];body=[];items={};selected={}
+	first_category=0;first_item=0;revision=0;inventory_revision=0;last_result={};refresh_age=0.0
 	phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:close();phase=Phase.Unavailable;changed.emit()
 func open(id: int) -> void:
 	close()
 	if id<0:return
 	building_id=id;_read()
+func poll_refresh(delta: float) -> void:
+	if phase!=Phase.Ready or category!=-1 or ticket!=0:return
+	refresh_age+=maxf(0.0,delta)
+	if refresh_age>=0.5:refresh_age=0.0;_read()
 func open_picker() -> void:
 	if phase!=Phase.Ready or category!=-1:return
 	category=-2;selected={};inventory_revision=0;_read()
 func key(row: Dictionary) -> String:return "%d:%d:%d:%d"%[row.type,row.subtype,row.subcat1,row.subcat2]
 func visible_categories() -> Array:return categories.filter(func(row):return row.matches)
-func expanded(row: Dictionary) -> bool:return expansion.get(key(row),row.expanded)
-func toggle_expansion(identity: String) -> void:
-	if phase!=Phase.Ready:return
-	for row in groups:
-		if key(row)==identity and row.matches:expansion[identity]=not expanded(row);changed.emit();return
+func expanded(row: Dictionary) -> bool:return row.expanded
 func select_category(value: int) -> void:
 	if phase!=Phase.Ready or category<0 or category==value or not categories.any(func(row):return row.type==value and row.matches):return
-	category=value;expansion={};first_item=0;items={};_read()
+	category=value;first_item=0;items={};_read()
 func set_query(value: String) -> void:
 	if phase not in [Phase.Ready,Phase.Reading] or category<0 or value==query or value.to_utf8_buffer().size()>1024:return
 	query=value;_queries.append(value)
@@ -119,16 +119,17 @@ func _submit(intent: Dictionary) -> void:
 		if not edit and category!=-1 and inventory_revision!=0 and value.inventory_revision!=inventory_revision:
 			_reject({"display":{"outcome":C.DisplayOutcome.Stale}});return
 		if edit:
-			category=-1;query="";_active_query="";_queries=[];selected={};expansion={};items={}
+			category=-1;query="";_active_query="";_queries=[];selected={};items={}
 		elif intent.category==-2:category=value.category
 		elif value.get("category")!=category:_reject(result);return
+		if category==-1 and revision!=value.revision:items={}
 		revision=value.revision;inventory_revision=value.inventory_revision
 		body=value.body.duplicate(true);categories=value.categories.duplicate(true);groups=value.groups.duplicate(true)
 		for row in value.items:items[row.id]=row.duplicate(true)
 		if category>=0:
 			var choices:=visible_categories()
 			var next: int=categories[0].type if choices.is_empty() else (category if choices.any(func(row):return row.type==category) else choices[0].type)
-			if next!=category:category=next;expansion={};first_item=0;items={};_read();return
+			if next!=category:category=next;first_item=0;items={};_read();return
 		if not _queries.is_empty():_active_query=_queries.pop_front();items={};_read();return
 		last_result={};phase=Phase.Ready;changed.emit()
 		if intent.action==C.ManagementAction.DisplayCommit:picker_closed.emit())

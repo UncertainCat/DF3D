@@ -78,6 +78,22 @@ if os.getenv('DF3D_DISPLAY_SELECT')=='1' then
  click(160,130);assert(picker.current_type==df.item_type.AMULET)
  capture('display-amulets')
  compare_picker('amulets')
+ if os.getenv('DF3D_DISPLAY_INPUT')=='1' then
+  local expanded=picker.current_type_a_expanded[0];local height=picker.i_height
+  click(500,130)
+  local collapsed=picker.current_type_a_expanded[0];local collapsed_height=picker.i_height
+  click(500,130)
+  assert(picker.current_type_a_expanded[0]==expanded and picker.i_height==height,'Display group restoration differs')
+  local draft_before=values(picker.new_display_itid)
+  click(500,166)
+  local draft_after=values(picker.new_display_itid)
+  result.input={expanded=expanded,after_group=collapsed,height=height,collapsed_height=collapsed_height,name_click_unchanged=json.encode(draft_before)==json.encode(draft_after)}
+  checkpoint()
+  assert(collapsed==expanded and collapsed_height==height and result.input.name_click_unchanged,'Display group/name click unexpectedly edits')
+  if not result.input.name_click_unchanged then click(500,166) end
+  assert(json.encode(draft_before)==json.encode(values(picker.new_display_itid)),'Display name click restoration differs')
+ end
+
  if os.getenv('DF3D_DISPLAY_PICKER')=='1' then
   click(500,94)
   for ch in ('steel'):gmatch('.')do gui.simulateInput(view,string.format('STRING_A%03d',ch:byte()))end

@@ -38,5 +38,5 @@ func _gui_input(event: InputEvent) -> void:
 	var index:=int((point.y+(item_scrollbar.first%3)*12)/36)
 	if index>=page.size():return
 	var entry: Dictionary=page[index]
-	if entry.has("group"):state.toggle_expansion(state.key(entry.group))
-	elif checkbox_rect(index).has_point(point):state.toggle_item(entry.id)
+	# Native Display group and item captions do not toggle selection/expansion.
+	if not entry.has("group") and checkbox_rect(index).has_point(point):state.toggle_item(entry.id)

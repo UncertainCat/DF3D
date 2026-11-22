@@ -36,7 +36,12 @@ require('gui.script').start(function()
   if os.getenv('DF3D_TASKS_NATIVE')=='1' then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('stockpile_storage_native.lua$','tasks-native.lua')
    assert(loadfile(source))(out,view,records)
-   assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+   if os.getenv('DF3D_TASKS_EXECUTION')=='1' then
+    local evidence
+    for _,record in ipairs(records)do if record.name=='tasks-production-simulation' then assert(not evidence);evidence=record end end
+    assert(evidence and evidence.start_tick==frame and evidence.end_tick==df.global.world.frame_counter and evidence.matching_products==1,'Missing production execution evidence')
+    assert(df.global.pause_state and evidence.end_tick>frame and evidence.end_tick-frame<=12060,'Production simulation outside bounded interval')
+   else assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')end
    return
   end
   if os.getenv('DF3D_STOCKS_NATIVE')=='1' then

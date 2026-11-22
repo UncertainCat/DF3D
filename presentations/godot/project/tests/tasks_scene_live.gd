@@ -97,7 +97,7 @@ func exercise(expected: Dictionary) -> void:
 			if not await settle(owner.job_state):return
 			var choice: int=-1
 			for i in owner.job_state.rows.size():
-				if owner.job_state.rows[i].caption=="Dolomite":choice=i;break
+				if owner.job_state.rows[i].caption==expected.get("execution_material",{}).get("caption","Dolomite"):choice=i;break
 			if not check(choice>=0,"Native Dolomite material choice missing"):return
 			owner.job_state.seek(choice);await process_frame
 			await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/tasks-main-materials.png")

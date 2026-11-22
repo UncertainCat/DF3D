@@ -8592,6 +8592,35 @@ demolition and started-construction cancellation are not covered by this run.
 Remaining action branches, Details subpage/overflow backgrounds and producer/epoch
 live acceptance remain unfinished; public-route acceptance is recorded above.
 
+### Production execution after Tasks edits
+
+`DF3D_TASKS_EXECUTION=1` extends the existing main-scene Tasks material/artwork
+lane with bounded native simulation after the viewer closes. The fixture selects
+a native material choice backed by a loose, unclaimed local boulder, without
+creating or relocating items, assigning a worker, altering labor or bypassing
+native production. The public Tasks controls edit the real queued statue job's
+material and historical-figure artwork. `tasks-production-native.lua` records
+assignment, input references and completion, then checks newly created statues
+for the selected material and artwork subject. Simulation is limited to12000 ticks
+and180 seconds, restores pause even on failure, and requires explicit execution
+evidence in the enclosing lane; ordinary modes retain the no-frame-advance guard.
+
+Protected160820 on2026-11-22 edits job382794 to Microcline (0/233) and figure9876.
+Native DF assigns worker6542 and input33082, completes at tick2007 and creates
+statue48559 with material0/233 and artwork subject9876. Main-scene editing and
+navigation pass, client stderr is empty, owned DF57536 closes unsaved and the
+source-save hashes are unchanged. Native/viewer graphics are serial30FPS with
+GPU samples59–60C. This qualifies natural simulation execution of the edited
+single-input statue job; the separate two-input encrusting evidence qualifies
+requirement editing, not execution of that family.
+
+Earlier160422 selected the prior fixed Dolomite choice and ended without a
+product. Run160640 selected nearby Jet but native DF cancelled with Needs jet.
+Those are failed execution attempts, not accepted adapter regressions. Physical
+proximity alone is insufficient: the final fixture excludes construction,
+removed, encased, held and otherwise claimed items when selecting its material.
+It leaves native availability, pathing, worker selection and completion authoritative.
+
 ### Management producer recovery
 
 Protected153800 on2026-11-22 runs the public Tasks, Objects and Justice HUD routes

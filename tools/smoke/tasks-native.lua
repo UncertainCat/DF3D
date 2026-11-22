@@ -36,6 +36,26 @@ if os.getenv('DF3D_TASKS_CANCEL_WORKSHOP')=='1' then
  for _,job in ipairs(holder.jobs)do workshop_cancel.holder_jobs[job.id]=true end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
 end
+local execution_material
+if os.getenv('DF3D_TASKS_EXECUTION')=='1' then
+ assert(created_job)
+ local unit;for _,candidate in ipairs(df.global.world.units.active)do if dfhack.units.isCitizen(candidate)then unit=candidate;break end end
+ assert(unit);local previous=unit.job.current_job;unit.job.current_job=created_job
+ local text,rc=dfhack.run_command_silent('df3d','residents-job-settings-probe',tostring(unit.id),'0');unit.job.current_job=previous
+ assert(rc==0,text);local choices=json.decode(text).materials
+ local holder;for _,ref in ipairs(created_job.general_refs)do if ref:getType()==df.general_ref_type.BUILDING_HOLDER then holder=ref:getBuilding();break end end
+ assert(holder);local distance
+ for _,item in ipairs(df.global.world.items.other.BOULDER)do
+  if item.pos.z==holder.z and item.flags.on_ground and not item.flags.construction and not item.flags.encased and not item.flags.removed and not item.flags.garbage_collect and not item.flags.trader and not item.flags.hostile and not item.flags.in_inventory and not item.flags.in_job and not item.flags.forbid and not item.flags.dump and not item.flags.in_building then
+   local d=math.abs(item.pos.x-holder.centerx)+math.abs(item.pos.y-holder.centery)
+   if not distance or d<distance then for _,choice in ipairs(choices)do
+    if choice.type==item:getMaterial() and choice.index==item:getMaterialIndex() then execution_material={type=choice.type,index=choice.index,id=choice.id,caption=choice.caption,item_id=item.id,flags=item.flags.whole,position={item.pos.x,item.pos.y,item.pos.z}};distance=d;break end
+   end end
+  end
+ end
+ assert(execution_material,'No free local boulder with a native material choice')
+ write('tasks-execution-material.json',json.encode(execution_material))
+end
 local cold=probe()
 local destructive
 local function find_job(id)
@@ -52,7 +72,7 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
  assert(job and job.flags.suspend,'Expected suspended construction fixture')
  local original=job.flags.whole
  write('tasks-wire-reference.json',json.encode(cold))
- write('tasks-scene-reference.json',json.encode{rows=cold,details_job=created_job and created_job.id or -1,cancel_job=workshop_cancel and workshop_cancel.job_id or -1})
+ write('tasks-scene-reference.json',json.encode{rows=cold,details_job=created_job and created_job.id or -1,cancel_job=workshop_cancel and workshop_cancel.job_id or -1,execution_material=execution_material})
  write('shot.tmp','tasks-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+(os.getenv('DF3D_TASKS_SCENE')=='1' and 120000 or 30000);local checked=0;local repeats=0;local lifecycle_steps=0;local material_checked=false;local art_checked=false;local original_repeat=created_job and created_job.flags.whole
  while true do
@@ -102,13 +122,13 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
   if created_job and os.getenv('DF3D_TASKS_MATERIAL')=='1' and not material_checked then
    local step=io.open(out..'/tasks-material-step')
    if step then
-    step:close();local material=assert(dfhack.matinfo.find('INORGANIC:DOLOMITE'))
+    step:close();local material=execution_material or assert(dfhack.matinfo.find('INORGANIC:DOLOMITE'))
     local input=assert(created_job.job_items.elements[0])
     assert(created_job.mat_type==material.type and created_job.mat_index==material.index,'Tasks material did not update job')
     assert(input.mat_type==material.type and input.mat_index==material.index,'Tasks material did not update requirement')
     assert((input.job_details_flags.whole&1)~=0 and input.job_details_mat_type==0 and input.job_details_mat_index==-1,'Tasks material lost original requirement')
     material_checked=true;write('tasks-material-ack','1')
-    write('tasks-material-native-result.json',json.encode{job_id=created_job.id,material='INORGANIC:DOLOMITE',mat_type=material.type,mat_index=material.index,original_requirement_preserved=true})
+    write('tasks-material-native-result.json',json.encode{job_id=created_job.id,material=execution_material and execution_material.caption or 'INORGANIC:DOLOMITE',mat_type=material.type,mat_index=material.index,original_requirement_preserved=true})
    end
   end
   if created_job and os.getenv('DF3D_TASKS_MATERIAL')=='1' and not art_checked then
@@ -467,4 +487,10 @@ if os.getenv('DF3D_TASKS_DETAILS')=='1' then
  write('tasks-details-native.json',json.encode(evidence))
  assert(evidence.returned,'Details did not return to Tasks')
  gui.simulateInput(view,'LEAVESCREEN')
+end
+
+if os.getenv('DF3D_TASKS_EXECUTION')=='1' then
+ assert(os.getenv('DF3D_TASKS_MATERIAL')=='1' and created_job,'Execution requires native-created and semantically edited job')
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('tasks%-native.lua$','tasks-production-native.lua')
+ assert(loadfile(path))(out,view,records,created_job)
 end

@@ -3,6 +3,11 @@ func read_display(id: int,category: int,query: String="",ids: Array=[]) -> Dicti
 	var result:=await request("display",{"action":C.ManagementAction.DisplayRead,"building_id":id,"category":category,"query":query,"item_ids":ids})
 	if not check(result.get("status")==C.ManagementStatus.Ok,"Display read failed: "+str(result)):return {}
 	return result.get("display",{})
+func settle(model,actions) -> bool:
+	var until:=Time.get_ticks_msec()+10000
+	while model.phase in [model.Phase.Reading,model.Phase.Applying] and Time.get_ticks_msec()<until:
+		world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+	return check(model.phase==model.Phase.Ready,"Display controller failed: "+str(model.last_result))
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	if directory.is_empty():quit(77);return
@@ -38,6 +43,29 @@ func run() -> void:
 			check(stale.get("display",{}).get("outcome")==C.DisplayOutcome.Stale,"Display stale removal accepted")
 			var removed:=await request("display",{"action":C.ManagementAction.DisplayRemove,"building_id":id,"expected_revision":assigned.revision,"selected_ids":[item]})
 			check(removed.get("display",{}).get("outcome")==C.DisplayOutcome.Applied and removed.display.body.is_empty(),"Display removal failed")
+	if not failed:
+		var actions=preload("res://scripts/semantic_action_service.gd").new()
+		actions.configure(world);root.add_child(actions);actions.set_process(false)
+		var claim: int=actions.submit("construction",{"action":C.ManagementAction.Catalog},Callable())
+		var until:=Time.get_ticks_msec()+10000
+		while actions.result(claim).is_empty() and Time.get_ticks_msec()<until:
+			world.poll();actions.poll(0.01);await create_timer(0.01).timeout
+		var model=preload("res://scripts/display_state.gd").new();model.configure(actions)
+		model.open(id)
+		if await settle(model,actions):
+			model.open_picker()
+			if await settle(model,actions):
+				model.select_category(37)
+				if await settle(model,actions):
+					model.toggle_item(item);model.select_category(39)
+					if await settle(model,actions):
+						check(model.selected.has(item),"Live category navigation lost draft")
+						model.finish_picker()
+						if await settle(model,actions):
+							check(model.body.size()==1 and model.body[0].id==item,"Live controller assignment missing")
+							model.remove_item(item)
+							if await settle(model,actions):check(model.body.is_empty(),"Live controller removal missing")
+		model.dispose();actions.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/display-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"initial":initial,"page":page}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)

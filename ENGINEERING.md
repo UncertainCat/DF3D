@@ -3495,6 +3495,18 @@ pass. Owned DF closes unsaved with source preservation, graphics capped at30FPS
 and sampled GPU59–60C. Evidence: display_wire_reference in the completed-sheet
 fixture. This is transport acceptance, not public UI or rendering acceptance.
 
+The viewer's display_state owns selection, category, search, expansion and scroll.
+Checkbox edits stay local across category navigation; explicit picker closure
+submits one sorted draft against its original inventory revision. Changed inventory
+retires that authority instead of silently rebinding selected IDs. Pending, stale
+and unknown edits cannot replay; session changes and closure retire callbacks.
+Headless display_state_test covers these transitions and exact64-bit revisions.
+Protected072043 (DF58380) exercises the state through semantic_action_service,
+including cross-category selection, commit, parent receipt and removal. The live
+client passes with empty stderr; source saves are preserved and DF closes unsaved
+at30FPS (GPU samples58–60C). Evidence: display_state_reference. The parent/picker
+views and public entry remain unfinished.
+
 ### Trap and hive control providers
 
 The trap/hive control provider now owns revisions over target stage/flags,

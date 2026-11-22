@@ -121330,6 +121330,1590 @@
           "build/stockpile-storage-native-farm-discovery-20261122-071630/display-selected-parent.png": "cdaa4645fdfcbc52f7fcd44811ff9d1dcc7c7854e02b4bc4d2e30fabe576a68e",
           "build/stockpile-storage-native-farm-discovery-20261122-071630/display-wire.png": "931d2c418c24c33692af8cc72bff2a2e5f86d02973b839ff43027c14e9716822"
         }
+      },
+      "display_state_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261122-072043",
+        "owned_df_pid": 58380,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Viewer-owned Display state through the real semantic action service preserves draft selection across category navigation, commits on explicit closure, receives the assigned parent and removes the item. Public UI/rendering remain unfinished. Protocol254 live transport validates parent/initial/category/detail reads, native group membership/captions and item appearance, search, assignment, stale removal rejection and successful removal. Source save is preserved; viewer draft/render/public route and oversized-reply paging remain unfinished. Prior composed display read chooses native initial category39, serves visible-page item38540 caption/appearance, and preserves inventory revision through repeated detail reads. Forbidding the candidate changes eligibility and stale-rejects commit without effects; restoring permits native-equivalent assignment/removal. Duplicate/stale edit and existing picker/inventory checks pass. Viewer draft lifecycle, transport/rendering/public exposure remain unfinished.",
+        "wire": {
+          "initial": {
+            "body": [],
+            "building_id": 1490,
+            "categories": [
+              {
+                "caption": "Ammunition",
+                "matches": true,
+                "stored": "~200",
+                "type": 39,
+                "unavailable": ""
+              },
+              {
+                "caption": "Amulets",
+                "matches": true,
+                "stored": "~20",
+                "type": 37,
+                "unavailable": ""
+              },
+              {
+                "caption": "Animal traps",
+                "matches": true,
+                "stored": "None",
+                "type": 19,
+                "unavailable": ""
+              },
+              {
+                "caption": "Anvils",
+                "matches": true,
+                "stored": "2",
+                "type": 45,
+                "unavailable": ""
+              },
+              {
+                "caption": "Armor",
+                "matches": true,
+                "stored": "~60",
+                "type": 25,
+                "unavailable": ""
+              },
+              {
+                "caption": "Armor stands",
+                "matches": true,
+                "stored": "None",
+                "type": 33,
+                "unavailable": ""
+              },
+              {
+                "caption": "Backpacks",
+                "matches": true,
+                "stored": "2",
+                "type": 61,
+                "unavailable": ""
+              },
+              {
+                "caption": "Bags",
+                "matches": true,
+                "stored": "~100",
+                "type": 31,
+                "unavailable": ""
+              },
+              {
+                "caption": "Ballista arrow heads",
+                "matches": true,
+                "stored": "None",
+                "type": 66,
+                "unavailable": ""
+              },
+              {
+                "caption": "Ballista parts",
+                "matches": true,
+                "stored": "None",
+                "type": 64,
+                "unavailable": ""
+              },
+              {
+                "caption": "Barrels",
+                "matches": true,
+                "stored": "~200",
+                "type": 17,
+                "unavailable": ""
+              },
+              {
+                "caption": "Bars",
+                "matches": true,
+                "stored": "~1000",
+                "type": 0,
+                "unavailable": ""
+              },
+              {
+                "caption": "Beds",
+                "matches": true,
+                "stored": "None",
+                "type": 8,
+                "unavailable": ""
+              },
+              {
+                "caption": "Bins",
+                "matches": true,
+                "stored": "~200",
+                "type": 32,
+                "unavailable": ""
+              },
+              {
+                "caption": "Blocks",
+                "matches": true,
+                "stored": "~800",
+                "type": 2,
+                "unavailable": ""
+              },
+              {
+                "caption": "Body parts",
+                "matches": true,
+                "stored": "~40",
+                "type": 46,
+                "unavailable": ""
+              },
+              {
+                "caption": "Bolt thrower parts",
+                "matches": true,
+                "stored": "None",
+                "type": 92,
+                "unavailable": ""
+              },
+              {
+                "caption": "Boulders",
+                "matches": true,
+                "stored": "~300",
+                "type": 4,
+                "unavailable": ""
+              },
+              {
+                "caption": "Boxes",
+                "matches": true,
+                "stored": "~30",
+                "type": 30,
+                "unavailable": ""
+              },
+              {
+                "caption": "Bracelets",
+                "matches": true,
+                "stored": "~20",
+                "type": 43,
+                "unavailable": ""
+              },
+              {
+                "caption": "Branches",
+                "matches": true,
+                "stored": "None",
+                "type": 91,
+                "unavailable": ""
+              },
+              {
+                "caption": "Buckets",
+                "matches": true,
+                "stored": "9",
+                "type": 18,
+                "unavailable": ""
+              },
+              {
+                "caption": "Cabinets",
+                "matches": true,
+                "stored": "None",
+                "type": 35,
+                "unavailable": ""
+              },
+              {
+                "caption": "Cages",
+                "matches": true,
+                "stored": "~10",
+                "type": 16,
+                "unavailable": ""
+              },
+              {
+                "caption": "Catapult parts",
+                "matches": true,
+                "stored": "None",
+                "type": 63,
+                "unavailable": ""
+              },
+              {
+                "caption": "Chains",
+                "matches": true,
+                "stored": "~10",
+                "type": 10,
+                "unavailable": ""
+              },
+              {
+                "caption": "Cheese",
+                "matches": true,
+                "stored": "None",
+                "type": 71,
+                "unavailable": ""
+              },
+              {
+                "caption": "Cloth",
+                "matches": true,
+                "stored": "~100",
+                "type": 58,
+                "unavailable": ""
+              },
+              {
+                "caption": "Codices",
+                "matches": true,
+                "stored": "2",
+                "type": 89,
+                "unavailable": ""
+              },
+              {
+                "caption": "Coffins",
+                "matches": true,
+                "stored": "None",
+                "type": 21,
+                "unavailable": ""
+              },
+              {
+                "caption": "Coins",
+                "matches": true,
+                "stored": "None",
+                "type": 74,
+                "unavailable": ""
+              },
+              {
+                "caption": "Corpses",
+                "matches": true,
+                "stored": "~20",
+                "type": 23,
+                "unavailable": "1"
+              },
+              {
+                "caption": "Crowns",
+                "matches": true,
+                "stored": "2",
+                "type": 40,
+                "unavailable": ""
+              },
+              {
+                "caption": "Crutches",
+                "matches": true,
+                "stored": "9",
+                "type": 83,
+                "unavailable": ""
+              },
+              {
+                "caption": "Cut gems",
+                "matches": true,
+                "stored": "None",
+                "type": 1,
+                "unavailable": ""
+              },
+              {
+                "caption": "Doors",
+                "matches": true,
+                "stored": "~20",
+                "type": 6,
+                "unavailable": ""
+              },
+              {
+                "caption": "Drinks",
+                "matches": true,
+                "stored": "~400",
+                "type": 69,
+                "unavailable": ""
+              },
+              {
+                "caption": "Earrings",
+                "matches": true,
+                "stored": "~20",
+                "type": 42,
+                "unavailable": ""
+              },
+              {
+                "caption": "Egg",
+                "matches": true,
+                "stored": "None",
+                "type": 88,
+                "unavailable": ""
+              },
+              {
+                "caption": "Figurines",
+                "matches": true,
+                "stored": "None",
+                "type": 36,
+                "unavailable": ""
+              },
+              {
+                "caption": "Fish",
+                "matches": true,
+                "stored": "None",
+                "type": 49,
+                "unavailable": ""
+              },
+              {
+                "caption": "Flasks",
+                "matches": true,
+                "stored": "~30",
+                "type": 11,
+                "unavailable": ""
+              },
+              {
+                "caption": "Floodgates",
+                "matches": true,
+                "stored": "2",
+                "type": 7,
+                "unavailable": ""
+              },
+              {
+                "caption": "Footwear",
+                "matches": true,
+                "stored": "~100",
+                "type": 26,
+                "unavailable": ""
+              },
+              {
+                "caption": "Glob",
+                "matches": true,
+                "stored": "None",
+                "type": 75,
+                "unavailable": ""
+              },
+              {
+                "caption": "Goblets",
+                "matches": true,
+                "stored": "~200",
+                "type": 12,
+                "unavailable": ""
+              },
+              {
+                "caption": "Grates",
+                "matches": true,
+                "stored": "None",
+                "type": 79,
+                "unavailable": ""
+              },
+              {
+                "caption": "Handwear",
+                "matches": true,
+                "stored": "~30",
+                "type": 29,
+                "unavailable": ""
+              },
+              {
+                "caption": "Hatch covers",
+                "matches": true,
+                "stored": "None",
+                "type": 78,
+                "unavailable": ""
+              },
+              {
+                "caption": "Headwear",
+                "matches": true,
+                "stored": "~20",
+                "type": 28,
+                "unavailable": ""
+              },
+              {
+                "caption": "Large gems",
+                "matches": true,
+                "stored": "2",
+                "type": 44,
+                "unavailable": ""
+              },
+              {
+                "caption": "Leaves and fruit",
+                "matches": true,
+                "stored": "None",
+                "type": 56,
+                "unavailable": ""
+              },
+              {
+                "caption": "Legwear",
+                "matches": true,
+                "stored": "~40",
+                "type": 60,
+                "unavailable": ""
+              },
+              {
+                "caption": "Limb/body casts",
+                "matches": true,
+                "stored": "None",
+                "type": 85,
+                "unavailable": ""
+              },
+              {
+                "caption": "Liquid",
+                "matches": true,
+                "stored": "~70",
+                "type": 73,
+                "unavailable": ""
+              },
+              {
+                "caption": "Logs",
+                "matches": true,
+                "stored": "~100",
+                "type": 5,
+                "unavailable": ""
+              },
+              {
+                "caption": "Meat",
+                "matches": true,
+                "stored": "None",
+                "type": 48,
+                "unavailable": ""
+              },
+              {
+                "caption": "Mechanisms",
+                "matches": true,
+                "stored": "2",
+                "type": 67,
+                "unavailable": ""
+              },
+              {
+                "caption": "Millstones",
+                "matches": true,
+                "stored": "7",
+                "type": 81,
+                "unavailable": ""
+              },
+              {
+                "caption": "Musical instruments",
+                "matches": true,
+                "stored": "~10",
+                "type": 13,
+                "unavailable": ""
+              },
+              {
+                "caption": "Pipe section",
+                "matches": true,
+                "stored": "3",
+                "type": 77,
+                "unavailable": ""
+              },
+              {
+                "caption": "Plants",
+                "matches": true,
+                "stored": "~1000",
+                "type": 54,
+                "unavailable": ""
+              },
+              {
+                "caption": "Powder",
+                "matches": true,
+                "stored": "~100",
+                "type": 70,
+                "unavailable": ""
+              },
+              {
+                "caption": "Prepared meals",
+                "matches": true,
+                "stored": "~900",
+                "type": 72,
+                "unavailable": ""
+              },
+              {
+                "caption": "Querns",
+                "matches": true,
+                "stored": "None",
+                "type": 80,
+                "unavailable": ""
+              },
+              {
+                "caption": "Quivers",
+                "matches": true,
+                "stored": "~20",
+                "type": 62,
+                "unavailable": ""
+              },
+              {
+                "caption": "Raw fish",
+                "matches": true,
+                "stored": "~200",
+                "type": 50,
+                "unavailable": ""
+              },
+              {
+                "caption": "Remains",
+                "matches": true,
+                "stored": "~10",
+                "type": 47,
+                "unavailable": ""
+              },
+              {
+                "caption": "Rings",
+                "matches": true,
+                "stored": "~20",
+                "type": 41,
+                "unavailable": ""
+              },
+              {
+                "caption": "Rough gems",
+                "matches": true,
+                "stored": "~90",
+                "type": 3,
+                "unavailable": ""
+              },
+              {
+                "caption": "Scepters",
+                "matches": true,
+                "stored": "None",
+                "type": 38,
+                "unavailable": ""
+              },
+              {
+                "caption": "Seeds",
+                "matches": true,
+                "stored": "~1000",
+                "type": 53,
+                "unavailable": ""
+              },
+              {
+                "caption": "Sheet",
+                "matches": true,
+                "stored": "None",
+                "type": 90,
+                "unavailable": ""
+              },
+              {
+                "caption": "Shields/bucklers",
+                "matches": true,
+                "stored": "~20",
+                "type": 27,
+                "unavailable": ""
+              },
+              {
+                "caption": "Siege ammo",
+                "matches": true,
+                "stored": "None",
+                "type": 65,
+                "unavailable": ""
+              },
+              {
+                "caption": "Slabs",
+                "matches": true,
+                "stored": "2",
+                "type": 87,
+                "unavailable": ""
+              },
+              {
+                "caption": "Small live animals",
+                "matches": true,
+                "stored": "None",
+                "type": 51,
+                "unavailable": ""
+              },
+              {
+                "caption": "Small rock",
+                "matches": true,
+                "stored": "None",
+                "type": 76,
+                "unavailable": ""
+              },
+              {
+                "caption": "Small tame animals",
+                "matches": true,
+                "stored": "1",
+                "type": 52,
+                "unavailable": ""
+              },
+              {
+                "caption": "Splints",
+                "matches": true,
+                "stored": "~10",
+                "type": 82,
+                "unavailable": ""
+              },
+              {
+                "caption": "Statues",
+                "matches": true,
+                "stored": "3",
+                "type": 22,
+                "unavailable": ""
+              },
+              {
+                "caption": "Tables",
+                "matches": true,
+                "stored": "~30",
+                "type": 20,
+                "unavailable": ""
+              },
+              {
+                "caption": "Tanned hides",
+                "matches": true,
+                "stored": "~100",
+                "type": 55,
+                "unavailable": ""
+              },
+              {
+                "caption": "Thread",
+                "matches": true,
+                "stored": "~20",
+                "type": 57,
+                "unavailable": ""
+              },
+              {
+                "caption": "Thrones",
+                "matches": true,
+                "stored": "~30",
+                "type": 9,
+                "unavailable": ""
+              },
+              {
+                "caption": "Tools",
+                "matches": true,
+                "stored": "~80",
+                "type": 86,
+                "unavailable": ""
+              },
+              {
+                "caption": "Totems",
+                "matches": true,
+                "stored": "None",
+                "type": 59,
+                "unavailable": ""
+              },
+              {
+                "caption": "Toys",
+                "matches": true,
+                "stored": "6",
+                "type": 14,
+                "unavailable": ""
+              },
+              {
+                "caption": "Traction benches",
+                "matches": true,
+                "stored": "None",
+                "type": 84,
+                "unavailable": ""
+              },
+              {
+                "caption": "Trap components",
+                "matches": true,
+                "stored": "None",
+                "type": 68,
+                "unavailable": ""
+              },
+              {
+                "caption": "Weapon racks",
+                "matches": true,
+                "stored": "None",
+                "type": 34,
+                "unavailable": ""
+              },
+              {
+                "caption": "Weapons",
+                "matches": true,
+                "stored": "~80",
+                "type": 24,
+                "unavailable": ""
+              },
+              {
+                "caption": "Windows",
+                "matches": true,
+                "stored": "None",
+                "type": 15,
+                "unavailable": ""
+              }
+            ],
+            "category": 39,
+            "groups": [
+              {
+                "amount": 27,
+                "caption": "Iron bolts [27]",
+                "expanded": true,
+                "flags": 0,
+                "item_ids": [
+                  27756
+                ],
+                "matches": true,
+                "revision": 0,
+                "subcat1": 0,
+                "subcat2": 0,
+                "subtype": 0,
+                "type": 39
+              },
+              {
+                "amount": 33,
+                "caption": "Silver bolts [33]",
+                "expanded": true,
+                "flags": 0,
+                "item_ids": [
+                  27744,
+                  27842
+                ],
+                "matches": true,
+                "revision": 0,
+                "subcat1": 0,
+                "subcat2": 2,
+                "subtype": 0,
+                "type": 39
+              },
+              {
+                "amount": 54,
+                "caption": "Copper bolts [54]",
+                "expanded": true,
+                "flags": 0,
+                "item_ids": [
+                  27792,
+                  32631
+                ],
+                "matches": true,
+                "revision": 0,
+                "subcat1": 0,
+                "subcat2": 3,
+                "subtype": 0,
+                "type": 39
+              },
+              {
+                "amount": 71,
+                "caption": "Iron arrows [71]",
+                "expanded": true,
+                "flags": 0,
+                "item_ids": [
+                  32564,
+                  47061,
+                  27834,
+                  47837,
+                  47851,
+                  47856,
+                  47858
+                ],
+                "matches": true,
+                "revision": 0,
+                "subcat1": 0,
+                "subcat2": 0,
+                "subtype": 1,
+                "type": 39
+              },
+              {
+                "amount": 23,
+                "caption": "Copper arrows [23]",
+                "expanded": true,
+                "flags": 0,
+                "item_ids": [
+                  27780
+                ],
+                "matches": true,
+                "revision": 0,
+                "subcat1": 0,
+                "subcat2": 3,
+                "subtype": 1,
+                "type": 39
+              }
+            ],
+            "inventory_revision": 5505426441492985229,
+            "items": [],
+            "outcome": 0,
+            "removing": false,
+            "revision": 8150647884290783749
+          },
+          "page": {
+            "body": [],
+            "building_id": 1490,
+            "categories": [
+              {
+                "caption": "Ammunition",
+                "matches": true,
+                "stored": "~200",
+                "type": 39,
+                "unavailable": ""
+              },
+              {
+                "caption": "Amulets",
+                "matches": true,
+                "stored": "~20",
+                "type": 37,
+                "unavailable": ""
+              },
+              {
+                "caption": "Animal traps",
+                "matches": true,
+                "stored": "None",
+                "type": 19,
+                "unavailable": ""
+              },
+              {
+                "caption": "Anvils",
+                "matches": true,
+                "stored": "2",
+                "type": 45,
+                "unavailable": ""
+              },
+              {
+                "caption": "Armor",
+                "matches": true,
+                "stored": "~60",
+                "type": 25,
+                "unavailable": ""
+              },
+              {
+                "caption": "Armor stands",
+                "matches": true,
+                "stored": "None",
+                "type": 33,
+                "unavailable": ""
+              },
+              {
+                "caption": "Backpacks",
+                "matches": true,
+                "stored": "2",
+                "type": 61,
+                "unavailable": ""
+              },
+              {
+                "caption": "Bags",
+                "matches": true,
+                "stored": "~100",
+                "type": 31,
+                "unavailable": ""
+              },
+              {
+                "caption": "Ballista arrow heads",
+                "matches": true,
+                "stored": "None",
+                "type": 66,
+                "unavailable": ""
+              },
+              {
+                "caption": "Ballista parts",
+                "matches": true,
+                "stored": "None",
+                "type": 64,
+                "unavailable": ""
+              },
+              {
+                "caption": "Barrels",
+                "matches": true,
+                "stored": "~200",
+                "type": 17,
+                "unavailable": ""
+              },
+              {
+                "caption": "Bars",
+                "matches": true,
+                "stored": "~1000",
+                "type": 0,
+                "unavailable": ""
+              },
+              {
+                "caption": "Beds",
+                "matches": true,
+                "stored": "None",
+                "type": 8,
+                "unavailable": ""
+              },
+              {
+                "caption": "Bins",
+                "matches": true,
+                "stored": "~200",
+                "type": 32,
+                "unavailable": ""
+              },
+              {
+                "caption": "Blocks",
+                "matches": true,
+                "stored": "~800",
+                "type": 2,
+                "unavailable": ""
+              },
+              {
+                "caption": "Body parts",
+                "matches": true,
+                "stored": "~40",
+                "type": 46,
+                "unavailable": ""
+              },
+              {
+                "caption": "Bolt thrower parts",
+                "matches": true,
+                "stored": "None",
+                "type": 92,
+                "unavailable": ""
+              },
+              {
+                "caption": "Boulders",
+                "matches": true,
+                "stored": "~300",
+                "type": 4,
+                "unavailable": ""
+              },
+              {
+                "caption": "Boxes",
+                "matches": true,
+                "stored": "~30",
+                "type": 30,
+                "unavailable": ""
+              },
+              {
+                "caption": "Bracelets",
+                "matches": true,
+                "stored": "~20",
+                "type": 43,
+                "unavailable": ""
+              },
+              {
+                "caption": "Branches",
+                "matches": true,
+                "stored": "None",
+                "type": 91,
+                "unavailable": ""
+              },
+              {
+                "caption": "Buckets",
+                "matches": true,
+                "stored": "9",
+                "type": 18,
+                "unavailable": ""
+              },
+              {
+                "caption": "Cabinets",
+                "matches": true,
+                "stored": "None",
+                "type": 35,
+                "unavailable": ""
+              },
+              {
+                "caption": "Cages",
+                "matches": true,
+                "stored": "~10",
+                "type": 16,
+                "unavailable": ""
+              },
+              {
+                "caption": "Catapult parts",
+                "matches": true,
+                "stored": "None",
+                "type": 63,
+                "unavailable": ""
+              },
+              {
+                "caption": "Chains",
+                "matches": true,
+                "stored": "~10",
+                "type": 10,
+                "unavailable": ""
+              },
+              {
+                "caption": "Cheese",
+                "matches": true,
+                "stored": "None",
+                "type": 71,
+                "unavailable": ""
+              },
+              {
+                "caption": "Cloth",
+                "matches": true,
+                "stored": "~100",
+                "type": 58,
+                "unavailable": ""
+              },
+              {
+                "caption": "Codices",
+                "matches": true,
+                "stored": "2",
+                "type": 89,
+                "unavailable": ""
+              },
+              {
+                "caption": "Coffins",
+                "matches": true,
+                "stored": "None",
+                "type": 21,
+                "unavailable": ""
+              },
+              {
+                "caption": "Coins",
+                "matches": true,
+                "stored": "None",
+                "type": 74,
+                "unavailable": ""
+              },
+              {
+                "caption": "Corpses",
+                "matches": true,
+                "stored": "~20",
+                "type": 23,
+                "unavailable": "1"
+              },
+              {
+                "caption": "Crowns",
+                "matches": true,
+                "stored": "2",
+                "type": 40,
+                "unavailable": ""
+              },
+              {
+                "caption": "Crutches",
+                "matches": true,
+                "stored": "9",
+                "type": 83,
+                "unavailable": ""
+              },
+              {
+                "caption": "Cut gems",
+                "matches": true,
+                "stored": "None",
+                "type": 1,
+                "unavailable": ""
+              },
+              {
+                "caption": "Doors",
+                "matches": true,
+                "stored": "~20",
+                "type": 6,
+                "unavailable": ""
+              },
+              {
+                "caption": "Drinks",
+                "matches": true,
+                "stored": "~400",
+                "type": 69,
+                "unavailable": ""
+              },
+              {
+                "caption": "Earrings",
+                "matches": true,
+                "stored": "~20",
+                "type": 42,
+                "unavailable": ""
+              },
+              {
+                "caption": "Egg",
+                "matches": true,
+                "stored": "None",
+                "type": 88,
+                "unavailable": ""
+              },
+              {
+                "caption": "Figurines",
+                "matches": true,
+                "stored": "None",
+                "type": 36,
+                "unavailable": ""
+              },
+              {
+                "caption": "Fish",
+                "matches": true,
+                "stored": "None",
+                "type": 49,
+                "unavailable": ""
+              },
+              {
+                "caption": "Flasks",
+                "matches": true,
+                "stored": "~30",
+                "type": 11,
+                "unavailable": ""
+              },
+              {
+                "caption": "Floodgates",
+                "matches": true,
+                "stored": "2",
+                "type": 7,
+                "unavailable": ""
+              },
+              {
+                "caption": "Footwear",
+                "matches": true,
+                "stored": "~100",
+                "type": 26,
+                "unavailable": ""
+              },
+              {
+                "caption": "Glob",
+                "matches": true,
+                "stored": "None",
+                "type": 75,
+                "unavailable": ""
+              },
+              {
+                "caption": "Goblets",
+                "matches": true,
+                "stored": "~200",
+                "type": 12,
+                "unavailable": ""
+              },
+              {
+                "caption": "Grates",
+                "matches": true,
+                "stored": "None",
+                "type": 79,
+                "unavailable": ""
+              },
+              {
+                "caption": "Handwear",
+                "matches": true,
+                "stored": "~30",
+                "type": 29,
+                "unavailable": ""
+              },
+              {
+                "caption": "Hatch covers",
+                "matches": true,
+                "stored": "None",
+                "type": 78,
+                "unavailable": ""
+              },
+              {
+                "caption": "Headwear",
+                "matches": true,
+                "stored": "~20",
+                "type": 28,
+                "unavailable": ""
+              },
+              {
+                "caption": "Large gems",
+                "matches": true,
+                "stored": "2",
+                "type": 44,
+                "unavailable": ""
+              },
+              {
+                "caption": "Leaves and fruit",
+                "matches": true,
+                "stored": "None",
+                "type": 56,
+                "unavailable": ""
+              },
+              {
+                "caption": "Legwear",
+                "matches": true,
+                "stored": "~40",
+                "type": 60,
+                "unavailable": ""
+              },
+              {
+                "caption": "Limb/body casts",
+                "matches": true,
+                "stored": "None",
+                "type": 85,
+                "unavailable": ""
+              },
+              {
+                "caption": "Liquid",
+                "matches": true,
+                "stored": "~70",
+                "type": 73,
+                "unavailable": ""
+              },
+              {
+                "caption": "Logs",
+                "matches": true,
+                "stored": "~100",
+                "type": 5,
+                "unavailable": ""
+              },
+              {
+                "caption": "Meat",
+                "matches": true,
+                "stored": "None",
+                "type": 48,
+                "unavailable": ""
+              },
+              {
+                "caption": "Mechanisms",
+                "matches": true,
+                "stored": "2",
+                "type": 67,
+                "unavailable": ""
+              },
+              {
+                "caption": "Millstones",
+                "matches": true,
+                "stored": "7",
+                "type": 81,
+                "unavailable": ""
+              },
+              {
+                "caption": "Musical instruments",
+                "matches": true,
+                "stored": "~10",
+                "type": 13,
+                "unavailable": ""
+              },
+              {
+                "caption": "Pipe section",
+                "matches": true,
+                "stored": "3",
+                "type": 77,
+                "unavailable": ""
+              },
+              {
+                "caption": "Plants",
+                "matches": true,
+                "stored": "~1000",
+                "type": 54,
+                "unavailable": ""
+              },
+              {
+                "caption": "Powder",
+                "matches": true,
+                "stored": "~100",
+                "type": 70,
+                "unavailable": ""
+              },
+              {
+                "caption": "Prepared meals",
+                "matches": true,
+                "stored": "~900",
+                "type": 72,
+                "unavailable": ""
+              },
+              {
+                "caption": "Querns",
+                "matches": true,
+                "stored": "None",
+                "type": 80,
+                "unavailable": ""
+              },
+              {
+                "caption": "Quivers",
+                "matches": true,
+                "stored": "~20",
+                "type": 62,
+                "unavailable": ""
+              },
+              {
+                "caption": "Raw fish",
+                "matches": true,
+                "stored": "~200",
+                "type": 50,
+                "unavailable": ""
+              },
+              {
+                "caption": "Remains",
+                "matches": true,
+                "stored": "~10",
+                "type": 47,
+                "unavailable": ""
+              },
+              {
+                "caption": "Rings",
+                "matches": true,
+                "stored": "~20",
+                "type": 41,
+                "unavailable": ""
+              },
+              {
+                "caption": "Rough gems",
+                "matches": true,
+                "stored": "~90",
+                "type": 3,
+                "unavailable": ""
+              },
+              {
+                "caption": "Scepters",
+                "matches": true,
+                "stored": "None",
+                "type": 38,
+                "unavailable": ""
+              },
+              {
+                "caption": "Seeds",
+                "matches": true,
+                "stored": "~1000",
+                "type": 53,
+                "unavailable": ""
+              },
+              {
+                "caption": "Sheet",
+                "matches": true,
+                "stored": "None",
+                "type": 90,
+                "unavailable": ""
+              },
+              {
+                "caption": "Shields/bucklers",
+                "matches": true,
+                "stored": "~20",
+                "type": 27,
+                "unavailable": ""
+              },
+              {
+                "caption": "Siege ammo",
+                "matches": true,
+                "stored": "None",
+                "type": 65,
+                "unavailable": ""
+              },
+              {
+                "caption": "Slabs",
+                "matches": true,
+                "stored": "2",
+                "type": 87,
+                "unavailable": ""
+              },
+              {
+                "caption": "Small live animals",
+                "matches": true,
+                "stored": "None",
+                "type": 51,
+                "unavailable": ""
+              },
+              {
+                "caption": "Small rock",
+                "matches": true,
+                "stored": "None",
+                "type": 76,
+                "unavailable": ""
+              },
+              {
+                "caption": "Small tame animals",
+                "matches": true,
+                "stored": "1",
+                "type": 52,
+                "unavailable": ""
+              },
+              {
+                "caption": "Splints",
+                "matches": true,
+                "stored": "~10",
+                "type": 82,
+                "unavailable": ""
+              },
+              {
+                "caption": "Statues",
+                "matches": true,
+                "stored": "3",
+                "type": 22,
+                "unavailable": ""
+              },
+              {
+                "caption": "Tables",
+                "matches": true,
+                "stored": "~30",
+                "type": 20,
+                "unavailable": ""
+              },
+              {
+                "caption": "Tanned hides",
+                "matches": true,
+                "stored": "~100",
+                "type": 55,
+                "unavailable": ""
+              },
+              {
+                "caption": "Thread",
+                "matches": true,
+                "stored": "~20",
+                "type": 57,
+                "unavailable": ""
+              },
+              {
+                "caption": "Thrones",
+                "matches": true,
+                "stored": "~30",
+                "type": 9,
+                "unavailable": ""
+              },
+              {
+                "caption": "Tools",
+                "matches": true,
+                "stored": "~80",
+                "type": 86,
+                "unavailable": ""
+              },
+              {
+                "caption": "Totems",
+                "matches": true,
+                "stored": "None",
+                "type": 59,
+                "unavailable": ""
+              },
+              {
+                "caption": "Toys",
+                "matches": true,
+                "stored": "6",
+                "type": 14,
+                "unavailable": ""
+              },
+              {
+                "caption": "Traction benches",
+                "matches": true,
+                "stored": "None",
+                "type": 84,
+                "unavailable": ""
+              },
+              {
+                "caption": "Trap components",
+                "matches": true,
+                "stored": "None",
+                "type": 68,
+                "unavailable": ""
+              },
+              {
+                "caption": "Weapon racks",
+                "matches": true,
+                "stored": "None",
+                "type": 34,
+                "unavailable": ""
+              },
+              {
+                "caption": "Weapons",
+                "matches": true,
+                "stored": "~80",
+                "type": 24,
+                "unavailable": ""
+              },
+              {
+                "caption": "Windows",
+                "matches": true,
+                "stored": "None",
+                "type": 15,
+                "unavailable": ""
+              }
+            ],
+            "category": 37,
+            "groups": [
+              {
+                "amount": 17,
+                "caption": "Steel amulets [17]",
+                "expanded": true,
+                "flags": 0,
+                "item_ids": [
+                  38540,
+                  39109,
+                  38894,
+                  38426,
+                  38542,
+                  38550,
+                  38690,
+                  39181,
+                  39028,
+                  39030,
+                  39228,
+                  38434,
+                  38705,
+                  38804,
+                  38862,
+                  39022,
+                  39193
+                ],
+                "matches": true,
+                "revision": 0,
+                "subcat1": 0,
+                "subcat2": 8,
+                "subtype": -1,
+                "type": 37
+              },
+              {
+                "amount": 1,
+                "caption": "Tiger bone amulet",
+                "expanded": true,
+                "flags": 0,
+                "item_ids": [
+                  13149
+                ],
+                "matches": true,
+                "revision": 0,
+                "subcat1": 22,
+                "subcat2": 338,
+                "subtype": -1,
+                "type": 37
+              }
+            ],
+            "inventory_revision": 5505426441492985229,
+            "items": [
+              {
+                "appearance": {
+                  "color_token": "BLUE-GRAY",
+                  "craft_gem_color": "",
+                  "craft_soft_material": 0,
+                  "flags": 0,
+                  "material_token": "INORGANIC:STEEL",
+                  "stack": 1,
+                  "subtype_raw": ""
+                },
+                "can_dump": true,
+                "can_melt": true,
+                "caption": "â˜¼steel amuletâ˜¼",
+                "flags": 8,
+                "id": 38540,
+                "material_token": "INORGANIC:STEEL",
+                "subtype_raw": "",
+                "type": 37
+              }
+            ],
+            "outcome": 0,
+            "removing": false,
+            "revision": 8150647884290783749
+          },
+          "success": true
+        },
+        "item_count": 6411,
+        "read": {
+          "changed": {
+            "effects_started": false,
+            "items": [],
+            "outcome": 2,
+            "removing": false,
+            "revision": "8150647884290783749"
+          },
+          "initial": {
+            "category": 39,
+            "inventory_revision": "5505426441492985229",
+            "items": [],
+            "revision": "8150647884290783749"
+          },
+          "page": {
+            "category": 37,
+            "inventory_revision": "5505426441492985229",
+            "items": [
+              {
+                "appearance": true,
+                "caption": "â˜¼steel amuletâ˜¼",
+                "id": 38540
+              }
+            ],
+            "revision": "8150647884290783749"
+          },
+          "repeated": {
+            "category": 37,
+            "inventory_revision": "5505426441492985229",
+            "items": [
+              {
+                "appearance": true,
+                "caption": "â˜¼steel amuletâ˜¼",
+                "id": 38540
+              }
+            ],
+            "revision": "8150647884290783749"
+          }
+        },
+        "provider": {
+          "assigned": {
+            "effects_started": true,
+            "items": [
+              38540
+            ],
+            "outcome": 1,
+            "removing": false,
+            "revision": "8575683379901701473"
+          },
+          "duplicate": {
+            "effects_started": false,
+            "items": [],
+            "outcome": 0,
+            "removing": false,
+            "revision": "8150647884290783749"
+          },
+          "removed": {
+            "effects_started": true,
+            "items": [],
+            "outcome": 1,
+            "removing": false,
+            "revision": "8150647884290783749"
+          },
+          "stale": {
+            "effects_started": false,
+            "items": [
+              38540
+            ],
+            "outcome": 2,
+            "removing": false,
+            "revision": "8575683379901701473"
+          }
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261122-072043/display-building-native.json": "4e93679d4eff9da815e239b9b725ba8462dab31c56130bbb0b9ade8a1d5f276d",
+          "build/stockpile-storage-native-farm-discovery-20261122-072043/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/display_read_native.h": "449f4c91f9388b8d72045ebeb661d6fc66fda7f776e883a4417022ef52878e31",
+          "bridge/plugin/display_assignment_native.h": "bc98d0ea83c9c0a1841925077e094552e48689e3392658939c37952869a6a24f",
+          "tools/smoke/display-building-native.lua": "600b8dc3ba709002537fab2d21cd579d6a40185ad7dd0d4a8cf6a16308c01508",
+          "presentations/godot/project/scripts/display_state.gd": "0b2e4777067b807856e580054fac790b14ee24382c322a57b797d46f862c74f1",
+          "presentations/godot/project/tests/display_state_test.gd": "060a732d616a56f88d1acb7918461bc270f7bacdf64a661b0eb7b9786dd6f199",
+          "build/stockpile-storage-native-farm-discovery-20261122-072043/display-wire-result.json": "0d8858a6281cfff6772bb168e548b844114ee3fc65a804f461616e8d61c87e39",
+          "build/stockpile-storage-native-farm-discovery-20261122-072043/display-wire.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "presentations/godot/project/tests/display_wire_live.gd": "19b1db97184dd36246f80f9f0ec75f0e6f3e6e8bd6ccfc8809b8a01c79d65828",
+          "build/stockpile-storage-native-farm-discovery-20261122-072043/display-amulets.png": "6066973976f5b8744751547cbdb0b0880344589c3951ade15e9c78e207c39b48",
+          "build/stockpile-storage-native-farm-discovery-20261122-072043/display-assignment-closed.png": "72e24d3e8856c7138f96543cc3b39f91a10b6e4f5519565d745901ae4f7fef2b",
+          "build/stockpile-storage-native-farm-discovery-20261122-072043/display-assignment-open.png": "4ff6a0e70092a46fc706f58ba121e40fffcf1b663c6b574297796cfe5f8716f0",
+          "build/stockpile-storage-native-farm-discovery-20261122-072043/display-assignment-settled.png": "4ff6a0e70092a46fc706f58ba121e40fffcf1b663c6b574297796cfe5f8716f0",
+          "build/stockpile-storage-native-farm-discovery-20261122-072043/display-removed-parent.png": "894ec6d6810668062b21efb30b634ddc2474750ad4d343d843ff5f45fdcb2caa",
+          "build/stockpile-storage-native-farm-discovery-20261122-072043/display-search-steel.png": "63acdfa086ffb0dc46d32235e0724c3f0714704b50c4a2d297bcd0c02b8598d9",
+          "build/stockpile-storage-native-farm-discovery-20261122-072043/display-selected-draft.png": "ede5c037ab53d919ea981d9eeba95b595ddd75a5d534be22dfc99a3cd82c76f8",
+          "build/stockpile-storage-native-farm-discovery-20261122-072043/display-selected-parent.png": "683b07d5f470cc4f3bc7a424410c82b96e80c0787573ecccaceb913d64a9c897",
+          "build/stockpile-storage-native-farm-discovery-20261122-072043/display-wire.png": "bd96be70bfb38ea0696db5f8284de16fd80b2c388f5e2f5daf58f024ab23d0ae"
+        }
       }
     },
     "pending_construction_reference": {

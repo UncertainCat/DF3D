@@ -12666,6 +12666,17 @@ closes unsaved/source-preserved at30FPS, sampled60C; bridge build and19 core
 checks pass. Enable `DF3D_CREATURE_UNIT_ROWS=1` in the creature-tab lane.
 Evidence: `build/stockpile-storage-native-farm-discovery-20261122-101755`.
 
+Management protocol256 adds `CreatureListQuery` for Pets, Other and Dead/Missing.
+Its complete ordered result uses `(kind,id)` identities, preserving separate unit
+and item namespaces. Parallel ID/kind vectors keep the maximum65536-entry roster
+within the512KiB management reply capacity; unequal vector lengths reject. Dead/Missing admits units only. Query bytes preserve partial
+UTF-8 from native textbox editing, reject NUL and retain the Residents byte bound.
+Category, Name, Profession and Activity are admitted; Slaughterability is Pets-only.
+The existing Residents and Work Details unit-only contracts are unchanged.
+Both bridge and consumer must rebuild for management region v256; older management
+recordings are incompatible and must not acquire inferred creature-list facts.
+This contract does not yet establish runtime transport or public tab acceptance.
+
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching
 item-name renderer1423fe0. Native142b45a..142b4c5 captures raw item.pos for Recenter;

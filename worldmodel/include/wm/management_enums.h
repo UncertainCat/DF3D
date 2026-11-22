@@ -2,6 +2,22 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class CreatureListTab : uint8_t {
+  Pets = 1,
+  Other = 2,
+  Dead = 3,
+};
+enum class CreatureListKind : uint8_t {
+  Unit = 0,
+  Item = 1,
+};
+enum class CreatureListSort : uint8_t {
+  Category = 0,
+  Name = 1,
+  Profession = 2,
+  Activity = 4,
+  Slaughterability = 5,
+};
 enum class DisplayOutcome : uint8_t {
   Available = 0,
   Applied = 1,
@@ -432,6 +448,7 @@ enum class ManagementAction : uint8_t {
   DisplayRead = 145,
   DisplayCommit = 146,
   DisplayRemove = 147,
+  CreatureListQuery = 148,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -792,11 +809,13 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::DisplayRead: return true;
   case ManagementAction::DisplayCommit: return true;
   case ManagementAction::DisplayRemove: return true;
+  case ManagementAction::CreatureListQuery: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::CreatureListQuery: return "creature_list";
   case ManagementAction::DisplayRead: return "display";
   case ManagementAction::DisplayCommit: return "display";
   case ManagementAction::DisplayRemove: return "display";

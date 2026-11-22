@@ -4160,6 +4160,26 @@
   ],
   "exclusions": [
     {
+      "path": "presentations/godot/project/tests/creature_list_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected creature roster/provider acceptance via stockpile_storage_native.ps1 -FarmDiscovery with DF3D_CREATURE_LIST_WIRE=1 and the Residents/creature reference fixture. Requires the live oracle's identity, edit-restoration and save-preservation checks; never standalone."
+    },
+    {
+      "path": "presentations/godot/project/tests/creature_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected public Citizens/Pets/Other/Dead workflow via the creature-list wire hook with DF3D_CREATURE_SCENE=1 and creature workflow/trainer/item fixtures. Serial30FPS main-scene UI plus enclosing native flags/trainer/cache restoration; never standalone."
+    },
+    {
+      "path": "presentations/godot/project/tests/creature_roster_capture.gd",
+      "status": "manual",
+      "reason": "Serial30FPS installed-art capture from creature-render-rows.bin in DF3D_CARRIER_DIRECTORY. Requires a protected native capture for independent pixel comparison; saving images alone is not acceptance."
+    },
+    {
+      "path": "presentations/godot/project/tests/pet_panes_capture.gd",
+      "status": "manual",
+      "reason": "Serial30FPS installed-art capture from recorded trainer/knowledge wire pages in DF3D_CARRIER_DIRECTORY. Requires matching protected native panes for independent pixel comparison; saving images alone is not acceptance."
+    },
+    {
       "path": "presentations/godot/project/tests/barrier_scene_live.gd",
       "status": "manual",
       "reason": "Protected client dispatched by tools/smoke/stockpile_storage_native.ps1. Requires the matching native oracle setup, runner-owned DF session and generated DF3D_CARRIER_DIRECTORY receipts; never invoke against an attached user game. Graphical variants run serially at30FPS with GPU monitoring."

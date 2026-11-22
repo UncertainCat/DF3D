@@ -79,7 +79,8 @@ func creature_tab_at(point: Vector2) -> int:
 		x+=width
 	return -1
 func activate_pet_control(point: Vector2) -> bool:
-	if state.tab!=1 or state.phase!=state.Phase.Ready:return false
+	# Work Details shares this view's outer input path with a different state.
+	if not state is RosterState or state.tab!=1 or state.phase!=state.Phase.Ready:return false
 	for index in page_rows:
 		var row: Dictionary=state.row_at(state.first+index)
 		for control: Dictionary in PetRow.controls(row,list_top()+index*36):
@@ -147,7 +148,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode==KEY_ESCAPE:cancelled.emit();get_viewport().set_input_as_handled()
 		elif search.has_focus():search.feed_key(event);get_viewport().set_input_as_handled()
-		elif state.tab>0 and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed and not event.shift_pressed and event.keycode in [KEY_UP,KEY_8,KEY_KP_8,KEY_DOWN,KEY_2,KEY_KP_2,KEY_PAGEUP,KEY_9,KEY_KP_9,KEY_PAGEDOWN,KEY_3,KEY_KP_3]:
+		elif state is RosterState and state.tab>0 and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed and not event.shift_pressed and event.keycode in [KEY_UP,KEY_8,KEY_KP_8,KEY_DOWN,KEY_2,KEY_KP_2,KEY_PAGEUP,KEY_9,KEY_KP_9,KEY_PAGEDOWN,KEY_3,KEY_KP_3]:
 			# Native135032 standard scrolling moves the cursor and only scrolls
 			# enough to expose it. Ordinary map CURSOR keys are separate in DF.
 			var step: int=-1 if event.keycode in [KEY_UP,KEY_8,KEY_KP_8] else 1

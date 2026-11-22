@@ -13040,6 +13040,14 @@ Residents headless input passes with public sibling dispatch. These ordinary
 public workflows do not resolve complex species artwork, the recorded26-pixel
 scrollbar residual, all sort/filter cursor variants or the broader release gate.
 
+The shared roster view limits sibling cursor navigation and out-of-frame pet
+hit-testing to `residents_state.gd` instances. Work Details inherits the common
+input path but owns a different state; it must not read creature-only `tab` data.
+The management offline integration run exposed five engine errors in its existing
+keyboard-focus regression despite that test's final marker. Restricting these
+two paths restores clean Work Details and Residents headless checks. The gate
+correctly treats unexpected engine diagnostics as failure, not marker success.
+
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching
 item-name renderer1423fe0. Native142b45a..142b4c5 captures raw item.pos for Recenter;

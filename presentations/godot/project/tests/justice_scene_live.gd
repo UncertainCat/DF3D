@@ -8,7 +8,7 @@ func exercise(expected: Dictionary) -> void:
 		await header_navigation(expected);return
 	owner=scene._ui.controller("justice")
 	for sample in expected.samples:
-		owner.open_panel();await drain()
+		await pointer(scene._fortress_hud.launcher_rect("Justice").get_center());await drain()
 		var tab:=3 if sample.tab=="Fortress guard" else 4
 		await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.tab_rect(tab).get_center());await drain()
 		var roster=owner.state.guard if tab==3 else owner.state.convicts
@@ -62,7 +62,7 @@ func exercise(expected: Dictionary) -> void:
 		check(scene._ui.host.active==(owner if sample.after_escape_info_open else null),"Sheet Escape retained wrong input owner")
 	exercised=true
 func header_navigation(expected: Dictionary) -> void:
-	owner=scene._ui.controller("justice");owner.open_panel();await drain()
+	owner=scene._ui.controller("justice");await pointer(scene._fortress_hud.launcher_rect("Justice").get_center());await drain()
 	await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.tab_rect(5).get_center());await drain()
 	var index:=0
 	for sample in expected.samples:

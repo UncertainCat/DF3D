@@ -168,7 +168,7 @@ func test_convicts(service,state) -> void:
 	service.reply(current,convicts_page([42]));check(roster.cursor_id==42,"Shrunken roster did not clamp retained cursor")
 	state.close();state.open(4);check(roster.query.is_empty() and roster.draft().cursor==0,"Closed Justice retained roster draft")
 func run() -> void:
-	check(Registry.PANEL_SCRIPTS.has("justice") and not Registry.PANEL_ROUTES.has("Justice"),"Justice public gate changed")
+	check(Registry.PANEL_SCRIPTS.has("justice") and Registry.PANEL_ROUTES.get("Justice")=="justice","Public Justice owner missing")
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()
 	service.reply(state.ticket,page([9],0,2));check(state.rows.is_empty() and state.phase==State.Phase.Reading,"Partial cases exposed")
 	check(service.calls[state.ticket].intent.offset==1 and service.calls[state.ticket].intent.expected_list_revision==8,"Case continuation lost receipt")

@@ -1,5 +1,5 @@
 extends Node
-# Staged case/Convict owner; no public route until full Justice acceptance.
+# Owned Justice controller, reached through the public HUD and information header.
 signal focus_requested(tile: Vector3i)
 signal inspect_requested(tile: Vector3i,unit_id: int)
 signal information_requested(caption: String)

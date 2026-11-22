@@ -4488,6 +4488,17 @@ Native observations and evidence hashes live in
 
 ## Justice native discovery
 
+Justice is public through the HUD and information header. Protected main-scene
+runs082516 and082617 on2026-11-22 exercise the actual HUD entry, Fortress guard
+and Convicts exact-creature handoffs, native creature detail text and Escape,
+then Places/Nobles header roundtrips with Intelligence tab retention. Both report
+successful roundtrips, empty client stderr and unchanged source saves; owned
+DF28544/49160 close unsaved. Graphics run serially at30FPS with sampled GPU59–61C.
+The header return screenshot was inspected. Justice state, adapter retirement,
+UI composition and all19 root checks pass. These runs establish public entry
+and navigation, not broader populated graph/roster or world-replacement coverage;
+the detailed evidence and remaining limits below still apply.
+
 Management protocol203 appends required actor detail lines and a plot's
 organization index to the graph contract. Lines retain native alias/relationship
 wording before viewer clipping; organization references address the same graph
@@ -4514,8 +4525,8 @@ The bridge hashes the complete owned graph before slicing a requested stream;
 the model and extension copy all strings and references. The Intelligence
 controller loads all four streams under one receipt, verifies organization node
 ranges, and publishes only the complete graph. Close and session changes retire
-pending reads; changed receipts are rejected without replay. Public Justice
-remains hidden. Report transport retains the protocol201 field semantics.
+pending reads; changed receipts are rejected without replay. Report transport
+retains the protocol201 field semantics.
 
 Protected `stockpile-storage-native-input-20261112-102334` verifies protocol203
 against a populated native graph: three actors (including an alias), one

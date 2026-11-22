@@ -8469,9 +8469,15 @@ job. This correction does not permit unrelated job changes. Final evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-081302`.
 Owned DF52852 closes unsaved/source-preserved at30FPS, GPU58–59C sampled, empty
 viewer stderr. The main Tasks screenshot was inspected. Core19 and Tasks state,
-UI composition and adapter-retirement checks pass. Remaining action branches,
-Details subpage/overflow rendering and producer/epoch coverage below remain
-integration work; this public-route acceptance does not establish those cases.
+UI composition and adapter-retirement checks pass. Subsequent public producer
+recovery153800, actual world replacement154406 and interrupted applied mutation
+155327 qualify the lifecycle cases described under Management producer recovery
+below. Production160820 also verifies that native DF completes a statue with
+the material and artwork selected through Tasks. These are separate evidence
+scopes: world replacement uses controllers, not a graphical main-scene reload.
+Assigned-job, demolition and started-construction cancellation, full Details
+subpage/overflow rendering, and graphical reload remain unqualified. They are
+acceptance gaps, not established implementation defects.
 
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is
@@ -8510,8 +8516,8 @@ comes from113154; headless checks match the fixture and check capability-aware
 hitboxes. Pending requests, pointer exit and hidden/retired views release hover
 ownership. No Tasks hotkey text is inferred from other screens. Repeat help remains
 unverified; rendered Tasks tooltip
-acceptance remains pending. The staged Tasks owner is registered in the main UI controller registry, without
-adding a public launcher. It owns modal focus, close/back/play-disable retirement,
+acceptance remains pending. The Tasks owner is registered in the main UI controller
+registry and exposed through the public HUD route qualified above. It owns modal focus, close/back/play-disable retirement,
 scaled layout and hover-service injection. Recenter re-reads the ordered native
 rows and verifies job/worker/building identity before moving the camera and
 closing. Worker View obtains a current CreatureSheetLocate result and uses the
@@ -8627,8 +8633,11 @@ reference for subsequent native menu comparisons. Source preserved, owned
 DF38916 closed unsaved, both processes capped30FPS, GPU43C/0% sampled; only
 documented engine diagnostics (passed_with_known_issues). Assigned jobs,
 demolition and started-construction cancellation are not covered by this run.
-Remaining action branches, Details subpage/overflow backgrounds and producer/epoch
-live acceptance remain unfinished; public-route acceptance is recorded above.
+This cancellation run does not qualify assigned-job, demolition or
+started-construction cancellation. Full Details subpage/overflow pixel evidence
+also remains incomplete. Producer recovery, world replacement and interrupted
+applied edits have later acceptance below; do not treat their earlier absence
+as a current missing implementation.
 
 ### Production execution after Tasks edits
 
@@ -35596,8 +35605,11 @@ game state), the **core** (`schema/` and `worldmodel/`, engine-independent C++),
 creatures, items and animations; pause, unpause and save remain available. The
 toolbar exposes designation and inspection tools, Reports/alerts, construction
 Stockpiles, Zones/Locations, editable Work orders, native Residents and the
-Labor workflow (Work Details, Standing orders, Kitchen and Stone use), plus Stocks, Tasks, Places, Nobles/administrators and Objects. Other management screens have staged implementations
-whose public integration remains unfinished. Specialized building controls are
+Labor workflow (Work Details, Standing orders, Kitchen and Stone use), plus
+Stocks, Tasks, Places, Nobles/administrators, Objects and Justice. Public exposure
+does not establish every action, rendering variant or lifecycle case; the owning
+sections distinguish accepted workflows from remaining evidence gaps.
+Specialized building controls are
 qualified individually in their owning sections. Windows x64 packages bundle the viewer and a bridge setup launcher;
 source builds are also supported. Both require the pinned Steam release of Dwarf Fortress.
 

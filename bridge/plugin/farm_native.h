@@ -101,6 +101,7 @@ inline bool plainFurnitureType(df::building_type type) {
     case df::building_type::Statue:case df::building_type::Instrument:case df::building_type::Bookcase:
     case df::building_type::OfferingPlace:case df::building_type::Wagon:case df::building_type::TractionBench:
     case df::building_type::WindowGlass:case df::building_type::WindowGem:
+    case df::building_type::Shop:case df::building_type::Nest:
     case df::building_type::RoadDirt:case df::building_type::RoadPaved:
     case df::building_type::Support:case df::building_type::ArcheryTarget:case df::building_type::Weapon:return true;
     default:return false;

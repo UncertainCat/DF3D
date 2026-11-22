@@ -3369,7 +3369,7 @@ The controlled claim establishes display behavior, not natural nesting eligibili
 Occupied/baited trap bodies and hive crowding branches have static native evidence
 but no live acceptance yet. DisplayFurniture53 still needs its product workflow;
 Siege22, Chain27 and Archery26 public controls are qualified in their owning sections.
-Shop7 and natural Nest47 require fortress-route assessment.
+Shop7 and natural Nest47 use the public shared panel, qualified in Other completed-building families.
 Earlier135024's siege capture selected a dwarf inside the footprint and is invalid;
 135309 and140937 use full-footprint clearance and explicit selected-building checks.
 
@@ -3930,7 +3930,7 @@ restraints, cages, nest boxes, hives and display furniture. Windows, bridges,
 roads, supports, upright weapons, wagons and traction benches reach the default
 body/input branches; this static result alone does not qualify their panels.
 Shop7 and natural Nest47 also reach those defaults. Their native management
-selection and controls are qualified below; public viewer admission remains open.
+selection and controls, including public viewer admission, are qualified below.
 Missing natural examples are retained in the fixture.
 
 `DF3D_LEGACY_BUILDINGS_NATIVE=1` selects disposable Shop7 and natural Nest47
@@ -3948,6 +3948,25 @@ The earlier151101 native sub-oracle also passed, but its enclosing lane failed
 after continuing into an unrelated chest test; it is not a complete lane pass.
 The isolated run uses the existing workshop-scope early return. Neither run
 establishes natural occurrence, shopkeeper variants or public DF3D parity.
+
+Protected153021 on2026-11-22 qualifies the public shared building panel for both
+types: actual map selection, rename/restore, removal/cancellation, holder return
+and final input-owner release pass. All ten488x708 panel captures are RGB-exact
+against the independent native states. The rendered Nest removal pane was also
+inspected. Core, extension and bridge builds pass; all19 core checks and focused
+header, holder-routing and UI-composition checks pass cleanly. Owned DF39980
+closes unsaved with source preservation; graphics are serial30FPS, sampled50C,
+and client stderr is empty. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-153021`.
+
+The bridge and response validator admit types7/47 through the existing semantic
+header/contents contract; there is no payload-layout or protocol-version change.
+The UI shares one native furniture-type list between holder admission, map entry
+and selection handoff, converting mirror IDs in one helper. This removes the
+duplicated lists that caused152558/152737 to reach generic inspection instead of
+the building panel. The holder regression now checks map admission for the same
+families. Unknown completion observations still fail closed. Construction choices
+are unchanged; natural occurrence and populated-shop variants remain unqualified.
 
 Protected131925 on2026-11-16 creates temporary completed examples for native
 WindowGlass16, WindowGem17, RoadDirt20, RoadPaved21, Support25 and Weapon31.

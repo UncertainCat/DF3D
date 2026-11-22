@@ -2180,6 +2180,8 @@ table CreatureListRow {
   // Raw native recenter target, possibly invalid; absent when there is no button.
   position:TilePos; can_inspect:bool; job_target:ResidentJobTarget;
   pet:PetRowControls;
+  // Absent for non-grazers and item rows; native name-widget warning.
+  name_warning:PetCaption;
 }
 table CreatureListRowsState {
   tab:CreatureListTab = Pets; rows:[CreatureListRow] (required);
@@ -2197,11 +2199,13 @@ table PetTrainerRow {
   id:int32 = -1; first_line:string (required); second_line:string (required);
   name_color:AreaNameColor (required); portrait:SelectionAppearance;
   skills:[string] (required);
+  name_warning:PetCaption;
 }
 table PetTrainersState {
   animal_id:int32 = -1; revision:uint64; assigned:bool;
   trainer_id:int32 = -1; any_trainer:bool; unassigned_only:bool;
   unit_ids:[int32] (required); rows:[PetTrainerRow] (required);
+  header:string (required);
 }
 table PetTrainerRequest {
   animal_id:int32 = -1; expected_revision:uint64; mode:PetTrainerMode; trainer_id:int32 = -1;
@@ -2778,7 +2782,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 257;
+  schema_version:uint32 = 258;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2864,7 +2868,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 257;
+  schema_version:uint32 = 258;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

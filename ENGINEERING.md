@@ -12817,6 +12817,17 @@ nativeZoneAnimalUnitDisplay already supplies the pinned caste-flag observation a
 literal warning at1786f68, but CreatureListRow does not yet carry that warning.
 Do not infer it from name text or silently omit it in the completed Pets view.
 
+Management protocol258 adds optional native name warnings to creature and trainer
+rows, and a required full trainer heading. Warning captions carry native palette
+values; item rows cannot carry a unit-name warning. The heading is bounded by the
+shared creature-text budget and must not be empty. The native heading combines
+literal1629e30 with formatter1330c30's untruncated animal name (gender=false), not
+the shortened roster lines. Widget14237a0 only emits the grazer warning when
+show_profession is true; its fitting combined-name and split-name branches have
+different vertical offsets. Both bridge and consumer must rebuild for region v258.
+Protocol257 records cannot supply these facts and are rejected rather than migrated
+with invented text. Producer/consumer integration and live acceptance remain pending.
+
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching
 item-name renderer1423fe0. Native142b45a..142b4c5 captures raw item.pos for Recenter;

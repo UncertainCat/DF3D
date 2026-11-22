@@ -107,3 +107,17 @@ TEST_CASE("Knowledge continuation requires a receipt") {
   CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
  }
 }
+TEST_CASE("Trainer heading and native warning captions retain bounded source text") {
+ for(int fault=0;fault<5;++fault) {
+  flatbuffers::FlatBufferBuilder b;
+  auto header=b.CreateString(fault==1?"":fault==2?std::string(4097,'x'):"native heading fixture");
+  auto first=b.CreateString("trainer"),empty=b.CreateString("");
+  auto warning=m::CreatePetCaption(b,b.CreateString(fault==4?std::string("bad\0text",8):"warning fixture"),fault==3?8:2,0,true);
+  auto color=m::CreateAreaNameColor(b);
+  auto row=m::CreatePetTrainerRow(b,12,first,empty,color,0,b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{}),warning);
+  auto payload=m::CreatePetTrainersState(b,7,1,false,-1,false,false,b.CreateVector(std::vector<int32_t>{12}),b.CreateVector(std::vector{row}),header);
+  m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(m::ManagementAction::PetTrainersRead);
+  s.add_status(m::ManagementStatus::Ok);s.add_pet_trainers(payload);b.Finish(s.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
+ }
+}

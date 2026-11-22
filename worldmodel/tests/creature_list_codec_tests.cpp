@@ -49,7 +49,7 @@ TEST_CASE("Creature workflows preserve typed identities, receipts and unknown ou
   color=m::CreateAreaNameColor(b,1,0,1,2,0,0,0);
   auto trainer=m::CreatePetTrainerRow(b,12,b.CreateString("fixture trainer"),b.CreateString(""),color,0,
     b.CreateVector(std::vector{b.CreateString("fixture skill")}));
-  auto trainers=m::CreatePetTrainersState(b,7,revision,true,12,false,false,b.CreateVector(std::vector<int32_t>{12,13}),b.CreateVector(std::vector{trainer}));
+  auto trainers=m::CreatePetTrainersState(b,7,revision,true,12,false,false,b.CreateVector(std::vector<int32_t>{12,13}),b.CreateVector(std::vector{trainer}),b.CreateString("trainer heading fixture"));
   m::ManagementStateBuilder ts(b);ts.add_revision(3);ts.add_action(m::ManagementAction::PetTrainersRead);
   ts.add_status(m::ManagementStatus::Ok);ts.add_pet_trainers(trainers);b.Finish(ts.Finish());
   s=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE_FALSE(m::validateManagementState(*s));decoded=c::decodeState(s);

@@ -192,8 +192,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 257;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v257";
+inline constexpr uint32_t kManagementVersion = 258;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v258";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kCreatureListEntries = 65536;
@@ -2227,7 +2227,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if(v->kind()!=CreatureListKind::Unit || v->position() || v->can_inspect())return "invalid dead creature navigation";
       } else if(!v->position() || !v->can_inspect())return "missing creature navigation";
       if(const auto* pos=v->position())if(pos->x()<INT16_MIN || pos->x()>INT16_MAX || pos->y()<INT16_MIN || pos->y()>INT16_MAX || pos->z()<INT16_MIN || pos->z()>INT16_MAX)return "invalid creature position";
-      if(v->kind()==CreatureListKind::Item && (v->second_line()->size() || v->job_target()))return "unexpected item creature fields";
+      if(v->name_warning() && !validPetCaption(v->name_warning(),bytes))return "invalid creature name warning";
+      if(v->kind()==CreatureListKind::Item && (v->second_line()->size() || v->job_target() || v->name_warning()))return "unexpected item creature fields";
       if(const auto* job=v->job_target())if(job->job_id()<0 || job->building_id()<0)return "invalid creature job target";
       if(q->tab()==CreatureListTab::Pets) {
         if(!validPetControls(v->pet(),v->kind(),bytes))return "invalid pet row controls";
@@ -2248,11 +2249,13 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
        (!q->assigned() && (q->trainer_id()!=-1 || q->any_trainer() || q->unassigned_only())) ||
        !q->unit_ids() || q->unit_ids()->size()>kResidentsQueryUnits || !q->rows() || q->rows()->size()>64)return "invalid pet trainers result";
     std::unordered_set<int32_t> candidates,seen;size_t bytes=0,art=0;
+    if(!validCreatureText(q->header(),bytes) || !q->header()->size())return "invalid trainer heading";
     for(auto id:*q->unit_ids())if(id<0 || !candidates.insert(id).second)return "invalid trainer candidate identity";
     for(const auto* v:*q->rows()) {
       if(!v || !candidates.count(v->id()) || !seen.insert(v->id()).second ||
          !validCreatureText(v->first_line(),bytes) || !validCreatureText(v->second_line(),bytes) ||
          !validCreatureColor(v->name_color()) || !v->skills() || v->skills()->size()>149)return "invalid trainer row";
+      if(v->name_warning() && !validPetCaption(v->name_warning(),bytes))return "invalid trainer name warning";
       for(const auto* text:*v->skills())if(!validCreatureText(text,bytes))return "invalid trainer skill";
       if(v->portrait())if(auto error=validateOwnerAppearance(*v->portrait(),art))return error;
     }

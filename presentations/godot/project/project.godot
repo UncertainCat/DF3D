@@ -6,7 +6,7 @@ config_version=5
 
 config/name="DF3D"
 config/description="A 3D presentation of a running Dwarf Fortress game, rendered from your own Steam install."
-config/version="0.2.0"
+config/version="0.3.0-rc.1"
 run/main_scene="res://scenes/entry.tscn"
 config/features=PackedStringArray("4.7")
 

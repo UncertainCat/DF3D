@@ -35567,7 +35567,7 @@ only in its ignored harness; product labels remain driven by session data.
 
 ## Windows package
 
-Run `DF3D-0.1.0-windows-x64.exe`, select your installed Dwarf Fortress, and use **Set up bridge**
+Run the versioned `DF3D-<version>-windows-x64.exe`, select your installed Dwarf Fortress, and use **Set up bridge**
 with the game closed. The launcher discovers Steam libraries and also accepts `DF3D_DF_PATH`
 or a folder selected with Browse. Godot and the required runtimes are included.
 
@@ -39539,7 +39539,7 @@ After building the root tools, extension and pinned DFHack fork, import the Godo
 ```powershell
 python tools/release/build_payload.py
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/release/smoke_package.ps1 `
-    -Artifact build/release-0.1.0/DF3D-0.1.0-windows-x64.exe
+    -Artifact build/release-0.3.0-rc.1/DF3D-0.3.0-rc.1-windows-x64.exe
 ```
 
 The builder reads `config/version`, discovers the Godot editor, stages DFHack from its build

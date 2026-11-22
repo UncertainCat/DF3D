@@ -22,8 +22,16 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Current management protocol251 adds independently revisioned cage occupant pages
-and parent assignment intents. Both peers must use251. Ordered occupant rows carry
+Current management protocol259 separates pet training captions from ownership
+captions. Both peers must use259; a flat older caption array cannot identify the
+groups. Protocol258 added native name warnings and full trainer headings;
+257 added sibling creature rows, pet edits and training;256 added Pets, Other and
+Dead/Missing queries. Protocol255 added bounded display-reply paging;254 added
+display edits;253 added siege bodies;252 added typed nest, trap and hive bodies.
+Older records cannot synthesize these facts. Rebuild the viewer and bridge together.
+
+Protocol251 added independently revisioned cage occupant pages
+and parent assignment intents. That migration required251 on both peers. Ordered occupant rows carry
 containment, assignment, resolution, native name/status/color and optional appearance;
 they cannot be inferred from picker candidates or replayed from older recordings.
 Protocol250 added cage-room location kind, tier and contents presence; older room

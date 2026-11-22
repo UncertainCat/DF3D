@@ -90,9 +90,14 @@ func _draw() -> void:
 		if portrait!=null:draw_texture_rect(portrait,Rect2(x+2,y+2,32,32),false)
 		if is_trainers():
 			var ink:=NameColor.choose(row.name_color,ticks_override if ticks_override>=0 else Time.get_ticks_msec(),0 if ticks_override>=0 else randi_range(0,1))
+			var warning: Dictionary=row.get("name_warning",{})
+			# Native1423d0f/1423d39 shifts split names for the grazer line;
+			# the fitting combined-name branch1423d52 retains its baseline.
+			var shift:=12 if not warning.is_empty() and not str(row.second_line).is_empty() else 0
 			if not ink.is_empty():
-				text(row.first_line,Vector2(56,y+12),int(ink[0])+8*int(ink[2]),240)
-				text(row.second_line,Vector2(56,y+24),int(ink[0])+8*int(ink[2]),240)
+				text(row.first_line,Vector2(56,y+12-shift),int(ink[0])+8*int(ink[2]),240)
+				text(row.second_line,Vector2(56,y+24-shift),int(ink[0])+8*int(ink[2]),240)
+			if not warning.is_empty():text(warning.text,Vector2(64,y+24),int(warning.foreground)+8*int(warning.bright))
 			for index in row.skills.size():text(row.skills[index],Vector2(296,y+24+index*12))
 		else:
 			text(row.name,Vector2(80,y+24))

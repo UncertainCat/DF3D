@@ -43,6 +43,12 @@ func read_rows(tab: int,targets: Array) -> Array:
 	check(response.get("status")==C.ManagementStatus.Ok,"Creature rows rejected: "+str(response.get("message","")))
 	return response.get("creature_list_rows",{}).get("rows",[])
 
+func check_warning(row: Dictionary,grazer: bool) -> void:
+	check(row.has("name_warning")==grazer,"Native grazer warning presence differs")
+	if grazer:
+		var warning: Dictionary=row.get("name_warning",{})
+		check(warning.get("text")=="Grazer: requires pasture" and warning.get("foreground")==2 and warning.get("background")==0 and warning.get("bright")==true,"Native grazer warning differs")
+
 func workflows() -> void:
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/creature-workflows-wire-reference.json"))
 	var editable: Array=[]
@@ -62,6 +68,7 @@ func workflows() -> void:
 				check(row.can_inspect==(tab!=3) and row.has("position")== (tab!=3),"Creature row navigation differs")
 				if tab!=3:check(row.position==Vector3i(int(native.position[0]),int(native.position[1]),int(native.position[2])),"Creature raw position differs")
 				if row.kind==0:
+					check_warning(row,native.grazer)
 					check(row.first_line==value.first_line and row.second_line==value.second_line,"Creature name differs")
 					for key in ["color","alternate"]:check(PackedInt32Array(row.name_color[key])==PackedInt32Array(value.name_color[key]),"Creature name color differs")
 					check(row.name_color.effect==int(value.name_color.effect),"Creature name effect differs")
@@ -85,7 +92,7 @@ func workflows() -> void:
 					for control: Dictionary in pet.controls:
 						check(control.value==native.pet.values[control.action],"Pet action value differs")
 						if control.action<=2:editable.append({"target":targets[i],"control":control,"revision":pet.revision})
-					if native.has("trainers"):trainer_cases.append({"id":row.id,"revision":pet.revision,"native":native.trainers})
+					if native.has("trainers"):trainer_cases.append({"id":row.id,"revision":pet.revision,"native":native.trainers,"header":native.get("trainer_header","")})
 				counts[str(tab)]+=1
 	for sample: Dictionary in trainer_cases:
 		var ids:=PackedInt32Array()
@@ -94,7 +101,10 @@ func workflows() -> void:
 			var response:=await request("pet_trainers",{"action":C.ManagementAction.PetTrainersRead,"animal_id":sample.id,"expected_revision":sample.revision,"columns":30,"unit_ids":ids.slice(offset,offset+64)})
 			var state: Dictionary=response.get("pet_trainers",{})
 			if not check(response.get("status")==C.ManagementStatus.Ok and state.get("unit_ids")==ids,"Trainer order differs"):return
-			for i in state.rows.size():check(state.rows[i].id==ids[offset+i] and state.rows[i].skills==sample.native[offset+i].skills,"Trainer skills differ")
+			if not sample.header.is_empty():check(state.header==sample.header,"Trainer heading differs from captured native widget: expected="+sample.header+" observed="+state.header)
+			for i in state.rows.size():
+				check(state.rows[i].id==ids[offset+i] and state.rows[i].skills==sample.native[offset+i].skills,"Trainer skills differ")
+				check_warning(state.rows[i],sample.native[offset+i].grazer)
 		if failed:return
 		if not check(not ids.is_empty(),"Trainer fixture has no candidate"):return
 		for mode in [C.PetTrainerMode.Any,C.PetTrainerMode.Unassigned,C.PetTrainerMode.Individual,C.PetTrainerMode.None]:

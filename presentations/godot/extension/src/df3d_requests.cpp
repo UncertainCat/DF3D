@@ -186,6 +186,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         Dictionary value;Array rows;value["tab"]=int(s.creatureListRows->tab);
         for(const auto& v:s.creatureListRows->rows) {
             Dictionary row;row["kind"]=int(v.kind);row["id"]=v.id;
+            if(v.nameWarning)row["name_warning"]=petCaption(*v.nameWarning);
             row["first_line"]=String::utf8(v.firstLine.c_str());row["second_line"]=String::utf8(v.secondLine.c_str());
             row["name_color"]=creatureColor(v.nameColor);row["activity"]=petCaption(v.activity);row["can_inspect"]=v.canInspect;
             if(v.portrait)row["portrait"]=management::itemRecipeDictionary(*v.portrait);
@@ -212,10 +213,11 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
     if(s.petTrainers) {
         const auto& v=*s.petTrainers;Dictionary value;Array rows;PackedInt32Array ids;
         value["animal_id"]=v.animalId;value["revision"]=int64_t(v.revision);value["assigned"]=v.assigned;
-        value["trainer_id"]=v.trainerId;value["any_trainer"]=v.anyTrainer;value["unassigned_only"]=v.unassignedOnly;
+        value["trainer_id"]=v.trainerId;value["any_trainer"]=v.anyTrainer;value["unassigned_only"]=v.unassignedOnly;value["header"]=String::utf8(v.header.c_str());
         for(auto id:v.unitIds)ids.push_back(id);value["unit_ids"]=ids;
         for(const auto& r:v.rows){Dictionary row;Array skills;row["id"]=r.id;row["first_line"]=String::utf8(r.firstLine.c_str());
             row["second_line"]=String::utf8(r.secondLine.c_str());row["name_color"]=creatureColor(r.nameColor);
+            if(r.nameWarning)row["name_warning"]=petCaption(*r.nameWarning);
             if(r.portrait)row["portrait"]=management::itemRecipeDictionary(*r.portrait);
             for(const auto& skill:r.skills)skills.push_back(String::utf8(skill.c_str()));row["skills"]=skills;rows.push_back(row);}
         value["rows"]=rows;result["pet_trainers"]=value;

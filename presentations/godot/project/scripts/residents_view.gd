@@ -253,9 +253,12 @@ func _draw() -> void:
 			var recenter: Texture2D=art.texture("STOCKS_RECENTER")
 			if recenter!=null:draw_texture_rect(recenter,Rect2(304,y,24,36),false)
 		var ink:=NameColor.choose(row.name_color,ticks_override if ticks_override>=0 else Time.get_ticks_msec(),0 if ticks_override>=0 else randi_range(0,1))
+		var warning: Dictionary=row.get("name_warning",{})
+		var name_shift:=12 if not warning.is_empty() and not str(row.second_line).is_empty() else 0
 		if not ink.is_empty():
-			text(row.first_line,Vector2(56,y+24),int(ink[0])+8*int(ink[2]),240)
-			text(row.second_line,Vector2(56,y+36),int(ink[0])+8*int(ink[2]),240)
+			text(row.first_line,Vector2(56,y+24-name_shift),int(ink[0])+8*int(ink[2]),240)
+			text(row.second_line,Vector2(56,y+36-name_shift),int(ink[0])+8*int(ink[2]),240)
+		if not warning.is_empty():text(warning.text,Vector2(64,y+36),int(warning.foreground)+8*int(warning.bright))
 		text(row.activity.caption,Vector2(368,y+24),int(row.activity.fg)+8*int(row.activity.bright),280)
 		var indicator_x:=736
 		for entry: Dictionary in row.get("assignments",[]):

@@ -37,6 +37,8 @@ std::optional<std::vector<ZoneSelectedOwner>> nativeZoneSelectedOwners(df::build
 struct ZoneOwnerDisplayText { std::string combined,name,profession,firstLine,secondLine; };
 // Native display readers write caller-owned DF-encoded strings; no renderer call.
 std::optional<ZoneOwnerDisplayText> nativeUnitNameDisplayText(df::unit& candidate,int32_t columns,bool showGender,bool showProfession,bool oneLineOnly);
+// Native profession-style name widget warning; empty when no warning applies.
+std::optional<std::string> nativeUnitNameWarning(df::unit& candidate);
 std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candidate,int32_t columns,bool showGender=true);
 struct ZoneOwnerColorSources {
     int32_t identityId=-1,identityProfession=-1,identityImpersonatedHistfig=-1;

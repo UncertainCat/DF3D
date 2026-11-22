@@ -797,15 +797,16 @@ struct CreatureListRow {
   std::string firstLine,secondLine; AreaNameColor nameColor; PetCaption activity;
   std::optional<SelectionAppearance> portrait; std::optional<TilePos> position;
   bool canInspect=false; std::optional<ResidentJobTarget> jobTarget; std::optional<PetRowControls> pet;
+  std::optional<PetCaption> nameWarning;
 };
 struct CreatureListRowsState { CreatureListTab tab=CreatureListTab::Pets; std::vector<CreatureListRow> rows; };
 struct PetActionRequest { CreatureListIdentity target; uint64_t expectedRevision=0; PetAction action=PetAction::Slaughter; bool desired=false; };
 struct PetEditState { CreatureListIdentity target; PetOutcome outcome=PetOutcome::Rejected; };
 struct PetTrainersRequest { int32_t animalId=-1; uint64_t expectedRevision=0; std::vector<int32_t> unitIds; uint16_t columns=30; };
-struct PetTrainerRow { int32_t id=-1; std::string firstLine,secondLine; AreaNameColor nameColor; std::optional<SelectionAppearance> portrait; std::vector<std::string> skills; };
+struct PetTrainerRow { int32_t id=-1; std::string firstLine,secondLine; AreaNameColor nameColor; std::optional<SelectionAppearance> portrait; std::vector<std::string> skills; std::optional<PetCaption> nameWarning; };
 struct PetTrainersState {
   int32_t animalId=-1; uint64_t revision=0; bool assigned=false; int32_t trainerId=-1;
-  bool anyTrainer=false,unassignedOnly=false; std::vector<int32_t> unitIds; std::vector<PetTrainerRow> rows;
+  bool anyTrainer=false,unassignedOnly=false; std::vector<int32_t> unitIds; std::vector<PetTrainerRow> rows; std::string header;
 };
 struct PetTrainerRequest { int32_t animalId=-1; uint64_t expectedRevision=0; PetTrainerMode mode=PetTrainerMode::None; int32_t trainerId=-1; };
 struct PetKnowledgeRequest { uint64_t expectedRevision=0; uint32_t offset=0; uint16_t limit=64; };

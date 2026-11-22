@@ -928,7 +928,11 @@ std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candida
 std::optional<ZoneAnimalUnitDisplay> nativeZoneAnimalUnitDisplay(df::unit& candidate,int32_t columns) {
     const auto text=nativeZoneOwnerDisplayText(candidate,columns);
     const auto color=nativeZoneOwnerNameColor(candidate);
-    if(!text || !color)return std::nullopt;
+    const auto warning=nativeUnitNameWarning(candidate);
+    if(!text || !color || !warning)return std::nullopt;
+    return ZoneAnimalUnitDisplay{*text,*color,!warning->empty(),*warning};
+}
+std::optional<std::string> nativeUnitNameWarning(df::unit& candidate) {
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     // Pin the observed inline variant, but never enter its render function.
     // Its GRAZER test is the cached caste flag, not the broader DFHack helper.
@@ -936,9 +940,9 @@ std::optional<ZoneAnimalUnitDisplay> nativeZoneAnimalUnitDisplay(df::unit& candi
     if(!compatible)return std::nullopt;
     static_assert(int(df::caste_raw_flags::GRAZER)==106);
     static_assert(offsetof(df::unit,enemy)+offsetof(df::unit::T_enemy,caste_flags)==0x1278);
-    ZoneAnimalUnitDisplay result{*text,*color,candidate.enemy.caste_flags.is_set(df::caste_raw_flags::GRAZER),{}};
+    std::string result;
     // Inline warning copies at1423dda/1423de4 refer to this immutable literal.
-    if(result.grazer)result.warning.assign(reinterpret_cast<const char*>(base+0x1786f68),24);
+    if(candidate.enemy.caste_flags.is_set(df::caste_raw_flags::GRAZER))result.assign(reinterpret_cast<const char*>(base+0x1786f68),24);
     return result;
 }
 namespace {

@@ -618,6 +618,7 @@ struct CreatureRowResult {
   std::optional<df3d_production::JobSettingsTarget> jobTarget;
   std::optional<df3d_residents::PetEditState> pet;
   std::vector<std::string> skills;
+  std::string nameWarning;
 };
 struct CreatureRowsResult {m::CreatureListTab tab;std::vector<CreatureRowResult> rows;};
 std::optional<CreatureRowsResult> creatureRows;
@@ -626,6 +627,7 @@ std::optional<PetEditResult> petEdit;
 struct PetTrainersResult {
   int32_t animalId=-1;uint64_t revision=0;bool assigned=false;int32_t trainerId=-1;
   bool anyTrainer=false,unassignedOnly=false;std::vector<int32_t> ids;std::vector<CreatureRowResult> rows;
+  std::string header;
 };
 std::optional<PetTrainersResult> petTrainers;
 struct PetKnowledgeResult {uint64_t revision;uint32_t total,offset;std::vector<df3d_residents::TrainingKnowledgeRow> rows;};
@@ -1643,6 +1645,10 @@ void publish() {
   const auto creatureColor=[&](const df3d_area::ZoneOwnerNameColor& c) {
     return m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
   };
+  const auto nameWarning=[&](const std::string& text) {
+    // Native1423d97: grazer warning uses palette2/0/1.
+    return text.empty()?flatbuffers::Offset<m::PetCaption>{}:m::CreatePetCaption(b,b.CreateString(text),2,0,true);
+  };
   flatbuffers::Offset<m::CreatureListRowsState> creatureRowsResult;
   if(creatureRows) {
     std::vector<flatbuffers::Offset<m::CreatureListRow>> rows;
@@ -1663,7 +1669,7 @@ void publish() {
       if(v.position)pos.emplace(v.position->x,v.position->y,v.position->z);
       rows.push_back(m::CreateCreatureListRow(b,m::CreatureListKind(v.kind),v.id,b.CreateString(v.text.name.firstLine),b.CreateString(v.text.name.secondLine),
         creatureColor(v.text.nameColor),m::CreatePetCaption(b,b.CreateString(a.caption),uint8_t(a.foreground),uint8_t(a.background),a.bright),encodeItemRecipe(v.portrait),
-        pos?&*pos:nullptr,v.canInspect,v.jobTarget?m::CreateResidentJobTarget(b,v.jobTarget->jobId,v.jobTarget->buildingId):flatbuffers::Offset<m::ResidentJobTarget>{},controls));
+        pos?&*pos:nullptr,v.canInspect,v.jobTarget?m::CreateResidentJobTarget(b,v.jobTarget->jobId,v.jobTarget->buildingId):flatbuffers::Offset<m::ResidentJobTarget>{},controls,nameWarning(v.nameWarning)));
     }
     creatureRowsResult=m::CreateCreatureListRowsState(b,creatureRows->tab,b.CreateVector(rows));
   }
@@ -1672,8 +1678,8 @@ void publish() {
   if(petTrainers) {
     const auto& v=*petTrainers;std::vector<flatbuffers::Offset<m::PetTrainerRow>> rows;
     for(const auto& row:v.rows)rows.push_back(m::CreatePetTrainerRow(b,row.id,b.CreateString(row.text.name.firstLine),b.CreateString(row.text.name.secondLine),
-      creatureColor(row.text.nameColor),encodeItemRecipe(row.portrait),b.CreateVectorOfStrings(row.skills)));
-    petTrainersResult=m::CreatePetTrainersState(b,v.animalId,v.revision,v.assigned,v.trainerId,v.anyTrainer,v.unassignedOnly,b.CreateVector(v.ids),b.CreateVector(rows));
+      creatureColor(row.text.nameColor),encodeItemRecipe(row.portrait),b.CreateVectorOfStrings(row.skills),nameWarning(row.nameWarning)));
+    petTrainersResult=m::CreatePetTrainersState(b,v.animalId,v.revision,v.assigned,v.trainerId,v.anyTrainer,v.unassignedOnly,b.CreateVector(v.ids),b.CreateVector(rows),b.CreateString(v.header));
   }
   flatbuffers::Offset<m::PetKnowledgeState> petKnowledgeResult;
   if(petKnowledge) {
@@ -6134,7 +6140,8 @@ void run(color_ostream& out) {
             if(kind==0) {
               auto* unit=df::unit::find(id);if(!unit)break;
               const auto value=df3d_residents::creatureUnitRowText(unit,q.columns(),q.tab()==m::CreatureListTab::Pets);if(!value)break;
-              row.text=*value;row.portrait=unitPortrait(unit);
+              const auto warning=df3d_area::nativeUnitNameWarning(*unit);if(!warning)break;
+              row.text=*value;row.nameWarning=*warning;row.portrait=unitPortrait(unit);
               if(row.canInspect)row.position=unit->pos;
               row.jobTarget=df3d_production::jobSettingsTarget(unit->job.current_job);
             } else {
@@ -6147,7 +6154,7 @@ void run(color_ostream& out) {
               // layer sets belong to the separate item-detail surface.
               df3d_appearance::Result look;if(df3d_appearance::resolveCritterItemSelector(item,look))row.portrait=df3d_production::ownedItemRecipe(look);
             }
-            if(!text(row.text.name.firstLine) || !text(row.text.name.secondLine) || !text(row.text.activity.caption))break;
+            if(!text(row.text.name.firstLine) || !text(row.text.name.secondLine) || !text(row.text.activity.caption) || !text(row.nameWarning))break;
             if(q.tab()==m::CreatureListTab::Pets) {
               row.pet=df3d_residents::petEditState(kind,id);if(!row.pet)break;
               auto& controls=row.pet->controls;
@@ -6184,8 +6191,9 @@ void run(color_ostream& out) {
         if(members && member(*members,0,q.animal_id())) {
           const auto current=df3d_residents::petEditState(0,q.animal_id());
           const auto choices=current && current->revision==q.expected_revision()?df3d_residents::petTrainers(q.animal_id()):std::nullopt;
-          if(choices && choices->size()<=65536) {
-            PetTrainersResult result;result.animalId=q.animal_id();result.revision=current->revision;
+          auto heading=choices?df3d_residents::petTrainerHeading(df::unit::find(q.animal_id())):std::nullopt;
+          if(choices && choices->size()<=65536 && heading && text(*heading)) {
+            PetTrainersResult result;result.header=std::move(*heading);result.animalId=q.animal_id();result.revision=current->revision;
             if(const auto* assignment=df::training_assignment::find(q.animal_id())) {
               result.assigned=true;result.trainerId=assignment->trainer_id;result.anyTrainer=assignment->flags.bits.any_trainer;
               result.unassignedOnly=assignment->flags.bits.any_unassigned_trainer;
@@ -6194,9 +6202,10 @@ void run(color_ostream& out) {
             for(auto id:*q.unit_ids()) {
               const auto choice=std::find_if(choices->begin(),choices->end(),[&](const auto& v){return v.id==id;});if(choice==choices->end())break;
               auto* unit=df::unit::find(id);const auto name=df3d_residents::petTrainerName(unit,q.columns());
-              const auto color=unit?df3d_area::nativeZoneOwnerNameColor(*unit):std::nullopt;if(!name || !color)break;
-              CreatureRowResult row;row.id=id;row.text.name=*name;row.text.nameColor=*color;row.portrait=unitPortrait(unit);row.skills=choice->skills;
-              bool valid=text(row.text.name.firstLine) && text(row.text.name.secondLine);
+              const auto color=unit?df3d_area::nativeZoneOwnerNameColor(*unit):std::nullopt;
+              const auto warning=unit?df3d_area::nativeUnitNameWarning(*unit):std::nullopt;if(!name || !color || !warning)break;
+              CreatureRowResult row;row.nameWarning=*warning;row.id=id;row.text.name=*name;row.text.nameColor=*color;row.portrait=unitPortrait(unit);row.skills=choice->skills;
+              bool valid=text(row.text.name.firstLine) && text(row.text.name.secondLine) && text(row.nameWarning);
               for(auto& skill:row.skills)if(!text(skill))valid=false;if(!valid)break;
               result.rows.push_back(std::move(row));
             }

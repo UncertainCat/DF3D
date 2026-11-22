@@ -61,6 +61,7 @@ ManagementState decodeState(const m::ManagementState* s) {
       CreatureListRow row;row.kind=CreatureListKind(v->kind());row.id=v->id();
       row.firstLine=v->first_line()->str();row.secondLine=v->second_line()->str();row.nameColor=creatureColor(v->name_color());
       row.activity=petCaption(v->activity());row.canInspect=v->can_inspect();
+      if(v->name_warning())row.nameWarning=petCaption(v->name_warning());
       if(v->portrait())row.portrait=decodeItemRecipe(v->portrait());
       if(const auto* p=v->position())row.position=TilePos{p->x(),p->y(),p->z()};
       if(const auto* j=v->job_target())row.jobTarget=ResidentJobTarget{j->job_id(),j->building_id()};
@@ -76,10 +77,11 @@ ManagementState decodeState(const m::ManagementState* s) {
   if(const auto* r=s->pet_edit())next.petEdit=PetEditState{{CreatureListKind(r->target()->kind()),r->target()->id()},PetOutcome(r->outcome())};
   if(const auto* r=s->pet_trainers()) {
     auto& out=next.petTrainers.emplace();out.animalId=r->animal_id();out.revision=r->revision();out.assigned=r->assigned();
-    out.trainerId=r->trainer_id();out.anyTrainer=r->any_trainer();out.unassignedOnly=r->unassigned_only();
+    out.trainerId=r->trainer_id();out.anyTrainer=r->any_trainer();out.unassignedOnly=r->unassigned_only();out.header=r->header()->str();
     out.unitIds.assign(r->unit_ids()->begin(),r->unit_ids()->end());
     for(const auto* v:*r->rows()) {
       PetTrainerRow row;row.id=v->id();row.firstLine=v->first_line()->str();row.secondLine=v->second_line()->str();row.nameColor=creatureColor(v->name_color());
+      if(v->name_warning())row.nameWarning=petCaption(v->name_warning());
       if(v->portrait())row.portrait=decodeItemRecipe(v->portrait());
       for(const auto* skill:*v->skills())row.skills.push_back(skill->str());
       out.rows.push_back(std::move(row));

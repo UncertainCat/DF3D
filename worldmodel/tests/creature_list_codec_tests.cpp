@@ -33,13 +33,17 @@ TEST_CASE("Creature workflows preserve typed identities, receipts and unknown ou
   auto pet=m::CreatePetRowControls(b,revision,b.CreateVector(std::vector{caption}),b.CreateVector(std::vector{owner}),b.CreateVector(std::vector{control}));
   m::TilePos position(-30000,-30000,-30000);
   auto row=m::CreateCreatureListRow(b,m::CreatureListKind::Item,7,b.CreateString("fixture pet"),b.CreateString(""),color,caption,0,&position,true,0,pet);
-  auto rows=m::CreateCreatureListRowsState(b,m::CreatureListTab::Pets,b.CreateVector(std::vector{row}));
+  auto unitRow=m::CreateCreatureListRow(b,m::CreatureListKind::Unit,7,b.CreateString("fixture unit"),b.CreateString(""),color,caption,0,&position,true,0,pet,
+    m::CreatePetCaption(b,b.CreateString("unit warning fixture"),2,0,true));
+  auto rows=m::CreateCreatureListRowsState(b,m::CreatureListTab::Pets,b.CreateVector(std::vector{row,unitRow}));
   m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::CreatureListRowsRead);
   state.add_status(m::ManagementStatus::Ok);state.add_creature_list_rows(rows);b.Finish(state.Finish());
   auto* s=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE(!m::validateManagementState(*s));
   auto decoded=c::decodeState(s);REQUIRE(decoded.creatureListRows);const auto& r=decoded.creatureListRows->rows.at(0);
-  REQUIRE((r.kind==wm::CreatureListKind::Item && r.position->x==-30000 && r.canInspect && !r.jobTarget));
+  REQUIRE((r.kind==wm::CreatureListKind::Item && !r.nameWarning && r.position->x==-30000 && r.canInspect && !r.jobTarget));
   REQUIRE((r.pet->revision==revision && r.pet->owners.at(0).firstLine=="fixture owner" && r.pet->controls.at(0).value));
+  REQUIRE(decoded.creatureListRows->rows.at(1).nameWarning);
+  REQUIRE(decoded.creatureListRows->rows.at(1).nameWarning->text=="unit warning fixture");
   b.Clear();auto edit=m::CreatePetEditState(b,m::CreateCreatureListIdentity(b,m::CreatureListKind::Item,7),m::PetOutcome::Unknown);
   m::ManagementStateBuilder result(b);result.add_revision(2);result.add_action(m::ManagementAction::PetActionApply);
   result.add_status(m::ManagementStatus::Rejected);result.add_pet_edit(edit);b.Finish(result.Finish());
@@ -48,12 +52,17 @@ TEST_CASE("Creature workflows preserve typed identities, receipts and unknown ou
   b.Clear();
   color=m::CreateAreaNameColor(b,1,0,1,2,0,0,0);
   auto trainer=m::CreatePetTrainerRow(b,12,b.CreateString("fixture trainer"),b.CreateString(""),color,0,
-    b.CreateVector(std::vector{b.CreateString("fixture skill")}));
+    b.CreateVector(std::vector{b.CreateString("fixture skill")}),m::CreatePetCaption(b,b.CreateString("warning fixture"),2,0,true));
   auto trainers=m::CreatePetTrainersState(b,7,revision,true,12,false,false,b.CreateVector(std::vector<int32_t>{12,13}),b.CreateVector(std::vector{trainer}),b.CreateString("trainer heading fixture"));
   m::ManagementStateBuilder ts(b);ts.add_revision(3);ts.add_action(m::ManagementAction::PetTrainersRead);
   ts.add_status(m::ManagementStatus::Ok);ts.add_pet_trainers(trainers);b.Finish(ts.Finish());
   s=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE_FALSE(m::validateManagementState(*s));decoded=c::decodeState(s);
-  REQUIRE(decoded.petTrainers);REQUIRE(decoded.petTrainers->revision==revision);REQUIRE(decoded.petTrainers->unitIds==std::vector<int32_t>{12,13});
+  REQUIRE(decoded.petTrainers);REQUIRE(decoded.petTrainers->header=="trainer heading fixture");
+  REQUIRE(decoded.petTrainers->rows.at(0).nameWarning);
+  REQUIRE(decoded.petTrainers->rows.at(0).nameWarning->text=="warning fixture");
+  REQUIRE(decoded.petTrainers->rows.at(0).nameWarning->foreground==2);
+  REQUIRE(decoded.petTrainers->rows.at(0).nameWarning->bright);
+  REQUIRE(decoded.petTrainers->revision==revision);REQUIRE(decoded.petTrainers->unitIds==std::vector<int32_t>{12,13});
   REQUIRE(decoded.petTrainers->rows.at(0).skills==std::vector<std::string>{"fixture skill"});REQUIRE_FALSE(decoded.petEdit);
   b.Clear();caption=m::CreatePetCaption(b,b.CreateString("fixture knowledge"),2,0,true);
   auto species=m::CreatePetKnowledgeRow(b,5,2,b.CreateString("fixture species"),caption);

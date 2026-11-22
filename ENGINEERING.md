@@ -12808,14 +12808,8 @@ dismiss the local picker without reporting an applied edit; returning rereads th
 roster. Headless checks cover paging, changed order, stale replies, close, generic
 row dispatch and unknown outcomes; Residents, Work Details, UI composition and
 all19 core checks pass. Pane geometry is based on native094804/093702, but rendered
-parity remains unverified. The trainer heading, grazer warning and species artwork
-still require producer/contract integration; public sibling tabs remain unwired.
-
-Remaining name-display integration: native widget_unit_name renders the grazer
-warning as a third line and shifts two-line names upward. The shared owned
-nativeZoneAnimalUnitDisplay already supplies the pinned caste-flag observation and
-literal warning at1786f68, but CreatureListRow does not yet carry that warning.
-Do not infer it from name text or silently omit it in the completed Pets view.
+parity remains unverified. Species artwork and public sibling-tab input remain
+unimplemented; heading and warning integration is qualified below.
 
 Management protocol258 adds optional native name warnings to creature and trainer
 rows, and a required full trainer heading. Warning captions carry native palette
@@ -12826,7 +12820,27 @@ the shortened roster lines. Widget14237a0 only emits the grazer warning when
 show_profession is true; its fitting combined-name and split-name branches have
 different vertical offsets. Both bridge and consumer must rebuild for region v258.
 Protocol257 records cannot supply these facts and are rejected rather than migrated
-with invented text. Producer/consumer integration and live acceptance remain pending.
+with invented text. The bridge, neutral model and Godot dictionaries now carry
+these facts. nativeUnitNameWarning shares the existing pinned zone-animal warning
+reader; petTrainerHeading owns its description context and restores random streams.
+Roster and trainer views shift split names when the warning is present; fitting
+combined names keep their baseline. Rendered parity of those views remains pending.
+
+Protected125038 on2026-11-22 compares the full trainer heading for animal6548 to
+native094804's captured widget text, and warning presence/text/palette to cached
+GRAZER flags for creature and trainer rows. The wire workflow passes17 Pets,
+9 Other and55 Dead rows, four pet edit families, four trainer modes with restoration,
+and45 knowledge rows. This verifies display data and retained semantic workflows,
+not public tab exposure or rendered panes. Source saves are preserved; owned
+DF59124 closes unsaved at30FPS, GPU samples53C, client stderr empty. Bridge,
+model and extension builds, three headless pane checks and all19 core checks pass.
+Evidence: `build/stockpile-storage-native-farm-discovery-20261122-125038`.
+Earlier124802/124848/124943 failed only the heading reference: the extraction script
+read a UTF-8 capture using Windows' default encoding. Explicit UTF-8 extraction
+corrected the reference without changing the product. Those runs preserved saves.
+The optional DF3D_PET_TRAINER_HEADING_REFERENCE fixture contains id/header and must
+be derived from native capture with explicit encoding, never reconstructed from
+truncated row text.
 
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching

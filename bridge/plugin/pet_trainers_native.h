@@ -1,5 +1,6 @@
 #pragma once
 #include "pet_controls_native.h"
+#include "unit_description_native.h"
 #include "df/unit_labor.h"
 
 namespace df3d_residents {
@@ -16,6 +17,8 @@ inline bool petTrainersSupported() {
             {0x1429ef0,0x408,UINT64_C(0xb77385c5e0f54a56)},
             {0x36e9ec,0x17,UINT64_C(0x4ec8381f71dcf32e)},
             {0x36eab0,0xa,UINT64_C(0x45471637cae4ef45)},
+            {0x36df18,0x13,UINT64_C(0xb380d995b4f7f20a)},
+            {0x36e02f,0xbc,UINT64_C(0xe85fdbdaeeae2ce1)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -24,6 +27,20 @@ inline bool petTrainersSupported() {
         }
         return true;
     }();return ready;
+}
+inline std::optional<std::string> petTrainerHeading(df::unit* animal) {
+    if(!animal || !petTrainersSupported() || !df3d_creature::inventoryDescriptionReady() ||
+       !animal->body.body_plan || animal->inventory.size()>10000)return std::nullopt;
+    for(const auto* held:animal->inventory)if(!held || !held->item)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    // Native36df26 formats the full animal name, then36e0b9..36e0e0 prefixes it.
+    // Keep description scratch and random streams owned; never enter its UI.
+    df3d_creature::InventoryRandomRestore restore(base);
+    df3d_creature::InventoryDescriptionContext owned(*animal);
+    std::string name;
+    reinterpret_cast<void(*)(df::unit*,std::string*,bool)>(base+0x1330c30)(owned.unit(),&name,false);
+    if(name.size()>2048)return std::nullopt;
+    return std::string(reinterpret_cast<const char*>(base+0x1629e30),21)+name;
 }
 inline std::optional<df3d_area::ZoneOwnerDisplayText> petTrainerName(df::unit* unit,int32_t columns) {
     if(!unit || columns<3 || columns>30 || !petTrainersSupported())return std::nullopt;

@@ -300,7 +300,7 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
     assert(#sorted[1].matching==1 and #sorted[2].matching==1 and sorted[1].matching[1]~=sorted[2].matching[1],'Native pet sort differs')
    end
   end
-  if index==1 and training_fixture_finish then
+  if index==1 and training_fixture_finish and os.getenv('DF3D_CREATURE_LIST_WIRE')~='1' then
    local ok,err=pcall(function()
     if os.getenv('DF3D_PET_TRAINER_REFERENCE')=='1' then
      local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','pet-training-native.lua')
@@ -320,6 +320,11 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
  local f=assert(io.open(out..'/creature-tabs-reference.json','w'));f:write(json.encode(observations));f:close()
  for _,observed in ipairs(observations)do assert(observed.matches~=false,'Creature list differs on tab '..observed.tab)end
  if os.getenv('DF3D_CREATURE_LIST_WIRE')=='1' then
+  local verify
+  if os.getenv('DF3D_CREATURE_WORKFLOWS_WIRE')=='1' then
+   local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','creature-workflows-wire-native.lua')
+   verify=assert(loadfile(path))(out,observations)
+  end
   local f=assert(io.open(out..'/shot.tmp','w'));f:write('creature-list-wire');f:close()
   assert(os.rename(out..'/shot.tmp',out..'/shot'))
   local deadline=dfhack.getTickCount()+90000
@@ -327,6 +332,8 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
    local ack=io.open(out..'/ack-creature-list-wire');if ack then ack:close();break end
    assert(dfhack.getTickCount()<deadline,'Creature list wire timeout');script.sleep(1,'frames')
   end
+  if verify then verify()end
+  if training_fixture_finish then training_fixture_finish()end
  end
  records[#records+1]={name='creature-tabs-native-discovery',modes=#observations}
  return

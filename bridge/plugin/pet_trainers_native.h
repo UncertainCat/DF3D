@@ -14,6 +14,8 @@ inline bool petTrainersSupported() {
             {0x36e720,0x71,UINT64_C(0x946299305fc7b64a)},
             {0x138ed20,0xff,UINT64_C(0x430951f9f3e403c2)},
             {0x1429ef0,0x408,UINT64_C(0xb77385c5e0f54a56)},
+            {0x36e9ec,0x17,UINT64_C(0x4ec8381f71dcf32e)},
+            {0x36eab0,0xa,UINT64_C(0x45471637cae4ef45)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -22,6 +24,14 @@ inline bool petTrainersSupported() {
         }
         return true;
     }();return ready;
+}
+inline std::optional<df3d_area::ZoneOwnerDisplayText> petTrainerName(df::unit* unit,int32_t columns) {
+    if(!unit || columns<3 || columns>30 || !petTrainersSupported())return std::nullopt;
+    static_assert(offsetof(df::widget_unit_name,show_gender)==0x158 &&
+        offsetof(df::widget_unit_name,show_profession)==0x159 && offsetof(df::widget_unit_name,one_line_only)==0x15a);
+    // Native36e9f3 writes gender=false/profession=true,36e9fc two-line output;
+    //36eab0 fixes the nominal name width at30. Layout may reduce that width.
+    return df3d_area::nativeUnitNameDisplayText(*unit,columns,false,true,false);
 }
 inline std::optional<std::vector<TrainerChoice>> petTrainers(int32_t animalId) {
     if(!df::global::world || !petTrainersSupported())return std::nullopt;

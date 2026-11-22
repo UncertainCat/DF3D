@@ -12740,12 +12740,51 @@ navigation and appearance, owner text/colors and observed help. Revision receipt
 remain64-bit integers throughout; an Unknown edit stays distinct from rejection
 or application. Adapter validation rejects malformed identities, duplicate row
 targets and inadmissible item actions before submission. These consumer paths
-do not establish bridge dispatch, public tab integration or native visual parity.
+alone do not establish public tab integration or native visual parity.
 Consumer verification: root and extension builds pass on2026-11-22; all19 root
 CTest checks pass, including typed identity, full-width receipt, optional
 navigation, owner/control, trainer-page and knowledge-page codec coverage.
 The headless management_contract_test passes with local rejection checks for
 malformed pet/row requests. No native game process is required for these checks.
+
+The bridge now dispatches all five requests at a safe point. Row batches recheck
+typed membership in the requested native roster; they never reuse Residents-only
+specialization or assignment facts. Native pet edit providers retain their revision
+and eligibility checks. Applied and Unknown both mark possible mutation; an invalid
+post-effect reply retains Pending rather than publishing a definite rejection.
+Trainer reads recheck Pets membership, the animal revision and complete native
+candidate order. Paged knowledge receipts hash the complete ordered observation;
+continuations with a changed receipt reject. All rendered text is converted to UTF-8
+and bounded before publication; the shared reply validator bounds artwork and totals.
+
+Native trainer builder36e9ec..36ea02 supplies gender=false, profession=true and
+two-line output;36eab0 fixes its nominal30-column width. petTrainerName pins these
+instructions and uses the shared owned name formatter. Unit row artwork uses the
+full-body selector. PET/VERMIN rows use resolveCritterItemSelector, the original
+small-animal tile selected by widget_item_portrait14236b0; sheet PORTRAIT layer sets
+are a different surface and must not be substituted. Species knowledge artwork
+remains absent pending the owned selector audit for widget_creature_portrait1423420.
+
+Protected120107 on2026-11-22 verifies17 Pets,9 Other (including a disposable VERMIN)
+and55 Dead/Missing rows through the Godot wire client, with native-provider name,
+color, activity, raw navigation, owner and control observations. A controlled
+trainable animal supplies122 native candidates over two row batches; all skills
+and candidate order match. Any, Unassigned, Individual and None execute and restore
+the original no-assignment state. Four ordinary pet action families toggle and
+restore through revision checks; replay of the superseded receipt rejects as Stale.
+All45 knowledge rows match across three pages; a stale continuation rejects and
+unrelated replies retain none of the new payloads. Native raw flags and trainer
+assignment restoration are independently checked after the wire client returns.
+
+The same run compares visible native PET5969 and VERMIN48520 anchors to their
+original selector tiles91091 and90947, then checks the wire page coordinates.
+Bridge build and all19 core checks pass; client stderr is empty. Owned DF20448
+closes unsaved/source-preserved at30FPS, GPU samples59–60C. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-120107`.
+The earlier115749 run passed text/actions but preceded the item-art correction;
+115542 failed only numeric-array comparisons in the oracle and preserved the save.
+These checks do not qualify complete public tab layouts, trainer-name pixels,
+species artwork, job Details on non-residents or the full pet-panel lifecycle.
 
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching

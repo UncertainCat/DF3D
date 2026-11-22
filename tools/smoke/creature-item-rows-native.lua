@@ -29,7 +29,7 @@ local function collect(widget)
    assert(tile.fg==row.color[1] and tile.bg==row.color[2] and (tile.bold and 1 or 0)==row.color[3],'Item pet caption color differs')
    cells[#cells+1]={ch=tile.ch,fg=tile.fg,bg=tile.bg,bright=tile.bold}
   end
-  local position;local sheet=false;local activity
+  local position;local sheet=false;local activity;local portrait
   for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do
    if child.name=='Recenter button'then
     local _,address=df.sizeof(child);position={}
@@ -37,11 +37,19 @@ local function collect(widget)
    end
    if df.widget_item_sheet_button:is_instance(child)then sheet=true end
    if child.name=='Job'then activity=dfhack.gui.getWidgetChildren(child)[1]end
+   if df.widget_item_portrait:is_instance(child)then portrait=child end
   end
   assert(position and json.encode(position)==json.encode(row.position),'Item pet Recenter position differs')
   assert(sheet and item.flags.whole==flags,'Item pet navigation/flags differ')
   assert(activity and dfhack.df2utf(activity.str)==row.activity and activity.fg==row.activity_color[1] and activity.bg==row.activity_color[2] and (activity.bright and 1 or 0)==row.activity_color[3],'Item pet activity differs')
-  samples[#samples+1]={id=item.id,provider=row,cells=cells,position=position,sheet=sheet}
+  local raw=assert(df.global.world.raws.creatures.all[item:getMaterial()])
+  local caste=item:getMaterialIndex()>=0 and raw.caste[item:getMaterialIndex()] or nil
+  local graphics=caste and caste.caste_graphics or nil
+  if not graphics or graphics.creature_small_texpos[0]==0 then graphics=raw.graphics end
+  local tile=assert(graphics).creature_small_texpos[0];assert(tile>0 and portrait,'Missing native item selector fixture')
+  local anchor=g.screentexpos_anchored[portrait.rect.x1*g.dimy+portrait.rect.y1]
+  assert(anchor==tile,'Native item row artwork differs from original selector tile')
+  samples[#samples+1]={id=item.id,provider=row,cells=cells,position=position,sheet=sheet,selector_tile=tile,anchor=anchor}
  end
  if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
 end

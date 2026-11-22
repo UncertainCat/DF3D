@@ -91,6 +91,9 @@
 #include "creature_header_native.h"
 #include "residents_query_native.h"
 #include "creature_lists_native.h"
+#include "creature_item_row_native.h"
+#include "pet_trainer_edits_native.h"
+#include "pet_training_native.h"
 #include "residents_row_native.h"
 #include "residents_specialization_native.h"
 #include "residents_activity_description_native.h"
@@ -608,6 +611,25 @@ struct CreatureAnimalResult {
 std::optional<CreatureAnimalResult> creatureAnimal;
 struct CreatureListResult { m::CreatureListTab tab; std::vector<df3d_residents::CreatureIdentity> entries; };
 std::optional<CreatureListResult> creatureList;
+struct CreatureRowResult {
+  int kind=0;int32_t id=-1;df3d_residents::RowText text;
+  std::optional<df3d_production::ItemAppearanceRecipe> portrait;
+  std::optional<df::coord> position;bool canInspect=false;
+  std::optional<df3d_production::JobSettingsTarget> jobTarget;
+  std::optional<df3d_residents::PetEditState> pet;
+  std::vector<std::string> skills;
+};
+struct CreatureRowsResult {m::CreatureListTab tab;std::vector<CreatureRowResult> rows;};
+std::optional<CreatureRowsResult> creatureRows;
+struct PetEditResult {int kind;int32_t id;m::PetOutcome outcome;};
+std::optional<PetEditResult> petEdit;
+struct PetTrainersResult {
+  int32_t animalId=-1;uint64_t revision=0;bool assigned=false;int32_t trainerId=-1;
+  bool anyTrainer=false,unassignedOnly=false;std::vector<int32_t> ids;std::vector<CreatureRowResult> rows;
+};
+std::optional<PetTrainersResult> petTrainers;
+struct PetKnowledgeResult {uint64_t revision;uint32_t total,offset;std::vector<df3d_residents::TrainingKnowledgeRow> rows;};
+std::optional<PetKnowledgeResult> petKnowledge;
 std::optional<std::vector<int32_t>> residents;
 // Strings are converted to UTF-8 and bounded before publishing this batch.
 struct ResidentRowResult { int32_t id; df3d_residents::RowText text; std::optional<ResidentAppearanceRecipe> icon; df3d_residents::Specialization specialization; std::vector<df3d_area::LocationStaffAssignment> assignments; df::coord position; std::optional<df3d_residents::ActivityTarget> activityTarget; std::optional<df3d_production::JobSettingsTarget> jobTarget; std::optional<std::vector<df3d_production::WorkDetailSkillText>> workDetailSkills; int8_t detailMember=-1; };
@@ -910,6 +932,7 @@ void clearResult() {
   creatureLocation.reset();
   creatureAnimal.reset();
   creatureList.reset();
+  creatureRows.reset();petEdit.reset();petTrainers.reset();petKnowledge.reset();
   residents.reset();
   residentsRows.reset();
   residentsSpecialization.reset();
@@ -1617,6 +1640,48 @@ void publish() {
     creatureListResult=m::CreateCreatureListState(b,creatureList->tab,b.CreateVector(ids),b.CreateVector(kinds));
   }
   const auto residentsResult=residents?m::CreateResidentsState(b,b.CreateVector(*residents)):flatbuffers::Offset<m::ResidentsState>{};
+  const auto creatureColor=[&](const df3d_area::ZoneOwnerNameColor& c) {
+    return m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
+  };
+  flatbuffers::Offset<m::CreatureListRowsState> creatureRowsResult;
+  if(creatureRows) {
+    std::vector<flatbuffers::Offset<m::CreatureListRow>> rows;
+    for(const auto& v:creatureRows->rows) {
+      flatbuffers::Offset<m::PetRowControls> controls;
+      if(v.pet) {
+        const auto& p=*v.pet;const auto& c=p.controls;
+        std::vector<flatbuffers::Offset<m::PetCaption>> captions;
+        std::vector<flatbuffers::Offset<m::PetOwner>> owners;
+        std::vector<flatbuffers::Offset<m::PetControl>> actions;
+        for(size_t i=0;i<c.captions.size();++i)captions.push_back(m::CreatePetCaption(b,b.CreateString(c.captions[i]),uint8_t(c.captionColors[i][0]),uint8_t(c.captionColors[i][1]),c.captionColors[i][2]!=0));
+        for(const auto& o:c.ownerDisplay)owners.push_back(m::CreatePetOwner(b,o.id,b.CreateString(o.text.firstLine),b.CreateString(o.text.secondLine),creatureColor(o.color)));
+        for(size_t i=0;i<c.actions.size();++i) {const auto& h=c.actionHelp[i];const auto a=c.actions[i];
+          actions.push_back(m::CreatePetControl(b,m::PetAction(a),p.values[a],h.observed,b.CreateString(h.text),h.hover,h.instruction));}
+        controls=m::CreatePetRowControls(b,p.revision,b.CreateVector(captions),b.CreateVector(owners),b.CreateVector(actions));
+      }
+      const auto& a=v.text.activity;std::optional<m::TilePos> pos;
+      if(v.position)pos.emplace(v.position->x,v.position->y,v.position->z);
+      rows.push_back(m::CreateCreatureListRow(b,m::CreatureListKind(v.kind),v.id,b.CreateString(v.text.name.firstLine),b.CreateString(v.text.name.secondLine),
+        creatureColor(v.text.nameColor),m::CreatePetCaption(b,b.CreateString(a.caption),uint8_t(a.foreground),uint8_t(a.background),a.bright),encodeItemRecipe(v.portrait),
+        pos?&*pos:nullptr,v.canInspect,v.jobTarget?m::CreateResidentJobTarget(b,v.jobTarget->jobId,v.jobTarget->buildingId):flatbuffers::Offset<m::ResidentJobTarget>{},controls));
+    }
+    creatureRowsResult=m::CreateCreatureListRowsState(b,creatureRows->tab,b.CreateVector(rows));
+  }
+  const auto petEditResult=petEdit?m::CreatePetEditState(b,m::CreateCreatureListIdentity(b,m::CreatureListKind(petEdit->kind),petEdit->id),petEdit->outcome):flatbuffers::Offset<m::PetEditState>{};
+  flatbuffers::Offset<m::PetTrainersState> petTrainersResult;
+  if(petTrainers) {
+    const auto& v=*petTrainers;std::vector<flatbuffers::Offset<m::PetTrainerRow>> rows;
+    for(const auto& row:v.rows)rows.push_back(m::CreatePetTrainerRow(b,row.id,b.CreateString(row.text.name.firstLine),b.CreateString(row.text.name.secondLine),
+      creatureColor(row.text.nameColor),encodeItemRecipe(row.portrait),b.CreateVectorOfStrings(row.skills)));
+    petTrainersResult=m::CreatePetTrainersState(b,v.animalId,v.revision,v.assigned,v.trainerId,v.anyTrainer,v.unassignedOnly,b.CreateVector(v.ids),b.CreateVector(rows));
+  }
+  flatbuffers::Offset<m::PetKnowledgeState> petKnowledgeResult;
+  if(petKnowledge) {
+    const auto& v=*petKnowledge;std::vector<flatbuffers::Offset<m::PetKnowledgeRow>> rows;
+    for(const auto& row:v.rows)rows.push_back(m::CreatePetKnowledgeRow(b,row.race,row.level,b.CreateString(row.name),
+      m::CreatePetCaption(b,b.CreateString(row.caption),uint8_t(row.foreground),0,row.bright)));
+    petKnowledgeResult=m::CreatePetKnowledgeState(b,v.revision,v.total,v.offset,b.CreateVector(rows));
+  }
   const auto residentsSpecializationResult=residentsSpecialization?
       m::CreateResidentsSpecializationState(b,residentsSpecialization->id,residentsSpecialization->outcome,residentsSpecialization->onlyAssigned):flatbuffers::Offset<m::ResidentsSpecializationState>{};
   flatbuffers::Offset<m::ResidentsRowsState> residentsRowsResult;
@@ -1949,7 +2014,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult,depotGoodsResult,depotCommitResult,tradeCatalogResult,tradeSessionResult,tradeDraftResult,displayResult,0,creatureListResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult,depotGoodsResult,depotCommitResult,tradeCatalogResult,tradeSessionResult,tradeDraftResult,displayResult,0,creatureListResult,creatureRowsResult,petEditResult,petTrainersResult,petKnowledgeResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
@@ -1976,6 +2041,7 @@ void publish() {
     // No rejection may follow a completed artwork store. If its minimal reply
     // is invalid, retain Pending so the sent mutation times out as unknown.
     if(action==m::ManagementAction::SelectionArtApply && mutated)return;
+    if((action==m::ManagementAction::PetActionApply || action==m::ManagementAction::PetTrainerApply) && mutated)return;
     // A batch may already have changed jobs. Never turn a malformed receipt
     // into a definite rejection; retain Pending for unknown-outcome retirement.
     if(action==m::ManagementAction::DepotGoodsCommit && mutated)return;
@@ -6041,6 +6107,120 @@ void run(color_ostream& out) {
         creatureList=CreatureListResult{query.tab(),std::move(*entries)};status=m::ManagementStatus::Ok;
       }
     } catch(...) {creatureList.reset();}
+    publish();return;
+  }
+  if(r->action()>=m::ManagementAction::CreatureListRowsRead && r->action()<=m::ManagementAction::PetKnowledgeRead) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    size_t textBytes=0;
+    const auto text=[&](std::string& value) {
+      if(value.size()>4096 || value.find('\0')!=std::string::npos)return false;
+      value=DF2UTF(value);textBytes+=value.size();return value.size()<=4096 && textBytes<=131072;
+    };
+    const auto member=[](const std::vector<df3d_residents::CreatureIdentity>& entries,int kind,int32_t id) {
+      return std::any_of(entries.begin(),entries.end(),[&](const auto& v){return v.kind==kind && v.id==id;});
+    };
+    const auto unitPortrait=[](df::unit* unit) {
+      df3d_appearance::Result look;
+      return df3d_appearance::resolveUnitSelector(unit,look)?df3d_production::ownedItemRecipe(look):std::optional<df3d_production::ItemAppearanceRecipe>{};
+    };
+    try {
+      if(r->action()==m::ManagementAction::CreatureListRowsRead) {
+        const auto& q=*r->creature_list_rows();const auto members=df3d_residents::orderedCreatures(int(q.tab()),0,false);
+        if(members) {
+          CreatureRowsResult result{q.tab(),{}};
+          for(const auto* target:*q.targets()) {
+            const int kind=int(target->kind());const int32_t id=target->id();if(!member(*members,kind,id))break;
+            CreatureRowResult row;row.kind=kind;row.id=id;row.canInspect=q.tab()!=m::CreatureListTab::Dead;
+            if(kind==0) {
+              auto* unit=df::unit::find(id);if(!unit)break;
+              const auto value=df3d_residents::creatureUnitRowText(unit,q.columns(),q.tab()==m::CreatureListTab::Pets);if(!value)break;
+              row.text=*value;row.portrait=unitPortrait(unit);
+              if(row.canInspect)row.position=unit->pos;
+              row.jobTarget=df3d_production::jobSettingsTarget(unit->job.current_job);
+            } else {
+              auto* item=df::item::find(id);const auto value=df3d_residents::creatureItemRow(item);if(!value)break;
+              row.text.name.firstLine=value->caption;
+              for(size_t i=0;i<3;++i)row.text.nameColor.color[i]=row.text.nameColor.alternate[i]=uint8_t(value->color[i]);
+              row.text.activity.caption=value->activity;row.text.activity.foreground=value->activityColor[0];
+              row.text.activity.background=value->activityColor[1];row.text.activity.bright=value->activityColor[2]!=0;row.position=value->position;
+              // Native list widget14236b0 uses the item selector; sheet PORTRAIT
+              // layer sets belong to the separate item-detail surface.
+              df3d_appearance::Result look;if(df3d_appearance::resolveCritterItemSelector(item,look))row.portrait=df3d_production::ownedItemRecipe(look);
+            }
+            if(!text(row.text.name.firstLine) || !text(row.text.name.secondLine) || !text(row.text.activity.caption))break;
+            if(q.tab()==m::CreatureListTab::Pets) {
+              row.pet=df3d_residents::petEditState(kind,id);if(!row.pet)break;
+              auto& controls=row.pet->controls;
+              if(controls.captions.size()>32 || controls.owners.size()>32 || controls.actions.size()>6 ||
+                 controls.captionColors.size()!=controls.captions.size() || controls.ownerDisplay.size()!=controls.owners.size() || controls.actionHelp.size()!=controls.actions.size())break;
+              bool valid=true;
+              for(auto& c:controls.captions)if(!text(c))valid=false;
+              for(auto& owner:controls.ownerDisplay)if(!text(owner.text.firstLine) || !text(owner.text.secondLine))valid=false;
+              for(size_t i=0;i<controls.actions.size();++i)if(controls.actions[i]<0 || controls.actions[i]>5 || !text(controls.actionHelp[i].text))valid=false;
+              if(!valid)break;
+            }
+            result.rows.push_back(std::move(row));
+          }
+          if(result.rows.size()==q.targets()->size()){creatureRows=std::move(result);status=m::ManagementStatus::Ok;}
+        }
+      } else if(r->action()==m::ManagementAction::PetActionApply || r->action()==m::ManagementAction::PetTrainerApply) {
+        using O=df3d_residents::PetEditOutcome;O outcome=O::Rejected;
+        if(r->action()==m::ManagementAction::PetActionApply) {
+          const auto& q=*r->pet_action();petEdit=PetEditResult{int(q.target()->kind()),q.target()->id(),m::PetOutcome::Rejected};
+          outcome=df3d_residents::setPetAction(petEdit->kind,petEdit->id,q.expected_revision(),int(q.action()),q.desired());
+        } else {
+          const auto& q=*r->pet_trainer();petEdit=PetEditResult{0,q.animal_id(),m::PetOutcome::Rejected};
+          outcome=df3d_residents::setPetTrainer(q.animal_id(),q.expected_revision(),df3d_residents::TrainerMode(q.mode()),q.trainer_id());
+        }
+        switch(outcome) {
+          case O::Applied:petEdit->outcome=m::PetOutcome::Applied;status=m::ManagementStatus::Ok;mutated=true;break;
+          case O::Stale:petEdit->outcome=m::PetOutcome::Stale;break;
+          case O::Unavailable:petEdit->outcome=m::PetOutcome::Unavailable;break;
+          case O::Unknown:petEdit->outcome=m::PetOutcome::Unknown;mutated=true;break;
+          case O::Rejected:break;
+        }
+      } else if(r->action()==m::ManagementAction::PetTrainersRead) {
+        const auto& q=*r->pet_trainers();const auto members=df3d_residents::orderedCreatures(1,0,false);
+        if(members && member(*members,0,q.animal_id())) {
+          const auto current=df3d_residents::petEditState(0,q.animal_id());
+          const auto choices=current && current->revision==q.expected_revision()?df3d_residents::petTrainers(q.animal_id()):std::nullopt;
+          if(choices && choices->size()<=65536) {
+            PetTrainersResult result;result.animalId=q.animal_id();result.revision=current->revision;
+            if(const auto* assignment=df::training_assignment::find(q.animal_id())) {
+              result.assigned=true;result.trainerId=assignment->trainer_id;result.anyTrainer=assignment->flags.bits.any_trainer;
+              result.unassignedOnly=assignment->flags.bits.any_unassigned_trainer;
+            }
+            for(const auto& choice:*choices)result.ids.push_back(choice.id);
+            for(auto id:*q.unit_ids()) {
+              const auto choice=std::find_if(choices->begin(),choices->end(),[&](const auto& v){return v.id==id;});if(choice==choices->end())break;
+              auto* unit=df::unit::find(id);const auto name=df3d_residents::petTrainerName(unit,q.columns());
+              const auto color=unit?df3d_area::nativeZoneOwnerNameColor(*unit):std::nullopt;if(!name || !color)break;
+              CreatureRowResult row;row.id=id;row.text.name=*name;row.text.nameColor=*color;row.portrait=unitPortrait(unit);row.skills=choice->skills;
+              bool valid=text(row.text.name.firstLine) && text(row.text.name.secondLine);
+              for(auto& skill:row.skills)if(!text(skill))valid=false;if(!valid)break;
+              result.rows.push_back(std::move(row));
+            }
+            if(result.rows.size()==q.unit_ids()->size()){petTrainers=std::move(result);status=m::ManagementStatus::Ok;}
+          }
+        }
+      } else if(r->action()==m::ManagementAction::PetKnowledgeRead) {
+        const auto& q=*r->pet_knowledge();auto knowledge=df3d_residents::trainingKnowledge();
+        if(knowledge && knowledge->size()<=32767 && q.offset()<=knowledge->size()) {
+          uint64_t hash=UINT64_C(14695981039346656037);
+          const auto add=[&](uint64_t v){for(unsigned i=0;i<8;++i){hash^=v&255;hash*=UINT64_C(1099511628211);v>>=8;}};
+          add(knowledge->size());
+          for(const auto& row:*knowledge){add(row.race);add(row.level);add(row.foreground);add(row.bright);
+            for(const auto* s:{&row.name,&row.caption}){add(s->size());for(unsigned char ch:*s)add(ch);}}
+          hash&=uint64_t(INT64_MAX);if(!hash)hash=1;
+          if(!q.expected_revision() || q.expected_revision()==hash) {
+            PetKnowledgeResult result{hash,uint32_t(knowledge->size()),q.offset(),{}};
+            const size_t end=std::min(knowledge->size(),size_t(q.offset())+q.limit());
+            for(size_t i=q.offset();i<end;++i){auto row=std::move((*knowledge)[i]);if(!text(row.name) || !text(row.caption))break;result.rows.push_back(std::move(row));}
+            if(result.rows.size()==end-q.offset()){petKnowledge=std::move(result);status=m::ManagementStatus::Ok;}
+          }
+        }
+      }
+    } catch(...) {creatureRows.reset();petTrainers.reset();petKnowledge.reset();status=m::ManagementStatus::Rejected;}
     publish();return;
   }
   if(r->action()==m::ManagementAction::ResidentsQuery) {

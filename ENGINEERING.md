@@ -12811,6 +12811,33 @@ all19 core checks pass. Pane geometry is based on native094804/093702, but rende
 parity remains unverified. Species artwork and public sibling-tab input remain
 unimplemented; heading and warning integration is qualified below.
 
+Management protocol259 separates pet training captions from ownership captions.
+PetRowControls.training is required, empty for item rows, bounded to32 entries
+and included in the shared text budget. Captions now contains ownership text only.
+Protocol258 cannot identify these groups from its flat caption array and is
+rejected rather than migrated using guessed text prefixes. Both bridge and
+consumer must rebuild for region v259. The bridge identifies training by ancestry
+under the independently owned row's named Job group, preserving blank placeholders
+and full source text. No visible-caption matching or native widget arrangement is
+used. Both caption groups contribute to the observed revision and shared text budget.
+The model and Godot dictionaries preserve the groups. The staged view draws trainer
+status below activity and ownership text/names in their separate native column.
+Trainer text uses native14196e0's24-column ellipsis rule, selected by372433/37244e;
+empty placeholders do not move the visible caption. Public sibling tabs remain gated.
+
+Protected131547 on2026-11-22 compares both groups with native widgets after
+Any, Unassigned, Individual, Any and None trainer selections. The individual
+caption retains its untruncated original text in transport; the row renderer
+shortens it to21 glyphs plus three dots. Native/provider mutation results, stale
+and duplicate refusals and restoration pass. Protected131707 transports17 Pets,
+9 Other and55 Dead rows, four pet edit families, trainer selection and45 knowledge
+rows; full training text and palette match. Owned DF25916/59784 close unsaved,
+source saves unchanged, at30FPS with GPU samples46C. Client stderr is empty.
+These runs qualify semantic grouping and transport, not rendered pane parity.
+The ownership baseline comes from native125038's captured ownership container:
+status at row+24, owner name first line at row+12, native caption-before-name
+paint order. Full rendered acceptance and remaining sibling workflow work remain.
+
 Management protocol258 adds optional native name warnings to creature and trainer
 rows, and a required full trainer heading. Warning captions carry native palette
 values; item rows cannot carry a unit-name warning. The heading is bounded by the

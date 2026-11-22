@@ -30,10 +30,12 @@ TEST_CASE("Creature workflows preserve typed identities, receipts and unknown ou
   auto color=m::CreateAreaNameColor(b,1,0,1,2,0,0,0);
   auto owner=m::CreatePetOwner(b,12,b.CreateString("fixture owner"),b.CreateString(""),color);
   auto control=m::CreatePetControl(b,m::PetAction::Adoption,true,false,b.CreateString(""),-1,-1);
-  auto pet=m::CreatePetRowControls(b,revision,b.CreateVector(std::vector{caption}),b.CreateVector(std::vector{owner}),b.CreateVector(std::vector{control}));
+  auto pet=m::CreatePetRowControls(b,revision,b.CreateVector(std::vector{caption}),b.CreateVector(std::vector{owner}),b.CreateVector(std::vector{control}),b.CreateVector(std::vector<flatbuffers::Offset<m::PetCaption>>{}));
   m::TilePos position(-30000,-30000,-30000);
   auto row=m::CreateCreatureListRow(b,m::CreatureListKind::Item,7,b.CreateString("fixture pet"),b.CreateString(""),color,caption,0,&position,true,0,pet);
-  auto unitRow=m::CreateCreatureListRow(b,m::CreatureListKind::Unit,7,b.CreateString("fixture unit"),b.CreateString(""),color,caption,0,&position,true,0,pet,
+  auto trainerCaption=m::CreatePetCaption(b,b.CreateString("training fixture"),7,0,true);
+  auto unitPet=m::CreatePetRowControls(b,revision,b.CreateVector(std::vector{caption}),b.CreateVector(std::vector{owner}),b.CreateVector(std::vector{control}),b.CreateVector(std::vector{trainerCaption}));
+  auto unitRow=m::CreateCreatureListRow(b,m::CreatureListKind::Unit,7,b.CreateString("fixture unit"),b.CreateString(""),color,caption,0,&position,true,0,unitPet,
     m::CreatePetCaption(b,b.CreateString("unit warning fixture"),2,0,true));
   auto rows=m::CreateCreatureListRowsState(b,m::CreatureListTab::Pets,b.CreateVector(std::vector{row,unitRow}));
   m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::CreatureListRowsRead);
@@ -42,6 +44,8 @@ TEST_CASE("Creature workflows preserve typed identities, receipts and unknown ou
   auto decoded=c::decodeState(s);REQUIRE(decoded.creatureListRows);const auto& r=decoded.creatureListRows->rows.at(0);
   REQUIRE((r.kind==wm::CreatureListKind::Item && !r.nameWarning && r.position->x==-30000 && r.canInspect && !r.jobTarget));
   REQUIRE((r.pet->revision==revision && r.pet->owners.at(0).firstLine=="fixture owner" && r.pet->controls.at(0).value));
+  REQUIRE(r.pet->training.empty());
+  REQUIRE(decoded.creatureListRows->rows.at(1).pet->training.at(0).text=="training fixture");
   REQUIRE(decoded.creatureListRows->rows.at(1).nameWarning);
   REQUIRE(decoded.creatureListRows->rows.at(1).nameWarning->text=="unit warning fixture");
   b.Clear();auto edit=m::CreatePetEditState(b,m::CreateCreatureListIdentity(b,m::CreatureListKind::Item,7),m::PetOutcome::Unknown);

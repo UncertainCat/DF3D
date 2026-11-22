@@ -68,6 +68,7 @@ ManagementState decodeState(const m::ManagementState* s) {
       if(const auto* p=v->pet()) {
         auto& pet=row.pet.emplace();pet.revision=p->revision();
         for(const auto* c:*p->captions())pet.captions.push_back(petCaption(c));
+        for(const auto* c:*p->training())pet.training.push_back(petCaption(c));
         for(const auto* o:*p->owners())pet.owners.push_back({o->id(),o->first_line()->str(),o->second_line()->str(),creatureColor(o->name_color())});
         for(const auto* c:*p->controls())pet.controls.push_back({PetAction(c->action()),c->value(),c->help_observed(),c->help_text()->str(),c->hover_help(),c->instruction_help()});
       }

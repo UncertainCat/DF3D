@@ -791,7 +791,7 @@ struct CreatureListRowsRequest { CreatureListTab tab=CreatureListTab::Pets; std:
 struct PetCaption { std::string text; uint8_t foreground=0,background=0; bool bright=false; };
 struct PetControl { PetAction action=PetAction::Slaughter; bool value=false,helpObserved=false; std::string helpText; int32_t hoverHelp=-1,instructionHelp=-1; };
 struct PetOwner { int32_t id=-1; std::string firstLine,secondLine; AreaNameColor nameColor; };
-struct PetRowControls { uint64_t revision=0; std::vector<PetCaption> captions; std::vector<PetOwner> owners; std::vector<PetControl> controls; };
+struct PetRowControls { uint64_t revision=0; std::vector<PetCaption> captions,training; std::vector<PetOwner> owners; std::vector<PetControl> controls; };
 struct CreatureListRow {
   CreatureListKind kind=CreatureListKind::Unit; int32_t id=-1;
   std::string firstLine,secondLine; AreaNameColor nameColor; PetCaption activity;

@@ -193,14 +193,15 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             if(v.position)row["position"]=Vector3i(v.position->x,v.position->y,v.position->z);
             if(v.jobTarget){Dictionary j;j["job_id"]=v.jobTarget->jobId;j["building_id"]=v.jobTarget->buildingId;row["job_target"]=j;}
             if(v.pet) {
-                Dictionary pet;Array captions,owners,controls;pet["revision"]=int64_t(v.pet->revision);
+                Dictionary pet;Array captions,training,owners,controls;pet["revision"]=int64_t(v.pet->revision);
                 for(const auto& c:v.pet->captions)captions.push_back(petCaption(c));
+                for(const auto& c:v.pet->training)training.push_back(petCaption(c));
                 for(const auto& o:v.pet->owners){Dictionary owner;owner["id"]=o.id;owner["first_line"]=String::utf8(o.firstLine.c_str());
                     owner["second_line"]=String::utf8(o.secondLine.c_str());owner["name_color"]=creatureColor(o.nameColor);owners.push_back(owner);}
                 for(const auto& c:v.pet->controls){Dictionary control;control["action"]=int(c.action);control["value"]=c.value;
                     control["help_observed"]=c.helpObserved;control["help_text"]=String::utf8(c.helpText.c_str());
                     control["hover_help"]=c.hoverHelp;control["instruction_help"]=c.instructionHelp;controls.push_back(control);}
-                pet["captions"]=captions;pet["owners"]=owners;pet["controls"]=controls;row["pet"]=pet;
+                pet["captions"]=captions;pet["training"]=training;pet["owners"]=owners;pet["controls"]=controls;row["pet"]=pet;
             }
             rows.push_back(row);
         }

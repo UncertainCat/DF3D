@@ -2171,6 +2171,8 @@ table PetOwner {
 table PetRowControls {
   revision:uint64; captions:[PetCaption] (required); owners:[PetOwner] (required);
   controls:[PetControl] (required);
+  // Training status belongs with activity; captions above contain ownership only.
+  training:[PetCaption] (required);
 }
 table CreatureListRow {
   kind:CreatureListKind; id:int32 = -1;
@@ -2782,7 +2784,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 258;
+  schema_version:uint32 = 259;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2868,7 +2870,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 258;
+  schema_version:uint32 = 259;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

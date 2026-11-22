@@ -192,8 +192,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 258;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v258";
+inline constexpr uint32_t kManagementVersion = 259;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v259";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kCreatureListEntries = 65536;
@@ -553,7 +553,9 @@ inline bool validPetCaption(const PetCaption* c,size_t& bytes) {
 }
 inline bool validPetControls(const PetRowControls* p,CreatureListKind kind,size_t& bytes) {
   if(!p || !validPetReceipt(p->revision()) || !p->captions() || p->captions()->size()>32 ||
-     !p->owners() || p->owners()->size()>32 || !p->controls() || p->controls()->size()>6)return false;
+     !p->owners() || p->owners()->size()>32 || !p->controls() || p->controls()->size()>6 ||
+     !p->training() || p->training()->size()>32 || (kind==CreatureListKind::Item && p->training()->size()))return false;
+  for(const auto* c:*p->training())if(!validPetCaption(c,bytes))return false;
   for(const auto* c:*p->captions())if(!validPetCaption(c,bytes))return false;
   for(const auto* owner:*p->owners())if(!owner || owner->id()<0 || !validCreatureText(owner->first_line(),bytes) ||
       !validCreatureText(owner->second_line(),bytes) || !validCreatureColor(owner->name_color()))return false;

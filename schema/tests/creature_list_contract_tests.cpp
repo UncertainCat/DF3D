@@ -121,3 +121,16 @@ TEST_CASE("Trainer heading and native warning captions retain bounded source tex
   CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
  }
 }
+
+TEST_CASE("Pet training captions retain their own bounded semantic group") {
+ for(int fault=0;fault<5;++fault) {
+  flatbuffers::FlatBufferBuilder b;
+  auto caption=m::CreatePetCaption(b,b.CreateString(fault==3?std::string(4097,'x'):"trainer fixture"),fault==2?8:7,0,true);
+  auto p=m::CreatePetRowControls(b,1,b.CreateVector(std::vector<flatbuffers::Offset<m::PetCaption>>{}),
+    b.CreateVector(std::vector<flatbuffers::Offset<m::PetOwner>>{}),b.CreateVector(std::vector<flatbuffers::Offset<m::PetControl>>{}),
+    b.CreateVector(std::vector<flatbuffers::Offset<m::PetCaption>>(fault==4?33:1,caption)));
+  b.Finish(p);size_t bytes=0;
+  CHECK(m::validPetControls(flatbuffers::GetRoot<m::PetRowControls>(b.GetBufferPointer()),
+    fault==1?m::CreatureListKind::Item:m::CreatureListKind::Unit,bytes)==(fault==0));
+ }
+}

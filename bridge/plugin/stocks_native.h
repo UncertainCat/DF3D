@@ -118,8 +118,8 @@ inline std::optional<std::vector<int32_t>> orderedInventory() {
 struct CategoryDisplay {int16_t type;std::string caption,stored,unavailable;};
 // Native renderer3a1a5a..3a1d48 supplies the formatting arguments. Return
 // type-indexed facts here; category filtering/order is a separate operation.
-inline std::optional<std::vector<CategoryDisplay>> categoryDisplay() {
-    const auto counts=totals();if(!counts || !df::global::plotinfo)return std::nullopt;
+inline std::optional<std::vector<CategoryDisplay>> categoryDisplay(const Totals& counts) {
+    if(!df::global::plotinfo || !df3d_production::farmFunctions())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool supported=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
@@ -151,17 +151,20 @@ inline std::optional<std::vector<CategoryDisplay>> categoryDisplay() {
         CategoryDisplay row;row.type=type;
         reinterpret_cast<Describe>(base+0xa82c10)(&row.caption,type,-1,-1,-1,-1,0,false,nullptr,-1,-1,true,0,0);
         reinterpret_cast<void(*)(std::string*)>(base+0x52d650)(&row.caption);
-        row.stored=countCaption(counts->stored[type],true);row.unavailable=countCaption(counts->unavailable[type],false);
+        row.stored=countCaption(counts.stored[type],true);row.unavailable=countCaption(counts.unavailable[type],false);
         result.push_back(std::move(row));
     }
     return result;
+}
+inline std::optional<std::vector<CategoryDisplay>> categoryDisplay() {
+    const auto counts=totals();return counts?categoryDisplay(*counts):std::nullopt;
 }
 struct Group {int16_t type,subtype,subcat1,subcat2;int32_t amount;bool expanded;};
 // Native ac9c30 owns no globals: abstract-list insertion/matching uses the
 // supplied vectors and authoritative item properties/history. Keep all storage
 // here, including MSVC's packed expanded bits; no stocks_interfacest is borrowed.
-inline std::optional<std::vector<Group>> groups() {
-    const auto ids=inventory();if(!ids)return std::nullopt;
+inline std::optional<std::vector<Group>> groups(const std::vector<int32_t>& ids) {
+    if(ids.size()>1048576 || !df3d_production::farmFunctions())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool supported=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
@@ -188,13 +191,16 @@ inline std::optional<std::vector<Group>> groups() {
     } owned;
     static_assert(offsetof(Context,amount)==0x60 && offsetof(Context,expanded)==0x78 && sizeof(Context)==0x98);
     const auto add=reinterpret_cast<void (*)(Context*,df::item*)>(base+0xac9c30);
-    for(auto id:*ids){auto* item=df::item::find(id);if(!item)return std::nullopt;add(&owned,item);}
+    for(auto id:ids){auto* item=df::item::find(id);if(!item)return std::nullopt;add(&owned,item);}
     const auto count=owned.type.size();
     if(owned.subtype.size()!=count || owned.subcat1.size()!=count || owned.subcat2.size()!=count ||
        owned.amount.size()!=count || owned.expanded.size()!=count)return std::nullopt;
     std::vector<Group> result;result.reserve(count);
     for(size_t i=0;i<count;++i)result.push_back({owned.type[i],owned.subtype[i],owned.subcat1[i],owned.subcat2[i],owned.amount[i],owned.expanded[i]});
     return result;
+}
+inline std::optional<std::vector<Group>> groups() {
+    const auto ids=inventory();return ids?groups(*ids):std::nullopt;
 }
 struct SelectedGroup {Group group;bool matches;uint32_t flags;std::vector<int32_t> ids;uint64_t revision=0;std::string caption;};
 struct Selection {std::vector<int32_t> ids;std::vector<SelectedGroup> groups;};
@@ -319,7 +325,7 @@ inline GroupEdit editItem(const Group& key,uint64_t expected,int32_t itemId,df3d
 // seed permutation and lower-bound insertion (equal captions reverse seed
 // order). Search37c070 delegates group naming, normalization and substring
 // matching to native routines; omit its native-window scroll clamp entirely.
-inline std::optional<std::vector<int16_t>> categories(std::string query) {
+inline std::optional<std::vector<int16_t>> categories(std::string query,const std::vector<Group>* source=nullptr) {
     auto display=categoryDisplay();if(!display)return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool supported=[base] {
@@ -343,7 +349,7 @@ inline std::optional<std::vector<int16_t>> categories(std::string query) {
         while(at!=ordered.end() && (*display)[*at].caption.compare((*display)[type].caption)<0)++at;
         ordered.insert(at,type);}
     if(query.empty())return ordered;
-    const auto grouped=groups();if(!grouped)return std::nullopt;
+    const auto grouped=source?std::optional<std::vector<Group>>(*source):groups();if(!grouped)return std::nullopt;
     normalize(&query);std::array<bool,93> matches{};
     df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
     using Describe=void(*)(std::string*,int16_t,int16_t,int16_t,int32_t,int32_t,int32_t,bool,void*,int32_t,int32_t,bool,int32_t,int32_t);

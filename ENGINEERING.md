@@ -3393,8 +3393,8 @@ called by runtime code. Its semantic inventory block uses the same c93160
 exclusion and c8be10/138ed20 holder checks already pinned by Stocks, with additional
 display eligibility and existing-assignment exclusions. Grouping uses ac9c30,
 already exposed with owned storage. Category filtering37b6e0 reads screen geometry;
-it is not a standalone semantic provider. Display-specific selection, commit,
-removal and owned transport remain to be implemented and verified.
+it is not a standalone semantic provider. Display providers are qualified below;
+owned transport and public composition remain unfinished.
 
 The owned display inventory now shares Stocks' availability/holder predicate,
 applies the pinned display-specific exclusions, and invokes native ac9b20/ac94a0
@@ -3427,6 +3427,26 @@ GPU59–60C. Bridge build and19 core checks pass. Evidence:
 `completed_sheet_discovery_reference.display_assignment_reference`.
 Multi-item commit, reassignment and later hauling remain unqualified. The owned
 picker/body transport and public display-furniture route are still unfinished.
+
+The grouped picker shares Stocks' native group insertion, category ordering/search
+and count formatting. It supplies display-eligible IDs and counts to those common
+providers. Native379df0 projects the selected type into independently owned vectors;
+37c390 filters group captions and37a670 calculates text-line height. Their semantic
+material/history dependencies are pinned; global picker storage and screen geometry
+are not inputs. Parent rows reuse buildingItemCaption and itemBuildingLookup,
+preserving "Assigned"/"On display" copy and native colors15/10.
+
+Protected065202 (DF38948) compares all93 initial categories and counts, ammunition
+and amulet item order, group keys/amounts/expansion/filter flags and text-line heights.
+Typing STEEL yields17 matching categories and one matching amulet group in both
+native and owned reads; clearing restores93 categories and both amulet groups.
+The assigned parent row's ID/name/status/color matches the native capture. Inventory
+and assignment checks also pass, with native UI bytes unchanged. Source preserved,
+owned session closes unsaved at30FPS, sampled GPU60C. Bridge build and19 core checks
+pass. Evidence: `completed_sheet_discovery_reference.display_picker_reference`.
+Product rendering, draft lifecycle, transport and public exposure remain unfinished.
+
+### Trap and hive control providers
 
 The trap/hive control provider now owns revisions over target stage/flags,
 contents, body facts and jobs. Bait selection preserves native1afad4..1afbc9:

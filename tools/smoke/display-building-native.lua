@@ -44,8 +44,23 @@ result.context_size=context_size;result.context_rva=context_address-dfhack.inter
 local function checkpoint()
  local file=assert(io.open(out..'/display-building-native.json','w'));file:write(json.encode(result));file:close()
 end
+local function compare_picker(label)
+ if os.getenv('DF3D_DISPLAY_PICKER')~='1' then return end
+ local owned=probe('display-picker-probe',picker.current_type,dfhack.df2utf(picker.item_filter))
+ local native={height=picker.i_height,categories=values(picker.filtered_type_list),stored=values(picker.storeamount),unavailable=values(picker.badamount),items={},groups={}}
+ for _,item in ipairs(picker.current_type_i_list)do native.items[#native.items+1]=item.id end
+ for i,subtype in ipairs(picker.current_type_a_subtype)do
+  native.groups[#native.groups+1]={subtype=subtype,subcat1=picker.current_type_a_subcat1[i],subcat2=picker.current_type_a_subcat2[i],amount=picker.current_type_a_amount[i],expanded=picker.current_type_a_expanded[i],matches=picker.current_type_a_on[i]}
+ end
+ result.picker_comparisons=result.picker_comparisons or {};result.picker_comparisons[#result.picker_comparisons+1]={label=label,native=native,owned=owned};checkpoint()
+ for _,key in ipairs{'height','categories','stored','unavailable','items'}do assert(json.encode(native[key])==json.encode(owned[key]),'Display picker '..label..' '..key..' differs')end
+ assert(#native.groups==#owned.groups,'Display group count differs')
+ for i,group in ipairs(native.groups)do for key,value in pairs(group)do assert(value==owned.groups[i][key],'Display group '..label..' '..i..' '..key..' differs')end end
+ return owned
+end
 for _,item in ipairs(picker.master_i_list.l_item)do result.master_ids[#result.master_ids+1]=item.id end
 for _,item in ipairs(picker.current_type_i_list)do result.current_ids[#result.current_ids+1]=item.id end
+compare_picker('initial')
 if os.getenv('DF3D_DISPLAY_PROVIDER')=='1' then
  local before_scratch={};for _,item in ipairs(df.global.world.items.other.IN_PLAY)do before_scratch[#before_scratch+1]=item.base_uniform_score end
  result.owned_ids=probe()
@@ -62,6 +77,15 @@ end
 if os.getenv('DF3D_DISPLAY_SELECT')=='1' then
  click(160,130);assert(picker.current_type==df.item_type.AMULET)
  capture('display-amulets')
+ compare_picker('amulets')
+ if os.getenv('DF3D_DISPLAY_PICKER')=='1' then
+  click(500,94)
+  for ch in ('steel'):gmatch('.')do gui.simulateInput(view,string.format('STRING_A%03d',ch:byte()))end
+  view:render(dfhack.getTickCount());capture('display-search-steel');compare_picker('steel')
+  for _=1,5 do gui.simulateInput(view,'STRING_A000')end
+  view:render(dfhack.getTickCount());assert(picker.item_filter=='');compare_picker('cleared')
+  click(160,130);assert(picker.current_type==df.item_type.AMULET)
+ end
  local candidate=assert(picker.current_type_i_list[0]);local candidate_id=candidate.id
  local function snapshot()
   local jobs={};for _,job in ipairs(building.jobs)do jobs[#jobs+1]={id=job.id,type=df.job_type[job.job_type]}end
@@ -75,6 +99,11 @@ if os.getenv('DF3D_DISPLAY_SELECT')=='1' then
  -- Escape closes the assignment screen and its parent sheet. Re-select the
  -- building through the ordinary map route before observing/removing the item.
  select_map(building);view:render(dfhack.getTickCount());capture('display-selected-parent')
+ if os.getenv('DF3D_DISPLAY_PICKER')=='1' then
+  local owned=probe('display-picker-probe',df.item_type.AMULET,'')
+  assert(#owned.body==1 and owned.body[1].id==candidate_id and owned.body[1].resolved and not owned.body[1].on_display and owned.body[1].status=='Assigned' and owned.body[1].color==15,'Display assigned body differs')
+  result.assigned_body=owned.body;checkpoint()
+ end
  if #building.displayed_items>#before.displayed then
   click(880,142);result.selection.removed=snapshot();checkpoint();capture('display-removed-parent')
  end

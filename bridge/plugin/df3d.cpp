@@ -180,6 +180,7 @@
 #include "stocks_native.h"
 #include "display_inventory_native.h"
 #include "display_assignment_native.h"
+#include "display_picker_native.h"
 #include "kitchen_native.h"
 #include "hunter_ammunition_native.h"
 #include "hunter_ammunition_captions_native.h"
@@ -5734,6 +5735,35 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["jobs"]=Json::Value(Json::arrayValue);
           for(const auto& job:body->jobs){Json::Value row;row["id"]=job.id;row["type"]=job.type;row["item_type"]=job.itemType;row["flags"]=job.flags;result["jobs"].append(row);}
         } else if(!edit)return CR_FAILURE;
+        out.print("{}",Json::FastWriter().write(result));return CR_OK;
+      }
+      if(parameters[0]=="display-picker-probe") {
+        if(parameters.size()!=4)return CR_WRONG_USAGE;
+        int32_t id=-1;int16_t type=-1;
+        const auto parse=[](const std::string& value,auto& target) {
+          const auto parsed=std::from_chars(value.data(),value.data()+value.size(),target);
+          return parsed.ec==std::errc{} && parsed.ptr==value.data()+value.size();
+        };
+        if(!parse(parameters[1],id) || !parse(parameters[2],type))return CR_WRONG_USAGE;
+        if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+        auto* building=df::building::find(id);
+        const auto picker=df3d_production::displayPicker(building,type,UTF2DF(parameters[3]));if(!picker)return CR_FAILURE;
+        Json::Value result;result["height"]=picker->height;
+        for(const auto* key:{"stored","unavailable","categories","items","groups","body"})result[key]=Json::Value(Json::arrayValue);
+        for(auto value:picker->counts.stored)result["stored"].append(value);
+        for(auto value:picker->counts.unavailable)result["unavailable"].append(value);
+        for(auto value:picker->categories)result["categories"].append(value);
+        for(auto value:picker->items)result["items"].append(value);
+        for(const auto& group:picker->groups) {
+          Json::Value row;row["subtype"]=group.group.subtype;row["subcat1"]=group.group.subcat1;row["subcat2"]=group.group.subcat2;
+          row["amount"]=group.group.amount;row["expanded"]=group.group.expanded;row["matches"]=group.matches;row["caption"]=DF2UTF(group.caption);
+          row["items"]=Json::Value(Json::arrayValue);for(auto item:group.ids)row["items"].append(item);result["groups"].append(row);
+        }
+        const auto body=df3d_production::displayBody(building);if(!body)return CR_FAILURE;
+        for(const auto& row:*body) {
+          Json::Value value;value["id"]=row.id;value["resolved"]=row.resolved;value["on_display"]=row.onDisplay;
+          value["name"]=DF2UTF(row.name);value["status"]=row.status;value["color"]=row.statusColor;result["body"].append(value);
+        }
         out.print("{}",Json::FastWriter().write(result));return CR_OK;
       }
       if(parameters[0]=="display-assignment-probe") {

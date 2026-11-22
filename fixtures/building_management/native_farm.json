@@ -119652,6 +119652,102 @@
           "build/stockpile-storage-native-farm-discovery-20261122-065202/display-selected-draft.png": "8649961514a1633f994bd2c090d984e6cc1d7c34ef77532a5cda5e48ec1ce9ab",
           "build/stockpile-storage-native-farm-discovery-20261122-065202/display-selected-parent.png": "e06a6546183c83ae8bd0540705750b2b9953a115f3fac0148e17852a5477ae7e"
         }
+      },
+      "display_read_reference": {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261122-065752",
+        "owned_df_pid": 52320,
+        "source_preserved": true,
+        "closed_unsaved": true,
+        "scope": "Composed display read chooses native initial category39, serves visible-page item38540 caption/appearance, and preserves inventory revision through repeated detail reads. Forbidding the candidate changes eligibility and stale-rejects commit without effects; restoring permits native-equivalent assignment/removal. Duplicate/stale edit and existing picker/inventory checks pass. Viewer draft lifecycle, transport/rendering/public exposure remain unfinished.",
+        "item_count": 6411,
+        "read": {
+          "changed": {
+            "effects_started": false,
+            "items": [],
+            "outcome": 2,
+            "removing": false,
+            "revision": "8150647884290783749"
+          },
+          "initial": {
+            "category": 39,
+            "inventory_revision": "5505426441492985229",
+            "items": [],
+            "revision": "8150647884290783749"
+          },
+          "page": {
+            "category": 37,
+            "inventory_revision": "5505426441492985229",
+            "items": [
+              {
+                "appearance": true,
+                "caption": "â˜¼steel amuletâ˜¼",
+                "id": 38540
+              }
+            ],
+            "revision": "8150647884290783749"
+          },
+          "repeated": {
+            "category": 37,
+            "inventory_revision": "5505426441492985229",
+            "items": [
+              {
+                "appearance": true,
+                "caption": "â˜¼steel amuletâ˜¼",
+                "id": 38540
+              }
+            ],
+            "revision": "8150647884290783749"
+          }
+        },
+        "provider": {
+          "assigned": {
+            "effects_started": true,
+            "items": [
+              38540
+            ],
+            "outcome": 1,
+            "removing": false,
+            "revision": "8575683379901701473"
+          },
+          "duplicate": {
+            "effects_started": false,
+            "items": [],
+            "outcome": 0,
+            "removing": false,
+            "revision": "8150647884290783749"
+          },
+          "removed": {
+            "effects_started": true,
+            "items": [],
+            "outcome": 1,
+            "removing": false,
+            "revision": "8150647884290783749"
+          },
+          "stale": {
+            "effects_started": false,
+            "items": [
+              38540
+            ],
+            "outcome": 2,
+            "removing": false,
+            "revision": "8575683379901701473"
+          }
+        },
+        "sha256": {
+          "build/stockpile-storage-native-farm-discovery-20261122-065752/display-building-native.json": "b0dd83123547bcdc4f9d0c63782c4f2c9bf5dd92e5245faec6b44372157c9589",
+          "build/stockpile-storage-native-farm-discovery-20261122-065752/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+          "bridge/plugin/display_read_native.h": "449f4c91f9388b8d72045ebeb661d6fc66fda7f776e883a4417022ef52878e31",
+          "bridge/plugin/display_assignment_native.h": "bc98d0ea83c9c0a1841925077e094552e48689e3392658939c37952869a6a24f",
+          "tools/smoke/display-building-native.lua": "4a65360ca4b02ab18a1b5326717f51eab48783626ccff30e86e4ca21b70e181b",
+          "build/stockpile-storage-native-farm-discovery-20261122-065752/display-amulets.png": "3a17019e9ad5fa4ffa843f0ee099e093d5cb24b581892b4b4d29de5cca202fa7",
+          "build/stockpile-storage-native-farm-discovery-20261122-065752/display-assignment-closed.png": "cb959e24a0e63e60b413d9d014a2b7a4211b6b0cc9a508d47f48ade20c3583cc",
+          "build/stockpile-storage-native-farm-discovery-20261122-065752/display-assignment-open.png": "4ff6a0e70092a46fc706f58ba121e40fffcf1b663c6b574297796cfe5f8716f0",
+          "build/stockpile-storage-native-farm-discovery-20261122-065752/display-assignment-settled.png": "4ff6a0e70092a46fc706f58ba121e40fffcf1b663c6b574297796cfe5f8716f0",
+          "build/stockpile-storage-native-farm-discovery-20261122-065752/display-removed-parent.png": "d25ce2d097538a75b9b8b3591ac3b9855ef21e80f1167b3f221e7f8598f2f3b6",
+          "build/stockpile-storage-native-farm-discovery-20261122-065752/display-search-steel.png": "33cf3a2d838d7f0354d3ca0a0cb464bb99af704c5b96b4bcc72b884b9fb03645",
+          "build/stockpile-storage-native-farm-discovery-20261122-065752/display-selected-draft.png": "8649961514a1633f994bd2c090d984e6cc1d7c34ef77532a5cda5e48ec1ce9ab",
+          "build/stockpile-storage-native-farm-discovery-20261122-065752/display-selected-parent.png": "a450abb1d6b4587833296ecf97b5e4661e52c4016d6c5c0e3127b1006b8778c2"
+        }
       }
     },
     "pending_construction_reference": {

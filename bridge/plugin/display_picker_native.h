@@ -38,10 +38,11 @@ struct DisplayPicker {
 // owned context plus semantic item/material facts. Never call the global opener
 // or category filter37b6e0, whose final clamp reads native window dimensions.
 inline std::optional<DisplayPicker> displayPicker(df::building* building,int16_t type,std::string query) {
-    if(!displayPickerReady() || type<0 || type>=93 || query.size()>1024)return {};
+    if(!displayPickerReady() || type<-1 || type>=93 || query.size()>1024)return {};
     const auto ids=displayInventory(building);if(!ids)return {};
     const auto groups=df3d_stocks::groups(*ids);if(!groups)return {};
     const auto categories=df3d_stocks::categories(query,&*groups);if(!categories)return {};
+    if(type<0){if(categories->empty())return {};type=categories->front();}
     df::assign_display_item_interfacest owned;
     static_assert(sizeof(owned)==0x230);
     static_assert(offsetof(df::assign_display_item_interfacest,master_a_list)==0xd8);

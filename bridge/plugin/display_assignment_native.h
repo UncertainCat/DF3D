@@ -40,7 +40,10 @@ inline std::optional<DisplayAssignments> displayAssignments(df::building* buildi
         add(id);auto* item=df::item::find(id);add(item!=nullptr);
         if(!item)continue;
         if(item->general_refs.size()>4096)return {};
-        add(item->flags.whole);add(item->flags2.whole);add(item->pos.x);add(item->pos.y);add(item->pos.z);
+        // Lazy item inspection may calculate weight. Cache validity is not
+        // assignment authority and must not invalidate a row by rendering it.
+        auto flags=item->flags;flags.bits.weight_computed=false;
+        add(flags.whole);add(item->flags2.whole);add(item->pos.x);add(item->pos.y);add(item->pos.z);
         add(item->general_refs.size());
         for(auto* ref:item->general_refs) {
             if(!ref)return {};add(int(ref->getType()));

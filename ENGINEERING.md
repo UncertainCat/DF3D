@@ -3446,6 +3446,26 @@ owned session closes unsaved at30FPS, sampled GPU60C. Bridge build and19 core ch
 pass. Evidence: `completed_sheet_discovery_reference.display_picker_reference`.
 Product rendering, draft lifecycle, transport and public exposure remain unfinished.
 
+The composed display read keeps checkbox drafts in the viewer. Category-1 reads
+the parent; category-2 opens the first native category without a hard-coded type.
+Up to64 visible-page item IDs are checked against current parent/category membership
+before shared item facts and appearance are read. Picker commit uses an inventory
+revision over target authority and eligible item identity/order, semantic flags,
+materials, stack counts, positions and references. Parent removal uses the separate
+assignment revision. Both revisions exclude the lazy weight-computed flag so item
+inspection cannot invalidate its own authority. The management caller must still
+enforce connection/epoch/save guards; no persistent bridge draft is introduced.
+
+Protected065752 (DF52320) verifies initial category39, amulet38540 detail/appearance,
+stable revisions across repeated detail reads, and stale rejection after temporarily
+forbidding the candidate. Restoring eligibility permits native-equivalent commit and
+parent removal. Prior inventory, picker search, duplicate and stale-edit comparisons
+also pass; native UI storage is unchanged. Source preserved, owned session closes
+unsaved at30FPS, sampled GPU60C. Bridge build and19 core checks pass. Evidence:
+`completed_sheet_discovery_reference.display_read_reference`.
+This qualifies the provider boundary; transport and actual viewer ownership remain
+unfinished, along with public workflow acceptance.
+
 ### Trap and hive control providers
 
 The trap/hive control provider now owns revisions over target stage/flags,

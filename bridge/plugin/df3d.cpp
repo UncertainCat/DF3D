@@ -181,6 +181,7 @@
 #include "display_inventory_native.h"
 #include "display_assignment_native.h"
 #include "display_picker_native.h"
+#include "display_read_native.h"
 #include "kitchen_native.h"
 #include "hunter_ammunition_native.h"
 #include "hunter_ammunition_captions_native.h"
@@ -5766,7 +5767,24 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(result));return CR_OK;
       }
-      if(parameters[0]=="display-assignment-probe") {
+      if(parameters[0]=="display-read-probe") {
+        if(parameters.size()<4)return CR_WRONG_USAGE;
+        const auto parse=[](const std::string& value,auto& target) {
+          const auto parsed=std::from_chars(value.data(),value.data()+value.size(),target);
+          return parsed.ec==std::errc{} && parsed.ptr==value.data()+value.size();
+        };
+        int32_t id=-1;int16_t category=-1;
+        if(!parse(parameters[1],id) || !parse(parameters[2],category))return CR_WRONG_USAGE;
+        if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+        std::vector<int32_t> ids;
+        for(size_t i=4;i<parameters.size();++i){int32_t item=-1;if(!parse(parameters[i],item))return CR_WRONG_USAGE;ids.push_back(item);}
+        const auto read=df3d_production::readDisplay(df::building::find(id),category,UTF2DF(parameters[3]),ids);if(!read)return CR_FAILURE;
+        Json::Value result;result["revision"]=std::to_string(read->assignments.revision);result["inventory_revision"]=std::to_string(read->inventoryRevision);
+        result["category"]=read->picker?read->picker->type:-1;result["items"]=Json::Value(Json::arrayValue);
+        for(const auto& item:read->items){Json::Value row;row["id"]=item.id;row["caption"]=DF2UTF(item.caption);row["appearance"]=bool(item.appearance);result["items"].append(row);}
+        out.print("{}",Json::FastWriter().write(result));return CR_OK;
+      }
+      if(parameters[0]=="display-assignment-probe" || parameters[0]=="display-draft-probe") {
         if(parameters.size()!=2 && parameters.size()<5)return CR_WRONG_USAGE;
         const auto parse=[](const std::string& value,auto& target) {
           const auto parsed=std::from_chars(value.data(),value.data()+value.size(),target);
@@ -5780,7 +5798,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!parse(parameters[2],revision) || !parse(parameters[3],assign) || (assign!=0 && assign!=1))return CR_WRONG_USAGE;
           std::vector<int32_t> items;
           for(size_t i=4;i<parameters.size();++i){int32_t item=-1;if(!parse(parameters[i],item))return CR_WRONG_USAGE;items.push_back(item);}
-          const auto edit=df3d_production::editDisplayAssignments(building,revision,items,assign!=0);
+          const auto edit=parameters[0]=="display-draft-probe"?
+            (assign?df3d_production::commitDisplayDraft(building,revision,items):
+              items.size()==1?df3d_production::removeDisplayItem(building,revision,items.front()):df3d_production::DisplayEdit{}):
+            df3d_production::editDisplayAssignments(building,revision,items,assign!=0);
           result["outcome"]=int(edit.outcome);result["effects_started"]=edit.effectsStarted;
         }
         const auto snapshot=df3d_production::displayAssignments(building);if(!snapshot)return CR_FAILURE;

@@ -110,15 +110,31 @@ if os.getenv('DF3D_DISPLAY_SELECT')=='1' then
  assert(#building.displayed_items==#before.displayed,'Display parent removal missed')
  if os.getenv('DF3D_DISPLAY_ASSIGNMENT')=='1' then
   local authority=probe('display-assignment-probe')
-  local invalid=probe('display-assignment-probe',authority.revision,1,candidate_id,candidate_id)
+  local command='display-assignment-probe';local draft_revision=authority.revision
+  if os.getenv('DF3D_DISPLAY_READ')=='1' then
+   command='display-draft-probe'
+   local first=probe('display-read-probe',-2,'')
+   local page=probe('display-read-probe',df.item_type.AMULET,'',candidate_id)
+   local repeated=probe('display-read-probe',df.item_type.AMULET,'',candidate_id)
+   assert(first.category==df.item_type.AMMO and first.inventory_revision==page.inventory_revision,'Display initial category/source differs')
+   assert(page.revision==authority.revision and page.inventory_revision==repeated.inventory_revision,'Drawing display item changed authority')
+   assert(#page.items==1 and page.items[1].id==candidate_id and page.items[1].appearance,'Display visible-page item missing')
+   local flags=candidate.flags.whole;candidate.flags.forbid=true
+   local changed=probe(command,page.inventory_revision,1,candidate_id)
+   candidate.flags.whole=flags
+   assert(changed.outcome==2 and not changed.effects_started,'Changed display inventory accepted')
+   result.read_provider={initial=first,page=page,repeated=repeated,changed=changed}
+   draft_revision=page.inventory_revision
+  end
+  local invalid=probe(command,draft_revision,1,candidate_id,candidate_id)
   assert(invalid.outcome==0 and not invalid.effects_started,'Duplicate display draft accepted')
-  local assigned=probe('display-assignment-probe',authority.revision,1,candidate_id)
+  local assigned=probe(command,draft_revision,1,candidate_id)
   assert(assigned.outcome==1 and assigned.effects_started,'Owned display assignment failed')
   result.selection.owned_assigned=snapshot()
   assert(json.encode(result.selection.owned_assigned)==json.encode(result.selection.closed),'Owned display assignment effects differ')
-  local stale=probe('display-assignment-probe',authority.revision,0,candidate_id)
+  local stale=probe(command,authority.revision,0,candidate_id)
   assert(stale.outcome==2 and not stale.effects_started,'Stale display removal accepted')
-  local removed=probe('display-assignment-probe',assigned.revision,0,candidate_id)
+  local removed=probe(command,assigned.revision,0,candidate_id)
   assert(removed.outcome==1 and removed.effects_started,'Owned display removal failed')
   result.selection.owned_removed=snapshot()
   assert(json.encode(result.selection.owned_removed)==json.encode(result.selection.removed),'Owned display removal effects differ')

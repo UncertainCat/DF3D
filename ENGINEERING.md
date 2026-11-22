@@ -7560,6 +7560,25 @@ hover controls, row layout and pixel rendering remain unfinished.
 
 ## Management 175 Places read contract
 
+Places is now a public HUD destination. Registered public destinations take
+precedence over the legacy information hierarchy, so Places opens its six-tab
+list rather than the Zones editor. Building View uses the shared semantic
+selection dispatcher for workshops, farms and siege engines, including pending
+buildings; zones/locations/stockpiles retain their owned area routes. No separate
+Places building-type rules or generic-inspector fallback are introduced.
+Protected081757 on2026-11-22 verifies actual HUD launch/reopen, all six tabs at
+912x552 and1600x900, list membership, scrolling/hover, exact building ownership,
+Recenter and Escape. All20 individual/group siege-action steps match native DF.
+Information round trips to Residents, Tasks, Labor and Work orders and all four
+Labor subpages pass at both widths. Owned DF62632 closes unsaved/source-preserved
+at30FPS, GPU60–61C sampled, viewer stderr empty. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-081757`.
+Core19, Places state, composition and adapter-retirement checks pass. Initial
+081531/081642 exposed the Places-to-Zones HUD alias; the composition regression
+now asserts that a HUD Places event activates Places. This acceptance establishes
+routing and composed actions, not fresh pixel parity for every subtype/status.
+
+
 Management175 adds `PlacesRead`, a bounded single-tab page request, and owned
 `PlacesRow`/`PlacesState` data. Rebuild bridge and viewer together; the shared
 region changes to `Local\df3d_management_v175` and174 peers cannot attach.
@@ -34595,7 +34614,7 @@ game state), the **core** (`schema/` and `worldmodel/`, engine-independent C++),
 creatures, items and animations; pause, unpause and save remain available. The
 toolbar exposes designation and inspection tools, Reports/alerts, construction
 Stockpiles, Zones/Locations, editable Work orders, native Residents and the
-Labor workflow (Work Details, Standing orders, Kitchen and Stone use), plus Stocks and Tasks. Other management screens have staged implementations
+Labor workflow (Work Details, Standing orders, Kitchen and Stone use), plus Stocks, Tasks and Places. Other management screens have staged implementations
 whose public integration remains unfinished. Specialized building controls are
 qualified individually in their owning sections. Windows x64 packages bundle the viewer and a bridge setup launcher;
 source builds are also supported. Both require the pinned Steam release of Dwarf Fortress.

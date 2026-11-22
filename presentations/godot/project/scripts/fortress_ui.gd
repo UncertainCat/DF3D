@@ -73,7 +73,7 @@ func setup(owner, audio_panel, original_ui) -> void:
 	hud.panel_requested.connect(open_destination)
 	hud.notification_requested.connect(open_notification)
 	hud.notification_dismissal_requested.connect(dismiss_notification)
-	hud.info_requested.connect(func(destination): open_destination(preload("res://scripts/native_info_frame.gd").destination(destination)))
+	hud.info_requested.connect(func(destination): open_destination(destination if Registry.PANEL_ROUTES.has(destination) else preload("res://scripts/native_info_frame.gd").destination(destination)))
 	hud.recovery_requested.connect(host.reset_local_views)
 	host.views_reset.connect(hud.close_menus)
 	hud.level_step_requested.connect(view._step_top_z)
@@ -186,7 +186,7 @@ func controller(id: String):
 			focus_tile(tile)
 			if tab in [0,1]:controller("areas").open_zone(building_id)
 			elif tab==2:controller("areas").open_stockpile(building_id)
-			else:controller("inspector").open_target(tile,3,building_id,true))
+			else:_selection_destination(preload("res://scripts/management_contract.gd").SelectionKind.Building,building_id,tile))
 		controllers[id]=panel;return panel
 	if id=="tasks":
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)

@@ -24,7 +24,7 @@ func stale(tab:=0) -> Dictionary:
 	return {"status":C.ManagementStatus.Rejected,"places":{"outcome":C.PlacesOutcome.Stale,"tab":tab,"list_revision":0,"total":0,"offset":0,"rows":[]}}
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
-	check(Shell.Registry.PANEL_SCRIPTS.has("places") and not Shell.Registry.PANEL_ROUTES.has("Places"),"Places public gate changed")
+	check(Shell.Registry.PANEL_SCRIPTS.has("places") and Shell.Registry.PANEL_ROUTES.get("Places")=="places","Places public owner missing")
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()
 	service.reply(state.ticket,page(0,0,[1],2));check(state.phase==State.Phase.Reading and state.rows.is_empty(),"Partial list exposed")
 	check(service.calls[state.ticket].intent.offset==1 and service.calls[state.ticket].intent.expected_list_revision==8,"Continuation lost identity")

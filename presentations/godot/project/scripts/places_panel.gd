@@ -1,5 +1,5 @@
 extends Node
-# Staged owner; public Places entry stays gated while controls are incomplete.
+# Public Places owner; navigation revalidates membership before handoff.
 signal information_requested(caption: String)
 signal focus_requested(tile: Vector3i)
 signal inspect_requested(tab: int,building_id: int,tile: Vector3i)

@@ -1,0 +1,66 @@
+#include "management_codecs.h"
+#include <doctest.h>
+namespace m=df3d::mirror;
+namespace c=wm::detail::management;
+TEST_CASE("Creature workflows preserve typed identities, receipts and unknown outcomes") {
+  constexpr uint64_t revision=9007199254740993ULL;
+  flatbuffers::FlatBufferBuilder b;
+  wm::ManagementRequest q;q.action=wm::ManagementAction::CreatureListRowsRead;
+  q.creatureListRows.targets={{wm::CreatureListKind::Unit,7},{wm::CreatureListKind::Item,7}};
+  c::encodeRequest(b,q,1,2,3);
+  auto* wire=flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer());
+  REQUIRE(!m::validateConstructionRequest(*wire));REQUIRE(wire->creature_list_rows()->targets()->size()==2);
+  REQUIRE(wire->creature_list_rows()->targets()->Get(1)->kind()==m::CreatureListKind::Item);
+  b.Clear();q.action=wm::ManagementAction::PetActionApply;
+  q.petAction={{wm::CreatureListKind::Item,7},revision,wm::PetAction::Adoption,true};
+  c::encodeRequest(b,q,1,2,3);wire=flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer());
+  REQUIRE(!m::validateConstructionRequest(*wire));REQUIRE(wire->pet_action()->expected_revision()==revision);
+  REQUIRE(wire->pet_action()->desired());REQUIRE(!wire->creature_list_rows());
+  b.Clear();q.action=wm::ManagementAction::PetTrainersRead;q.petTrainers={7,revision,{12,13},24};
+  c::encodeRequest(b,q,1,2,3);wire=flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer());
+  REQUIRE(!m::validateConstructionRequest(*wire));REQUIRE(wire->pet_trainers()->unit_ids()->Get(1)==13);
+  b.Clear();q.action=wm::ManagementAction::PetTrainerApply;q.petTrainer={7,revision,wm::PetTrainerMode::Individual,12};
+  c::encodeRequest(b,q,1,2,3);wire=flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer());
+  REQUIRE(!m::validateConstructionRequest(*wire));REQUIRE(wire->pet_trainer()->trainer_id()==12);
+  b.Clear();q.action=wm::ManagementAction::PetKnowledgeRead;q.petKnowledge={revision,64,32};
+  c::encodeRequest(b,q,1,2,3);wire=flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer());
+  REQUIRE(!m::validateConstructionRequest(*wire));REQUIRE(wire->pet_knowledge()->offset()==64);
+  b.Clear();
+  auto caption=m::CreatePetCaption(b,b.CreateString("fixture activity"),2,0,true);
+  auto color=m::CreateAreaNameColor(b,1,0,1,2,0,0,0);
+  auto owner=m::CreatePetOwner(b,12,b.CreateString("fixture owner"),b.CreateString(""),color);
+  auto control=m::CreatePetControl(b,m::PetAction::Adoption,true,false,b.CreateString(""),-1,-1);
+  auto pet=m::CreatePetRowControls(b,revision,b.CreateVector(std::vector{caption}),b.CreateVector(std::vector{owner}),b.CreateVector(std::vector{control}));
+  m::TilePos position(-30000,-30000,-30000);
+  auto row=m::CreateCreatureListRow(b,m::CreatureListKind::Item,7,b.CreateString("fixture pet"),b.CreateString(""),color,caption,0,&position,true,0,pet);
+  auto rows=m::CreateCreatureListRowsState(b,m::CreatureListTab::Pets,b.CreateVector(std::vector{row}));
+  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::CreatureListRowsRead);
+  state.add_status(m::ManagementStatus::Ok);state.add_creature_list_rows(rows);b.Finish(state.Finish());
+  auto* s=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE(!m::validateManagementState(*s));
+  auto decoded=c::decodeState(s);REQUIRE(decoded.creatureListRows);const auto& r=decoded.creatureListRows->rows.at(0);
+  REQUIRE((r.kind==wm::CreatureListKind::Item && r.position->x==-30000 && r.canInspect && !r.jobTarget));
+  REQUIRE((r.pet->revision==revision && r.pet->owners.at(0).firstLine=="fixture owner" && r.pet->controls.at(0).value));
+  b.Clear();auto edit=m::CreatePetEditState(b,m::CreateCreatureListIdentity(b,m::CreatureListKind::Item,7),m::PetOutcome::Unknown);
+  m::ManagementStateBuilder result(b);result.add_revision(2);result.add_action(m::ManagementAction::PetActionApply);
+  result.add_status(m::ManagementStatus::Rejected);result.add_pet_edit(edit);b.Finish(result.Finish());
+  s=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE(!m::validateManagementState(*s));decoded=c::decodeState(s);
+  REQUIRE((decoded.petEdit->outcome==wm::PetOutcome::Unknown && !decoded.creatureListRows));
+  b.Clear();
+  color=m::CreateAreaNameColor(b,1,0,1,2,0,0,0);
+  auto trainer=m::CreatePetTrainerRow(b,12,b.CreateString("fixture trainer"),b.CreateString(""),color,0,
+    b.CreateVector(std::vector{b.CreateString("fixture skill")}));
+  auto trainers=m::CreatePetTrainersState(b,7,revision,true,12,false,false,b.CreateVector(std::vector<int32_t>{12,13}),b.CreateVector(std::vector{trainer}));
+  m::ManagementStateBuilder ts(b);ts.add_revision(3);ts.add_action(m::ManagementAction::PetTrainersRead);
+  ts.add_status(m::ManagementStatus::Ok);ts.add_pet_trainers(trainers);b.Finish(ts.Finish());
+  s=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE_FALSE(m::validateManagementState(*s));decoded=c::decodeState(s);
+  REQUIRE(decoded.petTrainers);REQUIRE(decoded.petTrainers->revision==revision);REQUIRE(decoded.petTrainers->unitIds==std::vector<int32_t>{12,13});
+  REQUIRE(decoded.petTrainers->rows.at(0).skills==std::vector<std::string>{"fixture skill"});REQUIRE_FALSE(decoded.petEdit);
+  b.Clear();caption=m::CreatePetCaption(b,b.CreateString("fixture knowledge"),2,0,true);
+  auto species=m::CreatePetKnowledgeRow(b,5,2,b.CreateString("fixture species"),caption);
+  auto knowledge=m::CreatePetKnowledgeState(b,revision,65,64,b.CreateVector(std::vector{species}));
+  m::ManagementStateBuilder ks(b);ks.add_revision(4);ks.add_action(m::ManagementAction::PetKnowledgeRead);
+  ks.add_status(m::ManagementStatus::Ok);ks.add_pet_knowledge(knowledge);b.Finish(ks.Finish());
+  s=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE_FALSE(m::validateManagementState(*s));decoded=c::decodeState(s);
+  REQUIRE(decoded.petKnowledge);REQUIRE(decoded.petKnowledge->offset==64);REQUIRE(decoded.petKnowledge->revision==revision);
+  REQUIRE(decoded.petKnowledge->rows.at(0).knowledge.bright);REQUIRE_FALSE(decoded.petTrainers);
+}

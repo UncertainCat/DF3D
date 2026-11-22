@@ -62,6 +62,7 @@ add_executable(worldmodel_tests
   tests/command_tests.cpp
   tests/management_tests.cpp
   tests/management_codec_tests.cpp
+  tests/creature_list_codec_tests.cpp
   tests/tasks_codec_tests.cpp
   tests/objects_codec_tests.cpp
   tests/justice_codec_tests.cpp

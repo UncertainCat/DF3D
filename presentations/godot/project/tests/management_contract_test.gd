@@ -50,6 +50,19 @@ func run() -> void:
 	assert(state.status is int and state.action is int)
 	assert(Contract.is_mutation(A.Place) and Contract.is_mutation(A.AreaUpdate))
 	assert(not Contract.is_mutation(A.Preview))
+	var creature_rows := {"action":A.CreatureListRowsRead,"tab":1,"columns":30,"targets":[{"kind":0,"id":7}]}
+	for patch in [{"tab":0},{"columns":31},{"targets":[]},{"targets":[{"kind":0,"id":7},{"kind":0,"id":7}]},
+		{"targets":[{"kind":2,"id":7}]},{"targets":[{"kind":0,"id":7.0}]},{"tab":3,"targets":[{"kind":1,"id":7}]}]:
+		var invalid := creature_rows.duplicate(true);invalid.merge(patch,true)
+		assert(world.management_request("creature_list_rows",invalid)==0)
+	var pet_action := {"action":A.PetActionApply,"target":{"kind":1,"id":7},"expected_revision":9,"pet_action":1,"desired":true}
+	for patch in [{"expected_revision":0},{"expected_revision":9.0},{"pet_action":0},{"pet_action":3},{"desired":1},
+		{"target":{"kind":0,"id":-1}},{"target":{"kind":0,"id":7,"extra":true}}]:
+		var invalid := pet_action.duplicate(true);invalid.merge(patch,true)
+		assert(world.management_request("pet_action",invalid)==0)
+	assert(world.management_request("pet_trainers",{"action":A.PetTrainersRead,"animal_id":7,"expected_revision":9,"columns":30,"unit_ids":PackedInt32Array([1,1])})==0)
+	assert(world.management_request("pet_trainer",{"action":A.PetTrainerApply,"animal_id":7,"expected_revision":9,"mode":0,"trainer_id":1})==0)
+	assert(world.management_request("pet_knowledge",{"action":A.PetKnowledgeRead,"expected_revision":0,"offset":1,"limit":64})==0)
 	assert(Contract.domain_of(A.DepotGoodsRead)=="depot_goods" and not Contract.is_mutation(A.DepotGoodsRead))
 	var depot={"action":A.DepotGoodsRead,"depot_id":54,"category":45,"query":"IRON","sort_by_distance":true,"pending_on_top":true,"exclude_prohibited":false,"item_ids":[296]}
 	for patch in [{"depot_id":-1},{"category":93},{"category":-1},{"item_ids":[296,296]},{"sort_by_distance":1},{"query":false},{"extra":true}]:

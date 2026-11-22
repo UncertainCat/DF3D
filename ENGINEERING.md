@@ -12733,6 +12733,20 @@ Both bridge and consumer must rebuild for region v257; v256 management records
 are incompatible and must not acquire inferred row/control facts. The schema
 does not establish implementation or public acceptance of these new actions.
 
+The engine-independent model encodes all five requests and decodes sibling rows,
+pet edit outcomes, trainer candidates and species knowledge pages. The Godot
+adapter exposes the same payloads, including typed unit/item identities, optional
+navigation and appearance, owner text/colors and observed help. Revision receipts
+remain64-bit integers throughout; an Unknown edit stays distinct from rejection
+or application. Adapter validation rejects malformed identities, duplicate row
+targets and inadmissible item actions before submission. These consumer paths
+do not establish bridge dispatch, public tab integration or native visual parity.
+Consumer verification: root and extension builds pass on2026-11-22; all19 root
+CTest checks pass, including typed identity, full-width receipt, optional
+navigation, owner/control, trainer-page and knowledge-page codec coverage.
+The headless management_contract_test passes with local rejection checks for
+malformed pet/row requests. No native game process is required for these checks.
+
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching
 item-name renderer1423fe0. Native142b45a..142b4c5 captures raw item.pos for Recenter;

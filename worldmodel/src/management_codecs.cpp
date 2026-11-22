@@ -52,6 +52,47 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.creatureList=std::move(result);
   }
   if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
+  const auto petCaption=[](const m::PetCaption* v) { return PetCaption{v->text()->str(),v->foreground(),v->background(),v->bright()}; };
+  const auto creatureColor=[](const m::AreaNameColor* v) { return AreaNameColor{{v->foreground(),v->background(),v->bright()},
+    {v->alternate_foreground(),v->alternate_background(),v->alternate_bright()},v->effect()}; };
+  if(const auto* r=s->creature_list_rows()) {
+    auto& out=next.creatureListRows.emplace();out.tab=CreatureListTab(r->tab());
+    for(const auto* v:*r->rows()) {
+      CreatureListRow row;row.kind=CreatureListKind(v->kind());row.id=v->id();
+      row.firstLine=v->first_line()->str();row.secondLine=v->second_line()->str();row.nameColor=creatureColor(v->name_color());
+      row.activity=petCaption(v->activity());row.canInspect=v->can_inspect();
+      if(v->portrait())row.portrait=decodeItemRecipe(v->portrait());
+      if(const auto* p=v->position())row.position=TilePos{p->x(),p->y(),p->z()};
+      if(const auto* j=v->job_target())row.jobTarget=ResidentJobTarget{j->job_id(),j->building_id()};
+      if(const auto* p=v->pet()) {
+        auto& pet=row.pet.emplace();pet.revision=p->revision();
+        for(const auto* c:*p->captions())pet.captions.push_back(petCaption(c));
+        for(const auto* o:*p->owners())pet.owners.push_back({o->id(),o->first_line()->str(),o->second_line()->str(),creatureColor(o->name_color())});
+        for(const auto* c:*p->controls())pet.controls.push_back({PetAction(c->action()),c->value(),c->help_observed(),c->help_text()->str(),c->hover_help(),c->instruction_help()});
+      }
+      out.rows.push_back(std::move(row));
+    }
+  }
+  if(const auto* r=s->pet_edit())next.petEdit=PetEditState{{CreatureListKind(r->target()->kind()),r->target()->id()},PetOutcome(r->outcome())};
+  if(const auto* r=s->pet_trainers()) {
+    auto& out=next.petTrainers.emplace();out.animalId=r->animal_id();out.revision=r->revision();out.assigned=r->assigned();
+    out.trainerId=r->trainer_id();out.anyTrainer=r->any_trainer();out.unassignedOnly=r->unassigned_only();
+    out.unitIds.assign(r->unit_ids()->begin(),r->unit_ids()->end());
+    for(const auto* v:*r->rows()) {
+      PetTrainerRow row;row.id=v->id();row.firstLine=v->first_line()->str();row.secondLine=v->second_line()->str();row.nameColor=creatureColor(v->name_color());
+      if(v->portrait())row.portrait=decodeItemRecipe(v->portrait());
+      for(const auto* skill:*v->skills())row.skills.push_back(skill->str());
+      out.rows.push_back(std::move(row));
+    }
+  }
+  if(const auto* r=s->pet_knowledge()) {
+    auto& out=next.petKnowledge.emplace();out.revision=r->revision();out.total=r->total();out.offset=r->offset();
+    for(const auto* v:*r->rows()) {
+      PetKnowledgeRow row;row.race=v->race();row.level=v->level();row.name=v->name()->str();row.knowledge=petCaption(v->knowledge());
+      if(v->portrait())row.portrait=decodeItemRecipe(v->portrait());
+      out.rows.push_back(std::move(row));
+    }
+  }
   if(const auto* r=s->nobles()) {
     auto& out=next.nobles.emplace();out.outcome=NoblesOutcome(r->outcome());out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
     out.candidateRevision=r->candidate_revision();
@@ -598,7 +639,14 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       !r.displayReplyRequest && r.action>=ManagementAction::DisplayRead && r.action<=ManagementAction::DisplayRemove?
         m::CreateDisplayRequest(b,r.display.buildingId,r.display.category,b.CreateString(r.display.query),b.CreateVector(r.display.itemIds),r.display.expectedRevision,b.CreateVector(r.display.selectedIds)):flatbuffers::Offset<m::DisplayRequest>{},
       r.displayReplyRequest?m::CreateDisplayReplyRequest(b,r.displayReplyRequest,r.displayReplyOffset):flatbuffers::Offset<m::DisplayReplyRequest>{},
-      r.action==ManagementAction::CreatureListQuery?m::CreateCreatureListRequest(b,m::CreatureListTab(r.creatureList.tab),m::CreatureListSort(r.creatureList.sort),r.creatureList.descending,b.CreateVector(r.creatureList.queryBytes)):flatbuffers::Offset<m::CreatureListRequest>{});
+      r.action==ManagementAction::CreatureListQuery?m::CreateCreatureListRequest(b,m::CreatureListTab(r.creatureList.tab),m::CreatureListSort(r.creatureList.sort),r.creatureList.descending,b.CreateVector(r.creatureList.queryBytes)):flatbuffers::Offset<m::CreatureListRequest>{},
+      r.action==ManagementAction::CreatureListRowsRead?[&](){std::vector<flatbuffers::Offset<m::CreatureListIdentity>> targets;
+        for(const auto& v:r.creatureListRows.targets)targets.push_back(m::CreateCreatureListIdentity(b,m::CreatureListKind(v.kind),v.id));
+        return m::CreateCreatureListRowsRequest(b,m::CreatureListTab(r.creatureListRows.tab),b.CreateVector(targets),r.creatureListRows.columns);}():flatbuffers::Offset<m::CreatureListRowsRequest>{},
+      r.action==ManagementAction::PetActionApply?m::CreatePetActionRequest(b,m::CreateCreatureListIdentity(b,m::CreatureListKind(r.petAction.target.kind),r.petAction.target.id),r.petAction.expectedRevision,m::PetAction(r.petAction.action),r.petAction.desired):flatbuffers::Offset<m::PetActionRequest>{},
+      r.action==ManagementAction::PetTrainersRead?m::CreatePetTrainersRequest(b,r.petTrainers.animalId,r.petTrainers.expectedRevision,b.CreateVector(r.petTrainers.unitIds),r.petTrainers.columns):flatbuffers::Offset<m::PetTrainersRequest>{},
+      r.action==ManagementAction::PetTrainerApply?m::CreatePetTrainerRequest(b,r.petTrainer.animalId,r.petTrainer.expectedRevision,m::PetTrainerMode(r.petTrainer.mode),r.petTrainer.trainerId):flatbuffers::Offset<m::PetTrainerRequest>{},
+      r.action==ManagementAction::PetKnowledgeRead?m::CreatePetKnowledgeRequest(b,r.petKnowledge.expectedRevision,r.petKnowledge.offset,r.petKnowledge.limit):flatbuffers::Offset<m::PetKnowledgeRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

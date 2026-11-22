@@ -177,6 +177,56 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& entry:s.creatureList->entries) {Dictionary row;row["kind"]=int(entry.kind);row["id"]=entry.id;entries.push_back(row);}
         value["entries"]=entries;result["creature_list"]=value;
     }
+    const auto creatureColor=[](const wm::AreaNameColor& c) { Dictionary out;Array primary,alternate;
+        for(auto v:c.color)primary.push_back(int(v));for(auto v:c.alternate)alternate.push_back(int(v));
+        out["color"]=primary;out["alternate"]=alternate;out["effect"]=int(c.effect);return out; };
+    const auto petCaption=[](const wm::PetCaption& c) { Dictionary out;out["text"]=String::utf8(c.text.c_str());
+        out["foreground"]=int(c.foreground);out["background"]=int(c.background);out["bright"]=c.bright;return out; };
+    if(s.creatureListRows) {
+        Dictionary value;Array rows;value["tab"]=int(s.creatureListRows->tab);
+        for(const auto& v:s.creatureListRows->rows) {
+            Dictionary row;row["kind"]=int(v.kind);row["id"]=v.id;
+            row["first_line"]=String::utf8(v.firstLine.c_str());row["second_line"]=String::utf8(v.secondLine.c_str());
+            row["name_color"]=creatureColor(v.nameColor);row["activity"]=petCaption(v.activity);row["can_inspect"]=v.canInspect;
+            if(v.portrait)row["portrait"]=management::itemRecipeDictionary(*v.portrait);
+            if(v.position)row["position"]=Vector3i(v.position->x,v.position->y,v.position->z);
+            if(v.jobTarget){Dictionary j;j["job_id"]=v.jobTarget->jobId;j["building_id"]=v.jobTarget->buildingId;row["job_target"]=j;}
+            if(v.pet) {
+                Dictionary pet;Array captions,owners,controls;pet["revision"]=int64_t(v.pet->revision);
+                for(const auto& c:v.pet->captions)captions.push_back(petCaption(c));
+                for(const auto& o:v.pet->owners){Dictionary owner;owner["id"]=o.id;owner["first_line"]=String::utf8(o.firstLine.c_str());
+                    owner["second_line"]=String::utf8(o.secondLine.c_str());owner["name_color"]=creatureColor(o.nameColor);owners.push_back(owner);}
+                for(const auto& c:v.pet->controls){Dictionary control;control["action"]=int(c.action);control["value"]=c.value;
+                    control["help_observed"]=c.helpObserved;control["help_text"]=String::utf8(c.helpText.c_str());
+                    control["hover_help"]=c.hoverHelp;control["instruction_help"]=c.instructionHelp;controls.push_back(control);}
+                pet["captions"]=captions;pet["owners"]=owners;pet["controls"]=controls;row["pet"]=pet;
+            }
+            rows.push_back(row);
+        }
+        value["rows"]=rows;result["creature_list_rows"]=value;
+    }
+    if(s.petEdit) {
+        Dictionary value,target;target["kind"]=int(s.petEdit->target.kind);target["id"]=s.petEdit->target.id;
+        value["target"]=target;value["outcome"]=int(s.petEdit->outcome);result["pet_edit"]=value;
+    }
+    if(s.petTrainers) {
+        const auto& v=*s.petTrainers;Dictionary value;Array rows;PackedInt32Array ids;
+        value["animal_id"]=v.animalId;value["revision"]=int64_t(v.revision);value["assigned"]=v.assigned;
+        value["trainer_id"]=v.trainerId;value["any_trainer"]=v.anyTrainer;value["unassigned_only"]=v.unassignedOnly;
+        for(auto id:v.unitIds)ids.push_back(id);value["unit_ids"]=ids;
+        for(const auto& r:v.rows){Dictionary row;Array skills;row["id"]=r.id;row["first_line"]=String::utf8(r.firstLine.c_str());
+            row["second_line"]=String::utf8(r.secondLine.c_str());row["name_color"]=creatureColor(r.nameColor);
+            if(r.portrait)row["portrait"]=management::itemRecipeDictionary(*r.portrait);
+            for(const auto& skill:r.skills)skills.push_back(String::utf8(skill.c_str()));row["skills"]=skills;rows.push_back(row);}
+        value["rows"]=rows;result["pet_trainers"]=value;
+    }
+    if(s.petKnowledge) {
+        const auto& v=*s.petKnowledge;Dictionary value;Array rows;
+        value["revision"]=int64_t(v.revision);value["total"]=int64_t(v.total);value["offset"]=int64_t(v.offset);
+        for(const auto& r:v.rows){Dictionary row;row["race"]=r.race;row["level"]=r.level;row["name"]=String::utf8(r.name.c_str());
+            row["knowledge"]=petCaption(r.knowledge);if(r.portrait)row["portrait"]=management::itemRecipeDictionary(*r.portrait);rows.push_back(row);}
+        value["rows"]=rows;result["pet_knowledge"]=value;
+    }
     if(s.residents) {
         Dictionary value;PackedInt32Array ids;
         for(auto id:s.residents->unitIds)ids.push_back(id);
@@ -1226,6 +1276,69 @@ bool readWorkDetailWorkers(const Dictionary& data,wm::ManagementRequest& request
     const PackedByteArray bytes=data["query_bytes"];for(int64_t i=0;i<bytes.size();++i)query.queryBytes.push_back(bytes[i]);
     return true;
 }
+bool creatureInteger(const Dictionary& data,const char* key,int64_t low,int64_t high) {
+    return data.has(key) && data[key].get_type()==Variant::INT && int64_t(data[key])>=low && int64_t(data[key])<=high;
+}
+bool creatureIdentity(const Dictionary& data) {
+    return data.size()==2 && creatureInteger(data,"kind",0,1) && creatureInteger(data,"id",0,INT32_MAX);
+}
+bool validateCreatureRows(const Dictionary& data,String& error) {
+    if(data.size()!=4 || !creatureInteger(data,"tab",1,3) || !creatureInteger(data,"columns",3,30) ||
+       !data.has("targets") || data["targets"].get_type()!=Variant::ARRAY) {error="Invalid creature row fields";return false;}
+    const Array targets=data["targets"];
+    if(targets.is_empty() || targets.size()>64){error="Invalid creature row bounds";return false;}
+    for(int64_t i=0;i<targets.size();++i) {
+        if(targets[i].get_type()!=Variant::DICTIONARY){error="Invalid creature identity";return false;}
+        const Dictionary target=targets[i];
+        if(!creatureIdentity(target) || (int64_t(data["tab"])==3 && int64_t(target["kind"])!=0)){error="Invalid creature identity";return false;}
+        for(int64_t j=0;j<i;++j){const Dictionary previous=targets[j];if(previous["kind"]==target["kind"] && previous["id"]==target["id"]){error="Duplicate creature identity";return false;}}
+    }
+    return true;
+}
+bool readCreatureRows(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::CreatureListRowsRead;auto& q=request.creatureListRows;
+    q.tab=wm::CreatureListTab(int64_t(data["tab"]));q.columns=uint16_t(int64_t(data["columns"]));
+    const Array targets=data["targets"];for(int64_t i=0;i<targets.size();++i){const Dictionary v=targets[i];q.targets.push_back({wm::CreatureListKind(int64_t(v["kind"])),int32_t(int64_t(v["id"]))});}return true;
+}
+bool validatePetAction(const Dictionary& data,String& error) {
+    if(data.size()!=5 || !data.has("target") || data["target"].get_type()!=Variant::DICTIONARY ||
+       !creatureInteger(data,"expected_revision",1,INT64_MAX) || !creatureInteger(data,"pet_action",0,5) ||
+       !data.has("desired") || data["desired"].get_type()!=Variant::BOOL){error="Invalid pet edit fields";return false;}
+    const Dictionary target=data["target"];const int64_t action=data["pet_action"];
+    if(!creatureIdentity(target) || action==3 || (int64_t(target["kind"])==1 && action!=1)){error="Invalid pet edit target";return false;}return true;
+}
+bool readPetAction(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::PetActionApply;const Dictionary target=data["target"];
+    request.petAction={{wm::CreatureListKind(int64_t(target["kind"])),int32_t(int64_t(target["id"]))},uint64_t(int64_t(data["expected_revision"])),wm::PetAction(int64_t(data["pet_action"])),bool(data["desired"])};return true;
+}
+bool validatePetTrainers(const Dictionary& data,String& error) {
+    if(data.size()!=5 || !creatureInteger(data,"animal_id",0,INT32_MAX) || !creatureInteger(data,"expected_revision",1,INT64_MAX) ||
+       !creatureInteger(data,"columns",3,30) || !data.has("unit_ids") || data["unit_ids"].get_type()!=Variant::PACKED_INT32_ARRAY){error="Invalid pet trainer fields";return false;}
+    const PackedInt32Array ids=data["unit_ids"];if(ids.size()>64){error="Invalid pet trainer bounds";return false;}
+    for(int64_t i=0;i<ids.size();++i){if(ids[i]<0){error="Invalid trainer identity";return false;}for(int64_t j=0;j<i;++j)if(ids[i]==ids[j]){error="Duplicate trainer identity";return false;}}return true;
+}
+bool readPetTrainers(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::PetTrainersRead;auto& q=request.petTrainers;
+    q.animalId=int32_t(int64_t(data["animal_id"]));q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.columns=uint16_t(int64_t(data["columns"]));
+    const PackedInt32Array ids=data["unit_ids"];for(int64_t i=0;i<ids.size();++i)q.unitIds.push_back(ids[i]);return true;
+}
+bool validatePetTrainer(const Dictionary& data,String& error) {
+    if(data.size()!=5 || !creatureInteger(data,"animal_id",0,INT32_MAX) || !creatureInteger(data,"expected_revision",1,INT64_MAX) ||
+       !creatureInteger(data,"mode",0,3) || !creatureInteger(data,"trainer_id",-1,INT32_MAX) ||
+       (int64_t(data["mode"])==3 ? int64_t(data["trainer_id"])<0 : int64_t(data["trainer_id"])!=-1)){error="Invalid pet trainer edit";return false;}return true;
+}
+bool readPetTrainer(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::PetTrainerApply;
+    request.petTrainer={int32_t(int64_t(data["animal_id"])),uint64_t(int64_t(data["expected_revision"])),wm::PetTrainerMode(int64_t(data["mode"])),int32_t(int64_t(data["trainer_id"]))};return true;
+}
+bool validatePetKnowledge(const Dictionary& data,String& error) {
+    if(data.size()!=4 || !creatureInteger(data,"expected_revision",0,INT64_MAX) || !creatureInteger(data,"offset",0,32767) ||
+       !creatureInteger(data,"limit",1,64) || (int64_t(data["offset"])>0 && int64_t(data["expected_revision"])==0)){error="Invalid pet knowledge page";return false;}return true;
+}
+bool readPetKnowledge(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::PetKnowledgeRead;
+    request.petKnowledge={uint64_t(int64_t(data["expected_revision"])),uint32_t(int64_t(data["offset"])),uint16_t(int64_t(data["limit"]))};return true;
+}
 bool validateCreatureList(const Dictionary& data,String& error) {
     if(data.size()!=5 || !data.has("tab") || !data.has("sort") || !data.has("descending") || !data.has("query_bytes") ||
        data["tab"].get_type()!=Variant::INT || data["sort"].get_type()!=Variant::INT ||
@@ -1402,6 +1515,11 @@ const ManagementCodec managementCodecs[] = {
     {"creature_location",validateCreatureLocation,readCreatureLocation},
     {"creature_animal",validateCreatureAnimal,readCreatureAnimal},
     {"creature_list",validateCreatureList,readCreatureList},
+    {"creature_list_rows",validateCreatureRows,readCreatureRows},
+    {"pet_action",validatePetAction,readPetAction},
+    {"pet_trainers",validatePetTrainers,readPetTrainers},
+    {"pet_trainer",validatePetTrainer,readPetTrainer},
+    {"pet_knowledge",validatePetKnowledge,readPetKnowledge},
     {"residents",validateResidents,readResidents},
     {"work_detail_workers",validateWorkDetailWorkers,readWorkDetailWorkers},
     {"residents_rows",validateResidentsRows,readResidentsRows},
@@ -1438,7 +1556,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::CreatureListQuery)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::PetKnowledgeRead)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

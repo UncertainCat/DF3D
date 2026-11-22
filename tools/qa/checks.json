@@ -9,6 +9,105 @@
   },
   "checks": [
     {
+      "id": "building_holder_routing_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/building_holder_routing_test.gd",
+      "completion": "^BUILDING_HOLDER_ROUTING_PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "building_links_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/building_links_state_test.gd",
+      "completion": "^BUILDING_LINKS_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "cage_picker_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/cage_picker_state_test.gd",
+      "completion": "^cage_picker_state_test: PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "depot_contract_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/depot_contract_test.gd",
+      "completion": "^DEPOT_CONTRACT_PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "grate_contract_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/grate_contract_test.gd",
+      "completion": "^GRATE_CONTRACT_PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "lever_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/lever_state_test.gd",
+      "completion": "^LEVER_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "pending_building_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/pending_building_state_test.gd",
+      "completion": "^PENDING_BUILDING_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "well_contract_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/well_contract_test.gd",
+      "completion": "^WELL_CONTRACT_PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "workshop_worker_picker_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/workshop_worker_picker_test.gd",
+      "completion": "^WORKSHOP_WORKER_PICKER_PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
       "id": "trade_goods_state_test",
       "lane": "core",
       "kind": "godot",

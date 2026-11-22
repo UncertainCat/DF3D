@@ -1,10 +1,12 @@
 -- Native-only discovery in a protected, paused, owned session.
-local out,view,info,callbacks=...
+local out,view,info,callbacks,mode=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
+local trainer=mode=='trainer'
+local prefix=trainer and 'pet-trainer' or 'pet-training'
 local button
 local function find(widget)
  if (widget.flag.whole&1)==0 then return end
- for _,target in ipairs(callbacks(widget.custom_activated,64))do if target==0x3d15c0 then button=widget end end
+ for _,target in ipairs(callbacks(widget.custom_activated,64))do if target==(trainer and 0x3d1700 or 0x3d15c0) then button=widget end end
  if df.widget_container:is_instance(widget)then
   for ordinal,child in ipairs(dfhack.gui.getWidgetChildren(widget))do
    if not df.widget_tabs:is_instance(widget) or ordinal-1==widget.cur_idx then find(child)end
@@ -13,7 +15,7 @@ local function find(widget)
 end
 find(info.creatures);assert(button,'Overall Training button missing')
 local provider
-if os.getenv('DF3D_PET_TRAINING_PROVIDER')=='1' then
+if not trainer and os.getenv('DF3D_PET_TRAINING_PROVIDER')=='1' then
  local text,rc=dfhack.run_command_silent('df3d','pet-training-probe');assert(rc==0,text);provider=json.decode(text).rows
 end
 local x=math.floor((button.rect.x1+button.rect.x2)/2);local y=math.floor((button.rect.y1+button.rect.y2)/2)
@@ -24,7 +26,7 @@ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.ena
 for _=1,3 do script.sleep(1,'frames')end
 view:render(dfhack.getTickCount())
 local source=debug.getinfo(1,'S').source:sub(2):gsub('smoke/pet%-training%-native.lua$','ui_bake/capture_widgets.lua')
-assert(loadfile(source))(out..'/pet-training-widgets.json','all')
+assert(loadfile(source))(out..'/'..prefix..'-widgets.json','all')
 local controls={};local knowledge={};local base=dfhack.internal.getImageBase()
 local function collect(widget,path)
  if (widget.flag.whole&1)==0 then return end
@@ -34,7 +36,13 @@ local function collect(widget,path)
   rect={widget.rect.x1,widget.rect.y1,widget.rect.x2,widget.rect.y2},
   activated=callbacks(widget.custom_activated,64),feed=callbacks(widget.custom_feed,64)}
  if df.widget_text:is_instance(widget)then value.text=dfhack.df2utf(widget.str);value.color={widget.fg,widget.bg,widget.bright}end
- if df.widget_creature_portrait:is_instance(widget)then
+ if df.widget_unit_name:is_instance(widget) and widget.u then value.unit=widget.u.id end
+ if df.widget_unit_list:is_instance(widget)then
+  value.filters=callbacks(widget.filter_func,64);value.sorting={};value.ids={}
+  for _,entry in ipairs(widget.sorting_by)do value.sorting[#value.sorting+1]=entry.ident end
+  for _,entry in ipairs(widget.entry_list)do value.ids[#value.ids+1]={kind=entry.t,id=entry.t==0 and entry.u.id or entry.i.id}end
+ end
+ if not trainer and df.widget_creature_portrait:is_instance(widget)then
   local texts={}
   for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do if df.widget_text:is_instance(child)then texts[#texts+1]=child end end
   assert(#texts==2,'Training row text structure differs')
@@ -49,14 +57,14 @@ local function collect(widget,path)
  end
 end
 collect(info.creatures,'creatures')
-local f=assert(io.open(out..'/pet-training-controls.json','w'));f:write(json.encode(controls));f:close()
+local f=assert(io.open(out..'/'..prefix..'-controls.json','w'));f:write(json.encode(controls));f:close()
 local matches=not provider or json.encode(provider)==json.encode(knowledge)
-f=assert(io.open(out..'/pet-training-reference.json','w'));f:write(json.encode({native=knowledge,provider=provider,matches=matches}));f:close()
-assert(#knowledge>0 and matches,'Overall Training provider differs')
-f=assert(io.open(out..'/shot.tmp','w'));f:write('pet-training-root');f:close()
+f=assert(io.open(out..'/'..prefix..'-reference.json','w'));f:write(json.encode({native=knowledge,provider=provider,matches=matches}));f:close()
+assert(trainer or (#knowledge>0 and matches),'Overall Training provider differs')
+f=assert(io.open(out..'/shot.tmp','w'));f:write(prefix..'-root');f:close()
 assert(os.rename(out..'/shot.tmp',out..'/shot'))
 local deadline=dfhack.getTickCount()+30000
 while true do
- local ack=io.open(out..'/ack-pet-training-root');if ack then ack:close();break end
+ local ack=io.open(out..'/ack-'..prefix..'-root');if ack then ack:close();break end
  assert(dfhack.getTickCount()<deadline,'Training capture timeout');script.sleep(1,'frames')
 end

@@ -10,6 +10,21 @@ if os.getenv('DF3D_WORK_DETAILS_NATIVE')=='1' then
 end
 local activity_provider
 local residents_hover_finish
+local training_fixture_finish
+if os.getenv('DF3D_PET_TRAINER_FIXTURE')=='1' then
+ local target
+ for _,unit in ipairs(df.global.world.units.active)do
+  local raw=df.global.world.raws.creatures.all[unit.race]
+  local caste=raw and raw.caste[unit.caste]
+  if caste and caste.flags.TRAINABLE_WAR and caste.flags.TRAINABLE_HUNTING and not unit.flags1.inactive and
+     unit.relationship_ids.PetOwner~=-1 and not df.training_assignment.find(unit.id) then target=unit;break end
+ end
+ assert(target,'Controlled trainer fixture requires an owned trainable animal without an assignment')
+ local before={owner=target.relationship_ids.PetOwner,level=target.training_level}
+ target.relationship_ids.PetOwner=-1;target.training_level=df.animal_training_level.Trained
+ local f=assert(io.open(out..'/pet-trainer-fixture.json','w'));f:write(json.encode({id=target.id,before=before,controlled_owner=-1,controlled_level=target.training_level}));f:close()
+ training_fixture_finish=function()target.relationship_ids.PetOwner=before.owner;target.training_level=before.level end
+end
 if os.getenv('DF3D_RESIDENTS_ACTIVITY')=='1' then
  local text,code=dfhack.run_command_silent('df3d','residents-activity-probe')
  assert(code==0,'Cold Residents Activity provider failed: '..text)
@@ -121,7 +136,7 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
      if df.widget_text:is_instance(widget)then result.captions[#result.captions+1]=dfhack.df2utf(widget.str)end
      if df.widget_unit_name:is_instance(widget) and widget.u then result.owners[#result.owners+1]=widget.u.id end
      for _,target in ipairs(callbacks(widget.custom_activated,64))do
-      local action=({[0x3d0ca0]=0,[0x3d0e50]=1,[0x3d0a90]=1,[0x3d0c40]=2})[target]
+      local action=({[0x3d0ca0]=0,[0x3d0e50]=1,[0x3d0a90]=1,[0x3d0c40]=2,[0x3d1700]=3,[0x3d1460]=4,[0x3d1280]=5})[target]
       if action then result.actions[#result.actions+1]=action end
      end
      if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do semantic(child,result)end end
@@ -193,6 +208,17 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
   for _=1,3 do script.sleep(1,'frames')end
   view:render(dfhack.getTickCount());capture(index);queries(index)
+  if index==1 and training_fixture_finish then
+   local ok,err=pcall(function()
+    if os.getenv('DF3D_PET_TRAINER_REFERENCE')=='1' then
+     local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','pet-training-native.lua')
+     assert(loadfile(path))(out,view,info,callbacks,'trainer')
+    end
+   end)
+   training_fixture_finish()
+   assert(ok,err)
+   records[#records+1]={name='pet-trainer-fixture-discovery',restored=true};return
+  end
   if index==1 and os.getenv('DF3D_PET_TRAINING_REFERENCE')=='1' then
    local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','pet-training-native.lua')
    assert(loadfile(path))(out,view,info,callbacks)

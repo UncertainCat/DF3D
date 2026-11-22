@@ -6,7 +6,7 @@ namespace df3d_residents {
 struct PetControls {
     std::vector<std::string> captions;
     std::vector<int32_t> owners;
-    std::vector<int32_t> actions; // 0 slaughter, 1 adoption availability, 2 gelding
+    std::vector<int32_t> actions; // 0 slaughter, 1 adoption, 2 gelding, 3 trainer, 4 war, 5 hunting
 };
 inline bool petControlsSupported() {
     static const bool ready=[] {
@@ -57,6 +57,9 @@ inline std::optional<PetControls> petControls(const CreatureReference& entry) {
             if(target==0x3d0ca0)result.actions.push_back(0);
             else if(target==0x3d0e50 || target==0x3d0a90)result.actions.push_back(1);
             else if(target==0x3d0c40)result.actions.push_back(2);
+            else if(target==0x3d1700)result.actions.push_back(3);
+            else if(target==0x3d1460)result.actions.push_back(4);
+            else if(target==0x3d1280)result.actions.push_back(5);
         }
         if(auto* container=virtual_cast<df::widget_container>(widget))for(const auto& child:container->children)self(self,child.get());
     };

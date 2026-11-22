@@ -12518,6 +12518,27 @@ extraction, typed transport and public sibling views remain unqualified or
 unimplemented. Paused toggle parity does not qualify subsequent simulation job
 execution or broader animal lifecycle behavior.
 
+Protected094148 on2026-11-22 establishes the missing training controls with
+`DF3D_PET_TRAINER_FIXTURE=1`: dog6548 retains its real race/caste and is
+temporarily made unowned with training level Trained. Its original owner6546
+and Domesticated level are restored. This is a controlled visibility fixture,
+not evidence of a naturally unowned animal or a completed training job.
+The owned control provider matches all six native actions in order: trainer
+selection, war, hunting, adoption, slaughter and gelding. New semantic action
+IDs3/4/5 describe availability only; `setPetAction` still accepts only0..2.
+All17 pet control rows match and compared flags remain unchanged. Native
+trainer-picker capture adds `DF3D_PET_TRAINER_REFERENCE=1`; it offers Any trainer,
+Any unassigned trainer, None and individual trainers with native skill text.
+
+Trainer activation3d1700 enters36de70. War3d1460 and hunting3d1280 create or
+update `training_assignment`, clear the opposite training flag, and scan active
+units' related activity entries. Their effects are broader than a target flag;
+owned execution must preserve those native effects and still needs acceptance.
+Native generic selector actions are3d1a90/3d19d0/3d1910, individual3d1850.
+Owned DF57688 closes unsaved/source-preserved at30FPS, sampled61C; bridge build
+and19 core checks pass. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-094148`.
+
 
 Residents Activity has distinct job-settings and event-description routes.
 The job-details widget1423130 uses native eligibility d15ef0 and opens213420

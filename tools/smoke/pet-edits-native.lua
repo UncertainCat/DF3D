@@ -6,7 +6,7 @@ local cases={};local chosen={}
 for _,sample in ipairs(samples)do
  for _,action in ipairs(sample.provider.actions)do
   local key=sample.kind..':'..action
-  if not chosen[key] then cases[#cases+1]={kind=sample.kind,id=sample.id,action=action};chosen[key]=true end
+  if action<=2 and not chosen[key] then cases[#cases+1]={kind=sample.kind,id=sample.id,action=action};chosen[key]=true end
  end
 end
 assert(chosen['0:0'] and chosen['0:1'] and chosen['0:2'] and chosen['1:1'],'Pet edit fixture lacks an action family')

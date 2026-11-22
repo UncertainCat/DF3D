@@ -3,6 +3,7 @@ extends Node
 signal information_requested(caption: String)
 signal focus_requested(tile: Vector3i)
 signal inspect_requested(tile: Vector3i,unit_id: int)
+signal item_inspect_requested(item_id: int)
 var ui_host
 var modal_input:=true
 var play_enabled:=true
@@ -20,6 +21,9 @@ func _init() -> void:
 		if state.phase==state.Phase.Ready:state.refresh())
 	state.inspect_ready.connect(func(tile,id):
 		if allowed():inspect_requested.emit(tile,id))
+	state.item_inspect_ready.connect(func(id):
+		if allowed():
+			close_panel();item_inspect_requested.emit(id))
 func configure(world,service,host) -> void:
 	ui_host=host;state.configure(service);job_state.configure(service)
 	var layer:=CanvasLayer.new();layer.layer=10;add_child(layer)

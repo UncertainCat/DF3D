@@ -12786,6 +12786,24 @@ The earlier115749 run passed text/actions but preceded the item-art correction;
 These checks do not qualify complete public tab layouts, trainer-name pixels,
 species artwork, job Details on non-residents or the full pet-panel lifecycle.
 
+The shared Residents presentation state can now select the three sibling rosters,
+request their bounded native rows and submit revision-checked pet actions. Tab
+replacement retires outstanding reads; a pending edit blocks replacement and an
+Unknown outcome does not refresh or replay it. Local negative row keys encode item
+IDs as-id-1 while nonnegative keys retain unit IDs; native requests always carry the
+explicit kind/id pair. Portrait caches and sheet signals use these typed keys.
+Dead rows with can_inspect=false have no sheet drawing, input or hover target.
+Item sheet handoff opens the existing item owner instead of sending a unit request.
+Headless Residents, Work Details and UI composition checks pass, as do all19 core
+checks. Public sibling tab input remains unwired until the pet panes and layouts
+are complete; this state integration alone does not expose those workflows.
+
+Remaining name-display integration: native widget_unit_name renders the grazer
+warning as a third line and shifts two-line names upward. The shared owned
+nativeZoneAnimalUnitDisplay already supplies the pinned caste-flag observation and
+literal warning at1786f68, but CreatureListRow does not yet carry that warning.
+Do not infer it from name text or silently omit it in the completed Pets view.
+
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching
 item-name renderer1423fe0. Native142b45a..142b4c5 captures raw item.pos for Recenter;

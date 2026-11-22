@@ -2,6 +2,7 @@ extends RefCounted
 # Native roster ordering and row content; no local eligibility, search or sorting.
 signal changed
 signal inspect_ready(tile: Vector3i,unit_id: int)
+signal item_inspect_ready(item_id: int)
 const C=preload("res://scripts/management_contract.gd")
 enum Phase { Closed, Reading, Ready, Rejected, Unavailable, Applying, Navigating, ActivityReading, ActivityReady, ActivityRejected }
 var service
@@ -9,6 +10,7 @@ var phase:=Phase.Closed
 var generation:=0
 var ticket:=0
 var sort:=C.ResidentsSort.Category
+var tab:=0
 var directions: Array[bool]=[false,false,false,false,false]
 var query:=PackedByteArray()
 var ids:=PackedInt32Array()
@@ -41,10 +43,22 @@ func close() -> void:
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open() -> void:
-	close();sort=C.ResidentsSort.Category;directions=[false,false,false,false,false];query=PackedByteArray();refresh()
+	close();tab=0;sort=C.ResidentsSort.Category;directions=[false,false,false,false,false];query=PackedByteArray();refresh()
+func select_tab(value: int) -> void:
+	if value<0 or value>3 or value==tab or phase in [Phase.Closed,Phase.Applying,Phase.Navigating]:return
+	retire();activity_selection={};activity_page={};activity_first=0
+	tab=value;sort=C.ResidentsSort.Category;directions=[false,false,false,false,false,false]
+	query=PackedByteArray();first=0;phase=Phase.Reading;refresh()
+# Native IDs are nonnegative int32. Negative local keys encode item identities
+# without collisions, including unit/item rows with the same native ID.
+static func row_key(row: Dictionary) -> int:
+	return int(row.id) if int(row.get("kind",0))==0 else -int(row.id)-1
+func identity(key: int) -> Dictionary:
+	return {"kind":0,"id":key} if key>=0 else {"kind":1,"id":-key-1}
 func select_sort(value: int) -> void:
 	if activity_open():return
 	if value<0 or value>=directions.size() or phase in [Phase.Closed,Phase.Applying]:return
+	if (tab==0 and value==5) or (tab!=0 and value==3) or (tab!=1 and value==5):return
 	if phase==Phase.Navigating:return
 	if sort==value:directions[value]=not directions[value]
 	sort=value;first=0;refresh()
@@ -60,12 +74,20 @@ func refresh() -> void:
 	if service==null:phase=Phase.Unavailable;changed.emit();return
 	phase=Phase.Reading
 	var owner:=generation
-	ticket=service.submit("residents",{"action":C.ManagementAction.ResidentsQuery,"sort":sort,"descending":directions[sort],"query_bytes":query},func(received,result,_sent):
+	var action: int=C.ManagementAction.ResidentsQuery if tab==0 else C.ManagementAction.CreatureListQuery
+	var domain: String="residents" if tab==0 else "creature_list"
+	var intent: Dictionary={"action":action,"sort":sort,"descending":directions[sort],"query_bytes":query}
+	if tab!=0:intent.tab=tab
+	ticket=service.submit(domain,intent,func(received,result,_sent):
 		if owner!=generation or received!=ticket:return
 		ticket=0
-		if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=C.ManagementAction.ResidentsQuery or not result.has("residents"):
+		if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=action or not result.has(domain):
 			_reject();return
-		ids=result.residents.unit_ids.duplicate();roster_ready=true
+		if tab==0:ids=result.residents.unit_ids.duplicate()
+		else:
+			if result.creature_list.get("tab",-1)!=tab:_reject();return
+			for entry: Dictionary in result.creature_list.entries:ids.append(row_key(entry))
+		roster_ready=true
 		first=clampi(first,0,maxi(0,ids.size()-capacity));_fill();changed.emit())
 	if ticket==0:phase=Phase.Unavailable
 	changed.emit()
@@ -101,6 +123,9 @@ func close_activity() -> void:
 	_fill();changed.emit()
 func inspect(id: int) -> void:
 	if phase!=Phase.Ready or ticket!=0 or service==null or not rows.has(id):return
+	if not rows[id].get("can_inspect",true):return
+	if id<0:
+		item_inspect_ready.emit(-id-1);return
 	var owner:=generation;phase=Phase.Navigating
 	ticket=service.submit("creature_sheet_location",{"action":C.ManagementAction.CreatureSheetLocate,"unit_id":id},func(received,result,_sent):
 		if owner!=generation or received!=ticket:return
@@ -127,6 +152,22 @@ func specialize(id: int) -> void:
 		phase=Phase.Ready;refresh())
 	if ticket==0:_reject()
 	else:changed.emit()
+func pet_action(key: int,action: int) -> void:
+	if tab!=1 or phase!=Phase.Ready or ticket!=0 or service==null or action==C.PetAction.Trainer:return
+	var pet: Dictionary=rows.get(key,{}).get("pet",{})
+	var choices: Array=pet.get("controls",[]).filter(func(control):return int(control.action)==action)
+	if choices.size()!=1 or int(pet.get("revision",0))<=0:return
+	var target:=identity(key);var desired: bool=not choices[0].value;var owner:=generation
+	phase=Phase.Applying
+	ticket=service.submit("pet_action",{"action":C.ManagementAction.PetActionApply,"target":target,"expected_revision":pet.revision,"pet_action":action,"desired":desired},func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0
+		var value: Dictionary=result.get("pet_edit",{})
+		if result.get("outcome","")=="unknown" or result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=C.ManagementAction.PetActionApply or value.get("target",{})!=target or value.get("outcome",-1)!=C.PetOutcome.Applied:
+			_reject();return
+		phase=Phase.Ready;refresh())
+	if ticket==0:_reject()
+	else:changed.emit()
 func seek(offset: int,count: int) -> void:
 	capacity=clampi(count,0,64);first=clampi(offset,0,maxi(0,ids.size()-capacity))
 	_fill();changed.emit()
@@ -142,19 +183,31 @@ func _fill() -> void:
 	if wanted.is_empty():phase=Phase.Ready;return
 	phase=Phase.Reading
 	var owner:=generation
-	ticket=service.submit("residents_rows",{"action":C.ManagementAction.ResidentsRowsRead,"unit_ids":wanted,"columns":columns,"show_gender":show_gender},func(received,result,_sent):
+	var action: int=C.ManagementAction.ResidentsRowsRead if tab==0 else C.ManagementAction.CreatureListRowsRead
+	var domain: String="residents_rows" if tab==0 else "creature_list_rows"
+	var intent: Dictionary={"action":action,"columns":columns}
+	if tab==0:intent.unit_ids=wanted;intent.show_gender=show_gender
+	else:
+		intent.tab=tab;intent.targets=[]
+		for key in wanted:intent.targets.append(identity(key))
+	ticket=service.submit(domain,intent,func(received,result,_sent):
 		if owner!=generation or received!=ticket:return
 		ticket=0
-		var page: Array=result.get("residents_rows",{}).get("rows",[])
-		if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=C.ManagementAction.ResidentsRowsRead or page.size()!=wanted.size():
+		var page: Array=result.get(domain,{}).get("rows",[])
+		if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=action or page.size()!=wanted.size() or (tab!=0 and result.get(domain,{}).get("tab",-1)!=tab):
 			_reject();return
 		for index in page.size():
-			if int(page[index].get("id",-1))!=wanted[index]:_reject();return
+			if not page[index].has("id") or row_key(page[index])!=wanted[index]:_reject();return
 		# Keep only the active viewport and this receipt, rather than retaining
 		# an unbounded history of native text while scrolling a large fortress.
 		var kept: Dictionary={}
 		for index in range(first,mini(ids.size(),first+capacity)):
 			if rows.has(ids[index]):kept[ids[index]]=rows[ids[index]]
-		for row: Dictionary in page:kept[int(row.id)]=row.duplicate(true)
+		for row: Dictionary in page:
+			var value:=row.duplicate(true)
+			if tab!=0:
+				if value.has("portrait"):value.sheet_icon=value.portrait
+				value.activity={"caption":row.activity.text,"fg":row.activity.foreground,"bg":row.activity.background,"bright":row.activity.bright}
+			kept[row_key(row)]=value
 		rows=kept;_fill();changed.emit())
 	if ticket==0:phase=Phase.Unavailable;changed.emit()

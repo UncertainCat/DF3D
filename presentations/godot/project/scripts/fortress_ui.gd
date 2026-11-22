@@ -221,6 +221,8 @@ func controller(id: String):
 		add_child(panel);panel.configure(world,actions,host)
 		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
 		panel.panel.hover_help=view._fortress_hud.native_help
+		panel.item_inspect_requested.connect(func(item_id):
+			if host.play_enabled:controller("farm").item_owner.open_target(item_id))
 		panel.focus_requested.connect(focus_tile)
 		panel.inspect_requested.connect(func(tile,unit_id):
 			if host.allows_panel_input(panel) and controller("inspector").open_target(tile,1,unit_id,true):focus_tile(tile))

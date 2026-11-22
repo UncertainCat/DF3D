@@ -31,7 +31,43 @@ var failures:=0
 func check(value: bool,message: String) -> void:
 	if not value:failures+=1;push_error(message)
 func _initialize() -> void:call_deferred("run")
+func sibling_row(kind: int,id: int,inspectable:=true) -> Dictionary:
+	return {"kind":kind,"id":id,"first_line":"fixture","second_line":"","can_inspect":inspectable,
+		"activity":{"text":"fixture activity","foreground":2,"background":0,"bright":true},
+		"pet":{"revision":9,"controls":[{"action":C.PetAction.Adoption,"value":false}]}}
+func siblings() -> void:
+	var service:=Service.new();var state:=State.new();state.configure(service);state.capacity=2;state.open()
+	var residents_ticket:=state.ticket;state.select_tab(1)
+	check(service.calls[state.ticket].domain=="creature_list" and service.calls[state.ticket].request.tab==1,"Pets uses the native sibling query")
+	service.reply(residents_ticket,{"residents":{"unit_ids":PackedInt32Array([999])}})
+	check(state.ids.is_empty(),"Tab replacement retires the resident query")
+	service.reply(state.ticket,{"creature_list":{"tab":1,"entries":[{"kind":0,"id":7},{"kind":1,"id":7}]}})
+	check(state.ids==PackedInt32Array([7,-8]) and service.calls[state.ticket].request.targets==[{"kind":0,"id":7},{"kind":1,"id":7}],"Typed identities survive equal native IDs")
+	service.reply(state.ticket,{"creature_list_rows":{"tab":1,"rows":[sibling_row(0,7),sibling_row(1,7)]}})
+	check(state.rows.size()==2 and state.row_at(1).kind==1 and state.row_at(0).activity.caption=="fixture activity","Sibling rows retain typed identity and native activity")
+	var inspected: Array[int]=[];state.item_inspect_ready.connect(func(id):inspected.append(id))
+	var before:=service.next;state.inspect(-8)
+	check(inspected==[7] and service.next==before,"Item sheet handoff never sends a creature-unit request")
+	state.pet_action(-8,C.PetAction.Adoption)
+	var edit:=state.ticket;var intent: Dictionary=service.calls[edit].request
+	check(intent.target=={"kind":1,"id":7} and intent.expected_revision==9 and intent.desired,"Pet edit carries typed identity and observed receipt")
+	state.select_tab(2);check(state.tab==1,"Pending mutation blocks tab replacement")
+	service.reply(edit,{"pet_edit":{"target":{"kind":1,"id":7},"outcome":C.PetOutcome.Unknown}})
+	check(state.phase==State.Phase.Rejected and state.ticket==0 and service.next==edit,"Unknown mutation is not refreshed or replayed")
+	state.select_tab(2);var other:=state.ticket;state.select_tab(3)
+	service.reply(other,{"creature_list":{"tab":2,"entries":[{"kind":0,"id":999}]}})
+	check(state.ids.is_empty(),"Late sibling query cannot enter another tab")
+	service.reply(state.ticket,{"creature_list":{"tab":3,"entries":[{"kind":0,"id":7}]}})
+	var dead:=sibling_row(0,7,false);dead.erase("pet")
+	service.reply(state.ticket,{"creature_list_rows":{"tab":3,"rows":[dead]}})
+	before=service.next;state.inspect(7);state.select_sort(C.ResidentsSort.Stress);state.select_sort(C.CreatureListSort.Slaughterability)
+	check(service.next==before and not state.row_at(0).can_inspect,"Dead rows suppress sheet navigation and unsupported sorts")
+	state.refresh();var pending:=state.ticket;state.close()
+	service.reply(pending,{"creature_list":{"tab":3,"entries":[{"kind":0,"id":7}]}})
+	check(state.phase==State.Phase.Closed and state.ids.is_empty(),"Closing retires sibling reads")
+	state.dispose()
 func run() -> void:
+	siblings()
 	var service:=Service.new();var state:=State.new();state.configure(service);state.capacity=2;state.open()
 	var stale:=state.ticket
 	state.set_query(PackedByteArray([84,195]))
@@ -109,8 +145,13 @@ func run() -> void:
 	view.show();help.free();view.hover_help=null
 	click.position.x=316;view._gui_input(click)
 	check(focused==[Vector3i(25,31,4)],"Recenter uses the captured row position")
+	state.rows[42].can_inspect=false;click.position.x=348;view._gui_input(click)
+	check(inspected==[42] and view.hover_target(click.position).is_empty(),"Absent native sheet control has neither input nor hover target")
+	state.rows[42].can_inspect=true
+	state.rows[-43]={"kind":1,"id":42};state.ids=PackedInt32Array([42,-43]);view._gui_input(click)
+	check(inspected==[42,-43],"Item and unit sheet buttons retain distinct typed identities")
 	state.close();view._gui_input(click)
-	check(inspected==[42] and focused==[Vector3i(25,31,4)],"Closed rows cannot navigate using retired identity")
+	check(inspected==[42,-43] and focused==[Vector3i(25,31,4)],"Closed rows cannot navigate using retired identity")
 	view.free()
 	var interaction:=Interaction.new();root.add_child(interaction)
 	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)

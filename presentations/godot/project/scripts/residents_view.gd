@@ -9,6 +9,7 @@ const C=preload("res://scripts/management_contract.gd")
 const NameColor=preload("res://scripts/native_name_color.gd")
 const Indicators=preload("res://scripts/location_staff_indicators.gd")
 const InfoTabs=preload("res://scripts/work_order_info_tabs.gd")
+const RosterState=preload("res://scripts/residents_state.gd")
 const SORTS=[C.ResidentsSort.Name,C.ResidentsSort.Category,C.ResidentsSort.Profession,C.ResidentsSort.Activity,C.ResidentsSort.Stress]
 const SORT_X=[7,17,26,46,82]
 const SORT_WIDTH=[10,9,10,35,4]
@@ -71,9 +72,9 @@ func refresh() -> void:
 	for index in page_rows:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty() or not row.has("sheet_icon"):continue
-		var previous: Dictionary=portraits.get(int(row.id),{})
-		if previous.get("recipe",{})==row.sheet_icon:retained[int(row.id)]=previous
-		else:retained[int(row.id)]={"recipe":row.sheet_icon.duplicate(true),"texture":world.candidate_icon(row.sheet_icon)}
+		var previous: Dictionary=portraits.get(RosterState.row_key(row),{})
+		if previous.get("recipe",{})==row.sheet_icon:retained[RosterState.row_key(row)]=previous
+		else:retained[RosterState.row_key(row)]={"recipe":row.sheet_icon.duplicate(true),"texture":world.candidate_icon(row.sheet_icon)}
 	portraits=retained
 	if scrollbar!=null:
 		if showing_activity!=state.activity_open():scrollbar.dragging=false
@@ -106,8 +107,8 @@ func _input(event: InputEvent) -> void:
 		elif event.ctrl_pressed and not event.echo and pointer_known and state.phase==state.Phase.Ready:
 			var target:=hover_target(pointer_position)
 			if target.get("kind")=="recenter" and event.keycode==KEY_C:focus_requested.emit(target.row.position);get_viewport().set_input_as_handled()
-			elif target.get("kind")=="details" and event.keycode==KEY_V:inspect_requested.emit(int(target.row.id));get_viewport().set_input_as_handled()
-			elif str(target.get("kind","")).begins_with("specialization_") and event.keycode==KEY_Z:state.specialize(int(target.row.id));get_viewport().set_input_as_handled()
+			elif target.get("kind")=="details" and event.keycode==KEY_V:inspect_requested.emit(RosterState.row_key(target.row));get_viewport().set_input_as_handled()
+			elif str(target.get("kind","")).begins_with("specialization_") and event.keycode==KEY_Z:state.specialize(RosterState.row_key(target.row));get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT:
 		cancelled.emit();get_viewport().set_input_as_handled()
 func hover_target(point: Vector2) -> Dictionary:
@@ -120,6 +121,7 @@ func hover_target(point: Vector2) -> Dictionary:
 			if not Rect2(entry[1],y,entry[2],24 if entry[0]=="happiness" else 36).has_point(point):continue
 			var kind: String=entry[0]
 			if kind=="recenter" and not row.has("position"):return {}
+			if kind=="details" and not row.get("can_inspect",true):return {}
 			if kind=="happiness":
 				if not row.has("happiness"):return {}
 				kind+="_"+str(int(row.happiness))
@@ -166,14 +168,14 @@ func _gui_input(event: InputEvent) -> void:
 			var row: Dictionary=state.row_at(state.first+index)
 			if not row.is_empty() and state.phase==state.Phase.Ready and row.has("position") and Rect2(304,list_top()+index*36,24,36).has_point(event.position):
 				focus_requested.emit(row.position);accept_event();return
-			if not row.is_empty() and state.phase==state.Phase.Ready and Rect2(336,list_top()+index*36,24,36).has_point(event.position):
-				inspect_requested.emit(int(row.id));accept_event();return
+			if not row.is_empty() and state.phase==state.Phase.Ready and row.get("can_inspect",true) and Rect2(336,list_top()+index*36,24,36).has_point(event.position):
+				inspect_requested.emit(RosterState.row_key(row));accept_event();return
 			if not row.is_empty() and state.phase==state.Phase.Ready and row.has("job_target") and Rect2(528,list_top()+index*36,24,36).has_point(event.position):
-				job_requested.emit(int(row.id));accept_event();return
+				job_requested.emit(RosterState.row_key(row));accept_event();return
 			if not row.is_empty() and row.has("activity_target") and Rect2(624,list_top()+index*36,24,36).has_point(event.position):
-				state.activity_capacity=activity_rows();state.show_activity(int(row.id),activity_width());accept_event();return
+				state.activity_capacity=activity_rows();state.show_activity(RosterState.row_key(row),activity_width());accept_event();return
 			if not row.is_empty() and row.has("specialization") and Rect2(696,list_top()+index*36,32,36).has_point(event.position):
-				state.specialize(int(row.id));accept_event();return
+				state.specialize(RosterState.row_key(row));accept_event();return
 		for index in SORTS.size():
 			if Rect2(SORT_X[index]*8,list_top()-24,SORT_WIDTH[index]*8,12).has_point(event.position):state.select_sort(SORTS[index]);break
 		accept_event()
@@ -235,11 +237,11 @@ func _draw() -> void:
 		var y:=list_top()+index*36
 		patch("BUTTON_RECTANGLE_DARK",Vector2i(2,int(y/12)),int(size.x/8)-7,3)
 		patch("",Vector2i(2,int(y/12)),5,3,picture.texture(false))
-		var portrait: Texture2D=portraits.get(int(row.id),{}).get("texture")
+		var portrait: Texture2D=portraits.get(RosterState.row_key(row),{}).get("texture")
 		if portrait!=null:draw_texture_rect(portrait,Rect2(18,y+2,32,32),false)
 		# Native142ed10 constructs the 3x3 unit-sheet button with this row's ID.
 		var details: Texture2D=art.texture("STOCKS_VIEW_ITEM")
-		if details!=null:draw_texture_rect(details,Rect2(336,y,24,36),false)
+		if details!=null and row.get("can_inspect",true):draw_texture_rect(details,Rect2(336,y,24,36),false)
 		if details!=null and row.has("job_target"):draw_texture_rect(details,Rect2(528,y,24,36),false)
 		if details!=null and row.has("activity_target"):draw_texture_rect(details,Rect2(624,y,24,36),false)
 		if row.has("position"):

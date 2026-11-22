@@ -22,7 +22,11 @@ func run() -> void:
 	file=FileAccess.open(directory+"/pet-knowledge-rows.bin",FileAccess.READ)
 	var knowledge: Array=file.get_var();file.close()
 	state.pane=State.Pane.Knowledge;state.first=0;state.rows={};state.total=knowledge.size()
-	for index in knowledge.size():state.rows[index]=knowledge[index]
+	state.snapshot={"max_name_length":0,"max_caption_length":0}
+	for index in knowledge.size():
+		state.rows[index]=knowledge[index]
+		state.snapshot.max_name_length=maxi(state.snapshot.max_name_length,str(knowledge[index].name).length())
+		state.snapshot.max_caption_length=maxi(state.snapshot.max_caption_length,str(knowledge[index].knowledge.text).length())
 	view.layout(Vector2(1200,800))
 	for frame in 3:await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/pet-knowledge-render.png")

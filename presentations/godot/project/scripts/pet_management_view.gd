@@ -89,7 +89,7 @@ func _draw() -> void:
 		if row.has("mode"):
 			text(GENERIC_LABELS[row.mode],Vector2(48,y+24));continue
 		var x:=16 if is_trainers() else 32
-		row_background(Vector2i(x/8,y/12),int(size.x/8)-7 if is_trainers() else 50)
+		row_background(Vector2i(x/8,y/12),int(size.x/8)-7 if is_trainers() else 8+int(state.snapshot.get("max_name_length",0))+int(state.snapshot.get("max_caption_length",0)))
 		patch("",Vector2i(x/8,y/12),5,3,picture.texture(false))
 		var key: String=("unit:"+str(row.id)) if is_trainers() else ("race:"+str(row.race))
 		var portrait: Texture2D=portraits.get(key,{}).get("texture")
@@ -107,4 +107,4 @@ func _draw() -> void:
 			for index in row.skills.size():text(row.skills[index],Vector2(296,y+24+index*12))
 		else:
 			text(row.name,Vector2(80,y+24))
-			text(row.knowledge.text,Vector2(280,y+24),int(row.knowledge.foreground)+8*int(row.knowledge.bright))
+			text(row.knowledge.text,Vector2(96+8*int(state.snapshot.get("max_name_length",0)),y+24),int(row.knowledge.foreground)+8*int(row.knowledge.bright))

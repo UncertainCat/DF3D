@@ -118,6 +118,7 @@ func _fill_knowledge() -> void:
 		var page: Array=value.get("rows",[]);var count:=int(value.get("total",-1))
 		if count<offset or page.size()!=mini(limit,count-offset):_reject();return
 		revision=int(value.revision);total=count;first=clampi(first,0,maxi(0,total-capacity))
+		snapshot=value.duplicate(true);snapshot.erase("rows")
 		var kept: Dictionary={}
 		for index in range(first,mini(total,first+capacity)):
 			if rows.has(index):kept[index]=rows[index]

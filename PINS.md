@@ -22,9 +22,9 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Current management protocol259 separates pet training captions from ownership
-captions. Both peers must use259; a flat older caption array cannot identify the
-groups. Protocol258 added native name warnings and full trainer headings;
+Current management protocol260 carries complete-list native text lengths for
+species knowledge columns. Both peers must use260; page-local text cannot supply
+the complete-list layout. Protocol259 separated pet training and ownership captions. Protocol258 added native name warnings and full trainer headings;
 257 added sibling creature rows, pet edits and training;256 added Pets, Other and
 Dead/Missing queries. Protocol255 added bounded display-reply paging;254 added
 display edits;253 added siege bodies;252 added typed nest, trap and hive bodies.

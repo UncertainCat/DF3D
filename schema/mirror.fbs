@@ -2222,6 +2222,8 @@ table PetKnowledgeRow {
 }
 table PetKnowledgeState {
   revision:uint64; total:uint32; offset:uint32; rows:[PetKnowledgeRow] (required);
+  // Maximum native single-byte text lengths across the complete revision.
+  max_name_length:uint32; max_caption_length:uint32;
 }
 
 
@@ -2786,7 +2788,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 259;
+  schema_version:uint32 = 260;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2872,7 +2874,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 259;
+  schema_version:uint32 = 260;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

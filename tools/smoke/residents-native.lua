@@ -8,6 +8,10 @@ if os.getenv('DF3D_WORK_DETAILS_NATIVE')=='1' then
  local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','work-details-native.lua')
  assert(loadfile(path))(out,view,records);return
 end
+if os.getenv('DF3D_SPECIES_ART_AUDIT')=='1' then
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','species-art-audit-native.lua')
+ assert(loadfile(path))(out,records);return
+end
 local activity_provider
 local residents_hover_finish
 local training_fixture_finish

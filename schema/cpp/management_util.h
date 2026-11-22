@@ -192,8 +192,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 259;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v259";
+inline constexpr uint32_t kManagementVersion = 260;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v260";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kCreatureListEntries = 65536;
@@ -2267,7 +2267,9 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   if(const auto* q=s.pet_knowledge()) {
     if(s.action()!=ManagementAction::PetKnowledgeRead || s.status()!=ManagementStatus::Ok || !validPetReceipt(q->revision()) ||
        q->total()>32767 || q->offset()>q->total() || !q->rows() || q->rows()->size()>64 ||
-       q->rows()->size()>q->total()-q->offset() || (q->offset()<q->total() && !q->rows()->size()))return "invalid pet knowledge result";
+       q->rows()->size()>q->total()-q->offset() || (q->offset()<q->total() && !q->rows()->size()) ||
+       q->max_name_length()>4096 || q->max_caption_length()>4096 ||
+       (!q->total() && (q->max_name_length() || q->max_caption_length())))return "invalid pet knowledge result";
     std::unordered_set<int32_t> races;size_t bytes=0,art=0;
     for(const auto* v:*q->rows()) {
       if(!v || v->race()<0 || v->race()>=32767 || !v->level() || !races.insert(v->race()).second ||

@@ -633,7 +633,7 @@ struct PetTrainersResult {
 };
 std::optional<PetTrainersResult> petTrainers;
 struct PetKnowledgeRowResult {df3d_residents::TrainingKnowledgeRow text;std::optional<df3d_production::ItemAppearanceRecipe> portrait;};
-struct PetKnowledgeResult {uint64_t revision;uint32_t total,offset;std::vector<PetKnowledgeRowResult> rows;};
+struct PetKnowledgeResult {uint64_t revision;uint32_t total,offset;std::vector<PetKnowledgeRowResult> rows;uint32_t maxNameLength=0,maxCaptionLength=0;};
 std::optional<PetKnowledgeResult> petKnowledge;
 std::optional<std::vector<int32_t>> residents;
 // Strings are converted to UTF-8 and bounded before publishing this batch.
@@ -1691,7 +1691,7 @@ void publish() {
     const auto& v=*petKnowledge;std::vector<flatbuffers::Offset<m::PetKnowledgeRow>> rows;
     for(const auto& entry:v.rows){const auto& row=entry.text;rows.push_back(m::CreatePetKnowledgeRow(b,row.race,row.level,b.CreateString(row.name),
       m::CreatePetCaption(b,b.CreateString(row.caption),uint8_t(row.foreground),0,row.bright),encodeItemRecipe(entry.portrait)));}
-    petKnowledgeResult=m::CreatePetKnowledgeState(b,v.revision,v.total,v.offset,b.CreateVector(rows));
+    petKnowledgeResult=m::CreatePetKnowledgeState(b,v.revision,v.total,v.offset,b.CreateVector(rows),v.maxNameLength,v.maxCaptionLength);
   }
   const auto residentsSpecializationResult=residentsSpecialization?
       m::CreateResidentsSpecializationState(b,residentsSpecialization->id,residentsSpecialization->outcome,residentsSpecialization->onlyAssigned):flatbuffers::Offset<m::ResidentsSpecializationState>{};
@@ -6235,6 +6235,11 @@ void run(color_ostream& out) {
           hash&=uint64_t(INT64_MAX);if(!hash)hash=1;
           if(!q.expected_revision() || q.expected_revision()==hash) {
             PetKnowledgeResult result{hash,uint32_t(knowledge->size()),q.offset(),{}};
+            // Count native glyph bytes before UTF-8 conversion, across all pages.
+            for(const auto& row:*knowledge) {
+              result.maxNameLength=std::max(result.maxNameLength,uint32_t(row.name.size()));
+              result.maxCaptionLength=std::max(result.maxCaptionLength,uint32_t(row.caption.size()));
+            }
             const size_t end=std::min(knowledge->size(),size_t(q.offset())+q.limit());
             for(size_t i=q.offset();i<end;++i){auto row=std::move((*knowledge)[i]);if(!text(row.name) || !text(row.caption))break;
               std::optional<df3d_production::ItemAppearanceRecipe> portrait;

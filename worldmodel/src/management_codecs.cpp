@@ -91,6 +91,7 @@ ManagementState decodeState(const m::ManagementState* s) {
   }
   if(const auto* r=s->pet_knowledge()) {
     auto& out=next.petKnowledge.emplace();out.revision=r->revision();out.total=r->total();out.offset=r->offset();
+    out.maxNameLength=r->max_name_length();out.maxCaptionLength=r->max_caption_length();
     for(const auto* v:*r->rows()) {
       PetKnowledgeRow row;row.race=v->race();row.level=v->level();row.name=v->name()->str();row.knowledge=petCaption(v->knowledge());
       if(v->portrait())row.portrait=decodeItemRecipe(v->portrait());

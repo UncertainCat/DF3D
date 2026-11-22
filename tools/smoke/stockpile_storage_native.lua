@@ -58,7 +58,12 @@ require('gui.script').start(function()
   end
   if os.getenv('DF3D_RESIDENTS_REFERENCE')=='1' then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('stockpile_storage_native.lua$','residents-native.lua')
-   assert(loadfile(source))(out,view,records)
+   if os.getenv('DF3D_SPECIES_LAYERED_FIXTURE')=='1' then
+    local fixture=source:gsub('residents%-native.lua$','species-art-audit-native.lua')
+    local restore=assert(loadfile(fixture))(out,records,true)
+    local success,reason=xpcall(function()assert(loadfile(source))(out,view,records)end,debug.traceback)
+    restore();assert(success,reason)
+   else assert(loadfile(source))(out,view,records)end
    if os.getenv('DF3D_WORK_DETAILS_NATIVE')=='1' and os.getenv('DF3D_WORK_DETAILS_SETTINGS')=='1' and os.getenv('DF3D_WORK_DETAILS_SETTINGS_EFFECTS')=='1' and os.getenv('DF3D_WORK_DETAILS_SETTINGS_SIMULATION')=='1' then
     local evidence
     for _,record in ipairs(records)do if record.name=='work-details-simulation' then assert(not evidence);evidence=record end end

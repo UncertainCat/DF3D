@@ -155,10 +155,15 @@ func workflows() -> void:
 			if not check(observed.get("status")==C.ManagementStatus.Ok,"Trainer readback rejected"):return
 			check(state.assigned==(mode!=C.PetTrainerMode.None) and state.trainer_id==trainer_id and state.any_trainer==(mode==C.PetTrainerMode.Any) and state.unassigned_only==(mode==C.PetTrainerMode.Unassigned),"Trainer readback differs")
 	var knowledge: Array=[];var revision:=0
+	var max_name_length:=0;var max_caption_length:=0
+	for row: Dictionary in reference.knowledge:
+		max_name_length=maxi(max_name_length,str(row.name).length())
+		max_caption_length=maxi(max_caption_length,str(row.caption).length())
 	while knowledge.size()<reference.knowledge.size():
 		var response:=await request("pet_knowledge",{"action":C.ManagementAction.PetKnowledgeRead,"expected_revision":revision,"offset":knowledge.size(),"limit":16})
 		var state: Dictionary=response.get("pet_knowledge",{})
 		if not check(response.get("status")==C.ManagementStatus.Ok and not state.get("rows",[]).is_empty(),"Knowledge page rejected"):return
+		check(state.get("max_name_length",-1)==max_name_length and state.get("max_caption_length",-1)==max_caption_length,"Complete knowledge text lengths differ")
 		check(revision==0 or revision==state.revision,"Knowledge receipt changed across pages");revision=state.revision;knowledge.append_array(state.rows)
 	var knowledge_recording:=FileAccess.open(directory+"/pet-knowledge-rows.bin",FileAccess.WRITE)
 	knowledge_recording.store_var(knowledge);knowledge_recording.close()

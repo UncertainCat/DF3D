@@ -48,7 +48,7 @@ and stable first previews; stair previews keep all span errors visible, and
 raised spikes use their correct installed art. Small panel spacing differences
 and known Godot rendering/shutdown diagnostics remain.
 
-The included viewer and bridge must be updated together: management protocol259
+The included viewer and bridge must be updated together: management protocol260
 is incompatible with older peers. The supported DF version remains unchanged.
 
 DF3D is MIT licensed; see notices/DF3D-LICENSE.txt.

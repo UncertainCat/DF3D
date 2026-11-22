@@ -70,11 +70,12 @@ TEST_CASE("Creature workflows preserve typed identities, receipts and unknown ou
   REQUIRE(decoded.petTrainers->rows.at(0).skills==std::vector<std::string>{"fixture skill"});REQUIRE_FALSE(decoded.petEdit);
   b.Clear();caption=m::CreatePetCaption(b,b.CreateString("fixture knowledge"),2,0,true);
   auto species=m::CreatePetKnowledgeRow(b,5,2,b.CreateString("fixture species"),caption);
-  auto knowledge=m::CreatePetKnowledgeState(b,revision,65,64,b.CreateVector(std::vector{species}));
+  auto knowledge=m::CreatePetKnowledgeState(b,revision,65,64,b.CreateVector(std::vector{species}),22,19);
   m::ManagementStateBuilder ks(b);ks.add_revision(4);ks.add_action(m::ManagementAction::PetKnowledgeRead);
   ks.add_status(m::ManagementStatus::Ok);ks.add_pet_knowledge(knowledge);b.Finish(ks.Finish());
   s=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE_FALSE(m::validateManagementState(*s));decoded=c::decodeState(s);
   REQUIRE(decoded.petKnowledge);REQUIRE(decoded.petKnowledge->offset==64);REQUIRE(decoded.petKnowledge->revision==revision);
+  REQUIRE(decoded.petKnowledge->maxNameLength==22);REQUIRE(decoded.petKnowledge->maxCaptionLength==19);
   REQUIRE(decoded.petKnowledge->rows.at(0).knowledge.bright);REQUIRE_FALSE(decoded.petTrainers);
 }
 

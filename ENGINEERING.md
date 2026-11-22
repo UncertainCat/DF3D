@@ -13060,6 +13060,33 @@ this correction and must be rebuilt before final publication.
 
 ### Species knowledge artwork
 
+Management protocol260 supplies the maximum native name and knowledge-caption
+lengths across the complete revision, counted before UTF-8 conversion. The viewer
+uses these lengths for column spacing and row backgrounds, independent of the
+currently loaded page. Native OverallTraining uses content-sized text columns;
+fixed widths from a particular fortress list are not valid for other lists.
+Recorded-wire rendering matches all six full944x708 panels exactly: the eight
+layered species in native162933 and original45 entries at offsets0/10/20/30/35
+in native143755. Captures exit0 with empty stderr, serial30FPS, sampled62C.
+Evidence: build/notes/pm/knowledge-width-render-comparison.json. Protected165736 and165813 on2026-11-22 verify protocol260 across the real bridge,
+model and extension for eight and45 entries. Every page carries the same maxima
+computed from the complete native reference; paged rows, creature actions and trainer
+workflows pass with empty client stderr. Temporary knowledge is restored, both
+owned sessions59256/59836 close unsaved and source saves remain unchanged. Native
+graphics are capped at30FPS, GPU samples53–54C. Bridge/core/extension builds, all19
+core checks and Residents/Work Details state checks pass.
+
+Protected species inventory162739 on2026-11-22 temporarily admits all trainable
+PET/PET_EXOTIC or already-known species in this world's raw list. All417 candidates
+resolve:409 original tiles and8 layered recipes, with no unresolved entries.
+The layered group adds one-humped camels, two-humped camels and unicorns to the
+five previously qualified species. Shared graphics caches/template metadata remain
+unchanged and original knowledge levels/vector length are restored. Native162933
+and wire163023 qualify the expanded eight-species artwork, with protected sessions
+closed unsaved and source saves unchanged. This temporary knowledge admission is
+an inventory/render fixture, not evidence of natural training acquisition or
+coverage of future generated/modded raws. The complex-layer guards below remain.
+
 species_art_native.h calls pinned6d6560 with independently owned raw flags,
 castes and graphics, using the knowledge widget's caste=-1/profession102/flags400.
 DF retains its generated-creature, LIST_ICON, SMALL_RACE, raw-before-first-caste
@@ -13086,12 +13113,14 @@ knowledge entries in this fortress. Shared profession102 unitless vectors,
 sheet-icon vectors and layer-set template tokens remain unchanged before/after
 both the probe and wire workflow. Protected143755 captures native offsets0,10,20,
 30,35. Recorded-wire rendering has zero content differences across all five
-viewports; each full944x708 panel retains26 scrollbar pixels. This includes every
-knowledge entry and all five layered species. Native sessions52536/37196 close
-unsaved with source saves unchanged. Wire/render stderr is clean, graphics run
-serially at30FPS, GPU samples47–48C and all19 core checks pass. Generated-creature
-variants and complex layered artwork are not qualified by this fixture. Public
-pane lifecycle, resizing and sibling-tab integration still require acceptance.
+viewports. The original26-pixel scrollbar residual is resolved by the classic
+artwork correction above. This includes every knowledge entry and all five layered
+species. Native sessions52536/37196 close unsaved with source saves unchanged.
+Wire/render stderr is clean, graphics run serially at30FPS, GPU samples47–48C and
+all19 core checks pass. The later417-species inventory and eight-layered-species
+capture above broaden artwork coverage; future generated/modded recipes remain
+unqualified. Public pane lifecycle, resizing and sibling-tab integration are
+qualified by the public creature-tab workflow, protected145151.
 
 Management protocol258 adds optional native name warnings to creature and trainer
 rows, and a required full trainer heading. Warning captions carry native palette

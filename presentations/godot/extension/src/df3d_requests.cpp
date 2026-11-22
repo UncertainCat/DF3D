@@ -226,6 +226,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
     }
     if(s.petKnowledge) {
         const auto& v=*s.petKnowledge;Dictionary value;Array rows;
+        value["max_name_length"]=int64_t(v.maxNameLength);value["max_caption_length"]=int64_t(v.maxCaptionLength);
         value["revision"]=int64_t(v.revision);value["total"]=int64_t(v.total);value["offset"]=int64_t(v.offset);
         for(const auto& r:v.rows){Dictionary row;row["race"]=r.race;row["level"]=r.level;row["name"]=String::utf8(r.name.c_str());
             row["knowledge"]=petCaption(r.knowledge);if(r.portrait)row["portrait"]=management::itemRecipeDictionary(*r.portrait);rows.push_back(row);}

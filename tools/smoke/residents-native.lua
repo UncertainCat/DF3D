@@ -44,7 +44,7 @@ local function walk(widget)
   local row={name=widget.name,filter=widget.filter_str,options={},ids={},sorting={},sort_flags=widget.sort_flags.whole}
   for _,option in ipairs(widget.options)do row.options[#row.options+1]=df.unit_list_options[option]end
   for _,entry in ipairs(widget.entry_list)do
-   row.ids[#row.ids+1]={kind=entry.t,id=entry.t==0 and entry.u and entry.u.id or -1}
+   row.ids[#row.ids+1]={kind=entry.t,id=entry.t==0 and entry.u and entry.u.id or entry.t==1 and entry.i and entry.i.id or -1}
   end
   for _,entry in ipairs(widget.sorting_by)do row.sorting[#row.sorting+1]=entry.ident end
   row.filter_callbacks=#widget.filter_func;row.partitions=#widget.partitions;row.always_sorting=#widget.always_sorting_by
@@ -77,7 +77,20 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
   end
   assert(tabs.cur_idx==index,'Creature tab click failed: expected '..index..' tab '..tabs.cur_idx)
   local name='creature-tab-'..index
-  observations[#observations+1]={tab=index,interface_mode=info.creatures.current_mode,label=dfhack.df2utf(tabs.tab_labels[index]),lists=lists}
+  local observed={tab=index,interface_mode=info.creatures.current_mode,label=dfhack.df2utf(tabs.tab_labels[index]),lists=lists,rows={}}
+  local function collect(widget,active)
+   active=active and (widget.flag.whole&1)==1
+   if active and df.widget_unit_portrait:is_instance(widget) and widget.u then observed.rows[#observed.rows+1]={kind=0,id=widget.u.id}end
+   if active and df.widget_item_portrait:is_instance(widget) and widget.i then observed.rows[#observed.rows+1]={kind=1,id=widget.i.id}end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child,active)end end
+  end
+  assert(active_list);collect(active_list,true)
+  if os.getenv('DF3D_CREATURE_LIST_PROVIDER')=='1' then
+   local text,rc=dfhack.run_command_silent('df3d','creature-list-probe',tostring(index),'0','0');assert(rc==0,text)
+   observed.provider=json.decode(text).rows
+   observed.matches=json.encode(observed.provider)==json.encode(observed.rows)
+  end
+  observations[#observations+1]=observed
   assert(loadfile(source))(out..'/'..name..'-widgets.json','templates')
   local f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close()
   assert(os.rename(out..'/shot.tmp',out..'/shot'))
@@ -100,6 +113,7 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
   view:render(dfhack.getTickCount());capture(index)
  end
  local f=assert(io.open(out..'/creature-tabs-reference.json','w'));f:write(json.encode(observations));f:close()
+ for _,observed in ipairs(observations)do assert(observed.matches~=false,'Creature list differs on tab '..observed.tab)end
  records[#records+1]={name='creature-tabs-native-discovery',modes=#observations}
  return
 end

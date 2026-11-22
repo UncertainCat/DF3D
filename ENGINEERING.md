@@ -12415,9 +12415,27 @@ text-filter wrapper1435b40. The captured340-entry vectors are unfiltered input,
 not visible membership evidence. Pets includes ownership and animal actions;
 Dead/Missing omits recenter/sheet controls. These differences require semantic
 providers and matching presentation, not a renamed Residents list. No sibling
-provider or action is qualified by this diagnostic. Owned DF36636 closes unsaved
+action is qualified by this diagnostic. Owned DF36636 closes unsaved
 with source unchanged, at30FPS, sampled GPU59–60C. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261122-091034`.
+
+`creature_lists_native.h` supplies the initial category-ordered lists through
+owned tagged references to active units and `ANY_CRITTER` items. It calls the
+four pinned native exclusion predicates and existing native comparators; it
+does not borrow native widget storage. Identity retains kind and ID, since
+Pets/Livestock includes item-backed creatures. `creature-list-probe tab sort
+descending` exposes this diagnostic; public transport and sibling controllers
+remain missing. Search, Activity sorting, ownership/animal actions and row
+composition still require implementation and verification.
+
+Protected091510 on2026-11-22 compares complete native portrait-row membership
+and initial ordering against this provider: Residents141, Pets/Livestock17
+(one item), Other8, Dead/Missing55 all match. The capture now records actual
+item IDs instead of a placeholder. This verifies the candidate pool for this
+fortress, not every possible creature lifecycle or user-selected sort. Owned
+DF896 closes unsaved/source-preserved at30FPS, sampled GPU60–61C. Bridge build
+and all19 core checks pass. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-091510`.
 
 
 Residents Activity has distinct job-settings and event-description routes.

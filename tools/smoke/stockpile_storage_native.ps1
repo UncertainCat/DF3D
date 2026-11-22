@@ -197,7 +197,7 @@ try {
  $limit=(Get-Date).AddSeconds(600)
  while(-not(Test-Path "$out/result.json") -and (Get-Date) -lt $limit){
   if($owned.HasExited){throw 'Owned DF exited before the native capture completed'}
-  if(($env:DF3D_JUSTICE_CASE_RESIZE -eq '1' -or $env:DF3D_JUSTICE_ROSTER_RESIZE -eq '1' -or $env:DF3D_JUSTICE_ROSTER_RETURN -eq '1' -or $env:DF3D_JUSTICE_GRAPH_RESIZE -eq '1' -or $env:DF3D_JUSTICE_SORTS -eq '1' -or $env:DF3D_JUSTICE_CANDIDATES -eq '1' -or $env:DF3D_OBJECTS_LAYOUT -eq '1' -or $env:DF3D_NOBLES_SYMBOL_NAME_RESIZE -eq '1' -or $env:DF3D_NOBLES_SYMBOL_RESIZE -eq '1' -or $env:DF3D_NOBLES_ACCOUNTING -eq '1' -or $env:DF3D_PLACES_LAYOUT -eq '1' -or $env:DF3D_TASKS_LAYOUT -eq '1' -or $env:DF3D_STOCKS_CONTENTS_SCROLL -eq '1' -or $env:DF3D_STOCKS_RESIZE -eq '1' -or $env:DF3D_STOCKS_WHEEL -eq '1' -or $env:DF3D_WORK_DETAILS_MODSORT -eq '1' -or $env:DF3D_WORK_DETAILS_RETENTION -eq '1' -or $env:DF3D_CHORES_LONG_NAME -eq '1' -or $env:DF3D_STONE_USE_NAV -eq '1' -or $env:DF3D_KITCHEN_MODSORT -eq '1' -or $env:DF3D_KITCHEN_NAV -eq '1' -or $env:DF3D_KITCHEN_LAYOUT -eq '1' -or $env:DF3D_KITCHEN_SEARCH -eq '1' -or $env:DF3D_CHORES_LAYOUT -eq '1' -or $env:DF3D_HUNTER_AMMUNITION_LAYOUT -eq '1' -or $ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_QUERY -eq '1' -or $env:DF3D_WORK_DETAILS_QUERY_PROVIDER -eq '1' -or $env:DF3D_WORK_DETAILS_RENAME -eq '1' -or $env:DF3D_WORK_DETAILS_SHORTCUTS -eq '1' -or $env:DF3D_WORK_DETAILS_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1') -and (Test-Path "$out/owner-input-request")) {
+  if(($env:DF3D_JUSTICE_CASE_RESIZE -eq '1' -or $env:DF3D_JUSTICE_ROSTER_RESIZE -eq '1' -or $env:DF3D_JUSTICE_ROSTER_RETURN -eq '1' -or $env:DF3D_JUSTICE_GRAPH_RESIZE -eq '1' -or $env:DF3D_JUSTICE_SORTS -eq '1' -or $env:DF3D_JUSTICE_CANDIDATES -eq '1' -or $env:DF3D_OBJECTS_LAYOUT -eq '1' -or $env:DF3D_NOBLES_SYMBOL_NAME_RESIZE -eq '1' -or $env:DF3D_NOBLES_SYMBOL_RESIZE -eq '1' -or $env:DF3D_NOBLES_ACCOUNTING -eq '1' -or $env:DF3D_PLACES_LAYOUT -eq '1' -or $env:DF3D_TASKS_LAYOUT -eq '1' -or $env:DF3D_STOCKS_CONTENTS_SCROLL -eq '1' -or $env:DF3D_STOCKS_RESIZE -eq '1' -or $env:DF3D_STOCKS_WHEEL -eq '1' -or $env:DF3D_WORK_DETAILS_MODSORT -eq '1' -or $env:DF3D_WORK_DETAILS_RETENTION -eq '1' -or $env:DF3D_CHORES_LONG_NAME -eq '1' -or $env:DF3D_STONE_USE_NAV -eq '1' -or $env:DF3D_KITCHEN_MODSORT -eq '1' -or $env:DF3D_KITCHEN_NAV -eq '1' -or $env:DF3D_KITCHEN_LAYOUT -eq '1' -or $env:DF3D_KITCHEN_SEARCH -eq '1' -or $env:DF3D_CHORES_LAYOUT -eq '1' -or $env:DF3D_HUNTER_AMMUNITION_LAYOUT -eq '1' -or $ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_QUERY -eq '1' -or $env:DF3D_CREATURE_QUERY_REFERENCE -eq '1' -or $env:DF3D_WORK_DETAILS_QUERY_PROVIDER -eq '1' -or $env:DF3D_WORK_DETAILS_RENAME -eq '1' -or $env:DF3D_WORK_DETAILS_SHORTCUTS -eq '1' -or $env:DF3D_WORK_DETAILS_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1') -and (Test-Path "$out/owner-input-request")) {
    $action=(Get-Content "$out/owner-input-request" -Raw).Trim()
    $window=[Shot]::Find($owned.Id)
    switch($action) {
@@ -309,6 +309,15 @@ try {
      if($name -eq 'work-details-root' -and $env:DF3D_LABOR_PUBLIC_SCENE -eq '1'){$wireTimeout=115000}
      if(-not $client.WaitForExit($wireTimeout)){$client.Kill();$client.WaitForExit();throw 'Job settings wire client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/job-settings-wire-result.json")){throw 'Job settings wire client failed'}
+    }
+    if($env:DF3D_CREATURE_LIST_WIRE -eq '1' -and $name -eq 'creature-list-wire') {
+     $env:DF3D_CARRIER_DIRECTORY=$out
+     $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
+     $clientArgs=@('--headless','--render-thread','safe','--path',"$repo/presentations/godot/project",'--script','res://tests/creature_list_wire_live.gd')
+     $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/creature-list-wire.stdout.log" -RedirectStandardError "$out/creature-list-wire.stderr.log"
+     $null=$client.Handle
+     if(-not $client.WaitForExit(90000)){$client.Kill();$client.WaitForExit();throw 'Creature list wire timed out; no replay'}
+     if($client.ExitCode -ne 0 -or -not (Test-Path "$out/creature-list-wire-result.json")){throw 'Creature list wire client failed'}
     }
     if($env:DF3D_RESIDENTS_WIRE -eq '1' -and $name -eq 'residents-root') {
      $env:DF3D_CARRIER_DIRECTORY=$out

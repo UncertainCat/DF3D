@@ -129,7 +129,7 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
    local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','creature-unit-rows-native.lua')
    assert(loadfile(path))(out,active_list,index)
   end
-  if (index==1 and os.getenv('DF3D_CREATURE_ITEM_ROWS')=='1') or (index==2 and os.getenv('DF3D_CREATURE_VERMIN_FIXTURE')=='1') then
+  if not suffix and ((index==1 and os.getenv('DF3D_CREATURE_ITEM_ROWS')=='1') or (index==2 and os.getenv('DF3D_CREATURE_VERMIN_FIXTURE')=='1')) then
    local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','creature-item-rows-native.lua')
    assert(loadfile(path))(out,view,active_list,index)
   end
@@ -315,6 +315,15 @@ if os.getenv('DF3D_CREATURE_TABS_REFERENCE')=='1' then
  end
  local f=assert(io.open(out..'/creature-tabs-reference.json','w'));f:write(json.encode(observations));f:close()
  for _,observed in ipairs(observations)do assert(observed.matches~=false,'Creature list differs on tab '..observed.tab)end
+ if os.getenv('DF3D_CREATURE_LIST_WIRE')=='1' then
+  local f=assert(io.open(out..'/shot.tmp','w'));f:write('creature-list-wire');f:close()
+  assert(os.rename(out..'/shot.tmp',out..'/shot'))
+  local deadline=dfhack.getTickCount()+90000
+  while true do
+   local ack=io.open(out..'/ack-creature-list-wire');if ack then ack:close();break end
+   assert(dfhack.getTickCount()<deadline,'Creature list wire timeout');script.sleep(1,'frames')
+  end
+ end
  records[#records+1]={name='creature-tabs-native-discovery',modes=#observations}
  return
 end

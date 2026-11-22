@@ -90,6 +90,7 @@
 #include "creature_labor_native.h"
 #include "creature_header_native.h"
 #include "residents_query_native.h"
+#include "creature_lists_native.h"
 #include "residents_row_native.h"
 #include "residents_specialization_native.h"
 #include "residents_activity_description_native.h"
@@ -605,6 +606,8 @@ struct CreatureAnimalResult {
   bool assigned=false;
 };
 std::optional<CreatureAnimalResult> creatureAnimal;
+struct CreatureListResult { m::CreatureListTab tab; std::vector<df3d_residents::CreatureIdentity> entries; };
+std::optional<CreatureListResult> creatureList;
 std::optional<std::vector<int32_t>> residents;
 // Strings are converted to UTF-8 and bounded before publishing this batch.
 struct ResidentRowResult { int32_t id; df3d_residents::RowText text; std::optional<ResidentAppearanceRecipe> icon; df3d_residents::Specialization specialization; std::vector<df3d_area::LocationStaffAssignment> assignments; df::coord position; std::optional<df3d_residents::ActivityTarget> activityTarget; std::optional<df3d_production::JobSettingsTarget> jobTarget; std::optional<std::vector<df3d_production::WorkDetailSkillText>> workDetailSkills; int8_t detailMember=-1; };
@@ -906,6 +909,7 @@ void clearResult() {
   creatureWorkshop.reset();
   creatureLocation.reset();
   creatureAnimal.reset();
+  creatureList.reset();
   residents.reset();
   residentsRows.reset();
   residentsSpecialization.reset();
@@ -1605,6 +1609,13 @@ void publish() {
     creatureKnowledgeResult=m::CreateCreatureKnowledgeState(b,value.unitId,value.kind,value.id,value.outcome,b.CreateString(value.text));
   }
   flatbuffers::Offset<m::CreatureAnimalState> creatureAnimalResult;
+  flatbuffers::Offset<m::CreatureListState> creatureListResult;
+  if(creatureList) {
+    std::vector<int32_t> ids;std::vector<m::CreatureListKind> kinds;
+    ids.reserve(creatureList->entries.size());kinds.reserve(creatureList->entries.size());
+    for(const auto& entry:creatureList->entries){ids.push_back(entry.id);kinds.push_back(m::CreatureListKind(entry.kind));}
+    creatureListResult=m::CreateCreatureListState(b,creatureList->tab,b.CreateVector(ids),b.CreateVector(kinds));
+  }
   const auto residentsResult=residents?m::CreateResidentsState(b,b.CreateVector(*residents)):flatbuffers::Offset<m::ResidentsState>{};
   const auto residentsSpecializationResult=residentsSpecialization?
       m::CreateResidentsSpecializationState(b,residentsSpecialization->id,residentsSpecialization->outcome,residentsSpecialization->onlyAssigned):flatbuffers::Offset<m::ResidentsSpecializationState>{};
@@ -1938,7 +1949,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult,depotGoodsResult,depotCommitResult,tradeCatalogResult,tradeSessionResult,tradeDraftResult,displayResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, selectionResult, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult,0,selectionArtResult,depotGoodsResult,depotCommitResult,tradeCatalogResult,tradeSessionResult,tradeDraftResult,displayResult,0,creatureListResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
@@ -6018,6 +6029,18 @@ void run(color_ostream& out) {
         }
       }
     } catch(...) {residents.reset();}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::CreatureListQuery) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    const auto& query=*r->creature_list();
+    try {
+      auto entries=df3d_residents::orderedCreatures(int(query.tab()),int(query.sort()),query.descending(),
+          std::string(query.query_bytes()->begin(),query.query_bytes()->end()));
+      if(entries && entries->size()<=m::kCreatureListEntries) {
+        creatureList=CreatureListResult{query.tab(),std::move(*entries)};status=m::ManagementStatus::Ok;
+      }
+    } catch(...) {creatureList.reset();}
     publish();return;
   }
   if(r->action()==m::ManagementAction::ResidentsQuery) {

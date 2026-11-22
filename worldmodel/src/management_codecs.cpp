@@ -45,6 +45,12 @@ ManagementState decodeState(const m::ManagementState* s) {
     if(const auto* v=h->snapshot())header.snapshot=CreatureHeaderSnapshot{v->unit_id(),v->historical_figure_id(),v->has_figure(),v->revision(),v->nickname()->str(),v->profession()->str(),v->figure_nickname()->str()};
     next.creatureHeader=std::move(header);
   }
+  if(const auto* r=s->creature_list()) {
+    CreatureListState result;result.tab=CreatureListTab(r->tab());
+    result.entries.reserve(r->ids()->size());
+    for(flatbuffers::uoffset_t i=0;i<r->ids()->size();++i)result.entries.push_back({CreatureListKind(r->kinds()->Get(i)),r->ids()->Get(i)});
+    next.creatureList=std::move(result);
+  }
   if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
   if(const auto* r=s->nobles()) {
     auto& out=next.nobles.emplace();out.outcome=NoblesOutcome(r->outcome());out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
@@ -591,7 +597,8 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       r.action==ManagementAction::TradeDraftRead || r.action==ManagementAction::TradeDraftApply?m::CreateTradeDraftRequest(b,r.tradeDraft.session,r.tradeDraft.expectedRevision,r.tradeDraft.side,r.tradeDraft.offset,r.tradeDraft.limit,m::TradeDraftOperation(r.tradeDraft.operation),r.tradeDraft.item,r.tradeDraft.type,r.tradeDraft.subtype,b.CreateString(r.tradeDraft.query)):flatbuffers::Offset<m::TradeDraftRequest>{},
       !r.displayReplyRequest && r.action>=ManagementAction::DisplayRead && r.action<=ManagementAction::DisplayRemove?
         m::CreateDisplayRequest(b,r.display.buildingId,r.display.category,b.CreateString(r.display.query),b.CreateVector(r.display.itemIds),r.display.expectedRevision,b.CreateVector(r.display.selectedIds)):flatbuffers::Offset<m::DisplayRequest>{},
-      r.displayReplyRequest?m::CreateDisplayReplyRequest(b,r.displayReplyRequest,r.displayReplyOffset):flatbuffers::Offset<m::DisplayReplyRequest>{});
+      r.displayReplyRequest?m::CreateDisplayReplyRequest(b,r.displayReplyRequest,r.displayReplyOffset):flatbuffers::Offset<m::DisplayReplyRequest>{},
+      r.action==ManagementAction::CreatureListQuery?m::CreateCreatureListRequest(b,m::CreatureListTab(r.creatureList.tab),m::CreatureListSort(r.creatureList.sort),r.creatureList.descending,b.CreateVector(r.creatureList.queryBytes)):flatbuffers::Offset<m::CreatureListRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

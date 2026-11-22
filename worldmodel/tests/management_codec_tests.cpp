@@ -6315,3 +6315,33 @@ TEST_CASE("display parent replies retain exact revisions and reject foreign pick
     if(!fault){auto decoded=codec::decodeState(value);b.Clear();REQUIRE(decoded.display);CHECK(decoded.display->revision==9007199254740993ULL);REQUIRE(decoded.display->body.size()==1);CHECK(decoded.display->body[0].name=="Synthetic item");}
   }
 }
+
+TEST_CASE("Creature list codec retains native query bytes and typed order") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::CreatureListQuery;
+  request.creatureList.tab=wm::CreatureListTab::Other;
+  request.creatureList.sort=wm::CreatureListSort::Activity;
+  request.creatureList.descending=true;request.creatureList.queryBytes={0xc3};
+  flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,11,12,13);
+  const auto* q=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+  REQUIRE_FALSE(wire::validateConstructionRequest(*q));REQUIRE(q->creature_list());
+  CHECK(q->creature_list()->tab()==wire::CreatureListTab::Other);
+  CHECK(q->creature_list()->sort()==wire::CreatureListSort::Activity);
+  CHECK(q->creature_list()->descending());
+  REQUIRE(q->creature_list()->query_bytes()->size()==1);
+  CHECK(q->creature_list()->query_bytes()->Get(0)==0xc3);
+  b.Clear();
+  auto list=wire::CreateCreatureListState(b,wire::CreatureListTab::Other,
+    b.CreateVector(std::vector<int32_t>{7,7}),
+    b.CreateVector(std::vector<wire::CreatureListKind>{wire::CreatureListKind::Item,wire::CreatureListKind::Unit}));
+  wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(wire::ManagementAction::CreatureListQuery);
+  state.add_status(wire::ManagementStatus::Ok);state.add_creature_list(list);b.Finish(state.Finish());
+  const auto* encoded=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+  REQUIRE_FALSE(wire::validateManagementState(*encoded));
+  auto decoded=codec::decodeState(encoded);REQUIRE(decoded.creatureList);
+  CHECK(decoded.creatureList->tab==wm::CreatureListTab::Other);
+  REQUIRE(decoded.creatureList->entries.size()==2);
+  CHECK(decoded.creatureList->entries[0].kind==wm::CreatureListKind::Item);
+  CHECK(decoded.creatureList->entries[1].kind==wm::CreatureListKind::Unit);
+  CHECK(decoded.creatureList->entries[0].id==7);CHECK(decoded.creatureList->entries[1].id==7);
+  CHECK_FALSE(decoded.residents);
+}

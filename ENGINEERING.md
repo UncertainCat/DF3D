@@ -12675,7 +12675,25 @@ Category, Name, Profession and Activity are admitted; Slaughterability is Pets-o
 The existing Residents and Work Details unit-only contracts are unchanged.
 Both bridge and consumer must rebuild for management region v256; older management
 recordings are incompatible and must not acquire inferred creature-list facts.
-This contract does not yet establish runtime transport or public tab acceptance.
+The bridge calls the owned native creature-list provider, and the model/Godot
+adapter preserve typed identities and native order. Protected110400 on2026-11-22
+matches15 native snapshots across Pets, Other and Dead/Missing: initial lists,
+DOMESTICATED/DECEASED searches, unmatched searches and clearing. Other includes
+one controlled VERMIN item retained until owned unsaved exit. Invalid tabs and
+Other sort requests reject; an unrelated Catalog reply clears the roster payload.
+This run covers Category ordering and query transport, not all sort gestures or
+public tabs. The bridge, extension and root builds pass, as do all19 root checks.
+DF52188 closes unsaved/source-preserved at30FPS, sampled55–56C; the headless
+client reports no diagnostics. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261122-110400`.
+
+The query oracle's owner-input gate includes creature query captures. Item-row
+pixel sampling runs only on unfiltered snapshots; filtered empty lists remain
+valid roster observations. Earlier110141/110259 failures caught these harness
+conditions and preserved the source save. Earlier104947 was aborted at85–87C
+before wire acceptance; the owned process exited and source hashes were unchanged.
+The corrected query transport does not complete row/action transport or public
+Pets/Livestock, Other and Dead/Missing workflows.
 
 `creature_item_row_native.h` supplies PET and VERMIN item rows separately from unit rows.
 Names reuse the native c65450 formatter through `buildingItemCaption`, matching

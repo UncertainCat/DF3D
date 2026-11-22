@@ -777,6 +777,9 @@ struct WorkDetailSetting { int32_t id=-1; std::string caption; };
 struct WorkDetailSettingsState { int32_t detailIndex=-1; uint64_t revision=0; bool editable=false,noModify=false; std::vector<int16_t> labors; std::vector<WorkDetailSetting> catalog; };
 struct WorkDetailSort { WorkDetailWorkerSort column=WorkDetailWorkerSort::Skills; bool descending=false; };
 struct WorkDetailWorkersRequest { int32_t detailIndex=-1; uint64_t expectedRevision=0; std::vector<WorkDetailSort> sorts{{}}; std::vector<uint8_t> queryBytes; };
+struct CreatureListIdentity { CreatureListKind kind=CreatureListKind::Unit; int32_t id=-1; };
+struct CreatureListRequest { CreatureListTab tab=CreatureListTab::Pets; CreatureListSort sort=CreatureListSort::Category; bool descending=false; std::vector<uint8_t> queryBytes; };
+struct CreatureListState { CreatureListTab tab=CreatureListTab::Pets; std::vector<CreatureListIdentity> entries; };
 struct ResidentsRequest { ResidentsSort sort=ResidentsSort::Category; bool descending=false; std::vector<uint8_t> queryBytes; };
 struct ResidentsState { std::vector<int32_t> unitIds; };
 struct ResidentsRowsRequest { std::vector<int32_t> unitIds; uint16_t columns=30; bool showGender=false; int32_t detailIndex=-1; uint64_t expectedRevision=0; };
@@ -1169,6 +1172,7 @@ struct ManagementRequest {
   CreatureWorkshopRequest creatureWorkshop;
   CreatureLocationRequest creatureLocation;
   CreatureAnimalRequest creatureAnimal;
+  CreatureListRequest creatureList;
   ResidentsRequest residents;
   WorkDetailWorkersRequest workDetailWorkers;
   WorkDetailSettingsRequest workDetailSettings;
@@ -1248,6 +1252,7 @@ struct ManagementState {
   std::optional<CreatureWorkshopState> creatureWorkshop;
   std::optional<CreatureLocationState> creatureLocation;
   std::optional<CreatureAnimalState> creatureAnimal;
+  std::optional<CreatureListState> creatureList;
   std::optional<ResidentsState> residents;
   std::optional<ResidentsRowsState> residentsRows;
   std::optional<WorkDetailSettingsState> workDetailSettings;

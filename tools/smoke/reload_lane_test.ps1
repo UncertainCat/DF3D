@@ -68,7 +68,10 @@ try {
     $markerId=[int](Get-Content "$out/marker.json" -Raw | ConvertFrom-Json).id
     $env:DF3D_RELOAD_LANE=$out
     $godot=if($env:DF3D_GODOT){$env:DF3D_GODOT}else{'C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'}
-    $g=Start-ContainedProcess -Exe $godot -Arguments "--headless --render-thread safe --path `"$repo/presentations/godot/project`" --script res://tests/reload_lane_live.gd --log-file `"$out/godot.log`"" -WorkingDir "$repo/presentations/godot/project"
+    $sceneReload=$env:DF3D_MANAGEMENT_RELOAD_SCENE -eq '1'
+    $renderArgs=if($sceneReload){'--max-fps 30'}else{'--headless'}
+    $testScript=if($sceneReload){'res://tests/management_reload_scene_live.gd'}else{'res://tests/reload_lane_live.gd'}
+    $g=Start-ContainedProcess -Exe $godot -Arguments "$renderArgs --render-thread safe --path `"$repo/presentations/godot/project`" --script $testScript --log-file `"$out/godot.log`"" -WorkingDir "$repo/presentations/godot/project"
     $deadline=(Get-Date).AddSeconds(2000)
     while(-not $g.HasExited -and (Get-Date) -lt $deadline){
         if(Test-Path "$out/verify.txt"){

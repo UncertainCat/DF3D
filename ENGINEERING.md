@@ -8474,10 +8474,9 @@ recovery153800, actual world replacement154406 and interrupted applied mutation
 155327 qualify the lifecycle cases described under Management producer recovery
 below. Production160820 also verifies that native DF completes a statue with
 the material and artwork selected through Tasks. These are separate evidence
-scopes: world replacement uses controllers, not a graphical main-scene reload.
-Full Details
-subpage/overflow rendering, and graphical reload remain unqualified. They are
-acceptance gaps, not established implementation defects.
+scopes:154406 uses controllers; rendered main-scene reloads have separate103354
+acceptance below. Full Details subpage/overflow rendering remains unqualified;
+this is an acceptance gap, not an established implementation defect.
 
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is
@@ -8735,6 +8734,30 @@ Those are failed execution attempts, not accepted adapter regressions. Physical
 proximity alone is insufficient: the final fixture excludes construction,
 removed, encased, held and otherwise claimed items when selecting its material.
 It leaves native availability, pathing, worker selection and completion authoritative.
+
+### Rendered management recovery after world reload
+
+`DF3D_MANAGEMENT_RELOAD_SCENE=1` selects the actual main-scene client in the
+protected reload lane. It opens Tasks, Objects and Justice through their HUD
+buttons, captures each panel, closes with Escape, then requests two save-free
+world replacements while Tasks and Justice respectively remain open. The test
+requires a changed fortress epoch, cleared request/row authority, closed panels
+and an inactive modal owner before reopening all three through the HUD. Each
+fresh membership list must match the pre-reload list. Existing controller-level
+reload tests continue to qualify interrupted-ticket outcomes separately.
+
+Protected103354 on2026-11-23 passes both in-process reloads in owned DF54968.
+Fresh public memberships contain41 Tasks,10 Objects and7 Justice cases each time.
+The same native process advances fortress epochs236085762326530 and
+236085762326531. Native marker verification proves the unsaved world was replaced;
+all684 source-file hashes remain unchanged before/after each reload and teardown.
+The final Tasks screenshot was visually inspected. Graphics run serially at30FPS,
+GPU samples58–62C; the engine log has no errors or warnings. Owned DF closes
+unsaved and all19 core checks pass. Evidence: `build/reload-lane-20261123-103354`.
+This qualifies main-scene ownership and fresh reads for those three surfaces,
+not every child editor or an interrupted mutation in this rendered scenario.
+The earlier103252 attempt stopped before reload because its test helper assumed
+Objects had an Applying phase; the helper now waits for each owner's Ready state.
 
 ### Management producer recovery
 

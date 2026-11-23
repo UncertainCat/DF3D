@@ -24342,10 +24342,32 @@ are confirmed independently in DF. Conditions/Details/Back, three viewport sizes
 Escape and host close preserve ownership. Owned DF55264 closes unsaved with
 source preserved at30FPS; sampled GPU60C, viewer stderr empty. Evidence is in
 `build/stockpile-storage-native-farm-discovery-20261122-075512`.
-This qualifies the public entry and those composed edits, not every list boundary
-or quantity increment: the9999 text-entry cap versus native plus-button behavior
-above9999 remains unresolved, including native signed overflow.
+This qualifies public entry and those composed edits, not every list boundary.
+Global quantity arrows have separate positive-range acceptance below; signed
+int16 overflow remains unresolved.
 Use `DF3D_WORK_ORDER_PUBLIC_SCENE=1` to select the main-scene variant.
+
+Global quantity typing remains limited to four characters. Plus/minus uses a
+separate state action permitting positive one-step changes through32767. The
+bridge admits values above9999 only when they differ by one from the current
+remaining quantity under the matching revision. Native3c601f..3c6052, already
+pinned by the row provider, increments/decrements remaining and copies it into
+total; it does not preserve completed-work differences. Zero decrement does
+nothing. No menu state or feed handler is used as a runtime input.
+
+Protected104024 on2026-11-23 starts a controlled order at total12000/remaining9999.
+Native clicks confirm plus produces10000/10000 and minus9999/9999. The public HUD
+workflow at resized dimensions then confirms9999→10000→9999→10000, with independent
+native readback and original quantities restored afterward. Conditions/Details,
+workshop-limit edits, close/reopen and navigation continue to pass in that run.
+Client stderr is empty, source-save hashes are unchanged and owned DF20712 closes
+unsaved. Serial graphics use30FPS; GPU samples59–63C. MSVC and all19 core checks
+pass. Evidence: `build/stockpile-storage-native-farm-discovery-20261123-104024`.
+
+This closes the positive9999 boundary defect. Native32767→-32768 overflow is not
+admitted by the existing positive quantity contract; its maintainer decision
+remains pending. No overflow correction or full signed-range parity is claimed.
+
 
 Use `DF3D_WORK_ORDER_NAVIGATION=1` with the focused artwork-reference lane.
 This establishes navigation/input ownership, not resized writes or epoch-change

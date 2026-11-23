@@ -58,6 +58,14 @@ func find_order(id: int) -> Dictionary:
 	return {}
 func set_quantity(id: int,value: int) -> void:
 	if value>=0 and value<=9999:_edit(id,"remaining",value)
+func step_quantity(id: int,direction: int) -> void:
+	if direction not in [-1,1] or phase!=Phase.Ready:return
+	var row:=find_order(id)
+	if row.is_empty():return
+	var value: int=int(row.remaining)+direction
+	# Text input stays four characters. Native arrows can exceed9999; the
+	# signed-overflow boundary remains outside the admitted positive range.
+	if value>=0 and value<=32767:_edit(id,"remaining",value)
 func remove_order(id: int) -> void:
 	if phase!=Phase.Ready or service==null:return
 	var row:=find_order(id)

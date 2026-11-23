@@ -186,6 +186,17 @@ if os.getenv('DF3D_WORK_ORDER_HOVER')=='1' then
  return
 end
 if os.getenv('DF3D_WORK_ORDER_NAVIGATION')=='1' then
+ local boundary=os.getenv('DF3D_WORK_ORDER_QUANTITY_BOUNDARY')=='1'
+ local original_total,original_left=order.amount_total,order.amount_left
+ if boundary then
+  order.amount_total=12000;order.amount_left=9999
+  key('LEAVESCREEN');mouse(424,430)
+  assert(order.amount_total==10000 and order.amount_left==10000,'Native arrow boundary changed')
+  mouse(456,430)
+  assert(order.amount_total==9999 and order.amount_left==9999,'Native decrement boundary changed')
+  order.amount_total=12000;order.amount_left=9999
+  mouse(584,430);assert(details.open)
+ end
  local quantity,remaining,limit,frequency=order.amount_total,order.amount_left,order.max_workshops,order.frequency
  local edits=os.getenv('DF3D_WORK_ORDER_RESIZED_EDIT')=='1'
  local text_edit=os.getenv('DF3D_WORK_ORDER_RESIZED_TEXT_EDIT')=='1'
@@ -207,7 +218,7 @@ if os.getenv('DF3D_WORK_ORDER_NAVIGATION')=='1' then
   key('LEAVESCREEN');mouse(584,430);assert(details.open)
  end
  local threshold=edits and order.item_conditions[0].compare_val or -1
- local f=assert(io.open(out..'/work-order-navigation-expected.json','w'));f:write(json.encode({id=order.id,edits=edits,text_edit=text_edit,filters=filters,material_type=material_type,material_index=material_index,dependency=dependency,remaining=remaining,limit=limit,threshold=threshold}));f:close()
+ local f=assert(io.open(out..'/work-order-navigation-expected.json','w'));f:write(json.encode({id=order.id,edits=edits,boundary=boundary,text_edit=text_edit,filters=filters,material_type=material_type,material_index=material_index,dependency=dependency,remaining=remaining,limit=limit,threshold=threshold}));f:close()
  shot('work-order-navigation-wire')
  f=assert(io.open(out..'/work-order-navigation-wire-result.json'));local result=json.decode(f:read('*a'));f:close();assert(result.success,'Work orders navigation failed')
  assert(order.amount_total==(text_edit and 12 or edits and remaining+1 or quantity) and order.amount_left==(text_edit and 12 or remaining+(edits and 1 or 0)) and order.max_workshops==limit+(edits and 1 or 0) and order.frequency==frequency,'Navigation/edit order quantities or frequency differ')
@@ -217,6 +228,12 @@ if os.getenv('DF3D_WORK_ORDER_NAVIGATION')=='1' then
   assert(#order.order_conditions==1 and order.order_conditions[0].order_id==dependency,'Resized dependency differs')
  end
  assert(order.specdata.hist_figure_id==before.spec and order.art_spec.type==before.typ and order.art_spec.id==before.id and order.art_spec.subid==before.subid,'Navigation changed order details')
+ if boundary then
+  local f=assert(io.open(out..'/work-order-quantity-positive-boundary.json','w'))
+  f:write(json.encode{before_total=12000,before_remaining=9999,total=order.amount_total,remaining=order.amount_left});f:close()
+  assert(order.amount_total==10000 and order.amount_left==10000,'Native positive arrow boundary differs')
+  order.amount_total=original_total;order.amount_left=original_left
+ end
  records[#records+1]={name='work-order-navigation',order_unchanged=not edits,resized_edits_match=edits,resized_filters_match=filters}
  return
 end

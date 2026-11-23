@@ -88,6 +88,12 @@ func run() -> void:
   for candidate in owner.global_orders.rows.values():
    if int(candidate.id)==int(plan.id):row=candidate
   check(row.get("remaining",-1)==int(plan.remaining)+1 and row.get("total",-1)==int(plan.remaining)+1,"Resized quantity differs")
+  if plan.get("boundary",false):
+   for sample in [[2,9999],[1,10000]]:
+    click(order_point(owner,int(plan.id),int(sample[0])))
+    if not check(await settle(service,func():return owner.global_orders.phase==owner.global_orders.Phase.Ready and owner.global_orders.ticket==0),"Boundary arrow did not settle"):quit(1);return
+    row=owner.global_orders.find_order(int(plan.id))
+    check(row.get("remaining",-1)==int(sample[1]) and row.get("total",-1)==int(sample[1]),"Boundary arrow quantity differs")
   click(Vector2(1088,y))
   if not check(await settle(service,func():return owner.global_orders.phase==owner.global_orders.Phase.Ready and owner.global_orders.ticket==0),"Resized workshop limit was not confirmed"):quit(1);return
   for candidate in owner.global_orders.rows.values():

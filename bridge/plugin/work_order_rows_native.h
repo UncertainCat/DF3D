@@ -201,7 +201,7 @@ inline NativeWorkOrderEdit setGlobalOrderFields(int32_t id,uint64_t revision,int
     NativeWorkOrderEdit result;
     if(!workOrderRowsSupported() || !df::global::world ||
        int(quantity>=0)+int(maxWorkshops>=0)+int(move!=0)+int(frequency>=0)!=1 || frequency < -1 || frequency>4 ||
-       quantity < -1 || quantity>9999 || maxWorkshops < -1 || maxWorkshops>999 ||
+       quantity < -1 || quantity>32767 || maxWorkshops < -1 || maxWorkshops>999 ||
        move < -1 || move>1 || (!move && (listRevision || neighbor!=-1)))return result;
     auto& all=df::global::world->manager_orders.all;
     const auto it=std::find_if(all.begin(),all.end(),[&](const auto* order){return order && order->id==id;});
@@ -209,6 +209,11 @@ inline NativeWorkOrderEdit setGlobalOrderFields(int32_t id,uint64_t revision,int
     auto* order=*it;int32_t position=int32_t(it-all.begin());
     const auto before=nativeWorkOrderRow(*order,position,true);if(!before)return result;
     if(!revision || revision!=before->revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+    // Four-character text input remains bounded to9999. Larger positive values
+    // are admitted only as one native arrow step from the current receipt.
+    // Native3c601f..3c6052 copies the adjusted remaining count into both fields.
+    if(quantity>9999 && quantity!=int32_t(order->amount_left)+1 &&
+       quantity!=int32_t(order->amount_left)-1)return result;
     if(maxWorkshops>=0 && order->workshop_id!=-1)return result;
     if(move) {
         const auto page=nativeGlobalOrderPage(0,listRevision);

@@ -113,8 +113,8 @@ func _gui_input(event: InputEvent) -> void:
 			finish_entry()
 			match button:
 				0,7:editing_id=row.id;editing_limit=button==7
-				1:state.set_quantity(row.id,row.remaining+1)
-				2:state.set_quantity(row.id,maxi(0,row.remaining-1))
+				1:state.step_quantity(row.id,1)
+				2:state.step_quantity(row.id,-1)
 				3:state.move_order(row.id,-1)
 				4:state.move_order(row.id,1)
 				5:conditions_requested.emit(row.id,row.workshop_id)

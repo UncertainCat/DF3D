@@ -12028,6 +12028,19 @@ graphics run serially at30FPS (GPU56–57C samples), focused Work Details checks
 and all19 core checks pass. Evidence:
 build/stockpile-storage-native-farm-discovery-20261123-112247/portrait-comparison.json.
 
+Work Details worker rows use BUTTON_RECTANGLE for ordinary rows, the selected
+variant for the cursor, and the classic roster scrollbar artwork. Inactive sort
+captions use native RGB160 rather than palette gray192. Protected112725 on
+2026-11-23 repeats the public Labor workflow after these corrections: the full
+944x708 panel matches native112134 exactly in Name and Skills order. Reverse
+Name differs only within the animated name column; no other panel pixels differ.
+The reverse image was inspected. This supersedes the large row-background
+residual from112247 and the header/scrollbar residual from112525. Save manifests
+remain unchanged, owned DF62920 closes unsaved, viewer stderr is empty, and
+graphics run serially at30FPS with GPU56C samples. Focused Work Details checks
+and all19 core checks pass. Evidence:
+build/stockpile-storage-native-farm-discovery-20261123-112725/panel-comparison.json.
+
 Rendered113636 exercises actual second-portrait input and checks unchanged detail,
 no command ticket and retained row selection. Both source saves were preserved
 and owned processes closed unsaved; GPU59–60C samples, clients30FPS. Joined final

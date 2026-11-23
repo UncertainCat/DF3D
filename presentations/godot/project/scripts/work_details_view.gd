@@ -174,6 +174,7 @@ func refresh() -> void:
 		if search!=null and search.is_inside_tree():search.release_focus()
 		if scrollbar!=null:scrollbar.dragging=false
 	if scrollbar!=null:
+		scrollbar.use_classic_art=not showing_settings
 		scrollbar.position=Vector2(size.x-32 if showing_settings else roster_extent()-32,settings_top() if showing_settings else list_top())
 		scrollbar.size=Vector2(16,maxi(36,size.y-scrollbar.position.y-(24 if showing_settings else 84)))
 		scrollbar.page=settings_capacity() if showing_settings else page_rows
@@ -314,12 +315,12 @@ func _draw() -> void:
 		for cell in DETAIL_SORT_WIDTH[index]-4:
 			var background:=strip("SORT_TEXT_"+suffix,0 if cell==0 else 2 if cell==DETAIL_SORT_WIDTH[index]-5 else 1)
 			if background!=null:draw_texture_rect(background,Rect2((DETAIL_SORT_X[index]+4+cell)*8,list_top()-24,8,12),false)
-		text(DETAIL_SORT_LABELS[index],Vector2((DETAIL_SORT_X[index]+5)*8,list_top()-12),0 if suffix=="ACTIVE" else 7)
+		text_rgb(DETAIL_SORT_LABELS[index],Vector2((DETAIL_SORT_X[index]+5)*8,list_top()-12),Color.BLACK if suffix=="ACTIVE" else Color8(160,160,160))
 	for index in page_rows:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty():continue
 		var y:=list_top()+index*36
-		patch("BUTTON_RECTANGLE_SELECTED" if int(row.id)==worker_selected else "BUTTON_RECTANGLE_DARK",Vector2i(33,int(y/12)),int(roster_extent()/8)-38,3)
+		patch("BUTTON_RECTANGLE_SELECTED" if int(row.id)==worker_selected else "BUTTON_RECTANGLE",Vector2i(33,int(y/12)),int(roster_extent()/8)-38,3)
 		patch("",Vector2i(33,int(y/12)),5,3,picture.texture(int(row.id)==worker_selected,bool(row.member)))
 		var portrait: Texture2D=portraits.get(int(row.id),{}).get("texture")
 		if portrait!=null:draw_texture_rect(portrait,Rect2(266,y+2,32,32),false)

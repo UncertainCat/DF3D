@@ -11972,8 +11972,8 @@ asked Miners to use the prohibited Everybody mode; native rejection was correct,
 and the final test uses an allowed mode. This is public-route/composed navigation
 acceptance, not a replacement for the detailed edit/native-effect evidence below.
 The recorded120 checkbox-background pixels are corrected by the row comparison above.
-Sort-selection behavior is qualified below; portrait variants remain open and
-whole-panel pixel identity is not claimed.
+Sort-selection behavior and the visible sorted portrait cells are qualified
+below; whole-panel pixel identity is not claimed.
 
 
 The main `fortress_ui` composition owns a lazy, reusable `work_details`
@@ -12013,6 +12013,20 @@ selection, direction/priority changes, redraw and late replies; all19 core check
 pass. This accepts selection behavior, not sorted portrait pixel identity.
 Evidence: build/stockpile-storage-native-farm-discovery-20261123-111832 and
 build/work-details-selection-native-farm-discovery-20261123-111459.
+
+Work Details portrait frames use the native membership highlight independently
+of the selected-row border. The view supplies each observed row's member flag
+to the shared picture-frame helper; original unit artwork is unchanged.
+Protected native112134 on2026-11-23 observes visible portrait widget IDs through
+Name/reverse/Skills sorting, ruling out retained row identities. Public112247
+repeats the full HUD workflow: all ten visible portrait cells in each of those
+three states match native exactly in crop296,280..336,640. The reverse-order
+image was inspected. This closes the previously observed sorted-portrait
+background discrepancy; it is not a native bug or an approved departure.
+Source saves remain unchanged, DF59040 closes unsaved, viewer stderr is empty,
+graphics run serially at30FPS (GPU56–57C samples), focused Work Details checks
+and all19 core checks pass. Evidence:
+build/stockpile-storage-native-farm-discovery-20261123-112247/portrait-comparison.json.
 
 Rendered113636 exercises actual second-portrait input and checks unchanged detail,
 no command ticket and retained row selection. Both source saves were preserved

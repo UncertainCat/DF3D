@@ -320,7 +320,7 @@ func _draw() -> void:
 		if row.is_empty():continue
 		var y:=list_top()+index*36
 		patch("BUTTON_RECTANGLE_SELECTED" if int(row.id)==worker_selected else "BUTTON_RECTANGLE_DARK",Vector2i(33,int(y/12)),int(roster_extent()/8)-38,3)
-		patch("",Vector2i(33,int(y/12)),5,3,picture.texture(int(row.id)==worker_selected))
+		patch("",Vector2i(33,int(y/12)),5,3,picture.texture(int(row.id)==worker_selected,bool(row.member)))
 		var portrait: Texture2D=portraits.get(int(row.id),{}).get("texture")
 		if portrait!=null:draw_texture_rect(portrait,Rect2(266,y+2,32,32),false)
 		var ink:=NameColor.choose(row.name_color,ticks_override if ticks_override>=0 else Time.get_ticks_msec(),0 if ticks_override>=0 else randi_range(0,1))

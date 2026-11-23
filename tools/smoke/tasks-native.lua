@@ -68,6 +68,12 @@ if os.getenv('DF3D_TASKS_CANCEL_ASSIGNED')=='1' then
  local path=debug.getinfo(1,'S').source:sub(2):gsub('tasks%-native.lua$','tasks-assigned-cancel-native.lua')
  assigned_cancel=assert(loadfile(path))(out,view,records)
 end
+local started_cancel
+if os.getenv('DF3D_TASKS_CANCEL_STARTED')=='1' then
+ assert(not created_job and not workshop_cancel and not demolition and not assigned_cancel,'Started cancellation needs its own simulation fixture')
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('tasks%-native.lua$','tasks-started-cancel-native.lua')
+ started_cancel=assert(loadfile(path))(out,view,records)
+end
 local cold=probe()
 local destructive
 local function find_job(id)
@@ -84,7 +90,7 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
  assert(job and job.flags.suspend,'Expected suspended construction fixture')
  local original=job.flags.whole
  write('tasks-wire-reference.json',json.encode(cold))
- write('tasks-scene-reference.json',json.encode{rows=cold,details_job=created_job and created_job.id or -1,cancel_job=workshop_cancel and workshop_cancel.job_id or demolition and demolition.job_id or assigned_cancel and assigned_cancel.job_id or -1,execution_material=execution_material})
+ write('tasks-scene-reference.json',json.encode{rows=cold,details_job=created_job and created_job.id or -1,cancel_job=workshop_cancel and workshop_cancel.job_id or demolition and demolition.job_id or assigned_cancel and assigned_cancel.job_id or started_cancel and started_cancel.job_id or -1,execution_material=execution_material})
  write('shot.tmp','tasks-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+(os.getenv('DF3D_TASKS_SCENE')=='1' and 120000 or 30000);local checked=0;local repeats=0;local lifecycle_steps=0;local material_checked=false;local art_checked=false;local original_repeat=created_job and created_job.flags.whole
  while true do
@@ -177,12 +183,17 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
    local step=io.open(out..'/tasks-workshop-cancel-step')
    if step then step:close();assigned_cancel.verify();assigned_cancel.checked=true;write('tasks-workshop-cancel-ack','1')end
   end
+  if started_cancel and not started_cancel.checked then
+   local step=io.open(out..'/tasks-workshop-cancel-step')
+   if step then step:close();started_cancel.verify();started_cancel.checked=true;write('tasks-workshop-cancel-ack','1')end
+  end
   local ack=io.open(out..'/ack-tasks-wire');if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Tasks wire timed out');script.sleep(1,'frames')
  end
  assert(checked==2 and job.flags.whole==original,'Tasks wire did not restore suspension')
  if created_job then assert(repeats==2 and created_job.flags.whole==original_repeat,'Tasks Repeat did not restore');write('tasks-repeat-native-result.json',json.encode{job_id=created_job.id,steps=repeats,restored=true})end
  assert(not df.global.game.main_interface.info.open,'Tasks transport opened native menu')
+ if started_cancel then assert(started_cancel.checked,'Started cancellation incomplete');cold=probe()end
  if assigned_cancel then assert(assigned_cancel.checked,'Assigned cancellation incomplete');cold=probe()end
  if demolition then assert(demolition.checked,'Demolition cancellation incomplete');cold=probe()end
  if workshop_cancel then
@@ -386,14 +397,21 @@ else
   result.navigation[#result.navigation+1]={job_id=row.job_id,point={x,y},target=actual}
   gui.simulateInput(view,'D_JOBLIST');view:render(dfhack.getTickCount())
  end
- local first=info.jobs.scroll_position_cri_job
- recenter(warm[first+1],708,142,warm[first+1].worker_position)
- for _=1,2 do
-  g.precise_mouse_x=500;g.precise_mouse_y=300;g.mouse_x=62;g.mouse_y=25
-  gui.simulateInput(view,'CONTEXT_SCROLL_PAGEDOWN');view:render(dfhack.getTickCount())
+ -- Simulation fixtures change row counts/order; select a real target for each
+ -- navigation button instead of assuming the first/last visible row has one.
+ local function navigate(worker)
+  local chosen
+  for index,row in ipairs(warm)do
+   if (worker and row.unit_id>=0) or (not worker and row.building_id>=0) then chosen=index;break end
+  end
+  assert(chosen,'No eligible native navigation target')
+  info.jobs.scroll_position_cri_job=math.min(chosen-1,math.max(0,#warm-17));view:render(dfhack.getTickCount())
+  for _=1,3 do script.sleep(1,'frames')end
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  local row=warm[chosen];local y=142+(chosen-1-info.jobs.scroll_position_cri_job)*36
+  recenter(row,worker and 708 or 252,y,worker and row.worker_position or row.building_position)
  end
- local row=warm[#warm];local y=142+(#warm-1-info.jobs.scroll_position_cri_job)*36
- recenter(row,252,y,row.building_position)
+ navigate(true);navigate(false)
 end
 if os.getenv('DF3D_TASKS_LAYOUT')=='1' then
  result.layouts={}

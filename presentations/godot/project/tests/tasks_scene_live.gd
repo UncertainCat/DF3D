@@ -30,13 +30,15 @@ func exercise(expected: Dictionary) -> void:
 		owner.state.seek(0,owner.panel.capacity());await process_frame
 	var scrollbar=owner.panel.scrollbar
 	await pointer(scrollbar.get_global_transform_with_canvas()*Vector2(8,scrollbar.size.y-6))
-	check(owner.state.first==1,"Tasks scrollbar down did not advance one row")
-	for sample in [[Vector2(468,248),MOUSE_BUTTON_WHEEL_DOWN,false,2],[Vector2(468,248),MOUSE_BUTTON_WHEEL_UP,false,1],[Vector2(920,248),MOUSE_BUTTON_WHEEL_DOWN,true,18],[Vector2(920,248),MOUSE_BUTTON_WHEEL_UP,true,1],[Vector2(468,38),MOUSE_BUTTON_WHEEL_DOWN,false,1],[Vector2(-12,-32),MOUSE_BUTTON_WHEEL_DOWN,false,1]]:
+	var expected_first: int=mini(1,maxi(0,expected.rows.size()-17))
+	check(owner.state.first==expected_first,"Tasks scrollbar down did not advance one row")
+	for sample in [[Vector2(468,248),MOUSE_BUTTON_WHEEL_DOWN,false,1],[Vector2(468,248),MOUSE_BUTTON_WHEEL_UP,false,-1],[Vector2(920,248),MOUSE_BUTTON_WHEEL_DOWN,true,17],[Vector2(920,248),MOUSE_BUTTON_WHEEL_UP,true,-17],[Vector2(468,38),MOUSE_BUTTON_WHEEL_DOWN,false,0],[Vector2(-12,-32),MOUSE_BUTTON_WHEEL_DOWN,false,0]]:
 		var wheel:=InputEventMouseButton.new();wheel.position=owner.panel.get_global_transform_with_canvas()*sample[0];wheel.button_index=sample[1];wheel.shift_pressed=sample[2];wheel.pressed=true
 		root.push_input(wheel,true);wheel=wheel.duplicate();wheel.pressed=false;root.push_input(wheel,true);await process_frame
-		check(owner.state.first==sample[3],"Tasks contextual scrolling differs")
+		expected_first=clampi(expected_first+int(sample[3]),0,maxi(0,expected.rows.size()-17))
+		check(owner.state.first==expected_first,"Tasks contextual scrolling differs")
 	key(KEY_DOWN);key(KEY_PAGEDOWN);await process_frame
-	check(owner.state.first==1,"Tasks accepted inactive standard scrolling keys")
+	check(owner.state.first==expected_first,"Tasks accepted inactive standard scrolling keys")
 	owner.state.seek(1048576,owner.panel.capacity());await process_frame
 	var hover_index: int=-1
 	for i in owner.state.rows.size():
@@ -163,7 +165,7 @@ func exercise(expected: Dictionary) -> void:
 			var deadline:=Time.get_ticks_msec()+5000
 			while Time.get_ticks_msec()<deadline and FileAccess.get_file_as_string(directory+"/tasks-destructive-ack")!=str(step):await create_timer(0.01).timeout
 			if not check(FileAccess.get_file_as_string(directory+"/tasks-destructive-ack")==str(step),"Native Tasks action effect unconfirmed"):return
-	if OS.get_environment("DF3D_TASKS_CANCEL_WORKSHOP")=="1" or OS.get_environment("DF3D_TASKS_CANCEL_DEMOLITION")=="1" or OS.get_environment("DF3D_TASKS_CANCEL_ASSIGNED")=="1":
+	if OS.get_environment("DF3D_TASKS_CANCEL_WORKSHOP")=="1" or OS.get_environment("DF3D_TASKS_CANCEL_DEMOLITION")=="1" or OS.get_environment("DF3D_TASKS_CANCEL_ASSIGNED")=="1" or OS.get_environment("DF3D_TASKS_CANCEL_STARTED")=="1":
 		var target: int=-1
 		for i in owner.state.rows.size():
 			if owner.state.rows[i].job_id==int(expected.cancel_job):target=i;break

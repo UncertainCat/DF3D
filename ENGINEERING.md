@@ -8475,7 +8475,7 @@ recovery153800, actual world replacement154406 and interrupted applied mutation
 below. Production160820 also verifies that native DF completes a statue with
 the material and artwork selected through Tasks. These are separate evidence
 scopes: world replacement uses controllers, not a graphical main-scene reload.
-Started-construction cancellation, full Details
+Full Details
 subpage/overflow rendering, and graphical reload remain unqualified. They are
 acceptance gaps, not established implementation defects.
 
@@ -8676,8 +8676,36 @@ GPU samples59–60C. All19 core checks pass. Evidence:
 `build/stockpile-storage-native-farm-discovery-20261123-101408`.
 The earlier101152 run verified the same effects but failed the original paused-only
 harness guard; it is not clean acceptance. The paused181433 run was interrupted by
-the user before public completion. Started-construction cancellation remains a
-separate unqualified branch; ordinary assigned-job cancellation is now accepted.
+the user before public completion. Started-construction cancellation has separate acceptance below; ordinary
+assigned-job cancellation is accepted here.
+
+### Started-construction cancellation
+
+The protected `DF3D_TASKS_CANCEL_STARTED` fixture places a Masons workshop through
+DFHack's construction fixture API with a real boulder requirement. DF assigns the
+worker, reserves the input and advances construction naturally; the fixture never
+sets stage or worker fields. Progress is bounded to12000 ticks/180 seconds, and
+cancellation occurs paused. This fixture API is not a runtime construction path.
+
+Native102105 on2026-11-23 reaches workshop1490 stage1/3 after7200ticks. Tasks Cancel
+removes ConstructBuilding382794 and queues DestroyBuilding383031 with no worker,
+preserving the partial building and every unrelated world job. Protected102817
+repeats this through the public Tasks HUD in the actual DF3D main scene: after3370
+natural ticks, Cancel replaces construction with removal382924, retains stage1/3
+and preserves unrelated jobs. The refreshed list omits the construction job.
+The enclosing guard verifies the recorded simulation interval and paused action.
+Owned DF30632/34904 close unsaved with source-save hashes unchanged. Public client
+stderr is empty; graphics run serially at30FPS, GPU samples59–62C, and19 core
+checks pass. Evidence: `build/tasks-started-discovery-farm-discovery-20261123-102105`
+and `build/stockpile-storage-native-farm-discovery-20261123-102817`.
+
+Tasks navigation and scrolling oracles use current eligible rows and clamp their
+native17-row page expectations to current membership. Simulation changes task
+counts and ordering. Earlier102351 confirmed cancellation but failed the old
+first-visible-worker assumption;102645 failed fixed-list scrolling expectations.
+Those runs are not clean whole-workflow acceptance. No product change was needed.
+This qualifies queueing removal of a partial workshop, not completion of its later
+removal by the simulation; queued demolition cancellation has separate acceptance.
 
 ### Production execution after Tasks edits
 

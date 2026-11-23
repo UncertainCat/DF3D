@@ -17,6 +17,20 @@ func run() -> void:
 	var expected: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json"))
 	check(owner.state.details.size()==expected.details.size(),"Public Work Details count differs from native")
 	for frame in 3:await process_frame
+	var selections: Array=[]
+	for column in [0,0,3]:
+		if not check(owner.state.ids.size()>1,"Work Details selection fixture needs two workers"):quit(1);return
+		click(owner.panel.position+Vector2(280,owner.panel.list_top()+54));await process_frame
+		check(owner.panel.worker_selected==owner.state.ids[1],"Second portrait did not select its worker")
+		var header_x: float=owner.panel.DETAIL_SORT_X[column]*8+4
+		click(owner.panel.position+Vector2(header_x,owner.panel.list_top()-18))
+		if not check(await settle(service,func():return owner.state.phase==owner.state.Phase.Ready),"Worker sort did not settle"):quit(1);return
+		check(owner.panel.worker_selected==owner.state.ids[0],"Sort did not reset highlight to the first native-ordered worker")
+		selections.append({"column":column,"selected":owner.panel.worker_selected,"ids":Array(owner.state.ids)})
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/labor-sorted-selection-"+str(selections.size())+".png")
+	var selection_file:=FileAccess.open(directory+"/labor-sorted-selection.json",FileAccess.WRITE)
+	selection_file.store_string(JSON.stringify(selections));selection_file.close()
 	var original_mode: int=owner.state.selected.mode
 	var changed_mode: int=3 if original_mode!=3 else 2
 	click(owner.panel.position+owner.panel.mode_rect([1,3,2].find(changed_mode)).get_center())

@@ -11971,8 +11971,9 @@ viewer stderr. The settings screenshot was inspected. Attempt080509 incorrectly
 asked Miners to use the prohibited Everybody mode; native rejection was correct,
 and the final test uses an allowed mode. This is public-route/composed navigation
 acceptance, not a replacement for the detailed edit/native-effect evidence below.
-The recorded120 checkbox-background pixels are corrected by the row comparison above; unqualified sort/portrait
-variants remain open; whole-panel pixel identity is not claimed.
+The recorded120 checkbox-background pixels are corrected by the row comparison above.
+Sort-selection behavior is qualified below; portrait variants remain open and
+whole-panel pixel identity is not claimed.
 
 
 The main `fortress_ui` composition owns a lazy, reusable `work_details`
@@ -11991,6 +11992,27 @@ highlight; Info stays open, the creature sheet stays closed, and camera position
 is unchanged. The native option list contains PORTRAIT but not RECENTER/SHEET.
 DF3D now draws selected row and portrait frames and retains the clicked worker ID
 on pointer departure without submitting a semantic mutation.
+
+Changing worker sort resets the highlight to the first newly ordered row.
+The view tracks sort priorities and directions, clears selection while that
+ordering is pending, and selects the first fresh ID on receipt. Ordinary redraws
+preserve explicit selection; retired replies cannot restore it. This replaces
+the previous ID-preserving behavior across sorts. Protected native111459 on
+2026-11-23 selects the second portrait, then clicks Name, reverses Name and returns
+to Skills: the native cursor resets to0 and the inspected gold highlight follows
+the first displayed row. Its raw entry_list remains unsorted, so the probe's
+derived selected_id is not displayed-order evidence.
+
+Protected public111832 exercises those three sorts through actual HUD/portrait/
+header input and checks the selected ID against the fresh native-provider order.
+The reverse-Name screenshot was inspected; mode edit/restoration, six Labor tab
+returns, resize, close and reopen also pass. Source saves are unchanged, owned
+DF54052 closes unsaved, viewer stderr is empty, and serial graphics are capped
+at30FPS (GPU56–57C samples). The focused owner/view regression covers pending
+selection, direction/priority changes, redraw and late replies; all19 core checks
+pass. This accepts selection behavior, not sorted portrait pixel identity.
+Evidence: build/stockpile-storage-native-farm-discovery-20261123-111832 and
+build/work-details-selection-native-farm-discovery-20261123-111459.
 
 Rendered113636 exercises actual second-portrait input and checks unchanged detail,
 no command ticket and retained row selection. Both source saves were preserved

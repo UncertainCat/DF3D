@@ -165,6 +165,7 @@ func run() -> void:
 	await process_frame
 	state.dispose()
 	await modified_sort(service)
+	await sorted_worker_selection(service)
 	await keyboard_focus(service)
 	await labor_navigation(service)
 	await owner_lifecycle(service)
@@ -195,6 +196,29 @@ func owner_lifecycle(service) -> void:
 	renamed=detail(0,77);renamed.name="Detached";service.reply(first,{"citizen":{"details":[renamed]}})
 	check(retained.stopped,"Service-owned rename completes after observer destruction")
 	await process_frame
+
+func sorted_worker_selection(service) -> void:
+	var state:=State.new();state.configure(service);state.open()
+	service.reply(state.ticket,page([detail(0)]));complete_workers(service,state,[42,7,19])
+	var view:=View.new();view.state=state;state.changed.connect(view.refresh)
+	view.refresh();view.worker_selected=7
+	state.select_sort(C.WorkDetailWorkerSort.Name)
+	var retired:=state.ticket
+	check(view.worker_selected==-1,"Sorting retires the old worker highlight while new order is pending")
+	complete_workers(service,state,[19,7,42])
+	check(view.worker_selected==19,"Native Name sort selects the first new row even when the old worker remains")
+	view.worker_selected=7;state.select_sort(C.WorkDetailWorkerSort.Name)
+	service.reply(retired,workers([999]))
+	check(view.worker_selected==-1 and state.ids.is_empty(),"Late sorted results cannot restore a retired highlight")
+	complete_workers(service,state,[42,7,19])
+	check(view.worker_selected==42,"Reversing Name sort also selects the first new row")
+	view.worker_selected=7;view.refresh()
+	check(view.worker_selected==7,"Ordinary redraw preserves an explicit worker selection")
+	state.select_sort(C.WorkDetailWorkerSort.Profession,true)
+	complete_workers(service,state,[19,42,7])
+	check(view.worker_selected==19,"Changing sort priorities resets selection with the fresh ordering")
+	state.close();check(view.worker_selected==-1,"Closing retires worker selection")
+	state.dispose();view.state=null;view.free()
 
 func settings_page(revision: int=9007199254740993) -> Dictionary:
 	var catalog: Array=[]

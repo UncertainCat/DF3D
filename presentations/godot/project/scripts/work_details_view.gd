@@ -22,6 +22,7 @@ var name_entry
 var name_target: int=-1
 var detail_first:=0
 var worker_selected: int=-1
+var worker_sort: Array=[]
 var settings_selected:=0
 var showing_settings:=false
 var right_keyboard_focus:=false
@@ -152,6 +153,11 @@ func layout(view: Vector2) -> void:
 	refresh()
 func refresh() -> void:
 	if state==null:return
+	var current_sort: Array=[state.priorities,state.directions]
+	if current_sort!=worker_sort:
+		# Native sort headers reset the cursor to the first newly ordered row.
+		worker_selected=-1
+		worker_sort=current_sort.duplicate(true)
 
 	var retained: Dictionary={}
 	for index in page_rows:

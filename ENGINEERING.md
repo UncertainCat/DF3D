@@ -24282,10 +24282,21 @@ cells shorten to width-4 cells including the ellipsis. The previous presentation
 kept two extra characters in narrow artifact rows. Protected012750 verifies
 the category workflow after correction; its first minimum-width artifact
 caption has an identical1057-pixel cyan glyph mask to native, and the16x288
-scrollbar crop matches all4608 pixels. Other row background pixels differ, so
-this is not a full-panel pixel match. Owned DF22128 exits unsaved with the source
+scrollbar crop matches all4608 pixels. The row-background residual in that run
+is superseded by the current rendered comparison below. Owned DF22128 exits unsaved with the source
 unchanged; paired logs contain only documented diagnostics. Core19/19 and
 composition pass in `build/qa/artwork-caption-width`.
+
+Current comparison on2026-11-23 uses the recorded wide artifact captions at
+912x552, eight visible rows and the recorded261-item list size. The entire
+artifact list including scrollbar at248,168..688,456 matches native012750 exactly
+after the shared draft-row correction. Category buttons also paint their native
+black leading cell beneath transparent artwork; this removes216 previously gray
+pixels. The complete editor body at32,72..688,516 now has zero RGB differences.
+Title centering and the external HUD are outside that body comparison. The image
+was inspected; serial30FPS rendering has clean output, GPU58C sampled, and all19
+core checks pass. Evidence: build/qa/artifact-minimum-current/comparison-final.json.
+This reuses recorded content and does not claim another live mutation workflow.
 
 Artwork list resizing reconciles the controller's visible range, not just the
 scrollbar thumb. `fit_visible_rows` clamps the displayed start and uses the

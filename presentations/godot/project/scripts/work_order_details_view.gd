@@ -232,7 +232,7 @@ const DRAFT_CATEGORIES=[
 func draft_button(label: String,cell: Vector2i,enabled:=true,red:=false,selected:=false) -> Rect2:
 	var token:="BUTTON_CATEGORY_RECTANGLE" if not enabled else "BUTTON_CATEGORY_RECTANGLE_OFF" if red else "BUTTON_CATEGORY_RECTANGLE_ON"
 	if selected and enabled:token+="_SELECTED"
-	if engraving_context:draw_rect(Rect2(cell.x*8,cell.y*12,8,36),Color.BLACK)
+	draw_rect(Rect2(cell.x*8,cell.y*12,8,36),Color.BLACK)
 	patch(token,cell,label.length()+2,3)
 	text(label,Vector2(cell.x*8+8,cell.y*12+20))
 	return Rect2(cell.x*8,cell.y*12,(label.length()+2)*8,36)

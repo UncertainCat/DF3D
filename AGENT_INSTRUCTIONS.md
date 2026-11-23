@@ -198,6 +198,15 @@ copy, fabricated progress percentages or broader native-UI departures.
 
 ## 3. Assets and native UI
 
+- Maintainer decision, 2026-11-23: retain four confirmed native bug fixes:
+  Work-order quantity increments stop at32767 instead of wrapping negative;
+  Justice witness lists recalculate capacity immediately on resize; Justice
+  Intelligence report bylines consistently include the native renderer's
+  `Prepared by` prefix; Hunter ammunition picker scrollbar clicks use the
+  displayed picker's offset rather than the parent list's offset. These are
+  narrowly scoped exceptions; preserve other native behavior and retain their
+  reproduction evidence in ENGINEERING.md's native bug register.
+
 - Maintainer decision, 2026-11-15: keep a working scrollbar for long
   linked-building lists. Native DF omits scrolling and leaves later links
   inaccessible in the controlled twelve-link reproduction. Preserve native

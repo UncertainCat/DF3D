@@ -38,8 +38,8 @@ of a statue job after material/artwork edits. These checks do not establish
 parity for every job, item, portrait or viewport combination. All 417 known or
 trainable species in the recorded world resolve artwork; native render
 comparisons cover the eight layered species and 45 original list entries.
-Future modded species remain unqualified. Four behavior differences await a
-maintainer decision: capping Work-order quantities at 32,767 instead of native
+Future modded species remain unqualified. Four native bug fixes are
+maintainer-approved: capping Work-order quantities at 32,767 instead of native
 overflow; immediately resizing Justice witness lists; consistently including
 "Prepared by" in Justice report bylines; and using the displayed Hunter
 ammunition picker's offset for scrollbar clicks. This candidate is still

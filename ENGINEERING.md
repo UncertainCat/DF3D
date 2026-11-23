@@ -11948,19 +11948,14 @@ The recorded120 checkbox-background pixels are corrected by the row comparison a
 variants remain open; whole-panel pixel identity is not claimed.
 
 
-The main `fortress_ui` composition now owns a lazy, reusable `work_details`
-controller, configured with the shared action service, input host and native
-hover help. It remains staged: public Work Details/Labor destinations still use
-the existing read-only route. Protected113924 on2026-11-08 runs the rendered
-settings workflow through this factory and asserts repeated lookup returns the
-same owner. Resizing, scroll input, local worker selection, native setting
-effects, external-controller rejection and close pass. The test supplies a
-minimal HUD reference; it does not yet verify a public launcher or full main-scene
-handoff. Offline work-details-composition-20261108 passes core19, extension,
-Work Details state and route-retirement checks. Owned DF36124 closes unsaved
-with source preservation;30FPS clients, GPU57C sampled, documented engine
-diagnostics only. Broader lifecycle, keyboard dispatch and sibling Labor tabs
-remain unfinished before public promotion.
+The main `fortress_ui` composition owns a lazy, reusable `work_details`
+controller configured with the shared action service, input host and native
+hover help. Protected113924 on2026-11-08 established factory reuse, resizing,
+scroll input, worker selection, setting effects and close behavior. Its staged
+route and limited HUD fixture were superseded by the public080615 acceptance
+above. Do not treat that earlier route limitation as a current missing screen.
+The earlier run preserved saves and closed owned DF36124 unsaved at30FPS with
+sampled GPU57C; its engine diagnostics remain classified as known issues.
 
 Work Details portraits select a worker row locally. They are not the Residents
 Recenter/Unit sheet buttons: native113541 on2026-11-08 clicks the first and

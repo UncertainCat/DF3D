@@ -4835,6 +4835,11 @@
       "reason": "Protected live workflow; launched by tools/smoke/work_details_acceptance.ps1 on a never-saved disposable clone. Prepared inputs: DF3D_WORK_DETAILS_ACCEPTANCE."
     },
     {
+      "path": "presentations/godot/project/tests/management_reload_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected rendered main-scene reloads through tools/smoke/reload_lane_test.ps1 with DF3D_MANAGEMENT_RELOAD_SCENE=1. Requires a verified disposable save, serial30FPS graphics and Df3dLane ownership; Tasks/Objects/Justice HUD recovery is not a standalone headless check."
+    },
+    {
       "path": "presentations/godot/project/tests/reload_lane_live.gd",
       "status": "manual",
       "reason": "Protected live restarts through tools/smoke/reload_lane_test.ps1; prepared input DF3D_RELOAD_LANE; optional DF3D_MANAGEMENT_RELOAD verifies Tasks, Objects and Justice controller retirement and fresh membership across world replacement."

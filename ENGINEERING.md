@@ -1,3 +1,40 @@
+## Current management preview: 0.3.0-rc.1
+
+The public management routes are defined in `ui_availability.gd`. The table below
+summarizes their current acceptance; earlier dated discovery sections describe
+the scope at that time. Their statements that these routes remain hidden or
+unfinished do not describe current exposure. Native behavior remains authoritative
+except for the explicit maintainer decisions in AGENT_INSTRUCTIONS.md and the
+native bug register. Panels own navigation and drafts; semantic operations use
+owned native inputs without borrowing the global management menus.
+
+| Included workflow | Current evidence |
+| --- | --- |
+| Zones and Locations | The Zones and Locations public readiness table covers all18 zones and six location families, creation/editing, assignments, settings and lifecycle recovery. Public172338 and Multi172038 retain independent effects. |
+| Building operations and jobs | Owning sections qualify ordinary completed and pending building families, workshop jobs, linked controls, Display hauling/reassignment, Shop/Nest and Trade. Assigned-job cancellation101408 and started-construction cancellation102817 include native effects. |
+| Work orders and conditions | Public075512, quantity boundary104024, and shared Details mutation references cover editing and navigation. Native artwork draft-row and minimum-artifact rendering residuals are closed by eaa831a5/35076610. |
+| Residents and Labor/Work Details | Public080118/080615 and sibling lists145151 retain action evidence. Work Details sorting/portraits/row art are qualified by public112725. Species knowledge covers417 known or trainable species, with eight layered species and45 original entries compared to native renders. |
+| Stocks and Tasks | Public080911/081302; Stocks180118 native panel comparisons; actual edited statue production160820; assigned-job, demolition and started-construction cancellation effects. |
+| Places, Nobles, Objects and Justice | Public081757/082058/082302/082516/082617 include HUD entry/reopen and the actions described in their owning sections. Nobles earring art144446 and symbol client isolation145750 supersede earlier residuals. |
+| Recovery and preserved features | Producer recovery153800, interrupted applied edit155327, controller reload154406 and main-scene reload103354 retain no-replay/retirement evidence. Construction93, Reports/alerts, world hover and Stockpiles remain included. |
+
+Evidence timestamps above refer to the protected captures cited in the owning
+sections and production fixture references, not synthetic tests alone. The full
+offline gate `build/qa/management-release-current` passes245 checks at1604ac4f.
+Subsequent approval/release documentation does not change runtime behavior.
+The package built at3c6c0eb3 passes relocated extraction, install/restore,
+system-only PATH, isolated-profile startup, disposable fortress loading and GPU
+capture (`build/package smoke 501e5a2f7d984adcb6f9c0b7478d6ef4`). Source save hashes
+are unchanged and the owned game closes unsaved. Package smoke qualifies startup
+and play, not every management action; those retain their separate live evidence.
+
+Verification is scoped to the supported DF build and recorded workflows. Future
+modded species, every possible item/portrait/viewport combination, actual epoch
+replacement during an active Nobles symbol continuation, and separate-machine
+compatibility are not established by these checks. The approved quantity cap,
+Justice resize/byline fixes and Hunter picker scrollbar correction are intentional
+native departures, not unresolved approval requests.
+
 ## Trade conversation reconstruction
 
 The owned negotiation context restores pointer-free conversation checkpoints
@@ -22627,10 +22664,9 @@ GPU59-60C is not a peak claim. Core19 passes. Bounded hashes are retained in
 `native_zone_defaults.json.public_exposure_reference` and
 `native_zone_publication.json.current_multi_scene_reference`.
 
-This is screen exposure in the development build, not publication of a release
-or completion of the management goal. Building management, editable Work orders,
-Residents/Work Details and Stocks/Tasks/Places/Nobles/Objects/Justice remain in
-the backlog, followed by regression verification, packaging and publication.
+This table qualifies Zones and Locations. The current management preview summary
+above tracks the other accepted public workflows and release verification; this
+screen's evidence alone does not establish their acceptance.
 
 ### Current Zones implementation and native references
 

@@ -42,10 +42,12 @@ Future modded species remain unqualified. Four native bug fixes are
 maintainer-approved: capping Work-order quantities at 32,767 instead of native
 overflow; immediately resizing Justice witness lists; consistently including
 "Prepared by" in Justice report bylines; and using the displayed Hunter
-ammunition picker's offset for scrollbar clicks. This candidate is still
-undergoing integration and exact-package verification; it is not a claim that
-the full management backlog is complete. See ENGINEERING.md for scoped evidence
-and retained limitations. Separate-machine compatibility remains unverified.
+ammunition picker's offset for scrollbar clicks. The current runtime passed all
+245 offline integration checks. Package verification covers relocated extraction,
+install/restore, isolated-profile startup and disposable fortress loading with
+visible gameplay and preserved source saves. See ENGINEERING.md for scoped
+workflow evidence and retained limitations. Separate-machine compatibility
+remains unverified.
 
 Pause on new starts off in each fortress session and remembers explicit toggles;
 this simplification is maintainer-approved. Track uses fresh material distances

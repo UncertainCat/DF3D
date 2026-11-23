@@ -24167,11 +24167,22 @@ lists reserve the native extra row above the quantity controls. At1200x800,
 local rendered comparison `build/qa/artwork-controls-verified` matches the native
 020406 search field26208 pixels, quantity field21312 pixels, and each amount
 button1152 pixels exactly. The removal sprite's724 opaque pixels also match;
-78 surrounding row-background pixels still differ. This remaining background
-mismatch and other window sizes remain unfinished. The local capture reuses native observed content and installed
+The surrounding row-background discrepancy is corrected by the current comparison
+below; other window sizes retain their separately scoped evidence. The local capture reuses native observed content and installed
 assets without launching DF; it is appearance evidence, not new live-effect
 acceptance. Root19/19 and headless composition pass, with only documented engine
 diagnostics in the short30 FPS rendered check.
+
+The shared draft list uses native BUTTON_RECTANGLE artwork. On Delete element,
+the row continues beneath the transparent removal button while caption truncation
+still reserves the button's space. Current rendered comparison on2026-11-23 matches
+the entire three-row728x108 region at248,136..976,244 against native020406 with zero
+RGB differences, including all removal-button backgrounds. The final image was
+inspected. This replaces the old dark-row artwork and closes the recorded78-pixel
+removal-background gap. Rendering is serial30FPS (GPU55–58C samples), engine output
+is clean, all19 core checks and UI composition pass. Evidence:
+build/qa/artwork-row-corrected/comparison.json. This is a current renderer check
+using recorded captions, not a new native mutation or complete editor acceptance.
 
 The artwork discard prompt replaces the editor body with native Warning!/loss
 copy, a43-column red discard button followed by the green Keep working button.

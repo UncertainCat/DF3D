@@ -276,7 +276,8 @@ func draw_draft() -> void:
 		var width:=int((size.x-248)/8)-(4 if page==17 and not engraving_context else 2 if scrollbar.visible else 0)
 		for i in mini(page_rows,state.rows.size()-offset):
 			var row: Dictionary=state.rows[offset+i]
-			patch("BUTTON_RECTANGLE" if engraving_context else "BUTTON_RECTANGLE_DARK",Vector2i(29,int(list_top()/12)+i*3),width,3)
+			# Native draws the row beneath the transparent removal button.
+			patch("BUTTON_RECTANGLE",Vector2i(29,int(list_top()/12)+i*3),width+(4 if page==17 and not engraving_context else 0),3)
 			var label: String=row.caption
 			# Native element/relationship branches use the inclusive row span:
 			# e.g.20800a..208083 shortens to width-4, including the ellipsis.

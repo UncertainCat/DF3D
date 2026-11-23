@@ -35,9 +35,14 @@ remain included. All 93 supported construction entries have verified effects.
 Management verification includes actual public entry routes, native readback,
 selected pixel comparisons, producer recovery, fortress reloads and execution
 of a statue job after material/artwork edits. These checks do not establish
-parity for every job, item, portrait or viewport combination. Complex species
-artwork and some visual variants remain incomplete. Work-order quantity overflow
-and Justice witness-list resizing remain under review. This candidate is still
+parity for every job, item, portrait or viewport combination. All 417 known or
+trainable species in the recorded world resolve artwork; native render
+comparisons cover the eight layered species and 45 original list entries.
+Future modded species remain unqualified. Four behavior differences await a
+maintainer decision: capping Work-order quantities at 32,767 instead of native
+overflow; immediately resizing Justice witness lists; consistently including
+"Prepared by" in Justice report bylines; and using the displayed Hunter
+ammunition picker's offset for scrollbar clicks. This candidate is still
 undergoing integration and exact-package verification; it is not a claim that
 the full management backlog is complete. See ENGINEERING.md for scoped evidence
 and retained limitations. Separate-machine compatibility remains unverified.

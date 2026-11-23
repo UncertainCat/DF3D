@@ -16,6 +16,7 @@ var quantity_focused:=false
 var name_state=preload("res://scripts/work_order_art_name_state.gd").new()
 var name_view
 func configure_details(source,model) -> void:
+	add_to_group("native_wide_details")
 	super.configure(source);state=model;colors=art.installed_palette(source.assets_root())
 	name_state.configure(state)
 	name_view=preload("res://scripts/location_name_view.gd").new();add_child(name_view)

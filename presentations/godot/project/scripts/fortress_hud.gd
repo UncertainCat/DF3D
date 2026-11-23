@@ -33,6 +33,7 @@ var moon: Sprite2D
 var top: Control
 var actions: HBoxContainer
 var information: HBoxContainer
+var notification_layer: CanvasLayer
 var alerts: VBoxContainer
 var red_alert
 var notification_rail
@@ -212,8 +213,9 @@ func _ready():
 		launch("Kitchen"))
 	icon_button(labor_tabs, "Back", "", func(): labor_menu.hide())
 	labor_menu.hide()
+	notification_layer=CanvasLayer.new();notification_layer.layer=1;add_child(notification_layer)
 	alerts = VBoxContainer.new()
-	root_control.add_child(alerts)
+	notification_layer.add_child(alerts)
 	alerts.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_launcher(root_control, "Petitions", "")
 	add_launcher(root_control, "Reports", "ANNOUNCEMENT_OPEN_ALL_ANNOUNCEMENTS")
@@ -704,7 +706,8 @@ func _feedback_text() -> String:
 func update_state(play: bool, in_fort: bool, state: Dictionary):
 	var view: Vector2 = get_viewport().get_visible_rect().size
 	active_launcher = owned_launcher()
-	var state_key := [play, in_fort, interaction.construction_active, elevation_available(), interaction.tool_picker.selected,
+	var over_details: bool=not menu_open() and get_tree().get_nodes_in_group("native_wide_details").any(func(panel):return panel.is_visible_in_tree() and panel.position.x<32)
+	var state_key := [play, in_fort, over_details, interaction.construction_active, elevation_available(), interaction.tool_picker.selected,
 		interaction.shell_context_visible(), menu_open(), labor_menu.visible, world.get_top_z(), world.is_live(),
 		_feedback_text(), session_controls != null and session_controls.blocks_commands(), view,
 		Preferences.effective_scale_vector(view), Preferences.ui_scale, active_launcher, ui_host.allows_minimap_input() if ui_host!=null else false,
@@ -719,6 +722,7 @@ func update_state(play: bool, in_fort: bool, state: Dictionary):
 	entered = in_fort
 	session = state.duplicate(true)
 	visible = entered
+	notification_layer.visible=entered
 	minimap_layer.visible=entered and not native_help.visible
 	# Only the captured alert-group popup opts into map overdraw. Other panels
 	# retain their previous composition until their native behavior is measured.
@@ -741,7 +745,10 @@ func update_state(play: bool, in_fort: bool, state: Dictionary):
 	var blocked: bool = not enabled or interaction.construction_active or menu_open() or labor_menu.visible
 	minimap.set_allowed(enabled and not menu_open() and not labor_menu.visible and (ui_host.allows_minimap_input() if ui_host!=null else not interaction.construction_active))
 	notification_rail.visible = Availability.allows_launcher("Reports")
-	notification_rail.update_groups(state if notification_rail.visible else {}, not blocked and notification_rail.visible)
+	# Native wide Details draws below the still-visible notification rail, while
+	# modal input remains blocked. Other HUD composition retains its own layer.
+	notification_layer.layer=11 if over_details else layer
+	notification_rail.update_groups(state if notification_rail.visible else {}, not blocked and notification_rail.visible,over_details)
 	red_alert.update_state(state if Availability.allows_launcher("Reports") else {},not blocked and Availability.allows_launcher("Reports"))
 	if not interaction.construction_active: active_launcher = ""
 	for key in navigation:
@@ -913,6 +920,7 @@ func apply_ui_scale():
 	var factor := ui_scale_vector()
 	scale = factor
 	minimap_layer.scale=scale
+	notification_layer.scale=scale
 	root_control.size = logical_view_size()
 	auto_scale_toggle.set_pressed_no_signal(Preferences.ui_auto_scale)
 	scale_picker.editable = not Preferences.ui_auto_scale

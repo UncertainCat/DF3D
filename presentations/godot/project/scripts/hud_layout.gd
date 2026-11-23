@@ -19,7 +19,9 @@ static func info_rect(view: Vector2) -> Rect2:
 	return Rect2(origin, Vector2(maxf(320, view.x - origin.x - right_reserve(view)), maxf(220, view.y - origin.y - BOTTOM)))
 
 static func notification_rect(view: Vector2) -> Rect2:
-	return Rect2(0, TOP + 48, LEFT_RAIL - 8, maxf(0, view.y - TOP - BOTTOM - 48))
+	# Category rows follow the red alert's three native text rows.
+	var top:=108.0+fposmod(view.y,12.0)*0.5
+	return Rect2(fposmod(view.x,8.0)*0.5,top,LEFT_RAIL-8,maxf(0,view.y-top-BOTTOM))
 
 static func elevation_rect(view: Vector2, minimap_bottom: float) -> Rect2:
 	var top := minimap_bottom + 4.0 if has_minimap(view) else TOP

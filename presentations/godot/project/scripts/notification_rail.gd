@@ -11,11 +11,11 @@ var _key: Array = []
 func _ready():
 	horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	column = VBoxContainer.new()
-	column.add_theme_constant_override("separation", 4)
+	column.add_theme_constant_override("separation", 0)
 	add_child(column)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
-func update_groups(state: Dictionary, enabled: bool):
+func update_groups(state: Dictionary, enabled: bool, retain_icon_color:=false):
 	var groups: Array = state.get("active_notifications", []) if state.get("fortress_valid", false) else []
 	var epoch := int(state.get("fortress_epoch", 0))
 	var key := [epoch, hash(groups)]
@@ -44,5 +44,8 @@ func update_groups(state: Dictionary, enabled: bool):
 					button.accept_event())
 			column.add_child(button)
 			buttons.append(button)
-	for button in buttons: button.disabled = not enabled
+	for button in buttons:
+		button.disabled = not enabled
+		if retain_icon_color:button.add_theme_color_override("icon_disabled_color",Color.WHITE)
+		else:button.remove_theme_color_override("icon_disabled_color")
 	visible = not buttons.is_empty()

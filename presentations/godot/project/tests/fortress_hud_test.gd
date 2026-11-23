@@ -410,8 +410,16 @@ func run():
 	assert(hud.settings.visible, "Held Escape cannot toggle settings repeatedly")
 	escape.echo=false; root.push_input(escape,true)
 	assert(not hud.settings.visible and not i.shell_blocked)
+	# Child panel visibility must invalidate cached HUD composition even when
+	# the session dictionary and modal input admission have not changed.
+	var details:=Control.new();details.position=Vector2(16,40);details.add_to_group("native_wide_details");root.add_child(details)
+	hud.update_state(false,true,{})
+	assert(hud.notification_layer.layer==11 and not hud.enabled,"Wide Details lifts notifications without enabling input")
+	details.hide();hud.update_state(false,true,{})
+	assert(hud.notification_layer.layer==hud.layer,"Closing Details retires notification overdraw")
+	details.free()
 	hud.update_state(false, false, {})
-	assert(not hud.visible and not hud.settings.visible, "Loader hides fortress shell")
+	assert(not hud.visible and not hud.notification_layer.visible and not hud.settings.visible, "Loader hides fortress shell")
 	hud.free()
 	audio_panel.free()
 	audio.free()

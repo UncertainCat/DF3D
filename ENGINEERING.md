@@ -8735,6 +8735,33 @@ proximity alone is insufficient: the final fixture excludes construction,
 removed, encased, held and otherwise claimed items when selecting its material.
 It leaves native availability, pathing, worker selection and completion authoritative.
 
+### Wide Details notification composition
+
+The shared Details view registers its wide-panel overlap with HUD composition.
+Visible wide Details lifts only the notification rail above the panel, preserving
+modal input blocking and native icon color. Closing/hiding the child participates
+in the HUD cache key so unchanged session facts cannot retain the old layer.
+The rail follows the HUD scale and loader visibility. Other HUD panels and menu
+layers retain their own composition. Notification rows occupy consecutive36px
+cells below the red-alert slot; the former24px offset and4px gaps were incorrect.
+
+Protected native105210 on2026-11-23 captures the Tasks historical-figure picker
+with notifications above its left edge. Clicking the overlapping icon leaves the
+Tasks/Details/artwork state unchanged. Owned DF61052 closes unsaved with source
+hashes unchanged. Public105737 exercises the actual HUD, material/art edits and
+returns: its976x696 region at16,76 matches native exactly, including the notification
+overlap. The full976x732 panel differs in988 title pixels only: native says rock
+statue while the public job was edited to Dolomite. Both images were inspected;
+this is not a claim of an identical title or every Details subpage/viewport.
+Client stderr is empty, source hashes are unchanged, and owned DF13660 closes
+unsaved. Serial30FPS graphics have GPU samples59–61C. HUD/Reports/composition
+checks and all19 core checks pass; the HUD regression also changes child visibility
+without changing session facts and verifies loader retirement and blocked input.
+Evidence: `build/details-notification-native-farm-discovery-20261123-105210` and
+`build/stockpile-storage-native-farm-discovery-20261123-105737`.
+Earlier105255 retained the old layer due to caching;105419 failed a script edit;
+105538 exposed the row-spacing mismatch. These are not visual acceptance.
+
 ### Rendered management recovery after world reload
 
 `DF3D_MANAGEMENT_RELOAD_SCENE=1` selects the actual main-scene client in the

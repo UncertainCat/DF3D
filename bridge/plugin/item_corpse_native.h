@@ -201,7 +201,10 @@ inline bool corpseItemDescriptionDispatch(df::item* item) {
 // texture-cache compositor. Owned graphics retain only original skeleton tiles
 // and a flat CORPSE sentinel. Empty position/layer tables and zero secondary
 // tiles make every non-skeleton path return that sentinel before any compositor.
-// nullopt rejects unvalidated input; zero means continue normal layer selection.
+// nullopt rejects unvalidated input; zero is native's deliberate lack of art.
+// Keep the normal-selection sentinel distinct so an absent skeleton tile never
+// falls through to an unrelated ordinary corpse recipe.
+constexpr int32_t corpseNormalArtwork=INT32_MAX;
 inline std::optional<int32_t> corpseSkeletonArtwork(df::item* source) {
     if(!corpseItemDescriptionDispatch(source))return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
@@ -219,14 +222,13 @@ inline std::optional<int32_t> corpseSkeletonArtwork(df::item* source) {
     if(!raw)return std::nullopt;
     const auto* caste=corpse->caste>=0 && size_t(corpse->caste)<raw->caste.size()?raw->caste[corpse->caste]:nullptr;
     if(!caste)return std::nullopt;
-    constexpr int32_t normal=INT32_MAX;
     const auto graphics=[](const df::creature_raw_graphics* original) {
         if(!original)return std::unique_ptr<df::creature_raw_graphics>{};
         auto owned=std::make_unique<df::creature_raw_graphics>();
         owned->creature_texture_texpos={};
         owned->entity_link_texpos={};owned->site_link_texpos={};owned->profession_texpos={};
         owned->creature_texture_add_color={};
-        owned->creature_texture_texpos[0][df::creature_graphics_role::CORPSE][0][0]=normal;
+        owned->creature_texture_texpos[0][df::creature_graphics_role::CORPSE][0][0]=corpseNormalArtwork;
         owned->skeleton_with_skull_texpos=original->skeleton_with_skull_texpos;
         owned->skeleton_texpos=original->skeleton_texpos;
         return owned;
@@ -253,7 +255,7 @@ inline std::optional<int32_t> corpseSkeletonArtwork(df::item* source) {
         uint32_t,df::unit*,df::item_body_component*,bool*);
     const auto tile=reinterpret_cast<Selector>(base+0x6d6560)(ownedRaw.get(),0,&position,-1,-1,102,
         0x20,nullptr,owned.get(),nullptr);
-    return tile==normal?0:tile;
+    return tile;
 }
 // The corpse caption can select a unit profession and office title. Preserve
 // their lookup indices, including spouse-office links, around the whole call.

@@ -9026,9 +9026,22 @@ empty with safe rendering and30FPS; sampled GPU61C. Core19 and Stocks/item-sheet
 Residents state checks pass. Earlier174936 qualifies the same exact item panels.
 The installed-raw inventory174525 contains15 CORPSE layer sets; this inventory
 does not establish rendered acceptance for every species or custom definition.
-Of16 visible Stocks corpse icons,15 match. Resolved-unit corpse23840 (unit6680,
-race176) retains a separate259-pixel mismatch: native has no icon while DF3D draws
-one. It does not enter the new unitless path and remains an open artwork defect.
+Native zero artwork remains distinct from the owned normal-selection sentinel.
+Resolved-unit corpse23840 (unit6680, race176) deliberately has no native icon;
+the bridge preserves that result and the extension does not substitute map or
+material artwork when a whole-corpse recipe is absent. The controlled Stocks
+fixture checks both the visible unitless recipe and the deliberately blank row.
+Stocks uses native INTERFACE_BITS scrollbar artwork and DGRAY search hint ink.
+
+Protected180118 on2026-11-22 verifies all three corrections: the full944x708
+Stocks panel and both488x708 corpse/tooth panels have zero differing RGB pixels.
+Native and viewer Stocks screenshots were inspected. The reusable unitless
+fixture restores its unit ID and verifies native graphics caches are unchanged.
+Owned DF54776 closes unsaved, source-save hashes are unchanged, and client stderr
+is empty. Graphics use the protected serial30FPS lane. Bridge and extension builds,
+all19 core checks and focused Stocks/item-sheet state checks pass. Evidence is in
+build/stockpile-storage-native-farm-discovery-20261122-180118/panel-comparison.json.
+This qualifies the captured list and item sheets, not every possible corpse raw.
 
 Core19, extension/item-state and MSVC pass (`corpse-selector-wired`). Protected
 101742 on2026-11-10 verifies actual View/close, exact description/Uses and full

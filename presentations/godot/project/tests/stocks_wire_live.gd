@@ -197,7 +197,11 @@ func run() -> void:
 				for id in visible_ids:
 					if kind==23 and not state.items.get(id,{}).get("appearance",{}).has("corpse_selector"):unsupported.append(id)
 				check(not visible_ids.is_empty() and visible_ids.all(func(id):return state.items.has(id) and (unsupported.has(id) or (view.icons.has(id) and view.icons[id].texture!=null))),"Stocks category artwork unavailable: "+str(kind))
-				if OS.get_environment("DF3D_STOCKS_UNITLESS_CORPSE")=="1":check(unsupported.is_empty() and visible_ids.has(47852),"Unitless corpse recipe missing from Stocks")
+				if OS.get_environment("DF3D_STOCKS_UNITLESS_CORPSE")=="1":
+					check(visible_ids.has(47852) and not unsupported.has(47852),"Unitless corpse recipe missing from Stocks")
+					# Native175155 leaves23840 blank; no recipe is correct for this row.
+					check(unsupported==[23840],"Corpse recipe absence differs from native blank row")
+					check(view.icons.get(23840,{}).get("texture")==null,"Native blank corpse used fallback artwork")
 				if kind==6 and OS.get_environment("DF3D_STOCKS_DOOR_STATES")=="1":
 					var door_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/stocks-door-states.json"))
 					for expected in door_reference.cases:

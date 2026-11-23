@@ -52,6 +52,9 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
         if((itemType!=23 && itemType!=46) || appearance["corpse_selector"].get_type()!=Variant::DICTIONARY)return {};
         return candidateIcon(appearance["corpse_selector"],false);
     }
+    // Whole-corpse selectors are independently owned bridge results. Absence
+    // can be native's deliberate blank, not permission to use map/material art.
+    if(itemType==23)return {};
     if(appearance.has("coffin_unused") && (itemType!=21 || appearance["coffin_unused"].get_type()!=Variant::BOOL))return {};
     if(appearance.has("artifact_mood") && (itemType!=24 || appearance["artifact_mood"].get_type()!=Variant::BOOL))return {};
     if(appearance.has("floodgate_open") && (itemType!=7 || appearance["floodgate_open"].get_type()!=Variant::BOOL))return {};

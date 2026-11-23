@@ -1,6 +1,5 @@
 extends "res://scripts/location_staff_candidates_frame.gd"
-# Staged native Stocks surface. Individual artwork/actions and complete resize,
-# input acceptance remain prerequisites for public exposure.
+# Public native Stocks surface; item facts and actions come from the owned state.
 signal cancelled
 signal item_requested(id: int)
 signal recenter_requested(id: int)
@@ -31,7 +30,8 @@ func configure_stocks(source,model,help=null) -> void:
 	item_canvas=Control.new();add_child(item_canvas);item_canvas.mouse_filter=Control.MOUSE_FILTER_IGNORE;item_canvas.clip_contents=true
 	item_canvas.draw.connect(_draw_items)
 	item_scrollbar=preload("res://scripts/area_location_scrollbar.gd").new();add_child(item_scrollbar);item_scrollbar.configure(source)
-	for bar in [scrollbar,item_scrollbar]:bar.input_allowed=ready;bar.use_classic_art=true;bar.wheel_enabled=false
+	# Native Stocks uses INTERFACE_BITS (gold edge pixels), not scrollbar.png.
+	for bar in [scrollbar,item_scrollbar]:bar.input_allowed=ready;bar.wheel_enabled=false
 	scrollbar.row_changed.connect(func(value):state.first_category=value;refresh())
 	item_scrollbar.row_changed.connect(func(value):state.first_item=value;refresh())
 	var inset:=StyleBoxTexture.new();inset.texture=art.texture("BUTTON_FILTER")
@@ -39,6 +39,7 @@ func configure_stocks(source,model,help=null) -> void:
 	for side in [SIDE_TOP,SIDE_BOTTOM]:inset.set_texture_margin(side,12)
 	search=preload("res://scripts/stocks_filter.gd").new();add_child(search);search.theme=theme;search.byte_limit=4096
 	search.configure(inset,colors);search.edited.connect(func(bytes):state.set_query(bytes.get_string_from_utf8()))
+	if colors.size()==16:search.placeholder_ink=colors[8]
 	state.changed.connect(refresh)
 func allowed() -> bool:return is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call())
 func ready() -> bool:return allowed() and state!=null and state.phase==state.Phase.Ready

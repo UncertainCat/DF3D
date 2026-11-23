@@ -8475,7 +8475,7 @@ recovery153800, actual world replacement154406 and interrupted applied mutation
 below. Production160820 also verifies that native DF completes a statue with
 the material and artwork selected through Tasks. These are separate evidence
 scopes: world replacement uses controllers, not a graphical main-scene reload.
-Assigned-job and started-construction cancellation, full Details
+Started-construction cancellation, full Details
 subpage/overflow rendering, and graphical reload remain unqualified. They are
 acceptance gaps, not established implementation defects.
 
@@ -8654,6 +8654,30 @@ This qualifies cancellation of a queued demolition, not an assigned job or a
 partially constructed building. Earlier173116/173219/173309/173356 attempts failed
 the diagnostic native click before public acceptance; the final driver clamps
 its native scroll and restores pointer coordinates after capture.
+
+### Assigned workshop-job cancellation
+
+The protected `DF3D_TASKS_CANCEL_ASSIGNED` workflow creates statue tasks through
+native workshop controls and lets DF naturally assign a worker and reserve an
+input. It pauses immediately after those prerequisites and compares native Tasks
+Cancel with the public DF3D Tasks button on a second naturally assigned task.
+No worker pointers, material reservations or construction stages are manufactured.
+The oracle verifies both job queues, the worker's current job and the input's
+reservation flag after deletion, using retained IDs rather than freed job pointers.
+Simulation advancement is bounded and recorded; cancellation itself stays paused.
+
+Protected101408 on2026-11-23 passes: native job382794 and public job382810 both
+release worker6542 and input44707, preserve workshop3 and all unrelated world and
+holder jobs, and disappear from the refreshed Tasks list. Natural assignment takes
+86 and100 ticks respectively; the enclosing guard verifies exactly186 total ticks.
+The actual main-scene roundtrip passes with empty client stderr. Source-save hashes
+are unchanged and owned DF58096 closes unsaved. Graphics run serially at30FPS;
+GPU samples59–60C. All19 core checks pass. Evidence:
+`build/stockpile-storage-native-farm-discovery-20261123-101408`.
+The earlier101152 run verified the same effects but failed the original paused-only
+harness guard; it is not clean acceptance. The paused181433 run was interrupted by
+the user before public completion. Started-construction cancellation remains a
+separate unqualified branch; ordinary assigned-job cancellation is now accepted.
 
 ### Production execution after Tasks edits
 
